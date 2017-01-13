@@ -14,3 +14,7 @@ After the service is started, you can POST files to /api/upload . The file key n
 
 This works great with sharex, just like [mixtape.moe](https://mixtape.moe) and [cuntflaps.me](https://cuntflaps.me).
 A chrome extension to be able to right click images -> send to safe is in the works.
+
+If you are using nginx, you should set inside your location block the following directive, replacing the number with the one you want set up `client_max_body_size 512M;`
+
+If using apache, you should change the following directives on your config `memory_limit = 512M`
