@@ -26,3 +26,5 @@ galleryController.test = function(req, res, next){
 
 	db.table('gallery').insert(testdata).then(() => {})
 }
+
+module.exports = galleryController
