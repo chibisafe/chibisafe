@@ -4,7 +4,7 @@ Pomf-like image uploading service, written in NodeJS
 ---
 1. Clone
 2. Rename `config.sample.js` to `config.js`
-3. Modify port and prvacy options if desired
+3. Modify port and privacy options if desired
 4. run `npm install` to install all dependencies
 5. run `node lolisafe.js` to start the service
 
