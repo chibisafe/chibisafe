@@ -1,0 +1,25 @@
+{
+  "name": "loli-safe",
+  "version": "1.0.0",
+  "description": "Pomf-like uploading service, written in NodeJS",
+  "author": "kanadeko",
+  "main": "lolibank.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kanadeko/loli-safe"
+  },
+  "bugs": {
+    "url": "https://github.com/kanadeko/loli-safe/issues"
+  },
+  "engines": {
+    "node": ">=7.0.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "knex": "^0.12.6",
+    "multer": "^1.2.1",
+    "randomstring": "^1.1.5",
+    "sqlite3": "^3.1.8"
+  }
+}
