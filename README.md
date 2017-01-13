@@ -1,4 +1,4 @@
-# loli-bank
+# loli-safe
 Pomf-like image uploading service, written in NodeJS
 
 ---
