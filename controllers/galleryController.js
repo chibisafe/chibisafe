@@ -13,8 +13,8 @@ galleryController.list = function(req, res, next){
 }
 
 galleryController.test = function(req, res, next){
-	if(!config.privacy.public)
-		if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('Not Authorized!')
+	//if(!config.privacy.public)
+		//if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('Not Authorized!')
 
 	let testdata = [
 		{name: 'Test 1'},
