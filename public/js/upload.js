@@ -32,7 +32,12 @@ window.onload = function () {
 			autoProcessQueue: true,
 			headers: {
         		'auth': localStorage.token
-    		}
+    		},
+    		init: function() {
+    			this.on("addedfile", function(file) { 
+    				document.getElementById('uploads').style.display = 'block';
+    			});
+  			}
 		});
 
 		// Update the total progress bar
