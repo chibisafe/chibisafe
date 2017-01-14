@@ -24,9 +24,15 @@
 
 					<div class="columns">
 						<div class="column"></div>
-						<div class="column">
-							<a class="button is-danger is-outlined" id='btnGithub' href='https://github.com/kanadeko/loli-safe' target='_blank'>View on Github</a>
-							<div id="dropzone">Click here or drag and drop files</div>
+						<div class="column" id='uploadContainer'>
+
+							<p id='tokenContainer' class="control has-addons has-addons-centered">
+								<input id='token' class="input is-danger" type="text" placeholder="Your upload token">
+							  	<a id='tokenSubmit' class="button is-danger">Check</a>
+							</p>
+
+							<a id='btnGithub' class="button is-danger is-outlined" href='https://github.com/kanadeko/loli-safe' target='_blank'>View on Github</a>
+
 						</div>
 						<div class="column"></div>
 					</div>

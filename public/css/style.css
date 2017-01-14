@@ -50,6 +50,8 @@ div#dropzone:hover {
     color: #fff;
 }
 
+div#uploads, p#tokenContainer { display: none; }
+
 img.logo { height: 200px; margin-top: 20px; }
 .dz-preview .dz-details { display: flex; }
 .dz-preview .dz-details .dz-size, .dz-preview .dz-details .dz-filename { flex: 1 }
