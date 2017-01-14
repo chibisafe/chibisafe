@@ -37,7 +37,7 @@ uploadsController.upload = function(req, res, next){
 			file: req.file.filename,
 			galleryid: gallery
 		}).then(() => {
-			res.json({
+			return res.json({
 				'filename': req.file.filename
 			})
 		})
