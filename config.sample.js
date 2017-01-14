@@ -6,6 +6,9 @@ module.exports = {
 		Ideally the only options you should change are port and basedomain.
 	*/
 
+	// Your base domain where the app is running.
+	basedomain: 'https://i.kanacchi.moe/',
+
 	// Token to use on the api. Leave blank for public
 	TOKEN: 'YOURSUPERSECRETTOKEN',
 
@@ -14,9 +17,6 @@ module.exports = {
 
 	// Uploads config
 	uploads: {
-
-		// Where to serve the uploaded files.
-		basedomain: 'https://i.kanacchi.moe/',
 
 		// If prefix is set, it will be appended at the end of basedomain.
 		// Ex: https://i.kanacchi.moe/prefix/k4n4.png
