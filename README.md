@@ -1,4 +1,4 @@
-![loli-safe](https://i.kanacchi.moe/m9pi.png)   
+![loli-safe](https://i.kanacchi.moe/R6GE.png)   
 # loli-safe
 Pomf-like image uploading service, written in NodeJS
 
