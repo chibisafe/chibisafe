@@ -3,62 +3,8 @@
 	<head>
 		<title>loli-safe - A self hosted upload service</title>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-		
-		<style type="text/css">
-			#b {
-				-webkit-animation-delay: 0.5s;
-				animation-delay: 0.5s;
-				-webkit-animation-duration: 1.5s;
-				animation-duration: 1.5s;
-				-webkit-animation-fill-mode: both;
-				animation-fill-mode: both;
-				-webkit-animation-name: floatUp;
-				animation-name: floatUp;
-				-webkit-animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
-				animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
-				border-radius: 24px;
-				display: inline-block;
-				height: 240px;
-				margin-bottom: 40px;
-				position: relative;
-				vertical-align: top;
-				width: 240px;
-				box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
-			}
-			img.logo {
-				height: 200px;
-				margin-top: 20px;
-			}
-
-			.dz-preview .dz-details { display: flex; }
-			.dz-preview .dz-details .dz-size, .dz-preview .dz-details .dz-filename { flex: 1 }
-			.dz-preview img, .dz-preview .dz-success-mark, .dz-preview .dz-error-mark { display: none }
-
-			@keyframes floatUp {
-				0% {
-					opacity: 0;
-					box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0);
-					-webkit-transform: scale(0.86);
-					transform: scale(0.86);
-				}
-				25% {
-					opacity: 100;
-				}
-				67% {
-					box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
-					-webkit-transform: scale(1);
-					transform: scale(1);
-				}
-				100% {
-					box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
-					-webkit-transform: scale(1);
-					transform: scale(1);
-				}
-			}
-
-		</style>
 	</head>
 
 	<body>
@@ -78,15 +24,7 @@
 					<div class="columns">
 						<div class="column"></div>
 						<div class="column">
-							<a class="button is-danger is-outlined is-fullwidth" id="upload-button">Upload files</a>
-						</div>
-						<div class="column"></div>
-					</div>
-
-					<div class="columns">
-						<div class="column"></div>
-						<div class="column">
-							<div class="notification" id="dropzone">Or drag and drop files here</div>
+							<div id="dropzone">Click here or drag and drop files</div>
 						</div>
 						<div class="column"></div>
 					</div>
@@ -112,7 +50,25 @@
 		</section>
 
 		<script type="text/javascript">
+
+			var maxSize = '512';
+			var urlPrefix = '';
+
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == XMLHttpRequest.DONE) {
+					if(xhr.responseText.maxFileSize)
+						maxSize = xhr.responseText.maxFileSize
+					if(xhr.responseText.urlPrefix)
+						urlPrefix = xhr.responseText.urlPrefix + '/'
+				}
+			}
+			xhr.open('GET', '/api/info', true);
+			xhr.send(null);
+
 			window.onload = function () {
+
+
 				var previewNode = document.querySelector("#template");
 				previewNode.id = "";
 				var previewTemplate = previewNode.parentNode.innerHTML;
@@ -121,7 +77,7 @@
 				var dropzone = new Dropzone('div#dropzone', { 
 					url: '/api/upload',
 					paramName: 'file',
-					maxFilesize: 512,
+					maxFilesize: maxSize,
 					parallelUploads: 2,
 					uploadMultiple: false,
 					previewsContainer: 'div#uploads',
@@ -137,14 +93,15 @@
 				});
 
 				dropzone.on("success", function(file, response) {
-      				// Handle the responseText here. For example, add the text to the preview element:
-      				a = document.createElement('a');
-      				a.href = 'https://i.kanacchi.moe/' + response.filename;
-      				a.innerHTML = response.filename;
+					// Handle the responseText here. For example, add the text to the preview element:
+					a = document.createElement('a');
+					a.href = window.location.origin + '/' + urlPrefix + response.filename;
+					a.target = '_blank';
+					a.innerHTML = response.filename;
 
-      				file.previewTemplate.querySelector(".progress").style.display = 'none';
-      				file.previewTemplate.querySelector(".link").appendChild(a);
-    			});
+					file.previewTemplate.querySelector(".progress").style.display = 'none';
+					file.previewTemplate.querySelector(".link").appendChild(a);
+				});
 
 			};
 		</script>

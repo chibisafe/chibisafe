@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 		cb(null, './' + config.uploads.folder + '/')
 	},
 	filename: function (req, file, cb) {
-		cb(null, randomstring.generate(config.fileLength) + path.extname(file.originalname))
+		cb(null, randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname))
 	}
 })
 
