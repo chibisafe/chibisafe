@@ -29,7 +29,10 @@ window.onload = function () {
 			previewTemplate: previewTemplate,
 			createImageThumbnails: false,
 			maxFiles: 1000,
-			autoProcessQueue: true
+			autoProcessQueue: true,
+			headers: {
+        		'auth': localStorage.token
+    		}
 		});
 
 		// Update the total progress bar
