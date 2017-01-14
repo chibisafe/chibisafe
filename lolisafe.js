@@ -31,3 +31,6 @@ safe.use(function (err, req, res, next) {
 })
 
 safe.listen(config.port, () => console.log(`loli-safe started on port ${config.port}`))
+
+if(config.TOKEN !== '') console.log('Use the following token as the \'auth\' header in your requests to the API: ' + config.TOKEN)
+else console.log('Running lolisafe in public mode. No token required.')

@@ -22,10 +22,11 @@ const upload = multer({
 
 uploadsController.upload = function(req, res, next){
 
-	let gallery = req.headers.gallery
+	if(config.TOKEN !== '')
+		if(req.headers.auth !== config.TOKEN)
+			return res.status(401).send('not-authorized')
 
-	if(!config.privacy.public)
-		if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('not-authorized')
+	let gallery = req.headers.gallery
 	
 	upload(req, res, function (err) {
 		if (err) {
@@ -38,7 +39,7 @@ uploadsController.upload = function(req, res, next){
 			galleryid: gallery
 		}).then(() => {
 			return res.json({
-				'filename': req.file.filename
+				'url': config.uploads.basedomain + req.file.filename
 			})
 		})
 		

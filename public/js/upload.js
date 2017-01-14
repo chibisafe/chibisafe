@@ -1,5 +1,4 @@
 var maxSize = '512';
-var urlPrefix = '';
 
 var xhr = new XMLHttpRequest();
 xhr.onreadystatechange = function() {
@@ -10,8 +9,6 @@ xhr.onreadystatechange = function() {
 		}
 		if(xhr.responseText.maxFileSize)
 			maxSize = xhr.responseText.maxFileSize;
-		if(xhr.responseText.urlPrefix)
-			urlPrefix = xhr.responseText.urlPrefix + '/';
 	}
 }
 xhr.open('GET', '/api/info', true);
@@ -45,7 +42,7 @@ window.onload = function () {
 	dropzone.on("success", function(file, response) {
 		// Handle the responseText here. For example, add the text to the preview element:
 		a = document.createElement('a');
-		a.href = window.location.origin + '/' + urlPrefix + response.filename;
+		a.href = response.url;
 		a.target = '_blank';
 		a.innerHTML = response.filename;
 

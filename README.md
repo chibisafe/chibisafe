@@ -5,9 +5,14 @@ Pomf-like image uploading service, written in NodeJS
 ---
 1. Clone
 2. Rename `config.sample.js` to `config.js`
-3. Modify port and privacy options if desired
-4. run `npm install` to install all dependencies
-5. run `node lolisafe.js` to start the service
+4. Modify port and token options if desired
+3. run `npm install` to install all dependencies
+5. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
+
+### Token
+This service supports running both as public and private. The only difference is that one needs a token and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just leave the token empty on the config file.
+
+But if you want to run it privately, you need to specify a random string, which you'll need to provide in every API call as a header called `auth`.
 
 ---
 ## Using it
@@ -18,4 +23,4 @@ A chrome extension to be able to right click images -> send to safe is in the wo
 
 If you are using nginx, you should set inside your location block the following directive, replacing the number with the one you want set up `client_max_body_size 512M;`
 
-If using apache, you should change the following directives on your config `memory_limit = 512M`
+If using apache, you should change the following directives on your config `RLimitMEM 512M`
