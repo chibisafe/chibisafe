@@ -25,7 +25,7 @@ uploadsController.upload = function(req, res, next){
 	let gallery = req.headers.gallery
 
 	if(!config.privacy.public)
-		if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('Not Authorized!')
+		if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('not-authorized')
 	
 	upload(req, res, function (err) {
 		if (err) {

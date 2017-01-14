@@ -1,3 +1,4 @@
+![loli-safe](https://i.imgur.com/YqO1nuc.png)   
 # loli-safe
 Pomf-like image uploading service, written in NodeJS
 

@@ -28,7 +28,7 @@ div#dropzone {
 	background-color: rgba(0, 0, 0, 0);
     border-color: #ff3860;
     color: #ff3860;
-    display: flex;
+    display: none;
     width: 100%;
     border-radius: 3px;
     box-shadow: none;
@@ -49,6 +49,7 @@ div#dropzone:hover {
     border-color: #ff3860;
     color: #fff;
 }
+
 img.logo { height: 200px; margin-top: 20px; }
 .dz-preview .dz-details { display: flex; }
 .dz-preview .dz-details .dz-size, .dz-preview .dz-details .dz-filename { flex: 1 }

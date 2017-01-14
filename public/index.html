@@ -24,6 +24,7 @@
 					<div class="columns">
 						<div class="column"></div>
 						<div class="column">
+							<a class="button is-danger is-outlined" id='btnGithub' href='https://github.com/kanadeko/loli-safe' target='_blank'>View on Github</a>
 							<div id="dropzone">Click here or drag and drop files</div>
 						</div>
 						<div class="column"></div>
@@ -57,10 +58,15 @@
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == XMLHttpRequest.DONE) {
+					console.log(xhr.responseText)
+					if(xhr.responseText !== 'not-authorized'){
+						document.getElementById('btnGithub').style.display = 'none';
+						document.getElementById('dropzone').style.display = 'flex';
+					}
 					if(xhr.responseText.maxFileSize)
-						maxSize = xhr.responseText.maxFileSize
+						maxSize = xhr.responseText.maxFileSize;
 					if(xhr.responseText.urlPrefix)
-						urlPrefix = xhr.responseText.urlPrefix + '/'
+						urlPrefix = xhr.responseText.urlPrefix + '/';
 				}
 			}
 			xhr.open('GET', '/api/info', true);
