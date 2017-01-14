@@ -20,8 +20,7 @@ module.exports = {
 		// If not, which IP's should be able to access?
 		IPs: [
 			'::1',
-			'127.0.0.1',
-			'186.19.241.189'
+			'127.0.0.1'
 		]
 	},
 
