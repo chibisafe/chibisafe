@@ -39,7 +39,7 @@ uploadsController.upload = function(req, res, next){
 			galleryid: gallery
 		}).then(() => {
 			return res.json({
-				'url': config.uploads.basedomain + req.file.filename
+				'url': config.basedomain + req.file.filename
 			})
 		})
 		
