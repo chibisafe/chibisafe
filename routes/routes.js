@@ -4,7 +4,10 @@ const uploadController = require('../controllers/uploadController')
 const galleryController = require('../controllers/galleryController')
 
 routes.get  ('/info', (req, res, next) => {
-	res.json({
+	if(!config.privacy.public)
+		if(!config.privacy.IPs.includes(req.ip)) return res.status(401).send('Not Authorized!')
+
+	return res.json({
 		maxFileSize: config.uploads.maxsize.slice(0, -2),
 		urlPrefix: config.uploads.prefix
 	})
