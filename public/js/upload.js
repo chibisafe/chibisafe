@@ -50,7 +50,7 @@ window.onload = function () {
 			a = document.createElement('a');
 			a.href = response.url;
 			a.target = '_blank';
-			a.innerHTML = response.filename;
+			a.innerHTML = response.url;
 
 			file.previewTemplate.querySelector(".progress").style.display = 'none';
 			file.previewTemplate.querySelector(".link").appendChild(a);
