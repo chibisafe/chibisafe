@@ -1,21 +1,89 @@
 const config = require('../config.js')
 const routes = require('express').Router()
-const uploadController = require('../controllers/uploadController')
-const galleryController = require('../controllers/galleryController')
+const path = require('path')
 
-routes.get  ('/info', (req, res, next) => {
+routes.get('/', (req, res) => {
+
+	let options = {
+		root: 'pages/',
+		dotfiles: 'deny',
+		headers: {
+			'x-timestamp': Date.now(),
+			'x-sent': true
+		}
+	}
+
+	res.sendFile('home.html', options, function (err) {
+		if (err) {
+			console.log(err)
+			res.status(err.status).end()
+		} else {
+			console.log('Sent: home.html')
+		}
+	})
+
+})
+
+routes.get('/admin', function (req, res, next) {
+	
+	let options = {
+		root: 'pages/admin/',
+		dotfiles: 'deny',
+		headers: {
+			'x-timestamp': Date.now(),
+			'x-sent': true
+		}
+	}
+
+	res.sendFile('index.html', options, function (err) {
+		if (err) {
+			console.log(err)
+			res.status(err.status).end()
+		} else {
+			console.log('Sent: index.html')
+		}
+	})
+
+})
+
+routes.get('/admin/:name', function (req, res, next) {
+
+	let options = {
+		root: 'pages/admin/',
+		dotfiles: 'deny',
+		headers: {
+			'x-timestamp': Date.now(),
+			'x-sent': true
+		}
+	}
+
+	let fileName = req.params.name
+
+	res.sendFile(fileName, options, function (err) {
+		if (err) {
+			console.log(err)
+			res.status(err.status).end()
+		} else {
+			console.log('Sent:', fileName)
+		}
+	})
+
+})
+
+/*
+routes.get('/', (req, res) => {
+	res.sendFile('pages/home.html')
+})
+
+routes.get('/dashboard', (req, res, next) => {
 
 	if(config.TOKEN !== '')
 		if(req.headers.auth !== config.TOKEN)
 			return res.status(401).send('not-authorized')
-		
-	return res.json({
-		maxFileSize: config.uploads.maxsize.slice(0, -2)
-	})
-})
+	
+	return res.sendFile('pages/home.html')
 
-routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
-routes.get  ('/gallery', (req, res, next) => galleryController.list(req, res, next))
-routes.get  ('/gallery/test', (req, res, next) => galleryController.test(req, res, next))
+})
+*/
 
 module.exports = routes

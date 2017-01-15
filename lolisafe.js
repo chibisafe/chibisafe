@@ -1,4 +1,5 @@
 const config = require('./config.js')
+const api = require('./routes/api.js')
 const routes = require('./routes/routes.js')
 const express = require('express')
 const db = require('knex')(config.database)
@@ -18,7 +19,8 @@ if( prefix !== '' )
 
 safe.use('/' + prefix, express.static('./uploads'))
 safe.use('/', express.static('./public'))
-safe.use('/api'  , routes)
+safe.use('/', routes)
+safe.use('/api', api)
 
 safe.use(function (req, res, next) {
 	res.status(404).sendFile('404.html', {
