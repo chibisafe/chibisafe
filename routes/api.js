@@ -9,7 +9,7 @@ routes.get ('/check', (req, res, next) => {
 	return res.json({token: true})
 })
 
-routes.get  ('/info', (req, res, next) => {
+routes.get ('/info', (req, res, next) => {
 
 	if(config.TOKEN !== '')
 		if(req.headers.auth !== config.TOKEN)
@@ -21,7 +21,7 @@ routes.get  ('/info', (req, res, next) => {
 })
 
 routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
-routes.get  ('/gallery', (req, res, next) => galleryController.list(req, res, next))
-routes.get  ('/gallery/test', (req, res, next) => galleryController.test(req, res, next))
+routes.get ('/gallery', (req, res, next) => galleryController.list(req, res, next))
+routes.get ('/gallery/test', (req, res, next) => galleryController.test(req, res, next))
 
 module.exports = routes
