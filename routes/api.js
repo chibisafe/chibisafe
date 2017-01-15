@@ -3,7 +3,7 @@ const routes = require('express').Router()
 const uploadController = require('../controllers/uploadController')
 const galleryController = require('../controllers/galleryController')
 
-routes.get 	('/check', (req, res, next) => {
+routes.get ('/check', (req, res, next) => {
 	if(config.TOKEN === '')
 		return res.json({token: false})
 	return res.json({token: true})
