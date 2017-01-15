@@ -50,7 +50,7 @@ div#dropzone:hover {
     color: #fff;
 }
 
-div#uploads, p#tokenContainer { display: none; }
+div#uploads, p#tokenContainer, a#panel { display: none; }
 
 img.logo { height: 200px; margin-top: 20px; }
 .dz-preview .dz-details { display: flex; }

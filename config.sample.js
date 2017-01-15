@@ -6,7 +6,7 @@ module.exports = {
 		Ideally the only options you should change are port and basedomain.
 	*/
 
-	// Your base domain where the app is running.
+	// Your base domain where the app is running. Remember to finish it with '/'
 	basedomain: 'https://i.kanacchi.moe/',
 
 	// Token to use on the api. Leave blank for public

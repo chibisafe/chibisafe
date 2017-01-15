@@ -1,15 +1,33 @@
 
 window.onload = function () {
 
+	var USINGTOKEN;
 	var maxSize = '512';
 
-	if(!localStorage.token){
-		document.getElementById('tokenContainer').style.display = 'flex'
-		document.getElementById("tokenSubmit").addEventListener("click", function(){
-			getInfo(document.getElementById("token").value)
-		});
-	}else{
-		getInfo(localStorage.token);
+	// First check to see if the service is using token or not
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			USINGTOKEN = JSON.parse(xhr.responseText).token;
+			prepareTokenThing();
+		}
+	}
+	xhr.open('GET', '/api/check', true);
+	xhr.send(null);
+
+	function prepareTokenThing(){
+
+		if(!USINGTOKEN) return getInfo();
+
+		if(!localStorage.token){
+			document.getElementById('tokenContainer').style.display = 'flex'
+			document.getElementById("tokenSubmit").addEventListener("click", function(){
+				getInfo(document.getElementById("token").value)
+			});
+		}else{
+			getInfo(localStorage.token);
+		}
+
 	}
 
 	function prepareDropzone(){
@@ -73,15 +91,20 @@ window.onload = function () {
 					document.getElementById('btnGithub').style.display = 'none';
 					document.getElementById('tokenContainer').style.display = 'none';
 					document.getElementById('uploadContainer').appendChild(div);
-
-					if(xhr.responseText.maxFileSize) maxSize = xhr.responseText.maxFileSize;
+					document.getElementById('panel').style.display = 'block';
+					
+					if(xhr.responseText.maxFileSize) maxSize = JSON.parse(xhr.responseText).maxFileSize;
 					if(token) localStorage.token = token;
+
 					prepareDropzone();
 				}
 			}
 		}
 		xhr.open('GET', '/api/info', true);
-		xhr.setRequestHeader('auth', token);
+
+		if(token !== undefined)
+			xhr.setRequestHeader('auth', token);
+
 		xhr.send(null);
 	}
 };
