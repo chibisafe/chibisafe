@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({
 	storage: storage,
 	limits: { fileSize: config.uploads.maxsize }
-}).single('file')
+}).single('files[]')
 
 uploadsController.upload = function(req, res, next){
 
