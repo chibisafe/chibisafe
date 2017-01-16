@@ -4,15 +4,15 @@ const uploadController = require('../controllers/uploadController')
 const galleryController = require('../controllers/galleryController')
 
 routes.get ('/check', (req, res, next) => {
-	if(config.TOKEN === '')
+	if(config.TOKEN === true)
 		return res.json({token: false})
 	return res.json({token: true})
 })
 
 routes.get('/info', (req, res, next) => {
 
-	if(config.TOKEN !== '')
-		if(req.headers.auth !== config.TOKEN)
+	if(config.TOKEN === true)
+		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')
 		
 	return res.json({

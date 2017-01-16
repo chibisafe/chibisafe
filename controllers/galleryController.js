@@ -5,8 +5,8 @@ let galleryController = {}
 
 galleryController.list = function(req, res, next){
 	
-	if(config.TOKEN !== '')
-		if(req.headers.auth !== config.TOKEN)
+	if(config.TOKEN === true)
+		if(req.headers.auth === config.clientToken)
 			return res.status(401).send('not-authorized')
 
 	db.table('gallery').select('id', 'name').then((data) => {
@@ -16,8 +16,8 @@ galleryController.list = function(req, res, next){
 
 galleryController.test = function(req, res, next){
 	
-	if(config.TOKEN !== '')
-		if(req.headers.auth !== config.TOKEN)
+	if(config.TOKEN === true)
+		if(req.headers.auth === config.clientToken)
 			return res.status(401).send('not-authorized')
 
 	let testdata = [
