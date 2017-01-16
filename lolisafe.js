@@ -6,7 +6,7 @@ const db = require('knex')(config.database)
 const fs = require('fs')
 const safe = express()
 
-require('./database/db.js')(db)
+require('./database/db.js')(db, config)
 
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder)
@@ -33,6 +33,3 @@ safe.use(function (err, req, res, next) {
 })
 
 safe.listen(config.port, () => console.log(`loli-safe started on port ${config.port}`))
-
-if(config.TOKEN !== '') console.log('Use the following token as the \'auth\' header in your requests to the API: ' + config.TOKEN)
-else console.log('Running lolisafe in public mode. No token required.')

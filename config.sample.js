@@ -9,9 +9,6 @@ module.exports = {
 	// Your base domain where the app is running. Remember to finish it with '/'
 	basedomain: 'https://i.kanacchi.moe/',
 
-	// Token to use on the api. Leave blank for public
-	TOKEN: 'YOURSUPERSECRETTOKEN',
-
 	// Port on which to run the server
 	port: 9999,
 
