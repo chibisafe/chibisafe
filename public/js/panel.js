@@ -1,11 +1,33 @@
 window.onload = function () {
 
-	if(!localStorage.token) 
+	if(!localStorage.admintoken){
+		askForToken();
 		return;
+	}
 
+	var dashboard = document.getElementById('dashboard');
 	var page = document.getElementById('page');
 
+	dashboard.style.display = 'block';
 	prepareMenu();
+
+	function askForToken(){
+		document.getElementById('tokenSubmit').addEventListener('click', function(){
+			checkToken();
+		});
+
+		function checkToken(){
+			var xhr = new XMLHttpRequest();
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == XMLHttpRequest.DONE) {
+					// xhr.responseText
+				}
+			}
+			xhr.open('POST', '/api/info', true);
+			xhr.send(null);
+		}
+	}
 
 	function prepareMenu(){
 		document.getElementById('itemUploads').addEventListener('click', function(){

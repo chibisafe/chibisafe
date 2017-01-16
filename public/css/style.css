@@ -76,3 +76,17 @@ img.logo { height: 200px; margin-top: 20px; }
 		transform: scale(1);
 	}
 }
+
+/* ------------------
+		PANEL
+------------------ */
+
+section#dashboard { display: none }
+section#auth input, section#auth a {
+	border-left: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-radius: 0px;
+    background: rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0;
+}

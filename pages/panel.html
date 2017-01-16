@@ -7,8 +7,39 @@
         <script type="text/javascript" src="/js/panel.js"></script>
     </head>
     <body>
-        <section class="section">
-            <div class="container">
+
+        <section id='auth' class="hero is-light is-fullheight">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        Admin dashboard
+                    </h1>
+                    <h2 class="subtitle">
+                        <p class="control has-addons">
+                            <input id='token' class="input is-danger" type="text" placeholder="Your admin token">
+                            <a id='tokenSubmit' class="button is-danger is-outlined">Check</a>
+                        </p>
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <section id='dashboard' class="section">
+
+            <!--<div id="auth" class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column">
+                        <p class="control has-addons has-addons-centered">
+                            <input id='token' class="input is-danger" type="text" placeholder="Your admin token">
+                            <a id='tokenSubmit' class="button is-danger">Check</a>
+                        </p>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </div>-->
+
+            <div id="panel" class="container">
                 <h1 class="title">Dashboard</h1>
                 <h2 class="subtitle">A simple <strong>dashboard</strong>, to sort your uploaded stuff</h2>
                 <hr>
@@ -31,11 +62,10 @@
                                     </ul>
                                 </li>
                             </ul>
-                            <!--<p class="menu-label">Administration</p>
+                            <p class="menu-label">Administration</p>
                             <ul class="menu-list">
-                                <li><a>Change your token</a></li>
-                                <li><a>Some other fancy stuff</a></li>
-                            </ul>-->
+                                <li><a>Change your tokens</a></li>
+                            </ul>
                         </aside>
                     </div>
                     <div class="column has-text-centered" id='page'>
