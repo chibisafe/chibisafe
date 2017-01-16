@@ -33,7 +33,6 @@ uploadsController.upload = function(req, res, next){
 			console.error(err)
 			return res.json({ 
 				success: false,
-				errorcode: '',
 				description: err
 			})
 		}
