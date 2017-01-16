@@ -18,9 +18,9 @@ module.exports = {
 	// Uploads config
 	uploads: {
 
-		// If prefix is set, it will be appended at the end of basedomain.
+		// If prefix is set, it will be appended at the end of basedomain. Remember to finish it with `/`
 		// Ex: https://i.kanacchi.moe/prefix/k4n4.png
-		// Leave blank to use the basedomain
+		// Leave blank to use the basedomain.
 		prefix: '',
 
 		// Folder where images should be stored

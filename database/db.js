@@ -11,7 +11,12 @@ let init = function(db){
 	db.schema.createTableIfNotExists('files', function (table) {
 		table.increments()
 		table.string('file')
+		table.string('original')
+		table.string('type')
+		table.string('size')
+		table.string('ip')
 		table.integer('galleryid')
+		table.timestamps()
 	}).then(() => {})
 
 }

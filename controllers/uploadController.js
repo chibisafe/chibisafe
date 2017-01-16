@@ -31,20 +31,57 @@ uploadsController.upload = function(req, res, next){
 	upload(req, res, function (err) {
 		if (err) {
 			console.error(err)
-			return res.json({ error: err })
+			return res.json({ 
+				success: false,
+				errorcode: '',
+				description: err
+			})
 		}
 
 		db.table('files').insert({
 			file: req.file.filename,
-			galleryid: gallery
+			original: req.file.originalname,
+			type: req.file.mimetype,
+			size: req.file.size,
+			ip: req.ip,
+			galleryid: gallery,
+			created_at: Math.floor(Date.now() / 1000)
 		}).then(() => {
 			return res.json({
-				'url': config.basedomain + req.file.filename
+				success: true,
+				files: [
+					{
+						name: req.file.filename,
+						size: req.file.size,
+						url: config.basedomain + req.file.filename
+					}
+				]
 			})
 		})
-		
 	})
 
+}
+
+uploadsController.list = function(req, res){
+
+	if(config.TOKEN !== '')
+		if(req.headers.auth !== config.TOKEN)
+			return res.status(401).send('not-authorized')
+
+	db.table('files').then((files) => {
+
+		for(let file of files){
+			file.file = config.basedomain + config.uploads.prefix + file.file
+			file.ext = file.file.split('.').pop()
+
+			file.date = new Date(file.created_at * 1000)
+			file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
+			
+
+		}
+
+		return res.json(files)
+	})
 }
 
 module.exports = uploadsController

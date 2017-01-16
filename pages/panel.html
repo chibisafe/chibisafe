@@ -4,8 +4,7 @@
         <title>loli-safe - A self hosted upload service</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-        <script type="text/javascript" src="/js/upload.js"></script>
+        <script type="text/javascript" src="/js/panel.js"></script>
     </head>
     <body>
         <section class="section">
@@ -16,34 +15,27 @@
                 <div class="columns">
                     <div class="column is-3">
                         <aside class="menu">
-                            <p class="menu-label">
-                                General
-                            </p>
+                            <p class="menu-label">General</p>
                             <ul class="menu-list">
                                 <li><a href="/">Frontpage</a></li>
-                                <li><a>Uploads</a></li>
+                                <li><a id='itemUploads'>Uploads</a></li>
                             </ul>
-                            <p class="menu-label">
-                                Galleries
-                            </p>
+                            <p class="menu-label">Galleries</p>
                             <ul class="menu-list">
-                                <li><a>Manage your galleries</a></li>
+                                <li><a id='itemManageGallery'>Manage your galleries</a></li>
                                 <li>
-                                    <a class="is-active">Galleries</a>
-                                    <ul>
+                                    <ul id='galleryContainer'>
                                         <li><a>Gallery 1</a></li>
                                         <li><a>Gallery 2</a></li>
                                         <li><a>Gallery 3</a></li>
                                     </ul>
                                 </li>
                             </ul>
-                            <p class="menu-label">
-                                Administration
-                            </p>
+                            <!--<p class="menu-label">Administration</p>
                             <ul class="menu-list">
                                 <li><a>Change your token</a></li>
                                 <li><a>Some other fancy stuff</a></li>
-                            </ul>
+                            </ul>-->
                         </aside>
                     </div>
                     <div class="column has-text-centered" id='page'>
