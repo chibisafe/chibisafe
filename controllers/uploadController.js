@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({
 	storage: storage,
 	limits: { fileSize: config.uploads.maxsize }
-}).single('files[]')
+}).array('files[]')
 
 uploadsController.upload = function(req, res, next){
 
@@ -37,25 +37,32 @@ uploadsController.upload = function(req, res, next){
 			})
 		}
 
-		db.table('files').insert({
-			file: req.file.filename,
-			original: req.file.originalname,
-			type: req.file.mimetype,
-			size: req.file.size,
-			ip: req.ip,
-			galleryid: gallery,
-			created_at: Math.floor(Date.now() / 1000)
-		}).then(() => {
-			return res.json({
-				success: true,
-				files: [
-					{
-						name: req.file.filename,
-						size: req.file.size,
-						url: config.basedomain + req.file.filename
-					}
-				]
+		let files = []
+		req.files.forEach(function(file) {
+			files.push({
+				name: file.filename, 
+				original: file.originalname,
+				type: file.mimetype,
+				size: file.size, 
+				ip: req.ip,
+				galleryid: gallery,
+				created_at: Math.floor(Date.now() / 1000)
 			})
+		})
+
+		db.table('files').insert(files).then(() => {
+			
+			res.json({
+				success: true,
+				files: files.map(file => {
+					return {
+						name: file.name,
+						size: file.size,
+						url: config.basedomain + file.name
+					}
+				})
+			})
+
 		})
 	})
 
@@ -70,8 +77,8 @@ uploadsController.list = function(req, res){
 	db.table('files').then((files) => {
 
 		for(let file of files){
-			file.file = config.basedomain + config.uploads.prefix + file.file
-			file.ext = file.file.split('.').pop()
+			file.file = config.basedomain + config.uploads.prefix + file.name
+			file.ext = file.name.split('.').pop()
 
 			file.date = new Date(file.created_at * 1000)
 			file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()

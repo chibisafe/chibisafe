@@ -27,7 +27,7 @@ module.exports = {
 		maxsize: '512MB',
 
 		// The length of the random generated name for the uploaded files
-		fileLength: 4,
+		fileLength: 32,
 	},
 
 	// Folder where to store logs

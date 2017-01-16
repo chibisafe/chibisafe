@@ -10,7 +10,7 @@ let init = function(db, config){
 
 	db.schema.createTableIfNotExists('files', function (table) {
 		table.increments()
-		table.string('file')
+		table.string('name')
 		table.string('original')
 		table.string('type')
 		table.string('size')
