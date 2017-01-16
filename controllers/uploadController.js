@@ -82,8 +82,6 @@ uploadsController.list = function(req, res){
 
 			file.date = new Date(file.created_at * 1000)
 			file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
-			
-
 		}
 
 		return res.json(files)

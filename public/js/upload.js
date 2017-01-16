@@ -39,7 +39,7 @@ window.onload = function () {
 
 		var dropzone = new Dropzone('div#dropzone', { 
 			url: '/api/upload',
-			paramName: 'file',
+			paramName: 'files[]',
 			maxFilesize: maxSize,
 			parallelUploads: 2,
 			uploadMultiple: false,
