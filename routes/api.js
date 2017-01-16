@@ -4,9 +4,7 @@ const uploadController = require('../controllers/uploadController')
 const galleryController = require('../controllers/galleryController')
 
 routes.get ('/check', (req, res, next) => {
-	if(config.TOKEN === true)
-		return res.json({token: false})
-	return res.json({token: true})
+	return res.json({token: config.TOKEN})
 })
 
 routes.get('/info', (req, res, next) => {
