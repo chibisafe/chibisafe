@@ -39,7 +39,9 @@ safe.use(function (req, res, next) {
 })
 
 safe.use(function (err, req, res, next) {
-	res.status(500).end()
+	res.status(500).sendFile('500.html', {
+		root: './pages/error/',
+	})
 })
 
 safe.listen(config.port, () => console.log(`loli-safe started on port ${config.port}`))
