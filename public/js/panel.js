@@ -34,7 +34,7 @@ window.onload = function () {
 					// xhr.responseText
 				}
 			}
-			xhr.open('GET', '/api/verify', true);
+			xhr.open('GET', '/api/token/verify', true);
 			xhr.setRequestHeader('type', 'admin');
 			xhr.setRequestHeader('token', document.getElementById('token').value);
 			xhr.send(null);
