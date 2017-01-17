@@ -5,6 +5,7 @@ panel.token = localStorage.admintoken;
 
 panel.preparePage = function(){
 	if(!panel.token){
+		document.getElementById('auth').style.display = 'flex';
 		document.getElementById('tokenSubmit').addEventListener('click', function(){
 			panel.verifyToken(document.getElementById('token').value);
 		});

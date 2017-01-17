@@ -81,7 +81,7 @@ img.logo { height: 200px; margin-top: 20px; }
 		PANEL
 ------------------ */
 
-section#dashboard { display: none }
+section#auth, section#dashboard { display: none }
 section#auth input { background: rgba(0, 0, 0, 0); }
 section#auth input, section#auth a {
 	border-left: 0px;
