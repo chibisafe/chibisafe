@@ -8,16 +8,6 @@ routes.get ('/check', (req, res, next) => {
 	return res.json({ private: config.private })
 })
 
-routes.get('/info', (req, res, next) => {
-	if(config.private === true)
-		if(req.headers.auth !== config.clientToken)
-			return res.status(401).send('not-authorized')
-		
-	return res.json({
-		maxFileSize: config.uploads.maxsize.slice(0, -2)
-	})
-})
-
 routes.get  ('/uploads', (req, res, next) => uploadController.list(req, res))
 routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
 routes.get  ('/albums', (req, res, next) => albumsController.list(req, res, next))
