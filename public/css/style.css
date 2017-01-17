@@ -44,25 +44,14 @@ section#home div#dropzone {
     cursor: pointer;   
 }
 
-section#home div#dropzone:hover {
-	background-color: #ff3860;
-    border-color: #ff3860;
-    color: #fff;
-}
-
 section#home div#uploads, section#home p#tokenContainer, section#home a#panel { display: none; }
-
+section#home div#dropzone:hover { background-color: #ff3860; border-color: #ff3860; color: #fff; }
+section#home h3#maxFileSize { font-size: 14px; }
+section#home h3#links span { padding-left: 5px; padding-right: 5px; }
 section#home img.logo { height: 200px; margin-top: 20px; }
 section#home .dz-preview .dz-details { display: flex; }
-section#home .dz-preview .dz-details .dz-size, section#home .dz-preview .dz-details .dz-filename { flex: 1 }
-section#home .dz-preview img, section#home .dz-preview .dz-success-mark, section#home .dz-preview .dz-error-mark { display: none }
-section#home h3#links span {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-section#home h3#maxFileSize {
-	font-size: 14px;
-}
+section#home .dz-preview .dz-details .dz-size, section#home .dz-preview .dz-details .dz-filename { flex: 1; }
+section#home .dz-preview img, section#home .dz-preview .dz-success-mark, section#home .dz-preview .dz-error-mark { display: none; }
 
 @keyframes floatUp {
 	0% {

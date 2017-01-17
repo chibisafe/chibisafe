@@ -20,28 +20,9 @@ safe.use('/' + prefix, express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
-safe.get('/', function (req, res, next) {
-	res.sendFile('home.html', { 
-		root: './pages/' 
-	})
-})
-
-safe.get('/panel', function (req, res, next) {
-	res.sendFile('panel.html', { 
-		root: './pages/' 
-	})
-})
-
-safe.use(function (req, res, next) {
-	res.status(404).sendFile('404.html', {
-		root: './pages/error/',
-	})
-})
-
-safe.use(function (err, req, res, next) {
-	res.status(500).sendFile('500.html', {
-		root: './pages/error/',
-	})
-})
+safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
+safe.get('/panel', (req, res, next) => res.sendFile('panel.html', { root: './pages/' }))
+safe.use((req, res, next) => res.status(404).sendFile('404.html', { root: './pages/error/' }))
+safe.use((req, res, next) => res.status(500).sendFile('500.html', { root: './pages/error/' }))
 
 safe.listen(config.port, () => console.log(`loli-safe started on port ${config.port}`))
