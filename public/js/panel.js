@@ -74,7 +74,7 @@ panel.getUploads = function(){
 			  		<thead>
 			    		<tr>
 						      <th>File</th>
-						      <th>Gallery</th>
+						      <th>Album</th>
 						      <th>Date</th>
 			    		</tr>
 			  		</thead>
@@ -91,7 +91,7 @@ panel.getUploads = function(){
 				tr.innerHTML = `
 					<tr>
 				    	<th><a href="${item.file}" target="_blank">${item.file}</a></th>
-				      	<th>${item.gallery}</th>
+				      	<th>${item.album}</th>
 				      	<td>${item.date}</td>
 				    </tr>
 				    `;

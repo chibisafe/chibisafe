@@ -2,7 +2,7 @@
 let init = function(db, config){
 
 	// Create the tables we need to store galleries and files
-	db.schema.createTableIfNotExists('gallery', function (table) {
+	db.schema.createTableIfNotExists('albums', function (table) {
 		table.increments()
 		table.string('name')
 		table.timestamps()
@@ -15,7 +15,7 @@ let init = function(db, config){
 		table.string('type')
 		table.string('size')
 		table.string('ip')
-		table.integer('galleryid')
+		table.integer('albumid')
 		table.timestamps()
 	}).then(() => {})
 

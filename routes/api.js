@@ -9,7 +9,6 @@ routes.get ('/check', (req, res, next) => {
 })
 
 routes.get('/info', (req, res, next) => {
-
 	if(config.private === true)
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')

@@ -26,7 +26,7 @@ uploadsController.upload = function(req, res, next){
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')
 
-	let gallery = req.headers.gallery
+	let album = req.headers.album
 	
 	upload(req, res, function (err) {
 		if (err) {
@@ -45,7 +45,7 @@ uploadsController.upload = function(req, res, next){
 				type: file.mimetype,
 				size: file.size, 
 				ip: req.ip,
-				galleryid: gallery,
+				albumid: album,
 				created_at: Math.floor(Date.now() / 1000)
 			})
 		})
