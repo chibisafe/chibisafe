@@ -5,7 +5,10 @@ const albumsController = require('../controllers/albumsController')
 const tokenController = require('../controllers/tokenController')
 
 routes.get ('/check', (req, res, next) => {
-	return res.json({ private: config.private })
+	return res.json({ 
+		private: config.private,
+		maxFileSize: config.uploads.maxsize
+	})
 })
 
 routes.get  ('/uploads', (req, res, next) => uploadController.list(req, res))

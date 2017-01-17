@@ -2,12 +2,14 @@ var upload = {};
 
 upload.isPrivate = true;
 upload.token = localStorage.token;
+upload.maxFileSize;
 
 upload.checkIfPublic = function(){
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
 			upload.isPublic = JSON.parse(xhr.responseText).private;
+			upload.maxFileSize = JSON.parse(xhr.responseText).maxFileSize;
 			upload.preparePage();
 		}
 	}
@@ -62,7 +64,6 @@ upload.prepareUpload = function(){
 	div.innerHTML = 'Click here or drag and drop files';
 	div.style.display = 'flex';
 
-	document.getElementById('btnGithub').style.display = 'none';
 	document.getElementById('tokenContainer').style.display = 'none';
 	document.getElementById('uploadContainer').appendChild(div);
 	document.getElementById('panel').style.display = 'block';
@@ -81,6 +82,7 @@ upload.prepareDropzone = function(){
 	var dropzone = new Dropzone('div#dropzone', { 
 		url: '/api/upload',
 		paramName: 'files[]',
+		maxFilesize: upload.maxFileSize.slice(0, -2),
 		parallelUploads: 2,
 		uploadMultiple: false,
 		previewsContainer: 'div#uploads',
@@ -89,13 +91,13 @@ upload.prepareDropzone = function(){
 		maxFiles: 1000,
 		autoProcessQueue: true,
 		headers: {
-    		'auth': localStorage.token
+    		'auth': upload.token
 		},
 		init: function() {
 			this.on('addedfile', function(file) { 
 				document.getElementById('uploads').style.display = 'block';
 			});
-			}
+		}
 	});
 
 	// Update the total progress bar
