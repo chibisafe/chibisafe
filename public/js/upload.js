@@ -64,9 +64,9 @@ upload.prepareUpload = function(){
 	div.innerHTML = 'Click here or drag and drop files';
 	div.style.display = 'flex';
 
+	document.getElementById('maxFileSize').innerHTML = 'Maximum upload size per file is ' + upload.maxFileSize;
 	document.getElementById('tokenContainer').style.display = 'none';
 	document.getElementById('uploadContainer').appendChild(div);
-	document.getElementById('panel').style.display = 'block';
 
 	upload.prepareDropzone();
 

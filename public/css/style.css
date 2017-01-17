@@ -2,7 +2,7 @@
 		HOME
 ------------------ */
 
-#b {
+section#home #b {
 	-webkit-animation-delay: 0.5s;
 	animation-delay: 0.5s;
 	-webkit-animation-duration: 1.5s;
@@ -23,7 +23,7 @@
 	box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
 }
 
-div#dropzone {
+section#home div#dropzone {
 	border: 1px solid #dbdbdb;
 	background-color: rgba(0, 0, 0, 0);
     border-color: #ff3860;
@@ -44,18 +44,25 @@ div#dropzone {
     cursor: pointer;   
 }
 
-div#dropzone:hover {
+section#home div#dropzone:hover {
 	background-color: #ff3860;
     border-color: #ff3860;
     color: #fff;
 }
 
-div#uploads, p#tokenContainer, a#panel { display: none; }
+section#home div#uploads, section#home p#tokenContainer, section#home a#panel { display: none; }
 
-img.logo { height: 200px; margin-top: 20px; }
-.dz-preview .dz-details { display: flex; }
-.dz-preview .dz-details .dz-size, .dz-preview .dz-details .dz-filename { flex: 1 }
-.dz-preview img, .dz-preview .dz-success-mark, .dz-preview .dz-error-mark { display: none }
+section#home img.logo { height: 200px; margin-top: 20px; }
+section#home .dz-preview .dz-details { display: flex; }
+section#home .dz-preview .dz-details .dz-size, section#home .dz-preview .dz-details .dz-filename { flex: 1 }
+section#home .dz-preview img, section#home .dz-preview .dz-success-mark, section#home .dz-preview .dz-error-mark { display: none }
+section#home h3#links span {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+section#home h3#maxFileSize {
+	font-size: 14px;
+}
 
 @keyframes floatUp {
 	0% {
