@@ -5,18 +5,18 @@ let galleryController = {}
 
 galleryController.list = function(req, res, next){
 	
-	if(config.TOKEN === true)
+	if(config.private === true)
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')
 
-	db.table('gallery').select('id', 'name').then((data) => {
-		res.json({ data })
+	db.table('gallery').select('id', 'name').then((galleries) => {
+		return res.json({ galleries })
 	})
 }
 
 galleryController.test = function(req, res, next){
 	
-	if(config.TOKEN === true)
+	if(config.private === true)
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')
 

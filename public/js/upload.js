@@ -8,7 +8,7 @@ window.onload = function () {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
-			USINGTOKEN = JSON.parse(xhr.responseText).token;
+			USINGTOKEN = JSON.parse(xhr.responseText).private;
 			prepareTokenThing();
 		}
 	}
@@ -20,13 +20,13 @@ window.onload = function () {
 		if(!USINGTOKEN) return getInfo();
 
 		if(!localStorage.token){
-			document.getElementById('tokenContainer').style.display = 'flex'
 			document.getElementById('tokenSubmit').addEventListener('click', function(){
 				getInfo(document.getElementById('token').value)
 			});
-		}else{
-			getInfo(localStorage.token);
+			return document.getElementById('tokenContainer').style.display = 'flex';
 		}
+
+		getInfo(localStorage.token);
 
 	}
 
@@ -91,23 +91,25 @@ window.onload = function () {
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == XMLHttpRequest.DONE) {
-				if(xhr.responseText !== 'not-authorized'){
-					
-					div = document.createElement('div');
-					div.id = 'dropzone';
-					div.innerHTML = 'Click here or drag and drop files';
-					div.style.display = 'flex';
+				
+				if(xhr.responseText === 'not-authorized')
+					return notAuthorized();
 
-					document.getElementById('btnGithub').style.display = 'none';
-					document.getElementById('tokenContainer').style.display = 'none';
-					document.getElementById('uploadContainer').appendChild(div);
-					document.getElementById('panel').style.display = 'block';
-					
-					if(xhr.responseText.maxFileSize) maxSize = JSON.parse(xhr.responseText).maxFileSize;
-					if(token) localStorage.token = token;
+				div = document.createElement('div');
+				div.id = 'dropzone';
+				div.innerHTML = 'Click here or drag and drop files';
+				div.style.display = 'flex';
 
-					prepareDropzone();
-				}
+				document.getElementById('btnGithub').style.display = 'none';
+				document.getElementById('tokenContainer').style.display = 'none';
+				document.getElementById('uploadContainer').appendChild(div);
+				document.getElementById('panel').style.display = 'block';
+				
+				if(xhr.responseText.maxFileSize) maxSize = JSON.parse(xhr.responseText).maxFileSize;
+				if(token) localStorage.token = token;
+
+				prepareDropzone();
+				
 			}
 		}
 		xhr.open('GET', '/api/info', true);
@@ -116,5 +118,10 @@ window.onload = function () {
 			xhr.setRequestHeader('auth', token);
 
 		xhr.send(null);
+	}
+
+	function notAuthorized() {
+		localStorage.removeItem("token");
+		location.reload();
 	}
 };

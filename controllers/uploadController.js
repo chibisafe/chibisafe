@@ -22,7 +22,7 @@ const upload = multer({
 
 uploadsController.upload = function(req, res, next){
 
-	if(config.TOKEN === true)
+	if(config.private === true)
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).send('not-authorized')
 
@@ -70,9 +70,8 @@ uploadsController.upload = function(req, res, next){
 
 uploadsController.list = function(req, res){
 
-	if(config.TOKEN === true)
-		if(req.headers.auth !== config.clientToken)
-			return res.status(401).send('not-authorized')
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).send('not-authorized')
 
 	db.table('files').then((files) => {
 

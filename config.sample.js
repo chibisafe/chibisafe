@@ -6,6 +6,9 @@ module.exports = {
 		Ideally the only options you should change are port and basedomain.
 	*/
 
+	// Should this instance of loli-safe be private? If so, a client token will be needed for uploads
+	private: true,
+	
 	// Your base domain where the app is running. Remember to finish it with '/'
 	basedomain: 'https://i.kanacchi.moe/',
 
