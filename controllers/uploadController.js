@@ -29,7 +29,7 @@ uploadsController.upload = function(req, res, next){
 	let album = req.headers.album
 	
 	if(album !== undefined)
-		if(req.headers.adminAuth !== config.adminToken)
+		if(req.headers.adminauth !== config.adminToken)
 			return res.status(401).send('not-authorized')
 	
 	upload(req, res, function (err) {
