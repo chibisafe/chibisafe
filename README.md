@@ -32,7 +32,7 @@ A sample of the returning json from the endpoint can be seen below:
 }
 ```
 
-To make it easier and better than any other service, you can download [our Chrome extension]() that will let you configure your hostname and tokens, so that you can simply `right click` -> `send to loli-safe` to any image/audio/video file on the web.
+To make it easier and better than any other service, you can download [our Chrome extension](https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj) that will let you configure your hostname and tokens, so that you can simply `right click` -> `send to loli-safe` to any image/audio/video file on the web.
 
 Because of how nodejs apps work, if you want it attached to a domain name you will need to make a reverse proxy for it. Here is a tutorial [on how to do this with nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04). Keep in mind that this is only a requirement if you want to access your loli-safe service by using a domain name (ex: https://i.kanacchi.moe), otherwise you can use the service just fine by accessing it from your server's IP.
 
