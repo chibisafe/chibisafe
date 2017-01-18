@@ -13,11 +13,11 @@ albumsController.list = function(req, res, next){
 	if(req.headers.extended !== undefined)
 		fields.push('timestamp')
 	
-	db.table('albums').select(fields).then((albums) => {
+	db.table('albums').select(fields).where('enabled', 1).then((albums) => {
 		
 		if(req.headers.extended === undefined)
 			return res.json({ success: true, albums })
-					
+
 		let ids = []
 		for(let album of albums){
 			album.date = new Date(album.timestamp * 1000)
@@ -53,6 +53,7 @@ albumsController.create = function(req, res, next){
 
 		db.table('albums').insert({ 
 			name: name, 
+			enabled: 1,
 			timestamp: Math.floor(Date.now() / 1000) 
 		}).then(() => {
 			return res.json({ success: true })	
