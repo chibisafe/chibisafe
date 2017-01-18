@@ -80,8 +80,6 @@ uploadsController.list = function(req, res){
 	db.table('files').then((files) => {
 		db.table('albums').then((albums) => {
 
-			console.log(files)
-
 			for(let file of files){
 				file.file = config.basedomain + config.uploads.prefix + file.name
 				file.date = new Date(file.timestamp * 1000)
