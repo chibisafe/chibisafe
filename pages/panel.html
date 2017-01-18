@@ -3,12 +3,15 @@
     <head>
         <title>loli-safe - A self hosted upload service</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
         <script type="text/javascript" src="/js/panel.js"></script>
     </head>
     <body>
 
         <section id='auth' class="hero is-light is-fullheight">
+
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
@@ -22,6 +25,7 @@
                     </h2>
                 </div>
             </div>
+            
         </section>
 
         <section id='dashboard' class="section">
@@ -42,11 +46,7 @@
                             <ul class="menu-list">
                                 <li><a id='itemManageGallery'>Manage your albums</a></li>
                                 <li>
-                                    <ul id='galleryContainer'>
-                                        <li><a>Album 1</a></li>
-                                        <li><a>Album 2</a></li>
-                                        <li><a>Album 3</a></li>
-                                    </ul>
+                                    <ul id='albumsContainer'></ul>
                                 </li>
                             </ul>
                             <p class="menu-label">Administration</p>
@@ -60,6 +60,7 @@
                     </div>
                 </div>
             </div>
+
         </section>
     </body>
 </html>

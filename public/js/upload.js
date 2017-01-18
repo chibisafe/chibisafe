@@ -37,11 +37,18 @@ upload.verifyToken = function(token, reloadOnError = false){
 			
 			var json = JSON.parse(xhr.responseText);
 			if(json.success === false){
-				alert(json.description);
-				if(reloadOnError){
-					localStorage.removeItem("token");
-					location.reload();
-				}
+
+				swal({
+					title: "An error ocurred", 
+					text: json.description, 
+					type: "error"
+				}, function(){
+					if(reloadOnError){
+						localStorage.removeItem("token");
+						location.reload();
+					}
+				})
+
 				return;
 			}
 

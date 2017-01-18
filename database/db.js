@@ -5,7 +5,7 @@ let init = function(db, config){
 	db.schema.createTableIfNotExists('albums', function (table) {
 		table.increments()
 		table.string('name')
-		table.timestamps()
+		table.integer('timestamp')
 	}).then(() => {})
 
 	db.schema.createTableIfNotExists('files', function (table) {
@@ -16,13 +16,13 @@ let init = function(db, config){
 		table.string('size')
 		table.string('ip')
 		table.integer('albumid')
-		table.timestamps()
+		table.integer('timestamp')
 	}).then(() => {})
 
 	db.schema.createTableIfNotExists('tokens', function (table) {
 		table.string('name')
 		table.string('value')
-		table.timestamps()
+		table.integer('timestamp')
 	}).then(() => {
 
 		// == Generate a 1 time token == //
@@ -32,16 +32,19 @@ let init = function(db, config){
 			// This is the first launch of the app
 			let clientToken = require('randomstring').generate()
 			let adminToken = require('randomstring').generate()
+			let now = Math.floor(Date.now() / 1000)
 
 			db.table('tokens').insert(
 				[
 					{ 
 						name: 'client', 
-						value: clientToken 
+						value: clientToken,
+						timestamp: now
 					},
 					{ 
 						name: 'admin', 
-						value: adminToken 
+						value: adminToken,
+						timestamp: now
 					}
 				]
 			).then(() => {

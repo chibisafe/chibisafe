@@ -52,6 +52,7 @@ section#home img.logo { height: 200px; margin-top: 20px; }
 section#home .dz-preview .dz-details { display: flex; }
 section#home .dz-preview .dz-details .dz-size, section#home .dz-preview .dz-details .dz-filename { flex: 1; }
 section#home .dz-preview img, section#home .dz-preview .dz-success-mark, section#home .dz-preview .dz-error-mark { display: none; }
+section#home div#uploads { margin-bottom: 25px; }
 
 @keyframes floatUp {
 	0% {

@@ -46,7 +46,7 @@ uploadsController.upload = function(req, res, next){
 				size: file.size, 
 				ip: req.ip,
 				albumid: album,
-				created_at: Math.floor(Date.now() / 1000)
+				timestamp: Math.floor(Date.now() / 1000)
 			})
 		})
 
