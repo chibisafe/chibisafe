@@ -65,7 +65,7 @@ panel.prepareDashboard = function(){
 	panel.getAlbumsSidebar();
 }
 
-panel.getUploads = function(){
+panel.getUploads = function(album = undefined){
 	panel.page.innerHTML = '';
 	var xhr = new XMLHttpRequest();
 
@@ -114,6 +114,8 @@ panel.getUploads = function(){
 		}
 	}
 	xhr.open('GET', '/api/uploads', true);
+	if(album !== undefined)
+		xhr.setRequestHeader('albumid', album);
 	xhr.setRequestHeader('auth', panel.token);
 	xhr.send(null);
 }
@@ -225,7 +227,6 @@ panel.getAlbumsSidebar = function(){
 				return panel.verifyToken(panel.token);
 
 			var json = JSON.parse(xhr.responseText);
-			console.log(json);
 			if(json.success === false)
 				return swal("An error ocurred", json.description, "error");
 
@@ -235,9 +236,15 @@ panel.getAlbumsSidebar = function(){
 			if(json.albums === undefined) return;
 
 			for(var album of json.albums){
+
 				li = document.createElement('li');
 				a = document.createElement('a');
+				a.id = album.id;
 				a.innerHTML = album.name;
+
+				a.addEventListener('click', function(){
+					panel.getAlbum(this);
+				});
 
 				li.appendChild(a);
 				albumsContainer.appendChild(li);
@@ -248,6 +255,10 @@ panel.getAlbumsSidebar = function(){
 	xhr.open('GET', '/api/albums', true);
 	xhr.setRequestHeader('auth', panel.token);
 	xhr.send(null);
+}
+
+panel.getAlbum = function(item){
+	panel.getUploads(item.id);
 }
 
 window.onload = function () {

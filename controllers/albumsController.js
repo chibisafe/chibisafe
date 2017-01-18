@@ -15,6 +15,9 @@ albumsController.list = function(req, res, next){
 	
 	db.table('albums').select(fields).then((albums) => {
 		
+		if(req.headers.extended === undefined)
+			return res.json({ success: true, albums })
+					
 		let ids = []
 		for(let album of albums){
 			album.date = new Date(album.timestamp * 1000)
@@ -22,9 +25,6 @@ albumsController.list = function(req, res, next){
 
 			ids.push(album.id)
 		}
-
-		if(req.headers.extended === undefined)
-			return res.json({ success: true, albums })
 
 		db.table('files').whereIn('albumid', ids).select('albumid').then((files) => {
 

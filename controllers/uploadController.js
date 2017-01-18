@@ -77,7 +77,14 @@ uploadsController.list = function(req, res){
 	if(req.headers.auth !== config.adminToken)
 		return res.status(401).send('not-authorized')
 
-	db.table('files').then((files) => {
+	db.table('files')
+	.where(function(){
+		if(req.headers.albumid === undefined)
+			this.where('id', '<>', '')
+		else
+			this.where('albumid', req.headers.albumid)
+	})
+	.then((files) => {
 		db.table('albums').then((albums) => {
 
 			for(let file of files){
