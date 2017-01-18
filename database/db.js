@@ -5,6 +5,7 @@ let init = function(db, config){
 	db.schema.createTableIfNotExists('albums', function (table) {
 		table.increments()
 		table.string('name')
+		table.integer('enabled')
 		table.integer('timestamp')
 	}).then(() => {})
 
