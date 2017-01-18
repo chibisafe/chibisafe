@@ -58,7 +58,7 @@ upload.verifyToken = function(token, reloadOnError = false){
 
 		}
 	}
-	xhr.open('GET', '/api/token/verify', true);
+	xhr.open('GET', '/api/tokens/verify', true);
 	xhr.setRequestHeader('type', 'client');
 	xhr.setRequestHeader('token', token);
 	xhr.send(null);

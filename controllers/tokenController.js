@@ -24,4 +24,37 @@ tokenController.verify = function(req, res, next){
 	return res.json({ success: false, description: '(╯°□°）╯︵ ┻━┻' })
 }
 
+tokenController.list = function(req, res, next){
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).send('not-authorized')
+
+	return res.json({
+		clientToken: config.clientToken,
+		adminToken: config.adminToken
+	})
+}
+
+tokenController.change = function(req, res, next){
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).send('not-authorized')
+
+	let type = req.headers.type
+	let token = req.headers.token
+
+	if(type === undefined) return res.json({ success: false, description: 'No type provided.' })
+	if(token === undefined) return res.json({ success: false, description: 'No token provided.' })
+	if(type !== 'client' && type !== 'admin') return res.json({ success: false, description: 'Wrong type provided.' })
+
+	db.table('tokens').where('name', type).update({ value: token, timestamp: Math.floor(Date.now() / 1000) })
+	.then(() => {
+
+		if(type === 'client')
+			config.clientToken = token
+		else if(type === 'admin')
+			config.adminToken = token
+		
+		res.json({ success: true }) 
+	})
+}
+
 module.exports = tokenController

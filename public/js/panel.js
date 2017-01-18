@@ -43,7 +43,7 @@ panel.verifyToken = function(token, reloadOnError = false){
 
 		}
 	}
-	xhr.open('GET', '/api/token/verify', true);
+	xhr.open('GET', '/api/tokens/verify', true);
 	xhr.setRequestHeader('type', 'admin');
 	xhr.setRequestHeader('token', token);
 	xhr.send(null);
@@ -62,6 +62,10 @@ panel.prepareDashboard = function(){
 		panel.getAlbums();
 	});
 
+	document.getElementById('itemTokens').addEventListener('click', function(){
+		panel.changeTokens();
+	});
+
 	panel.getAlbumsSidebar();
 }
 
@@ -76,7 +80,7 @@ panel.getUploads = function(album = undefined){
 				return panel.verifyToken(panel.token);
 
 			var json = JSON.parse(xhr.responseText);
-			console.log(json);
+
 			if(json.success === false)
 				return swal("An error ocurred", json.description, "error");
 			
@@ -155,7 +159,7 @@ panel.getAlbums = function(){
 				return panel.verifyToken(panel.token);
 
 			var json = JSON.parse(xhr.responseText);
-			console.log(json);
+
 			if(json.success === false)
 				return swal("An error ocurred", json.description, "error");
 
@@ -259,6 +263,102 @@ panel.getAlbumsSidebar = function(){
 
 panel.getAlbum = function(item){
 	panel.getUploads(item.id);
+}
+
+panel.changeTokens = function(){
+	panel.page.innerHTML = '';
+	var xhr = new XMLHttpRequest();
+
+	var container = document.createElement('div');
+	container.className = "container";
+	container.innerHTML = `
+		<h2 class="subtitle">Manage your tokens</h2>
+
+		<label class="label">Client token:</label>
+		<p class="control has-addons">
+		  	<input id="clientToken" class="input is-expanded" type="text" placeholder="Your client token">
+		  	<a id="submitClientToken" class="button is-primary">Save</a>
+		</p>
+
+		<label class="label">Admin token:</label>
+		<p class="control has-addons">
+		  	<input id="adminToken" class="input is-expanded" type="text" placeholder="Your admin token">
+		  	<a id="submitAdminToken" class="button is-primary">Save</a>
+		</p>
+	`;
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			
+			if(xhr.responseText === 'not-authorized')
+				return panel.verifyToken(panel.token);
+
+			var json = JSON.parse(xhr.responseText);
+
+			console.log(json);
+
+			if(json.success === false)
+				return swal("An error ocurred", json.description, "error");
+
+			panel.page.appendChild(container);
+
+			document.getElementById('clientToken').value = json.clientToken;
+			document.getElementById('adminToken').value = json.adminToken;
+
+			document.getElementById('submitClientToken').addEventListener('click', function(){
+				panel.submitToken('client', document.getElementById('clientToken').value);
+			});
+
+			document.getElementById('submitAdminToken').addEventListener('click', function(){
+				panel.submitToken('admin', document.getElementById('adminToken').value);
+			});
+		}
+	}
+
+	xhr.open('GET', '/api/tokens', true);
+	xhr.setRequestHeader('auth', panel.token);
+	xhr.send(null);
+}
+
+panel.submitToken = function(type, token){
+
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			
+			if(xhr.responseText === 'not-authorized')
+				return panel.verifyToken(panel.token);
+
+			var json = JSON.parse(xhr.responseText);
+
+			console.log(json);
+
+			if(json.success === false)
+				return swal("An error ocurred", json.description, "error");
+
+			swal({
+				title: "Woohoo!", 
+				text: 'Your token was changed successfully.', 
+				type: "success"
+			}, function(){
+				
+				if(type === 'client')
+					localStorage.token = token;
+				else if(type === 'admin')
+					localStorage.admintoken = token
+
+				location.reload();
+					
+			})
+
+		}
+	}
+
+	xhr.open('POST', '/api/tokens/change', true);
+	xhr.setRequestHeader('auth', panel.token);
+	xhr.setRequestHeader('type', type);
+	xhr.setRequestHeader('token', token);
+	xhr.send(null);
 }
 
 window.onload = function () {
