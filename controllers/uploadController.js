@@ -78,15 +78,27 @@ uploadsController.list = function(req, res){
 		return res.status(401).send('not-authorized')
 
 	db.table('files').then((files) => {
+		db.table('albums').then((albums) => {
 
-		for(let file of files){
-			file.file = config.basedomain + config.uploads.prefix + file.name
-			file.ext = file.name.split('.').pop()
-			file.date = new Date(file.created_at * 1000)
-			file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
-		}
+			console.log(files)
 
-		return res.json(files)
+			for(let file of files){
+				file.file = config.basedomain + config.uploads.prefix + file.name
+				file.date = new Date(file.timestamp * 1000)
+				file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
+
+				file.album = ''
+				
+				if(file.albumid !== undefined)
+					for(let album of albums)
+						if(file.albumid === album.id)
+							file.album = album.name
+
+			}
+
+			return res.json(files)
+		})
+
 	})
 }
 

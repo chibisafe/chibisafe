@@ -14,13 +14,17 @@ albumsController.list = function(req, res, next){
 		fields.push('timestamp')
 	
 	db.table('albums').select(fields).then((albums) => {
+		
+		let ids = []
+		for(let album of albums){
+			album.date = new Date(album.timestamp * 1000)
+			album.date = album.date.getFullYear() + '-' + album.date.getMonth() + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
+
+			ids.push(album.id)
+		}
 
 		if(req.headers.extended === undefined)
 			return res.json({ success: true, albums })
-
-		let ids = []
-		for(let album of albums)
-			ids.push(album.id)
 
 		db.table('files').whereIn('albumid', ids).select('albumid').then((files) => {
 

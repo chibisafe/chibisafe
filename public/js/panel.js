@@ -82,7 +82,7 @@ panel.getUploads = function(){
 			
 			var container = document.createElement('div');
 			container.innerHTML = `
-				<table class="table">
+				<table class="table is-striped is-narrow">
 			  		<thead>
 			    		<tr>
 						      <th>File</th>
@@ -104,7 +104,7 @@ panel.getUploads = function(){
 					<tr>
 				    	<th><a href="${item.file}" target="_blank">${item.file}</a></th>
 				      	<th>${item.album}</th>
-				      	<td>${item.timestamp}</td>
+				      	<td>${item.date}</td>
 				    </tr>
 				    `;
 
@@ -134,7 +134,7 @@ panel.getAlbums = function(){
 
 		<h2 class="subtitle">List of albums</h2>
 
-		<table class="table">
+		<table class="table is-striped is-narrow">
 	  		<thead>
 	    		<tr>
 				      <th>Name</th>
@@ -167,7 +167,7 @@ panel.getAlbums = function(){
 					<tr>
 				    	<th>${item.name}</th>
 				      	<th>${item.files}</th>
-				      	<td>${item.timestamp}</td>
+				      	<td>${item.date}</td>
 				    </tr>
 				    `;
 
@@ -231,7 +231,7 @@ panel.getAlbumsSidebar = function(){
 
 			var albumsContainer = document.getElementById('albumsContainer');
 			albumsContainer.innerHTML = '';
-			
+
 			if(json.albums === undefined) return;
 
 			for(var album of json.albums){
