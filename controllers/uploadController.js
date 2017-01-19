@@ -3,6 +3,8 @@ const config = require('../config.js')
 const multer  = require('multer')
 const randomstring = require('randomstring')
 const db = require('knex')(config.database)
+//const crypto = require('crypto')
+//const fs = require('fs')
 
 let uploadsController = {}
 
@@ -44,7 +46,24 @@ uploadsController.upload = function(req, res, next){
 		if(req.files.length === 0) return res.json({ success: false, description: 'no-files' })
 
 		let files = []
+		//let existingFiles = []
+
 		req.files.forEach(function(file) {
+
+			/*
+			// Check if the file exists by checking hash and size
+			let hash = crypto.createHash('md5')
+			let stream = fs.createReadStream('./' + config.uploads.folder + '/' + file.filename)
+
+			stream.on('data', function (data) {
+				hash.update(data, 'utf8')
+			})
+
+			stream.on('end', function () {
+				let fileHash = hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
+
+			})*/
+
 			files.push({
 				name: file.filename, 
 				original: file.originalname,
@@ -92,7 +111,7 @@ uploadsController.list = function(req, res){
 		else
 			this.where('albumid', req.params.id)
 	})
-	.sort('id', 'DESC')
+	.orderBy('id', 'DESC')
 	.then((files) => {
 		db.table('albums').then((albums) => {
 

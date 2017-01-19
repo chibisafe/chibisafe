@@ -15,6 +15,7 @@ let init = function(db, config){
 		table.string('original')
 		table.string('type')
 		table.string('size')
+		table.string('hash')
 		table.string('ip')
 		table.integer('albumid')
 		table.integer('timestamp')
