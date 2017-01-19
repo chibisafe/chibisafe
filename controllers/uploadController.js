@@ -92,6 +92,7 @@ uploadsController.list = function(req, res){
 		else
 			this.where('albumid', req.params.id)
 	})
+	.sort('id', 'DESC')
 	.then((files) => {
 		db.table('albums').then((albums) => {
 
