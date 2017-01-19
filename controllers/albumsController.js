@@ -21,7 +21,7 @@ albumsController.list = function(req, res, next){
 		let ids = []
 		for(let album of albums){
 			album.date = new Date(album.timestamp * 1000)
-			album.date = album.date.getFullYear() + '-' + album.date.getMonth() + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
+			album.date = album.date.getFullYear() + '-' + (album.date.getMonth() + 1) + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
 
 			ids.push(album.id)
 		}

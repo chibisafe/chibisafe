@@ -93,10 +93,17 @@ uploadsController.list = function(req, res){
 	.then((files) => {
 		db.table('albums').then((albums) => {
 
+			let basedomain = req.get('host')
+			for(let domain of config.domains)
+				if(domain.host === req.get('host'))
+					if(domain.hasOwnProperty('resolve'))
+						basedomain = domain.resolve
+
 			for(let file of files){
-				file.file = config.basedomain + config.uploads.prefix + file.name
+				file.file = 'http://' + basedomain + '/' + file.name
+				//file.file = config.basedomain + config.uploads.prefix + file.name
 				file.date = new Date(file.timestamp * 1000)
-				file.date = file.date.getFullYear() + '-' + file.date.getMonth() + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
+				file.date = file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
 
 				file.album = ''
 				

@@ -20,6 +20,7 @@ module.exports = {
 
 		// Files will be served at http://localhost:9999/Fxt0.png
 		{ domain: 'localhost:9999' }
+
 	],
 
 	// Port on which to run the server
@@ -31,7 +32,7 @@ module.exports = {
 		// Folder where images should be stored
 		folder: 'uploads',
 
-		// Max file size allowed
+		// Max file size allowed. Needs to be in MB
 		maxSize: '512MB',
 
 		// The length of the random generated name for the uploaded files
