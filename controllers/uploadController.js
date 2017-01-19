@@ -26,7 +26,7 @@ uploadsController.upload = function(req, res, next){
 		if(req.headers.auth !== config.clientToken)
 			return res.status(401).json({ success: false, description: 'not-authorized'})
 
-	let album = req.body.album
+	let album = req.params.albumid
 	
 	if(album !== undefined)
 		if(req.headers.adminauth !== config.adminToken)
@@ -40,6 +40,8 @@ uploadsController.upload = function(req, res, next){
 				description: err
 			})
 		}
+
+		if(req.files.length === 0) return res.json({ success: false, description: 'no-files' })
 
 		let files = []
 		req.files.forEach(function(file) {
