@@ -5,16 +5,18 @@ upload.token = localStorage.token;
 upload.maxFileSize;
 
 upload.checkIfPublic = function(){
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			upload.isPublic = JSON.parse(xhr.responseText).private;
-			upload.maxFileSize = JSON.parse(xhr.responseText).maxFileSize;
-			upload.preparePage();
-		}
-	}
-	xhr.open('GET', '/api/check', true);
-	xhr.send(null);
+
+	axios.get('/api/check')
+  	.then(function (response) {
+    	upload.isPublic = response.data.private;
+		upload.maxFileSize = response.data.maxFileSize;
+		upload.preparePage();
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
+
 }
 
 upload.preparePage = function(){
@@ -30,38 +32,37 @@ upload.preparePage = function(){
 }
 
 upload.verifyToken = function(token, reloadOnError = false){
-	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			var json = JSON.parse(xhr.responseText);
-			if(json.success === false){
+	axios.post('/api/tokens/verify', {
+		type: 'client',
+		token: token
+	})
+  	.then(function (response) {
 
-				swal({
-					title: "An error ocurred", 
-					text: json.description, 
-					type: "error"
-				}, function(){
-					if(reloadOnError){
-						localStorage.removeItem("token");
-						location.reload();
-					}
-				})
+    	if(response.data.success === false){
+    		swal({
+				title: "An error ocurred", 
+				text: response.data.description, 
+				type: "error"
+			}, function(){
+				if(reloadOnError){
+					localStorage.removeItem("token");
+					location.reload();
+				}
+			})
+			return;
+    	}
 
-				return;
-			}
+    	localStorage.token = token;
+		upload.token = token;
+		return upload.prepareUpload();
 
-			localStorage.token = token;
-			upload.token = token;
-			return upload.prepareUpload();
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
 
-		}
-	}
-	xhr.open('GET', '/api/tokens/verify', true);
-	xhr.setRequestHeader('type', 'client');
-	xhr.setRequestHeader('token', token);
-	xhr.send(null);
 }
 
 upload.prepareUpload = function(){

@@ -4,8 +4,8 @@ const db = require('knex')(config.database)
 let tokenController = {}
 
 tokenController.verify = function(req, res, next){
-	let type = req.headers.type
-	let token = req.headers.token
+	let type = req.body.type
+	let token = req.body.token
 
 	if(type === undefined) return res.json({ success: false, description: 'No type provided.' })
 	if(token === undefined) return res.json({ success: false, description: 'No token provided.' })
@@ -26,7 +26,7 @@ tokenController.verify = function(req, res, next){
 
 tokenController.list = function(req, res, next){
 	if(req.headers.auth !== config.adminToken)
-		return res.status(401).send('not-authorized')
+		return res.status(401).json({ success: false, description: 'not-authorized'})
 
 	return res.json({
 		clientToken: config.clientToken,
@@ -36,10 +36,10 @@ tokenController.list = function(req, res, next){
 
 tokenController.change = function(req, res, next){
 	if(req.headers.auth !== config.adminToken)
-		return res.status(401).send('not-authorized')
+		return res.status(401).json({ success: false, description: 'not-authorized'})
 
-	let type = req.headers.type
-	let token = req.headers.token
+	let type = req.body.type
+	let token = req.body.token
 
 	if(type === undefined) return res.json({ success: false, description: 'No type provided.' })
 	if(token === undefined) return res.json({ success: false, description: 'No token provided.' })

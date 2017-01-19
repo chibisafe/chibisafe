@@ -1,6 +1,7 @@
 const config = require('./config.js')
 const api = require('./routes/api.js')
 const express = require('express')
+const bodyParser = require('body-parser')
 const db = require('knex')(config.database)
 const fs = require('fs')
 const safe = express()
@@ -9,6 +10,9 @@ require('./database/db.js')(db, config)
 
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder)
+
+safe.use(bodyParser.urlencoded({ extended: true }))
+safe.use(bodyParser.json())
 
 safe.enable('trust proxy')
 

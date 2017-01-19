@@ -15,38 +15,38 @@ panel.preparePage = function(){
 }
 
 panel.verifyToken = function(token, reloadOnError = false){
-	var xhr = new XMLHttpRequest();
+	
+	axios.post('/api/tokens/verify', {
+		type: 'admin',
+		token: token
+	})
+  	.then(function (response) {
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			var json = JSON.parse(xhr.responseText);
-			if(json.success === false){
+    	if(response.data.success === false){
+    		swal({
+				title: "An error ocurred", 
+				text: response.data.description, 
+				type: "error"
+			}, function(){
+				if(reloadOnError){
+					localStorage.removeItem("admintoken");
+					location.reload();
+				}
+			})
+			return;
+    	}
 
-				swal({
-					title: "An error ocurred", 
-					text: json.description, 
-					type: "error"
-				}, function(){
-					if(reloadOnError){
-						localStorage.removeItem("admintoken");
-						location.reload();
-					}
-				})
-				
-				return;
-			}
+    	axios.defaults.headers.common['auth'] = token;
+    	localStorage.admintoken = token;
+		panel.token = token;
+		return panel.prepareDashboard();
 
-			localStorage.admintoken = token;
-			panel.token = token;
-			return panel.prepareDashboard();
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
 
-		}
-	}
-	xhr.open('GET', '/api/tokens/verify', true);
-	xhr.setRequestHeader('type', 'admin');
-	xhr.setRequestHeader('token', token);
-	xhr.send(null);
 }
 
 panel.prepareDashboard = function(){
@@ -70,195 +70,183 @@ panel.prepareDashboard = function(){
 }
 
 panel.getUploads = function(album = undefined){
-	panel.page.innerHTML = '';
-	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatechange = function() {
-		if(xhr.readyState == XMLHttpRequest.DONE){
-			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
-
-			var json = JSON.parse(xhr.responseText);
-
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
-			
-			var container = document.createElement('div');
-			container.innerHTML = `
-				<table class="table is-striped is-narrow">
-			  		<thead>
-			    		<tr>
-						      <th>File</th>
-						      <th>Album</th>
-						      <th>Date</th>
-			    		</tr>
-			  		</thead>
-			  		<tbody id="table">
-			  		</tbody>
-			  	</table>`;
-			panel.page.appendChild(container);
-
-			var table = document.getElementById('table');
-
-			for(var item of json){
-
-				var tr = document.createElement('tr');
-				tr.innerHTML = `
-					<tr>
-				    	<th><a href="${item.file}" target="_blank">${item.file}</a></th>
-				      	<th>${item.album}</th>
-				      	<td>${item.date}</td>
-				    </tr>
-				    `;
-
-				table.appendChild(tr);
-			}
-			
-		}
-	}
-	xhr.open('GET', '/api/uploads', true);
+	let url = '/api/uploads'
 	if(album !== undefined)
-		xhr.setRequestHeader('albumid', album);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.send(null);
+		url = '/api/album/' + album
+
+	axios.get(url)
+  	.then(function (response) {
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
+    	
+    	panel.page.innerHTML = '';
+    	var container = document.createElement('div');
+		container.innerHTML = `
+			<table class="table is-striped is-narrow">
+		  		<thead>
+		    		<tr>
+					      <th>File</th>
+					      <th>Album</th>
+					      <th>Date</th>
+		    		</tr>
+		  		</thead>
+		  		<tbody id="table">
+		  		</tbody>
+		  	</table>`;
+		panel.page.appendChild(container);
+
+		var table = document.getElementById('table');
+
+		for(var item of response.data.files){
+
+			var tr = document.createElement('tr');
+			tr.innerHTML = `
+				<tr>
+			    	<th><a href="${item.file}" target="_blank">${item.file}</a></th>
+			      	<th>${item.album}</th>
+			      	<td>${item.date}</td>
+			    </tr>
+			    `;
+
+			table.appendChild(tr);
+		}
+
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
+
 }
 
 panel.getAlbums = function(){
-	panel.page.innerHTML = '';
-	var xhr = new XMLHttpRequest();
 
-	var container = document.createElement('div');
-	container.className = "container";
-	container.innerHTML = `
-		<h2 class="subtitle">Create new album</h2>
+	axios.get('/api/albums')
+  	.then(function (response) {
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
 
-		<p class="control has-addons has-addons-centered">
-		  	<input id="albumName" class="input" type="text" placeholder="Name">
-		  	<a id="submitAlbum" class="button is-primary">Submit</a>
-		</p>
+  		panel.page.innerHTML = '';
+  		var container = document.createElement('div');
+		container.className = "container";
+		container.innerHTML = `
+			<h2 class="subtitle">Create new album</h2>
 
-		<h2 class="subtitle">List of albums</h2>
+			<p class="control has-addons has-addons-centered">
+			  	<input id="albumName" class="input" type="text" placeholder="Name">
+			  	<a id="submitAlbum" class="button is-primary">Submit</a>
+			</p>
 
-		<table class="table is-striped is-narrow">
-	  		<thead>
-	    		<tr>
-				      <th>Name</th>
-				      <th>Files</th>
-				      <th>Created At</th>
-	    		</tr>
-	  		</thead>
-	  		<tbody id="table">
-	  		</tbody>
-	  	</table>`;
+			<h2 class="subtitle">List of albums</h2>
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
+			<table class="table is-striped is-narrow">
+		  		<thead>
+		    		<tr>
+					      <th>Name</th>
+					      <th>Files</th>
+					      <th>Created At</th>
+		    		</tr>
+		  		</thead>
+		  		<tbody id="table">
+		  		</tbody>
+		  	</table>`;
 
-			var json = JSON.parse(xhr.responseText);
+		panel.page.appendChild(container);
+		var table = document.getElementById('table');
 
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
+		for(var item of response.data.albums){
 
-			panel.page.appendChild(container);
-			var table = document.getElementById('table');
+			var tr = document.createElement('tr');
+			tr.innerHTML = `
+				<tr>
+			    	<th>${item.name}</th>
+			      	<th>${item.files}</th>
+			      	<td>${item.date}</td>
+			    </tr>
+			    `;
 
-			for(var item of json.albums){
-
-				var tr = document.createElement('tr');
-				tr.innerHTML = `
-					<tr>
-				    	<th>${item.name}</th>
-				      	<th>${item.files}</th>
-				      	<td>${item.date}</td>
-				    </tr>
-				    `;
-
-				table.appendChild(tr);
-			}
-
-			document.getElementById('submitAlbum').addEventListener('click', function(){
-				panel.submitAlbum();
-			});
-			
+			table.appendChild(tr);
 		}
-	}
 
-	xhr.open('GET', '/api/albums', true);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.setRequestHeader('extended', '');
-	xhr.send(null);
+		document.getElementById('submitAlbum').addEventListener('click', function(){
+			panel.submitAlbum();
+		});
+
+
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
+
 }
 
 panel.submitAlbum = function(){
 	
-	var xhr = new XMLHttpRequest();
+	axios.post('/api/albums', {
+		name: document.getElementById('albumName').value
+	})
+  	.then(function (response) {
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
 
-			var json = JSON.parse(xhr.responseText);
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
+    	swal("Woohoo!", "Album was added successfully", "success");
+		panel.getAlbumsSidebar();
+		panel.getAlbums();
+		return;
 
-			swal("Woohoo!", "Album was added successfully", "success");
-			panel.getAlbumsSidebar();
-			panel.getAlbums();
-			return;
-		}
-	}
-
-	xhr.open('POST', '/api/albums', true);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.setRequestHeader('name', document.getElementById('albumName').value);
-	xhr.send(null);
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
 
 }
 
 panel.getAlbumsSidebar = function(){
-	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
+	axios.get('/api/albums/sidebar')
+  	.then(function (response) {
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
 
-			var json = JSON.parse(xhr.responseText);
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
+  		var albumsContainer = document.getElementById('albumsContainer');
+		albumsContainer.innerHTML = '';
 
-			var albumsContainer = document.getElementById('albumsContainer');
-			albumsContainer.innerHTML = '';
+		if(response.data.albums === undefined) return;
 
-			if(json.albums === undefined) return;
+		for(var album of response.data.albums){
 
-			for(var album of json.albums){
+			li = document.createElement('li');
+			a = document.createElement('a');
+			a.id = album.id;
+			a.innerHTML = album.name;
 
-				li = document.createElement('li');
-				a = document.createElement('a');
-				a.id = album.id;
-				a.innerHTML = album.name;
+			a.addEventListener('click', function(){
+				panel.getAlbum(this);
+			});
 
-				a.addEventListener('click', function(){
-					panel.getAlbum(this);
-				});
-
-				li.appendChild(a);
-				albumsContainer.appendChild(li);
-			}
+			li.appendChild(a);
+			albumsContainer.appendChild(li);
 		}
-	}
 
-	xhr.open('GET', '/api/albums', true);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.send(null);
+
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
+
 }
 
 panel.getAlbum = function(item){
@@ -266,99 +254,89 @@ panel.getAlbum = function(item){
 }
 
 panel.changeTokens = function(){
-	panel.page.innerHTML = '';
-	var xhr = new XMLHttpRequest();
 
-	var container = document.createElement('div');
-	container.className = "container";
-	container.innerHTML = `
-		<h2 class="subtitle">Manage your tokens</h2>
+	axios.get('/api/tokens')
+  	.then(function (response) {
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
 
-		<label class="label">Client token:</label>
-		<p class="control has-addons">
-		  	<input id="clientToken" class="input is-expanded" type="text" placeholder="Your client token">
-		  	<a id="submitClientToken" class="button is-primary">Save</a>
-		</p>
+  		panel.page.innerHTML = '';
+  		var container = document.createElement('div');
+		container.className = "container";
+		container.innerHTML = `
+			<h2 class="subtitle">Manage your tokens</h2>
 
-		<label class="label">Admin token:</label>
-		<p class="control has-addons">
-		  	<input id="adminToken" class="input is-expanded" type="text" placeholder="Your admin token">
-		  	<a id="submitAdminToken" class="button is-primary">Save</a>
-		</p>
-	`;
+			<label class="label">Client token:</label>
+			<p class="control has-addons">
+			  	<input id="clientToken" class="input is-expanded" type="text" placeholder="Your client token">
+			  	<a id="submitClientToken" class="button is-primary">Save</a>
+			</p>
 
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
+			<label class="label">Admin token:</label>
+			<p class="control has-addons">
+			  	<input id="adminToken" class="input is-expanded" type="text" placeholder="Your admin token">
+			  	<a id="submitAdminToken" class="button is-primary">Save</a>
+			</p>
+		`;
 
-			var json = JSON.parse(xhr.responseText);
+		panel.page.appendChild(container);
 
-			console.log(json);
+		document.getElementById('clientToken').value = response.data.clientToken;
+		document.getElementById('adminToken').value = response.data.adminToken;
 
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
+		document.getElementById('submitClientToken').addEventListener('click', function(){
+			panel.submitToken('client', document.getElementById('clientToken').value);
+		});
 
-			panel.page.appendChild(container);
+		document.getElementById('submitAdminToken').addEventListener('click', function(){
+			panel.submitToken('admin', document.getElementById('adminToken').value);
+		});
 
-			document.getElementById('clientToken').value = json.clientToken;
-			document.getElementById('adminToken').value = json.adminToken;
 
-			document.getElementById('submitClientToken').addEventListener('click', function(){
-				panel.submitToken('client', document.getElementById('clientToken').value);
-			});
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
 
-			document.getElementById('submitAdminToken').addEventListener('click', function(){
-				panel.submitToken('admin', document.getElementById('adminToken').value);
-			});
-		}
-	}
-
-	xhr.open('GET', '/api/tokens', true);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.send(null);
 }
 
 panel.submitToken = function(type, token){
 
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
+	axios.post('/api/tokens/change', {
+		type: type,
+		token: token
+	})
+  	.then(function (response) {
+
+  		if(response.data.success === false){
+  			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+  			else return swal("An error ocurred", response.data.description, "error");		
+  		}
+
+    	swal({
+			title: "Woohoo!", 
+			text: 'Your token was changed successfully.', 
+			type: "success"
+		}, function(){
 			
-			if(xhr.responseText === 'not-authorized')
-				return panel.verifyToken(panel.token);
+			if(type === 'client')
+				localStorage.token = token;
+			else if(type === 'admin')
+				localStorage.admintoken = token
 
-			var json = JSON.parse(xhr.responseText);
-
-			console.log(json);
-
-			if(json.success === false)
-				return swal("An error ocurred", json.description, "error");
-
-			swal({
-				title: "Woohoo!", 
-				text: 'Your token was changed successfully.', 
-				type: "success"
-			}, function(){
+			location.reload();
 				
-				if(type === 'client')
-					localStorage.token = token;
-				else if(type === 'admin')
-					localStorage.admintoken = token
+		})
 
-				location.reload();
-					
-			})
+  	})
+  	.catch(function (error) {
+  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	console.log(error);
+  	});
 
-		}
-	}
-
-	xhr.open('POST', '/api/tokens/change', true);
-	xhr.setRequestHeader('auth', panel.token);
-	xhr.setRequestHeader('type', type);
-	xhr.setRequestHeader('token', token);
-	xhr.send(null);
 }
 
 window.onload = function () {

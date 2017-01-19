@@ -6,16 +6,16 @@ let albumsController = {}
 albumsController.list = function(req, res, next){
 	
 	if(req.headers.auth !== config.adminToken)
-		return res.status(401).send('not-authorized')
+		return res.status(401).json({ success: false, description: 'not-authorized'})
 
 	let fields = ['id', 'name']
 
-	if(req.headers.extended !== undefined)
+	if(req.params.sidebar === undefined)
 		fields.push('timestamp')
 	
 	db.table('albums').select(fields).where('enabled', 1).then((albums) => {
 		
-		if(req.headers.extended === undefined)
+		if(req.params.sidebar !== undefined)
 			return res.json({ success: true, albums })
 
 		let ids = []
@@ -42,9 +42,9 @@ albumsController.list = function(req, res, next){
 albumsController.create = function(req, res, next){
 	
 	if(req.headers.auth !== config.adminToken)
-		return res.status(401).send('not-authorized')
+		return res.status(401).json({ success: false, description: 'not-authorized'})
 
-	let name = req.headers.name
+	let name = req.body.name
 	if(name === undefined || name === '')
 		return res.json({ success: false, description: 'No album name specified' })	
 

@@ -24,13 +24,13 @@ uploadsController.upload = function(req, res, next){
 
 	if(config.private === true)
 		if(req.headers.auth !== config.clientToken)
-			return res.status(401).send('not-authorized')
+			return res.status(401).json({ success: false, description: 'not-authorized'})
 
-	let album = req.headers.album
+	let album = req.body.album
 	
 	if(album !== undefined)
 		if(req.headers.adminauth !== config.adminToken)
-			return res.status(401).send('not-authorized')
+			return res.status(401).json({ success: false, description: 'not-authorized'})
 	
 	upload(req, res, function (err) {
 		if (err) {
@@ -81,14 +81,14 @@ uploadsController.upload = function(req, res, next){
 uploadsController.list = function(req, res){
 
 	if(req.headers.auth !== config.adminToken)
-		return res.status(401).send('not-authorized')
+		return res.status(401).json({ success: false, description: 'not-authorized'})
 
 	db.table('files')
 	.where(function(){
-		if(req.headers.albumid === undefined)
+		if(req.params.id === undefined)
 			this.where('id', '<>', '')
 		else
-			this.where('albumid', req.headers.albumid)
+			this.where('albumid', req.params.id)
 	})
 	.then((files) => {
 		db.table('albums').then((albums) => {
@@ -114,7 +114,10 @@ uploadsController.list = function(req, res){
 
 			}
 
-			return res.json(files)
+			return res.json({
+				success: true,
+				files
+			})
 		})
 
 	})
