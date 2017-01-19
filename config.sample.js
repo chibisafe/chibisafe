@@ -12,11 +12,14 @@ module.exports = {
 	// The registered domain where you will be serving the app. Use IP if none.
 	domains: [
 
-		// Files will be served at https://i.kanacchi.moe/file.png
-		{ base: 'https://i.kanacchi.moe/', prefix: ''},
+		// Files will be served at http(s)://i.kanacchi.moe/Fxt0.png
+		{ host: 'i.kanacchi.moe' },
 
-		// Files will be served at http://localhost:9999/files/file.png
-		{ base: 'http://127.0.0.1:9999/', prefix: 'files/'}
+		// Files will be served at http(s)://my.kanacchi.moe/loli-self/files/Fxt0.png
+		{ host: 'my.kanacchi.moe', resolve: 'https://my.kanacchi.moe/loli-self/files' },
+
+		// Files will be served at http://localhost:9999/Fxt0.png
+		{ domain: 'localhost:9999' }
 	],
 
 	// Port on which to run the server

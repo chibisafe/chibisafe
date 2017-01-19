@@ -12,11 +12,7 @@ fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder
 
 safe.enable('trust proxy')
 
-let prefix = config.uploads.prefix
-if( prefix !== '' )
-	prefix = prefix + '/'
-
-safe.use('/' + prefix, express.static('./uploads'))
+safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
 

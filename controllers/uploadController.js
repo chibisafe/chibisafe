@@ -56,13 +56,19 @@ uploadsController.upload = function(req, res, next){
 
 		db.table('files').insert(files).then(() => {
 			
+			let basedomain = req.get('host') + '/'
+			for(let domain of config.domains)
+				if(domain.host === req.get('host'))
+					if(domain.hasOwnProperty('resolve'))
+						return basedomain = domain.resolve + '/'
+
 			res.json({
 				success: true,
 				files: files.map(file => {
 					return {
 						name: file.name,
 						size: file.size,
-						url: config.basedomain + file.name
+						url: basedomain + file.name
 					}
 				})
 			})
