@@ -48,7 +48,7 @@ albumsController.create = function(req, res, next){
 	if(name === undefined || name === '')
 		return res.json({ success: false, description: 'No album name specified' })	
 
-	db.table('albums').where('name', name).then((album) => {
+	db.table('albums').where('name', name).where('enabled', 1).then((album) => {
 		if(album.length !== 0) return res.json({ success: false, description: 'There\'s already an album with that name' })	
 
 		db.table('albums').insert({ 
@@ -58,6 +58,19 @@ albumsController.create = function(req, res, next){
 		}).then(() => {
 			return res.json({ success: true })	
 		})
+	})
+}
+
+albumsController.delete = function(req, res, next){
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).json({ success: false, description: 'not-authorized'})
+
+	let id = req.body.id
+	if(id === undefined || id === '')
+		return res.json({ success: false, description: 'No album specified' })
+
+	db.table('albums').where('id', id).update({ enabled: 0 }).then(() => {
+		return res.json({ success: true })	
 	})
 }
 

@@ -123,7 +123,6 @@ uploadsController.list = function(req, res){
 
 			for(let file of files){
 				file.file = 'http://' + basedomain + '/' + file.name
-				//file.file = config.basedomain + config.uploads.prefix + file.name
 				file.date = new Date(file.timestamp * 1000)
 				file.date = file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
 
