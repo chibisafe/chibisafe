@@ -109,7 +109,8 @@ upload.prepareDropzone = function(){
 
 	// Update the total progress bar
 	dropzone.on('uploadprogress', function(file, progress) {
-		file.previewElement.querySelector('.progress').style.width = progress + '%';
+		file.previewElement.querySelector('.progress').setAttribute('value', progress);
+		file.previewElement.querySelector('.progress').innerHTML = progress + '%';
 	});
 
 	dropzone.on('success', function(file, response) {
