@@ -54,7 +54,7 @@ tokenController.change = function(req, res, next){
 			config.adminToken = token
 		
 		res.json({ success: true }) 
-	})
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 module.exports = tokenController

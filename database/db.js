@@ -51,9 +51,8 @@ let init = function(db, config){
 				]
 			).then(() => {
 				printAndSave(config, clientToken, adminToken)
-			})
-
-		})
+			}).catch(function(error) { console.log(error) })
+		}).catch(function(error) { console.log(error) })
 
 	})
 

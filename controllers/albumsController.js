@@ -35,8 +35,8 @@ albumsController.list = function(req, res, next){
 			for(let album of albums) album.files = albumsCount[album.id]
 
 			return res.json({ success: true, albums })
-		})
-	})
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 albumsController.create = function(req, res, next){
@@ -58,7 +58,7 @@ albumsController.create = function(req, res, next){
 		}).then(() => {
 			return res.json({ success: true })	
 		})
-	})
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 albumsController.delete = function(req, res, next){
@@ -71,8 +71,30 @@ albumsController.delete = function(req, res, next){
 
 	db.table('albums').where('id', id).update({ enabled: 0 }).then(() => {
 		return res.json({ success: true })	
-	})
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
+albumsController.rename = function(req, res, next){
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).json({ success: false, description: 'not-authorized'})
+
+	let id = req.body.id
+	if(id === undefined || id === '')
+		return res.json({ success: false, description: 'No album specified' })
+
+	let name = req.body.name
+	if(name === undefined || name === '')
+		return res.json({ success: false, description: 'No name specified' })
+
+	db.table('albums').where('name', name).then((results) => {
+		if(results.length !== 0)
+			return res.json({ success: false, description: 'Name already in use' })
+
+		db.table('albums').where('id', id).update({ name: name }).then(() => {
+			return res.json({ success: true })	
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+}
 
 module.exports = albumsController

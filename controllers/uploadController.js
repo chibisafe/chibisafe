@@ -4,7 +4,7 @@ const multer  = require('multer')
 const randomstring = require('randomstring')
 const db = require('knex')(config.database)
 //const crypto = require('crypto')
-//const fs = require('fs')
+const fs = require('fs')
 
 let uploadsController = {}
 
@@ -94,9 +94,38 @@ uploadsController.upload = function(req, res, next){
 				})
 			})
 
-		})
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	})
 
+}
+
+uploadsController.delete = function(req, res){
+
+	if(req.headers.auth !== config.adminToken)
+		return res.status(401).json({ success: false, description: 'not-authorized'})
+
+	let id = req.body.id
+	if(id === undefined || id === '')
+		return res.json({ success: false, description: 'No file specified' })
+
+	db.table('files').where('id', id).then((file) => {
+
+		fs.stat('./' + config.uploads.folder + '/' + file[0].name, function (err, stats) {
+
+			if (err) { return res.json({ success: false, description: err.toString() }) }
+
+			fs.unlink('./' + config.uploads.folder + '/' + file[0].name, function(err){
+				if (err) { return res.json({ success: false, description: err.toString() }) }
+
+				db.table('files').where('id', id).del().then(() =>{
+					return res.json({ success: true })
+				}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+			})
+		})
+
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+	
 }
 
 uploadsController.list = function(req, res){
@@ -141,7 +170,7 @@ uploadsController.list = function(req, res){
 			})
 		})
 
-	})
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 module.exports = uploadsController
