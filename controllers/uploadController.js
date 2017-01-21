@@ -104,7 +104,7 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 		if(domain.host === req.get('host'))
 			if(domain.hasOwnProperty('resolve'))
 				basedomain = domain.resolve
-				
+
 	if(files.length === 0){
 		return res.json({
 			success: true,
