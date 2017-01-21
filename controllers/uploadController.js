@@ -146,18 +146,12 @@ uploadsController.delete = function(req, res){
 
 	db.table('files').where('id', id).then((file) => {
 
-		fs.stat('./' + config.uploads.folder + '/' + file[0].name, function (err, stats) {
-
-			if (err) { return res.json({ success: false, description: err.toString() }) }
-
-			fs.unlink('./' + config.uploads.folder + '/' + file[0].name, function(err){
-				if (err) { return res.json({ success: false, description: err.toString() }) }
-
-				db.table('files').where('id', id).del().then(() =>{
-					return res.json({ success: true })
-				}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
-
-			})
+		uploadsController.deleteFile(file[0].name).then(() => {
+			db.table('files').where('id', id).del().then(() =>{
+				return res.json({ success: true })
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+		}).catch((e) => {
+			return res.json({ success: false, description: e.toString() })
 		})
 
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
