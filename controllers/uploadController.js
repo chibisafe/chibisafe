@@ -3,7 +3,7 @@ const config = require('../config.js')
 const multer  = require('multer')
 const randomstring = require('randomstring')
 const db = require('knex')(config.database)
-//const crypto = require('crypto')
+const crypto = require('crypto')
 const fs = require('fs')
 
 let uploadsController = {}
@@ -46,11 +46,11 @@ uploadsController.upload = function(req, res, next){
 		if(req.files.length === 0) return res.json({ success: false, description: 'no-files' })
 
 		let files = []
-		//let existingFiles = []
+		let existingFiles = []
+		let iteration = 1
 
 		req.files.forEach(function(file) {
 
-			/*
 			// Check if the file exists by checking hash and size
 			let hash = crypto.createHash('md5')
 			let stream = fs.createReadStream('./' + config.uploads.folder + '/' + file.filename)
@@ -62,41 +62,77 @@ uploadsController.upload = function(req, res, next){
 			stream.on('end', function () {
 				let fileHash = hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
 
-			})*/
+				db.table('files').where({
+					hash: fileHash,
+					size: file.size
+				}).then((dbfile) => {
 
-			files.push({
-				name: file.filename, 
-				original: file.originalname,
-				type: file.mimetype,
-				size: file.size, 
-				ip: req.ip,
-				albumid: album,
-				timestamp: Math.floor(Date.now() / 1000)
+					if(dbfile.length !== 0){
+						uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
+						existingFiles.push(dbfile[0])
+					}else{
+						files.push({
+							name: file.filename, 
+							original: file.originalname,
+							type: file.mimetype,
+							size: file.size, 
+							hash: fileHash,
+							ip: req.ip,
+							albumid: album,
+							timestamp: Math.floor(Date.now() / 1000)
+						})
+					}
+
+					if(iteration === req.files.length)
+						return something(req, res, files, existingFiles)
+					iteration++
+				})
+
+			})
+
+		})
+
+	})
+
+}
+
+function something(req, res, files, existingFiles){
+
+	let basedomain = req.get('host')
+	for(let domain of config.domains)
+		if(domain.host === req.get('host'))
+			if(domain.hasOwnProperty('resolve'))
+				basedomain = domain.resolve
+
+	if(files.length === 0){
+		return res.json({
+			success: true,
+			files: existingFiles.map(file => {
+				return {
+					name: file.name,
+					size: file.size,
+					url: 'http://' + basedomain + '/' + file.name
+				}
+			})
+		})
+	}
+
+	db.table('files').insert(files).then(() => {
+
+		for(let efile of existingFiles) files.push(efile)
+
+		res.json({
+			success: true,
+			files: files.map(file => {
+				return {
+					name: file.name,
+					size: file.size,
+					url: 'http://' + basedomain + '/' + file.name
+				}
 			})
 		})
 
-		db.table('files').insert(files).then(() => {
-			
-			let basedomain = req.get('host')
-			for(let domain of config.domains)
-				if(domain.host === req.get('host'))
-					if(domain.hasOwnProperty('resolve'))
-						basedomain = domain.resolve
-
-			res.json({
-				success: true,
-				files: files.map(file => {
-					return {
-						name: file.name,
-						size: file.size,
-						url: 'http://' + basedomain + '/' + file.name
-					}
-				})
-			})
-
-		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
-	})
-
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 uploadsController.delete = function(req, res){
@@ -126,6 +162,20 @@ uploadsController.delete = function(req, res){
 
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	
+}
+
+uploadsController.deleteFile = function(file){
+
+	return new Promise(function(resolve, reject){
+		fs.stat('./' + config.uploads.folder + '/' + file, function (err, stats) {
+			if (err) { return reject(err) }
+			fs.unlink('./' + config.uploads.folder + '/' + file, function(err){
+				if (err) { return reject(err) }
+				return resolve()
+			})
+		})
+	})
+
 }
 
 uploadsController.list = function(req, res){
