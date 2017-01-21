@@ -38,22 +38,22 @@
                 <hr>
                 <div class="columns">
                     <div class="column is-3">
-                        <aside class="menu">
+                        <aside class="menu" id="menu">
                             <p class="menu-label">General</p>
                             <ul class="menu-list">
                                 <li><a href="/">Frontpage</a></li>
-                                <li><a onclick="panel.getUploads()">Uploads</a></li>
+                                <li><a id="itemUploads" onclick="panel.getUploads()">Uploads</a></li>
                             </ul>
                             <p class="menu-label">Albums</p>
                             <ul class="menu-list">
-                                <li><a onclick="panel.getAlbums()">Manage your albums</a></li>
+                                <li><a id="itemManageGallery" onclick="panel.getAlbums()">Manage your albums</a></li>
                                 <li>
                                     <ul id='albumsContainer'></ul>
                                 </li>
                             </ul>
                             <p class="menu-label">Administration</p>
                             <ul class="menu-list">
-                                <li><a onclick="panel.changeTokens()">Change your tokens</a></li>
+                                <li><a id="itemTokens" onclick="panel.changeTokens()">Change your tokens</a></li>
                                 <li><a onclick="panel.logout()">Logout</a></li>
                             </ul>
                         </aside>
