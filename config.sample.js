@@ -12,14 +12,16 @@ module.exports = {
 	// The registered domain where you will be serving the app. Use IP if none.
 	domains: [
 
+		/*
+			You need to specify the base domain where loli-self is running
+			and how should it resolve the URL for uploaded files. For example:
+		*/
+
 		// Files will be served at http(s)://i.kanacchi.moe/Fxt0.png
-		{ host: 'i.kanacchi.moe' },
+		{ host: 'kanacchi.moe', resolve: 'https://i.kanacchi.moe'},
 
-		// Files will be served at http(s)://my.kanacchi.moe/loli-self/files/Fxt0.png
-		{ host: 'my.kanacchi.moe', resolve: 'https://my.kanacchi.moe/loli-self/files' },
-
-		// Files will be served at http://localhost:9999/Fxt0.png
-		{ domain: 'localhost:9999' }
+		// Files will be served at https://my.kanacchi.moe/loli-self/files/Fxt0.png
+		{ host: 'kanacchi.moe', resolve: 'https://my.kanacchi.moe/loli-self/files' }
 
 	],
 

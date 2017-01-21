@@ -98,12 +98,13 @@ uploadsController.upload = function(req, res, next){
 
 uploadsController.processFilesForDisplay = function(req, res, files, existingFiles){
 
+
 	let basedomain = req.get('host')
 	for(let domain of config.domains)
 		if(domain.host === req.get('host'))
 			if(domain.hasOwnProperty('resolve'))
 				basedomain = domain.resolve
-
+				
 	if(files.length === 0){
 		return res.json({
 			success: true,
@@ -111,7 +112,7 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 				return {
 					name: file.name,
 					size: file.size,
-					url: 'http://' + basedomain + '/' + file.name
+					url: basedomain + '/' + file.name
 				}
 			})
 		})
@@ -127,7 +128,7 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 				return {
 					name: file.name,
 					size: file.size,
-					url: 'http://' + basedomain + '/' + file.name
+					url: basedomain + '/' + file.name
 				}
 			})
 		})
@@ -200,7 +201,7 @@ uploadsController.list = function(req, res){
 						basedomain = domain.resolve
 
 			for(let file of files){
-				file.file = 'http://' + basedomain + '/' + file.name
+				file.file = basedomain + '/' + file.name
 				file.date = new Date(file.timestamp * 1000)
 				file.date = file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
 
