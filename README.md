@@ -1,4 +1,4 @@
-![loli-safe](https://i.kanacchi.moe/EW7C.png)   
+![loli-safe](https://a.cuntflaps.me/jcutlz.png)   
 # loli-safe
 Pomf-like file uploading service, but way better.
 
