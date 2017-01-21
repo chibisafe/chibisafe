@@ -54,6 +54,7 @@ panel.prepareDashboard = function(){
 	document.getElementById('auth').style.display = 'none';
 	document.getElementById('dashboard').style.display = 'block';
 
+	/*
 	document.getElementById('itemUploads').addEventListener('click', function(){
 		panel.getUploads();
 	});
@@ -65,8 +66,14 @@ panel.prepareDashboard = function(){
 	document.getElementById('itemTokens').addEventListener('click', function(){
 		panel.changeTokens();
 	});
+	*/
 
 	panel.getAlbumsSidebar();
+}
+
+panel.logout = function(){
+	localStorage.removeItem("admintoken");
+	location.reload('/');
 }
 
 panel.getUploads = function(album = undefined, page = undefined){
