@@ -84,7 +84,7 @@ uploadsController.upload = function(req, res, next){
 					}
 
 					if(iteration === req.files.length)
-						return something(req, res, files, existingFiles)
+						return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
 					iteration++
 				})
 
@@ -96,7 +96,7 @@ uploadsController.upload = function(req, res, next){
 
 }
 
-function something(req, res, files, existingFiles){
+uploadsController.processFilesForDisplay = function(req, res, files, existingFiles){
 
 	let basedomain = req.get('host')
 	for(let domain of config.domains)
@@ -177,6 +177,9 @@ uploadsController.list = function(req, res){
 	if(req.headers.auth !== config.adminToken)
 		return res.status(401).json({ success: false, description: 'not-authorized'})
 
+	let offset = req.params.page
+	if(offset === undefined) offset = 0
+
 	db.table('files')
 	.where(function(){
 		if(req.params.id === undefined)
@@ -185,6 +188,8 @@ uploadsController.list = function(req, res){
 			this.where('albumid', req.params.id)
 	})
 	.orderBy('id', 'DESC')
+	.limit(25)
+	.offset(25 * offset)
 	.then((files) => {
 		db.table('albums').then((albums) => {
 

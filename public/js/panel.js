@@ -69,11 +69,13 @@ panel.prepareDashboard = function(){
 	panel.getAlbumsSidebar();
 }
 
-panel.getUploads = function(album = undefined){
+panel.getUploads = function(album = undefined, page = undefined){
 
-	let url = '/api/uploads'
+	if(page === undefined) page = 0;
+
+	let url = '/api/uploads/' + page
 	if(album !== undefined)
-		url = '/api/album/' + album
+		url = '/api/album/' + album + '/' + page
 
 	axios.get(url)
 	.then(function (response) {
@@ -82,9 +84,27 @@ panel.getUploads = function(album = undefined){
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 		
+
+		var prevPage = 0;
+		var nextPage = page + 1;
+
+		if(response.data.files.length < 25)
+			nextPage = page;
+		
+		if(page > 0) prevPage = page - 1;
+
 		panel.page.innerHTML = '';
 		var container = document.createElement('div');
 		container.innerHTML = `
+			<div class='columns'>
+				<div class="column">
+					<nav class="pagination is-centered">
+				  		<a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
+				  		<a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
+					</nav>
+				</div>
+			</div>
+
 			<table class="table is-striped is-narrow">
 				<thead>
 					<tr>
@@ -96,7 +116,17 @@ panel.getUploads = function(album = undefined){
 				</thead>
 				<tbody id="table">
 				</tbody>
-			</table>`;
+			</table>
+
+			<div class='columns'>
+				<div class="column">
+					<nav class="pagination is-centered">
+				  		<a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
+				  		<a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
+					</nav>
+				</div>
+			</div>
+			`;
 		panel.page.appendChild(container);
 
 		var table = document.getElementById('table');

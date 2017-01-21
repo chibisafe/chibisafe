@@ -12,11 +12,14 @@ routes.get ('/check', (req, res, next) => {
 })
 
 routes.get  ('/uploads', (req, res, next) => uploadController.list(req, res))
+routes.get  ('/uploads/:page', (req, res, next) => uploadController.list(req, res))
 routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
 routes.post ('/upload/delete', (req, res, next) => uploadController.delete(req, res, next))
 routes.post ('/upload/:albumid', (req, res, next) => uploadController.upload(req, res, next))
 
 routes.get  ('/album/:id', (req, res, next) => uploadController.list(req, res, next))
+routes.get  ('/album/:id/:page', (req, res, next) => uploadController.list(req, res, next))
+
 routes.get  ('/albums', (req, res, next) => albumsController.list(req, res, next))
 routes.get  ('/albums/:sidebar', (req, res, next) => albumsController.list(req, res, next))
 routes.post ('/albums', (req, res, next) => albumsController.create(req, res, next))
