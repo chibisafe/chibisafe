@@ -8,7 +8,7 @@ upload.checkIfPublic = function(){
 
 	axios.get('/api/check')
   	.then(function (response) {
-    	upload.isPublic = response.data.private;
+    	upload.isPrivate= response.data.private;
 		upload.maxFileSize = response.data.maxFileSize;
 		upload.preparePage();
   	})
