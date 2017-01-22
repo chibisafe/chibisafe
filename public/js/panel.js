@@ -2,6 +2,7 @@ let panel = {}
 
 panel.page;
 panel.token = localStorage.admintoken;
+panel.filesView = localStorage.filesView;
 
 panel.preparePage = function(){
 	if(!panel.token){
@@ -14,8 +15,10 @@ panel.preparePage = function(){
 	panel.verifyToken(panel.token, true);
 }
 
-panel.verifyToken = function(token, reloadOnError = false){
-	
+panel.verifyToken = function(token, reloadOnError){
+	if(reloadOnError === undefined)
+		reloadOnError = false;
+
 	axios.post('/api/tokens/verify', {
 		type: 'admin',
 		token: token
@@ -100,62 +103,108 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 		panel.page.innerHTML = '';
 		var container = document.createElement('div');
-		container.innerHTML = `
-			<div class='columns'>
-				<div class="column">
-					<nav class="pagination is-centered">
-				  		<a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
-				  		<a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
-					</nav>
-				</div>
+		var pagination = `<nav class="pagination is-centered">
+					  		<a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
+					  		<a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
+						</nav>`;
+		var listType = `
+		<div class="columns">
+			<div class="column">
+				<a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('list', ${album}, ${page})">
+					<span class="icon is-small">
+						<i class="fa fa-list-ul"></i>
+					</span>
+				</a>
+				<a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('thumbs', ${album}, ${page})">
+					<span class="icon is-small">
+						<i class="fa fa-th-large"></i>
+					</span>
+				</a>
 			</div>
+		</div>`
 
-			<table class="table is-striped is-narrow">
-				<thead>
-					<tr>
-						  <th>File</th>
-						  <th>Album</th>
-						  <th>Date</th>
-						  <th></th>
-					</tr>
-				</thead>
-				<tbody id="table">
-				</tbody>
-			</table>
+		if(panel.filesView === 'thumbs'){
 
-			<div class='columns'>
-				<div class="column">
-					<nav class="pagination is-centered">
-				  		<a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
-				  		<a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
-					</nav>
+
+			container.innerHTML = `
+				
+				${pagination}
+				<hr>
+				${listType}
+				<div class="columns is-multiline is-mobile" id="table">
+
 				</div>
-			</div>
+				${pagination}
+
 			`;
-		panel.page.appendChild(container);
 
-		var table = document.getElementById('table');
 
-		for(var item of response.data.files){
+			panel.page.appendChild(container);
+			var table = document.getElementById('table');
 
-			var tr = document.createElement('tr');
-			tr.innerHTML = `
-				<tr>
-					<th><a href="${item.file}" target="_blank">${item.file}</a></th>
-					<th>${item.album}</th>
-					<td>${item.date}</td>
-					<td>
-						<a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteFile(${item.id})">
-							<span class="icon is-small">
-								<i class="fa fa-trash-o"></i>
-							</span>
-						</a>
-					</td>
-				</tr>
-				`;
+			for(var item of response.data.files){
 
-			table.appendChild(tr);
+				var div = document.createElement('div');
+				div.className = "column is-2";
+				if(item.thumb !== undefined)
+					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`;
+				else
+					div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a>`;
+				table.appendChild(div);
+
+			}
+
+		}else{
+
+			container.innerHTML = `
+				
+				${pagination}
+				<hr>
+				${listType}
+				<table class="table is-striped is-narrow is-left">
+					<thead>
+						<tr>
+							  <th>File</th>
+							  <th>Album</th>
+							  <th>Date</th>
+							  <th></th>
+						</tr>
+					</thead>
+					<tbody id="table">
+					</tbody>
+				</table>
+				<hr>
+				${pagination}
+
+			`;
+
+			panel.page.appendChild(container);
+			var table = document.getElementById('table');
+
+			for(var item of response.data.files){
+
+				var tr = document.createElement('tr');
+				tr.innerHTML = `
+					<tr>
+						<th><a href="${item.file}" target="_blank">${item.file}</a></th>
+						<th>${item.album}</th>
+						<td>${item.date}</td>
+						<td>
+							<a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteFile(${item.id})">
+								<span class="icon is-small">
+									<i class="fa fa-trash-o"></i>
+								</span>
+							</a>
+						</td>
+					</tr>
+					`;
+
+				table.appendChild(tr);
+			}
+
 		}
+
+
 
 	})
 	.catch(function (error) {
@@ -163,6 +212,12 @@ panel.getUploads = function(album = undefined, page = undefined){
 		console.log(error);
 	});
 
+}
+
+panel.setFilesView = function(view, album, page){
+	localStorage.filesView = view;
+	panel.filesView = view;
+	panel.getUploads(album, page);
 }
 
 panel.deleteFile = function(id){

@@ -5,6 +5,7 @@ const randomstring = require('randomstring')
 const db = require('knex')(config.database)
 const crypto = require('crypto')
 const fs = require('fs')
+const gm = require('gm')
 
 let uploadsController = {}
 
@@ -152,7 +153,10 @@ uploadsController.delete = function(req, res){
 				return res.json({ success: true })
 			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch((e) => {
-			return res.json({ success: false, description: e.toString() })
+			console.log(e.toString())
+			db.table('files').where('id', id).del().then(() =>{
+				return res.json({ success: true })
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		})
 
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
@@ -212,14 +216,48 @@ uploadsController.list = function(req, res){
 						if(file.albumid === album.id)
 							file.album = album.name
 
+				if(config.uploads.generateThumbnails === true){
+
+					let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png']
+					for(let ext of extensions){
+						if(path.extname(file.name) === ext){
+
+							file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -4) + '.png'
+
+							let thumbname = path.join(__dirname, '..', 'uploads', 'thumbs') + '/' + file.name.slice(0, -4) + '.png'
+							fs.access(thumbname, function(err) {
+								if (err && err.code === 'ENOENT') {
+									// File doesnt exist
+
+									let size = {
+										width: 200, 
+										height: 200
+									}
+
+									gm('./' + config.uploads.folder + '/' + file.name)
+										.resize(size.width, size.height + '>')
+										.gravity('Center')
+										.extent(size.width, size.height)
+										.background('transparent')
+										.write(thumbname, function (error) {
+											if (error) console.log('Error - ', error)
+										})
+								}
+							})
+						}
+					}
+
+				}
+				
+
 			}
 
 			return res.json({
 				success: true,
 				files
 			})
-		})
 
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 

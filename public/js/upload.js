@@ -31,8 +31,10 @@ upload.preparePage = function(){
 	upload.verifyToken(upload.token, true);
 }
 
-upload.verifyToken = function(token, reloadOnError = false){
-
+upload.verifyToken = function(token, reloadOnError){
+	if(reloadOnError === undefined)
+		reloadOnError = false;
+	
 	axios.post('/api/tokens/verify', {
 		type: 'client',
 		token: token

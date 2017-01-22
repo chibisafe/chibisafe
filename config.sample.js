@@ -39,6 +39,10 @@ module.exports = {
 
 		// The length of the random generated name for the uploaded files
 		fileLength: 32,
+
+		// NOTE: Thumbnails are only for the admin panel and they require you
+		// to install a separate binary called graphicsmagick (http://www.graphicsmagick.org)
+		generateThumbnails: false
 	},
 
 	// Folder where to store logs
