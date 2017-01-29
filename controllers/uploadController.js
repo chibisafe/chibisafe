@@ -246,10 +246,7 @@ uploadsController.list = function(req, res){
 							})
 						}
 					}
-
 				}
-				
-
 			}
 
 			return res.json({
