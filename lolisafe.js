@@ -6,7 +6,7 @@ const db = require('knex')(config.database)
 const fs = require('fs')
 const safe = express()
 
-require('./database/db.js')(db, config)
+require('./database/db.js')(db)
 
 fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder)
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
@@ -22,6 +22,7 @@ safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
 safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
+safe.get('/auth', (req, res, next) => res.sendFile('auth.html', { root: './pages/' }))
 safe.get('/panel', (req, res, next) => res.sendFile('panel.html', { root: './pages/' }))
 safe.use((req, res, next) => res.status(404).sendFile('404.html', { root: './pages/error/' }))
 safe.use((req, res, next) => res.status(500).sendFile('500.html', { root: './pages/error/' }))
