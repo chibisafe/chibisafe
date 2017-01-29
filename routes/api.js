@@ -3,6 +3,7 @@ const routes = require('express').Router()
 const uploadController = require('../controllers/uploadController')
 const albumsController = require('../controllers/albumsController')
 const tokenController = require('../controllers/tokenController')
+const authController = require('../controllers/authController')
 
 routes.get ('/check', (req, res, next) => {
 	return res.json({ 
@@ -10,6 +11,11 @@ routes.get ('/check', (req, res, next) => {
 		maxFileSize: config.uploads.maxSize
 	})
 })
+
+routes.post ('/login', (req, res, next) => authController.verify(req, res, next))
+routes.post ('/register', (req, res, next) => authController.register(req, res, next))
+
+routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
 
 routes.get  ('/uploads', (req, res, next) => uploadController.list(req, res))
 routes.get  ('/uploads/:page', (req, res, next) => uploadController.list(req, res))
