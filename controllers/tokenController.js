@@ -4,34 +4,26 @@ const db = require('knex')(config.database)
 let tokenController = {}
 
 tokenController.verify = function(req, res, next){
-	let type = req.body.type
+
+	if(req.body.token === undefined) return res.json({ success: false, description: 'No token provided' })
 	let token = req.body.token
 
-	if(type === undefined) return res.json({ success: false, description: 'No type provided.' })
-	if(token === undefined) return res.json({ success: false, description: 'No token provided.' })
-	if(type !== 'client' && type !== 'admin') return res.json({ success: false, description: 'Wrong type provided.' })
-
-	if(type === 'client'){
-		if(token !== config.clientToken) return res.json({ success: false, description: 'Token mismatch.' })
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.json({ success: false, description: 'Token mismatch' })
 		return res.json({ success: true })
-	}
-
-	if(type === 'admin'){
-		if(token !== config.adminToken) return res.json({ success: false, description: 'Token mismatch.' })
-		return res.json({ success: true })
-	}
-
-	return res.json({ success: false, description: '(╯°□°）╯︵ ┻━┻' })
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 tokenController.list = function(req, res, next){
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
 
-	return res.json({
-		clientToken: config.clientToken,
-		adminToken: config.adminToken
-	})
+	if(req.headers.auth === undefined) return res.json({ success: false, description: 'No token provided' })
+	let token = req.headers.auth
+
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.json({ success: false, description: 'Token mismatch' })
+		return res.json({ success: true, token: token })
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
 }
 
 tokenController.change = function(req, res, next){
