@@ -7,6 +7,7 @@ const randomstring = require('randomstring')
 let authController = {}
 
 authController.verify = function(req, res, next){
+	
 	let username = req.body.username
 	let password = req.body.password
 
