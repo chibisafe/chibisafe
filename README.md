@@ -4,7 +4,7 @@ A small safe worth protecting.
 ---
 ### Sites using loli-safe
 
-- [lolisafe.moe](https://lolisafe.moe): A small safe with a smile worth protecting.
+- [i.kanacchi.moe](https://i.kanacchi.moe): A small safe with a smile worth protecting.
 - [cuntflaps.me](https://cuntflaps.me)
 - [fluntcaps.me](https://fluntcaps.me)
 - Feel free to add yours here.
