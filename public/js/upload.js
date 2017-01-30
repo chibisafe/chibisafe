@@ -21,13 +21,7 @@ upload.checkIfPublic = function(){
 
 upload.preparePage = function(){
 	if(!upload.isPrivate) return upload.prepareUpload();
-	if(!upload.token){
-		document.getElementById('tokenSubmit').addEventListener('click', function(){
-			upload.verifyToken(document.getElementById('token').value)
-		});
-		document.getElementById('tokenContainer').style.display = 'flex';
-		return;
-	}
+	if(!upload.token) return document.getElementById('loginToUpload').style.display = 'inline-flex';
 	upload.verifyToken(upload.token, true);
 }
 
@@ -74,7 +68,7 @@ upload.prepareUpload = function(){
 	div.style.display = 'flex';
 
 	document.getElementById('maxFileSize').innerHTML = 'Maximum upload size per file is ' + upload.maxFileSize;
-	document.getElementById('tokenContainer').style.display = 'none';
+	document.getElementById('loginToUpload').style.display = 'none';
 	document.getElementById('uploadContainer').appendChild(div);
 
 	upload.prepareDropzone();
