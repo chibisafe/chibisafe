@@ -463,7 +463,7 @@ panel.getAlbum = function(item){
 	panel.getUploads(item.id);
 }
 
-panel.changeTokens = function(){
+panel.changeToken = function(){
 
 	axios.get('/api/tokens')
 	.then(function (response) {
@@ -515,6 +515,55 @@ panel.getNewToken = function(){
 			type: "success"
 		}, function(){
 			localStorage.token = response.data.token;
+			location.reload();
+		})
+
+	})
+	.catch(function (error) {
+		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+		console.log(error);
+	});
+
+}
+
+panel.changePassword = function(){
+
+	panel.page.innerHTML = '';
+	var container = document.createElement('div');
+	container.className = "container";
+	container.innerHTML = `
+		<h2 class="subtitle">Change your password</h2>
+
+		<label class="label">New password:</label>
+		<p class="control has-addons">
+			<input id="password" class="input is-expanded" type="password" placeholder="Your new password">
+			<a id="sendChangePassword" class="button is-primary">Set new password</a>
+		</p>
+	`;
+
+	panel.page.appendChild(container);
+
+	document.getElementById('sendChangePassword').addEventListener('click', function(){
+		panel.sendNewPassword();
+	});
+
+}
+
+panel.sendNewPassword = function(){
+
+	axios.post('/api/password/change')
+	.then(function (response) {
+
+		if(response.data.success === false){
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+			else return swal("An error ocurred", response.data.description, "error");		
+		}
+
+		swal({
+			title: "Woohoo!", 
+			text: 'Your password was changed successfully.', 
+			type: "success"
+		}, function(){
 			location.reload();
 		})
 
