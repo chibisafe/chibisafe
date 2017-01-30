@@ -37,7 +37,7 @@ authController.register = function(req, res, next){
 	if(password === undefined) return res.json({ success: false, description: 'No password provided' })
 
 	if(username.length < 4 || username.length > 32)
-		return res.json({ success: false, description: 'Username must have 6-32 characters' })
+		return res.json({ success: false, description: 'Username must have 4-32 characters' })
 	if(password.length < 6 || password.length > 64)
 		return res.json({ success: false, description: 'Password must have 6-64 characters' })
 
