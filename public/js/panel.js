@@ -544,14 +544,14 @@ panel.changePassword = function(){
 	panel.page.appendChild(container);
 
 	document.getElementById('sendChangePassword').addEventListener('click', function(){
-		panel.sendNewPassword();
+		panel.sendNewPassword(document.getElementById('password').value);
 	});
 
 }
 
-panel.sendNewPassword = function(){
+panel.sendNewPassword = function(pass){
 
-	axios.post('/api/password/change')
+	axios.post('/api/password/change', {password: pass})
 	.then(function (response) {
 
 		if(response.data.success === false){
