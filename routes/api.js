@@ -15,8 +15,6 @@ routes.get ('/check', (req, res, next) => {
 routes.post ('/login', (req, res, next) => authController.verify(req, res, next))
 routes.post ('/register', (req, res, next) => authController.register(req, res, next))
 
-routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
-
 routes.get  ('/uploads', (req, res, next) => uploadController.list(req, res))
 routes.get  ('/uploads/:page', (req, res, next) => uploadController.list(req, res))
 routes.post ('/upload', (req, res, next) => uploadController.upload(req, res, next))
