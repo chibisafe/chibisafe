@@ -1,17 +1,11 @@
 let panel = {}
 
 panel.page;
-panel.token = localStorage.admintoken;
+panel.token = localStorage.token;
 panel.filesView = localStorage.filesView;
 
 panel.preparePage = function(){
-	if(!panel.token){
-		document.getElementById('auth').style.display = 'flex';
-		document.getElementById('tokenSubmit').addEventListener('click', function(){
-			panel.verifyToken(document.getElementById('token').value);
-		});
-		return;
-	}
+	if(!panel.token) return window.location = '/auth';
 	panel.verifyToken(panel.token, true);
 }
 
@@ -20,7 +14,6 @@ panel.verifyToken = function(token, reloadOnError){
 		reloadOnError = false;
 
 	axios.post('/api/tokens/verify', {
-		type: 'admin',
 		token: token
 	})
 	.then(function (response) {
@@ -32,15 +25,15 @@ panel.verifyToken = function(token, reloadOnError){
 				type: "error"
 			}, function(){
 				if(reloadOnError){
-					localStorage.removeItem("admintoken");
-					location.reload();
+					localStorage.removeItem("token");
+					location.location = '/auth';
 				}
 			})
 			return;
 		}
 
-		axios.defaults.headers.common['auth'] = token;
-		localStorage.admintoken = token;
+		axios.defaults.headers.common['token'] = token;
+		localStorage.token = token;
 		panel.token = token;
 		return panel.prepareDashboard();
 
@@ -73,7 +66,7 @@ panel.prepareDashboard = function(){
 }
 
 panel.logout = function(){
-	localStorage.removeItem("admintoken");
+	localStorage.removeItem("token");
 	location.reload('/');
 }
 
@@ -85,14 +78,12 @@ panel.getUploads = function(album = undefined, page = undefined){
 	if(album !== undefined)
 		url = '/api/album/' + album + '/' + page
 
-	axios.get(url)
-	.then(function (response) {
+	axios.get(url).then(function (response) {
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 		
-
 		var prevPage = 0;
 		var nextPage = page + 1;
 
@@ -125,9 +116,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 		if(panel.filesView === 'thumbs'){
 
-
 			container.innerHTML = `
-				
 				${pagination}
 				<hr>
 				${listType}
@@ -135,9 +124,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 				</div>
 				${pagination}
-
 			`;
-
 
 			panel.page.appendChild(container);
 			var table = document.getElementById('table');
@@ -157,7 +144,6 @@ panel.getUploads = function(album = undefined, page = undefined){
 		}else{
 
 			container.innerHTML = `
-				
 				${pagination}
 				<hr>
 				${listType}
@@ -175,7 +161,6 @@ panel.getUploads = function(album = undefined, page = undefined){
 				</table>
 				<hr>
 				${pagination}
-
 			`;
 
 			panel.page.appendChild(container);
@@ -201,11 +186,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 				table.appendChild(tr);
 			}
-
 		}
-
-
-
 	})
 	.catch(function (error) {
 		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
@@ -238,7 +219,7 @@ panel.deleteFile = function(id){
 			.then(function (response) {
 
 				if(response.data.success === false){
-					if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 					else return swal("An error ocurred", response.data.description, "error");		
 				}
 
@@ -258,10 +239,9 @@ panel.deleteFile = function(id){
 
 panel.getAlbums = function(){
 
-	axios.get('/api/albums')
-	.then(function (response) {
+	axios.get('/api/albums').then(function (response) {
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 
@@ -324,7 +304,6 @@ panel.getAlbums = function(){
 			panel.submitAlbum();
 		});
 
-
 	})
 	.catch(function (error) {
 		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
@@ -357,7 +336,7 @@ panel.renameAlbum = function(id){
 		.then(function (response) {
 
 			if(response.data.success === false){
-				if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+				if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 				else if(response.data.description === 'Name already in use') swal.showInputError("That name is already in use!");
 				else swal("An error ocurred", response.data.description, "error");
 				return;
@@ -396,7 +375,7 @@ panel.deleteAlbum = function(id){
 			.then(function (response) {
 
 				if(response.data.success === false){
-					if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 					else return swal("An error ocurred", response.data.description, "error");		
 				}
 
@@ -424,7 +403,7 @@ panel.submitAlbum = function(){
 	.then(function (response) {
 
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 
@@ -446,7 +425,7 @@ panel.getAlbumsSidebar = function(){
 	axios.get('/api/albums/sidebar')
 	.then(function (response) {
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 
@@ -489,7 +468,7 @@ panel.changeTokens = function(){
 	axios.get('/api/tokens')
 	.then(function (response) {
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 
@@ -497,34 +476,20 @@ panel.changeTokens = function(){
 		var container = document.createElement('div');
 		container.className = "container";
 		container.innerHTML = `
-			<h2 class="subtitle">Manage your tokens</h2>
+			<h2 class="subtitle">Manage your token</h2>
 
-			<label class="label">Client token:</label>
+			<label class="label">Your current token:</label>
 			<p class="control has-addons">
-				<input id="clientToken" class="input is-expanded" type="text" placeholder="Your client token">
-				<a id="submitClientToken" class="button is-primary">Save</a>
-			</p>
-
-			<label class="label">Admin token:</label>
-			<p class="control has-addons">
-				<input id="adminToken" class="input is-expanded" type="text" placeholder="Your admin token">
-				<a id="submitAdminToken" class="button is-primary">Save</a>
+				<input id="token" readonly class="input is-expanded" type="text" placeholder="Your token" value="${response.data.token}">
+				<a id="getNewToken" class="button is-primary">Request new token</a>
 			</p>
 		`;
 
 		panel.page.appendChild(container);
 
-		document.getElementById('clientToken').value = response.data.clientToken;
-		document.getElementById('adminToken').value = response.data.adminToken;
-
-		document.getElementById('submitClientToken').addEventListener('click', function(){
-			panel.submitToken('client', document.getElementById('clientToken').value);
+		document.getElementById('getNewToken').addEventListener('click', function(){
+			panel.getNewToken();
 		});
-
-		document.getElementById('submitAdminToken').addEventListener('click', function(){
-			panel.submitToken('admin', document.getElementById('adminToken').value);
-		});
-
 
 	})
 	.catch(function (error) {
@@ -534,16 +499,13 @@ panel.changeTokens = function(){
 
 }
 
-panel.submitToken = function(type, token){
+panel.getNewToken = function(){
 
-	axios.post('/api/tokens/change', {
-		type: type,
-		token: token
-	})
+	axios.post('/api/tokens/change')
 	.then(function (response) {
 
 		if(response.data.success === false){
-			if(response.data.description === 'not-authorized') return panel.verifyToken(panel.token);
+			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
 			else return swal("An error ocurred", response.data.description, "error");		
 		}
 
@@ -552,14 +514,8 @@ panel.submitToken = function(type, token){
 			text: 'Your token was changed successfully.', 
 			type: "success"
 		}, function(){
-			
-			if(type === 'client')
-				localStorage.token = token;
-			else if(type === 'admin')
-				localStorage.admintoken = token
-
+			localStorage.token = response.data.token;
 			location.reload();
-				
 		})
 
 	})

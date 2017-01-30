@@ -36,7 +36,6 @@ upload.verifyToken = function(token, reloadOnError){
 		reloadOnError = false;
 	
 	axios.post('/api/tokens/verify', {
-		type: 'client',
 		token: token
 	})
   	.then(function (response) {
@@ -101,7 +100,7 @@ upload.prepareDropzone = function(){
 		maxFiles: 1000,
 		autoProcessQueue: true,
 		headers: {
-    		'auth': upload.token
+    		'token': upload.token
 		},
 		init: function() {
 			this.on('addedfile', function(file) { 

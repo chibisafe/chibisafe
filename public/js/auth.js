@@ -14,19 +14,19 @@ page.do = function(dest){
 		username: user,
 		password: pass
 	})
-  	.then(function (response) {
+	.then(function (response) {
 
-    	if(response.data.success === false)
-    		return swal('Error', response.data.description, 'error');
-    	
-    	localStorage.token = response.data.token;
-    	window.location('/panel');
+		if(response.data.success === false)
+			return swal('Error', response.data.description, 'error');
+		
+		localStorage.token = response.data.token;
+		window.location = '/panel';
 
-  	})
-  	.catch(function (error) {
-  		return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
-    	console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+		console.log(error);
+	});
 }
 
 page.verify = function(){
@@ -36,18 +36,18 @@ page.verify = function(){
 	axios.post('/api/tokens/verify', {
 		token: page.token
 	})
-  	.then(function (response) {
+	.then(function (response) {
 
-    	if(response.data.success === false)
-    		return swal('Error', response.data.description, 'error');
-    	
-    	window.location('/panel');
+		if(response.data.success === false)
+			return swal('Error', response.data.description, 'error');
+		
+		window.location = '/panel';
 
-  	})
-  	.catch(function (error) {
-  		return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
-    	console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+		console.log(error);
+	});
 
 }
 
