@@ -1,6 +1,6 @@
 {
   "name": "loli-safe",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Pomf-like uploading service, written in node",
   "author": "kanadeko",
   "repository": {
