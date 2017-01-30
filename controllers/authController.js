@@ -30,13 +30,13 @@ authController.register = function(req, res, next){
 	if(config.enableUserAccounts === false) 
 		return res.json({ success: false, description: 'Register is disabled at the moment' })
 
-	let username = req.body.user
+	let username = req.body.username
 	let password = req.body.password
 
 	if(username === undefined) return res.json({ success: false, description: 'No username provided' })
 	if(password === undefined) return res.json({ success: false, description: 'No password provided' })
 
-	if(username.length < 6 || username.length > 32)
+	if(username.length < 4 || username.length > 32)
 		return res.json({ success: false, description: 'Username must have 6-32 characters' })
 	if(password.length < 6 || password.length > 64)
 		return res.json({ success: false, description: 'Password must have 6-64 characters' })
@@ -78,7 +78,7 @@ authController.changePassword = function(req, res, next){
 		bcrypt.hash(password, saltRounds, function(err, hash) {
 			if(err) return res.json({ success: false, description: 'Error generating password hash (╯°□°）╯︵ ┻━┻' })
 
-			db.table('users').where('id', user.id).update({password: hash}).then(() => {
+			db.table('users').where('id', user[0].id).update({password: hash}).then(() => {
 				return res.json({ success: true})
 			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		})

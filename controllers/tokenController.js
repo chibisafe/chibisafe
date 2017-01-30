@@ -1,5 +1,6 @@
 const config = require('../config.js')
 const db = require('knex')(config.database)
+const randomstring = require('randomstring')
 
 let tokenController = {}
 
@@ -37,7 +38,7 @@ tokenController.change = function(req, res, next){
 	db.table('users').where('token', token).update({
 		token: newtoken,
 		timestamp:  Math.floor(Date.now() / 1000)
-	}).then((user) => {
+	}).then(() => {
 		res.json({ success: true, token: newtoken })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	

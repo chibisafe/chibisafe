@@ -36,7 +36,7 @@ uploadsController.upload = function(req, res, next){
 	db.table('users').where('token', token).then((user) => {
 		let userid
 		if(user.length > 0)
-			userid = user.id
+			userid = user[0].id
 
 		// Check if user is trying to upload to an album
 		let album = undefined
@@ -161,8 +161,8 @@ uploadsController.delete = function(req, res){
 		db.table('files')
 		.where('id', id)
 		.where(function(){
-			if(user.username !== 'root')
-				this.where('userid', user.id)
+			if(user[0].username !== 'root')
+				this.where('userid', user[0].id)
 		})
 		.then((file) => {
 
@@ -215,8 +215,8 @@ uploadsController.list = function(req, res){
 				this.where('albumid', req.params.id)
 		})
 		.where(function(){
-			if(user.username !== 'root')
-				this.where('userid', user.id)
+			if(user[0].username !== 'root')
+				this.where('userid', user[0].id)
 		})
 		.orderBy('id', 'DESC')
 		.limit(25)

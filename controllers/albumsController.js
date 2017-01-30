@@ -16,7 +16,7 @@ albumsController.list = function(req, res, next){
 		if(req.params.sidebar === undefined)
 			fields.push('timestamp')
 		
-		db.table('albums').select(fields).where({enabled: 1, userid: user.id}).then((albums) => {
+		db.table('albums').select(fields).where({enabled: 1, userid: user[0].id}).then((albums) => {
 			
 			if(req.params.sidebar !== undefined)
 				return res.json({ success: true, albums })
@@ -59,14 +59,14 @@ albumsController.create = function(req, res, next){
 		db.table('albums').where({
 			name: name,
 			enabled: 1,
-			userid: user.id
+			userid: user[0].id
 		}).then((album) => {
 			if(album.length !== 0) return res.json({ success: false, description: 'There\'s already an album with that name' })	
 
 			db.table('albums').insert({ 
 				name: name, 
 				enabled: 1,
-				userid: user.id,
+				userid: user[0].id,
 				timestamp: Math.floor(Date.now() / 1000) 
 			}).then(() => {
 				return res.json({ success: true })	
@@ -88,7 +88,7 @@ albumsController.delete = function(req, res, next){
 		if(id === undefined || id === '')
 			return res.json({ success: false, description: 'No album specified' })
 
-		db.table('albums').where({id: id, userid: user.id}).update({ enabled: 0 }).then(() => {
+		db.table('albums').where({id: id, userid: user[0].id}).update({ enabled: 0 }).then(() => {
 			return res.json({ success: true })	
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
@@ -109,10 +109,10 @@ albumsController.rename = function(req, res, next){
 		if(name === undefined || name === '')
 			return res.json({ success: false, description: 'No name specified' })
 
-		db.table('albums').where({name: name, userid: user.id}).then((results) => {
+		db.table('albums').where({name: name, userid: user[0].id}).then((results) => {
 			if(results.length !== 0) return res.json({ success: false, description: 'Name already in use' })
 
-			db.table('albums').where({id: id, userid: user.id}).update({ name: name }).then(() => {
+			db.table('albums').where({id: id, userid: user[0].id}).update({ name: name }).then(() => {
 				return res.json({ success: true })	
 			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
