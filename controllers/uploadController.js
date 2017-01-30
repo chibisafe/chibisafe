@@ -32,7 +32,9 @@ uploadsController.upload = function(req, res, next){
 	if(config.private === true)
 		if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	// Let's see if it's a valid token
+	// If there is no token then just leave it blank so the query fails
+	if(token === undefined) token = ''
+	
 	db.table('users').where('token', token).then((user) => {
 		let userid
 		if(user.length > 0)
