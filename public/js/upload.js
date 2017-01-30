@@ -36,7 +36,6 @@ upload.verifyToken = function(token, reloadOnError){
 		reloadOnError = false;
 	
 	axios.post('/api/tokens/verify', {
-		type: 'client',
 		token: token
 	})
   	.then(function (response) {
@@ -101,10 +100,11 @@ upload.prepareDropzone = function(){
 		maxFiles: 1000,
 		autoProcessQueue: true,
 		headers: {
-    		'auth': upload.token
+    		'token': upload.token
 		},
 		init: function() {
 			this.on('addedfile', function(file) { 
+				myDropzone = this;
 				document.getElementById('uploads').style.display = 'block';
 			});
 		}
@@ -138,6 +138,22 @@ upload.prepareDropzone = function(){
 	});
 
 }
+
+//Handle image paste event
+window.addEventListener('paste', function(event) {
+	var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+	for (index in items) {
+		var item = items[index];
+		if (item.kind === 'file') {
+			var blob = item.getAsFile();
+			console.log(blob.type);
+			var file = new File([blob], "pasted-image."+blob.type.match(/(?:[^\/]*\/)([^;]*)/)[1]);
+			file.type = blob.type;
+			console.log(file);
+			myDropzone.addFile(file);
+		}
+	}
+});
 
 window.onload = function () {
 	upload.checkIfPublic();

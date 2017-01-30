@@ -5,93 +5,116 @@ let albumsController = {}
 
 albumsController.list = function(req, res, next){
 	
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	let fields = ['id', 'name']
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-	if(req.params.sidebar === undefined)
-		fields.push('timestamp')
-	
-	db.table('albums').select(fields).where('enabled', 1).then((albums) => {
+		let fields = ['id', 'name']
+
+		if(req.params.sidebar === undefined)
+			fields.push('timestamp')
 		
-		if(req.params.sidebar !== undefined)
-			return res.json({ success: true, albums })
-
-		let ids = []
-		for(let album of albums){
-			album.date = new Date(album.timestamp * 1000)
-			album.date = album.date.getFullYear() + '-' + (album.date.getMonth() + 1) + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
-
-			ids.push(album.id)
-		}
-
-		db.table('files').whereIn('albumid', ids).select('albumid').then((files) => {
-
-			let albumsCount = {}
+		db.table('albums').select(fields).where({enabled: 1, userid: user[0].id}).then((albums) => {
 			
-			for(let id of ids)  albumsCount[id] = 0
-			for(let file of files) albumsCount[file.albumid] += 1
-			for(let album of albums) album.files = albumsCount[album.id]
+			if(req.params.sidebar !== undefined)
+				return res.json({ success: true, albums })
 
-			return res.json({ success: true, albums })
+			let ids = []
+			for(let album of albums){
+				album.date = new Date(album.timestamp * 1000)
+				album.date = album.date.getFullYear() + '-' + (album.date.getMonth() + 1) + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
+
+				ids.push(album.id)
+			}
+
+			db.table('files').whereIn('albumid', ids).select('albumid').then((files) => {
+
+				let albumsCount = {}
+				
+				for(let id of ids)  albumsCount[id] = 0
+				for(let file of files) albumsCount[file.albumid] += 1
+				for(let album of albums) album.files = albumsCount[album.id]
+
+				return res.json({ success: true, albums })
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
 }
 
 albumsController.create = function(req, res, next){
 	
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	let name = req.body.name
-	if(name === undefined || name === '')
-		return res.json({ success: false, description: 'No album name specified' })	
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-	db.table('albums').where('name', name).where('enabled', 1).then((album) => {
-		if(album.length !== 0) return res.json({ success: false, description: 'There\'s already an album with that name' })	
+		let name = req.body.name
+		if(name === undefined || name === '')
+			return res.json({ success: false, description: 'No album name specified' })	
 
-		db.table('albums').insert({ 
-			name: name, 
+		db.table('albums').where({
+			name: name,
 			enabled: 1,
-			timestamp: Math.floor(Date.now() / 1000) 
-		}).then(() => {
-			return res.json({ success: true })	
-		})
+			userid: user[0].id
+		}).then((album) => {
+			if(album.length !== 0) return res.json({ success: false, description: 'There\'s already an album with that name' })	
+
+			db.table('albums').insert({ 
+				name: name, 
+				enabled: 1,
+				userid: user[0].id,
+				timestamp: Math.floor(Date.now() / 1000) 
+			}).then(() => {
+				return res.json({ success: true })	
+			})
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+	
 }
 
 albumsController.delete = function(req, res, next){
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	let id = req.body.id
-	if(id === undefined || id === '')
-		return res.json({ success: false, description: 'No album specified' })
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-	db.table('albums').where('id', id).update({ enabled: 0 }).then(() => {
-		return res.json({ success: true })	
+		let id = req.body.id
+		if(id === undefined || id === '')
+			return res.json({ success: false, description: 'No album specified' })
+
+		db.table('albums').where({id: id, userid: user[0].id}).update({ enabled: 0 }).then(() => {
+			return res.json({ success: true })	
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 albumsController.rename = function(req, res, next){
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	let id = req.body.id
-	if(id === undefined || id === '')
-		return res.json({ success: false, description: 'No album specified' })
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-	let name = req.body.name
-	if(name === undefined || name === '')
-		return res.json({ success: false, description: 'No name specified' })
+		let id = req.body.id
+		if(id === undefined || id === '')
+			return res.json({ success: false, description: 'No album specified' })
 
-	db.table('albums').where('name', name).then((results) => {
-		if(results.length !== 0)
-			return res.json({ success: false, description: 'Name already in use' })
+		let name = req.body.name
+		if(name === undefined || name === '')
+			return res.json({ success: false, description: 'No name specified' })
 
-		db.table('albums').where('id', id).update({ name: name }).then(() => {
-			return res.json({ success: true })	
+		db.table('albums').where({name: name, userid: user[0].id}).then((results) => {
+			if(results.length !== 0) return res.json({ success: false, description: 'Name already in use' })
+
+			db.table('albums').where({id: id, userid: user[0].id}).update({ name: name }).then(() => {
+				return res.json({ success: true })	
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 

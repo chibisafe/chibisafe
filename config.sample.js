@@ -9,6 +9,9 @@ module.exports = {
 	*/
 	private: true,
 	
+	// If true, users will be able to create accounts and access their uploaded files
+	enableUserAccounts: true,
+	
 	// The registered domain where you will be serving the app. Use IP if none.
 	domains: [
 

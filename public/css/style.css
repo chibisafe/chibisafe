@@ -78,6 +78,19 @@ section#home div#uploads { margin-bottom: 25px; }
 		PANEL
 ------------------ */
 
+section#login input, section#login p.control a.button {
+	border-left: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-radius: 0px;
+    box-shadow: 0 0 0;
+}
+
+section#login p.control a.button { margin-left: 10px; }
+section#login p.control a#loginBtn { border-right: 0px; }
+section#login p.control a#registerBtn { border-left: 0px; }
+
+
 section#auth, section#dashboard { display: none }
 section#auth input { background: rgba(0, 0, 0, 0); }
 section#auth input, section#auth a {

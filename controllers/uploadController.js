@@ -25,80 +25,91 @@ const upload = multer({
 
 uploadsController.upload = function(req, res, next){
 
-	if(config.private === true)
-		if(req.headers.auth !== config.clientToken)
-			return res.status(401).json({ success: false, description: 'not-authorized'})
+	// Get the token
+	let token = req.headers.token
 
-	let album = req.params.albumid
+	// If we're running in private and there's no token, error
+	if(config.private === true)
+		if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
+
+	// If there is no token then just leave it blank so the query fails
+	if(token === undefined) token = ''
 	
-	if(album !== undefined)
-		if(req.headers.adminauth !== config.adminToken)
-			return res.status(401).json({ success: false, description: 'not-authorized'})
-	
-	upload(req, res, function (err) {
-		if (err) {
-			console.error(err)
-			return res.json({ 
-				success: false,
-				description: err
-			})
+	db.table('users').where('token', token).then((user) => {
+		let userid
+		if(user.length > 0)
+			userid = user[0].id
+
+		// Check if user is trying to upload to an album
+		let album = undefined
+		if(userid !== undefined){
+			album = req.headers.albumid
+			if(album === undefined)
+				album = req.params.albumid
 		}
 
-		if(req.files.length === 0) return res.json({ success: false, description: 'no-files' })
+		upload(req, res, function (err) {
+			if (err) {
+				console.error(err)
+				return res.json({ 
+					success: false,
+					description: err
+				})
+			}
 
-		let files = []
-		let existingFiles = []
-		let iteration = 1
+			if(req.files.length === 0) return res.json({ success: false, description: 'no-files' })
 
-		req.files.forEach(function(file) {
+			let files = []
+			let existingFiles = []
+			let iteration = 1
 
-			// Check if the file exists by checking hash and size
-			let hash = crypto.createHash('md5')
-			let stream = fs.createReadStream('./' + config.uploads.folder + '/' + file.filename)
+			req.files.forEach(function(file) {
 
-			stream.on('data', function (data) {
-				hash.update(data, 'utf8')
-			})
+				// Check if the file exists by checking hash and size
+				let hash = crypto.createHash('md5')
+				let stream = fs.createReadStream('./' + config.uploads.folder + '/' + file.filename)
 
-			stream.on('end', function () {
-				let fileHash = hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
-
-				db.table('files').where({
-					hash: fileHash,
-					size: file.size
-				}).then((dbfile) => {
-
-					if(dbfile.length !== 0){
-						uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
-						existingFiles.push(dbfile[0])
-					}else{
-						files.push({
-							name: file.filename, 
-							original: file.originalname,
-							type: file.mimetype,
-							size: file.size, 
-							hash: fileHash,
-							ip: req.ip,
-							albumid: album,
-							timestamp: Math.floor(Date.now() / 1000)
-						})
-					}
-
-					if(iteration === req.files.length)
-						return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
-					iteration++
+				stream.on('data', function (data) {
+					hash.update(data, 'utf8')
 				})
 
+				stream.on('end', function () {
+					let fileHash = hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
+
+					db.table('files').where({
+						hash: fileHash,
+						size: file.size
+					}).then((dbfile) => {
+
+						if(dbfile.length !== 0){
+							uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
+							existingFiles.push(dbfile[0])
+						}else{
+							files.push({
+								name: file.filename, 
+								original: file.originalname,
+								type: file.mimetype,
+								size: file.size, 
+								hash: fileHash,
+								ip: req.ip,
+								albumid: album,
+								userid: userid,
+								timestamp: Math.floor(Date.now() / 1000)
+							})
+						}
+
+						if(iteration === req.files.length)
+							return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
+						iteration++
+
+					}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+				})
 			})
-
 		})
-
-	})
-
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
 uploadsController.processFilesForDisplay = function(req, res, files, existingFiles){
-
 
 	let basedomain = req.get('host')
 	for(let domain of config.domains)
@@ -139,28 +150,38 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 
 uploadsController.delete = function(req, res){
 
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
 	let id = req.body.id
 	if(id === undefined || id === '')
 		return res.json({ success: false, description: 'No file specified' })
 
-	db.table('files').where('id', id).then((file) => {
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-		uploadsController.deleteFile(file[0].name).then(() => {
-			db.table('files').where('id', id).del().then(() =>{
-				return res.json({ success: true })
-			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
-		}).catch((e) => {
-			console.log(e.toString())
-			db.table('files').where('id', id).del().then(() =>{
-				return res.json({ success: true })
-			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+		db.table('files')
+		.where('id', id)
+		.where(function(){
+			if(user[0].username !== 'root')
+				this.where('userid', user[0].id)
 		})
+		.then((file) => {
 
+			uploadsController.deleteFile(file[0].name).then(() => {
+				db.table('files').where('id', id).del().then(() =>{
+					return res.json({ success: true })
+				}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+			}).catch((e) => {
+				console.log(e.toString())
+				db.table('files').where('id', id).del().then(() =>{
+					return res.json({ success: true })
+				}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+			})
+
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
-	
+
 }
 
 uploadsController.deleteFile = function(file){
@@ -179,86 +200,92 @@ uploadsController.deleteFile = function(file){
 
 uploadsController.list = function(req, res){
 
-	if(req.headers.auth !== config.adminToken)
-		return res.status(401).json({ success: false, description: 'not-authorized'})
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
-	let offset = req.params.page
-	if(offset === undefined) offset = 0
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
 
-	db.table('files')
-	.where(function(){
-		if(req.params.id === undefined)
-			this.where('id', '<>', '')
-		else
-			this.where('albumid', req.params.id)
-	})
-	.orderBy('id', 'DESC')
-	.limit(25)
-	.offset(25 * offset)
-	.then((files) => {
-		db.table('albums').then((albums) => {
+		let offset = req.params.page
+		if(offset === undefined) offset = 0
 
-			let basedomain = req.get('host')
-			for(let domain of config.domains)
-				if(domain.host === req.get('host'))
-					if(domain.hasOwnProperty('resolve'))
-						basedomain = domain.resolve
+		db.table('files')
+		.where(function(){
+			if(req.params.id === undefined)
+				this.where('id', '<>', '')
+			else
+				this.where('albumid', req.params.id)
+		})
+		.where(function(){
+			if(user[0].username !== 'root')
+				this.where('userid', user[0].id)
+		})
+		.orderBy('id', 'DESC')
+		.limit(25)
+		.offset(25 * offset)
+		.then((files) => {
+			db.table('albums').then((albums) => {
 
-			for(let file of files){
-				file.file = basedomain + '/' + file.name
-				file.date = new Date(file.timestamp * 1000)
-				file.date = file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
+				let basedomain = req.get('host')
+				for(let domain of config.domains)
+					if(domain.host === req.get('host'))
+						if(domain.hasOwnProperty('resolve'))
+							basedomain = domain.resolve
 
-				file.album = ''
-				
-				if(file.albumid !== undefined)
-					for(let album of albums)
-						if(file.albumid === album.id)
-							file.album = album.name
+				for(let file of files){
+					file.file = basedomain + '/' + file.name
+					file.date = new Date(file.timestamp * 1000)
+					file.date = file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
 
-				if(config.uploads.generateThumbnails === true){
+					file.album = ''
+					
+					if(file.albumid !== undefined)
+						for(let album of albums)
+							if(file.albumid === album.id)
+								file.album = album.name
 
-					let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png']
-					for(let ext of extensions){
-						if(path.extname(file.name) === ext){
+					if(config.uploads.generateThumbnails === true){
 
-							file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -4) + '.png'
+						let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png']
+						for(let ext of extensions){
+							if(path.extname(file.name) === ext){
 
-							let thumbname = path.join(__dirname, '..', 'uploads', 'thumbs') + '/' + file.name.slice(0, -4) + '.png'
-							fs.access(thumbname, function(err) {
-								if (err && err.code === 'ENOENT') {
-									// File doesnt exist
+								file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -4) + '.png'
 
-									let size = {
-										width: 200, 
-										height: 200
+								let thumbname = path.join(__dirname, '..', 'uploads', 'thumbs') + '/' + file.name.slice(0, -4) + '.png'
+								fs.access(thumbname, function(err) {
+									if (err && err.code === 'ENOENT') {
+										// File doesnt exist
+
+										let size = {
+											width: 200, 
+											height: 200
+										}
+
+										gm('./' + config.uploads.folder + '/' + file.name)
+											.resize(size.width, size.height + '>')
+											.gravity('Center')
+											.extent(size.width, size.height)
+											.background('transparent')
+											.write(thumbname, function (error) {
+												if (error) console.log('Error - ', error)
+											})
 									}
-
-									gm('./' + config.uploads.folder + '/' + file.name)
-										.resize(size.width, size.height + '>')
-										.gravity('Center')
-										.extent(size.width, size.height)
-										.background('transparent')
-										.write(thumbname, function (error) {
-											if (error) console.log('Error - ', error)
-										})
-								}
-							})
+								})
+							}
 						}
 					}
-
 				}
-				
 
-			}
+				return res.json({
+					success: true,
+					files
+				})
 
-			return res.json({
-				success: true,
-				files
-			})
-
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
-	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+	})	
 }
 
 module.exports = uploadsController
