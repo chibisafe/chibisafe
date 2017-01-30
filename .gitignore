@@ -4,3 +4,4 @@ logs/
 database/db
 config.js
 start.json
+npm-debug.log
