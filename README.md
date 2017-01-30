@@ -1,27 +1,32 @@
 ![loli-safe](https://a.cuntflaps.me/jcutlz.png)   
 # loli-safe
-Pomf-like file uploading service, but way better.
+A small safe worth protecting.
+---
+### Sites using loli-safe
+
+- [lolisafe.moe](https://lolisafe.moe): A small safe with a smile worth protecting.
+- [cuntflaps.me](https://cuntflaps.me)
+- [fluntcaps.me](https://fluntcaps.me)
+- Feel free to add yours here.
 
 ---
+
 1. Clone
 2. Rename `config.sample.js` to `config.js`
 4. Modify port, basedomain and privacy options if desired
 3. run `npm install` to install all dependencies
 5. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
 
-### Token
-This service supports running both as public and private. The only difference is that one needs a token to upload and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just set the option `private: false` in the `config.js` file.
+### Getting started
+This service supports running both as public and private. The only difference is that one needs a token to upload and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just set the option `private: false` in the `config.js` file. In case you want to run it privately, you should set `private: true`.
 
-In case you want to run it privately, you should set `private: true` and 2 tokens will be generated when you first run the service. This tokens are a client and admin token respectively.
+Upon running the service for the first time, it's gonna create a user account with the username `root` and password `root`. This is your admin account and you should change the password immediately. This account will let you manage all uploaded files and remove any if necessary.
 
-The client token should be sent with every upload request to the service to validate an upload, making it so that only people with access to said token can upload files to the service.
-The admin token is used to access the admin dashboard. This one is generated regardless of how the service is running (public or private) because it grants you access to the dashboard where you can see all uploaded files, create albums to sort out stuff and change your access tokens.
-
-When you first run the service both tokens will be displayed on the console so you can copy and save them. Keep in mind that the tokens are nothing more than random generated strings so you can always change them for something easy to remember, acting more like a password than a token. But since the token is sent to the server with each request either to upload files or access the admin dashboard, I suggest keeping them random.
+If you set `enableUserAccounts: true`, people will be able to create accounts on the service to keep track of their uploaded files and create albums to upload stuff to, pretty much like imgur does, but only through the API. Every user account has a token that the user can use to upload stuff through the API. You can find this token on the section called `Change your token` on the administration dashboard, and if it gets leaked or compromised you can renew it by clicking the button titled `Request new token`.
 
 ---
 ## Using loli-safe
-Once the service starts you can start hitting the upload endpoint at `/api/upload` with any file. If you're using the frontend to do so then you are pretty much set, but if using the API to upload make sure the form name is set to `files[]` and the form type to `multipart/form-data`. If the service is running in private mode, dont forget to send a header of type `auth: YOUR-CLIENT-TOKEN` to validate the request.
+Once the service starts you can start hitting the upload endpoint at `/api/upload` with any file. If you're using the frontend to do so then you are pretty much set, but if using the API to upload make sure the form name is set to `files[]` and the form type to `multipart/form-data`. If the service is running in private mode, dont forget to send a header of type `token: YOUR-CLIENT-TOKEN` to validate the request.
 
 A sample of the returning json from the endpoint can be seen below:
 ```json
@@ -38,3 +43,10 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 
 If you choose to use a domain name and thus nginx, you should add the following directive into your location block with the limit you want to set on uploaded file's size:
 `client_max_body_size 512M;`
+
+## Author
+
+**loli-safe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/loli-safe/blob/master/LICENSE) License.<br>
+Authored and maintained by Pitu.
+
+> [lolisafe.moe](https://lolisafe.moe) · GitHub [@Pitu](https://github.com/Pitu) · Twitter [@kanaadeko](https://twitter.com/kanaadeko)
