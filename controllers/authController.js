@@ -61,4 +61,28 @@ authController.register = function(req, res, next){
 
 }
 
+authController.changePassword = function(req, res, next){
+
+	let token = req.headers.token
+	if(token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
+
+	db.table('users').where('token', token).then((user) => {
+		if(user.length === 0) return res.status(401).json({ success: false, description: 'Invalid token'})
+		
+		let password = req.body.password
+		if(password === undefined) return res.json({ success: false, description: 'No password provided' })
+		if(password.length < 6 || password.length > 64)
+			return res.json({ success: false, description: 'Password must have 6-64 characters' })
+
+		bcrypt.hash(password, saltRounds, function(err, hash) {
+			if(err) return res.json({ success: false, description: 'Error generating password hash (╯°□°）╯︵ ┻━┻' })
+
+			db.table('users').where('id', user.id).update({password: hash}).then(() => {
+				return res.json({ success: true})
+			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+		})
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+}
+
 module.exports = authController
