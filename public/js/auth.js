@@ -20,7 +20,7 @@ page.do = function(dest){
 			return swal('Error', response.data.description, 'error');
 		
 		localStorage.token = response.data.token;
-		window.location = '/panel';
+		window.location = '/dashboard';
 
 	})
 	.catch(function (error) {
@@ -41,7 +41,7 @@ page.verify = function(){
 		if(response.data.success === false)
 			return swal('Error', response.data.description, 'error');
 		
-		window.location = '/panel';
+		window.location = '/dashboard';
 
 	})
 	.catch(function (error) {
