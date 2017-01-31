@@ -22,6 +22,7 @@ safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
 safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
+safe.get('/faq', (req, res, next) => res.sendFile('faq.html', { root: './pages/' }))
 safe.get('/auth', (req, res, next) => res.sendFile('auth.html', { root: './pages/' }))
 safe.get('/panel', (req, res, next) => res.sendFile('panel.html', { root: './pages/' }))
 safe.use((req, res, next) => res.status(404).sendFile('404.html', { root: './pages/error/' }))

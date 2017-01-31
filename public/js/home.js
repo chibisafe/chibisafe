@@ -69,6 +69,7 @@ upload.prepareUpload = function(){
 
 	document.getElementById('maxFileSize').innerHTML = 'Maximum upload size per file is ' + upload.maxFileSize;
 	document.getElementById('loginToUpload').style.display = 'none';
+	document.getElementById('loginLinkText').innerHTML = 'Create an account and keep track of your uploads';
 	document.getElementById('uploadContainer').appendChild(div);
 
 	upload.prepareDropzone();
