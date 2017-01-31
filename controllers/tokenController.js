@@ -11,7 +11,7 @@ tokenController.verify = function(req, res, next){
 
 	db.table('users').where('token', token).then((user) => {
 		if(user.length === 0) return res.json({ success: false, description: 'Token mismatch' })
-		return res.json({ success: true })
+		return res.json({ success: true, username: user[0].username})
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	
 }

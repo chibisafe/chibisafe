@@ -1,6 +1,7 @@
 let panel = {}
 
 panel.page;
+panel.username;
 panel.token = localStorage.token;
 panel.filesView = localStorage.filesView;
 
@@ -35,6 +36,7 @@ panel.verifyToken = function(token, reloadOnError){
 		axios.defaults.headers.common['token'] = token;
 		localStorage.token = token;
 		panel.token = token;
+		panel.username = response.data.username;
 		return panel.prepareDashboard();
 
 	})
@@ -61,6 +63,12 @@ panel.prepareDashboard = function(){
 	document.getElementById('itemTokens').addEventListener('click', function(){
 		panel.setActiveMenu(this);
 	});
+
+	document.getElementById('itemPassword').addEventListener('click', function(){
+		panel.setActiveMenu(this);
+	});
+
+	document.getElementById('itemLogout').innerHTML = `Logout ( ${panel.username} )`;
 
 	panel.getAlbumsSidebar();
 }
