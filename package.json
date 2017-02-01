@@ -18,6 +18,7 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.16.0",
     "express": "^4.14.0",
+    "express-rate-limit": "^2.6.0",
     "gm": "^1.23.0",
     "knex": "^0.12.6",
     "multer": "^1.2.1",

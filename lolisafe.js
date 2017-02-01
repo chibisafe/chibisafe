@@ -2,6 +2,7 @@ const config = require('./config.js')
 const api = require('./routes/api.js')
 const express = require('express')
 const bodyParser = require('body-parser')
+const rateLimit = require('express-rate-limit')
 const db = require('knex')(config.database)
 const fs = require('fs')
 const safe = express()
@@ -12,14 +13,18 @@ fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + config.uploads.folder + '/thumbs')
 
+safe.enable('trust proxy')
+
 safe.use(bodyParser.urlencoded({ extended: true }))
 safe.use(bodyParser.json())
-
-safe.enable('trust proxy')
 
 safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
+
+let limiter = new rateLimit({ windowMs: 5, max: 2 })
+safe.use('/api/login', limiter)
+safe.use('/api/register', limiter)
 
 safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
 safe.get('/faq', (req, res, next) => res.sendFile('faq.html', { root: './pages/' }))
