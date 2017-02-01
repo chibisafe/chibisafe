@@ -23,8 +23,8 @@ safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
 let limiter = new rateLimit({ windowMs: 5000, max: 2 })
-safe.use('/api/login', limiter)
-safe.use('/api/register', limiter)
+safe.use('/api/login/', limiter)
+safe.use('/api/register/', limiter)
 
 safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
 safe.get('/faq', (req, res, next) => res.sendFile('faq.html', { root: './pages/' }))
