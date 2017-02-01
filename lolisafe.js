@@ -22,7 +22,7 @@ safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
-let limiter = new rateLimit({ windowMs: 5, max: 2 })
+let limiter = new rateLimit({ windowMs: 5000, max: 2 })
 safe.use('/api/login', limiter)
 safe.use('/api/register', limiter)
 
