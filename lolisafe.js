@@ -15,16 +15,16 @@ fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + c
 
 safe.set('trust proxy', 1)
 
+let limiter = new rateLimit({ windowMs: 5000, max: 2 })
+safe.use('/api/login/', limiter)
+safe.use('/api/register/', limiter)
+
 safe.use(bodyParser.urlencoded({ extended: true }))
 safe.use(bodyParser.json())
 
 safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
-
-let limiter = new rateLimit({ windowMs: 5000, max: 2 })
-safe.use('/api/login/', limiter)
-safe.use('/api/register/', limiter)
 
 safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
 safe.get('/faq', (req, res, next) => res.sendFile('faq.html', { root: './pages/' }))
