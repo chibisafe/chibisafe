@@ -13,7 +13,7 @@ fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + config.uploads.folder + '/thumbs')
 
-safe.enable('trust proxy')
+safe.set('trust proxy', 1)
 
 safe.use(bodyParser.urlencoded({ extended: true }))
 safe.use(bodyParser.json())
