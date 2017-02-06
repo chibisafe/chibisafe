@@ -1,4 +1,5 @@
 .DS_Store
+!.gitkeep
 node_modules/
 uploads/
 logs/
@@ -6,3 +7,4 @@ database/db
 config.js
 start.json
 npm-debug.log
+pages/custom/**

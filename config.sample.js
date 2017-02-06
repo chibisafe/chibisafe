@@ -31,6 +31,9 @@ module.exports = {
 	// Port on which to run the server
 	port: 9999,
 
+	// Pages to process for the frontend
+	pages: ['home', 'auth', 'dashboard', 'faq'],
+
 	// Uploads config
 	uploads: {
 

@@ -9,6 +9,7 @@ const safe = express()
 
 require('./database/db.js')(db)
 
+fs.existsSync('./pages/custom' ) || fs.mkdirSync('./pages/custom')
 fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder)
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + config.uploads.folder + '/thumbs')
@@ -26,11 +27,22 @@ safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
 
-safe.get('/', (req, res, next) => res.sendFile('home.html', { root: './pages/' }))
-safe.get('/faq', (req, res, next) => res.sendFile('faq.html', { root: './pages/' }))
-safe.get('/auth', (req, res, next) => res.sendFile('auth.html', { root: './pages/' }))
-safe.get('/dashboard', (req, res, next) => res.sendFile('dashboard.html', { root: './pages/' }))
+for(let page of config.pages){
+	let root = './pages/'
+	if(fs.existsSync(`./pages/custom/${page}.html`))
+		root = './pages/custom/'
+
+	if(page === 'home') safe.get('/', (req, res, next) => res.sendFile(`${page}.html`, { root: root }))
+	else safe.get(`/${page}`, (req, res, next) => res.sendFile(`${page}.html`, { root: root }))
+}
+
 safe.use((req, res, next) => res.status(404).sendFile('404.html', { root: './pages/error/' }))
 safe.use((req, res, next) => res.status(500).sendFile('500.html', { root: './pages/error/' }))
 
 safe.listen(config.port, () => console.log(`loli-safe started on port ${config.port}`))
+
+safe.prepareFrontendRoutes = function(){
+
+	
+
+}
