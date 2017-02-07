@@ -76,7 +76,14 @@ uploadsController.upload = function(req, res, next){
 				stream.on('end', function () {
 					let fileHash = hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
 
-					db.table('files').where({
+					db.table('files')
+					.where(function(){
+						if(userid === undefined) 
+							this.whereNull('userid')
+						else 
+							this.where('userid', userid)
+					})
+					.where({
 						hash: fileHash,
 						size: file.size
 					}).then((dbfile) => {
