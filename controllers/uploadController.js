@@ -6,6 +6,7 @@ const db = require('knex')(config.database)
 const crypto = require('crypto')
 const fs = require('fs')
 const gm = require('gm')
+const ffmpeg = require('fluent-ffmpeg')
 
 let uploadsController = {}
 
@@ -253,30 +254,44 @@ uploadsController.list = function(req, res){
 
 					if(config.uploads.generateThumbnails === true){
 
-						let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png']
+						let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webm', '.mp4']
 						for(let ext of extensions){
 							if(path.extname(file.name) === ext){
 
-								file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -4) + '.png'
+								file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 
-								let thumbname = path.join(__dirname, '..', 'uploads', 'thumbs') + '/' + file.name.slice(0, -4) + '.png'
+								let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs') + '/' + file.name.slice(0, -ext.length) + '.png'
 								fs.access(thumbname, function(err) {
 									if (err && err.code === 'ENOENT') {
 										// File doesnt exist
 
-										let size = {
-											width: 200, 
-											height: 200
+										if (ext === '.webm' || ext === '.mp4') {
+											ffmpeg('./' + config.uploads.folder + '/' + file.name)
+												.thumbnail({
+													timestamps: [0],
+													filename: '%b.png',
+													folder: './' + config.uploads.folder + '/thumbs',
+													size: '200x?'
+												})
+												.on('error', function(error) {
+													console.log('Error - ', error.message)
+												})
 										}
+										else {
+											let size = {
+												width: 200,
+												height: 200
+											}
 
-										gm('./' + config.uploads.folder + '/' + file.name)
-											.resize(size.width, size.height + '>')
-											.gravity('Center')
-											.extent(size.width, size.height)
-											.background('transparent')
-											.write(thumbname, function (error) {
-												if (error) console.log('Error - ', error)
-											})
+											gm('./' + config.uploads.folder + '/' + file.name)
+												.resize(size.width, size.height + '>')
+												.gravity('Center')
+												.extent(size.width, size.height)
+												.background('transparent')
+												.write(thumbname, function (error) {
+													if (error) console.log('Error - ', error)
+												})
+										}
 									}
 								})
 							}
