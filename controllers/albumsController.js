@@ -1,5 +1,10 @@
 const config = require('../config.js')
 const db = require('knex')(config.database)
+const randomstring = require('randomstring')
+const path = require('path')
+const fs = require('fs')
+const ffmpeg = require('fluent-ffmpeg')
+const gm = require('gm')
 
 let albumsController = {}
 
@@ -67,6 +72,7 @@ albumsController.create = function(req, res, next){
 				name: name, 
 				enabled: 1,
 				userid: user[0].id,
+				identifier: randomstring.generate(8),
 				timestamp: Math.floor(Date.now() / 1000) 
 			}).then(() => {
 				return res.json({ success: true })	
@@ -74,7 +80,6 @@ albumsController.create = function(req, res, next){
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 
-	
 }
 
 albumsController.delete = function(req, res, next){
@@ -115,6 +120,85 @@ albumsController.rename = function(req, res, next){
 			db.table('albums').where({id: id, userid: user[0].id}).update({ name: name }).then(() => {
 				return res.json({ success: true })	
 			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
+
+}
+
+albumsController.get = function(req, res, next){
+	let identifier = req.params.identifier
+	if(identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' })
+
+	db.table('albums')
+	.where('identifier', identifier)
+	.then((albums) => {
+		if(albums.length === 0) return res.json({ success: false, description: 'Album not found' })
+
+		let title = albums[0].name
+		db.table('files').select('name').where('albumid', albums[0].id).orderBy('id', 'DESC').then((files) => {
+			
+			let basedomain = req.get('host')
+			for(let domain of config.domains)
+				if(domain.host === req.get('host'))
+					if(domain.hasOwnProperty('resolve'))
+						basedomain = domain.resolve
+
+			for(let file of files){
+				file.file = basedomain + '/' + file.name
+
+				if(config.uploads.generateThumbnails === true){
+
+					let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webm', '.mp4']
+					for(let ext of extensions){
+						if(path.extname(file.name) === ext){
+
+							file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
+
+							let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs') + '/' + file.name.slice(0, -ext.length) + '.png'
+							fs.access(thumbname, function(err) {
+								if (err && err.code === 'ENOENT') {
+									// File doesnt exist
+
+									if (ext === '.webm' || ext === '.mp4') {
+										ffmpeg('./' + config.uploads.folder + '/' + file.name)
+											.thumbnail({
+												timestamps: [0],
+												filename: '%b.png',
+												folder: './' + config.uploads.folder + '/thumbs',
+												size: '200x?'
+											})
+											.on('error', function(error) {
+												console.log('Error - ', error.message)
+											})
+									}
+									else {
+										let size = {
+											width: 200,
+											height: 200
+										}
+
+										gm('./' + config.uploads.folder + '/' + file.name)
+											.resize(size.width, size.height + '>')
+											.gravity('Center')
+											.extent(size.width, size.height)
+											.background('transparent')
+											.write(thumbname, function (error) {
+												if (error) console.log('Error - ', error)
+											})
+									}
+								}
+							})
+						}
+					}
+				}
+			}
+
+			return res.json({
+				success: true,
+				title: title,
+				files
+			})
+
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 

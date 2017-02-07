@@ -5,6 +5,7 @@ let init = function(db){
 		table.increments()
 		table.integer('userid')
 		table.string('name')
+		table.string('identifier')
 		table.integer('enabled')
 		table.integer('timestamp')
 	}).then(() => {})

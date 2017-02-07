@@ -26,6 +26,7 @@ safe.use(bodyParser.json())
 safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
 safe.use('/api', api)
+safe.get('/a/:identifier', (req, res, next) => res.sendFile('album.html', {root: './pages/'}))
 
 for(let page of config.pages){
 	let root = './pages/'
