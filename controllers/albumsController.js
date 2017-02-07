@@ -39,7 +39,7 @@ albumsController.list = function(req, res, next){
 						if(domain.hasOwnProperty('resolve'))
 							basedomain = domain.resolve
 
-				album.identifier = basedomain + '/' + album.identifier
+				album.identifier = basedomain + '/a/' + album.identifier
 
 				ids.push(album.id)
 			}
