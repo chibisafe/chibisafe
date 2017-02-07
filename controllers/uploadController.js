@@ -264,8 +264,7 @@ uploadsController.list = function(req, res){
 													timestamps: [0],
 													filename: '%b.png',
 													folder: './' + config.uploads.folder + '/thumbs',
-													size: '200x?',
-													autopad: true
+													size: '200x?'
 												})
 												.on('error', function(error) {
 													console.log('Error - ', error.message)
