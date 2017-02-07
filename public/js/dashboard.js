@@ -272,6 +272,7 @@ panel.getAlbums = function(){
 						  <th>Name</th>
 						  <th>Files</th>
 						  <th>Created At</th>
+						  <th>Public link</th>
 						  <th></th>
 					</tr>
 				</thead>
@@ -290,6 +291,7 @@ panel.getAlbums = function(){
 					<th>${item.name}</th>
 					<th>${item.files}</th>
 					<td>${item.date}</td>
+					<td><a href="${item.identifier}" target="_blank">Album link</a></td>
 					<td>
 						<a class="button is-small is-primary is-outlined" title="Edit name" onclick="panel.renameAlbum(${item.id})">
 							<span class="icon is-small">

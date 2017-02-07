@@ -4,6 +4,7 @@ album.get = function(album){
 	axios.get('/api/album/get/' + album)
   	.then(function (response) {
     	document.getElementById('title').innerHTML = response.data.title;
+    	document.getElementById('count').innerHTML = response.data.count + ' files';
 
     	var container = document.createElement('div');
     	container.innerHTML = `<div class="columns is-multiline is-mobile" id="table"></div>`

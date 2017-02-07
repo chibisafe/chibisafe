@@ -18,8 +18,10 @@ albumsController.list = function(req, res, next){
 
 		let fields = ['id', 'name']
 
-		if(req.params.sidebar === undefined)
+		if(req.params.sidebar === undefined){
 			fields.push('timestamp')
+			fields.push('identifier')
+		}
 		
 		db.table('albums').select(fields).where({enabled: 1, userid: user[0].id}).then((albums) => {
 			
@@ -30,6 +32,14 @@ albumsController.list = function(req, res, next){
 			for(let album of albums){
 				album.date = new Date(album.timestamp * 1000)
 				album.date = album.date.getFullYear() + '-' + (album.date.getMonth() + 1) + '-' + album.date.getDate() + ' ' + (album.date.getHours() < 10 ? '0' : '') + album.date.getHours() + ':' + (album.date.getMinutes() < 10 ? '0' : '') + album.date.getMinutes() + ':' + (album.date.getSeconds() < 10 ? '0' : '') + album.date.getSeconds()
+
+				let basedomain = req.get('host')
+				for(let domain of config.domains)
+					if(domain.host === req.get('host'))
+						if(domain.hasOwnProperty('resolve'))
+							basedomain = domain.resolve
+
+				album.identifier = basedomain + '/' + album.identifier
 
 				ids.push(album.id)
 			}
@@ -196,6 +206,7 @@ albumsController.get = function(req, res, next){
 			return res.json({
 				success: true,
 				title: title,
+				count: files.length,
 				files
 			})
 
