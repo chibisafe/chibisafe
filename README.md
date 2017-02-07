@@ -4,10 +4,35 @@ A small safe worth protecting.
 ---
 ### Sites using loli-safe
 
-- [i.kanacchi.moe](https://i.kanacchi.moe): A small safe with a smile worth protecting.
+- [lolisafe.moe](https://lolisafe.moe): A small safe worth protecting.
 - [cuntflaps.me](https://cuntflaps.me)
 - [fluntcaps.me](https://fluntcaps.me)
 - Feel free to add yours here.
+
+---
+### What's new in v2.2.0
+
+- Creation of public link for sharing a gallery
+- Ability to add your own html files without making git dirty (Check [this commit](https://github.com/WeebDev/loli-safe/commit/18c66d27fb580ed0f847f11525d2d2dca0fda2f4))
+- Thumbnail creation for .webm and .mp4 (Thanks to [PascalTemel](https://github.com/PascalTemel))
+- Changed how duplicate files work (Check [this issue for more info](https://github.com/WeebDev/loli-safe/issues/8))
+
+If you're upgrading from a previous version, create a `migrate.js` file on the root folder with the following code and run it only once:
+
+```js
+const config = require('./config.js')
+const db = require('knex')(config.database)
+const randomstring = require('randomstring')
+
+db.schema.table('albums', function (table) {
+	table.string('identifier')
+}).then(() => {
+	db.table('albums').then((albums) => {
+		for(let album of albums)
+			db.table('albums').where('id', album.id).update('identifier', randomstring.generate(8)).then(() => {})
+	})
+})
+```
 
 ---
 
