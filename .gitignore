@@ -8,3 +8,4 @@ config.js
 start.json
 npm-debug.log
 pages/custom/**
+migrate.js
