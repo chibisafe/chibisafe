@@ -3,8 +3,7 @@
 
 ## Sites using loli-safe
 - [lolisafe.moe](https://lolisafe.moe): A small safe worth protecting.
-- [cuntflaps.me](https://cuntflaps.me)
-- [fluntcaps.me](https://fluntcaps.me)
+- [safe.moe](https://safe.moe): The world most ~~un~~safe pomf clone
 - Feel free to add yours here.
 
 ## What's new in v2.2.0
