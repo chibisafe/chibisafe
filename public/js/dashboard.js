@@ -151,6 +151,10 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 		}else{
 
+			var albumOrUser = 'Album';
+			if(panel.username === 'root')
+				albumOrUser = 'User';
+
 			container.innerHTML = `
 				${pagination}
 				<hr>
@@ -159,7 +163,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 					<thead>
 						<tr>
 							  <th>File</th>
-							  <th>Album</th>
+							  <th>${albumOrUser}</th>
 							  <th>Date</th>
 							  <th></th>
 						</tr>
@@ -177,10 +181,18 @@ panel.getUploads = function(album = undefined, page = undefined){
 			for(var item of response.data.files){
 
 				var tr = document.createElement('tr');
+
+				var displayAlbumOrUser = item.album;
+				if(panel.username === 'root'){
+					displayAlbumOrUser = '';
+					if(item.username !== undefined)
+						displayAlbumOrUser = item.username;
+				}
+					
 				tr.innerHTML = `
 					<tr>
 						<th><a href="${item.file}" target="_blank">${item.file}</a></th>
-						<th>${item.album}</th>
+						<th>${displayAlbumOrUser}</th>
 						<td>${item.date}</td>
 						<td>
 							<a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteFile(${item.id})">

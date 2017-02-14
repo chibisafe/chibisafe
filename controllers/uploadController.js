@@ -231,6 +231,7 @@ uploadsController.list = function(req, res){
 		.orderBy('id', 'DESC')
 		.limit(25)
 		.offset(25 * offset)
+		.select('id', 'albumid', 'timestamp', 'name', 'userid')
 		.then((files) => {
 			db.table('albums').then((albums) => {
 
@@ -239,6 +240,8 @@ uploadsController.list = function(req, res){
 					if(domain.host === req.get('host'))
 						if(domain.hasOwnProperty('resolve'))
 							basedomain = domain.resolve
+
+				let userids = []
 
 				for(let file of files){
 					file.file = basedomain + '/' + file.name
@@ -252,62 +255,79 @@ uploadsController.list = function(req, res){
 							if(file.albumid === album.id)
 								file.album = album.name
 
-					if(config.uploads.generateThumbnails === true){
+					// Only push usernames if we are root
+					if(user[0].username === 'root')
+						if(file.userid !== undefined && file.userid !== null && file.userid !== '')
+							userids.push(file.userid)
 
-						let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webm', '.mp4']
-						for(let ext of extensions){
-							if(path.extname(file.name) === ext){
-
-								file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
-
-								let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs') + '/' + file.name.slice(0, -ext.length) + '.png'
-								fs.access(thumbname, function(err) {
-									if (err && err.code === 'ENOENT') {
-										// File doesnt exist
-
-										if (ext === '.webm' || ext === '.mp4') {
-											ffmpeg('./' + config.uploads.folder + '/' + file.name)
-												.thumbnail({
-													timestamps: [0],
-													filename: '%b.png',
-													folder: './' + config.uploads.folder + '/thumbs',
-													size: '200x?'
-												})
-												.on('error', function(error) {
-													console.log('Error - ', error.message)
-												})
-										}
-										else {
-											let size = {
-												width: 200,
-												height: 200
-											}
-
-											gm('./' + config.uploads.folder + '/' + file.name)
-												.resize(size.width, size.height + '>')
-												.gravity('Center')
-												.extent(size.width, size.height)
-												.background('transparent')
-												.write(thumbname, function (error) {
-													if (error) console.log('Error - ', error)
-												})
-										}
-									}
-								})
-							}
-						}
-					}
+					uploadsController.generateThumbs(file, basedomain)
 				}
 
-				return res.json({
-					success: true,
-					files
-				})
+				// If we are a normal user, send response
+				if(user[0].username !== 'root') return res.json({ success: true, files })
 
+				// If we are root but there are no uploads attached to a user, send response
+				if(userids.length === 0) return res.json({ success: true, files })
+				
+				db.table('users').whereIn('id', userids).then((users) => {
+					for(let user of users)
+						for(let file of files)
+							if(file.userid === user.id)
+								file.username = user.username
+
+					return res.json({ success: true, files })
+				}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 			}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 		}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 
 	})	
+}
+
+uploadsController.generateThumbs = function(file, basedomain){
+	if(config.uploads.generateThumbnails !== true) return
+
+	let extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webm', '.mp4']
+	for(let ext of extensions){
+		if(path.extname(file.name).toLowerCase() === ext){
+
+			file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
+
+			let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs') + '/' + file.name.slice(0, -ext.length) + '.png'
+			fs.access(thumbname, function(err) {
+				if (err && err.code === 'ENOENT') {
+					// File doesnt exist
+
+					if (ext === '.webm' || ext === '.mp4') {
+						ffmpeg('./' + config.uploads.folder + '/' + file.name)
+							.thumbnail({
+								timestamps: [0],
+								filename: '%b.png',
+								folder: './' + config.uploads.folder + '/thumbs',
+								size: '200x?'
+							})
+							.on('error', function(error) {
+								console.log('Error - ', error.message)
+							})
+					}
+					else {
+						let size = {
+							width: 200,
+							height: 200
+						}
+
+						gm('./' + config.uploads.folder + '/' + file.name)
+							.resize(size.width, size.height + '>')
+							.gravity('Center')
+							.extent(size.width, size.height)
+							.background('transparent')
+							.write(thumbname, function (error) {
+								if (error) console.log('Error - ', error)
+							})
+					}
+				}
+			})
+		}
+	}
 }
 
 module.exports = uploadsController
