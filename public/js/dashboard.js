@@ -303,7 +303,7 @@ panel.getAlbums = function(){
 			tr.innerHTML = `
 				<tr>
 					<th>${item.name}</th>
-					<th>${item.original</th> 
+					<th>${item.original}</th> 
 					<th>${item.files}</th>
 					<td>${item.date}</td>
 					<td><a href="${item.identifier}" target="_blank">Album link</a></td>
