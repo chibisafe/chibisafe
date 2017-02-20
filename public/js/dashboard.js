@@ -163,6 +163,8 @@ panel.getUploads = function(album = undefined, page = undefined){
 					<thead>
 						<tr>
 							  <th>File</th>
+							  <th>Orig. Name</th>
+							  <th></th>
 							  <th>${albumOrUser}</th>
 							  <th>Date</th>
 							  <th></th>
@@ -301,6 +303,7 @@ panel.getAlbums = function(){
 			tr.innerHTML = `
 				<tr>
 					<th>${item.name}</th>
+					<th>${item.original</th> 
 					<th>${item.files}</th>
 					<td>${item.date}</td>
 					<td><a href="${item.identifier}" target="_blank">Album link</a></td>
