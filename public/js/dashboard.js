@@ -562,7 +562,7 @@ panel.changePassword = function(){
 		</p>
 		<label class="label">Confirm password:</label>
 		<p class="control has-addons">
-			<input id="passwordTwo" class="input is-expanded" type="password" placeholder="Verify your new password">
+			<input id="passwordConfirm" class="input is-expanded" type="password" placeholder="Verify your new password">
 			<a id="sendChangePassword" class="button is-primary">Set new password</a>
 		</p>
 	`;
@@ -570,11 +570,11 @@ panel.changePassword = function(){
 	panel.page.appendChild(container);
 
 	document.getElementById('sendChangePassword').addEventListener('click', function(){
-		if (document.getElementById('password').value === document.getElementById('passwordTwo').value) {
+		if (document.getElementById('password').value === document.getElementById('passwordConfirm').value) {
 			panel.sendNewPassword(document.getElementById('password').value);
 		} else {
 			swal({
-				title: "Password Mismatch!", 
+				title: "Password mismatch!", 
 				text: 'Your passwords do not match, please try again.', 
 				type: "error"
 			}, function() {
