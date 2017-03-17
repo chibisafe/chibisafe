@@ -153,6 +153,10 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 			})
 		})
 
+		for (let file of files){
+			uploadsController.generateThumbs(file, basedomain)
+		}
+
 	}).catch(function(error) { console.log(error); res.json({success: false, description: 'error'}) })
 }
 
@@ -290,19 +294,17 @@ uploadsController.generateThumbs = function(file, basedomain){
 	for(let ext of extensions){
 		if(path.extname(file.name).toLowerCase() === ext){
 
-			file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
-
-			let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs') + '/' + file.name.slice(0, -ext.length) + '.png'
+			let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs', file.name.slice(0, -ext.length) + '.png')
 			fs.access(thumbname, function(err) {
 				if (err && err.code === 'ENOENT') {
 					// File doesnt exist
 
 					if (ext === '.webm' || ext === '.mp4') {
-						ffmpeg('./' + config.uploads.folder + '/' + file.name)
+						ffmpeg(path.join(__dirname, '..', config.uploads.folder, file.name))
 							.thumbnail({
 								timestamps: [0],
 								filename: '%b.png',
-								folder: './' + config.uploads.folder + '/thumbs',
+								folder: path.join(__dirname, '..', config.uploads.folder, 'thumbs'),
 								size: '200x?'
 							})
 							.on('error', function(error) {
@@ -315,7 +317,7 @@ uploadsController.generateThumbs = function(file, basedomain){
 							height: 200
 						}
 
-						gm('./' + config.uploads.folder + '/' + file.name)
+						gm(path.join(__dirname, '..', config.uploads.folder, file.name))
 							.resize(size.width, size.height + '>')
 							.gravity('Center')
 							.extent(size.width, size.height)
