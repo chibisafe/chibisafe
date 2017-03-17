@@ -5,7 +5,7 @@ const randomstring = require('randomstring')
 const db = require('knex')(config.database)
 const crypto = require('crypto')
 const fs = require('fs')
-const utils = require('utilsController.js')
+const utils = require('./utilsController.js')
 
 let uploadsController = {}
 
