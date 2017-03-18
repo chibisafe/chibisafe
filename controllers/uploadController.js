@@ -1,5 +1,5 @@
-const path = require('path')
 const config = require('../config.js')
+const path = require('path')
 const multer = require('multer')
 const randomstring = require('randomstring')
 const db = require('knex')(config.database)
@@ -151,7 +151,11 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 		})
 
 		for (let file of files) {
-			utils.generateThumbs(file)
+			let ext = path.extname(file.name).toLowerCase()
+			if (utils.extensions.includes(ext)) {
+				file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
+				utils.generateThumbs(file)
+			}
 		}
 
 	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
@@ -260,7 +264,11 @@ uploadsController.list = function(req, res) {
 						if (file.userid !== undefined && file.userid !== null && file.userid !== '')
 							userids.push(file.userid)
 
-					utils.generateThumbs(file)
+					let ext = path.extname(file.name).toLowerCase()
+					if (utils.extensions.includes(ext)) {
+						file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
+						utils.generateThumbs(file)
+					}
 				}
 
 				// If we are a normal user, send response

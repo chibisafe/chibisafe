@@ -2,6 +2,7 @@ const config = require('../config.js')
 const db = require('knex')(config.database)
 const randomstring = require('randomstring')
 const utils = require('./utilsController.js')
+const path = require('path')
 
 let albumsController = {}
 
@@ -57,7 +58,6 @@ albumsController.list = function(req, res, next) {
 }
 
 albumsController.create = function(req, res, next) {
-
 	let token = req.headers.token
 	if (token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
 
@@ -153,7 +153,12 @@ albumsController.get = function(req, res, next) {
 
 			for (let file of files) {
 				file.file = basedomain + '/' + file.name
-				utils.generateThumbs(file)
+
+				let ext = path.extname(file.name).toLowerCase()
+				if (utils.extensions.includes(ext)) {
+					file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
+					utils.generateThumbs(file)
+				}
 			}
 
 			return res.json({
