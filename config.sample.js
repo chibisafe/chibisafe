@@ -4,7 +4,6 @@ module.exports = {
 		If set to true the user will need to specify the auto-generated token
 		on each API call, meaning random strangers wont be able to use the service
 		unless they have the token loli-safe provides you with.
-
 		If it's set to false, then upload will be public for anyone to use.
 	*/
 	private: true,
@@ -33,6 +32,14 @@ module.exports = {
 
 	// Pages to process for the frontend
 	pages: ['home', 'auth', 'dashboard', 'faq'],
+
+	// Add file extensions here which should be blocked
+	blockedExtensions: [
+		'.exe',
+		'.bat',
+		'.cmd',
+		'.msi'
+	],
 
 	// Uploads config
 	uploads: {
