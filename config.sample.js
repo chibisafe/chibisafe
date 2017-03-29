@@ -40,7 +40,6 @@ module.exports = {
 		'.cmd',
 		'.msi',
 		'.sh',
-		'.iso'
 	],
 
 	// Uploads config
