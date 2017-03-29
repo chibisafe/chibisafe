@@ -39,7 +39,7 @@ module.exports = {
 		'.bat',
 		'.cmd',
 		'.msi',
-		'.sh',
+		'.sh'
 	],
 
 	// Uploads config
