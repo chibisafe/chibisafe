@@ -22,8 +22,11 @@ const upload = multer({
 	storage: storage,
 	limits: { fileSize: config.uploads.maxSize },
 	fileFilter: function(req, file, cb) {
-		if (config.blockedExtensions.some(extension => path.extname(file.originalname) === extension)) {
-			return cb('This file extension is not allowed');
+		if (config.blockedExtensions !== undefined) {
+			if (config.blockedExtensions.some(extension => path.extname(file.originalname) === extension)) {
+				return cb('This file extension is not allowed');
+			}
+			return cb(null, true);
 		}
 		return cb(null, true);
 	}
