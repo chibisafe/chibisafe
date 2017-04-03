@@ -42,8 +42,14 @@ uploadsController.upload = function(req, res, next) {
 	if (token === undefined) token = ''
 
 	db.table('users').where('token', token).then((user) => {
+
+		if(user.length === 0)
+			if(config.private === true)
+				return res.status(401).json({ success: false, description: 'Invalid token provided' })
+
 		let userid
-		if (user.length > 0) userid = user[0].id
+		if(user.length > 0)
+			userid = user[0].id
 
 		// Check if user is trying to upload to an album
 		let album
