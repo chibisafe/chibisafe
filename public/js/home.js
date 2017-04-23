@@ -16,7 +16,6 @@ upload.checkIfPublic = function(){
   		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
     	console.log(error);
   	});
-
 }
 
 upload.preparePage = function(){
@@ -61,6 +60,10 @@ upload.verifyToken = function(token, reloadOnError){
 }
 
 upload.prepareUpload = function(){
+	
+	if (upload.token) {
+		document.getElementById('albumDiv').style.display = 'block';
+	}
 
 	div = document.createElement('div');
 	div.id = 'dropzone';
@@ -74,7 +77,7 @@ upload.prepareUpload = function(){
 		document.getElementById('loginLinkText').innerHTML = 'Create an account and keep track of your uploads';
 
 	document.getElementById('uploadContainer').appendChild(div);
-
+	
 	upload.prepareDropzone();
 
 }
