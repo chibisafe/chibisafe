@@ -7,7 +7,6 @@ upload.maxFileSize;
 upload.album;
 
 upload.checkIfPublic = function(){
-
 	axios.get('/api/check')
   	.then(function (response) {
     	upload.isPrivate= response.data.private;
@@ -62,7 +61,6 @@ upload.verifyToken = function(token, reloadOnError){
 }
 
 upload.prepareUpload = function(){
-	
 	// I think this fits best here because we need to check for a valid token before we can get the albums
 	if (upload.token) {
 		var select = document.querySelector('select');
@@ -109,7 +107,6 @@ upload.prepareUpload = function(){
 }
 
 upload.prepareDropzone = function(){
-	
 	var previewNode = document.querySelector('#template');
 	previewNode.id = '';
 	var previewTemplate = previewNode.parentNode.innerHTML;
