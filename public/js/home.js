@@ -3,6 +3,8 @@ var upload = {};
 upload.isPrivate = true;
 upload.token = localStorage.token;
 upload.maxFileSize;
+// add the album var to the upload so we can store the album id in there
+upload.album;
 
 upload.checkIfPublic = function(){
 
@@ -61,23 +63,30 @@ upload.verifyToken = function(token, reloadOnError){
 
 upload.prepareUpload = function(){
 	
+	// I think this fits best here because we need to check for a valid token before we can get the albums
 	if (upload.token) {
 		const select = document.querySelector('select');
+		
 		axios.get('/api/albums', { headers: { token: upload.token }})
-		.then((res) => {
-			console.log(res);
+		.then(function(res) {
 			let albums = res.data.albums;
 			
-			if (albums.length === 0) return; 
+			// if the user doesn't have any albums we don't really need to display
+			// an album selection
+			if (albums.length === 0) return;
+			
+			// loop through the albums and create an option for each album 
 			for (let i = 0; i < albums.length; i++) {
 				let opt = document.createElement('option');
 				opt.value = albums[i].id;
 				opt.innerHTML = albums[i].name;
 				select.appendChild(opt);
 			}
+			// display the album selection
 			document.getElementById('albumDiv').style.display = 'block';
 		})
-		.catch((e) => {
+		.catch(function(e) {
+			return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
 			console.log(e);
 		})
 	}
@@ -100,7 +109,7 @@ upload.prepareUpload = function(){
 }
 
 upload.prepareDropzone = function(){
-
+	
 	var previewNode = document.querySelector('#template');
 	previewNode.id = '';
 	var previewTemplate = previewNode.parentNode.innerHTML;
@@ -124,6 +133,13 @@ upload.prepareDropzone = function(){
 			this.on('addedfile', function(file) { 
 				myDropzone = this;
 				document.getElementById('uploads').style.display = 'block';
+			});
+			// add the selected albumid, if an album is selected, as a header 
+			this.on('sending', function(file, xhr) {
+				if (upload.album) {
+					console.log(upload.album)
+					xhr.setRequestHeader('albumid', upload.album)
+				}
 			});
 		}
 	});
@@ -175,4 +191,10 @@ window.addEventListener('paste', function(event) {
 
 window.onload = function () {
 	upload.checkIfPublic();
+	
+	// eventlistener for the album select
+	document.querySelector('select').addEventListener('change', function() {
+		upload.album = document.querySelector('select').value;
+	});
 };
+
