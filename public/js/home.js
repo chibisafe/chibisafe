@@ -62,7 +62,24 @@ upload.verifyToken = function(token, reloadOnError){
 upload.prepareUpload = function(){
 	
 	if (upload.token) {
-		document.getElementById('albumDiv').style.display = 'block';
+		const select = document.querySelector('select');
+		axios.get('/api/albums', { headers: { token: upload.token }})
+		.then((res) => {
+			console.log(res);
+			let albums = res.data.albums;
+			
+			if (albums.length === 0) return; 
+			for (let i = 0; i < albums.length; i++) {
+				let opt = document.createElement('option');
+				opt.value = albums[i].id;
+				opt.innerHTML = albums[i].name;
+				select.appendChild(opt);
+			}
+			document.getElementById('albumDiv').style.display = 'block';
+		})
+		.catch((e) => {
+			console.log(e);
+		})
 	}
 
 	div = document.createElement('div');
