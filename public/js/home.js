@@ -65,19 +65,19 @@ upload.prepareUpload = function(){
 	
 	// I think this fits best here because we need to check for a valid token before we can get the albums
 	if (upload.token) {
-		const select = document.querySelector('select');
+		var select = document.querySelector('select');
 		
 		axios.get('/api/albums', { headers: { token: upload.token }})
 		.then(function(res) {
-			let albums = res.data.albums;
+			var albums = res.data.albums;
 			
 			// if the user doesn't have any albums we don't really need to display
 			// an album selection
 			if (albums.length === 0) return;
 			
 			// loop through the albums and create an option for each album 
-			for (let i = 0; i < albums.length; i++) {
-				let opt = document.createElement('option');
+			for (var i = 0; i < albums.length; i++) {
+				var opt = document.createElement('option');
 				opt.value = albums[i].id;
 				opt.innerHTML = albums[i].name;
 				select.appendChild(opt);
