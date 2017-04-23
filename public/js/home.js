@@ -137,7 +137,6 @@ upload.prepareDropzone = function(){
 			// add the selected albumid, if an album is selected, as a header 
 			this.on('sending', function(file, xhr) {
 				if (upload.album) {
-					console.log(upload.album)
 					xhr.setRequestHeader('albumid', upload.album)
 				}
 			});
