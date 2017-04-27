@@ -1,6 +1,7 @@
 const config = require('./config.js')
 const api = require('./routes/api.js')
 const express = require('express')
+const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const RateLimit = require('express-rate-limit')
 const db = require('knex')(config.database)
@@ -14,6 +15,7 @@ fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder
 fs.existsSync('./' + config.uploads.folder) || fs.mkdirSync('./' + config.uploads.folder)
 fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + config.uploads.folder + '/thumbs')
 
+safe.use(helmet())
 safe.set('trust proxy', 1)
 
 let limiter = new RateLimit({ windowMs: 5000, max: 2 })
