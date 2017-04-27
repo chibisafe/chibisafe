@@ -14,8 +14,8 @@ upload.checkIfPublic = function(){
 		upload.preparePage();
   	})
   	.catch(function (error) {
-  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	console.log(error);
+  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	return console.log(error);
   	});
 }
 
@@ -54,8 +54,8 @@ upload.verifyToken = function(token, reloadOnError){
 
   	})
   	.catch(function (error) {
-  		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	console.log(error);
+  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+    	return console.log(error);
   	});
 
 }
@@ -88,8 +88,8 @@ upload.prepareUpload = function(){
 			document.getElementById('albumDiv').style.display = 'block';
 		})
 		.catch(function(e) {
-			return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-			console.log(e);
+			swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+			return console.log(e);
 		})
 	}
 
