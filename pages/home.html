@@ -45,16 +45,26 @@
             <div class="hero-body">
                 <div class="container">
                     <p id="b">
-                        <img class='logo' src="/images/logo_smol.png">
+                        <img class="logo" src="/images/logo_smol.png">
                     </p>
                     <h1 class="title">loli-safe</h1>
                     <h2 class="subtitle">A <strong>modern</strong> self-hosted file upload service</h2>
 
-                    <h3 class="subtitle" id="maxFileSize"></h2>
+                    <h3 class="subtitle" id="maxFileSize"></h3>
                     <div class="columns">
                         <div class="column is-hidden-mobile"></div>
-                        <div class="column" id='uploadContainer'>
+                        <div class="column" id="uploadContainer">
                             <a id="loginToUpload" href="/auth" class="button is-danger">Running in private mode. Log in to upload.</a>
+                            <div class="field" id="albumDiv" style="display: none">
+                                <label class="label">Album</label>
+                                <p class="control select-wrapper">
+                                    <span class="select">
+                                        <select>
+                                            <option value="">None</option>
+                                        </select>
+                                    </span>
+                                </p>
+                            </div>
                         </div>
                         <div class="column is-hidden-mobile"></div>
                     </div>

@@ -3,9 +3,10 @@ var upload = {};
 upload.isPrivate = true;
 upload.token = localStorage.token;
 upload.maxFileSize;
+// add the album var to the upload so we can store the album id in there
+upload.album;
 
 upload.checkIfPublic = function(){
-
 	axios.get('/api/check')
   	.then(function (response) {
     	upload.isPrivate= response.data.private;
@@ -16,7 +17,6 @@ upload.checkIfPublic = function(){
   		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
     	console.log(error);
   	});
-
 }
 
 upload.preparePage = function(){
@@ -61,6 +61,33 @@ upload.verifyToken = function(token, reloadOnError){
 }
 
 upload.prepareUpload = function(){
+	// I think this fits best here because we need to check for a valid token before we can get the albums
+	if (upload.token) {
+		var select = document.querySelector('select');
+		
+		axios.get('/api/albums', { headers: { token: upload.token }})
+		.then(function(res) {
+			var albums = res.data.albums;
+			
+			// if the user doesn't have any albums we don't really need to display
+			// an album selection
+			if (albums.length === 0) return;
+			
+			// loop through the albums and create an option for each album 
+			for (var i = 0; i < albums.length; i++) {
+				var opt = document.createElement('option');
+				opt.value = albums[i].id;
+				opt.innerHTML = albums[i].name;
+				select.appendChild(opt);
+			}
+			// display the album selection
+			document.getElementById('albumDiv').style.display = 'block';
+		})
+		.catch(function(e) {
+			return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+			console.log(e);
+		})
+	}
 
 	div = document.createElement('div');
 	div.id = 'dropzone';
@@ -74,13 +101,12 @@ upload.prepareUpload = function(){
 		document.getElementById('loginLinkText').innerHTML = 'Create an account and keep track of your uploads';
 
 	document.getElementById('uploadContainer').appendChild(div);
-
+	
 	upload.prepareDropzone();
 
 }
 
 upload.prepareDropzone = function(){
-
 	var previewNode = document.querySelector('#template');
 	previewNode.id = '';
 	var previewTemplate = previewNode.parentNode.innerHTML;
@@ -104,6 +130,12 @@ upload.prepareDropzone = function(){
 			this.on('addedfile', function(file) { 
 				myDropzone = this;
 				document.getElementById('uploads').style.display = 'block';
+			});
+			// add the selected albumid, if an album is selected, as a header 
+			this.on('sending', function(file, xhr) {
+				if (upload.album) {
+					xhr.setRequestHeader('albumid', upload.album)
+				}
 			});
 		}
 	});
@@ -155,4 +187,10 @@ window.addEventListener('paste', function(event) {
 
 window.onload = function () {
 	upload.checkIfPublic();
+	
+	// eventlistener for the album select
+	document.querySelector('select').addEventListener('change', function() {
+		upload.album = document.querySelector('select').value;
+	});
 };
+
