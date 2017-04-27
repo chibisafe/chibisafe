@@ -1,4 +1,4 @@
-![loli-safe](https://a.cuntflaps.me/jcutlz.png)   
+![loli-safe](https://a.safe.moe/jcutlz.png)   
 # lolisafe, a small safe worth protecting.
 
 ## Sites using loli-safe
