@@ -65,6 +65,10 @@ upload.prepareUpload = function(){
 	if (upload.token) {
 		var select = document.querySelector('select');
 		
+		select.addEventListener('change', function() {
+			upload.album = select.value;
+		});
+
 		axios.get('/api/albums', { headers: { token: upload.token }})
 		.then(function(res) {
 			var albums = res.data.albums;
@@ -187,10 +191,5 @@ window.addEventListener('paste', function(event) {
 
 window.onload = function () {
 	upload.checkIfPublic();
-	
-	// eventlistener for the album select
-	document.querySelector('select').addEventListener('change', function() {
-		upload.album = document.querySelector('select').value;
-	});
 };
 
