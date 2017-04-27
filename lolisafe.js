@@ -17,6 +17,7 @@ fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + c
 
 safe.use(helmet())
 safe.set('trust proxy', 1)
+safe.disable('x-powered-by')
 
 let limiter = new RateLimit({ windowMs: 5000, max: 2 })
 safe.use('/api/login/', limiter)
