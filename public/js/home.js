@@ -63,7 +63,7 @@ upload.verifyToken = function(token, reloadOnError){
 upload.prepareUpload = function(){
 	// I think this fits best here because we need to check for a valid token before we can get the albums
 	if (upload.token) {
-		var select = document.querySelector('select');
+		var select = document.getElementById('albumSelect');
 		
 		select.addEventListener('change', function() {
 			upload.album = select.value;
