@@ -23,7 +23,7 @@ const upload = multer({
 	limits: { fileSize: config.uploads.maxSize },
 	fileFilter: function(req, file, cb) {
 		if (config.blockedExtensions !== undefined) {
-			if (config.blockedExtensions.some(extension => path.extname(file.originalname) === extension)) {
+			if (config.blockedExtensions.some(extension => path.extname(file.originalname).toLowerCase() === extension)) {
 				return cb('This file extension is not allowed');
 			}
 			return cb(null, true);
