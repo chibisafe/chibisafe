@@ -67,4 +67,4 @@ If you choose to use a domain name and thus nginx, you should add the following 
 **loli-safe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/loli-safe/blob/master/LICENSE) License.<br>
 Authored and maintained by Pitu.
 
-> [lolisafe.moe](https://lolisafe.moe) · GitHub [@Pitu](https://github.com/Pitu) · Twitter [@kanaadeko](https://twitter.com/kanaadeko)
+> [lolisafe.moe](https://lolisafe.moe) · GitHub [@Pitu](https://github.com/Pitu)
