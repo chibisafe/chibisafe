@@ -62,67 +62,76 @@ uploadsController.upload = function(req, res, next) {
 				album = req.params.albumid
 		}
 
-		upload(req, res, function (err) {
-			if (err) {
-				console.error(err)
-				return res.json({ 
+		db.table('albums').where({ id: album, userid: userid }).then((albums) => {
+			if (albums.length === 0) {
+				return res.json({
 					success: false,
-					description: err
+					description: 'Album doesn\'t exist or it doesn\'t belong to the user'
 				})
 			}
 
-			if (req.files.length === 0) return res.json({ success: false, description: 'no-files' })
-
-			let files = []
-			let existingFiles = []
-			let iteration = 1
-
-			req.files.forEach(function(file) {
-
-				// Check if the file exists by checking hash and size
-				let hash = crypto.createHash('md5')
-				let stream = fs.createReadStream(path.join(__dirname, '..', config.uploads.folder, file.filename))
-
-				stream.on('data', function (data) {
-					hash.update(data, 'utf8')
-				})
-
-				stream.on('end', function () {
-					let fileHash = hash.digest('hex')
-
-					db.table('files')
-					.where(function() {
-						if (userid === undefined) 
-							this.whereNull('userid')
-						else 
-							this.where('userid', userid)
+			upload(req, res, function (err) {
+				if (err) {
+					console.error(err)
+					return res.json({
+						success: false,
+						description: err
 					})
-					.where({
-						hash: fileHash,
-						size: file.size
-					}).then((dbfile) => {
+				}
 
-						if (dbfile.length !== 0) {
-							uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
-							existingFiles.push(dbfile[0])
-						} else {
-							files.push({
-								name: file.filename, 
-								original: file.originalname,
-								type: file.mimetype,
-								size: file.size, 
-								hash: fileHash,
-								ip: req.ip,
-								albumid: album,
-								userid: userid,
-								timestamp: Math.floor(Date.now() / 1000)
-							})
-						}
+				if (req.files.length === 0) return res.json({ success: false, description: 'no-files' })
 
-						if (iteration === req.files.length)
-							return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
-						iteration++
-					}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+				let files = []
+				let existingFiles = []
+				let iteration = 1
+
+				req.files.forEach(function(file) {
+
+					// Check if the file exists by checking hash and size
+					let hash = crypto.createHash('md5')
+					let stream = fs.createReadStream(path.join(__dirname, '..', config.uploads.folder, file.filename))
+
+					stream.on('data', function (data) {
+						hash.update(data, 'utf8')
+					})
+
+					stream.on('end', function () {
+						let fileHash = hash.digest('hex')
+
+						db.table('files')
+						.where(function() {
+							if (userid === undefined)
+								this.whereNull('userid')
+							else
+								this.where('userid', userid)
+						})
+						.where({
+							hash: fileHash,
+							size: file.size
+						}).then((dbfile) => {
+
+							if (dbfile.length !== 0) {
+								uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
+								existingFiles.push(dbfile[0])
+							} else {
+								files.push({
+									name: file.filename,
+									original: file.originalname,
+									type: file.mimetype,
+									size: file.size,
+									hash: fileHash,
+									ip: req.ip,
+									albumid: album,
+									userid: userid,
+									timestamp: Math.floor(Date.now() / 1000)
+								})
+							}
+
+							if (iteration === req.files.length)
+								return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
+							iteration++
+						}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+					})
 				})
 			})
 		})
@@ -268,7 +277,7 @@ uploadsController.list = function(req, res) {
 					file.date = utils.getPrettyDate(file.date) // file.date.getFullYear() + '-' + (file.date.getMonth() + 1) + '-' + file.date.getDate() + ' ' + (file.date.getHours() < 10 ? '0' : '') + file.date.getHours() + ':' + (file.date.getMinutes() < 10 ? '0' : '') + file.date.getMinutes() + ':' + (file.date.getSeconds() < 10 ? '0' : '') + file.date.getSeconds()
 
 					file.album = ''
-					
+
 					if (file.albumid !== undefined)
 						for (let album of albums)
 							if (file.albumid === album.id)

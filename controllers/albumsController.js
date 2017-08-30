@@ -75,12 +75,12 @@ albumsController.create = function(req, res, next) {
 		}).then((album) => {
 			if (album.length !== 0) return res.json({ success: false, description: 'There\'s already an album with that name' })
 
-			db.table('albums').insert({ 
-				name: name, 
+			db.table('albums').insert({
+				name: name,
 				enabled: 1,
 				userid: user[0].id,
 				identifier: randomstring.generate(8),
-				timestamp: Math.floor(Date.now() / 1000) 
+				timestamp: Math.floor(Date.now() / 1000)
 			}).then(() => {
 				return res.json({ success: true })
 			})
@@ -144,7 +144,7 @@ albumsController.get = function(req, res, next) {
 
 		let title = albums[0].name
 		db.table('files').select('name').where('albumid', albums[0].id).orderBy('id', 'DESC').then((files) => {
-			
+
 			let basedomain = req.get('host')
 			for (let domain of config.domains)
 				if (domain.host === req.get('host'))
