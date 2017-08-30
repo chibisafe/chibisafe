@@ -62,82 +62,93 @@ uploadsController.upload = function(req, res, next) {
 				album = req.params.albumid
 		}
 
-		db.table('albums').where({ id: album, userid: userid }).then((albums) => {
-			if (albums.length === 0) {
-				return res.json({
-					success: false,
-					description: 'Album doesn\'t exist or it doesn\'t belong to the user'
-				})
-			}
+		/*
+			A rewrite is due so might as well do awful things here and fix them later :bloblul:
+		*/
 
-			upload(req, res, function (err) {
-				if (err) {
-					console.error(err)
+		if (album !== undefined && userid !== undefined) {
+			// If both values are present, check if the album owner is the user uploading
+			db.table('albums').where({ id: album, userid: userid }).then((albums) => {
+				if (albums.length === 0) {
 					return res.json({
 						success: false,
-						description: err
+						description: 'Album doesn\'t exist or it doesn\'t belong to the user'
 					})
 				}
-
-				if (req.files.length === 0) return res.json({ success: false, description: 'no-files' })
-
-				let files = []
-				let existingFiles = []
-				let iteration = 1
-
-				req.files.forEach(function(file) {
-
-					// Check if the file exists by checking hash and size
-					let hash = crypto.createHash('md5')
-					let stream = fs.createReadStream(path.join(__dirname, '..', config.uploads.folder, file.filename))
-
-					stream.on('data', function (data) {
-						hash.update(data, 'utf8')
-					})
-
-					stream.on('end', function () {
-						let fileHash = hash.digest('hex')
-
-						db.table('files')
-						.where(function() {
-							if (userid === undefined)
-								this.whereNull('userid')
-							else
-								this.where('userid', userid)
-						})
-						.where({
-							hash: fileHash,
-							size: file.size
-						}).then((dbfile) => {
-
-							if (dbfile.length !== 0) {
-								uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
-								existingFiles.push(dbfile[0])
-							} else {
-								files.push({
-									name: file.filename,
-									original: file.originalname,
-									type: file.mimetype,
-									size: file.size,
-									hash: fileHash,
-									ip: req.ip,
-									albumid: album,
-									userid: userid,
-									timestamp: Math.floor(Date.now() / 1000)
-								})
-							}
-
-							if (iteration === req.files.length)
-								return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
-							iteration++
-						}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-					})
-				})
+				uploadsController.actuallyUpload(req, res, userid, album);
 			})
-		})
+		} else {
+			uploadsController.actuallyUpload(req, res, userid, album);
+		}
 	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
 }
 
+uploadsController.actuallyUpload = function(req, res, userid, album) {
+	upload(req, res, function (err) {
+		if (err) {
+			console.error(err)
+			return res.json({
+				success: false,
+				description: err
+			})
+		}
+
+		if (req.files.length === 0) return res.json({ success: false, description: 'no-files' })
+
+		let files = []
+		let existingFiles = []
+		let iteration = 1
+
+		req.files.forEach(function(file) {
+
+			// Check if the file exists by checking hash and size
+			let hash = crypto.createHash('md5')
+			let stream = fs.createReadStream(path.join(__dirname, '..', config.uploads.folder, file.filename))
+
+			stream.on('data', function (data) {
+				hash.update(data, 'utf8')
+			})
+
+			stream.on('end', function () {
+				let fileHash = hash.digest('hex')
+
+				db.table('files')
+				.where(function() {
+					if (userid === undefined)
+						this.whereNull('userid')
+					else
+						this.where('userid', userid)
+				})
+				.where({
+					hash: fileHash,
+					size: file.size
+				}).then((dbfile) => {
+
+					if (dbfile.length !== 0) {
+						uploadsController.deleteFile(file.filename).then(() => {}).catch((e) => console.error(e))
+						existingFiles.push(dbfile[0])
+					} else {
+						files.push({
+							name: file.filename,
+							original: file.originalname,
+							type: file.mimetype,
+							size: file.size,
+							hash: fileHash,
+							ip: req.ip,
+							albumid: album,
+							userid: userid,
+							timestamp: Math.floor(Date.now() / 1000)
+						})
+					}
+
+					if (iteration === req.files.length)
+						return uploadsController.processFilesForDisplay(req, res, files, existingFiles)
+					iteration++
+				}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+			})
+		})
+	})
+}
 uploadsController.processFilesForDisplay = function(req, res, files, existingFiles) {
 
 	let basedomain = req.get('host')
