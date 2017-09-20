@@ -1,11 +1,13 @@
 const config = require('./config.js')
 const api = require('./routes/api.js')
+const album = require('./routes/album.js')
 const express = require('express')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const RateLimit = require('express-rate-limit')
 const db = require('knex')(config.database)
 const fs = require('fs')
+const exphbs  = require('express-handlebars')
 const safe = express()
 
 require('./database/db.js')(db)
@@ -18,6 +20,10 @@ fs.existsSync('./' + config.uploads.folder + '/thumbs') || fs.mkdirSync('./' + c
 safe.use(helmet())
 safe.set('trust proxy', 1)
 
+safe.engine('handlebars', exphbs({defaultLayout: 'main'}))
+safe.set('view engine', 'handlebars')
+safe.enable('view cache')
+
 let limiter = new RateLimit({ windowMs: 5000, max: 2 })
 safe.use('/api/login/', limiter)
 safe.use('/api/register/', limiter)
@@ -27,8 +33,9 @@ safe.use(bodyParser.json())
 
 safe.use('/', express.static('./uploads'))
 safe.use('/', express.static('./public'))
+safe.use('/', album)
 safe.use('/api', api)
-safe.get('/a/:identifier', (req, res, next) => res.sendFile('album.html', { root: './pages/' }))
+
 
 for (let page of config.pages) {
 	let root = './pages/'
