@@ -51,7 +51,7 @@ routes.get('/a/:identifier', (req, res, next) => {
 				layout: false,
 				title: title,
 				count: files.length,
-				thumb: files[0].
+				thumb,
 				files
 			})
 		}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })

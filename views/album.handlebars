@@ -21,14 +21,14 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="{{ title }} | {{ count }} files" />
 		<meta property="og:description" content="lolisafe.moe | A small safe worth protecting." />
-		<meta property="og:image" content="http://lolisafe.moe/images/logo_square.png" />
-		<meta property="og:image:secure_url" content="https://lolisafe.moe/images/logo_square.png" />
+		<meta property="og:image" content="{{ thumb }}" />
+		<meta property="og:image:secure_url" content="{{ thumb }}" />
 
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{{ title }} | {{ count }} files">
 		<meta name="twitter:description" content="lolisafe.moe | A small safe worth protecting.">
-		<meta name="twitter:image" content="https://listen.moe/files/images/logo_square.png">
-		<meta name="twitter:image:src" content="https://lolisafe.moe/images/logo_square.png">
+		<meta name="twitter:image" content="{{ thumb }}">
+		<meta name="twitter:image:src" content="{{ thumb }}">
 
 		<title>{{ title }}</title>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
@@ -54,7 +54,7 @@
 					<div class="columns is-multiline is-mobile" id="table">
 						{{#each files}}
 						<div class="column is-2">
-							<a href="{{this.file}}" target="_blank">{{{this.thumb}}}</a>
+							<a href="{{ this.file }}" target="_blank">{{{ this.thumb }}}</a>
 						</div>
 						{{/each}}
 					</div>
