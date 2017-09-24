@@ -1,7 +1,7 @@
 let album = {}
 
 album.generateZip = function(identifier) {
-	axios.get('/api/album/generateZip/' + identifier)
+	axios.get('/api/album/zip/' + identifier)
 	.then(function (response) {
 		if (response.data.success) {
 			// Construct the a element
