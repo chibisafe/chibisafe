@@ -186,7 +186,7 @@ albumsController.generateZip = function(req, res, next) {
 		let album = albums[0]
 
 		db.table('files').select('name').where('albumid', album.id).then((files) => {
-			if (files.length === 0) return res.json({ success: false, description: 'No files in album' })
+			if (files.length === 0) return res.json({ success: false, description: 'There are no files in the album' })
 			let basedomain = req.get('host')
 			for (let domain of config.domains)
 				if (domain.host === req.get('host'))

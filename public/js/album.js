@@ -3,21 +3,25 @@ let album = {}
 album.generateZip = function(identifier) {
 	axios.get('/api/album/generateZip/' + identifier)
 	.then(function (response) {
-		// Construct the a element
-		console.log(response.data)
-		var link = document.createElement("a");
-		link.download = response.data.fileName;
-		link.target = "_blank";
+		if (response.data.success) {
+			// Construct the a element
+			var link = document.createElement("a");
+			link.download = response.data.fileName;
+			link.target = "_blank";
 
-		// Construct the uri
-		link.href = response.data.zipPath;
-		document.body.appendChild(link);
-		link.click();
+			// Construct the uri
+			link.href = response.data.zipPath;
+			document.body.appendChild(link);
+			link.click();
 
-		// Cleanup the DOM
-		document.body.removeChild(link);
-		delete link;
-		return
+			// Cleanup the DOM
+			document.body.removeChild(link);
+			delete link;
+			return
+		}
+		else {
+			return swal("An error ocurred", response.data.description, "error");
+		}
 	})
 	.catch(function (error) {
 		console.log(error);
