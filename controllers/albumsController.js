@@ -192,7 +192,7 @@ albumsController.generateZip = function(req, res, next) {
 				if (domain.hasOwnProperty('resolve'))
 					basedomain = domain.resolve
 
-		if ((album.zipGeneratedAt > album.editedAt) || (!album.zipGeneratedAt)) { // check for up-to-date existing zip
+		if (album.zipGeneratedAt > album.editedAt) { // check for up-to-date existing zip
 			return res.json({
 				success: true,
 				fileName: album.name + '.zip',
