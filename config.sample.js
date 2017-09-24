@@ -7,10 +7,10 @@ module.exports = {
 		If it's set to false, then upload will be public for anyone to use.
 	*/
 	private: true,
-	
+
 	// If true, users will be able to create accounts and access their uploaded files
 	enableUserAccounts: true,
-	
+
 	// The registered domain where you will be serving the app. Use IP if none.
 	domains: [
 
@@ -60,7 +60,12 @@ module.exports = {
 		// NOTE: Thumbnails are only for the admin panel and they require you
 		// to install a separate binary called graphicsmagick (http://www.graphicsmagick.org)
 		// for images and FFmpeg (https://ffmpeg.org/) for video files
-		generateThumbnails: false
+		generateThumbnails: false,
+
+		// Allows users to download a .zip file of all files in an album.
+		// The file is generated when the user clicks the download button in the view
+		// and is re-used if the album has not changed between download requests
+		generateZips: false
 	},
 
 	// Folder where to store logs
