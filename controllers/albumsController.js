@@ -155,7 +155,7 @@ albumsController.get = function(req, res, next) {
 				file.file = basedomain + '/' + file.name
 
 				let ext = path.extname(file.name).toLowerCase()
-				if (utils.extensions.includes(ext)) {
+				if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
 					file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 					utils.generateThumbs(file)
 				}

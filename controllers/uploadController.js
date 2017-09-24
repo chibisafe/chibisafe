@@ -187,7 +187,7 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 
 		for (let file of files) {
 			let ext = path.extname(file.name).toLowerCase()
-			if (utils.extensions.includes(ext)) {
+			if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
 				file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 				utils.generateThumbs(file)
 			}
@@ -300,7 +300,7 @@ uploadsController.list = function(req, res) {
 							userids.push(file.userid)
 
 					let ext = path.extname(file.name).toLowerCase()
-					if (utils.extensions.includes(ext)) {
+					if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
 						file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 						utils.generateThumbs(file)
 					}
