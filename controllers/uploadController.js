@@ -232,17 +232,26 @@ uploadsController.delete = function(req, res) {
 }
 
 uploadsController.deleteFile = function(file) {
-
+	const ext = path.extname(file).toLowerCase()
 	return new Promise(function(resolve, reject) {
 		fs.stat(path.join(__dirname, '..', config.uploads.folder, file), function(err, stats) {
 			if (err) { return reject(err) }
 			fs.unlink(path.join(__dirname, '..', config.uploads.folder, file), function(err) {
 				if (err) { return reject(err) }
-				return resolve()
+				if(!utils.imageExtensions.includes(ext) && !utils.videoExtensions.includes(ext)) {
+					return resolve() 
+				}
+				file = file.substr(0, file.lastIndexOf(".")) + ".png"
+				fs.stat(path.join(__dirname, '..', config.uploads.folder, "thumbs/", file), function(err, stats) {
+					if (err) { return reject(err) }
+					fs.unlink(path.join(__dirname, '..', config.uploads.folder, "thumbs/", file), function(err) {
+						if (err) { return reject(err) }
+						return resolve()
+					})
+				})
 			})
 		})
 	})
-
 }
 
 uploadsController.list = function(req, res) {
