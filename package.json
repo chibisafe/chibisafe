@@ -5,17 +5,17 @@
   "author": "kanadeko",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kanadeko/loli-safe"
+    "url": "https://github.com/WeebDev/lolisafe"
   },
   "bugs": {
-    "url": "https://github.com/kanadeko/loli-safe/issues"
+    "url": "https://github.com/WeebDev/loli-safe/issues"
   },
   "engines": {
     "node": ">=7.0.0"
   },
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.16.0",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
@@ -27,5 +27,21 @@
     "multer": "^1.2.1",
     "randomstring": "^1.1.5",
     "sqlite3": "^3.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "eslint-config-aqua": "^1.4.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "aqua"
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "func-names": 0
+    }
   }
 }
