@@ -1,8 +1,10 @@
 const config = require('../config.js')
 const db = require('knex')(config.database)
+const fs = require('fs')
 const randomstring = require('randomstring')
 const utils = require('./utilsController.js')
 const path = require('path')
+const zip = require('jszip')
 
 let albumsController = {}
 
@@ -169,6 +171,59 @@ albumsController.get = function(req, res, next) {
 			})
 
 		}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+}
+
+albumsController.generateZip = function(req, res, next) {
+	let identifier = req.params.identifier
+	if (identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' })
+	if (!config.uploads.generateZips) return res.status(401).json({ success: false, description: 'Zip generation disabled' })
+
+	db.table('albums')
+	.where('identifier', identifier)
+	.then((albums) => {
+		if (albums.length === 0) return res.json({ success: false, description: 'Album not found' })
+
+		let album = albums[0]
+
+		let basedomain = req.get('host')
+		for (let domain of config.domains)
+			if (domain.host === req.get('host'))
+				if (domain.hasOwnProperty('resolve'))
+					basedomain = domain.resolve
+
+		if (album.zipGeneratedAt > album.editedAt) { // check for up-to-date existing zip
+			return res.json({
+				success: true,
+				fileName: album.name + '.zip',
+				zipPath: basedomain + '/zips/' + album.identifier + '.zip'
+			})
+		}
+		else {
+			db.table('files').select('name').where('albumid', album.id).then((files) => {
+				if (files.length === 0) return res.json({ success: false, description: 'There are no files in the album' })
+
+				const zipPath = path.join(__dirname, '..', config.uploads.folder, 'zips', album.identifier + '.zip')
+				let archive = new zip()
+
+				for (let file of files) {
+					archive.file(file.name, fs.readFileSync(path.join(__dirname, '..', config.uploads.folder, file.name)))
+				}
+
+				archive
+				.generateNodeStream({ type:'nodebuffer', streamFiles:true })
+				.pipe(fs.createWriteStream(zipPath))
+				.on('finish', function() {
+					db.table('albums').where('id', album.id).update({ zipGeneratedAt: Math.floor(Date.now() / 1000) }).then(() => {
+						return res.json({
+							success: true,
+							fileName: album.name + '.zip',
+							zipPath: basedomain + '/zips/' + album.identifier + '.zip'
+						})
+					}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+				})
+			}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+		}
 	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
 }
 

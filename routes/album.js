@@ -47,12 +47,20 @@ routes.get('/a/:identifier', (req, res, next) => {
 				}
 			}
 
+			let zipPath = '';
+
+			if (config.uploads.generateZips) {
+				zipPath = path.join(__dirname, '..', config.uploads.folder, 'zips', identifier + '.zip')
+			}
+
 			return res.render('album', {
 				layout: false,
 				title: title,
 				count: files.length,
+				identifier,
 				thumb,
-				files
+				files,
+				zipPath
 			})
 		}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
 	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })

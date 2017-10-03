@@ -191,6 +191,11 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 				file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 				utils.generateThumbs(file)
 			}
+
+			if (file.albumid) {
+				db.table('albums').where('id', file.albumid).update('editedAt', file.timestamp).then(() => {})
+				.catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+			}
 		}
 
 	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
@@ -215,10 +220,16 @@ uploadsController.delete = function(req, res) {
 				this.where('userid', user[0].id)
 		})
 		.then((file) => {
-
 			uploadsController.deleteFile(file[0].name).then(() => {
 				db.table('files').where('id', id).del().then(() => {
-					return res.json({ success: true })
+					if (file[0].albumid) {
+						db.table('albums').where('id', file[0].albumid).update('editedAt', Math.floor(Date.now() / 1000)).then(() => {
+							return res.json({ success: true })
+						}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
+					}
+					else {
+						return res.json({ success: true })
+					}
 				}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
 			}).catch((e) => {
 				console.log(e.toString())

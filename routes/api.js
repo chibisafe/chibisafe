@@ -6,7 +6,7 @@ const tokenController = require('../controllers/tokenController')
 const authController = require('../controllers/authController')
 
 routes.get ('/check', (req, res, next) => {
-	return res.json({ 
+	return res.json({
 		private: config.private,
 		maxFileSize: config.uploads.maxSize
 	})
@@ -23,6 +23,7 @@ routes.post ('/upload/delete', (req, res, next) => uploadController.delete(req, 
 routes.post ('/upload/:albumid', (req, res, next) => uploadController.upload(req, res, next))
 
 routes.get  ('/album/get/:identifier', (req, res, next) => albumsController.get(req, res, next))
+routes.get  ('/album/zip/:identifier', (req, res, next) => albumsController.generateZip(req, res, next))
 routes.get  ('/album/:id', (req, res, next) => uploadController.list(req, res, next))
 routes.get  ('/album/:id/:page', (req, res, next) => uploadController.list(req, res, next))
 
