@@ -5,6 +5,7 @@ upload.token = localStorage.token;
 upload.maxFileSize;
 // add the album var to the upload so we can store the album id in there
 upload.album;
+upload.myDropzone;
 
 upload.checkIfPublic = function(){
 	axios.get('/api/check')
@@ -131,8 +132,8 @@ upload.prepareDropzone = function(){
     		'token': upload.token
 		},
 		init: function() {
+			upload.myDropzone = this;
 			this.on('addedfile', function(file) { 
-				myDropzone = this;
 				document.getElementById('uploads').style.display = 'block';
 			});
 			// add the selected albumid, if an album is selected, as a header 
@@ -184,7 +185,7 @@ window.addEventListener('paste', function(event) {
 			var file = new File([blob], "pasted-image."+blob.type.match(/(?:[^\/]*\/)([^;]*)/)[1]);
 			file.type = blob.type;
 			console.log(file);
-			myDropzone.addFile(file);
+			upload.myDropzone.addFile(file);
 		}
 	}
 });

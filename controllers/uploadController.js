@@ -187,7 +187,7 @@ uploadsController.processFilesForDisplay = function(req, res, files, existingFil
 
 		for (let file of files) {
 			let ext = path.extname(file.name).toLowerCase()
-			if (utils.extensions.includes(ext)) {
+			if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
 				file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 				utils.generateThumbs(file)
 			}
@@ -232,17 +232,26 @@ uploadsController.delete = function(req, res) {
 }
 
 uploadsController.deleteFile = function(file) {
-
+	const ext = path.extname(file).toLowerCase()
 	return new Promise(function(resolve, reject) {
 		fs.stat(path.join(__dirname, '..', config.uploads.folder, file), function(err, stats) {
 			if (err) { return reject(err) }
 			fs.unlink(path.join(__dirname, '..', config.uploads.folder, file), function(err) {
 				if (err) { return reject(err) }
-				return resolve()
+				if(!utils.imageExtensions.includes(ext) && !utils.videoExtensions.includes(ext)) {
+					return resolve() 
+				}
+				file = file.substr(0, file.lastIndexOf(".")) + ".png"
+				fs.stat(path.join(__dirname, '..', config.uploads.folder, "thumbs/", file), function(err, stats) {
+					if (err) { return reject(err) }
+					fs.unlink(path.join(__dirname, '..', config.uploads.folder, "thumbs/", file), function(err) {
+						if (err) { return reject(err) }
+						return resolve()
+					})
+				})
 			})
 		})
 	})
-
 }
 
 uploadsController.list = function(req, res) {
@@ -300,7 +309,7 @@ uploadsController.list = function(req, res) {
 							userids.push(file.userid)
 
 					let ext = path.extname(file.name).toLowerCase()
-					if (utils.extensions.includes(ext)) {
+					if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
 						file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
 						utils.generateThumbs(file)
 					}

@@ -5,7 +5,8 @@ const gm = require('gm')
 const ffmpeg = require('fluent-ffmpeg')
 
 const utilsController = {}
-utilsController.extensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webm', '.mp4']
+utilsController.imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png']
+utilsController.videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov']
 
 utilsController.getPrettyDate = function(date) {
 	return date.getFullYear() + '-'
@@ -26,7 +27,7 @@ utilsController.generateThumbs = function(file, basedomain) {
 	let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs', file.name.slice(0, -ext.length) + '.png')
 	fs.access(thumbname, (err) => {
 		if (err && err.code === 'ENOENT') {
-			if (ext === '.webm' || ext === '.mp4') {
+			if (utilsController.videoExtensions.includes(ext)) {
 				ffmpeg(path.join(__dirname, '..', config.uploads.folder, file.name))
 					.thumbnail({
 						timestamps: [0],
