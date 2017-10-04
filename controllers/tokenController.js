@@ -1,46 +1,34 @@
-const config = require('../config.js')
-const db = require('knex')(config.database)
-const randomstring = require('randomstring')
+const config = require('../config.js');
+const db = require('knex')(config.database);
+const randomstring = require('randomstring');
+const utils = require('./utilsController.js');
 
-let tokenController = {}
+const tokenController = {};
 
-tokenController.verify = function(req, res, next) {
+tokenController.verify = async (req, res, next) => {
+	const token = req.body.token;
+	if (token === undefined) return res.status(401).json({ success: false, description: 'No token provided' });
 
-	if (req.body.token === undefined) return res.json({ success: false, description: 'No token provided' })
-	let token = req.body.token
+	const user = await db.table('users').where('token', token).first();
+	if (!user) return res.status(401).json({ success: false, description: 'Invalid token' });
+	return res.json({ success: true, username: user.username });
+};
 
-	db.table('users').where('token', token).then((user) => {
-		if (user.length === 0) return res.json({ success: false, description: 'Token mismatch' })
-		return res.json({ success: true, username: user[0].username })
-	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-	
-}
+tokenController.list = async (req, res, next) => {
+	const user = await utils.authorize(req, res);
+	return res.json({ success: true, token: user.token });
+};
 
-tokenController.list = function(req, res, next) {
+tokenController.change = async (req, res, next) => {
+	const user = await utils.authorize(req, res);
+	const newtoken = randomstring.generate(64);
 
-	let token = req.headers.token
-	if (token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
-
-	db.table('users').where('token', token).then((user) => {
-		if (user.length === 0) return res.json({ success: false, description: 'Token mismatch' })
-		return res.json({ success: true, token: token })
-	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-
-}
-
-tokenController.change = function(req, res, next) {
-
-	let token = req.headers.token
-	if (token === undefined) return res.status(401).json({ success: false, description: 'No token provided' })
-
-	let newtoken = randomstring.generate(64)
-
-	db.table('users').where('token', token).update({
+	await db.table('users').where('token', user.token).update({
 		token: newtoken,
-		timestamp:  Math.floor(Date.now() / 1000)
-	}).then(() => {
-		res.json({ success: true, token: newtoken })
-	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-}
+		timestamp: Math.floor(Date.now() / 1000)
+	});
 
-module.exports = tokenController
+	res.json({ success: true, token: newtoken });
+};
+
+module.exports = tokenController;

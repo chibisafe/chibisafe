@@ -1,61 +1,50 @@
-const config = require('../config.js')
-const routes = require('express').Router()
-const db = require('knex')(config.database)
-const path = require('path')
-const utils = require('../controllers/utilsController.js')
+const config = require('../config.js');
+const routes = require('express').Router();
+const db = require('knex')(config.database);
+const path = require('path');
+const utils = require('../controllers/utilsController.js');
 
-routes.get('/a/:identifier', (req, res, next) => {
+routes.get('/a/:identifier', async (req, res, next) => {
+	let identifier = req.params.identifier;
+	if (identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' });
 
-	let identifier = req.params.identifier
-	if (identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' })
+	const album = await db.table('albums').where('identifier', identifier).first();
+	if (!album) return res.json({ success: false, description: 'Album not found' });
 
-	db.table('albums')
-	.where('identifier', identifier)
-	.then((albums) => {
-		if (albums.length === 0) return res.json({ success: false, description: 'Album not found' })
+	const files = await db.table('files').select('name').where('albumid', album.id).orderBy('id', 'DESC');
+	let thumb = '';
+	const basedomain = config.domain;
 
-		let title = albums[0].name
-		db.table('files').select('name').where('albumid', albums[0].id).orderBy('id', 'DESC').then((files) => {
+	for (let file of files) {
+		file.file = `${basedomain}/${file.name}`;
 
-			let thumb = ''
-			let basedomain = req.get('host')
-			for (let domain of config.domains)
-				if (domain.host === req.get('host'))
-					if (domain.hasOwnProperty('resolve'))
-						basedomain = domain.resolve
+		let ext = path.extname(file.name).toLowerCase();
+		if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
+			file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`;
 
-			for (let file of files) {
-				file.file = basedomain + '/' + file.name
+			/*
+				If thumbnail for album is still not set, do it.
+				A potential improvement would be to let the user upload a specific image as an album cover
+				since embedding the first image could potentially result in nsfw content when pasting links.
+			*/
 
-				let ext = path.extname(file.name).toLowerCase()
-				if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
-					file.thumb = basedomain + '/thumbs/' + file.name.slice(0, -ext.length) + '.png'
-
-					/*
-						If thumbnail for album is still not set, do it.
-						A potential improvement would be to let the user upload a specific image as an album cover
-						since embedding the first image could potentially result in nsfw content when pasting links.
-					*/
-
-					if (thumb === '') {
-						thumb = file.thumb
-					}
-
-					file.thumb = `<img src="${file.thumb}"/>`
-				} else {
-					file.thumb = `<h1 class="title">.${ext}</h1>`
-				}
+			if (thumb === '') {
+				thumb = file.thumb;
 			}
 
-			return res.render('album', {
-				layout: false,
-				title: title,
-				count: files.length,
-				thumb,
-				files
-			})
-		}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-	}).catch(function(error) { console.log(error); res.json({ success: false, description: 'error' }) })
-})
+			file.thumb = `<img src="${file.thumb}"/>`;
+		} else {
+			file.thumb = `<h1 class="title">.${ext}</h1>`;
+		}
+	}
 
-module.exports = routes
+	return res.render('album', {
+		layout: false,
+		title: album.name,
+		count: files.length,
+		thumb,
+		files
+	});
+});
+
+module.exports = routes;
