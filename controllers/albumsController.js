@@ -152,7 +152,13 @@ albumsController.generateZip = async (req, res, next) => {
 		let archive = new Zip();
 
 		for (let file of files) {
-			archive.file(file.name, fs.readFileSync(path.join(__dirname, '..', config.uploads.folder, file.name)));
+			fs.stat(path.join(__dirname, '..', config.uploads.folder, file.name), (err, stats) => {
+				if (err) {
+					console.log(err);
+				} else {
+					archive.file(file.name, fs.readFileSync(path.join(__dirname, '..', config.uploads.folder, file.name)));
+				}
+			});
 		}
 
 		archive
