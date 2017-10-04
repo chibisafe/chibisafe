@@ -42,7 +42,7 @@ uploadsController.upload = async (req, res, next) => {
 	const albumid = req.headers.albumid || req.params.albumid;
 
 	if (albumid && user) {
-		const album = await db.table('albums').where({ id: album, userid: user.id }).first();
+		const album = await db.table('albums').where({ id: albumid, userid: user.id }).first();
 		if (!album) {
 			return res.json({
 				success: false,
@@ -150,6 +150,11 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 			file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`;
 			utils.generateThumbs(file);
 		}
+
+		if (file.albumid) {
+			db.table('albums').where('id', file.albumid).update('editedAt', file.timestamp).then(() => {})
+				.catch(error => { console.log(error); res.json({ success: false, description: 'Error updating album' }); });
+		}
 	}
 };
 
@@ -172,6 +177,9 @@ uploadsController.delete = async (req, res) => {
 	try {
 		await uploadsController.deleteFile(file.name);
 		await db.table('files').where('id', id).del();
+		if (file.albumid) {
+			await db.table('albums').where('id', file.albumid).update('editedAt', Math.floor(Date.now() / 1000));
+		}
 	} catch (err) {
 		console.log(err);
 	}

@@ -23,6 +23,7 @@
     "fluent-ffmpeg": "^2.1.0",
     "gm": "^1.23.0",
     "helmet": "^3.5.0",
+    "jszip": "^3.1.4",
     "knex": "^0.12.6",
     "multer": "^1.2.1",
     "randomstring": "^1.1.5",

@@ -38,12 +38,18 @@ routes.get('/a/:identifier', async (req, res, next) => {
 		}
 	}
 
+
+	let enableDownload = false;
+	if (config.uploads.generateZips) enableDownload = true;
+
 	return res.render('album', {
 		layout: false,
 		title: album.name,
 		count: files.length,
 		thumb,
-		files
+		files,
+		identifier,
+		enableDownload
 	});
 });
 

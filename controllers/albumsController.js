@@ -3,7 +3,8 @@ const db = require('knex')(config.database);
 const randomstring = require('randomstring');
 const utils = require('./utilsController.js');
 const path = require('path');
-
+const fs = require('fs');
+const Zip = require('jszip');
 const albumsController = {};
 
 albumsController.list = async (req, res, next) => {
@@ -127,6 +128,46 @@ albumsController.get = async (req, res, next) => {
 		count: files.length,
 		files
 	});
+};
+
+
+albumsController.generateZip = async (req, res, next) => {
+	const identifier = req.params.identifier;
+	if (identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' });
+	if (!config.uploads.generateZips) return res.status(401).json({ success: false, description: 'Zip generation disabled' });
+
+	const album = await db.table('albums').where({ identifier, enabled: 1 }).first();
+	if (!album) return res.json({ success: false, description: 'Album not found' });
+
+	if (album.zipGeneratedAt > album.editedAt) {
+		const filePath = path.join(config.uploads.folder, 'zips', `${identifier}.zip`);
+		const fileName = `${album.name}.zip`;
+		return res.download(filePath, fileName);
+	} else {
+		console.log(`Generating zip for album identifier: ${identifier}`);
+		const files = await db.table('files').select('name').where('albumid', album.id);
+		if (files.length === 0) return res.json({ success: false, description: 'There are no files in the album' });
+
+		const zipPath = path.join(__dirname, '..', config.uploads.folder, 'zips', `${album.identifier}.zip`);
+		let archive = new Zip();
+
+		for (let file of files) {
+			archive.file(file.name, fs.readFileSync(path.join(__dirname, '..', config.uploads.folder, file.name)));
+		}
+
+		archive
+			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+			.pipe(fs.createWriteStream(zipPath))
+			.on('finish', async () => {
+				await db.table('albums')
+					.where('id', album.id)
+					.update({ zipGeneratedAt: Math.floor(Date.now() / 1000) });
+
+				const filePath = path.join(config.uploads.folder, 'zips', `${identifier}.zip`);
+				const fileName = `${album.name}.zip`;
+				return res.download(filePath, fileName);
+			});
+	}
 };
 
 module.exports = albumsController;

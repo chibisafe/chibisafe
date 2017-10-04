@@ -43,8 +43,17 @@
 		<section class="hero is-fullheight">
 			<div class="hero-head">
 				<div class="container">
-					<h1 class="title" id='title' style='margin-top: 1.5rem;'>{{ title }}</h1>
-					<h1 class="subtitle" id='count'> {{ count }} files</h1>
+					<div class="columns">
+						<div class="column is-9">
+							<h1 class="title" id='title' style='margin-top: 1.5rem;'>{{ title }}</h1>
+							<h1 class="subtitle" id='count'>{{ count }} files</h1>
+						</div>
+						<div class="column is-3" style="text-align: center; padding-top: 45px;">
+							{{#if enableDownload}}
+								<a class="button is-primary is-outlined" title="Download album" href="/api/album/zip/{{ identifier }}">Download Album</a>
+							{{/if}}
+						</div>
+					</div>
 					<hr>
 				</div>
 			</div>
