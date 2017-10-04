@@ -49,7 +49,7 @@ uploadsController.upload = async (req, res, next) => {
 				description: 'Album doesn\'t exist or it doesn\'t belong to the user'
 			});
 		}
-		return uploadsController.actuallyUpload(req, res, user.id, albumid);
+		return uploadsController.actuallyUpload(req, res, user, albumid);
 	}
 	return uploadsController.actuallyUpload(req, res, user, albumid);
 };
