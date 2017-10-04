@@ -165,6 +165,7 @@ albumsController.generateZip = async (req, res, next) => {
 			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
 			.pipe(fs.createWriteStream(zipPath))
 			.on('finish', async () => {
+				console.log(`Generated zip for album identifier: ${identifier}`);
 				await db.table('albums')
 					.where('id', album.id)
 					.update({ zipGeneratedAt: Math.floor(Date.now() / 1000) });
