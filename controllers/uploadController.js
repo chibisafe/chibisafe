@@ -51,7 +51,7 @@ uploadsController.upload = async (req, res, next) => {
 		}
 		return uploadsController.actuallyUpload(req, res, user.id, albumid);
 	}
-	return uploadsController.actuallyUpload(req, res, user.id, albumid);
+	return uploadsController.actuallyUpload(req, res, user, albumid);
 };
 
 uploadsController.actuallyUpload = async (req, res, userid, album) => {
@@ -81,7 +81,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 				const dbFile = await db.table('files')
 					.where(function() {
 						if (userid === undefined) this.whereNull('userid');
-						else this.where('userid', userid);
+						else this.where('userid', userid.id);
 					})
 					.where({
 						hash: fileHash,
@@ -98,7 +98,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 						hash: fileHash,
 						ip: req.ip,
 						albumid: album,
-						userid: userid,
+						userid: userid.id,
 						timestamp: Math.floor(Date.now() / 1000)
 					});
 				} else {
