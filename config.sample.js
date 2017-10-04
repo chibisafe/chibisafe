@@ -17,15 +17,15 @@ module.exports = {
 		If you set it to `true`, the uploaded files will be located after the host like:
 			https://lolisafe.moe/yourFile.jpg
 
-		If you set it to `false`, you need to specify the domain in the setting right below `serveFilesWithNode`
-		and make nginx directly serve whatever folder it is you are serving your downloads in. This also gives
-		you the ability to serve them, for example, like this:
+		If you set it to `false`, you need to set nginx to directly serve whatever folder it is you are serving your
+		downloads in. This also gives you the ability to serve them, for example, like this:
 			https://files.lolisafe.moe/yourFile.jpg
 
-		So ultimately, it's up to you.
+		Both cases require you to type the domain where the files will be served on the `domain` key below.
+		Which one you use is ultimately up to you.
 	*/
 	serveFilesWithNode: false,
-	domain: '',
+	domain: 'https://lolisafe.moe',
 
 	// Port on which to run the server
 	port: 9999,
