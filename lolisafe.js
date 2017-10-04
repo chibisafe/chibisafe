@@ -10,7 +10,7 @@ const fs = require('fs');
 const exphbs = require('express-handlebars');
 const safe = express();
 
-require('./database/db.js')(db)
+require('./database/db.js')(db);
 
 fs.existsSync('./pages/custom' ) || fs.mkdirSync('./pages/custom');
 fs.existsSync('./' + config.logsFolder) || fs.mkdirSync('./' + config.logsFolder);
