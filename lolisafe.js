@@ -32,7 +32,7 @@ safe.use(bodyParser.urlencoded({ extended: true }));
 safe.use(bodyParser.json());
 
 if (config.serveFilesWithNode) {
-	safe.use('/', express.static('./uploads'));
+	safe.use('/', express.static(config.uploads.folder));
 }
 
 safe.use('/', express.static('./public'));
