@@ -1,8 +1,8 @@
 {
-  "name": "loli-safe",
-  "version": "2.2.0",
-  "description": "Pomf-like uploading service, written in node",
-  "author": "kanadeko",
+  "name": "lolisafe",
+  "version": "3.0.0",
+  "description": "Blazing fast file uploader and awesome bunker written in node! 🚀",
+  "author": "Pitu",
   "repository": {
     "type": "git",
     "url": "https://github.com/WeebDev/lolisafe"
