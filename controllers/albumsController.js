@@ -106,7 +106,7 @@ albumsController.get = async (req, res, next) => {
 	const identifier = req.params.identifier;
 	if (identifier === undefined) return res.status(401).json({ success: false, description: 'No identifier provided' });
 
-	const album = await db.table('albums').where('identifier', identifier).first();
+	const album = await db.table('albums').where({ identifier, enabled: 1 }).first();
 	if (!album) return res.json({ success: false, description: 'Album not found' });
 
 	const title = album.name;
