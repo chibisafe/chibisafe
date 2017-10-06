@@ -12,11 +12,12 @@
 If you're upgrading from a version prior to v3.0.0 make sure to run **ONCE** `node database/migration.js` to create the missing columns on the database.
 
 ## Running
-1. Clone
-2. Rename `config.sample.js` to `config.js`
+1. Ensure you have at least version 7.6.0 of node installed
+2. Clone the repo
+3. Rename `config.sample.js` to `config.js`
 4. Modify port, domain and privacy options if desired
-3. run `npm install` to install all dependencies
-5. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
+5. run `npm install` to install all dependencies
+6. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
 
 ## Getting started
 This service supports running both as public and private. The only difference is that one needs a token to upload and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just set the option `private: false` in the `config.js` file. In case you want to run it privately, you should set `private: true`.
