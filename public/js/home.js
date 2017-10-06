@@ -172,6 +172,29 @@ upload.prepareDropzone = function(){
 		
 	});
 
+	upload.prepareShareX();
+}
+
+upload.prepareShareX = function(){
+	if (upload.token) {
+		var sharex_element = document.getElementById("ShareX");
+		var sharex_file = "{ \
+  \"Name\": \"" + location.hostname + "\", \
+  \"DestinationType\": \"ImageUploader, FileUploader\", \
+  \"RequestType\": \"POST\", \
+  \"RequestURL\": \"" + location.origin + "/api/upload\", \
+  \"FileFormName\": \"files[]\", \
+  \"Headers\": { \
+    \"token\": \" " + upload.token + "\" \
+  }, \
+  \"ResponseType\": \"Text\", \
+  \"URL\": \"$json:files[0].url$\", \
+  \"ThumbnailURL\": \"$json:files[0].url$\" \
+}";
+		var sharex_blob = new Blob([sharex_file], {type: "application/octet-binary"});
+		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob))
+		sharex_element.setAttribute("download", location.hostname + ".sxcu");
+	}
 }
 
 //Handle image paste event
