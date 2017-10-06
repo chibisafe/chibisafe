@@ -178,18 +178,18 @@ upload.prepareDropzone = function(){
 upload.prepareShareX = function(){
 	if (upload.token) {
 		var sharex_element = document.getElementById("ShareX");
-		var sharex_file = "{ \
-  \"Name\": \"" + location.hostname + "\", \
-  \"DestinationType\": \"ImageUploader, FileUploader\", \
-  \"RequestType\": \"POST\", \
-  \"RequestURL\": \"" + location.origin + "/api/upload\", \
-  \"FileFormName\": \"files[]\", \
-  \"Headers\": { \
-    \"token\": \" " + upload.token + "\" \
-  }, \
-  \"ResponseType\": \"Text\", \
-  \"URL\": \"$json:files[0].url$\", \
-  \"ThumbnailURL\": \"$json:files[0].url$\" \
+		var sharex_file = "{\r\n\
+  \"Name\": \"" + location.hostname + "\",\r\n\
+  \"DestinationType\": \"ImageUploader, FileUploader\",\r\n\
+  \"RequestType\": \"POST\",\r\n\
+  \"RequestURL\": \"" + location.origin + "/api/upload\",\r\n\
+  \"FileFormName\": \"files[]\",\r\n\
+  \"Headers\": {\r\n\
+    \"token\": \" " + upload.token + "\"\r\n\
+  },\r\n\
+  \"ResponseType\": \"Text\",\r\n\
+  \"URL\": \"$json:files[0].url$\",\r\n\
+  \"ThumbnailURL\": \"$json:files[0].url$\"\r\n\
 }";
 		var sharex_blob = new Blob([sharex_file], {type: "application/octet-binary"});
 		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob))
