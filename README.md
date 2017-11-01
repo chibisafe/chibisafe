@@ -19,6 +19,21 @@ If you're upgrading from a version prior to v3.0.0 make sure to run **ONCE** `no
 5. run `npm install` to install all dependencies
 6. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
 
+## Running with Docker
+1. Ensure you have Docker installed
+2. Run 
+```bash
+docker run 
+	-t 
+	-p 9999:9999 
+	-v <relative_path_to_config>:/usr/src/app/config.js:ro
+	-v <relative_path_to_uploads>:/usr/src/app/uploads 
+	-v <relative_path_to_logs>:/usr/src/app/logs
+	-v <relative_path_to_database>:/usr/src/app/database/db
+	WeebDev/lolisafe
+```
+3. You can access lolisafe at http://localhost:9999/
+
 ## Getting started
 This service supports running both as public and private. The only difference is that one needs a token to upload and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just set the option `private: false` in the `config.js` file. In case you want to run it privately, you should set `private: true`.
 
