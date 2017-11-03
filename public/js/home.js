@@ -185,7 +185,7 @@ upload.prepareShareX = function(){
   \"RequestURL\": \"" + location.origin + "/api/upload\",\r\n\
   \"FileFormName\": \"files[]\",\r\n\
   \"Headers\": {\r\n\
-    \"token\": \" " + upload.token + "\"\r\n\
+    \"token\": \"" + upload.token + "\"\r\n\
   },\r\n\
   \"ResponseType\": \"Text\",\r\n\
   \"URL\": \"$json:files[0].url$\",\r\n\
