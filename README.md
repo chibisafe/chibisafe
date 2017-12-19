@@ -53,9 +53,27 @@ To make it easier and better than any other service, you can download [our Chrom
 
 Because of how nodejs apps work, if you want it attached to a domain name you will need to make a reverse proxy for it. Here is a tutorial [on how to do this with nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04). Keep in mind that this is only a requirement if you want to access your loli-safe service by using a domain name (ex: https://i.kanacchi.moe), otherwise you can use the service just fine by accessing it from your server's IP.
 
+## Using in Docker
+
+It's quite easy to clone it and run `docker build .`
+
+But you still have to mount some volumes or you'll lose all of your data in the next deployment. Follow the sample below:
+
+| Container Path       | Host Path                         |      |
+| -------------------- | --------------------------------- | ---- |
+| /app/config.js       | /home/app-lolisafe/config.js      | ro   |
+| /app/database/db.db* | /home/app-lolisafe/database/db.db | rw   |
+| /app/logs            | /home/app-lolisafe/logs           | rw   |
+| /app/uploads         | /home/app-lolisafe/uploads        | rw   |
+
+\* To avoid potential compatibility issues, it's recommanded to modify `database.connection.filename` to a filename with extension or Docker may treat it as a directory.
+
+Besides, don't forget expose the same port as `port` in `config.js`.
+
 ## Sites using loli-safe
 - [lolisafe.moe](https://lolisafe.moe): A small safe worth protecting.
 - [safe.moe](https://safe.moe): The world's most ~~un~~safe pomf clone
+- [i.icemic.moe](https://i.icemic.moe): Just for personal use, and loves the repo's name.
 - Feel free to add yours here.
 
 ## Author
