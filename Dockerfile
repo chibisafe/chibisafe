@@ -3,8 +3,8 @@ FROM node:8
 WORKDIR /app
 COPY . /app
 
-RUN yarn install && yarn global add pm2
+RUN yarn install && yarn global add nodemon
 
 EXPOSE 3000
 
-CMD ["pm2", "start", "lolisafe.js"]
+CMD ["nodemon", "lolisafe.js"]
