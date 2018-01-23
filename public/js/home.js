@@ -18,8 +18,8 @@ upload.checkIfPublic = function () {
       upload.preparePage()
     })
     .catch(error => {
-      swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
-      return console.log(error)
+      console.log(error)
+      return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
     })
 }
 
@@ -56,8 +56,8 @@ upload.verifyToken = function (token, reloadOnError) {
       return upload.prepareUpload()
     })
     .catch(error => {
-      swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
-      return console.log(error)
+      console.log(error)
+      return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
     })
 }
 
@@ -89,8 +89,8 @@ upload.prepareUpload = function () {
         document.getElementById('albumDiv').style.display = 'block'
       })
       .catch(e => {
-        swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
-        return console.log(e)
+        console.log(e)
+        return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
   }
 
