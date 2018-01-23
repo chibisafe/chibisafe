@@ -1,92 +1,92 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="description" content="A pomf-like file uploading service that doesn't suck.">
-		<meta name="keywords" content="upload,lolisafe,file,images,hosting">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="keywords" content="upload,lolisafe,file,images,hosting">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-		<link rel="apple-touch-icon" sizes="180x180" href="https://safe.fiery.me/images/icons/apple-touch-icon.png?v=ZqYs7M3fG4">
-		<link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-32x32.png?v=ZqYs7M3fG4" sizes="32x32">
-		<link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-16x16.png?v=ZqYs7M3fG4" sizes="16x16">
-		<link rel="manifest" href="https://safe.fiery.me/images/icons/manifest.json?v=ZqYs7M3fG4">
-		<link rel="mask-icon" href="https://safe.fiery.me/images/icons/safari-pinned-tab.svg?v=ZqYs7M3fG4" color="#ffffff">
-		<link rel="shortcut icon" href="https://safe.fiery.me/images/icons/favicon.ico?v=ZqYs7M3fG4">
-		<meta name="apple-mobile-web-app-title" content="lolisafe">
-		<meta name="application-name" content="lolisafe">
-		<meta name="msapplication-config" content="https://safe.fiery.me/images/icons/browserconfig.xml?v=ZqYs7M3fG4">
-		<meta name="theme-color" content="#232629">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://safe.fiery.me/images/icons/apple-touch-icon.png?v=ZqYs7M3fG4">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-32x32.png?v=ZqYs7M3fG4" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-16x16.png?v=ZqYs7M3fG4" sizes="16x16">
+    <link rel="manifest" href="https://safe.fiery.me/images/icons/manifest.json?v=ZqYs7M3fG4">
+    <link rel="mask-icon" href="https://safe.fiery.me/images/icons/safari-pinned-tab.svg?v=ZqYs7M3fG4" color="#ffffff">
+    <link rel="shortcut icon" href="https://safe.fiery.me/images/icons/favicon.ico?v=ZqYs7M3fG4">
+    <meta name="apple-mobile-web-app-title" content="lolisafe">
+    <meta name="application-name" content="lolisafe">
+    <meta name="msapplication-config" content="https://safe.fiery.me/images/icons/browserconfig.xml?v=ZqYs7M3fG4">
+    <meta name="theme-color" content="#232629">
 
-		<meta property="og:url" content="https://safe.fiery.me" />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="lolisafe.moe | A small safe worth protecting." />
-		<meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
-		<meta property="og:image" content="https://safe.fiery.me/images/logo_square.png" />
+    <meta property="og:url" content="https://safe.fiery.me" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="lolisafe.moe | A small safe worth protecting." />
+    <meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
+    <meta property="og:image" content="https://safe.fiery.me/images/logo_square.png" />
 
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:title" content="lolisafe.moe | A small safe worth protecting.">
-		<meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
-		<meta name="twitter:image" content="https://safe.fiery.me/images/logo_square.png">
-		<meta name="twitter:image:src" content="https://safe.fiery.me/images/logo_square.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="lolisafe.moe | A small safe worth protecting.">
+    <meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="twitter:image" content="https://safe.fiery.me/images/logo_square.png">
+    <meta name="twitter:image:src" content="https://safe.fiery.me/images/logo_square.png">
 
-		<title>safe.fiery.me &#8211; A small safe worth protecting.</title>
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
-		<script type="text/javascript" src="/js/home.js"></script>
-	</head>
+    <title>safe.fiery.me &#8211; A small safe worth protecting.</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
+  </head>
 
-	<body>
-		<section class="hero is-fullheight has-text-centered" id="home">
-			<div class="hero-body">
-				<div class="container">
-					<p id="b">
-						<img class="logo" src="/images/logo_smol.png">
-					</p>
-					<h1 class="title">safe.fiery.me</h1>
-					<h2 class="subtitle">A <strong>modern</strong> self-hosted file upload service</h2>
+  <body>
+    <section class="hero is-fullheight has-text-centered" id="home">
+      <div class="hero-body">
+        <div class="container">
+          <p id="b">
+            <img class="logo" src="/images/logo_smol.png">
+          </p>
+          <h1 class="title">safe.fiery.me</h1>
+          <h2 class="subtitle">A <strong>modern</strong> self-hosted file upload service</h2>
 
-					<h3 class="subtitle" id="maxFileSize"></h3>
-					<div class="columns">
-						<div class="column is-hidden-mobile"></div>
-						<div class="column" id="uploadContainer">
-							<a id="loginToUpload" href="/auth" class="button is-danger">Running in private mode. Log in to upload.</a>
-							<div class="field" id="albumDiv" style="display: none">
-								<p class="control select-wrapper">
-									<span class="select">
-										<select id="albumSelect">
-											<option value="">Upload to album</option>
-										</select>
-									</span>
-								</p>
-							</div>
-						</div>
-						<div class="column is-hidden-mobile"></div>
-					</div>
+          <h3 class="subtitle" id="maxFileSize"></h3>
+          <div class="columns">
+            <div class="column is-hidden-mobile"></div>
+            <div class="column" id="uploadContainer">
+              <a id="loginToUpload" href="/auth" class="button is-danger">Running in private mode. Log in to upload.</a>
+              <div class="field" id="albumDiv" style="display: none">
+                <p class="control select-wrapper">
+                  <span class="select">
+                    <select id="albumSelect">
+                      <option value="">Upload to album</option>
+                    </select>
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+          </div>
 
-					<div id="uploads">
-						<div id="template" class="columns">
-							<div class="column is-hidden-mobile"></div>
-							<div class="column">
-								<progress class="progress is-small is-danger" value="0" max="100" data-dz-uploadprogress></progress>
-								<p data-dz-errormessage></p>
-								<p class="link"></p>
-							</div>
-							<div class="column is-hidden-mobile"></div>
-						</div>
-					</div>
+          <div id="uploads">
+            <div id="template" class="columns">
+              <div class="column is-hidden-mobile"></div>
+              <div class="column">
+                <progress class="progress is-small is-danger" value="0" max="100" data-dz-uploadprogress></progress>
+                <p data-dz-errormessage></p>
+                <p class="link"></p>
+              </div>
+              <div class="column is-hidden-mobile"></div>
+            </div>
+          </div>
 
-					<h3 class="subtitle"><a href="/auth" id="loginLinkText"></a></h3>
-					<h3 id="links">
-						<a href="https://fiery.me" target="_blank" class="is-danger">Home</a><span>|</span><a href="https://blog.fiery.me" target="_blank" class="is-danger">Blog</a><span>|</span><a id="ShareX" href="https://safe.fiery.me/sharex.txt">ShareX</a><span>|</span><a href="/faq" class="is-danger">FAQ</a><span>|</span><a href="/auth" target="_blank" class="is-danger">Dashboard</a><span>|</span><a href="https://github.com/BobbyWibowo/lolisafe" target="_blank" class="is-danger">View on GitHub</a>
-					</h3>
+          <h3 class="subtitle"><a href="/auth" id="loginLinkText"></a></h3>
+          <h3 id="links">
+            <a href="https://fiery.me" target="_blank" class="is-danger">Home</a><span>|</span><a href="https://blog.fiery.me" target="_blank" class="is-danger">Blog</a><span>|</span><a id="ShareX" href="https://safe.fiery.me/sharex.txt">ShareX</a><span>|</span><a href="/faq" class="is-danger">FAQ</a><span>|</span><a href="/auth" target="_blank" class="is-danger">Dashboard</a><span>|</span><a href="https://github.com/BobbyWibowo/lolisafe" target="_blank" class="is-danger">View on GitHub</a>
+          </h3>
 
-				</div>
-			</div>
-		</section>
+        </div>
+      </div>
+    </section>
 
-	</body>
+  </body>
 </html>

@@ -1,31 +1,31 @@
 /* ------------------
-		HOME
+    HOME
 ------------------ */
 
 section#home #b {
-	-webkit-animation-delay: 0.5s;
-	animation-delay: 0.5s;
-	-webkit-animation-duration: 1.5s;
-	animation-duration: 1.5s;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
-	-webkit-animation-name: floatUp;
-	animation-name: floatUp;
-	-webkit-animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
-	animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
-	border-radius: 24px;
-	display: inline-block;
-	height: 240px;
-	margin-bottom: 40px;
-	position: relative;
-	vertical-align: top;
-	width: 240px;
-	box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: floatUp;
+  animation-name: floatUp;
+  -webkit-animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
+  animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
+  border-radius: 24px;
+  display: inline-block;
+  height: 240px;
+  margin-bottom: 40px;
+  position: relative;
+  vertical-align: top;
+  width: 240px;
+  box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
 }
 
 section#home div#dropzone {
-	border: 1px solid #dbdbdb;
-	background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #dbdbdb;
+  background-color: rgba(0, 0, 0, 0);
     border-color: #ff3860;
     color: #ff3860;
     display: none;
@@ -55,31 +55,31 @@ section#home .dz-preview img, section#home .dz-preview .dz-success-mark, section
 section#home div#uploads { margin-bottom: 25px; }
 
 @keyframes floatUp {
-	0% {
-		opacity: 0;
-		box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0);
-		-webkit-transform: scale(0.86);
-		transform: scale(0.86);
-	}
-	25% { opacity: 100; }
-	67% {
-		box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
-	100% {
-		box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0), 0 0 0 rgba(10, 10, 10, 0);
+    -webkit-transform: scale(0.86);
+    transform: scale(0.86);
+  }
+  25% { opacity: 100; }
+  67% {
+    box-shadow: 0 0 0 rgba(10, 10, 10, 0), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 20px 60px rgba(10, 10, 10, 0.05), 0 5px 10px rgba(10, 10, 10, 0.1), 0 1px 1px rgba(10, 10, 10, 0.2);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
 
 /* ------------------
-		PANEL
+    PANEL
 ------------------ */
 
 section#login input, section#login p.control a.button {
-	border-left: 0px;
+  border-left: 0px;
     border-top: 0px;
     border-right: 0px;
     border-radius: 0px;
@@ -94,7 +94,7 @@ section#login p.control a#registerBtn { border-left: 0px; }
 section#auth, section#dashboard { display: none }
 section#auth input { background: rgba(0, 0, 0, 0); }
 section#auth input, section#auth a {
-	border-left: 0px;
+  border-left: 0px;
     border-top: 0px;
     border-right: 0px;
     border-radius: 0px;
@@ -107,8 +107,8 @@ section#dashboard div#table div.column a { width: 100%; }
 section#dashboard div#table div.column a img { width:200px; }
 
 .select-wrapper {
-	text-align: center;
-	margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 /** Based on KDE Breeze Dark **/
