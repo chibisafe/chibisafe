@@ -41,7 +41,7 @@ section#home div#dropzone {
     padding-left: .75em;
     padding-right: .75em;
     text-align: center;
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 section#home div#uploads, section#home p#tokenContainer, section#home a#panel { display: none; }
@@ -109,4 +109,41 @@ section#dashboard div#table div.column a img { width:200px; }
 .select-wrapper {
 	text-align: center;
 	margin-bottom: 10px;
+}
+
+/** Based on KDE Breeze Dark **/
+
+.hero {
+  background-color: #232629;
+  color: #eff0f1;
+}
+
+.title {
+  color: #eff0f1;
+}
+
+.subtitle {
+  color: #bdc3c7;
+}
+
+.subtitle strong {
+  color: #bdc3c7;
+}
+
+a {
+  color: #2980b9;
+}
+
+a:hover {
+  color: #3daee9;
+}
+
+section#home h3#links span {
+  color: #4d4d4d;
+}
+
+section#home #b {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
 }

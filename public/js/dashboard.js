@@ -1,104 +1,95 @@
-let panel = {}
+let panel = {};
 
 panel.page;
 panel.username;
 panel.token = localStorage.token;
 panel.filesView = localStorage.filesView;
 
-panel.preparePage = function(){
-	if(!panel.token) return window.location = '/auth';
+panel.preparePage = function() {
+	if (!panel.token) return window.location = '/auth';
 	panel.verifyToken(panel.token, true);
-}
+};
 
-panel.verifyToken = function(token, reloadOnError){
-	if(reloadOnError === undefined)
-		reloadOnError = false;
+panel.verifyToken = function(token, reloadOnError) {
+	if (reloadOnError === undefined) { reloadOnError = false; }
 
-	axios.post('/api/tokens/verify', {
-		token: token
-	})
-	.then(function (response) {
+	axios.post('/api/tokens/verify', { token: token })
+		.then(response => {
+			if (response.data.success === false) {
+				swal({
+					title: 'An error ocurred',
+					text: response.data.description,
+					type: 'error'
+				}, () => {
+					if (reloadOnError) {
+						localStorage.removeItem('token');
+						location.location = '/auth';
+					}
+				});
+				return;
+			}
 
-		if(response.data.success === false){
-			swal({
-				title: "An error ocurred", 
-				text: response.data.description, 
-				type: "error"
-			}, function(){
-				if(reloadOnError){
-					localStorage.removeItem("token");
-					location.location = '/auth';
-				}
-			})
-			return;
-		}
+			axios.defaults.headers.common.token = token;
+			localStorage.token = token;
+			panel.token = token;
+			panel.username = response.data.username;
+			return panel.prepareDashboard();
+		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-		axios.defaults.headers.common['token'] = token;
-		localStorage.token = token;
-		panel.token = token;
-		panel.username = response.data.username;
-		return panel.prepareDashboard();
-
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
-
-}
-
-panel.prepareDashboard = function(){
+panel.prepareDashboard = function() {
 	panel.page = document.getElementById('page');
 	document.getElementById('auth').style.display = 'none';
 	document.getElementById('dashboard').style.display = 'block';
 
-	document.getElementById('itemUploads').addEventListener('click', function(){
+	document.getElementById('itemUploads').addEventListener('click', function() {
 		panel.setActiveMenu(this);
 	});
 
-	document.getElementById('itemManageGallery').addEventListener('click', function(){
+	document.getElementById('itemManageGallery').addEventListener('click', function() {
 		panel.setActiveMenu(this);
 	});
 
-	document.getElementById('itemTokens').addEventListener('click', function(){
+	document.getElementById('itemTokens').addEventListener('click', function() {
 		panel.setActiveMenu(this);
 	});
 
-	document.getElementById('itemPassword').addEventListener('click', function(){
+	document.getElementById('itemPassword').addEventListener('click', function() {
 		panel.setActiveMenu(this);
 	});
 
 	document.getElementById('itemLogout').innerHTML = `Logout ( ${panel.username} )`;
 
 	panel.getAlbumsSidebar();
-}
+};
 
-panel.logout = function(){
-	localStorage.removeItem("token");
+panel.logout = function() {
+	localStorage.removeItem('token');
 	location.reload('/');
-}
+};
 
-panel.getUploads = function(album = undefined, page = undefined){
+panel.getUploads = function(album = undefined, page = undefined) {
+	if (page === undefined) page = 0;
 
-	if(page === undefined) page = 0;
+	let url = `/api/uploads/${page}`;
+	if (album !== undefined) { url = `/api/album/${album}/${page}`; }
 
-	let url = '/api/uploads/' + page
-	if(album !== undefined)
-		url = '/api/album/' + album + '/' + page
-
-	axios.get(url).then(function (response) {
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+	axios.get(url).then(response => {
+		if (response.data.success === false) {
+			if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+			else return swal('An error ocurred', response.data.description, 'error');
 		}
-		
+
 		var prevPage = 0;
 		var nextPage = page + 1;
 
-		if(response.data.files.length < 25)
-			nextPage = page;
-		
-		if(page > 0) prevPage = page - 1;
+		if (response.data.files.length < 25) { nextPage = page; }
+
+		if (page > 0) prevPage = page - 1;
 
 		panel.page.innerHTML = '';
 		var container = document.createElement('div');
@@ -120,10 +111,9 @@ panel.getUploads = function(album = undefined, page = undefined){
 					</span>
 				</a>
 			</div>
-		</div>`
+		</div>`;
 
-		if(panel.filesView === 'thumbs'){
-
+		if (panel.filesView === 'thumbs') {
 			container.innerHTML = `
 				${pagination}
 				<hr>
@@ -137,23 +127,15 @@ panel.getUploads = function(album = undefined, page = undefined){
 			panel.page.appendChild(container);
 			var table = document.getElementById('table');
 
-			for(var item of response.data.files){
-
+			for (var item of response.data.files) {
 				var div = document.createElement('div');
-				div.className = "column is-2";
-				if(item.thumb !== undefined)
-					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`;
-				else
-					div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a>`;
+				div.className = 'column is-2';
+				if (item.thumb !== undefined) { div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`; } else { div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a>`; }
 				table.appendChild(div);
-
 			}
-
-		}else{
-
+		} else {
 			var albumOrUser = 'Album';
-			if(panel.username === 'root')
-				albumOrUser = 'User';
+			if (panel.username === 'root') { albumOrUser = 'User'; }
 
 			container.innerHTML = `
 				${pagination}
@@ -178,17 +160,15 @@ panel.getUploads = function(album = undefined, page = undefined){
 			panel.page.appendChild(container);
 			var table = document.getElementById('table');
 
-			for(var item of response.data.files){
-
+			for (var item of response.data.files) {
 				var tr = document.createElement('tr');
 
 				var displayAlbumOrUser = item.album;
-				if(panel.username === 'root'){
+				if (panel.username === 'root') {
 					displayAlbumOrUser = '';
-					if(item.username !== undefined)
-						displayAlbumOrUser = item.username;
+					if (item.username !== undefined) { displayAlbumOrUser = item.username; }
 				}
-					
+
 				tr.innerHTML = `
 					<tr>
 						<th><a href="${item.file}" target="_blank">${item.file}</a></th>
@@ -208,66 +188,57 @@ panel.getUploads = function(album = undefined, page = undefined){
 			}
 		}
 	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-}
-
-panel.setFilesView = function(view, album, page){
+panel.setFilesView = function(view, album, page) {
 	localStorage.filesView = view;
 	panel.filesView = view;
 	panel.getUploads(album, page);
-}
+};
 
-panel.deleteFile = function(id){
+panel.deleteFile = function(id) {
 	swal({
-		title: "Are you sure?",
-		text: "You wont be able to recover the file!",
-		type: "warning",
+		title: 'Are you sure?',
+		text: 'You wont be able to recover the file!',
+		type: 'warning',
 		showCancelButton: true,
-		confirmButtonColor: "#ff3860",
-		confirmButtonText: "Yes, delete it!",
+		confirmButtonColor: '#ff3860',
+		confirmButtonText: 'Yes, delete it!',
 		closeOnConfirm: false
 	},
-		function(){
-
-			axios.post('/api/upload/delete', {
-				id: id
-			})
-			.then(function (response) {
-
-				if(response.data.success === false){
-					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-					else return swal("An error ocurred", response.data.description, "error");		
+	() => {
+		axios.post('/api/upload/delete', { id: id })
+			.then(response => {
+				if (response.data.success === false) {
+					if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+					else return swal('An error ocurred', response.data.description, 'error');
 				}
 
-				swal("Deleted!", "The file has been deleted.", "success");
+				swal('Deleted!', 'The file has been deleted.', 'success');
 				panel.getUploads();
-				return;
-
 			})
-			.catch(function (error) {
-				return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+			.catch(error => {
+				return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
 				console.log(error);
 			});
-
-		}
+	}
 	);
-}
+};
 
-panel.getAlbums = function(){
-
-	axios.get('/api/albums').then(function (response) {
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+panel.getAlbums = function() {
+	axios.get('/api/albums').then(response => {
+		if (response.data.success === false) {
+			if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+			else return swal('An error ocurred', response.data.description, 'error');
 		}
 
 		panel.page.innerHTML = '';
 		var container = document.createElement('div');
-		container.className = "container";
+		container.className = 'container';
 		container.innerHTML = `
 			<h2 class="subtitle">Create new album</h2>
 
@@ -295,8 +266,7 @@ panel.getAlbums = function(){
 		panel.page.appendChild(container);
 		var table = document.getElementById('table');
 
-		for(var item of response.data.albums){
-
+		for (var item of response.data.albums) {
 			var tr = document.createElement('tr');
 			tr.innerHTML = `
 				<tr>
@@ -322,182 +292,153 @@ panel.getAlbums = function(){
 			table.appendChild(tr);
 		}
 
-		document.getElementById('submitAlbum').addEventListener('click', function(){
+		document.getElementById('submitAlbum').addEventListener('click', () => {
 			panel.submitAlbum();
 		});
-
 	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-}
-
-panel.renameAlbum = function(id){
-	
+panel.renameAlbum = function(id) {
 	swal({
-  		title: "Rename album",
-		text: "New name you want to give the album:",
-		type: "input",
+  		title: 'Rename album',
+		text: 'New name you want to give the album:',
+		type: 'input',
 		showCancelButton: true,
 		closeOnConfirm: false,
-		animation: "slide-from-top",
-		inputPlaceholder: "My super album"
-	},function(inputValue){
+		animation: 'slide-from-top',
+		inputPlaceholder: 'My super album'
+	}, inputValue => {
   		if (inputValue === false) return false;
-  		if (inputValue === "") {
-    		swal.showInputError("You need to write something!");
-    		return false
+  		if (inputValue === '') {
+    		swal.showInputError('You need to write something!');
+    		return false;
   		}
-  		
+
   		axios.post('/api/albums/rename', {
 			id: id,
 			name: inputValue
 		})
-		.then(function (response) {
-
-			if(response.data.success === false){
-				if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-				else if(response.data.description === 'Name already in use') swal.showInputError("That name is already in use!");
-				else swal("An error ocurred", response.data.description, "error");
-				return;
-			}
-
-			swal("Success!", "Your album was renamed to: " + inputValue, "success");
-			panel.getAlbumsSidebar();
-			panel.getAlbums();
-			return;
-
-		})
-		.catch(function (error) {
-			return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-			console.log(error);
-		});
-		
-	});
-
-}
-
-panel.deleteAlbum = function(id){
-	swal({
-		title: "Are you sure?",
-		text: "This won't delete your files, only the album!",
-		type: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#ff3860",
-		confirmButtonText: "Yes, delete it!",
-		closeOnConfirm: false
-	},
-		function(){
-
-			axios.post('/api/albums/delete', {
-				id: id
-			})
-			.then(function (response) {
-
-				if(response.data.success === false){
-					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-					else return swal("An error ocurred", response.data.description, "error");		
+			.then(response => {
+				if (response.data.success === false) {
+					if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+					else if (response.data.description === 'Name already in use') swal.showInputError('That name is already in use!');
+					else swal('An error ocurred', response.data.description, 'error');
+					return;
 				}
 
-				swal("Deleted!", "Your album has been deleted.", "success");
+				swal('Success!', `Your album was renamed to: ${inputValue}`, 'success');
 				panel.getAlbumsSidebar();
 				panel.getAlbums();
-				return;
-
 			})
-			.catch(function (error) {
-				return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+			.catch(error => {
+				return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
 				console.log(error);
 			});
-
-		}
-	);
-
-}
-
-panel.submitAlbum = function(){
-	
-	axios.post('/api/albums', {
-		name: document.getElementById('albumName').value
-	})
-	.then(function (response) {
-
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
-		}
-
-		swal("Woohoo!", "Album was added successfully", "success");
-		panel.getAlbumsSidebar();
-		panel.getAlbums();
-		return;
-
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
 	});
+};
 
-}
+panel.deleteAlbum = function(id) {
+	swal({
+		title: 'Are you sure?',
+		text: "This won't delete your files, only the album!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#ff3860',
+		confirmButtonText: 'Yes, delete it!',
+		closeOnConfirm: false
+	},
+	() => {
+		axios.post('/api/albums/delete', { id: id })
+			.then(response => {
+				if (response.data.success === false) {
+					if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+					else return swal('An error ocurred', response.data.description, 'error');
+				}
 
-panel.getAlbumsSidebar = function(){
-
-	axios.get('/api/albums/sidebar')
-	.then(function (response) {
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
-		}
-
-		var albumsContainer = document.getElementById('albumsContainer');
-		albumsContainer.innerHTML = '';
-
-		if(response.data.albums === undefined) return;
-
-		for(var album of response.data.albums){
-
-			li = document.createElement('li');
-			a = document.createElement('a');
-			a.id = album.id;
-			a.innerHTML = album.name;
-
-			a.addEventListener('click', function(){
-				panel.getAlbum(this);
+				swal('Deleted!', 'Your album has been deleted.', 'success');
+				panel.getAlbumsSidebar();
+				panel.getAlbums();
+			})
+			.catch(error => {
+				return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+				console.log(error);
 			});
+	}
+	);
+};
 
-			li.appendChild(a);
-			albumsContainer.appendChild(li);
-		}
+panel.submitAlbum = function() {
+	axios.post('/api/albums', { name: document.getElementById('albumName').value })
+		.then(response => {
+			if (response.data.success === false) {
+				if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+				else return swal('An error ocurred', response.data.description, 'error');
+			}
 
+			swal('Woohoo!', 'Album was added successfully', 'success');
+			panel.getAlbumsSidebar();
+			panel.getAlbums();
+		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
+panel.getAlbumsSidebar = function() {
+	axios.get('/api/albums/sidebar')
+		.then(response => {
+			if (response.data.success === false) {
+				if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+				else return swal('An error ocurred', response.data.description, 'error');
+			}
 
-}
+			var albumsContainer = document.getElementById('albumsContainer');
+			albumsContainer.innerHTML = '';
 
-panel.getAlbum = function(item){
+			if (response.data.albums === undefined) return;
+
+			for (var album of response.data.albums) {
+				li = document.createElement('li');
+				a = document.createElement('a');
+				a.id = album.id;
+				a.innerHTML = album.name;
+
+				a.addEventListener('click', function() {
+					panel.getAlbum(this);
+				});
+
+				li.appendChild(a);
+				albumsContainer.appendChild(li);
+			}
+		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
+
+panel.getAlbum = function(item) {
 	panel.setActiveMenu(item);
 	panel.getUploads(item.id);
-}
+};
 
-panel.changeToken = function(){
-
+panel.changeToken = function() {
 	axios.get('/api/tokens')
-	.then(function (response) {
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
-		}
+		.then(response => {
+			if (response.data.success === false) {
+				if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+				else return swal('An error ocurred', response.data.description, 'error');
+			}
 
-		panel.page.innerHTML = '';
-		var container = document.createElement('div');
-		container.className = "container";
-		container.innerHTML = `
+			panel.page.innerHTML = '';
+			var container = document.createElement('div');
+			container.className = 'container';
+			container.innerHTML = `
 			<h2 class="subtitle">Manage your token</h2>
 
 			<label class="label">Your current token:</label>
@@ -507,52 +448,45 @@ panel.changeToken = function(){
 			</p>
 		`;
 
-		panel.page.appendChild(container);
+			panel.page.appendChild(container);
 
-		document.getElementById('getNewToken').addEventListener('click', function(){
-			panel.getNewToken();
-		});
-
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
-
-}
-
-panel.getNewToken = function(){
-
-	axios.post('/api/tokens/change')
-	.then(function (response) {
-
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
-		}
-
-		swal({
-			title: "Woohoo!", 
-			text: 'Your token was changed successfully.', 
-			type: "success"
-		}, function(){
-			localStorage.token = response.data.token;
-			location.reload();
+			document.getElementById('getNewToken').addEventListener('click', () => {
+				panel.getNewToken();
+			});
 		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
+panel.getNewToken = function() {
+	axios.post('/api/tokens/change')
+		.then(response => {
+			if (response.data.success === false) {
+				if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+				else return swal('An error ocurred', response.data.description, 'error');
+			}
 
-}
+			swal({
+				title: 'Woohoo!',
+				text: 'Your token was changed successfully.',
+				type: 'success'
+			}, () => {
+				localStorage.token = response.data.token;
+				location.reload();
+			});
+		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-panel.changePassword = function(){
-
+panel.changePassword = function() {
 	panel.page.innerHTML = '';
 	var container = document.createElement('div');
-	container.className = "container";
+	container.className = 'container';
 	container.innerHTML = `
 		<h2 class="subtitle">Change your password</h2>
 
@@ -569,56 +503,51 @@ panel.changePassword = function(){
 
 	panel.page.appendChild(container);
 
-	document.getElementById('sendChangePassword').addEventListener('click', function(){
+	document.getElementById('sendChangePassword').addEventListener('click', () => {
 		if (document.getElementById('password').value === document.getElementById('passwordConfirm').value) {
 			panel.sendNewPassword(document.getElementById('password').value);
 		} else {
 			swal({
-				title: "Password mismatch!", 
-				text: 'Your passwords do not match, please try again.', 
-				type: "error"
-			}, function() {
+				title: 'Password mismatch!',
+				text: 'Your passwords do not match, please try again.',
+				type: 'error'
+			}, () => {
 				panel.changePassword();
 			});
 		}
 	});
-}
+};
 
-panel.sendNewPassword = function(pass){
+panel.sendNewPassword = function(pass) {
+	axios.post('/api/password/change', { password: pass })
+		.then(response => {
+			if (response.data.success === false) {
+				if (response.data.description === 'No token provided') return panel.verifyToken(panel.token);
+				else return swal('An error ocurred', response.data.description, 'error');
+			}
 
-	axios.post('/api/password/change', {password: pass})
-	.then(function (response) {
-
-		if(response.data.success === false){
-			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
-		}
-
-		swal({
-			title: "Woohoo!", 
-			text: 'Your password was changed successfully.', 
-			type: "success"
-		}, function(){
-			location.reload();
+			swal({
+				title: 'Woohoo!',
+				text: 'Your password was changed successfully.',
+				type: 'success'
+			}, () => {
+				location.reload();
+			});
 		})
+		.catch(error => {
+			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+			console.log(error);
+		});
+};
 
-	})
-	.catch(function (error) {
-		return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-		console.log(error);
-	});
-
-}
-
-panel.setActiveMenu = function(item){
+panel.setActiveMenu = function(item) {
 	var menu = document.getElementById('menu');
 	var items = menu.getElementsByTagName('a');
-	for(var i = 0; i < items.length; i++)
-		items[i].className = "";
+	for (var i = 0; i < items.length; i++) { items[i].className = ''; }
 
 	item.className = 'is-active';
-}
+};
 
-window.onload = function () {
+window.onload = function() {
 	panel.preparePage();
-}
+};

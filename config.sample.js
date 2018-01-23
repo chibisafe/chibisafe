@@ -81,4 +81,4 @@ module.exports = {
 		connection: { filename: './database/db' },
 		useNullAsDefault: true
 	}
-}
+};
