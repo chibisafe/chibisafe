@@ -11,3 +11,4 @@ pages/custom/**
 migrate.js
 yarn.lock
 package-lock.json
+.vscode/
