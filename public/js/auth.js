@@ -1,44 +1,56 @@
-var page = {};
+/* global swal, axios */
 
-page.do = function(dest) {
-	var user = document.getElementById('user').value;
-	var pass = document.getElementById('pass').value;
+var page = {}
 
-	if (user === undefined || user === null || user === '') { return swal('Error', 'You need to specify a username', 'error'); }
-	if (pass === undefined || pass === null || pass === '') { return swal('Error', 'You need to specify a username', 'error'); }
+page.do = function (dest) {
+  var user = document.getElementById('user').value
+  var pass = document.getElementById('pass').value
 
-	axios.post(`/api/${dest}`, {
-		username: user,
-		password: pass
-	})
-		.then(response => {
-			if (response.data.success === false) { return swal('Error', response.data.description, 'error'); }
+  if (user === undefined || user === null || user === '') {
+    return swal('Error', 'You need to specify a username', 'error')
+  }
+  if (pass === undefined || pass === null || pass === '') {
+    return swal('Error', 'You need to specify a username', 'error')
+  }
 
-			localStorage.token = response.data.token;
-			window.location = '/dashboard';
-		})
-		.catch(error => {
-			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
-			console.log(error);
-		});
-};
+  axios.post('/api/' + dest, {
+    username: user,
+    password: pass
+  })
+  .then(function (response) {
+    if (response.data.success === false) {
+      return swal('Error', response.data.description, 'error')
+    }
 
-page.verify = function() {
-	page.token = localStorage.token;
-	if (page.token === undefined) return;
+    localStorage.token = response.data.token
+    window.location = '/dashboard'
+  })
+  .catch(function (error) {
+    console.log(error)
+    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+  })
+}
 
-	axios.post('/api/tokens/verify', { token: page.token })
-		.then(response => {
-			if (response.data.success === false) { return swal('Error', response.data.description, 'error'); }
+page.verify = function () {
+  page.token = localStorage.token
+  if (page.token === undefined) return
 
-			window.location = '/dashboard';
-		})
-		.catch(error => {
-			return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
-			console.log(error);
-		});
-};
+  axios.post('/api/tokens/verify', {
+    token: page.token
+  })
+  .then(function (response) {
+    if (response.data.success === false) {
+      return swal('Error', response.data.description, 'error')
+    }
 
-window.onload = function() {
-	page.verify();
-};
+    window.location = '/dashboard'
+  })
+  .catch(function (error) {
+    console.log(error)
+    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+  })
+}
+
+window.onload = function () {
+  page.verify()
+}
