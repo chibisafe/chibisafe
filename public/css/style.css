@@ -139,11 +139,15 @@ a:hover {
 }
 
 section#home h3#links span {
-  color: #4d4d4d;
+  color: #898b8d;
 }
 
 section#home #b {
   width: 200px;
   height: 200px;
   border-radius: 100%;
+}
+
+hr {
+  background-color: #898b8d;
 }
