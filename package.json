@@ -37,6 +37,9 @@
     "standard": "^10.0.3"
   },
   "standard": {
-    "envs": ["browser", "node"]
+    "envs": [
+      "browser",
+      "node"
+    ]
   }
 }
