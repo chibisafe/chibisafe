@@ -60,8 +60,13 @@ for (let page of config.pages) {
   }
 }
 
-// safe.use((req, res, next) => res.status(404).sendFile('404.html', { root: './pages/error/' }))
-// safe.use((req, res, next) => res.status(500).sendFile('500.html', { root: './pages/error/' }))
+// NOTE: Uses fiery-me branch of https://github.com/BobbyWibowo/HttpErrorPages
+safe.use((req, res, next) => {
+  const errorCodes = [400, 401, 403, 404, 500, 501, 502, 503, 520, 521, 533]
+  for (const e of errorCodes) {
+    res.status(e).sendFile(`HTTP${e}.html`, { root: '../HttpErrorPages/dist/' })
+  }
+})
 
 safe.listen(config.port, () => console.log(`lolisafe started on port ${config.port}`))
 
