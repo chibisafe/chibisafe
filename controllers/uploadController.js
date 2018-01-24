@@ -98,7 +98,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 						hash: fileHash,
 						ip: req.ip,
 						albumid: album,
-						userid: userid !== undefined ? userid.id : null,
+						userid: typeof userid !== 'undefined' ? userid.id : null,
 						timestamp: Math.floor(Date.now() / 1000)
 					});
 				} else {
