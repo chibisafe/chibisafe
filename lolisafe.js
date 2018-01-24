@@ -34,11 +34,9 @@ safe.use(bodyParser.json())
 
 const setHeaders = (res, path, stat) => {
   if (/\.(3gp|gif|jpg|jpeg|png|ico|wmv|avi|asf|asx|mpg|mpeg|mp4|pls|mp3|mid|wav|swf|flv|exe|zip|tar|rar|gz|tgz|bz2|uha|7z|doc|docx|xls|xlsx|pdf|iso|js|css|eot|svg|ttf|woff|woff2)$/.test(path)) {
-    const day = 86400000
+    const day = 86400
     res.set('Access-Control-Allow-Origin', '*')
-    res.append('Cache-Control', `must-revalidate, proxy-revalidate, immutable, stale-while-revalidate=86400, stale-if-error=604800, max-age=${day * 30}`) // 30 days
-  } else {
-    res.append('Cache-Control', 'max-age=14400') // 4 hours
+    res.set('Cache-Control', `public, max-age=${day * 30}, must-revalidate, proxy-revalidate, immutable, stale-while-revalidate=86400, stale-if-error=604800`) // 30 days
   }
 }
 
