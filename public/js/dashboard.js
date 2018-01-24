@@ -10,8 +10,7 @@ panel.filesView = localStorage.filesView
 
 panel.preparePage = function () {
   if (!panel.token) {
-    window.location = '/auth'
-    return '/auth'
+    window.location = 'auth'
   }
   panel.verifyToken(panel.token, true)
 }
@@ -21,7 +20,7 @@ panel.verifyToken = function (token, reloadOnError) {
     reloadOnError = false
   }
 
-  axios.post('/api/tokens/verify', {
+  axios.post('api/tokens/verify', {
     token: token
   })
   .then(function (response) {
@@ -33,7 +32,7 @@ panel.verifyToken = function (token, reloadOnError) {
       }, function () {
         if (reloadOnError) {
           localStorage.removeItem('token')
-          location.location = '/auth'
+          location.location = 'auth'
         }
       })
       return
@@ -79,14 +78,14 @@ panel.prepareDashboard = function () {
 
 panel.logout = function () {
   localStorage.removeItem('token')
-  location.reload('/')
+  location.reload('.')
 }
 
 panel.getUploads = function (album = undefined, page = undefined) {
   if (page === undefined) page = 0
 
-  let url = '/api/uploads/' + page
-  if (album !== undefined) { url = '/api/album/' + album + '/' + page }
+  let url = 'api/uploads/' + page
+  if (album !== undefined) { url = 'api/album/' + album + '/' + page }
 
   axios.get(url).then(function (response) {
     if (response.data.success === false) {
@@ -112,12 +111,12 @@ panel.getUploads = function (album = undefined, page = undefined) {
       <div class="column">
         <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('list', ${album}, ${page})">
           <span class="icon is-small">
-            <i class="fa fa-list-ul"></i>
+            <i class="fa icon-list-bullet"></i>
           </span>
         </a>
         <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('thumbs', ${album}, ${page})">
           <span class="icon is-small">
-            <i class="fa fa-th-large"></i>
+            <i class="fa icon-th-large"></i>
           </span>
         </a>
       </div>
@@ -156,18 +155,20 @@ panel.getUploads = function (album = undefined, page = undefined) {
         ${pagination}
         <hr>
         ${listType}
-        <table class="table is-striped is-narrow is-left">
-          <thead>
-            <tr>
-                <th>File</th>
-                <th>${albumOrUser}</th>
-                <th>Date</th>
-                <th></th>
-            </tr>
-          </thead>
-          <tbody id="table">
-          </tbody>
-        </table>
+        <div class="table-container">
+          <table class="table is-striped is-narrow is-left">
+            <thead>
+              <tr>
+                  <th>File</th>
+                  <th>${albumOrUser}</th>
+                  <th>Date</th>
+                  <th></th>
+              </tr>
+            </thead>
+            <tbody id="table">
+            </tbody>
+          </table>
+        </div>
         <hr>
         ${pagination}
       `
@@ -193,7 +194,7 @@ panel.getUploads = function (album = undefined, page = undefined) {
             <td>
               <a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteFile(${item.id})">
                 <span class="icon is-small">
-                  <i class="fa fa-trash-o"></i>
+                  <i class="fa icon-trash"></i>
                 </span>
               </a>
             </td>
@@ -227,7 +228,7 @@ panel.deleteFile = function (id) {
     closeOnConfirm: false
   },
     function () {
-      axios.post('/api/upload/delete', {
+      axios.post('api/upload/delete', {
         id: id
       })
       .then(function (response) {
@@ -248,7 +249,7 @@ panel.deleteFile = function (id) {
 }
 
 panel.getAlbums = function () {
-  axios.get('/api/albums').then(function (response) {
+  axios.get('api/albums').then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
       else return swal('An error ocurred', response.data.description, 'error')
@@ -295,12 +296,12 @@ panel.getAlbums = function () {
           <td>
             <a class="button is-small is-primary is-outlined" title="Edit name" onclick="panel.renameAlbum(${item.id})">
               <span class="icon is-small">
-                <i class="fa fa-pencil"></i>
+                <i class="fa icon-pencil"></i>
               </span>
             </a>
             <a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteAlbum(${item.id})">
               <span class="icon is-small">
-                <i class="fa fa-trash-o"></i>
+                <i class="fa icon-trash"></i>
               </span>
             </a>
           </td>
@@ -336,7 +337,7 @@ panel.renameAlbum = function (id) {
       return false
     }
 
-    axios.post('/api/albums/rename', {
+    axios.post('api/albums/rename', {
       id: id,
       name: inputValue
     })
@@ -370,7 +371,7 @@ panel.deleteAlbum = function (id) {
     closeOnConfirm: false
   },
     function () {
-      axios.post('/api/albums/delete', {
+      axios.post('api/albums/delete', {
         id: id
       })
       .then(function (response) {
@@ -392,7 +393,7 @@ panel.deleteAlbum = function (id) {
 }
 
 panel.submitAlbum = function () {
-  axios.post('/api/albums', {
+  axios.post('api/albums', {
     name: document.getElementById('albumName').value
   })
   .then(function (response) {
@@ -412,7 +413,7 @@ panel.submitAlbum = function () {
 }
 
 panel.getAlbumsSidebar = function () {
-  axios.get('/api/albums/sidebar')
+  axios.get('api/albums/sidebar')
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
@@ -451,7 +452,7 @@ panel.getAlbum = function (item) {
 }
 
 panel.changeToken = function () {
-  axios.get('/api/tokens')
+  axios.get('api/tokens')
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
@@ -484,7 +485,7 @@ panel.changeToken = function () {
 }
 
 panel.getNewToken = function () {
-  axios.post('/api/tokens/change')
+  axios.post('api/tokens/change')
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
@@ -542,7 +543,7 @@ panel.changePassword = function () {
 }
 
 panel.sendNewPassword = function (pass) {
-  axios.post('/api/password/change', {password: pass})
+  axios.post('api/password/change', {password: pass})
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)

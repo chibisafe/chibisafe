@@ -11,7 +11,7 @@ upload.album
 upload.myDropzone
 
 upload.checkIfPublic = function () {
-  axios.get('/api/check')
+  axios.get('api/check')
     .then(response => {
       upload.isPrivate = response.data.private
       upload.maxFileSize = response.data.maxFileSize
@@ -24,18 +24,22 @@ upload.checkIfPublic = function () {
 }
 
 upload.preparePage = function () {
-  if (!upload.isPrivate) return upload.prepareUpload()
-  if (!upload.token) {
-    document.getElementById('loginToUpload').style.display = 'inline-flex'
-    return 'inline-flex'
+  if (upload.isPrivate) {
+    if (upload.token) {
+      return upload.verifyToken(upload.token, true)
+    } else {
+      document.getElementById('loginToUpload').innerText = 'Running in private mode. Log in to upload.'
+      document.getElementById('loginToUpload').style.display = 'inline-flex' // ???
+    }
+  } else {
+    return upload.prepareUpload()
   }
-  upload.verifyToken(upload.token, true)
 }
 
 upload.verifyToken = function (token, reloadOnError) {
   if (reloadOnError === undefined) { reloadOnError = false }
 
-  axios.post('/api/tokens/verify', { token: token })
+  axios.post('api/tokens/verify', { token: token })
     .then(response => {
       if (response.data.success === false) {
         swal({
@@ -70,7 +74,7 @@ upload.prepareUpload = function () {
       upload.album = select.value
     })
 
-    axios.get('/api/albums', { headers: { token: upload.token } })
+    axios.get('api/albums', { headers: { token: upload.token } })
       .then(res => {
         var albums = res.data.albums
 
@@ -116,7 +120,7 @@ upload.prepareDropzone = function () {
   previewNode.parentNode.removeChild(previewNode)
 
   var dropzone = new Dropzone('div#dropzone', {
-    url: '/api/upload',
+    url: 'api/upload',
     paramName: 'files[]',
     maxFilesize: upload.maxFileSize.slice(0, -2),
     parallelUploads: 2,

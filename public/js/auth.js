@@ -13,7 +13,7 @@ page.do = function (dest) {
     return swal('Error', 'You need to specify a username', 'error')
   }
 
-  axios.post('/api/' + dest, {
+  axios.post('api/' + dest, {
     username: user,
     password: pass
   })
@@ -23,7 +23,7 @@ page.do = function (dest) {
     }
 
     localStorage.token = response.data.token
-    window.location = '/dashboard'
+    window.location = 'dashboard'
   })
   .catch(function (error) {
     console.log(error)
@@ -35,7 +35,7 @@ page.verify = function () {
   page.token = localStorage.token
   if (page.token === undefined) return
 
-  axios.post('/api/tokens/verify', {
+  axios.post('api/tokens/verify', {
     token: page.token
   })
   .then(function (response) {
@@ -43,7 +43,7 @@ page.verify = function () {
       return swal('Error', response.data.description, 'error')
     }
 
-    window.location = '/dashboard'
+    window.location = 'dashboard'
   })
   .catch(function (error) {
     console.log(error)

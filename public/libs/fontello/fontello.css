@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('fontello.eot?90492172');
+  src: url('fontello.eot?90492172#iefix') format('embedded-opentype'),
+       url('fontello.woff2?90492172') format('woff2'),
+       url('fontello.woff?90492172') format('woff'),
+       url('fontello.ttf?90492172') format('truetype'),
+       url('fontello.svg?90492172#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('fontello.svg?90492172#fontello') format('svg');
+  }
+}
+*/
+
+ [class^="fa icon-"]:before, [class*=" icon-"]:before {
+  font: normal normal 14px/1 fontello;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-th-large:before { content: '\e800'; } /* '' */
+.icon-pencil:before { content: '\e802'; } /* '' */
+.icon-list-bullet:before { content: '\f0ca'; } /* '' */
+.icon-trash:before { content: '\f1f8'; } /* '' */

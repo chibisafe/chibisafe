@@ -151,3 +151,7 @@ section#home #b {
 hr {
   background-color: #898b8d;
 }
+
+.table-container {
+  overflow-x: scroll;
+}
