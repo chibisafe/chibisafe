@@ -2,128 +2,55 @@
 <html>
   <head>
 
+    <meta charset="utf-8" />
     <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
-    <meta name="keywords" content="upload,lolisafe,file,images,hosting">
+    <meta name="keywords" content="upload,lolisafe,file,images,hosting,bobby,fiery">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="https://safe.fiery.me/images/icons/apple-touch-icon.png?v=ZqYs7M3fG4">
-    <link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-32x32.png?v=ZqYs7M3fG4" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://safe.fiery.me/images/icons/favicon-16x16.png?v=ZqYs7M3fG4" sizes="16x16">
-    <link rel="manifest" href="https://safe.fiery.me/images/icons/manifest.json?v=ZqYs7M3fG4">
-    <link rel="mask-icon" href="https://safe.fiery.me/images/icons/safari-pinned-tab.svg?v=ZqYs7M3fG4" color="#ffffff">
-    <link rel="shortcut icon" href="https://safe.fiery.me/images/icons/favicon.ico?v=ZqYs7M3fG4">
-    <meta name="apple-mobile-web-app-title" content="lolisafe">
-    <meta name="application-name" content="lolisafe">
-    <meta name="msapplication-config" content="https://safe.fiery.me/images/icons/browserconfig.xml?v=ZqYs7M3fG4">
-    <meta name="theme-color" content="#232629">
-
-    <meta property="og:url" content="https://safe.fiery.me" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="lolisafe.moe | A small safe worth protecting." />
-    <meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
-    <meta property="og:image" content="http://lolisafe.moe/images/logo_square.png" />
-
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="lolisafe.moe | A small safe worth protecting.">
-    <meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
-    <meta name="twitter:image" content="https://safe.fiery.me/images/logo_square.png">
-    <meta name="twitter:image:src" content="https://safe.fiery.me/images/logo_square.png">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>safe.fiery.me &#8211; A small safe worth protecting.</title>
+
+    <!-- Stylesheets and scripts -->
     <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="libs/fontello/fontello.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
     <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript" src="libs/axios/axios.min.js"></script>
     <script type="text/javascript" src="js/dashboard.js"></script>
 
-    <style type="text/css">
-      /** Based on KDE Breeze Dark **/
+    <!-- Open Graph tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="safe.fiery.me &#8211; A small safe worth protecting." />
+    <meta property="og:url" content="https://safe.fiery.me/" />
+    <meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
+    <meta property="og:image" content="https://safe.fiery.me/icons/600px.png" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:locale" content="en_US" />
 
-      html {
-        background-color: #232629;
-      }
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="safe.fiery.me &#8211; A small safe worth protecting.">
+    <meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="twitter:image" content="https://safe.fiery.me/icons/600px.png">
 
-      .section {
-        background: none;
-      }
-
-      .menu-list a {
-        color: #2980b9;
-      }
-
-      .menu-list a:hover {
-        color: #3daee9;
-        background-color: #4d4d4d;
-      }
-
-      .menu-list a.is-active {
-        color: #eff0f1;
-        background-color: #2980b9;
-      }
-
-      .button.is-primary {
-        background-color: #2980b9;
-      }
-
-      .button.is-primary.is-hovered, .button.is-primary:hover {
-        background-color: #2980b9;
-      }
-
-      .pagination a {
-        color: #eff0f1;
-        border-color: #4d4d4d;
-        background-color: #31363b;
-      }
-
-      .pagination-link:hover, .pagination-next:hover, .pagination-previous:hover {
-        color: #eff0f1;
-        border-color: #3daee9;
-        background-color: #31363b;
-      }
-
-      .label {
-        color: #bdc3c7;
-      }
-
-      .table {
-        color: #bdc3c7;
-        background-color: #31363b;
-      }
-
-      .table tr:hover, .table.is-striped tbody tr:nth-child(2n) {
-        background: none;
-      }
-
-      .table.is-striped tbody tr:hover, .table.is-striped tbody tr:nth-child(2n):hover, .tag {
-        background-color: #4d4d4d;
-      }
-
-      .table thead td, .table thead th {
-        color: #eff0f1;
-        background-color: #ff3860;
-      }
-
-      .table th {
-        color: #eff0f1;
-      }
-
-      .table td, .table th {
-        border: 0;
-      }
-
-      section#dashboard div#table div.column {
-        background-color: #31363b;
-      }
-
-      .menu-list li ul {
-        border-left-color: #898b8d;
-      }
-    </style>
+    <!-- Icons and configs -->
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/32px.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/96px.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/192px.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/120px.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/152px.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/167px.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/180px.png" sizes="180x180">
+    <link rel="manifest" href="https://safe.fiery.me/icons/manifest.json?v=hEjFGFcHY8">
+    <meta name="apple-mobile-web-app-title" content="safe.fiery.me">
+    <meta name="application-name" content="safe.fiery.me">
+    <meta name="msapplication-config" content="https://safe.fiery.me/icons/browserconfig.xml?v=hEjFGFcHY8">
+    <meta name="theme-color" content="#232629">
 
   </head>
+
   <body>
 
     <section id='auth' class="hero is-light is-fullheight">
