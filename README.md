@@ -36,7 +36,9 @@ downloads in. This also gives you the ability to serve them, for example, like t
 	https://files.lolisafe.moe/yourFile.jpg
 
 Both cases require you to type the domain where the files will be served on the `domain` key below.
-Which one you use is ultimately up to you. Either way, I've provided a [sample config file for nginx](https://github.com/WeebDev/lolisafe/blob/master/nginx.sample.conf) that you can use to set it up quickly and painlessly!
+Which one you use is ultimately up to you. Either way, I've provided a sample config files for nginx that you can use to set it up quickly and painlessly!
+- [Normal Version](https://github.com/WeebDev/lolisafe/blob/master/nginx.sample.conf)
+- [SSL Version](https://github.com/WeebDev/lolisafe/blob/master/nginx-ssl.sample.conf)
 
 If you set `enableUserAccounts: true`, people will be able to create accounts on the service to keep track of their uploaded files and create albums to upload stuff to, pretty much like imgur does, but only through the API. Every user account has a token that the user can use to upload stuff through the API. You can find this token on the section called `Change your token` on the administration dashboard, and if it gets leaked or compromised you can renew it by clicking the button titled `Request new token`.
 
