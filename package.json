@@ -14,35 +14,32 @@
     "node": ">=7.0.0"
   },
   "license": "MIT",
+  "scripts": {
+    "start": "node ./lolisafe.js",
+    "pm2": "pm2 start --name lolisafe ./lolisafe.js "
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
-    "body-parser": "^1.16.0",
-    "express": "^4.14.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "express-rate-limit": "^2.6.0",
+    "express-rate-limit": "^2.11.0",
     "fluent-ffmpeg": "^2.1.0",
-    "gm": "^1.23.0",
-    "helmet": "^3.5.0",
+    "gm": "^1.23.1",
+    "helmet": "^3.10.0",
     "jszip": "^3.1.4",
-    "knex": "^0.12.6",
+    "knex": "^0.14.2",
     "multer": "^1.2.1",
     "randomstring": "^1.1.5",
-    "sqlite3": "^3.1.11"
+    "sqlite3": "^3.1.13"
   },
   "devDependencies": {
-    "eslint": "^4.4.1",
-    "eslint-config-aqua": "^1.4.1"
+    "standard": "^10.0.3"
   },
-  "eslintConfig": {
-    "extends": [
-      "aqua"
-    ],
-    "env": {
-      "browser": true,
-      "node": true
-    },
-    "rules": {
-      "func-names": 0
-    }
+  "standard": {
+    "envs": [
+      "browser",
+      "node"
+    ]
   }
 }

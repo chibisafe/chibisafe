@@ -1,83 +1,114 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="description" content="A pomf-like file uploading service that doesn't suck.">
-		<meta name="keywords" content="upload,lolisafe,file,images,hosting">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
 
-		<link rel="apple-touch-icon" sizes="180x180" href="https://lolisafe.moe/images/icons/apple-touch-icon.png?v=XBreOJMe24">
-		<link rel="icon" type="image/png" href="https://lolisafe.moe/images/icons/favicon-32x32.png?v=XBreOJMe24" sizes="32x32">
-		<link rel="icon" type="image/png" href="https://lolisafe.moe/images/icons/favicon-16x16.png?v=XBreOJMe24" sizes="16x16">
-		<link rel="manifest" href="https://lolisafe.moe/images/icons/manifest.json?v=XBreOJMe24">
-		<link rel="mask-icon" href="https://lolisafe.moe/images/icons/safari-pinned-tab.svg?v=XBreOJMe24" color="#5bbad5">
-		<link rel="shortcut icon" href="https://lolisafe.moe/images/icons/favicon.ico?v=XBreOJMe24">
-		<meta name="apple-mobile-web-app-title" content="lolisafe">
-		<meta name="application-name" content="lolisafe">
-		<meta name="msapplication-config" content="https://lolisafe.moe/images/icons/browserconfig.xml?v=XBreOJMe24">
-		<meta name="theme-color" content="#ffffff">
+    <meta charset="utf-8" />
+    <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="keywords" content="upload,lolisafe,file,images,hosting,bobby,fiery">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>safe.fiery.me &#8211; A small safe worth protecting.</title>
 
-		<meta property="og:url" content="https://lolisafe.moe" />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="lolisafe.moe | A small safe worth protecting." />
-		<meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
-		<meta property="og:image" content="http://lolisafe.moe/images/logo_square.png" />
-		<meta property="og:image:secure_url" content="https://lolisafe.moe/images/logo_square.png" />
+    <!-- Stylesheets and scripts -->
+    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:title" content="lolisafe.moe | A small safe worth protecting.">
-		<meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
-		<meta name="twitter:image" content="https://listen.moe/files/images/logo_square.png">
-		<meta name="twitter:image:src" content="https://lolisafe.moe/images/logo_square.png">
+    <!-- Open Graph tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="safe.fiery.me &#8211; A small safe worth protecting." />
+    <meta property="og:url" content="https://safe.fiery.me/" />
+    <meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
+    <meta property="og:image" content="https://safe.fiery.me/icons/600px.png" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image" content="https://safe.fiery.me/images/fb_share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
 
-		<title>lolisafe - A small safe worth protecting.</title>
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
-	</head>
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="safe.fiery.me &#8211; A small safe worth protecting.">
+    <meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="twitter:image" content="https://safe.fiery.me/icons/600px.png">
 
-	<body>
-		<section class="hero is-fullheight has-text-centered" id="home">
-			<div class="hero-body">
-				<div class="container has-text-left">
+    <!-- Icons and configs -->
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/32pxr.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/96pxr.png" sizes="96x96">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/120px.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/152px.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/167px.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/180px.png" sizes="180x180">
+    <link rel="manifest" href="https://safe.fiery.me/icons/manifest.json?v=hEjFGFcHY8">
+    <meta name="apple-mobile-web-app-title" content="safe.fiery.me">
+    <meta name="application-name" content="safe.fiery.me">
+    <meta name="msapplication-config" content="https://safe.fiery.me/icons/browserconfig.xml?v=hEjFGFcHY8">
+    <meta name="theme-color" content="#232629">
 
-					<h2 class='subtitle'>What is lolisafe?</h2>
-					<article class="message">
-						<div class="message-body">
-							lolisafe is an easy to use, open source and completely free file upload service. We accept your files, photos, documents, anything, and give you back a shareable link for you to send to others.
-						</div>
-					</article>
+    <style>
+      /** Colors based on KDE Breeze Dark **/
+      .message-body {
+        color: #eff0f1;
+        background-color: #31363b;
+        border-color: #898b8d;
+      }
+    </style>
 
-					<h2 class='subtitle'>Will you keep my files forever?</h2>
-					<article class="message">
-						<div class="message-body">
-							Unless we receive a copyright complain or some other bullshit, we will.
-						</div>
-					</article>
+  </head>
 
-					<h2 class='subtitle'>How can I keep track of my uploads?</h2>
-					<article class="message">
-						<div class="message-body">
-							Simply create a user on the site and every upload will be associated with your account, granting you access to your uploaded files through our dashboard.
-						</div>
-					</article>
+  <body>
 
-					<h2 class='subtitle'>What are albums?</h2>
-					<article class="message">
-						<div class="message-body">
-							Albums are a simple way of sorting uploads together. Right now you can create albums through the dashboard and use them only with <a target="_blank" href="https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">our chrome extension</a> which will enable you to <strong>right click -> send to lolisafe</strong> or to a desired album if you have any.
-						</div>
-					</article>
+    <section class="hero is-fullheight has-text-centered" id="home">
+      <div class="hero-body">
+        <div class="container has-text-left">
 
-					<h2 class='subtitle'>Why should I use this?</h2>
-					<article class="message">
-						<div class="message-body">
-							There are too many file upload services out there, and a lot of them rely on the foundations of pomf which is ancient. In a desperate and unsuccessful attempt of finding a good file uploader that's easily extendable, lolisafe was born. We give you control over your files, we give you a way to sort your uploads into albums for ease of access and we give you an api to use with ShareX or any other thing that let's you make POST requests. Awesome isn't it? Just like you.
-						</div>
-					</article>
+          <h2 class='subtitle'>What is safe.fiery.me?</h2>
+          <article class="message">
+            <div class="message-body">
+              safe.fiery.me is merely another clone of lolisafe. lolisafe itself is an easy to use, open source and completely free file upload service. We accept your files, photos, documents, anything, and give you back a shareable link for you to send to others. On a side note, this site was originally made for personal usage but I disabled private mode in the end, so yeah, feel free..
+            </div>
+          </article>
 
-				</div>
-			</div>
-		</section>
+          <h2 class='subtitle'>Will you keep my files forever?</h2>
+          <article class="message">
+            <div class="message-body">
+              Unless we receive a copyright complain or some other bullshit, we will.
+            </div>
+          </article>
 
-	</body>
+          <h2 class='subtitle'>How can I keep track of my uploads?</h2>
+          <article class="message">
+            <div class="message-body">
+              Simply create a user on the site and every upload will be associated with your account, granting you access to your uploaded files through our dashboard.
+            </div>
+          </article>
+
+          <h2 class='subtitle'>What are albums?</h2>
+          <article class="message">
+            <div class="message-body">
+              Albums are a simple way of sorting uploads together. Right now you can create albums through the dashboard and use them <s>only</s>* with <a target="_blank" href="https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">our chrome extension</a> which will enable you to <strong>right click -> send to lolisafe</strong> or to a desired album if you have any. You will probably have to change some things involving https://safe.fiery.me/api/upload.<br>
+              <br>
+              * You are no longer required to use the chrome extension to utilize albums. As long as you are logged in, you will be able to choose your albums from the upload page (of course the albums had to be created first from the dashboard).
+            </div>
+          </article>
+
+          <h2 class='subtitle'>Why should I use this?</h2>
+          <article class="message">
+            <div class="message-body">
+              I don't know ¯\_(ツ)_/¯.
+            </div>
+          </article>
+
+          <h2 class='subtitle'>I saw something too illegal for my tastes here, what do?</h2>
+          <article class="message">
+            <div class="message-body">
+               Send a strongly worded email to <a href="mailto:bobby@fiery.me">bobby@fiery.me</a> and I will <i>try</i> to get back to you within 24 hours.
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </body>
 </html>

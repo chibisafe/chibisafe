@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="description" content="A pomf-like file uploading service that doesn't suck.">
-		<meta name="keywords" content="upload,lolisafe,file,images,hosting">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-		<link rel="apple-touch-icon" sizes="180x180" href="https://lolisafe.moe/images/icons/apple-touch-icon.png?v=XBreOJMe24">
-		<link rel="icon" type="image/png" href="https://lolisafe.moe/images/icons/favicon-32x32.png?v=XBreOJMe24" sizes="32x32">
-		<link rel="icon" type="image/png" href="https://lolisafe.moe/images/icons/favicon-16x16.png?v=XBreOJMe24" sizes="16x16">
-		<link rel="manifest" href="https://lolisafe.moe/images/icons/manifest.json?v=XBreOJMe24">
-		<link rel="mask-icon" href="https://lolisafe.moe/images/icons/safari-pinned-tab.svg?v=XBreOJMe24" color="#5bbad5">
-		<link rel="shortcut icon" href="https://lolisafe.moe/images/icons/favicon.ico?v=XBreOJMe24">
-		<meta name="apple-mobile-web-app-title" content="lolisafe">
-		<meta name="application-name" content="lolisafe">
-		<meta name="msapplication-config" content="https://lolisafe.moe/images/icons/browserconfig.xml?v=XBreOJMe24">
-		<meta name="theme-color" content="#ffffff">
+    <meta charset="utf-8" />
+    <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="keywords" content="upload,lolisafe,file,images,hosting,bobby,fiery">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ title }}</title>
 
-		<meta property="og:url" content="https://lolisafe.moe" />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="{{ title }} | {{ count }} files" />
-		<meta property="og:description" content="lolisafe.moe | A small safe worth protecting." />
-		<meta property="og:image" content="{{ thumb }}" />
-		<meta property="og:image:secure_url" content="{{ thumb }}" />
+    <!-- Stylesheets and scripts -->
+    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="libs/dropzone/dropzone.min.js"></script>
+    <script type="text/javascript" src="libs/axios/axios.min.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
 
-		<meta name="twitter:card" content="summary">
-		<meta name="twitter:title" content="{{ title }} | {{ count }} files">
-		<meta name="twitter:description" content="lolisafe.moe | A small safe worth protecting.">
-		<meta name="twitter:image" content="{{ thumb }}">
-		<meta name="twitter:image:src" content="{{ thumb }}">
+    <!-- Open Graph tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ title }} | {{ count }} files" />
+    <meta property="og:url" content="https://safe.fiery.me/" />
+    <meta property="og:description" content="A pomf-like file uploading service that doesn't suck." />
+    <meta property="og:image" content="{{ thumb }}" />
+    <meta property="og:locale" content="en_US" />
 
-		<title>{{ title }}</title>
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ title }} | {{ count }} files">
+    <meta name="twitter:description" content="A pomf-like file uploading service that doesn't suck.">
+    <meta name="twitter:image" content="{{ thumb }}">
+
+    <!-- Icons and configs -->
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/32pxr.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://safe.fiery.me/icons/96pxr.png" sizes="96x96">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/120px.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/152px.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/167px.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="https://safe.fiery.me/icons/180px.png" sizes="180x180">
+    <link rel="manifest" href="https://safe.fiery.me/icons/manifest.json?v=hEjFGFcHY8">
+    <meta name="apple-mobile-web-app-title" content="safe.fiery.me">
+    <meta name="application-name" content="safe.fiery.me">
+    <meta name="msapplication-config" content="https://safe.fiery.me/icons/browserconfig.xml?v=hEjFGFcHY8">
+    <meta name="theme-color" content="#232629">
+
 	</head>
 
 	<body>
@@ -50,7 +59,7 @@
 						</div>
 						<div class="column is-3" style="text-align: right; padding-top: 45px;">
 							{{#if enableDownload}}
-								<a class="button is-primary is-outlined" title="Download album" href="/api/album/zip/{{ identifier }}">Download Album</a>
+								<a class="button is-primary is-outlined" title="Download album" href="api/album/zip/{{ identifier }}">Download Album</a>
 							{{/if}}
 						</div>
 					</div>
