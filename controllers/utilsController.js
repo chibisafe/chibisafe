@@ -31,13 +31,18 @@ utilsController.authorize = async (req, res) => {
 }
 
 utilsController.generateThumbs = function (file, basedomain) {
-  if (config.uploads.generateThumbnails !== true) return
   const ext = path.extname(file.name).toLowerCase()
+  const isVideoExt = utilsController.videoExtensions.includes(ext)
+  const isImageExt = utilsController.imageExtensions.includes(ext)
+
+  if (!isVideoExt && !isImageExt) return
+  if (isVideoExt && config.uploads.generateVideoThumbnails !== true) return
+  if (isImageExt && config.uploads.generateImageThumbnails !== true) return
 
   let thumbname = path.join(__dirname, '..', config.uploads.folder, 'thumbs', file.name.slice(0, -ext.length) + '.png')
   fs.access(thumbname, err => {
     if (err && err.code === 'ENOENT') {
-      if (utilsController.videoExtensions.includes(ext)) {
+      if (isVideoExt) {
         ffmpeg(path.join(__dirname, '..', config.uploads.folder, file.name))
           .thumbnail({
             timestamps: [0],
@@ -46,7 +51,7 @@ utilsController.generateThumbs = function (file, basedomain) {
             size: '200x?'
           })
           .on('error', error => console.log('Error - ', error.message))
-      } else {
+      } else if (isImageExt) {
         let size = {
           width: 200,
           height: 200

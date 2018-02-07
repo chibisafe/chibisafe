@@ -62,7 +62,8 @@ module.exports = {
       to install a separate binary called graphicsmagick (http://www.graphicsmagick.org)
       for images and ffmpeg (https://ffmpeg.org/) for video files
     */
-    generateThumbnails: false,
+    generateImageThumbnails: true,
+    generateVideoThumbnails: false,
 
     /*
       Allows users to download a .zip file of all files in an album.
