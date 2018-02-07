@@ -64,7 +64,9 @@ albumsController.create = async (req, res, next) => {
     enabled: 1,
     userid: user.id,
     identifier: randomstring.generate(8),
-    timestamp: Math.floor(Date.now() / 1000)
+    timestamp: Math.floor(Date.now() / 1000),
+    editedAt: 0,
+    zipGeneratedAt: 0
   })
 
   return res.json({ success: true })
