@@ -14,9 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../libs/sweetalert/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <script type="text/javascript" src="../libs/sweetalert/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../libs/dropzone/dropzone.min.js"></script>
     <script type="text/javascript" src="../libs/axios/axios.min.js"></script>
-    <script type="text/javascript" src="../js/home.js"></script>
 
     <!-- Open Graph tags -->
     <meta property="og:type" content="website" />
@@ -59,7 +57,7 @@
 						</div>
 						<div class="column is-3" style="text-align: right; padding-top: 45px;">
 							{{#if enableDownload}}
-								<a class="button is-primary is-outlined" title="Download album" href="api/album/zip/{{ identifier }}">Download Album</a>
+								<a class="button is-primary is-outlined" title="Download album" href="../api/album/zip/{{ identifier }}">Download Album</a>
 							{{/if}}
 						</div>
 					</div>
