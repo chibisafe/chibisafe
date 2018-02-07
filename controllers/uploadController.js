@@ -146,7 +146,7 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 
   for (let file of files) {
     let ext = path.extname(file.name).toLowerCase()
-    if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
+    if ((config.uploads.generateImageThumbnails && utils.imageExtensions.includes(ext)) || (config.uploads.generateVideoThumbnails && utils.videoExtensions.includes(ext))) {
       file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`
       utils.generateThumbs(file)
     }
@@ -259,7 +259,7 @@ uploadsController.list = async (req, res) => {
     }
 
     let ext = path.extname(file.name).toLowerCase()
-    if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
+    if ((config.uploads.generateImageThumbnails && utils.imageExtensions.includes(ext)) || (config.uploads.generateVideoThumbnails && utils.videoExtensions.includes(ext))) {
       file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`
     }
   }

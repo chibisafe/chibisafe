@@ -117,7 +117,7 @@ albumsController.get = async (req, res, next) => {
     file.file = `${config.domain}/${file.name}`
 
     const ext = path.extname(file.name).toLowerCase()
-    if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
+    if ((config.uploads.generateImageThumbnails && utils.imageExtensions.includes(ext)) || (config.uploads.generateVideoThumbnails && utils.videoExtensions.includes(ext))) {
       file.thumb = `${config.domain}/thumbs/${file.name.slice(0, -ext.length)}.png`
     }
   }
