@@ -28,6 +28,7 @@ let init = function(db){
 		table.string('username')
 		table.string('password')
 		table.string('token')
+		table.integer('enabled')
 		table.integer('timestamp')
 	}).then(() => {
 		db.table('users').where({username: 'root'}).then((user) => {
