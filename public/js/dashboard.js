@@ -26,7 +26,7 @@ panel.verifyToken = function (token, reloadOnError) {
   .then(function (response) {
     if (response.data.success === false) {
       swal({
-        title: 'An error ocurred',
+        title: 'An error occurred',
         text: response.data.description,
         type: 'error'
       }, function () {
@@ -46,7 +46,7 @@ panel.verifyToken = function (token, reloadOnError) {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -90,7 +90,7 @@ panel.getUploads = function (album = undefined, page = undefined) {
   axios.get(url).then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     var prevPage = 0
@@ -207,7 +207,7 @@ panel.getUploads = function (album = undefined, page = undefined) {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -234,7 +234,7 @@ panel.deleteFile = function (id) {
       .then(function (response) {
         if (response.data.success === false) {
           if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-          else return swal('An error ocurred', response.data.description, 'error')
+          else return swal('An error occurred', response.data.description, 'error')
         }
 
         swal('Deleted!', 'The file has been deleted.', 'success')
@@ -242,7 +242,7 @@ panel.deleteFile = function (id) {
       })
       .catch(function (error) {
         console.log(error)
-        return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+        return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
     }
   )
@@ -252,7 +252,7 @@ panel.getAlbums = function () {
   axios.get('api/albums').then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     panel.page.innerHTML = ''
@@ -317,7 +317,7 @@ panel.getAlbums = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -345,7 +345,7 @@ panel.renameAlbum = function (id) {
       if (response.data.success === false) {
         if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
         else if (response.data.description === 'Name already in use') swal.showInputError('That name is already in use!')
-        else swal('An error ocurred', response.data.description, 'error')
+        else swal('An error occurred', response.data.description, 'error')
         return
       }
 
@@ -355,7 +355,7 @@ panel.renameAlbum = function (id) {
     })
     .catch(function (error) {
       console.log(error)
-      return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
     })
   })
 }
@@ -377,7 +377,7 @@ panel.deleteAlbum = function (id) {
       .then(function (response) {
         if (response.data.success === false) {
           if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-          else return swal('An error ocurred', response.data.description, 'error')
+          else return swal('An error occurred', response.data.description, 'error')
         }
 
         swal('Deleted!', 'Your album has been deleted.', 'success')
@@ -386,7 +386,7 @@ panel.deleteAlbum = function (id) {
       })
       .catch(function (error) {
         console.log(error)
-        return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+        return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
     }
   )
@@ -399,7 +399,7 @@ panel.submitAlbum = function () {
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     swal('Woohoo!', 'Album was added successfully', 'success')
@@ -408,7 +408,7 @@ panel.submitAlbum = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -417,7 +417,7 @@ panel.getAlbumsSidebar = function () {
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     var albumsContainer = document.getElementById('albumsContainer')
@@ -442,7 +442,7 @@ panel.getAlbumsSidebar = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -456,7 +456,7 @@ panel.changeToken = function () {
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     panel.page.innerHTML = ''
@@ -480,7 +480,7 @@ panel.changeToken = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -489,7 +489,7 @@ panel.getNewToken = function () {
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     swal({
@@ -503,7 +503,7 @@ panel.getNewToken = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -547,7 +547,7 @@ panel.sendNewPassword = function (pass) {
   .then(function (response) {
     if (response.data.success === false) {
       if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error ocurred', response.data.description, 'error')
+      else return swal('An error occurred', response.data.description, 'error')
     }
 
     swal({
@@ -560,7 +560,7 @@ panel.sendNewPassword = function (pass) {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 

@@ -27,7 +27,7 @@ page.do = function (dest) {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 
@@ -47,7 +47,7 @@ page.verify = function () {
   })
   .catch(function (error) {
     console.log(error)
-    return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
   })
 }
 

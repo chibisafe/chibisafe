@@ -19,7 +19,7 @@ upload.checkIfPublic = function () {
     })
     .catch(error => {
       console.log(error)
-      return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
     })
 }
 
@@ -43,7 +43,7 @@ upload.verifyToken = function (token, reloadOnError) {
     .then(response => {
       if (response.data.success === false) {
         swal({
-          title: 'An error ocurred',
+          title: 'An error occurred',
           text: response.data.description,
           type: 'error'
         }, () => {
@@ -61,7 +61,7 @@ upload.verifyToken = function (token, reloadOnError) {
     })
     .catch(error => {
       console.log(error)
-      return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
     })
 }
 
@@ -94,7 +94,7 @@ upload.prepareUpload = function () {
       })
       .catch(e => {
         console.log(e)
-        return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error')
+        return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
   }
 
