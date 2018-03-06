@@ -36,9 +36,11 @@ module.exports = {
 	// Add file extensions here which should be blocked
 	blockedExtensions: [
 		'.exe',
+		'.msi',
+		'.com',
 		'.bat',
 		'.cmd',
-		'.msi',
+		'.ps1',
 		'.sh'
 	],
 
