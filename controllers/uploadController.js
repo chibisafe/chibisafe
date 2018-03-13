@@ -9,12 +9,33 @@ const utils = require('./utilsController.js')
 
 const uploadsController = {}
 
+const maxStrikes = 3
+const uploadDir = path.join(__dirname, '..', config.uploads.folder)
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '..', config.uploads.folder))
+    cb(null, uploadDir)
   },
   filename: function (req, file, cb) {
-    cb(null, randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname))
+    let name
+    let strike = 0
+
+    do {
+      name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname)
+      try {
+        fs.accessSync(path.join(uploadDir, name))
+        strike++
+        console.log(`"${name}" already exists in upload dir (${strike}x)\u2000`)
+      } catch (err) {
+        strike = 0
+      }
+    } while (strike > 0 && strike < maxStrikes)
+
+    if (strike >= maxStrikes) {
+      cb('Could not allocate a file name. Try again?') // eslint-disable-line standard/no-callback-literal
+    } else {
+      cb(null, name)
+    }
   }
 })
 
@@ -175,7 +196,10 @@ uploadsController.delete = async (req, res) => {
     .first()
 
   try {
-    await uploadsController.deleteFile(file.name)
+    await uploadsController.deleteFile(file.name).catch(err => {
+      // ENOENT is missing file, for whatever reason, then just delete from db
+      if (err.code !== 'ENOENT') throw err
+    })
     await db.table('files').where('id', id).del()
     if (file.albumid) {
       await db.table('albums').where('id', file.albumid).update('editedAt', Math.floor(Date.now() / 1000))
@@ -200,7 +224,9 @@ uploadsController.deleteFile = function (file) {
         file = file.substr(0, file.lastIndexOf('.')) + '.png'
         fs.stat(path.join(__dirname, '..', config.uploads.folder, 'thumbs/', file), (err, stats) => {
           if (err) {
-            console.log(err)
+            if (err.code !== 'ENOENT') {
+              console.log(err)
+            }
             return resolve()
           }
           fs.unlink(path.join(__dirname, '..', config.uploads.folder, 'thumbs/', file), err => {
