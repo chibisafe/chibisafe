@@ -8,6 +8,7 @@ migration.start = async () => {
     table.dateTime('zipGeneratedAt')
   })
   console.log('Migration finished! Now start lolisafe normally')
+  process.exit(0)
 }
 
 migration.start()

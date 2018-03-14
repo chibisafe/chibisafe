@@ -60,6 +60,12 @@ uploadsController.upload = async (req, res, next) => {
 
   const token = req.headers.token || ''
   const user = await db.table('users').where('token', token).first()
+  if (user && (user.enabled === false || user.enabled === 0)) {
+    return res.json({
+      success: false,
+      description: 'This account has been disabled'
+    })
+  }
   const albumid = req.headers.albumid || req.params.albumid
 
   if (albumid && user) {

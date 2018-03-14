@@ -15,6 +15,12 @@ authController.verify = async (req, res, next) => {
 
   const user = await db.table('users').where('username', username).first()
   if (!user) return res.json({ success: false, description: 'Username doesn\'t exist' })
+  if (user.enabled === false || user.enabled === 0) {
+    return res.json({
+      success: false,
+      description: 'This account has been disabled'
+    })
+  }
 
   bcrypt.compare(password, user.password, (err, result) => {
     if (err) {
@@ -56,7 +62,8 @@ authController.register = async (req, res, next) => {
     await db.table('users').insert({
       username: username,
       password: hash,
-      token: token
+      token: token,
+      enabled: 1
     })
     return res.json({ success: true, token: token })
   })
