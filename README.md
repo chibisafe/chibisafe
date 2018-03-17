@@ -60,6 +60,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [safe.moe](https://safe.moe): The world's most ~~un~~safe pomf clone
 - [updx.xyz](http://updx.xyz): A shitty clone. ~~At least the files are more secure!~~
 - [safe.fiery.me](https://safe.fiery.me): Just another clone.
+- [akiko.moe](https://akiko.moe/): Another clone.
 - Feel free to add yours here.
 
 ## Author
