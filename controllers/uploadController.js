@@ -9,6 +9,7 @@ const utils = require('./utilsController.js')
 
 const uploadsController = {}
 
+// Let's default it to only 1 try
 const maxTries = config.uploads.maxTries || 1
 const uploadDir = path.join(__dirname, '..', config.uploads.folder)
 
@@ -17,18 +18,17 @@ const storage = multer.diskStorage({
     cb(null, uploadDir)
   },
   filename: function (req, file, cb) {
-    for (let i = 0; i < maxTries; i++) {
+    const access = i => {
       const name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname)
-      try {
-        fs.accessSync(path.join(uploadDir, name))
-        console.log(`A file named "${name}" already exists (${i + 1}/${maxTries}).`)
-      } catch (err) {
-        // Note: fs.accessSync() will throw an Error if a file with the same name does not exist
-        return cb(null, name)
-      }
+      fs.access(path.join(uploadDir, name), err => {
+        if (err) return cb(null, name)
+        console.log(`A file named "${name}" already exists (${++i}/${maxTries}).`)
+        if (i < maxTries) return access(i)
+        // eslint-disable-next-line standard/no-callback-literal
+        return cb('Could not allocate a unique file name. Try again?')
+      })
     }
-    // eslint-disable-next-line standard/no-callback-literal
-    return cb('Could not allocate a unique file name. Try again?')
+    access(0)
   }
 })
 
