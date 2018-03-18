@@ -9,7 +9,7 @@ const utils = require('./utilsController.js')
 
 const uploadsController = {}
 
-const maxStrikes = 3
+const maxTries = config.uploads.maxTries || 1
 const uploadDir = path.join(__dirname, '..', config.uploads.folder)
 
 const storage = multer.diskStorage({
@@ -17,25 +17,18 @@ const storage = multer.diskStorage({
     cb(null, uploadDir)
   },
   filename: function (req, file, cb) {
-    let name
-    let strike = 0
-
-    do {
-      name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname)
+    for (let i = 0; i < maxTries; i++) {
+      const name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname)
       try {
         fs.accessSync(path.join(uploadDir, name))
-        strike++
-        console.log(`"${name}" already exists in upload dir (${strike}x)\u2000`)
+        console.log(`A file named "${name}" already exists (${i + 1}/${maxTries}).`)
       } catch (err) {
-        strike = 0
+        // Note: fs.accessSync() will throw an Error if a file with the same name does not exist
+        return cb(null, name)
       }
-    } while (strike > 0 && strike < maxStrikes)
-
-    if (strike >= maxStrikes) {
-      cb('Could not allocate a file name. Try again?') // eslint-disable-line standard/no-callback-literal
-    } else {
-      cb(null, name)
     }
+    // eslint-disable-next-line standard/no-callback-literal
+    return cb('Could not allocate a unique file name. Try again?')
   }
 })
 
@@ -45,7 +38,8 @@ const upload = multer({
   fileFilter: function (req, file, cb) {
     if (config.blockedExtensions !== undefined) {
       if (config.blockedExtensions.some(extension => path.extname(file.originalname).toLowerCase() === extension)) {
-        return cb('This file extension is not allowed') // eslint-disable-line standard/no-callback-literal
+        // eslint-disable-next-line standard/no-callback-literal
+        return cb('This file extension is not allowed')
       }
       return cb(null, true)
     }

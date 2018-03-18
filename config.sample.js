@@ -68,6 +68,13 @@ module.exports = {
     fileLength: 32,
 
     /*
+      This option will limit how many times it will try to generate random names
+      for uploaded files. If this value is higher than 1, it will help in cases
+      where files with the same name already exists (higher chance with shorter file name length).
+    */
+    maxTries: 1,
+
+    /*
       NOTE: Thumbnails are only for the admin panel and they require you
       to install a separate binary called graphicsmagick (http://www.graphicsmagick.org)
       for images and ffmpeg (https://ffmpeg.org/) for video files
