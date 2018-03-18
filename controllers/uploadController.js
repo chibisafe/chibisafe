@@ -9,12 +9,26 @@ const utils = require('./utilsController.js');
 
 const uploadsController = {};
 
+// Let's default it to only 1 try
+const maxTries = config.uploads.maxTries || 1;
+const uploadDir = path.join(__dirname, '..', config.uploads.folder);
+
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
-		cb(null, path.join(__dirname, '..', config.uploads.folder));
+		cb(null, uploadDir);
 	},
 	filename: function(req, file, cb) {
-		cb(null, randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname));
+		for (let i = 0; i < maxTries; i++) {
+			const name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname);
+			try {
+				fs.accessSync(path.join(uploadDir, name));
+				console.log(`A file named "${name}" already exists (${i + 1}/${maxTries}).`);
+			} catch (err) {
+				// Note: fs.accessSync() will throw an Error if a file with the same name does not exist
+				return cb(null, name);
+			}
+		}
+		return cb('Could not allocate a unique file name. Try again?');
 	}
 });
 
