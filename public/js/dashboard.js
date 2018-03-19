@@ -129,7 +129,7 @@ panel.getUploads = function (album = undefined, page = undefined) {
         ${pagination}
         <hr>
         ${listType}
-        <div class="columns is-multiline is-mobile" id="table">
+        <div class="columns is-multiline is-mobile is-centered" id="table">
 
         </div>
         ${pagination}
@@ -139,7 +139,7 @@ panel.getUploads = function (album = undefined, page = undefined) {
 
       for (item of response.data.files) {
         var div = document.createElement('div')
-        div.className = 'column is-2'
+        div.className = 'column is-narrow'
         if (item.thumb !== undefined) {
           div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`
         } else {
