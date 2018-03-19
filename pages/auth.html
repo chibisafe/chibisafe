@@ -5,16 +5,15 @@
     <meta charset="utf-8" />
     <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
     <meta name="keywords" content="upload,lolisafe,file,images,hosting,bobby,fiery">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>safe.fiery.me &#8211; A small safe worth protecting.</title>
 
     <!-- Stylesheets and scripts -->
-    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css?v=V2RnA3Mwhh">
     <link rel="stylesheet" type="text/css" href="libs/fontello/fontello.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js?v=V2RnA3Mwhh"></script>
     <script type="text/javascript" src="libs/axios/axios.min.js"></script>
     <script type="text/javascript" src="js/auth.js"></script>
 
@@ -64,33 +63,35 @@
     <section id='login' class="hero is-fullheight">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">
-            Dashboard Access
-          </h1>
-          <h2 class="subtitle">
-            Login or register
-          </h2>
-          <div class="columns">
+          <div class="columns is-centered">
+            <div class="column is-one-quarter is-hidden-mobile"></div>
             <div class="column">
-              <p class="control">
-                <input id='user' class="input" type="text" placeholder="Your username">
-              </p>
-              <p class="control">
-                <input id='pass' class="input" type="password" placeholder="Your password">
-              </p>
-
-              <p class="control has-addons is-pulled-right">
-                <a class="button" id='registerBtn' onclick="page.do('register')">
-                  <span>Register</span>
-                </a>
-                <a class="button" id='loginBtn' onclick="page.do('login')">
-                  <span>Log in</span>
-                </a>
-              </p>
-
+              <h1 class="title">
+                Dashboard Access
+              </h1>
+              <h2 class="subtitle">
+                Login or register
+              </h2>
+              <div class="field">
+                <div class="control">
+                  <input id="user" class="input" type="text" onkeypress="page.onkeypress(event, this)" placeholder="Your username">
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input id="pass" class="input" type="password" onkeypress="page.onkeypress(event, this)" placeholder="Your password">
+                </div>
+              </div>
+              <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                  <a id="registerBtn" class="button" onclick="page.do('register')">Register</a>
+                </div>
+                <div class="control">
+                  <a id="loginBtn" class="button" onclick="page.do('login')">Log in</a>
+                </div>
+              </div>
             </div>
-            <div class="column is-hidden-mobile"></div>
-            <div class="column is-hidden-mobile"></div>
+            <div class="column is-one-quarter is-hidden-mobile"></div>
           </div>
         </div>
       </div>

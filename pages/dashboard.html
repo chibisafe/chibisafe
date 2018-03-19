@@ -5,17 +5,16 @@
     <meta charset="utf-8" />
     <meta name="description" content="A pomf-like file uploading service that doesn't suck.">
     <meta name="keywords" content="upload,lolisafe,file,images,hosting,bobby,fiery">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>safe.fiery.me &#8211; A small safe worth protecting.</title>
 
     <!-- Stylesheets and scripts -->
-    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="libs/bulma/bulma.min.css?v=V2RnA3Mwhh">
     <link rel="stylesheet" type="text/css" href="libs/fontello/fontello.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
-    <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="libs/sweetalert/sweetalert.min.js?v=V2RnA3Mwhh"></script>
     <script type="text/javascript" src="libs/axios/axios.min.js"></script>
     <script type="text/javascript" src="js/dashboard.js"></script>
 
@@ -73,39 +72,58 @@
 
     </section>
 
-    <section id='dashboard' class="section">
+    <section id="dashboard" class="section">
 
       <div id="panel" class="container">
-        <h1 class="title">Dashboard</h1>
-        <h2 class="subtitle">A simple <strong>dashboard</strong>, to sort your uploaded stuff</h2>
+
+        <h1 class="title">
+          Dashboard
+        </h1>
+        <h1 class="subtitle">
+          A simple <strong>dashboard</strong>, to sort your uploaded stuff
+        </h1>
         <hr>
+
         <div class="columns">
-          <div class="column is-3">
+          <div class="column is-one-quarter">
             <aside class="menu" id="menu">
               <p class="menu-label">General</p>
               <ul class="menu-list">
-                <li><a href=".">Frontpage</a></li>
-                <li><a id="itemUploads" onclick="panel.getUploads()">Uploads</a></li>
+                <li>
+                  <a href=".">Frontpage</a>
+                </li>
+                <li>
+                  <a id="itemUploads" onclick="panel.getUploads()">Uploads</a>
+                </li>
               </ul>
               <p class="menu-label">Albums</p>
               <ul class="menu-list">
-                <li><a id="itemManageGallery" onclick="panel.getAlbums()">Manage your albums</a></li>
+                <li>
+                  <a id="itemManageGallery" onclick="panel.getAlbums()">Manage your albums</a>
+                </li>
                 <li>
                   <ul id='albumsContainer'></ul>
                 </li>
               </ul>
               <p class="menu-label">Administration</p>
               <ul class="menu-list">
-                <li><a id="itemTokens" onclick="panel.changeToken()">Change your token</a></li>
-                <li><a id="itemPassword" onclick="panel.changePassword()">Change your password</a></li>
-                <li><a id="itemLogout"onclick="panel.logout()">Logout</a></li>
+                <li>
+                  <a id="itemTokens" onclick="panel.changeToken()">Change your token</a>
+                </li>
+                <li>
+                  <a id="itemPassword" onclick="panel.changePassword()">Change your password</a>
+                </li>
+                <li>
+                  <a id="itemLogout" onclick="panel.logout()">Logout</a>
+                </li>
               </ul>
             </aside>
           </div>
-          <div class="column has-text-centered" id='page'>
+          <div class="column has-text-centered is-third-quarters" id='page'>
             <img src="images/logo.png">
           </div>
         </div>
+
       </div>
 
     </section>

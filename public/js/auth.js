@@ -17,18 +17,24 @@ page.do = function (dest) {
     username: user,
     password: pass
   })
-  .then(function (response) {
-    if (response.data.success === false) {
-      return swal('Error', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        return swal('Error', response.data.description, 'error')
+      }
 
-    localStorage.token = response.data.token
-    window.location = 'dashboard'
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+      localStorage.token = response.data.token
+      window.location = 'dashboard'
+    })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
+}
+
+page.onkeypress = function (event, element) {
+  event = event || window.event
+  if (!event) return
+  if (event.keyCode === 13 || event.which === 13) return this.do('login')
 }
 
 page.verify = function () {
@@ -38,17 +44,17 @@ page.verify = function () {
   axios.post('api/tokens/verify', {
     token: page.token
   })
-  .then(function (response) {
-    if (response.data.success === false) {
-      return swal('Error', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        return swal('Error', response.data.description, 'error')
+      }
 
-    window.location = 'dashboard'
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+      window.location = 'dashboard'
+    })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 window.onload = function () {

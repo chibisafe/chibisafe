@@ -23,31 +23,31 @@ panel.verifyToken = function (token, reloadOnError) {
   axios.post('api/tokens/verify', {
     token: token
   })
-  .then(function (response) {
-    if (response.data.success === false) {
-      swal({
-        title: 'An error occurred',
-        text: response.data.description,
-        type: 'error'
-      }, function () {
-        if (reloadOnError) {
-          localStorage.removeItem('token')
-          location.location = 'auth'
-        }
-      })
-      return
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        swal({
+          title: 'An error occurred',
+          text: response.data.description,
+          icon: 'error'
+        }).then(() => {
+          if (reloadOnError) {
+            localStorage.removeItem('token')
+            location.location = 'auth'
+          }
+        })
+        return
+      }
 
-    axios.defaults.headers.common.token = token
-    localStorage.token = token
-    panel.token = token
-    panel.username = response.data.username
-    return panel.prepareDashboard()
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+      axios.defaults.headers.common.token = token
+      localStorage.token = token
+      panel.token = token
+      panel.username = response.data.username
+      return panel.prepareDashboard()
+    })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.prepareDashboard = function () {
@@ -100,31 +100,32 @@ panel.getUploads = function (album = undefined, page = undefined) {
 
     if (page > 0) prevPage = page - 1
 
-    panel.page.innerHTML = ''
-    var container = document.createElement('div')
-    var pagination = `<nav class="pagination is-centered">
-                <a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
-                <a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
-            </nav>`
+    var pagination = `
+      <nav class="pagination is-centered">
+        <a class="pagination-previous" onclick="panel.getUploads(${album}, ${prevPage} )">Previous</a>
+        <a class="pagination-next" onclick="panel.getUploads(${album}, ${nextPage} )">Next page</a>
+      </nav>
+    `
     var listType = `
-    <div class="columns">
-      <div class="column">
-        <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('list', ${album}, ${page})">
-          <span class="icon is-small">
-            <i class="fa icon-list-bullet"></i>
-          </span>
-        </a>
-        <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('thumbs', ${album}, ${page})">
-          <span class="icon is-small">
-            <i class="fa icon-th-large"></i>
-          </span>
-        </a>
+      <div class="columns">
+        <div class="column">
+          <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('list', ${album}, ${page})">
+            <span class="icon is-small">
+              <i class="fa icon-list-bullet"></i>
+            </span>
+          </a>
+          <a class="button is-small is-outlined is-danger" title="List view" onclick="panel.setFilesView('thumbs', ${album}, ${page})">
+            <span class="icon is-small">
+              <i class="fa icon-th-large"></i>
+            </span>
+          </a>
+        </div>
       </div>
-    </div>`
+    `
 
     var table, item
     if (panel.filesView === 'thumbs') {
-      container.innerHTML = `
+      panel.page.innerHTML = `
         ${pagination}
         <hr>
         ${listType}
@@ -134,7 +135,6 @@ panel.getUploads = function (album = undefined, page = undefined) {
         ${pagination}
       `
 
-      panel.page.appendChild(container)
       table = document.getElementById('table')
 
       for (item of response.data.files) {
@@ -151,12 +151,12 @@ panel.getUploads = function (album = undefined, page = undefined) {
       var albumOrUser = 'Album'
       if (panel.username === 'root') { albumOrUser = 'User' }
 
-      container.innerHTML = `
+      panel.page.innerHTML = `
         ${pagination}
         <hr>
         ${listType}
         <div class="table-container">
-          <table class="table is-striped is-narrow is-left">
+          <table class="table is-narrow is-fullwidth is-hoverable">
             <thead>
               <tr>
                   <th>File</th>
@@ -173,7 +173,6 @@ panel.getUploads = function (album = undefined, page = undefined) {
         ${pagination}
       `
 
-      panel.page.appendChild(container)
       table = document.getElementById('table')
 
       for (item of response.data.files) {
@@ -199,16 +198,16 @@ panel.getUploads = function (album = undefined, page = undefined) {
               </a>
             </td>
           </tr>
-          `
+        `
 
         table.appendChild(tr)
       }
     }
   })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.setFilesView = function (view, album, page) {
@@ -221,16 +220,20 @@ panel.deleteFile = function (id) {
   swal({
     title: 'Are you sure?',
     text: 'You wont be able to recover the file!',
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#ff3860',
-    confirmButtonText: 'Yes, delete it!',
-    closeOnConfirm: false
-  },
-    function () {
-      axios.post('api/upload/delete', {
-        id: id
-      })
+    icon: 'warning',
+    dangerMode: true,
+    buttons: {
+      cancel: true,
+      confirm: {
+        text: 'Yes, delete it!',
+        closeModal: false
+      }
+    }
+  }).then(value => {
+    if (!value) return
+    axios.post('api/upload/delete', {
+      id: id
+    })
       .then(function (response) {
         if (response.data.success === false) {
           if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
@@ -244,8 +247,7 @@ panel.deleteFile = function (id) {
         console.log(error)
         return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
-    }
-  )
+  })
 }
 
 panel.getAlbums = function () {
@@ -255,34 +257,37 @@ panel.getAlbums = function () {
       else return swal('An error occurred', response.data.description, 'error')
     }
 
-    panel.page.innerHTML = ''
-    var container = document.createElement('div')
-    container.className = 'container'
-    container.innerHTML = `
+    panel.page.innerHTML = `
       <h2 class="subtitle">Create new album</h2>
 
-      <p class="control has-addons has-addons-centered">
-        <input id="albumName" class="input" type="text" placeholder="Name">
-        <a id="submitAlbum" class="button is-primary">Submit</a>
-      </p>
+      <div class="field has-addons has-addons-centered">
+        <div class="control is-expanded">
+          <input id="albumName" class="input" type="text" placeholder="Name">
+        </div>
+        <div class="control">
+          <a id="submitAlbum" class="button is-primary">Submit</a>
+        </div>
+      </div>
 
       <h2 class="subtitle">List of albums</h2>
 
-      <table class="table is-striped is-narrow">
-        <thead>
-          <tr>
-              <th>Name</th>
-              <th>Files</th>
-              <th>Created At</th>
-              <th>Public link</th>
-              <th></th>
-          </tr>
-        </thead>
-        <tbody id="table">
-        </tbody>
-      </table>`
+      <div class="table-container">
+        <table class="table is-narrow is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+                <th>Name</th>
+                <th>Files</th>
+                <th>Created At</th>
+                <th>Public link</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody id="table">
+          </tbody>
+        </table>
+      </div>
+    `
 
-    panel.page.appendChild(container)
     var table = document.getElementById('table')
 
     for (var item of response.data.albums) {
@@ -292,7 +297,7 @@ panel.getAlbums = function () {
           <th>${item.name}</th>
           <th>${item.files}</th>
           <td>${item.date}</td>
-          <td><a href="${item.identifier}" target="_blank">Album link</a></td>
+          <td><a href="${item.identifier}" target="_blank">${item.identifier}</a></td>
           <td>
             <a class="button is-small is-primary is-outlined" title="Edit name" onclick="panel.renameAlbum(${item.id})">
               <span class="icon is-small">
@@ -306,7 +311,7 @@ panel.getAlbums = function () {
             </a>
           </td>
         </tr>
-        `
+      `
 
       table.appendChild(tr)
     }
@@ -315,65 +320,72 @@ panel.getAlbums = function () {
       panel.submitAlbum()
     })
   })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.renameAlbum = function (id) {
   swal({
     title: 'Rename album',
     text: 'New name you want to give the album:',
-    type: 'input',
-    showCancelButton: true,
-    closeOnConfirm: false,
-    animation: 'slide-from-top',
-    inputPlaceholder: 'My super album'
-  }, function (inputValue) {
-    if (inputValue === false) return false
-    if (inputValue === '') {
-      swal.showInputError('You need to write something!')
-      return false
+    icon: 'info',
+    content: {
+      element: 'input',
+      attributes: {
+        placeholder: 'My super album'
+      }
+    },
+    buttons: {
+      cancel: true,
+      confirm: {
+        closeModal: false
+      }
     }
-
+  }).then(value => {
+    if (!value) return swal.close()
     axios.post('api/albums/rename', {
       id: id,
-      name: inputValue
+      name: value
     })
-    .then(function (response) {
-      if (response.data.success === false) {
-        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-        else if (response.data.description === 'Name already in use') swal.showInputError('That name is already in use!')
-        else swal('An error occurred', response.data.description, 'error')
-        return
-      }
+      .then(function (response) {
+        if (response.data.success === false) {
+          if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+          else if (response.data.description === 'Name already in use') swal.showInputError('That name is already in use!')
+          else swal('An error occurred', response.data.description, 'error')
+          return
+        }
 
-      swal('Success!', 'Your album was renamed to: ' + inputValue, 'success')
-      panel.getAlbumsSidebar()
-      panel.getAlbums()
-    })
-    .catch(function (error) {
-      console.log(error)
-      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-    })
+        swal('Success!', 'Your album was renamed to: ' + value, 'success')
+        panel.getAlbumsSidebar()
+        panel.getAlbums()
+      })
+      .catch(function (error) {
+        console.log(error)
+        return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+      })
   })
 }
 
 panel.deleteAlbum = function (id) {
   swal({
     title: 'Are you sure?',
-    text: "This won't delete your files, only the album!",
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#ff3860',
-    confirmButtonText: 'Yes, delete it!',
-    closeOnConfirm: false
-  },
-    function () {
-      axios.post('api/albums/delete', {
-        id: id
-      })
+    text: 'This won\'t delete your files, only the album!',
+    icon: 'warning',
+    dangerMode: true,
+    buttons: {
+      cancel: true,
+      confirm: {
+        text: 'Yes, delete it!',
+        closeModal: false
+      }
+    }
+  }).then(value => {
+    if (!value) return
+    axios.post('api/albums/delete', {
+      id: id
+    })
       .then(function (response) {
         if (response.data.success === false) {
           if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
@@ -388,62 +400,61 @@ panel.deleteAlbum = function (id) {
         console.log(error)
         return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
       })
-    }
-  )
+  })
 }
 
 panel.submitAlbum = function () {
   axios.post('api/albums', {
     name: document.getElementById('albumName').value
   })
-  .then(function (response) {
-    if (response.data.success === false) {
-      if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error occurred', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+        else return swal('An error occurred', response.data.description, 'error')
+      }
 
-    swal('Woohoo!', 'Album was added successfully', 'success')
-    panel.getAlbumsSidebar()
-    panel.getAlbums()
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+      swal('Woohoo!', 'Album was added successfully', 'success')
+      panel.getAlbumsSidebar()
+      panel.getAlbums()
+    })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.getAlbumsSidebar = function () {
   axios.get('api/albums/sidebar')
-  .then(function (response) {
-    if (response.data.success === false) {
-      if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error occurred', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+        else return swal('An error occurred', response.data.description, 'error')
+      }
 
-    var albumsContainer = document.getElementById('albumsContainer')
-    albumsContainer.innerHTML = ''
+      var albumsContainer = document.getElementById('albumsContainer')
+      albumsContainer.innerHTML = ''
 
-    if (response.data.albums === undefined) return
+      if (response.data.albums === undefined) return
 
-    var li, a
-    for (var album of response.data.albums) {
-      li = document.createElement('li')
-      a = document.createElement('a')
-      a.id = album.id
-      a.innerHTML = album.name
+      var li, a
+      for (var album of response.data.albums) {
+        li = document.createElement('li')
+        a = document.createElement('a')
+        a.id = album.id
+        a.innerHTML = album.name
 
-      a.addEventListener('click', function () {
-        panel.getAlbum(this)
-      })
+        a.addEventListener('click', function () {
+          panel.getAlbum(this)
+        })
 
-      li.appendChild(a)
-      albumsContainer.appendChild(li)
-    }
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+        li.appendChild(a)
+        albumsContainer.appendChild(li)
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.getAlbum = function (item) {
@@ -453,79 +464,83 @@ panel.getAlbum = function (item) {
 
 panel.changeToken = function () {
   axios.get('api/tokens')
-  .then(function (response) {
-    if (response.data.success === false) {
-      if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error occurred', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+        else return swal('An error occurred', response.data.description, 'error')
+      }
 
-    panel.page.innerHTML = ''
-    var container = document.createElement('div')
-    container.className = 'container'
-    container.innerHTML = `
-      <h2 class="subtitle">Manage your token</h2>
+      panel.page.innerHTML = `
+        <h2 class="subtitle">Manage your token</h2>
 
-      <label class="label">Your current token:</label>
-      <p class="control has-addons">
-        <input id="token" readonly class="input is-expanded" type="text" placeholder="Your token" value="${response.data.token}">
-        <a id="getNewToken" class="button is-primary">Request new token</a>
-      </p>
-    `
+        <div class="field">
+          <label class="label">Your current token:</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input id="token" readonly class="input" type="text" placeholder="Your token" value="${response.data.token}">
+            </div>
+            <div class="control">
+              <a id="getNewToken" class="button is-primary">Request new token</a>
+            </div>
+          </div>
+        </div>
+      `
 
-    panel.page.appendChild(container)
-
-    document.getElementById('getNewToken').addEventListener('click', function () {
-      panel.getNewToken()
+      document.getElementById('getNewToken').addEventListener('click', function () {
+        panel.getNewToken()
+      })
     })
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.getNewToken = function () {
   axios.post('api/tokens/change')
-  .then(function (response) {
-    if (response.data.success === false) {
-      if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error occurred', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+        else return swal('An error occurred', response.data.description, 'error')
+      }
 
-    swal({
-      title: 'Woohoo!',
-      text: 'Your token was changed successfully.',
-      type: 'success'
-    }, function () {
-      localStorage.token = response.data.token
-      location.reload()
+      swal({
+        title: 'Woohoo!',
+        text: 'Your token was changed successfully.',
+        icon: 'success'
+      }).then(() => {
+        localStorage.token = response.data.token
+        location.reload()
+      })
     })
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.changePassword = function () {
-  panel.page.innerHTML = ''
-  var container = document.createElement('div')
-  container.className = 'container'
-  container.innerHTML = `
+  panel.page.innerHTML = `
     <h2 class="subtitle">Change your password</h2>
 
-    <label class="label">New password:</label>
-    <p class="control has-addons">
-      <input id="password" class="input is-expanded" type="password" placeholder="Your new password">
-    </p>
-    <label class="label">Confirm password:</label>
-    <p class="control has-addons">
-      <input id="passwordConfirm" class="input is-expanded" type="password" placeholder="Verify your new password">
-      <a id="sendChangePassword" class="button is-primary">Set new password</a>
-    </p>
+    <div class="field">
+      <label class="label">New password:</label>
+      <div class="control">
+        <input id="password" class="input" type="password" placeholder="Your new password">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Confirm password:</label>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input id="passwordConfirm" class="input is-expanded" type="password" placeholder="Verify your new password">
+        </div>
+        <div class="control">
+          <a id="sendChangePassword" class="button is-primary">Set new password</a>
+        </div>
+      </div>
+    </div>
   `
-
-  panel.page.appendChild(container)
 
   document.getElementById('sendChangePassword').addEventListener('click', function () {
     if (document.getElementById('password').value === document.getElementById('passwordConfirm').value) {
@@ -534,8 +549,8 @@ panel.changePassword = function () {
       swal({
         title: 'Password mismatch!',
         text: 'Your passwords do not match, please try again.',
-        type: 'error'
-      }, function () {
+        icon: 'error'
+      }).then(() => {
         panel.changePassword()
       })
     }
@@ -544,24 +559,24 @@ panel.changePassword = function () {
 
 panel.sendNewPassword = function (pass) {
   axios.post('api/password/change', {password: pass})
-  .then(function (response) {
-    if (response.data.success === false) {
-      if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
-      else return swal('An error occurred', response.data.description, 'error')
-    }
+    .then(function (response) {
+      if (response.data.success === false) {
+        if (response.data.description === 'No token provided') return panel.verifyToken(panel.token)
+        else return swal('An error occurred', response.data.description, 'error')
+      }
 
-    swal({
-      title: 'Woohoo!',
-      text: 'Your password was changed successfully.',
-      type: 'success'
-    }, function () {
-      location.reload()
+      swal({
+        title: 'Woohoo!',
+        text: 'Your password was changed successfully.',
+        icon: 'success'
+      }).then(() => {
+        location.reload()
+      })
     })
-  })
-  .catch(function (error) {
-    console.log(error)
-    return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
-  })
+    .catch(function (error) {
+      console.log(error)
+      return swal('An error occurred', 'There was an error with the request, please check the console for more information.', 'error')
+    })
 }
 
 panel.setActiveMenu = function (item) {

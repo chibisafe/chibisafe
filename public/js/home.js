@@ -45,8 +45,8 @@ upload.verifyToken = function (token, reloadOnError) {
         swal({
           title: 'An error occurred',
           text: response.data.description,
-          type: 'error'
-        }, () => {
+          icon: 'error'
+        }).then(() => {
           if (reloadOnError) {
             localStorage.removeItem('token')
             location.reload()

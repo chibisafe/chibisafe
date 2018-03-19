@@ -78,6 +78,7 @@ section#home div#uploads { margin-bottom: 25px; }
     PANEL
 ------------------ */
 
+/*
 section#login input, section#login p.control a.button {
   border-left: 0px;
     border-top: 0px;
@@ -89,7 +90,7 @@ section#login input, section#login p.control a.button {
 section#login p.control a.button { margin-left: 10px; }
 section#login p.control a#loginBtn { border-right: 0px; }
 section#login p.control a#registerBtn { border-left: 0px; }
-
+*/
 
 section#auth, section#dashboard { display: none }
 section#auth input { background: rgba(0, 0, 0, 0); }
@@ -138,11 +139,11 @@ a:hover {
   color: #3daee9;
 }
 
-section#home h3#links span {
+#home #links span {
   color: #898b8d;
 }
 
-section#home #b {
+#home #b {
   width: 200px;
   height: 200px;
   border-radius: 100%;
@@ -154,4 +155,49 @@ hr {
 
 .table-container {
   overflow-x: auto;
+}
+
+/*
+.textarea, .input {
+  border-width: 2px;
+}
+*/
+
+#login .input {
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+  padding-right: calc(0.75em + 1px);
+  padding-left: calc(0.75em + 1px);
+}
+
+#login .control .button {
+  border-radius: 0;
+}
+
+.input.is-active, .input.is-focused, .input:active, .input:focus, .textarea.is-active, .textarea.is-focused, .textarea:active, .textarea:focus {
+  border-color: #2980b9;
+}
+
+.button.is-danger {
+  background-color: #da4453;
+}
+
+.button.is-danger.is-hovered, .button.is-danger:hover {
+  background-color: #3daee9;
+}
+
+/*
+.table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
+  background-color: #383c41;
+}
+*/
+
+.table.is-hoverable tbody tr:not(.is-selected):hover {
+  background-color: #4d4d4d;
+}
+
+.table td, .table th {
+  vertical-align: middle;
 }
