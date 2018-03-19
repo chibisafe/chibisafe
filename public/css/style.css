@@ -139,11 +139,11 @@ a:hover {
   color: #3daee9;
 }
 
-#home #links span {
+section#home h3#links span {
   color: #898b8d;
 }
 
-#home #b {
+section#home #b {
   width: 200px;
   height: 200px;
   border-radius: 100%;
