@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="https://safe.fiery.me/icons/70px.png"/>
+      <square150x150logo src="https://safe.fiery.me/icons/270px.png"/>
+      <square310x310logo src="https://safe.fiery.me/icons/310px.png"/>
+      <wide310x150logo src="https://safe.fiery.me/icons/310pxw.png"/>
+      <TileColor>#232629</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>

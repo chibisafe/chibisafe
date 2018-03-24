@@ -1,8 +1,11 @@
-![loli-safe](https://a.safe.moe/jcutlz.png)
+![loli-safe](https://s.fiery.me/rlpHkNJejaYKuVesQN1Gxtm43NokI8WQ.png)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kanadeko/Kuro/master/LICENSE)
 [![Chat / Support](https://img.shields.io/badge/Chat%20%2F%20Support-discord-7289DA.svg?style=flat-square)](https://discord.gg/5g6vgwn)
 
 # lolisafe, a small safe worth protecting.
+
+## What is `safe.fiery.me` branch?
+This branch is the one being used at https://safe.fiery.me. If you are looking for the original, head to `master` branch, or even better to [WeebDev/lolisafe](https://github.com/WeebDev/lolisafe).
 
 ## What's new in v3.0.0
 - Backend rewrite to make it faster, better and easier to extend
