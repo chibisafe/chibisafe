@@ -8,6 +8,8 @@ let init = function(db){
 		table.string('identifier')
 		table.integer('enabled')
 		table.integer('timestamp')
+		table.integer('editedAt');
+		table.integer('zipGeneratedAt');
 	}).then(() => {})
 
 	db.schema.createTableIfNotExists('files', function (table) {
