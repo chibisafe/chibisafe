@@ -155,20 +155,21 @@ upload.prepareDropzone = function(){
 
 		// Handle the responseText here. For example, add the text to the preview element:
 
-		if(response.success === false){
-			var span = document.createElement('span');
-			span.innerHTML = response.description;
-			file.previewTemplate.querySelector('.link').appendChild(span);
-			return;
+		if (response.success === false) {
+			var p = document.createElement('p');
+			p.innerHTML = response.description;
+			file.previewTemplate.querySelector('.link').appendChild(p);
 		}
 
-		a = document.createElement('a');
-		a.href = response.files[0].url;
-		a.target = '_blank';
-		a.innerHTML = response.files[0].url;
-		file.previewTemplate.querySelector('.link').appendChild(a);
-		
-		file.previewTemplate.querySelector('.progress').style.display = 'none';
+		if (response.files[0].url) {
+			a = document.createElement('a');
+			a.href = response.files[0].url;
+			a.target = '_blank';
+			a.innerHTML = response.files[0].url;
+			file.previewTemplate.querySelector('.link').appendChild(a);
+
+			file.previewTemplate.querySelector('.progress').style.display = 'none';
+		}
 		
 	});
 
