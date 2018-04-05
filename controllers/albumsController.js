@@ -23,8 +23,8 @@ albumsController.list = async (req, res, next) => {
 
 	let ids = [];
 	for (let album of albums) {
-		album.date = new Date(album.timestamp * 1000)
-		album.date = utils.getPrettyDate(album.date)
+		album.date = new Date(album.timestamp * 1000);
+		album.date = utils.getPrettyDate(album.date);
 
 		album.identifier = `${config.domain}/a/${album.identifier}`;
 		ids.push(album.id);
@@ -55,7 +55,7 @@ albumsController.create = async (req, res, next) => {
 	}).first();
 
 	if (album) {
-		return res.json({ success: false, description: 'There\'s already an album with that name' })
+		return res.json({ success: false, description: 'There\'s already an album with that name' });
 	}
 
 	await db.table('albums').insert({
@@ -96,10 +96,10 @@ albumsController.rename = async (req, res, next) => {
 
 	const album = await db.table('albums').where({ name: name, userid: user.id }).first();
 	if (album) {
-		return res.json({ success: false, description: 'Name already in use' })
+		return res.json({ success: false, description: 'Name already in use' });
 	}
 
-	await db.table('albums').where({ id: id, userid: user.id }).update({ name: name })
+	await db.table('albums').where({ id: id, userid: user.id }).update({ name: name });
 	return res.json({ success: true });
 };
 
