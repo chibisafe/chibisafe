@@ -173,7 +173,7 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 
 	return res.json({
 		success: albumSuccess,
-		description: albumSuccess ? null : 'Warning: Successfully uploaded file(s) but unable to add to album.',
+		description: albumSuccess ? null : 'Warning: Error updating album.',
 		files: files.map(file => {
 			return {
 				name: file.name,
