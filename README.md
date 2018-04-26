@@ -64,7 +64,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [updx.xyz](http://updx.xyz): A shitty clone. ~~At least the files are more secure!~~
 - [safe.fiery.me](https://safe.fiery.me): Just another clone.
 - [kayo.pics](https://kayo.pics): File hosting for all~
-- [dmca.gripe](https://dmca.gripe): a **dmca-resistant**, **permanent** file hosting service.
+- [dmca.gripe](https://dmca.gripe): a dmca-resistant, permanent file hosting service.
 - Feel free to add yours here.
 
 ## Author
