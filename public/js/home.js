@@ -24,7 +24,7 @@ upload.preparePage = function(){
 	if(!upload.isPrivate) return upload.prepareUpload();
 	if(!upload.token) return document.getElementById('loginToUpload').style.display = 'inline-flex';
 	upload.verifyToken(upload.token, true);
-}
+};
 
 upload.verifyToken = function(token, reloadOnError){
 	if(reloadOnError === undefined)
@@ -45,7 +45,7 @@ upload.verifyToken = function(token, reloadOnError){
 					localStorage.removeItem("token");
 					location.reload();
 				}
-			})
+			});
 			return;
 		}
 
@@ -59,7 +59,7 @@ upload.verifyToken = function(token, reloadOnError){
 		return console.log(error);
 	});
 
-}
+};
 
 upload.prepareUpload = function(){
 	// I think this fits best here because we need to check for a valid token before we can get the albums
@@ -91,7 +91,7 @@ upload.prepareUpload = function(){
 		.catch(function(e) {
 			swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
 			return console.log(e);
-		})
+		});
 	}
 
 	div = document.createElement('div');
@@ -109,7 +109,7 @@ upload.prepareUpload = function(){
 	
 	upload.prepareDropzone();
 
-}
+};
 
 upload.prepareDropzone = function(){
 	var previewNode = document.querySelector('#template');
@@ -139,7 +139,7 @@ upload.prepareDropzone = function(){
 			// add the selected albumid, if an album is selected, as a header 
 			this.on('sending', function(file, xhr) {
 				if (upload.album) {
-					xhr.setRequestHeader('albumid', upload.album)
+					xhr.setRequestHeader('albumid', upload.album);
 				}
 			});
 		}
@@ -173,7 +173,7 @@ upload.prepareDropzone = function(){
 	});
 
 	upload.prepareShareX();
-}
+};
 
 upload.prepareShareX = function(){
 	if (upload.token) {
@@ -192,10 +192,10 @@ upload.prepareShareX = function(){
   \"ThumbnailURL\": \"$json:files[0].url$\"\r\n\
 }";
 		var sharex_blob = new Blob([sharex_file], {type: "application/octet-binary"});
-		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob))
+		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob));
 		sharex_element.setAttribute("download", location.hostname + ".sxcu");
 	}
-}
+};
 
 //Handle image paste event
 window.addEventListener('paste', function(event) {

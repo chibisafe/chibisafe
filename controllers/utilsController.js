@@ -19,7 +19,7 @@ utilsController.getPrettyDate = function(date) {
 		+ date.getMinutes() + ':'
 		+ (date.getSeconds() < 10 ? '0' : '')
 		+ date.getSeconds();
-}
+};
 
 utilsController.authorize = async (req, res) => {
 	const token = req.headers.token;

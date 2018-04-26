@@ -27,7 +27,7 @@ page.do = function(dest){
 		return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
 		console.log(error);
 	});
-}
+};
 
 page.verify = function(){
 	page.token = localStorage.token;
@@ -49,8 +49,8 @@ page.verify = function(){
 		console.log(error);
 	});
 
-}
+};
 
 window.onload = function () {
 	page.verify();
-}
+};
