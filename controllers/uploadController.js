@@ -9,12 +9,25 @@ const utils = require('./utilsController.js');
 
 const uploadsController = {};
 
+// Let's default it to only 1 try
+const maxTries = config.uploads.maxTries || 1;
+const uploadDir = path.join(__dirname, '..', config.uploads.folder);
+
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
-		cb(null, path.join(__dirname, '..', config.uploads.folder));
+		cb(null, uploadDir);
 	},
 	filename: function(req, file, cb) {
-		cb(null, randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname));
+		const access = i => {
+			const name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname);
+			fs.access(path.join(uploadDir, name), err => {
+				if (err) return cb(null, name);
+				console.log(`A file named "${name}" already exists (${++i}/${maxTries}).`);
+				if (i < maxTries) return access(i);
+				return cb('Could not allocate a unique file name. Try again?');
+			});
+		};
+		access(0);
 	}
 });
 
@@ -39,7 +52,7 @@ uploadsController.upload = async (req, res, next) => {
 
 	const token = req.headers.token || '';
 	const user = await db.table('users').where('token', token).first();
-	if (user.enabled === false || user.enabled === 0) return res.json({
+	if (user && (user.enabled === false || user.enabled === 0)) return res.json({
 		success: false,
 		description: 'This account has been disabled'
 	});
@@ -58,7 +71,7 @@ uploadsController.upload = async (req, res, next) => {
 	return uploadsController.actuallyUpload(req, res, user, albumid);
 };
 
-uploadsController.actuallyUpload = async (req, res, userid, album) => {
+uploadsController.actuallyUpload = async (req, res, userid, albumid) => {
 	upload(req, res, async err => {
 		if (err) {
 			console.error(err);
@@ -101,7 +114,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 						size: file.size,
 						hash: fileHash,
 						ip: req.ip,
-						albumid: album,
+						albumid: albumid,
 						userid: userid !== undefined ? userid.id : null,
 						timestamp: Math.floor(Date.now() / 1000)
 					});
@@ -111,7 +124,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 				}
 
 				if (iteration === req.files.length) {
-					return uploadsController.processFilesForDisplay(req, res, files, existingFiles);
+					return uploadsController.processFilesForDisplay(req, res, files, existingFiles, albumid);
 				}
 				iteration++;
 			});
@@ -119,7 +132,7 @@ uploadsController.actuallyUpload = async (req, res, userid, album) => {
 	});
 };
 
-uploadsController.processFilesForDisplay = async (req, res, files, existingFiles) => {
+uploadsController.processFilesForDisplay = async (req, res, files, existingFiles, albumid) => {
 	let basedomain = config.domain;
 	if (files.length === 0) {
 		return res.json({
@@ -137,8 +150,30 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 	await db.table('files').insert(files);
 	for (let efile of existingFiles) files.push(efile);
 
-	res.json({
-		success: true,
+	for (let file of files) {
+		let ext = path.extname(file.name).toLowerCase();
+		if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
+			file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`;
+			utils.generateThumbs(file);
+		}
+	}
+
+	let albumSuccess = true;
+	if (albumid) {
+		const editedAt = Math.floor(Date.now() / 1000)
+		albumSuccess = await db.table('albums')
+			.where('id', albumid)
+			.update('editedAt', editedAt)
+			.then(() => true)
+			.catch(error => {
+				console.log(error);
+				return false;
+			});
+	}
+
+	return res.json({
+		success: albumSuccess,
+		description: albumSuccess ? null : 'Warning: Error updating album.',
 		files: files.map(file => {
 			return {
 				name: file.name,
@@ -147,19 +182,6 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 			};
 		})
 	});
-
-	for (let file of files) {
-		let ext = path.extname(file.name).toLowerCase();
-		if (utils.imageExtensions.includes(ext) || utils.videoExtensions.includes(ext)) {
-			file.thumb = `${basedomain}/thumbs/${file.name.slice(0, -ext.length)}.png`;
-			utils.generateThumbs(file);
-		}
-
-		if (file.albumid) {
-			db.table('albums').where('id', file.albumid).update('editedAt', file.timestamp).then(() => {})
-				.catch(error => { console.log(error); res.json({ success: false, description: 'Error updating album' }); });
-		}
-	}
 };
 
 uploadsController.delete = async (req, res) => {

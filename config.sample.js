@@ -35,10 +35,14 @@ module.exports = {
 
 	// Add file extensions here which should be blocked
 	blockedExtensions: [
+		'.jar',
 		'.exe',
+		'.msi',
+		'.com',
 		'.bat',
 		'.cmd',
-		'.msi',
+		'.scr',
+		'.ps1',
 		'.sh'
 	],
 
@@ -56,6 +60,13 @@ module.exports = {
 
 		// The length of the random generated name for the uploaded files
 		fileLength: 32,
+
+		/*
+			This option will limit how many times it will try to generate random names
+			for uploaded files. If this value is higher than 1, it will help in cases
+			where files with the same name already exists (higher chance with shorter file name length).
+		*/
+		maxTries: 1,
 
 		/*
 			NOTE: Thumbnails are only for the admin panel and they require you
