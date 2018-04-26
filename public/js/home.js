@@ -9,15 +9,15 @@ upload.myDropzone;
 
 upload.checkIfPublic = function(){
 	axios.get('/api/check')
-  	.then(function (response) {
-    	upload.isPrivate= response.data.private;
+	.then(function (response) {
+		upload.isPrivate= response.data.private;
 		upload.maxFileSize = response.data.maxFileSize;
 		upload.preparePage();
-  	})
-  	.catch(function (error) {
-  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	return console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+		return console.log(error);
+	});
 }
 
 upload.preparePage = function(){
@@ -33,10 +33,10 @@ upload.verifyToken = function(token, reloadOnError){
 	axios.post('/api/tokens/verify', {
 		token: token
 	})
-  	.then(function (response) {
+	.then(function (response) {
 
-    	if(response.data.success === false){
-    		swal({
+		if(response.data.success === false){
+			swal({
 				title: "An error ocurred", 
 				text: response.data.description, 
 				type: "error"
@@ -47,17 +47,17 @@ upload.verifyToken = function(token, reloadOnError){
 				}
 			})
 			return;
-    	}
+		}
 
-    	localStorage.token = token;
+		localStorage.token = token;
 		upload.token = token;
 		return upload.prepareUpload();
 
-  	})
-  	.catch(function (error) {
-  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	return console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+		return console.log(error);
+	});
 
 }
 
@@ -129,7 +129,7 @@ upload.prepareDropzone = function(){
 		maxFiles: 1000,
 		autoProcessQueue: true,
 		headers: {
-    		'token': upload.token
+			'token': upload.token
 		},
 		init: function() {
 			upload.myDropzone = this;

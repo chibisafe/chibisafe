@@ -337,7 +337,7 @@ panel.getAlbums = function(){
 panel.renameAlbum = function(id){
 	
 	swal({
-  		title: "Rename album",
+		title: "Rename album",
 		text: "New name you want to give the album:",
 		type: "input",
 		showCancelButton: true,
@@ -345,13 +345,13 @@ panel.renameAlbum = function(id){
 		animation: "slide-from-top",
 		inputPlaceholder: "My super album"
 	},function(inputValue){
-  		if (inputValue === false) return false;
-  		if (inputValue === "") {
-    		swal.showInputError("You need to write something!");
-    		return false
-  		}
-  		
-  		axios.post('/api/albums/rename', {
+		if (inputValue === false) return false;
+		if (inputValue === "") {
+			swal.showInputError("You need to write something!");
+			return false
+		}
+		
+		axios.post('/api/albums/rename', {
 			id: id,
 			name: inputValue
 		})
