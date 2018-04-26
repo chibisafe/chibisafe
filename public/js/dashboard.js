@@ -245,7 +245,6 @@ panel.deleteFile = function(id){
 
 				swal("Deleted!", "The file has been deleted.", "success");
 				panel.getUploads();
-				return;
 
 			})
 			.catch(function (error) {
@@ -367,7 +366,6 @@ panel.renameAlbum = function(id){
 			swal("Success!", "Your album was renamed to: " + inputValue, "success");
 			panel.getAlbumsSidebar();
 			panel.getAlbums();
-			return;
 
 		})
 		.catch(function (error) {
@@ -404,7 +402,6 @@ panel.deleteAlbum = function(id){
 				swal("Deleted!", "Your album has been deleted.", "success");
 				panel.getAlbumsSidebar();
 				panel.getAlbums();
-				return;
 
 			})
 			.catch(function (error) {
@@ -432,7 +429,6 @@ panel.submitAlbum = function(){
 		swal("Woohoo!", "Album was added successfully", "success");
 		panel.getAlbumsSidebar();
 		panel.getAlbums();
-		return;
 
 	})
 	.catch(function (error) {
