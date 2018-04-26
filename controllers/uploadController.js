@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
 		cb(null, uploadDir);
 	},
-  	filename: function(req, file, cb) {
+	filename: function(req, file, cb) {
 		const access = i => {
 			const name = randomstring.generate(config.uploads.fileLength) + path.extname(file.originalname);
 			fs.access(path.join(uploadDir, name), err => {
