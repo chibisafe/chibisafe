@@ -17,6 +17,7 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "clamscan": "^0.8.4",
     "express": "^4.16.1",
     "express-handlebars": "^3.0.0",
     "express-rate-limit": "^2.11.0",
