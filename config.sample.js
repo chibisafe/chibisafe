@@ -80,7 +80,17 @@ module.exports = {
 			The file is generated when the user clicks the download button in the view
 			and is re-used if the album has not changed between download requests
 		*/
-		generateZips: true
+		generateZips: true,
+
+        /* 
+            Scan files to see if they are a virus.
+            NOTE: This requires the package clamav installed.
+                Debian: sudo apt-get install clamav
+                Fedora: sudo yum install clamav
+                OS X: sudo brew install clamav
+                Windows: Not Supported by ClamAV.
+         */
+		scanFiles: false
 	},
 
 	// Folder where to store logs
