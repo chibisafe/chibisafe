@@ -6,6 +6,7 @@ const db = require('knex')(config.database);
 const crypto = require('crypto');
 const fs = require('fs');
 const utils = require('./utilsController.js');
+const clamscan = require('clamscan')({ preference: 'clamscan' });
 
 const uploadsController = {};
 
@@ -118,6 +119,25 @@ uploadsController.actuallyUpload = async (req, res, userid, albumid) => {
 						userid: userid !== undefined ? userid.id : null,
 						timestamp: Math.floor(Date.now() / 1000)
 					});
+
+                    if (config.uploads.virusScan) {
+                        let _file = path.join(__dirname, '..', config.uploads.folder, file.filename);
+                        console.log("[Clamscan]: Scanning: " + path.join(config.uploads.folder, file.filename) + "...");
+
+                        clamscan.is_infected(_file, (err, returnFile, is_infected) =>{
+                            if (err) {
+                                return console.log(err);
+                            }
+
+                            if (is_infected) {
+                                console.log("***** infected file! ***** " + path.join(config.uploads.folder, file.filename) + ' ***** infected file! *****');
+                                //TODO: Notify user with res.json({ success: false, description: `The file you are uploading is infected!(${file.filename})` });
+                                //      Currently this fails because 'res' becomes undefined.
+                            } else {
+                                console.log("[Clamscan]: Clean file! " + path.join(config.uploads.folder, file.filename));
+                            }
+                        });
+                    }
 				} else {
 					uploadsController.deleteFile(file.filename).then(() => {}).catch(err => console.error(err));
 					existingFiles.push(dbFile);
