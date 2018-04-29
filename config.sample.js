@@ -82,14 +82,14 @@ module.exports = {
 		*/
 		generateZips: true,
 
-        /* 
-            Scan files to see if they are a virus.
-            NOTE: This requires the package clamav installed.
-                Debian: sudo apt-get install clamav
-                Fedora: sudo yum install clamav
-                OS X:   sudo brew install clamav
-                Windows:Not Supported
-         */
+		/* 
+		    Scan files to see if they are a virus.
+		    NOTE: This requires the package clamav installed.
+			Debian: sudo apt-get install clamav
+			Fedora: sudo yum install clamav
+			OS X:   sudo brew install clamav
+			Windows:Not Supported
+		 */
 		virusScan: false
 	},
 
