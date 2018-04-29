@@ -87,10 +87,10 @@ module.exports = {
             NOTE: This requires the package clamav installed.
                 Debian: sudo apt-get install clamav
                 Fedora: sudo yum install clamav
-                OS X: sudo brew install clamav
-                Windows: Not Supported by ClamAV.
+                OS X:   sudo brew install clamav
+                Windows:Not Supported
          */
-		scanFiles: false
+		virusScan: false
 	},
 
 	// Folder where to store logs
