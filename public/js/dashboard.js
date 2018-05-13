@@ -142,7 +142,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 				var div = document.createElement('div');
 				div.className = "column is-2";
 				if(item.thumb !== undefined)
-					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`;
+					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>							<a class="button is-small is-danger is-outlined" title="Delete album" onclick="panel.deleteFile(${item.id})"><span class="icon is-small"><i class="fa fa-trash-o"></i></span></a>`;
 				else
 					div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a>`;
 				table.appendChild(div);
