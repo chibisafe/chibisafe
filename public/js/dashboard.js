@@ -67,6 +67,10 @@ panel.prepareDashboard = function(){
 	document.getElementById('itemPassword').addEventListener('click', function(){
 		panel.setActiveMenu(this);
 	});
+	
+	document.getElementById('itemCreate').addEventListener('click', function(){
+		panel.setActiveMenu(this);
+	});
 
 	document.getElementById('itemLogout').innerHTML = `Logout ( ${panel.username} )`;
 
@@ -76,6 +80,56 @@ panel.prepareDashboard = function(){
 panel.logout = function(){
 	localStorage.removeItem("token");
 	location.reload('/');
+};
+
+panel.register = function(){
+	panel.page.innerHTML = '';
+	var container = document.createElement('div');
+	container.innerHTML = `
+		<h2 class="subtitle">Create an Account</h2>
+		<label class="label">Username:</label>
+		<p class="control has-addons">
+			<input id="accountUser" class="input is-expanded" type="text" placeholder="Username">
+		</p>
+		<label class="label">Password:</label>
+		<p class="control has-addons">
+			<input id="accountPass" class="input is-expanded" type="password" placeholder="Password">
+			<a id="sendAccountCreation" class="button is-primary">Create</a>
+		</p>
+	`;
+	panel.page.appendChild(container);
+        document.getElementById('sendAccountCreation').addEventListener('click', function(){
+
+        var user = document.getElementById('accountUser').value;
+        var pass = document.getElementById('accountPass').value;
+
+        if(user === undefined || user === null || user === '')
+            return swal('Error', 'You need to specify a username', 'error');
+        if(pass === undefined || pass === null || pass === '')
+            return swal('Error', 'You need to specify a password', 'error');
+
+        axios.post('/api/register', {
+            username: user,
+            password: pass
+        })
+        .then(function (response) {
+            if(response.data.success === true) {
+                swal({
+                    title: 'Woohoo!',
+                    text: 'The requested account has been created.',
+                    type: 'success'
+                    }, function() {
+                    location.reload();
+                });
+            } else {
+                return swal('Error', response.data.description, 'error');
+            }
+        })
+        .catch(function (error) {
+            return swal('An error ocurred', 'There was an error with the request, please check the console for more information.', 'error');
+            console.log(error);
+        });
+    });
 };
 
 panel.getUploads = function(album = undefined, page = undefined){
