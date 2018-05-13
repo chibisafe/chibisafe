@@ -68,7 +68,7 @@ panel.prepareDashboard = function(){
 		panel.setActiveMenu(this);
 	});
 	
-	document.getElementById('accountCreation').addEventListener('click', function(){
+	document.getElementById('itemCreate').addEventListener('click', function(){
 		panel.setActiveMenu(this);
 	});
 
