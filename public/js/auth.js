@@ -18,7 +18,7 @@ page.do = function(dest){
 
 		if(response.data.success === false)
 			return swal('Error', response.data.description, 'error');
-		
+
 		localStorage.token = response.data.token;
 		window.location = '/dashboard';
 
@@ -40,7 +40,7 @@ page.verify = function(){
 
 		if(response.data.success === false)
 			return swal('Error', response.data.description, 'error');
-		
+
 		window.location = '/dashboard';
 
 	})

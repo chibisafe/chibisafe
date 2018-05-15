@@ -21,8 +21,8 @@ panel.verifyToken = function(token, reloadOnError){
 
 		if(response.data.success === false){
 			swal({
-				title: "An error ocurred", 
-				text: response.data.description, 
+				title: "An error ocurred",
+				text: response.data.description,
 				type: "error"
 			}, function(){
 				if(reloadOnError){
@@ -89,15 +89,15 @@ panel.getUploads = function(album = undefined, page = undefined){
 	axios.get(url).then(function (response) {
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
-		
+
 		var prevPage = 0;
 		var nextPage = page + 1;
 
 		if(response.data.files.length < 25)
 			nextPage = page;
-		
+
 		if(page > 0) prevPage = page - 1;
 
 		panel.page.innerHTML = '';
@@ -188,7 +188,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 					if(item.username !== undefined)
 						displayAlbumOrUser = item.username;
 				}
-					
+
 				tr.innerHTML = `
 					<tr>
 						<th><a href="${item.file}" target="_blank">${item.file}</a></th>
@@ -240,7 +240,7 @@ panel.deleteFile = function(id){
 
 				if(response.data.success === false){
 					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-					else return swal("An error ocurred", response.data.description, "error");		
+					else return swal("An error ocurred", response.data.description, "error");
 				}
 
 				swal("Deleted!", "The file has been deleted.", "success");
@@ -261,7 +261,7 @@ panel.getAlbums = function(){
 	axios.get('/api/albums').then(function (response) {
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		panel.page.innerHTML = '';
@@ -334,7 +334,7 @@ panel.getAlbums = function(){
 };
 
 panel.renameAlbum = function(id){
-	
+
 	swal({
 		title: "Rename album",
 		text: "New name you want to give the album:",
@@ -349,7 +349,7 @@ panel.renameAlbum = function(id){
 			swal.showInputError("You need to write something!");
 			return false;
 		}
-		
+
 		axios.post('/api/albums/rename', {
 			id: id,
 			name: inputValue
@@ -372,7 +372,7 @@ panel.renameAlbum = function(id){
 			return swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
 			console.log(error);
 		});
-		
+
 	});
 
 };
@@ -396,7 +396,7 @@ panel.deleteAlbum = function(id){
 
 				if(response.data.success === false){
 					if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-					else return swal("An error ocurred", response.data.description, "error");		
+					else return swal("An error ocurred", response.data.description, "error");
 				}
 
 				swal("Deleted!", "Your album has been deleted.", "success");
@@ -415,7 +415,7 @@ panel.deleteAlbum = function(id){
 };
 
 panel.submitAlbum = function(){
-	
+
 	axios.post('/api/albums', {
 		name: document.getElementById('albumName').value
 	})
@@ -423,7 +423,7 @@ panel.submitAlbum = function(){
 
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		swal("Woohoo!", "Album was added successfully", "success");
@@ -444,7 +444,7 @@ panel.getAlbumsSidebar = function(){
 	.then(function (response) {
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		var albumsContainer = document.getElementById('albumsContainer');
@@ -487,7 +487,7 @@ panel.changeToken = function(){
 	.then(function (response) {
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		panel.page.innerHTML = '';
@@ -524,12 +524,12 @@ panel.getNewToken = function(){
 
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		swal({
-			title: "Woohoo!", 
-			text: 'Your token was changed successfully.', 
+			title: "Woohoo!",
+			text: 'Your token was changed successfully.',
 			type: "success"
 		}, function(){
 			localStorage.token = response.data.token;
@@ -570,8 +570,8 @@ panel.changePassword = function(){
 			panel.sendNewPassword(document.getElementById('password').value);
 		} else {
 			swal({
-				title: "Password mismatch!", 
-				text: 'Your passwords do not match, please try again.', 
+				title: "Password mismatch!",
+				text: 'Your passwords do not match, please try again.',
 				type: "error"
 			}, function() {
 				panel.changePassword();
@@ -587,12 +587,12 @@ panel.sendNewPassword = function(pass){
 
 		if(response.data.success === false){
 			if(response.data.description === 'No token provided') return panel.verifyToken(panel.token);
-			else return swal("An error ocurred", response.data.description, "error");		
+			else return swal("An error ocurred", response.data.description, "error");
 		}
 
 		swal({
-			title: "Woohoo!", 
-			text: 'Your password was changed successfully.', 
+			title: "Woohoo!",
+			text: 'Your password was changed successfully.',
 			type: "success"
 		}, function(){
 			location.reload();
