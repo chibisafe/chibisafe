@@ -29,7 +29,7 @@ upload.preparePage = function(){
 upload.verifyToken = function(token, reloadOnError){
 	if(reloadOnError === undefined)
 		reloadOnError = false;
-	
+
 	axios.post('/api/tokens/verify', {
 		token: token
 	})
@@ -37,8 +37,8 @@ upload.verifyToken = function(token, reloadOnError){
 
 		if(response.data.success === false){
 			swal({
-				title: "An error ocurred", 
-				text: response.data.description, 
+				title: "An error ocurred",
+				text: response.data.description,
 				type: "error"
 			}, function(){
 				if(reloadOnError){
@@ -65,7 +65,7 @@ upload.prepareUpload = function(){
 	// I think this fits best here because we need to check for a valid token before we can get the albums
 	if (upload.token) {
 		var select = document.getElementById('albumSelect');
-		
+
 		select.addEventListener('change', function() {
 			upload.album = select.value;
 		});
@@ -73,12 +73,12 @@ upload.prepareUpload = function(){
 		axios.get('/api/albums', { headers: { token: upload.token }})
 		.then(function(res) {
 			var albums = res.data.albums;
-			
+
 			// if the user doesn't have any albums we don't really need to display
 			// an album selection
 			if (albums.length === 0) return;
-			
-			// loop through the albums and create an option for each album 
+
+			// loop through the albums and create an option for each album
 			for (var i = 0; i < albums.length; i++) {
 				var opt = document.createElement('option');
 				opt.value = albums[i].id;
@@ -101,12 +101,12 @@ upload.prepareUpload = function(){
 
 	document.getElementById('maxFileSize').innerHTML = 'Maximum upload size per file is ' + upload.maxFileSize;
 	document.getElementById('loginToUpload').style.display = 'none';
-	
-	if(upload.token === undefined) 
+
+	if(upload.token === undefined)
 		document.getElementById('loginLinkText').innerHTML = 'Create an account and keep track of your uploads';
 
 	document.getElementById('uploadContainer').appendChild(div);
-	
+
 	upload.prepareDropzone();
 
 };
@@ -117,7 +117,7 @@ upload.prepareDropzone = function(){
 	var previewTemplate = previewNode.parentNode.innerHTML;
 	previewNode.parentNode.removeChild(previewNode);
 
-	var dropzone = new Dropzone('div#dropzone', { 
+	var dropzone = new Dropzone('div#dropzone', {
 		url: '/api/upload',
 		paramName: 'files[]',
 		maxFilesize: upload.maxFileSize.slice(0, -2),
@@ -133,10 +133,10 @@ upload.prepareDropzone = function(){
 		},
 		init: function() {
 			upload.myDropzone = this;
-			this.on('addedfile', function(file) { 
+			this.on('addedfile', function(file) {
 				document.getElementById('uploads').style.display = 'block';
 			});
-			// add the selected albumid, if an album is selected, as a header 
+			// add the selected albumid, if an album is selected, as a header
 			this.on('sending', function(file, xhr) {
 				if (upload.album) {
 					xhr.setRequestHeader('albumid', upload.album);
@@ -170,7 +170,7 @@ upload.prepareDropzone = function(){
 
 			file.previewTemplate.querySelector('.progress').style.display = 'none';
 		}
-		
+
 	});
 
 	upload.prepareShareX();
