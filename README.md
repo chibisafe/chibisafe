@@ -65,6 +65,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [safe.fiery.me](https://safe.fiery.me): Just another clone.
 - [kayo.pics](https://kayo.pics): File hosting for all~
 - [dmca.gripe](https://dmca.gripe): a dmca-resistant, permanent file hosting service.
+- [succmy.wang](https://succmy.wang): A private clone with a funny name
 - Feel free to add yours here.
 
 ## Author
