@@ -1,4 +1,4 @@
-let panel = {}
+let panel = {};
 
 panel.page;
 panel.username;
@@ -8,7 +8,7 @@ panel.filesView = localStorage.filesView;
 panel.preparePage = function(){
 	if(!panel.token) return window.location = '/auth';
 	panel.verifyToken(panel.token, true);
-}
+};
 
 panel.verifyToken = function(token, reloadOnError){
 	if(reloadOnError === undefined)
@@ -29,7 +29,7 @@ panel.verifyToken = function(token, reloadOnError){
 					localStorage.removeItem("token");
 					location.location = '/auth';
 				}
-			})
+			});
 			return;
 		}
 
@@ -45,7 +45,7 @@ panel.verifyToken = function(token, reloadOnError){
 		console.log(error);
 	});
 
-}
+};
 
 panel.prepareDashboard = function(){
 	panel.page = document.getElementById('page');
@@ -71,20 +71,20 @@ panel.prepareDashboard = function(){
 	document.getElementById('itemLogout').innerHTML = `Logout ( ${panel.username} )`;
 
 	panel.getAlbumsSidebar();
-}
+};
 
 panel.logout = function(){
 	localStorage.removeItem("token");
 	location.reload('/');
-}
+};
 
 panel.getUploads = function(album = undefined, page = undefined){
 
 	if(page === undefined) page = 0;
 
-	let url = '/api/uploads/' + page
+	let url = '/api/uploads/' + page;
 	if(album !== undefined)
-		url = '/api/album/' + album + '/' + page
+		url = '/api/album/' + album + '/' + page;
 
 	axios.get(url).then(function (response) {
 		if(response.data.success === false){
@@ -120,7 +120,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 					</span>
 				</a>
 			</div>
-		</div>`
+		</div>`;
 
 		if(panel.filesView === 'thumbs'){
 
@@ -142,9 +142,9 @@ panel.getUploads = function(album = undefined, page = undefined){
 				var div = document.createElement('div');
 				div.className = "column is-2";
 				if(item.thumb !== undefined)
-					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a>`;
+					div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.thumb}"/></a><a class="button is-small is-danger is-outlined" title="Delete file" onclick="panel.deleteFile(${item.id})"><span class="icon is-small"><i class="fa fa-trash-o"></i></span></a>`;
 				else
-					div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a>`;
+					div.innerHTML = `<a href="${item.file}" target="_blank"><h1 class="title">.${item.file.split('.').pop()}</h1></a><a class="button is-small is-danger is-outlined" title="Delete file" onclick="panel.deleteFile(${item.id})"><span class="icon is-small"><i class="fa fa-trash-o"></i></span></a>`;
 				table.appendChild(div);
 
 			}
@@ -213,13 +213,13 @@ panel.getUploads = function(album = undefined, page = undefined){
 		console.log(error);
 	});
 
-}
+};
 
 panel.setFilesView = function(view, album, page){
 	localStorage.filesView = view;
 	panel.filesView = view;
 	panel.getUploads(album, page);
-}
+};
 
 panel.deleteFile = function(id){
 	swal({
@@ -245,7 +245,6 @@ panel.deleteFile = function(id){
 
 				swal("Deleted!", "The file has been deleted.", "success");
 				panel.getUploads();
-				return;
 
 			})
 			.catch(function (error) {
@@ -255,7 +254,7 @@ panel.deleteFile = function(id){
 
 		}
 	);
-}
+};
 
 panel.getAlbums = function(){
 
@@ -332,12 +331,12 @@ panel.getAlbums = function(){
 		console.log(error);
 	});
 
-}
+};
 
 panel.renameAlbum = function(id){
 	
 	swal({
-  		title: "Rename album",
+		title: "Rename album",
 		text: "New name you want to give the album:",
 		type: "input",
 		showCancelButton: true,
@@ -345,13 +344,13 @@ panel.renameAlbum = function(id){
 		animation: "slide-from-top",
 		inputPlaceholder: "My super album"
 	},function(inputValue){
-  		if (inputValue === false) return false;
-  		if (inputValue === "") {
-    		swal.showInputError("You need to write something!");
-    		return false
-  		}
-  		
-  		axios.post('/api/albums/rename', {
+		if (inputValue === false) return false;
+		if (inputValue === "") {
+			swal.showInputError("You need to write something!");
+			return false;
+		}
+		
+		axios.post('/api/albums/rename', {
 			id: id,
 			name: inputValue
 		})
@@ -367,7 +366,6 @@ panel.renameAlbum = function(id){
 			swal("Success!", "Your album was renamed to: " + inputValue, "success");
 			panel.getAlbumsSidebar();
 			panel.getAlbums();
-			return;
 
 		})
 		.catch(function (error) {
@@ -377,7 +375,7 @@ panel.renameAlbum = function(id){
 		
 	});
 
-}
+};
 
 panel.deleteAlbum = function(id){
 	swal({
@@ -404,7 +402,6 @@ panel.deleteAlbum = function(id){
 				swal("Deleted!", "Your album has been deleted.", "success");
 				panel.getAlbumsSidebar();
 				panel.getAlbums();
-				return;
 
 			})
 			.catch(function (error) {
@@ -415,7 +412,7 @@ panel.deleteAlbum = function(id){
 		}
 	);
 
-}
+};
 
 panel.submitAlbum = function(){
 	
@@ -432,7 +429,6 @@ panel.submitAlbum = function(){
 		swal("Woohoo!", "Album was added successfully", "success");
 		panel.getAlbumsSidebar();
 		panel.getAlbums();
-		return;
 
 	})
 	.catch(function (error) {
@@ -440,7 +436,7 @@ panel.submitAlbum = function(){
 		console.log(error);
 	});
 
-}
+};
 
 panel.getAlbumsSidebar = function(){
 
@@ -478,12 +474,12 @@ panel.getAlbumsSidebar = function(){
 		console.log(error);
 	});
 
-}
+};
 
 panel.getAlbum = function(item){
 	panel.setActiveMenu(item);
 	panel.getUploads(item.id);
-}
+};
 
 panel.changeToken = function(){
 
@@ -519,7 +515,7 @@ panel.changeToken = function(){
 		console.log(error);
 	});
 
-}
+};
 
 panel.getNewToken = function(){
 
@@ -538,7 +534,7 @@ panel.getNewToken = function(){
 		}, function(){
 			localStorage.token = response.data.token;
 			location.reload();
-		})
+		});
 
 	})
 	.catch(function (error) {
@@ -546,7 +542,7 @@ panel.getNewToken = function(){
 		console.log(error);
 	});
 
-}
+};
 
 panel.changePassword = function(){
 
@@ -582,7 +578,7 @@ panel.changePassword = function(){
 			});
 		}
 	});
-}
+};
 
 panel.sendNewPassword = function(pass){
 
@@ -600,7 +596,7 @@ panel.sendNewPassword = function(pass){
 			type: "success"
 		}, function(){
 			location.reload();
-		})
+		});
 
 	})
 	.catch(function (error) {
@@ -608,7 +604,7 @@ panel.sendNewPassword = function(pass){
 		console.log(error);
 	});
 
-}
+};
 
 panel.setActiveMenu = function(item){
 	var menu = document.getElementById('menu');
@@ -617,8 +613,8 @@ panel.setActiveMenu = function(item){
 		items[i].className = "";
 
 	item.className = 'is-active';
-}
+};
 
 window.onload = function () {
 	panel.preparePage();
-}
+};

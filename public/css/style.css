@@ -102,8 +102,9 @@ section#auth input, section#auth a {
 }
 
 section#dashboard .table { font-size: 12px }
-section#dashboard div#table div.column { display:flex; width: 200px; height: 200px; margin: 9px; background: #f9f9f9; overflow: hidden; align-items: center; }
+section#dashboard div#table div.column { display:flex; width: 200px; height: 220px; margin: 9px; background: #f9f9f9; overflow: hidden; flex-wrap: wrap; align-items: center; }
 section#dashboard div#table div.column a { width: 100%; }
+section#dashboard div#table div.column a:first-child { height: 180px; }
 section#dashboard div#table div.column a img { width:200px; }
 
 .select-wrapper {

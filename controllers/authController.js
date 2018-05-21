@@ -42,10 +42,10 @@ authController.register = async (req, res, next) => {
 	if (password === undefined) return res.json({ success: false, description: 'No password provided' });
 
 	if (username.length < 4 || username.length > 32) {
-		return res.json({ success: false, description: 'Username must have 4-32 characters' })
+		return res.json({ success: false, description: 'Username must have 4-32 characters' });
 	}
 	if (password.length < 6 || password.length > 64) {
-		return res.json({ success: false, description: 'Password must have 6-64 characters' })
+		return res.json({ success: false, description: 'Password must have 6-64 characters' });
 	}
 
 	const user = await db.table('users').where('username', username).first();
@@ -63,7 +63,7 @@ authController.register = async (req, res, next) => {
 			token: token,
 			enabled: 1
 		});
-		return res.json({ success: true, token: token })
+		return res.json({ success: true, token: token });
 	});
 };
 

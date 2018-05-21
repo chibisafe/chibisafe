@@ -9,22 +9,22 @@ upload.myDropzone;
 
 upload.checkIfPublic = function(){
 	axios.get('/api/check')
-  	.then(function (response) {
-    	upload.isPrivate= response.data.private;
+	.then(function (response) {
+		upload.isPrivate= response.data.private;
 		upload.maxFileSize = response.data.maxFileSize;
 		upload.preparePage();
-  	})
-  	.catch(function (error) {
-  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	return console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+		return console.log(error);
+	});
 }
 
 upload.preparePage = function(){
 	if(!upload.isPrivate) return upload.prepareUpload();
 	if(!upload.token) return document.getElementById('loginToUpload').style.display = 'inline-flex';
 	upload.verifyToken(upload.token, true);
-}
+};
 
 upload.verifyToken = function(token, reloadOnError){
 	if(reloadOnError === undefined)
@@ -33,10 +33,10 @@ upload.verifyToken = function(token, reloadOnError){
 	axios.post('/api/tokens/verify', {
 		token: token
 	})
-  	.then(function (response) {
+	.then(function (response) {
 
-    	if(response.data.success === false){
-    		swal({
+		if(response.data.success === false){
+			swal({
 				title: "An error ocurred", 
 				text: response.data.description, 
 				type: "error"
@@ -45,21 +45,21 @@ upload.verifyToken = function(token, reloadOnError){
 					localStorage.removeItem("token");
 					location.reload();
 				}
-			})
+			});
 			return;
-    	}
+		}
 
-    	localStorage.token = token;
+		localStorage.token = token;
 		upload.token = token;
 		return upload.prepareUpload();
 
-  	})
-  	.catch(function (error) {
-  		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
-    	return console.log(error);
-  	});
+	})
+	.catch(function (error) {
+		swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
+		return console.log(error);
+	});
 
-}
+};
 
 upload.prepareUpload = function(){
 	// I think this fits best here because we need to check for a valid token before we can get the albums
@@ -91,7 +91,7 @@ upload.prepareUpload = function(){
 		.catch(function(e) {
 			swal("An error ocurred", 'There was an error with the request, please check the console for more information.', "error");
 			return console.log(e);
-		})
+		});
 	}
 
 	div = document.createElement('div');
@@ -109,7 +109,7 @@ upload.prepareUpload = function(){
 	
 	upload.prepareDropzone();
 
-}
+};
 
 upload.prepareDropzone = function(){
 	var previewNode = document.querySelector('#template');
@@ -129,7 +129,7 @@ upload.prepareDropzone = function(){
 		maxFiles: 1000,
 		autoProcessQueue: true,
 		headers: {
-    		'token': upload.token
+			'token': upload.token
 		},
 		init: function() {
 			upload.myDropzone = this;
@@ -139,7 +139,7 @@ upload.prepareDropzone = function(){
 			// add the selected albumid, if an album is selected, as a header 
 			this.on('sending', function(file, xhr) {
 				if (upload.album) {
-					xhr.setRequestHeader('albumid', upload.album)
+					xhr.setRequestHeader('albumid', upload.album);
 				}
 			});
 		}
@@ -155,25 +155,26 @@ upload.prepareDropzone = function(){
 
 		// Handle the responseText here. For example, add the text to the preview element:
 
-		if(response.success === false){
-			var span = document.createElement('span');
-			span.innerHTML = response.description;
-			file.previewTemplate.querySelector('.link').appendChild(span);
-			return;
+		if (response.success === false) {
+			var p = document.createElement('p');
+			p.innerHTML = response.description;
+			file.previewTemplate.querySelector('.link').appendChild(p);
 		}
 
-		a = document.createElement('a');
-		a.href = response.files[0].url;
-		a.target = '_blank';
-		a.innerHTML = response.files[0].url;
-		file.previewTemplate.querySelector('.link').appendChild(a);
-		
-		file.previewTemplate.querySelector('.progress').style.display = 'none';
+		if (response.files[0].url) {
+			a = document.createElement('a');
+			a.href = response.files[0].url;
+			a.target = '_blank';
+			a.innerHTML = response.files[0].url;
+			file.previewTemplate.querySelector('.link').appendChild(a);
+
+			file.previewTemplate.querySelector('.progress').style.display = 'none';
+		}
 		
 	});
 
 	upload.prepareShareX();
-}
+};
 
 upload.prepareShareX = function(){
 	if (upload.token) {
@@ -192,10 +193,10 @@ upload.prepareShareX = function(){
   \"ThumbnailURL\": \"$json:files[0].url$\"\r\n\
 }";
 		var sharex_blob = new Blob([sharex_file], {type: "application/octet-binary"});
-		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob))
+		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob));
 		sharex_element.setAttribute("download", location.hostname + ".sxcu");
 	}
-}
+};
 
 //Handle image paste event
 window.addEventListener('paste', function(event) {
