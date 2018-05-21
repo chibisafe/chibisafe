@@ -51,8 +51,7 @@ module.exports = {
 		'.csh',
 		'.bash_profile',
 		'.bashrc',
-		'.profile',
-		'.reg'
+		'.profile'
 	],
 
 	// Uploads config
