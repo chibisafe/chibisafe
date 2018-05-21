@@ -41,9 +41,17 @@ module.exports = {
 		'.com',
 		'.bat',
 		'.cmd',
+		'.nt',
 		'.scr',
 		'.ps1',
-		'.sh'
+		'.psm1',
+		'.sh',
+		'.bash',
+		'.bsh',
+		'.csh',
+		'.bash_profile',
+		'.bashrc',
+		'.profile'
 	],
 
 	// Uploads config
