@@ -68,6 +68,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [succmy.wang](https://succmy.wang): A private clone with a funny name
 - [i-want-to.2dgirls.date](https://i-want-to.2dgirls.date): A clone that screams what you want
 - [namir.in](https://namir.in): A private clone dedicated to best girl.
+- [safe.waliant.pw](https://safe.waliant.pw): A generic private clone for personal use.
 - Feel free to add yours here.
 
 ## Author
