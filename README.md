@@ -69,6 +69,8 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [namir.in](https://namir.in): A private clone dedicated to best girl.
 - [safe.waliant.pw](https://safe.waliant.pw): A generic private clone for personal use.
 - [a.hyper.lol](https://a.hyper.lol): My personal clone with some ~~terrible~~ great changes.
+- [i.pyr0.pw](https://i.pyro0.pw): Private Lolisafe Setup With NGINX Cloudflare
+- [isis.dating](https://isis.dating): Randomg Setup By A Random User With Random Intensions
 - Feel free to add yours here.
 
 ## Author
