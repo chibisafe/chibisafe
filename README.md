@@ -60,7 +60,6 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 
 ## Sites using lolisafe
 - [lolisafe.moe](https://lolisafe.moe): A small safe worth protecting.
-- [safe.moe](https://safe.moe): The world's most ~~un~~safe pomf clone
 - [safe.fiery.me](https://safe.fiery.me): Just another clone.
 - [kayo.moe](https://kayo.moe): File hosting for all~
 - [dmca.gripe](https://dmca.gripe): a dmca-resistant, permanent file hosting service.
