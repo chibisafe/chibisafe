@@ -70,6 +70,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [a.hyper.lol](https://a.hyper.lol): My personal clone with some ~~terrible~~ great changes.
 - [i.pyr0.pw](https://i.pyro0.pw): Private Lolisafe Setup With NGINX Cloudflare.
 - [isis.dating](https://isis.dating): Randomg Setup By A Random User With Random Intentions.
+- [discordjs.moe](https://discordjs.moe): A まじ卍 as fuck copy of lolisafe.moe
 - Feel free to add yours here.
 
 ## Author
