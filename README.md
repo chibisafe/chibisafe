@@ -69,6 +69,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [a.hyper.lol](https://a.hyper.lol): My personal clone with some ~~terrible~~ great changes.
 - [discordjs.moe](https://discordjs.moe): A まじ卍 as fuck copy of lolisafe.moe
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
+- [discordimages.com](https://discordimages.com): A file hosting service that is available for public use.
 - Feel free to add yours here.
 
 ## Author
