@@ -11,22 +11,22 @@ class linkPOST extends Route {
 
 	async run(req, res) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
-		const { albumId, enabled, enableDownload, expiresAt } = req.body;
+		const { albumId } = req.body;
 		if (!albumId) return res.status(400).json({ message: 'No album provided' });
 
 		const exists = await db.table('albums').where('id', albumId).first();
 		if (!exists) return res.status(400).json({ message: 'Album doesn\t exist' });
 
-		const identifier = Util.getUniqueAlbumIdentifier();
+		const identifier = await Util.getUniqueAlbumIdentifier();
 		if (!identifier) return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
 
 		try {
 			await db.table('links').insert({
 				identifier,
 				albumId,
-				enabled,
-				enableDownload,
-				expiresAt
+				enabled: true,
+				enableDownload: true,
+				expiresAt: null
 			});
 
 			return res.json({
