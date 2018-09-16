@@ -41,8 +41,10 @@ class uploadPOST extends Route {
 			if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
 		}
 
+		/*
 		if (!albumId) log.info('Incoming file');
 		else log.info(`Incoming file for album ${albumId}`);
+		*/
 
 		let upload = file.data;
 		/*
@@ -167,7 +169,7 @@ class uploadPOST extends Route {
 			If exif removal has been force service-wide or requested by the user, remove it
 		*/
 		if (config.uploads.forceStripExif) { // || user.settings.stripExif) {
-			Util.removeExif(upload.filename);
+			// Util.removeExif(upload.filename);
 		}
 
 		/*

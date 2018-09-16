@@ -15,7 +15,7 @@ class albumPOST extends Route {
 
 		const album = await db.table('albums').where({
 			name,
-			enabled: true,
+			// enabled: true,
 			userId: user.id
 		}).first();
 
@@ -31,7 +31,7 @@ class albumPOST extends Route {
 		*/
 		await db.table('albums').insert({
 			name,
-			enabled: true,
+			// enabled: true,
 			userId: user.id,
 			createdAt: now,
 			editedAt: now
