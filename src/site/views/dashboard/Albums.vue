@@ -114,6 +114,8 @@
 			}
 		}
 	}
+
+	div.column > h2.subtitle { padding-top: 1px; }
 </style>
 <style lang="scss">
 	@import '../../styles/colors.scss';
@@ -136,11 +138,10 @@
 						<Sidebar/>
 					</div>
 					<div class="column">
-						<!--
-						<h1 class="title">Uploads</h1>
-						<h2 class="subtitle">Keep track of all your uploads in here</h2>
+
+						<h2 class="subtitle">Manage your albums</h2>
 						<hr>
-						-->
+
 						<div class="search-container">
 							<b-field>
 								<b-input v-model="newAlbumName"
@@ -200,57 +201,64 @@
 								<div v-if="album.isDetailsOpen"
 									class="details">
 
-									<b-tabs>
-										<b-tab-item label="Settings"/>
-										<b-tab-item label="Links"/>
-									</b-tabs>
 
-									<template v-if="album.links.length">
-										<h2>Public links for this album:</h2>
+									<h2>Public links for this album:</h2>
 
-										<b-table
-											:data="album.links"
-											:mobile-cards="true">
-											<template slot-scope="props">
-												<b-table-column field="identifier"
-													label="Link"
-													centered>
-													<a :href="props.row.identifier"
-														target="_blank">
-														{{ props.row.identifier }}
-													</a>
-												</b-table-column>
+									<b-table
+										:data="album.links.length ? album.links : []"
+										:mobile-cards="true">
+										<template slot-scope="props">
+											<b-table-column field="identifier"
+												label="Link"
+												centered>
+												<a :href="props.row.identifier"
+													target="_blank">
+													{{ props.row.identifier }}
+												</a>
+											</b-table-column>
 
-												<b-table-column field="views"
-													label="Views"
-													centered>
-													{{ props.row.views }}
-												</b-table-column>
+											<b-table-column field="views"
+												label="Views"
+												centered>
+												{{ props.row.views }}
+											</b-table-column>
 
-												<b-table-column field="enableDownload"
-													label="Allow download"
-													centered>
-													<b-switch :value="props.row.enableDownload "/>
-												</b-table-column>
+											<b-table-column field="enableDownload"
+												label="Allow download"
+												centered>
+												<b-switch :value="props.row.enableDownload "/>
+											</b-table-column>
 
-												<b-table-column field="enabled"
-													label="Enabled"
-													centered>
-													<b-switch :value="props.row.enabled "/>
-												</b-table-column>
+											<b-table-column field="enabled"
+												label="Enabled"
+												centered>
+												<b-switch :value="props.row.enabled "/>
+											</b-table-column>
 
-												<b-table-column field="createdAt"
-													label="Created at"
-													centered>
-													{{ props.row.createdAt }}
-												</b-table-column>
-											</template>
-										</b-table>
-									</template>
-
-									<template v-else>
-										<h2>There are no public links to this album yet.</h2>
-									</template>
+											<b-table-column field="createdAt"
+												label="Created at"
+												centered>
+												{{ props.row.createdAt }}
+											</b-table-column>
+										</template>
+										<template slot="empty">
+											<div class="has-text-centered">
+												<i class="icon-misc-mood-sad"/>
+											</div>
+											<div class="has-text-centered">
+												Nothing here
+											</div>
+										</template>
+										<template slot="footer">
+											<div class="has-text-right">
+												<p class="control">
+													<button :class="{ 'is-loading': album.isCreatingLink }"
+														class="button is-primary"
+														@click="createLink(album)">Create new link</button>
+												</p>
+											</div>
+										</template>
+									</b-table>
 
 								</div>
 							</div>
@@ -289,6 +297,25 @@ export default {
 		});
 	},
 	methods: {
+		async createLink(album) {
+			album.isCreatingLink = true;
+			try {
+				const response = await this.axios.post(`${this.$config.baseURL}/album/link/new`,
+					{ albumId: album.id });
+				this.$toast.open(response.data.message);
+				album.links.push({
+					identifier: response.data.identifier,
+					views: 0,
+					enabled: true,
+					enableDownload: true,
+					expiresAt: null
+				});
+				album.isCreatingLink = false;
+			} catch (error) {
+				this.$onPromiseError(error);
+				album.isCreatingLink = false;
+			}
+		},
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
 			try {
@@ -307,29 +334,6 @@ export default {
 				const response = await this.axios.get(`${this.$config.baseURL}/albums/mini`);
 				for (const album of response.data.albums) {
 					album.isDetailsOpen = false;
-					album.links = [
-						{
-							identifier: 'fgjh90834',
-							views: 5,
-							enableDownload: true,
-							enabled: true,
-							createdAt: ''
-						},
-						{
-							identifier: 'awf564qwr',
-							views: 10,
-							enableDownload: false,
-							enabled: true,
-							createdAt: ''
-						},
-						{
-							identifier: 'ghjmk39fh',
-							views: 0,
-							enableDownload: true,
-							enabled: false,
-							createdAt: ''
-						}
-					];
 				}
 				this.albums = response.data.albums;
 				console.log(this.albums);
