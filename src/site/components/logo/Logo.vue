@@ -50,7 +50,7 @@
 
 <template>
 	<p id="logo">
-		<img src="../../../../public/images/logo.png">
+		<img src="../../public/images/logo.png">
 	</p>
 </template>
 
