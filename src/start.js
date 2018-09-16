@@ -6,7 +6,8 @@ const config = require('../config');
 const path = require('path');
 const log = require('./api/utils/Log');
 const dev = process.env.NODE_ENV !== 'production';
-// const reamConfig = require('../../ream.config');
+const oneliner = require('one-liner');
+const jetpack = require('fs-jetpack');
 
 function startProduction() {
 	startAPI();
@@ -15,35 +16,31 @@ function startProduction() {
 
 function startAPI() {
 	new Backend().start();
-	// const backend = new Backend().start();
-	// backend.start();
 }
 
 function startSite() {
-	// console.log(reamConfig);
-	// console.log();
+	/*
+		Make sure the frontend has enough data to prepare the service
+	*/
+	writeFrontendConfig();
+
+	/*
+		Starting ream's custom server
+	*/
 	const server = express();
 	const app = ream({
-		// The path join below prints X:\lolisafe2.2\src\site\index.js which is correct
-		entry: path.join(__dirname, 'site', 'index.js'),
-		html: path.join(__dirname, 'site', 'index.html'),
-		// entry: './site/index.js',
-		// html: './site/index.html',
-		dev
+		dev,
+		entry: path.join(__dirname, 'site', 'index.js')
 	});
-
-	// console.log(app);
 
 	app.getRequestHandler().then(handler => {
 		server.use(compression());
 		/*
-			JUST TEMPORARY FOR LOCAL DEVELOPMENT, LETS SERVE THE UPLOADS FOLDER
+			This option is mostly for development, since serving the files with nginx is better.
 		*/
-		/*
 		if (config.serveFilesWithNode) {
 			server.use('/', express.static(`./${config.uploads.uploadFolder}`));
 		}
-		*/
 		server.get('*', handler);
 		server.listen(config.server.ports.frontend, error => {
 			if (error) log.error(error);
@@ -53,6 +50,25 @@ function startSite() {
 	app.on('renderer-ready', () => log.info(`> Frontend ready and listening on port ${config.server.ports.frontend}`));
 }
 
+function writeFrontendConfig() {
+	/*
+		Since ream can't execute getInitialData on non-routes we write a config file for it.
+	*/
+	const template = oneliner`
+		module.exports = {
+			version: '${process.env.npm_package_version}',
+			baseURL: '${config.backendLocation}',
+			serviceName: '${config.serviceName}',
+			maxFileSize: '${config.uploads.uploadMaxSize}',
+			chunkSize: '${config.uploads.chunkSize}'
+		}`;
+	jetpack.write(path.join(__dirname, 'site', 'config.js'), template);
+	log.success('Frontend config file generated successfully');
+}
+
+/*
+	Having multiple files for different scripts was mendokusai.
+*/
 const args = process.argv[2];
 if (!args) startProduction();
 else if (args === 'api') startAPI();
