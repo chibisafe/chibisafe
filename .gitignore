@@ -1,0 +1,16 @@
+# Packages
+node_modules/
+_dist/
+.ream/
+
+# Log files
+logs/
+*.log
+
+# Miscellaneous
+.tmp/
+.vscode/
+
+# Lolisafe specifics
+config.js
+database.db
