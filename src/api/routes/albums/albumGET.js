@@ -33,20 +33,4 @@ class albumGET extends Route {
 	}
 }
 
-class albumsDropdownGET extends Route {
-	constructor() {
-		super('/albums/:identifier', 'get');
-	}
-
-	async run(req, res, user) {
-		const albums = await db.table('albums')
-			.where('userId', user.id)
-			.select('id', 'name');
-		return res.json({
-			message: 'Successfully retrieved albums',
-			albums
-		});
-	}
-}
-
-module.exports = [albumGET, albumsDropdownGET];
+module.exports = albumGET;
