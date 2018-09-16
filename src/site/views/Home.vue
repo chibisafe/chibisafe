@@ -1,0 +1,96 @@
+<style lang="scss" scoped>
+	@import "../styles/_colors.scss";
+	div.home {
+		color: $textColor;
+		// background-color: #1e2430;
+	}
+	.columns {
+		.column {
+			&.centered {
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+
+	h4 {
+		color: $textColorHighlight;
+		margin-bottom: 1em;
+	}
+
+	p {
+		font-size: 1.25em;
+		font-weight: 600;
+		line-height: 1.5;
+
+		strong {
+			color: $textColorHighlight;
+		}
+	}
+</style>
+
+<template>
+	<div class="home">
+		<section class="hero is-fullheight has-text-centered">
+			<Navbar :isWhite="true"/>
+			<div class="hero-body">
+				<div class="container">
+					<div class="columns">
+						<div class="column is-3 is-offset-2">
+							<div class="logo">
+								<Logo/>
+							</div>
+						</div>
+						<div class="column is-5 centered">
+							<div class="content-wrapper">
+								<h4>Blazing fast file uploader. For real.</h4>
+								<p>
+									A <strong>modern</strong> and <strong>self-hosted</strong> file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="spacer mt7" />
+					<Uploader />
+				</div>
+			</div>
+			<div class="hero-foot">
+				<div class="container">
+					<Links />
+				</div>
+			</div>
+		</section>
+	</div>
+</template>
+
+<script>
+import Navbar from '../components/navbar/Navbar.vue';
+import Logo from '../components/logo/Logo.vue';
+import Uploader from '../components/uploader/Uploader.vue';
+import Links from '../components/home/links/Links.vue';
+
+export default {
+	name: 'Home',
+	components: {
+		Navbar,
+		Logo,
+		Uploader,
+		Links
+	},
+	data() {
+		return { albums: [] };
+	},
+	computed: {
+		loggedIn() {
+			return this.$store.state.loggedIn;
+		}
+	},
+	mounted() {
+		this.$ga.page({
+			page: '/',
+			title: 'Home',
+			location: window.location.href
+		});
+	}
+};
+</script>

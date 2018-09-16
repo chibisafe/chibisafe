@@ -1,0 +1,35 @@
+<style lang="scss" scoped>
+@import "../styles/_colors.scss";
+	h2 {
+		font-weight: 100;
+		color: $textColor;
+		font-size: 4em;
+		text-align: center;
+	}
+</style>
+
+<template>
+	<section class="hero is-fullheight">
+		<Navbar/>
+		<div class="hero-body">
+			<div class="container">
+				<h2>404</h2>
+			</div>
+		</div>
+	</section>
+</template>
+
+<script>
+import Navbar from '../components/navbar/Navbar.vue';
+
+export default {
+	components: { Navbar },
+	mounted() {
+		this.$ga.page({
+			page: '/404',
+			title: 'Not Found',
+			location: window.location.href
+		});
+	}
+};
+</script>
