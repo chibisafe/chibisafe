@@ -139,3 +139,39 @@ section p.control button {
 .switch input[type=checkbox] + .check:before {
 	background: #fbfbfb;
 }
+
+/*
+	Register and Login forms
+*/
+
+section#login,
+section#register { background-color: $backgroundLight1 !important; }
+section#login input,
+section#register input,
+section#login a.button,
+section#register a.button {
+	font-size: 14px !important;
+}
+section#login input,
+section#register input,
+section#login p.control a.button,
+section#register p.control a.button {
+	border-left: 0px !important;
+	border-top: 0px !important;
+	border-right: 0px !important;
+	border-radius: 0px !important;
+	box-shadow: 0 0 0 !important;
+}
+
+section#login p.control a.button,
+section#register p.control a.button { margin-left: 10px !important; }
+section#login p.control a#loginBtn,
+section#register p.control a#loginBtn { border-right: 0px !important; }
+section#login p.control a#registerBtn,
+section#register p.control a#registerBtn { border-left: 0px !important; }
+
+section#login a.is-text,
+section#register a.is-text {
+	font-size: 1.25em;
+	line-height: 2.5em;
+}

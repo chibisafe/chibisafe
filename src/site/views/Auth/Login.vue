@@ -1,25 +1,6 @@
 <style lang="scss" scoped>
 	@import '../../styles/colors.scss';
 </style>
-<style lang="scss">
-	@import '../../styles/colors.scss';
-
-	section#login { background-color: $backgroundLight1 !important; }
-	section#login input, section#login a.button {
-		font-size: 14px !important;
-	}
-	section#login input, section#login p.control a.button {
-		border-left: 0px !important;
-		border-top: 0px !important;
-		border-right: 0px !important;
-		border-radius: 0px !important;
-		box-shadow: 0 0 0 !important;
-	}
-
-	section#login p.control a.button { margin-left: 10px !important; }
-	section#login p.control a#loginBtn { border-right: 0px !important; }
-	section#login p.control a#registerBtn { border-left: 0px !important; }
-</style>
 
 <template>
 	<section id="login"
@@ -34,11 +15,11 @@
 					Login or register
 				</h2>
 				<div class="columns">
-					<div class="column">
+					<div class="column is-4">
 						<b-field>
 							<b-input v-model="username"
 								type="text"
-								placeholder="Username / Email"
+								placeholder="Username"
 								@keyup.enter.native="login"/>
 						</b-field>
 						<b-field>
@@ -50,17 +31,13 @@
 						</b-field>
 
 						<p class="control has-addons is-pulled-right">
-							<router-link id="registerBtn"
-								to="/register"
-								class="button">Register</router-link>
+							<router-link to="/register"
+								class="is-text">Don't have an account?</router-link>
 							<a id="loginBtn"
 								class="button"
 								@click="login">Log in</a>
 						</p>
-
 					</div>
-					<div class="column is-hidden-mobile"/>
-					<div class="column is-hidden-mobile"/>
 				</div>
 			</div>
 		</div>
