@@ -12,7 +12,7 @@ const router = new Router({
 		{ path: '/dashboard', component: () => import('../views/Dashboard/Uploads.vue') },
 		{ path: '/dashboard/albums', component: () => import('../views/Dashboard/Albums.vue') },
 		{ path: '/dashboard/settings', component: () => import('../views/Dashboard/Settings.vue') },
-		{ path: '*', component: () => import('../views/NotFound.vue') }
+		// { path: '*', component: () => import('../views/NotFound.vue') }
 	]
 });
 
