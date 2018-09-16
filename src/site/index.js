@@ -17,7 +17,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 Vue.use(VueMeta);
 Vue.use(VueLazyload);
-/*
 Vue.use(VueAnalytics, {
 	id: 'UA-000000000-0',
 	debug: {
@@ -25,7 +24,6 @@ Vue.use(VueAnalytics, {
 		sendHitTask: isProduction
 	}
 });
-*/
 Vue.use(VueIsYourPasswordSafe, {
 	minLength: 6,
 	maxLength: 64
@@ -40,7 +38,7 @@ Vue.use(VueTimeago, {
 Vue.use(Clipboard);
 
 Vue.axios.defaults.headers.common.Accept = 'application/vnd.lolisafe.json';
-// Vue.prototype.$config = require('./config');
+Vue.prototype.$config = require('./config');
 
 export default () => {
 	return {

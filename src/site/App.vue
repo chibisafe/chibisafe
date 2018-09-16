@@ -6,12 +6,13 @@
 		@drop="isDrag = false">
 		<router-view :key="$route.fullPath"/>
 
+		<!--
 		<div v-if="!ready"
 			id="loading">
 			<div class="background"/>
 			<Loading class="square"/>
 		</div>
-
+		-->
 		<div v-if="false"
 			id="drag-overlay">
 			<div class="background"/>
@@ -39,16 +40,6 @@ export default {
 		Loading,
 		Logo
 	},
-	async getInitialData({ route, store }) {
-		try {
-			const res = await this.axios.get(`/api/config`);
-			Vue.prototype.$config = res.data;
-			await store.commit('config', res.data);
-			return { config: res.data };
-		} catch (error) {
-			return {};
-		}
-	},
 	data() {
 		return {
 			pageTitle: '',
@@ -69,10 +60,52 @@ export default {
 	},
 	mounted() {
 		console.log(`%c Running lolisafe %c v${this.config.version} %c`, 'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff', 'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff', 'background:transparent');
+		this.$store.commit('config', Vue.prototype.$config);
 		this.ready = true;
 	},
 	metaInfo() { // eslint-disable-line complexity
-		return {};
+		return {
+			title: this.pageTitle || 'A small safe worth protecting.',
+			titleTemplate: '%s | lolisafe',
+			link: [
+				{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700', body: true },
+				{ rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.1.99/css/materialdesignicons.min.css', body: true },
+
+				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/public/images/icons/apple-touch-icon.png' },
+				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/public/images/icons/favicon-32x32.png' },
+				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/public/images/icons/favicon-16x16.png' },
+				{ rel: 'manifest', href: '/public/images/icons/manifest.json' },
+				{ rel: 'mask-icon', color: '#FF015B', href: '/public/images/icons/safari-pinned-tab.svg' },
+				{ rel: 'shortcut icon', href: '/public/images/icons/favicon.ico' },
+				{ rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/bjhaeboalljjbggiljjokojcedhmkfoa' },
+				{ type: 'application/json+oembed', href: 'https://listen.moe/public/oembed.json' }
+			],
+			meta: [
+				{ vmid: 'theme-color', name: 'theme-color', content: '#FF015B' },
+
+				{ vmid: 'description', name: 'description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+				{ vmid: 'keywords', name: 'keywords', content: 'lolisafe, file, upload, uploader, vue, node, open source, free' },
+
+				{ vmid: 'apple-mobile-web-app-title', name: 'apple-mobile-web-app-title', content: 'lolisafe' },
+				{ vmid: 'application-name', name: 'application-name', content: 'lolisafe' },
+				{ vmid: 'msapplication-config', name: 'msapplication-config', content: '/public/images/icons/browserconfig.xml' },
+
+				{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+				{ vmid: 'twitter:site', name: 'twitter:site', content: '@its_pitu' },
+				{ vmid: 'twitter:creator', name: 'twitter:creator', content: '@its_pitu' },
+				{ vmid: 'twitter:title', name: 'twitter:title', content: `lolisafe` },
+				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+				{ vmid: 'twitter:image', name: 'twitter:image', content: 'https://listen.moe/public/images/share.jpg' },
+
+				{ vmid: 'og:url', property: 'og:url', content: 'https://listen.moe' },
+				{ vmid: 'og:type', property: 'og:type', content: 'website' },
+				{ vmid: 'og:title', property: 'og:title', content: `lolisafe` },
+				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+				{ vmid: 'og:image', property: 'og:image', content: 'https://listen.moe/public/images/share.jpg' },
+				{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: 'https://listen.moe/public/images/share.jpg' },
+				{ vmid: 'og:site_name', property: 'og:site_name', content: 'LISTEN.moe' }
+			]
+		};
 	},
 	created() {
 		/*
@@ -104,7 +137,7 @@ export default {
 
 		this.$router.beforeEach((to, from, next) => {
 			if (this.$store.state.loggedIn) return next();
-			if (localStorage.getItem('ls-token')) return this.tryToLogin(next, `/login?redirect=${to.path}`);
+			if (localStorage && localStorage.getItem('ls-token')) return this.tryToLogin(next, `/login?redirect=${to.path}`);
 
 			for (const match of to.matched) {
 				if (protectedRoutes.includes(match.path)) {
@@ -169,4 +202,5 @@ export default {
 
 <style lang="scss">
 	@import "./styles/style.scss";
+	@import "./styles/icons.min.css";
 </style>
