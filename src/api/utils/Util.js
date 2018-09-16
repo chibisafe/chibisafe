@@ -96,7 +96,7 @@ class Util {
 			}) + path.extname(name);
 			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename));
 			if (!exists) return filename;
-			if (i < config.uploads.retryFilenameTimes) return retry(i++);
+			if (i < config.uploads.retryFilenameTimes) return retry(i + 1);
 			return null;
 		};
 		return retry();
@@ -110,7 +110,11 @@ class Util {
 			});
 			const exists = await db.table('links').where({ identifier }).first();
 			if (!exists) return identifier;
-			if (i < config.uploads.retryAlbumLinkTimes) return retry(i++);
+			/*
+				It's funny but if you do i++ the asignment never gets done resulting in an infinite loop
+			*/
+			if (i < config.uploads.retryAlbumLinkTimes) return retry(i + 1);
+			log.error('Couldnt allocate identifier for album');
 			return null;
 		};
 		return retry();
