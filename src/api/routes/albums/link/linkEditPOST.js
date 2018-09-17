@@ -3,14 +3,14 @@ const config = require('../../../../../config');
 const db = require('knex')(config.server.database);
 const log = require('../../../utils/Log');
 
-class linkEnabledPOST extends Route {
+class linkEditPOST extends Route {
 	constructor() {
-		super('/album/link/enabled', 'post');
+		super('/album/link/edit', 'post');
 	}
 
 	async run(req, res, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
-		const { identifier, enabled } = req.body;
+		const { identifier, enabled, enableDownload, expiresAt } = req.body;
 		if (!identifier) return res.status(400).json({ message: 'Invalid album identifier supplied' });
 
 		const link = await db.table('links').where({
@@ -22,13 +22,17 @@ class linkEnabledPOST extends Route {
 		try {
 			await db.table('links')
 				.where({ identifier })
-				.update({ enabled });
-			return res.json({ message: 'The link status was changed successfully' });
+				.update({
+					enabled: enabled || false,
+					enableDownload: enableDownload || false,
+					expiresAt // This one should be null if not supplied
+				});
+			return res.json({ message: 'Editing the link was successfully' });
 		} catch (error) {
 			log.error(error);
-			return res.json({ message: 'There was a problem changing the status of the link' });
+			return res.json({ message: 'There was a problem editing the link' });
 		}
 	}
 }
 
-module.exports = linkEnabledPOST;
+module.exports = linkEditPOST;
