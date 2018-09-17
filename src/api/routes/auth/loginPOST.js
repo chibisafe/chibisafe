@@ -15,12 +15,21 @@ class loginPOST extends Route {
 		const { username, password } = req.body;
 		if (!username || !password) return res.status(401).json({ message: 'Invalid body provided' });
 
+		/*
+			Checks if the user exists
+		*/
 		const user = await db.table('users').where('username', username).first();
 		if (!user) return res.status(401).json({ message: 'Invalid authorization' });
 
+		/*
+			Checks if the password is right
+		*/
 		const comparePassword = await bcrypt.compare(password, user.password);
 		if (!comparePassword) return res.status(401).json({ message: 'Invalid authorization.' });
 
+		/*
+			Create the jwt with some data
+		*/
 		const jwt = JWT.sign({
 			iss: 'lolisafe',
 			sub: user.id,

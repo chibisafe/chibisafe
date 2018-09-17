@@ -13,12 +13,12 @@ class linkEditPOST extends Route {
 		const { identifier, enabled, enableDownload, expiresAt } = req.body;
 		if (!identifier) return res.status(400).json({ message: 'Invalid album identifier supplied' });
 
-		const link = await db.table('links').where({
-			identifier,
-			userId: user.id
-		}).first();
-
+		/*
+			Make sure the link exists
+		*/
+		const link = await db.table('links').where({ identifier, userId: user.id }).first();
 		if (!link) return res.status(400).json({ message: 'The link doesn\'t exist or doesn\'t belong to the user' });
+
 		try {
 			await db.table('links')
 				.where({ identifier })

@@ -13,12 +13,15 @@ class fileDELETE extends Route {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: 'Invalid file ID supplied' });
 
-		const file = await db.table('files').where({
-			id,
-			userId: user.id
-		}).first();
-
+		/*
+			Make sure the file exists
+		*/
+		const file = await db.table('files').where({ id, userId: user.id }).first();
 		if (!file) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });
+
+		/*
+			Delete the file
+		*/
 		try {
 			await Util.deleteFile(file.name, true);
 			return res.json({ message: 'The file was deleted successfully' });

@@ -24,9 +24,15 @@ class registerPOST extends Route {
 			return res.status(400).json({ message: 'Password must have 6-64 characters' });
 		}
 
+		/*
+			Make sure the username doesn't exist yet
+		*/
 		const user = await db.table('users').where('username', username).first();
 		if (user) return res.status(401).json({ message: 'Username already exists' });
 
+		/*
+			Hash the supplied password
+		*/
 		let hash;
 		try {
 			hash = await bcrypt.hash(password, 10);
@@ -36,6 +42,9 @@ class registerPOST extends Route {
 			return res.status(401).json({ message: 'There was a problem processing your account' });
 		}
 
+		/*
+			Create the user
+		*/
 		const now = moment.utc().toDate();
 		await db.table('users').insert({
 			username,

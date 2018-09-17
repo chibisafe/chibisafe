@@ -2,6 +2,7 @@ const JWT = require('jsonwebtoken');
 const { server } = require('../../../config');
 const db = require('knex')(server.database);
 const moment = require('moment');
+const log = require('../utils/Log');
 
 class Route {
 	constructor(path, method, options) {
@@ -21,7 +22,7 @@ class Route {
 
 		return JWT.verify(token, server.secret, async (error, decoded) => {
 			if (error) {
-				console.log(error);
+				log.error(error);
 				return res.status(401).json({ message: 'Your token appears to be invalid' });
 			}
 			const id = decoded ? decoded.sub : '';

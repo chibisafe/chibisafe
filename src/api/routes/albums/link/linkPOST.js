@@ -14,12 +14,21 @@ class linkPOST extends Route {
 		const { albumId } = req.body;
 		if (!albumId) return res.status(400).json({ message: 'No album provided' });
 
+		/*
+			Make sure the album exists
+		*/
 		const exists = await db.table('albums').where('id', albumId).first();
 		if (!exists) return res.status(400).json({ message: 'Album doesn\t exist' });
 
+		/*
+			Count the amount of links created for that album already and error out if max was reached
+		*/
 		const count = await db.table('links').where('albumId', albumId).count({ count: 'id' });
 		if (count[0].count >= config.albums.maxLinksPerAlbum) return res.status(400).json({ message: 'Maximum links per album reached' });
 
+		/*
+			Try to allocate a new identifier on the db
+		*/
 		const identifier = await Util.getUniqueAlbumIdentifier();
 		if (!identifier) return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
 

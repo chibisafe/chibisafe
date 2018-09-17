@@ -9,12 +9,20 @@ class filesGET extends Route {
 	}
 
 	async run(req, res, user) {
+		/*
+			Get all the files from the user
+		*/
 		const files = await db.table('files')
 			.where('userId', user.id)
 			.orderBy('id', 'desc');
+
+		/*
+			For each file, create the public link to be able to display the file
+		*/
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}
+
 		return res.json({
 			message: 'Successfully retrieved files',
 			files
