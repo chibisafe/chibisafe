@@ -105,7 +105,7 @@ class Util {
 	static getUniqueAlbumIdentifier() {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
-				length: config.uploads.generatedAlbumLinkLength,
+				length: config.albums.generatedAlbumLinkLength,
 				capitalization: 'lowercase'
 			});
 			const exists = await db.table('links').where({ identifier }).first();
@@ -113,7 +113,7 @@ class Util {
 			/*
 				It's funny but if you do i++ the asignment never gets done resulting in an infinite loop
 			*/
-			if (i < config.uploads.retryAlbumLinkTimes) return retry(i + 1);
+			if (i < config.albums.retryAlbumLinkTimes) return retry(i + 1);
 			log.error('Couldnt allocate identifier for album');
 			return null;
 		};

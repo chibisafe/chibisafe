@@ -82,36 +82,46 @@
 		<WaterfallItem v-for="(item, index) in files"
 			v-if="showWaterfall && item.thumb"
 			:key="index"
+			:width="width"
 			move-class="item-move">
-			<img :src="`${item.thumb}`">
-			<div :class="{ fixed }"
-				class="actions">
-				<b-tooltip label="Link"
-					position="is-top">
-					<a :href="`${item.url}`"
-						target="_blank">
-						<i class="icon-web-code"/>
-					</a>
-				</b-tooltip>
-				<b-tooltip label="Albums"
-					position="is-top">
-					<a @click="manageAlbums(item)">
-						<i class="icon-interface-window"/>
-					</a>
-				</b-tooltip>
-				<b-tooltip label="Tags"
-					position="is-top">
-					<a @click="manageTags(item)">
-						<i class="icon-ecommerce-tag-c"/>
-					</a>
-				</b-tooltip>
-				<b-tooltip label="Delete"
-					position="is-top">
-					<a @click="deleteFile(item, index)">
-						<i class="icon-editorial-trash-a-l"/>
-					</a>
-				</b-tooltip>
-			</div>
+			<template v-if="isPublic">
+				<a :href="`${item.url}`"
+					target="_blank">
+					<img :src="`${item.thumb}`">
+				</a>
+			</template>
+			<template v-else>
+				<img :src="`${item.thumb}`">
+				<div v-if="!isPublic"
+					:class="{ fixed }"
+					class="actions">
+					<b-tooltip label="Link"
+						position="is-top">
+						<a :href="`${item.url}`"
+							target="_blank">
+							<i class="icon-web-code"/>
+						</a>
+					</b-tooltip>
+					<b-tooltip label="Albums"
+						position="is-top">
+						<a @click="manageAlbums(item)">
+							<i class="icon-interface-window"/>
+						</a>
+					</b-tooltip>
+					<b-tooltip label="Tags"
+						position="is-top">
+						<a @click="manageTags(item)">
+							<i class="icon-ecommerce-tag-c"/>
+						</a>
+					</b-tooltip>
+					<b-tooltip label="Delete"
+						position="is-top">
+						<a @click="deleteFile(item, index)">
+							<i class="icon-editorial-trash-a-l"/>
+						</a>
+					</b-tooltip>
+				</div>
+			</template>
 		</WaterfallItem>
 	</Waterfall>
 </template>
@@ -132,12 +142,19 @@ export default {
 		fixed: {
 			type: Boolean,
 			default: false
+		},
+		isPublic: {
+			type: Boolean,
+			default: false
+		},
+		width: {
+			type: Number,
+			default: 150
 		}
 	},
 	data() {
 		return { showWaterfall: true };
 	},
-	mounted() {},
 	methods: {
 		deleteFile(file, index) {
 			this.$dialog.confirm({

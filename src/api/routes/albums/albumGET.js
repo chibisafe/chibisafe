@@ -1,6 +1,7 @@
 const Route = require('../../structures/Route');
 const config = require('../../../../config');
 const db = require('knex')(config.server.database);
+const Util = require('../../utils/Util');
 
 class albumGET extends Route {
 	constructor() {
@@ -21,13 +22,19 @@ class albumGET extends Route {
 		if (!album) return res.status(400).json({ message: 'Album not found' });
 
 		const fileList = await db.table('albumsFiles').where('albumId', link.albumId);
-		const fileIds = fileList.filter(el => el.file.fileId);
+		const fileIds = fileList.map(el => el.fileId);
 		const files = await db.table('files')
-			.where('id', fileIds)
+			.whereIn('id', fileIds)
+			.orderBy('id', 'desc')
 			.select('name');
 
+		for (let file of files) {
+			file = Util.constructFilePublicLink(file);
+		}
 		return res.json({
 			message: 'Successfully retrieved files',
+			name: album.name,
+			downloadEnabled: link.enableDownload,
 			files
 		});
 	}

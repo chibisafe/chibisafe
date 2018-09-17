@@ -211,7 +211,7 @@
 											<b-table-column field="identifier"
 												label="Link"
 												centered>
-												<a :href="props.row.identifier"
+												<a :href="`${config.URL}/a/${props.row.identifier}`"
 													target="_blank">
 													{{ props.row.identifier }}
 												</a>
@@ -235,10 +235,11 @@
 												<b-switch :value="props.row.enabled "/>
 											</b-table-column>
 
-											<b-table-column field="createdAt"
-												label="Created at"
+											<b-table-column field="actions"
+												label="Actions"
 												centered>
-												{{ props.row.createdAt }}
+												<button class="button is-danger"
+													@click="deleteLink(props.row.identifier)">Delete link</button>
 											</b-table-column>
 										</template>
 										<template slot="empty">
@@ -251,11 +252,11 @@
 										</template>
 										<template slot="footer">
 											<div class="has-text-right">
-												<p class="control">
-													<button :class="{ 'is-loading': album.isCreatingLink }"
-														class="button is-primary"
-														@click="createLink(album)">Create new link</button>
-												</p>
+												<button :class="{ 'is-loading': album.isCreatingLink }"
+													class="button is-primary"
+													style="float: left"
+													@click="createLink(album)">Create new link</button>
+												{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created
 											</div>
 										</template>
 									</b-table>
@@ -284,6 +285,11 @@ export default {
 			albums: [],
 			newAlbumName: null
 		};
+	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
 	},
 	metaInfo() {
 		return { title: 'Uploads' };
