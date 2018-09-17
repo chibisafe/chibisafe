@@ -57,10 +57,12 @@ function writeFrontendConfig() {
 	const template = oneliner`
 		module.exports = {
 			version: '${process.env.npm_package_version}',
+			URL: '${config.filesServeLocation}',
 			baseURL: '${config.backendLocation}',
 			serviceName: '${config.serviceName}',
 			maxFileSize: '${config.uploads.uploadMaxSize}',
-			chunkSize: '${config.uploads.chunkSize}'
+			chunkSize: '${config.uploads.chunkSize}',
+			maxLinksPerAlbum: '${config.albums.maxLinksPerAlbum}'
 		}`;
 	jetpack.write(path.join(__dirname, 'site', 'config.js'), template);
 	log.success('Frontend config file generated successfully');
