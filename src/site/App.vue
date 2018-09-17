@@ -69,7 +69,7 @@ export default {
 			titleTemplate: '%s | lolisafe',
 			link: [
 				{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700', body: true },
-				{ rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.1.99/css/materialdesignicons.min.css', body: true },
+				// { rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.1.99/css/materialdesignicons.min.css', body: true },
 
 				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/public/images/icons/apple-touch-icon.png' },
 				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/public/images/icons/favicon-32x32.png' },
@@ -77,11 +77,11 @@ export default {
 				{ rel: 'manifest', href: '/public/images/icons/manifest.json' },
 				{ rel: 'mask-icon', color: '#FF015B', href: '/public/images/icons/safari-pinned-tab.svg' },
 				{ rel: 'shortcut icon', href: '/public/images/icons/favicon.ico' },
-				{ rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/bjhaeboalljjbggiljjokojcedhmkfoa' },
-				{ type: 'application/json+oembed', href: 'https://listen.moe/public/oembed.json' }
+				{ rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj' },
+				{ type: 'application/json+oembed', href: '/public/oembed.json' }
 			],
 			meta: [
-				{ vmid: 'theme-color', name: 'theme-color', content: '#FF015B' },
+				{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
 
 				{ vmid: 'description', name: 'description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
 				{ vmid: 'keywords', name: 'keywords', content: 'lolisafe, file, upload, uploader, vue, node, open source, free' },
@@ -95,15 +95,15 @@ export default {
 				{ vmid: 'twitter:creator', name: 'twitter:creator', content: '@its_pitu' },
 				{ vmid: 'twitter:title', name: 'twitter:title', content: `lolisafe` },
 				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-				{ vmid: 'twitter:image', name: 'twitter:image', content: 'https://listen.moe/public/images/share.jpg' },
+				{ vmid: 'twitter:image', name: 'twitter:image', content: '/public/images/share.jpg' },
 
-				{ vmid: 'og:url', property: 'og:url', content: 'https://listen.moe' },
+				{ vmid: 'og:url', property: 'og:url', content: 'https://lolisafe.moe' },
 				{ vmid: 'og:type', property: 'og:type', content: 'website' },
 				{ vmid: 'og:title', property: 'og:title', content: `lolisafe` },
 				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-				{ vmid: 'og:image', property: 'og:image', content: 'https://listen.moe/public/images/share.jpg' },
-				{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: 'https://listen.moe/public/images/share.jpg' },
-				{ vmid: 'og:site_name', property: 'og:site_name', content: 'LISTEN.moe' }
+				{ vmid: 'og:image', property: 'og:image', content: '/public/images/share.jpg' },
+				{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: '/public/images/share.jpg' },
+				{ vmid: 'og:site_name', property: 'og:site_name', content: 'lolisafe' }
 			]
 		};
 	},
@@ -137,7 +137,9 @@ export default {
 
 		this.$router.beforeEach((to, from, next) => {
 			if (this.$store.state.loggedIn) return next();
-			if (localStorage && localStorage.getItem('ls-token')) return this.tryToLogin(next, `/login?redirect=${to.path}`);
+			if (process.browser) {
+				if (localStorage && localStorage.getItem('ls-token')) return this.tryToLogin(next, `/login?redirect=${to.path}`);
+			}
 
 			for (const match of to.matched) {
 				if (protectedRoutes.includes(match.path)) {
@@ -173,7 +175,7 @@ export default {
 			}
 		},
 		tryToLogin(next, destination) {
-			this.$store.commit('token', localStorage.getItem('ls-token'));
+			if (process.browser) this.$store.commit('token', localStorage.getItem('ls-token'));
 			this.axios.get(`${this.$config.baseURL}/verify`).then(res => {
 				this.$store.commit('user', res.data.user);
 				this.$store.commit('loggedIn', true);
