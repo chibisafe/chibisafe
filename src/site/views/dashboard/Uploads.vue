@@ -36,16 +36,11 @@
 <script>
 import Sidebar from '../../components/sidebar/Sidebar.vue';
 import Grid from '../../components/grid/Grid.vue';
-// import Waterfall from '../../components/waterfall/Waterfall.vue';
-// import WaterfallItem from '../../components/waterfall/WaterfallItem.vue';
 
 export default {
 	components: {
 		Sidebar,
 		Grid
-		// Waterfall,
-		// WaterfallSlot
-		// WaterfallItem
 	},
 	data() {
 		return { files: [] };
