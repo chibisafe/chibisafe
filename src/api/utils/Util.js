@@ -137,8 +137,11 @@ class Util {
 	}
 
 	static async deleteFile(filename, deleteFromDB = false) {
+		const thumbName = this.getFileThumbnail(filename);
 		try {
 			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', thumbName));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', 'square', thumbName));
 			if (deleteFromDB) {
 				await db.table('files').where('name', filename).delete();
 			}
