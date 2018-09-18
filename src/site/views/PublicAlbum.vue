@@ -23,7 +23,7 @@
 			<div class="hero-body align-top">
 				<div class="container">
 					<h1 class="title">{{ name }}</h1>
-					<h2 class="subtitle">Serving {{ files.length }} files</h2>
+					<h2 class="subtitle">Serving {{ files ? files.length : 0 }} files</h2>
 					<a v-if="downloadLink"
 						:href="downloadLink">Download Album</a>
 					<hr>
@@ -31,7 +31,7 @@
 			</div>
 			<div class="hero-body">
 				<div class="container">
-					<Grid v-if="files.length"
+					<Grid v-if="files && files.length"
 						:files="files"
 						:isPublic="true"
 						:width="200"/>
@@ -80,23 +80,38 @@ export default {
 		return {};
 	},
 	metaInfo() {
-		return {
-			title: `${this.name ? this.name : ''}`,
-			meta: [
-				{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
-				{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-				{ vmid: 'twitter:title', name: 'twitter:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-				{ vmid: 'twitter:image', name: 'twitter:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-				{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
+		if (!this.files) {
+			return {
+				title: `${this.name ? this.name : ''}`,
+				meta: [
+					{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
+					{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+					{ vmid: 'twitter:title', name: 'twitter:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
+					{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+					{ vmid: 'twitter:image', name: 'twitter:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
+					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
 
-				{ vmid: 'og:url', property: 'og:url', content: `${config.URL}/a/${this.$route.params.identifier}` },
-				{ vmid: 'og:title', property: 'og:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-				{ vmid: 'og:image', property: 'og:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-				{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
-			]
-		};
+					{ vmid: 'og:url', property: 'og:url', content: `${config.URL}/a/${this.$route.params.identifier}` },
+					{ vmid: 'og:title', property: 'og:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
+					{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+					{ vmid: 'og:image', property: 'og:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
+					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
+				]
+			};
+		} else {
+			return {
+				title: `${this.name ? this.name : ''}`,
+				meta: [
+					{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
+					{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+					{ vmid: 'twitter:title', name: 'twitter:title', content: 'lolisafe' },
+					{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+					{ vmid: 'og:url', property: 'og:url', content: `${config.URL}/a/${this.$route.params.identifier}` },
+					{ vmid: 'og:title', property: 'og:title', content: 'lolisafe' },
+					{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
+				]
+			};
+		}
 	},
 	mounted() {
 		if (this.error) {
