@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ hasFiles: files.length > 0 }"
+	<div :class="{ 'has-files': alreadyAddedFiles }"
 		class="uploader-wrapper">
 		<b-select v-if="loggedIn"
 			v-model="selectedAlbum"
@@ -21,6 +21,9 @@
 			@vdropzone-success="dropzoneSuccess"
 			@vdropzone-error="dropzoneError"
 			@vdropzone-files-added="dropzoneFilesAdded" />
+		<label class="add-more">
+			Add more files
+		</label>
 
 		<div id="template"
 			ref="template">
@@ -75,6 +78,7 @@ export default {
 	components: { Dropzone },
 	data() {
 		return {
+			alreadyAddedFiles: false,
 			files: [],
 			dropzoneOptions: {},
 			showDropzone: false,
@@ -156,6 +160,7 @@ export default {
 			Dropzone stuff
 		*/
 		dropzoneFilesAdded(files) {
+			this.alreadyAddedFiles = true;
 			// console.log(files);
 		},
 		dropzoneSuccess(file, response) {
@@ -236,6 +241,20 @@ export default {
 	}
 
 	div.uploader-wrapper {
+		&.has-files {
+			#dropzone {
+				padding-bottom: 50px;
+			}
+			label.add-more {
+				position: absolute;
+				bottom: 23px;
+				width: 100%;
+				text-align: center;
+				color: #797979;
+				display: block;
+				pointer-events: none;
+			}
+		}
 		div.control {
 			margin-bottom: 5px;
 			span.select {
@@ -247,5 +266,6 @@ export default {
 				}
 			}
 		}
+		label.add-more { display: none; }
 	}
 </style>
