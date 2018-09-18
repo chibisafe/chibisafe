@@ -19,7 +19,7 @@
 
 <template>
 	<section class="hero is-fullheight">
-		<template v-if="files.length">
+		<template v-if="files && files.length">
 			<div class="hero-body align-top">
 				<div class="container">
 					<h1 class="title">{{ name }}</h1>
@@ -67,6 +67,23 @@ export default {
 				downloadLink
 			};
 		} catch (error) {
+			return {
+				name: null,
+				downloadEnabled: false,
+				files: [],
+				downloadLink: null,
+				error: error.response.status
+			};
+			/*
+			if (error.response.status === 404) {
+
+				setTimeout(() => this.$router.push('/404'), 3000);
+			} else {
+				console.error(error);
+			}
+			return {};
+			*/
+			/*
 			console.error(error);
 			return {
 				name: null,
@@ -74,6 +91,7 @@ export default {
 				files: [],
 				downloadLink: null
 			};
+			*/
 		}
 	},
 	data() {
@@ -99,17 +117,20 @@ export default {
 		};
 	},
 	mounted() {
+		if (this.error) {
+			if (this.error === 404) {
+				this.$toast.open('Album not found', true, 3000);
+				setTimeout(() => this.$router.push('/404'), 3000);
+				return;
+			} else {
+				this.$toast.open(`Error code ${this.error}`, true, 3000);
+			}
+		}
 		this.$ga.page({
 			page: `/a/${this.$route.params.identifier}`,
 			title: `Album | ${this.name}`,
 			location: window.location.href
 		});
-	},
-	methods: {
-		async downloadAlbum() {
-			const response = await axios.get(`${config.baseURL}/album/${this.$route.params.identifier}/zip`);
-			console.log(response.data);
-		}
 	}
 };
 </script>
