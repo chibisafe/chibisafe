@@ -226,21 +226,29 @@
 											<b-table-column field="enableDownload"
 												label="Allow download"
 												centered>
-												<b-switch :value="props.row.enableDownload "/>
+												<b-switch v-model="props.row.enableDownload"
+													@input="linkOptionsChanged(props.row)"/>
 											</b-table-column>
 
 											<b-table-column field="enabled"
 												label="Enabled"
 												centered>
-												<b-switch :value="props.row.enabled "/>
+												<b-switch v-model="props.row.enabled"
+													@input="linkOptionsChanged(props.row)"/>
 											</b-table-column>
 
+											<!--
+												Until it's decided if we want to delete links or just hide them from the list
+												this setting will be hidden. Discussion about it is encouraged on Discord.
+											-->
+											<!--
 											<b-table-column field="actions"
 												label="Actions"
 												centered>
 												<button class="button is-danger"
 													@click="deleteLink(props.row.identifier)">Delete link</button>
 											</b-table-column>
+											-->
 										</template>
 										<template slot="empty">
 											<div class="has-text-centered">
@@ -303,6 +311,19 @@ export default {
 		});
 	},
 	methods: {
+		async linkOptionsChanged(link) {
+			try {
+				const response = await this.axios.post(`${this.$config.baseURL}/album/link/edit`,
+					{
+						identifier: link.identifier,
+						enableDownload: link.enableDownload,
+						enabled: link.enabled
+					});
+				this.$toast.open(response.data.message);
+			} catch (error) {
+				this.$onPromiseError(error);
+			}
+		},
 		async createLink(album) {
 			album.isCreatingLink = true;
 			try {
