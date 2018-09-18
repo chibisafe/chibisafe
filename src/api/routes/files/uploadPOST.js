@@ -10,7 +10,6 @@ const Busboy = require('busboy');
 const fs = require('fs');
 
 /*
-	TODO: Sometimes pics are being uploaded twice. Hash comparison not working?
 	TODO: Strip exif data if the owner/user configured it as such
 	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover.
@@ -103,10 +102,7 @@ class uploadPOST extends Route {
 				if (!user) this.whereNull('userId'); // eslint-disable-line no-invalid-this
 				else this.where('userId', user.id); // eslint-disable-line no-invalid-this
 			})
-			.where({
-				hash,
-				size: upload.size
-			})
+			.where({ hash })
 			.first();
 
 		if (exists) {
