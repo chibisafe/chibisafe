@@ -74,24 +74,6 @@ export default {
 				downloadLink: null,
 				error: error.response.status
 			};
-			/*
-			if (error.response.status === 404) {
-
-				setTimeout(() => this.$router.push('/404'), 3000);
-			} else {
-				console.error(error);
-			}
-			return {};
-			*/
-			/*
-			console.error(error);
-			return {
-				name: null,
-				downloadEnabled: false,
-				files: [],
-				downloadLink: null
-			};
-			*/
 		}
 	},
 	data() {
