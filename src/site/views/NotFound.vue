@@ -10,10 +10,10 @@
 
 <template>
 	<section class="hero is-fullheight">
-		<Navbar/>
+		<Navbar :isWhite="true"/>
 		<div class="hero-body">
 			<div class="container">
-				<h2>404</h2>
+				<h2>404エラ</h2>
 			</div>
 		</div>
 	</section>
