@@ -34,6 +34,7 @@ class Database {
 				// table.string('identifier');
 				// table.boolean('enabled');
 				// table.boolean('enableDownload').defaultTo(true);
+				table.timestamp('zippedAt');
 				table.timestamp('createdAt');
 				table.timestamp('editedAt');
 			});
@@ -57,6 +58,7 @@ class Database {
 		if (!await db.schema.hasTable('links')) {
 			await db.schema.createTable('links', table => {
 				table.increments();
+				table.integer('userId');
 				table.integer('albumId');
 				table.string('identifier');
 				table.integer('views').defaultTo(0);

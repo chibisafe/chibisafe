@@ -9,7 +9,7 @@ class linkPOST extends Route {
 		super('/album/link/new', 'post');
 	}
 
-	async run(req, res) {
+	async run(req, res, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { albumId } = req.body;
 		if (!albumId) return res.status(400).json({ message: 'No album provided' });
@@ -35,6 +35,7 @@ class linkPOST extends Route {
 		try {
 			await db.table('links').insert({
 				identifier,
+				userId: user.id,
 				albumId,
 				enabled: true,
 				enableDownload: true,

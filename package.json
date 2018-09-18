@@ -26,6 +26,7 @@
 		"node": ">=8.0.0"
 	},
 	"dependencies": {
+		"adm-zip": "^0.4.11",
 		"axios": "^0.18.0",
 		"bcrypt": "^2.0.1",
 		"body-parser": "^1.18.2",

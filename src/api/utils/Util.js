@@ -9,6 +9,7 @@ const log = require('../utils/Log');
 const crypto = require('crypto');
 const sharp = require('sharp');
 const ffmpeg = require('fluent-ffmpeg');
+const Zip = require('adm-zip');
 
 const imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
@@ -182,6 +183,18 @@ class Util {
 
 			return user;
 		});
+	}
+
+	static createZip(files, album) {
+		try {
+			const zip = new Zip();
+			for (const file of files) {
+				zip.addLocalFile(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, file));
+			}
+			zip.writeZip(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'zips', `${album.userId}-${album.id}.zip`));
+		} catch (error) {
+			log.error(error);
+		}
 	}
 }
 

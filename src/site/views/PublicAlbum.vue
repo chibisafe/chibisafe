@@ -24,6 +24,8 @@
 				<div class="container">
 					<h1 class="title">{{ name }}</h1>
 					<h2 class="subtitle">Serving {{ files.length }} files</h2>
+					<a v-if="downloadLink"
+						:href="downloadLink">Download Album</a>
 					<hr>
 				</div>
 			</div>
@@ -57,17 +59,20 @@ export default {
 	async getInitialData({ route, store }) {
 		try {
 			const res = await axios.get(`${config.baseURL}/album/${route.params.identifier}`);
+			const downloadLink = res.data.downloadEnabled ? `${config.baseURL}/album/${route.params.identifier}/zip` : null;
 			return {
 				name: res.data.name,
 				downloadEnabled: res.data.downloadEnabled,
-				files: res.data.files
+				files: res.data.files,
+				downloadLink
 			};
 		} catch (error) {
 			console.error(error);
 			return {
 				name: null,
 				downloadEnabled: false,
-				files: []
+				files: [],
+				downloadLink: null
 			};
 		}
 	},
@@ -100,6 +105,11 @@ export default {
 			location: window.location.href
 		});
 	},
-	methods: {}
+	methods: {
+		async downloadAlbum() {
+			const response = await axios.get(`${config.baseURL}/album/${this.$route.params.identifier}/zip`);
+			console.log(response.data);
+		}
+	}
 };
 </script>

@@ -24,6 +24,10 @@ class Server {
 		this.server.use(helmet());
 		this.server.use(cors({ allowedHeaders: ['Accept', 'Authorization', 'Cache-Control', 'X-Requested-With', 'Content-Type', 'albumId'] }));
 		this.server.use((req, res, next) => {
+			/*
+				This bypasses the headers.accept for album download, since it's accesed directly through the browser.
+			*/
+			if (req.url.includes('/api/album/') && req.url.includes('/zip') && req.method === 'GET') return next();
 			if (req.headers.accept === 'application/vnd.lolisafe.json') return next();
 			return res.status(405).json({ message: 'Incorrect `Accept` header provided' });
 		});
