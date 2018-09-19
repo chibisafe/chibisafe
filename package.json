@@ -12,8 +12,9 @@
 	"scripts": {
 		"api": "nodemon src/start api",
 		"site": "node src/start site",
-		"build": "ream build",
-		"start": "cross-env NODE_ENV=production node src/start"
+		"build": "nuxt build",
+		"start": "cross-env NODE_ENV=production node src/start && nuxt start",
+		"nuxt": "nuxt --port 5002"
 	},
 	"repository": {
 		"type": "git",
@@ -48,67 +49,43 @@
 		"moment": "^2.22.1",
 		"multer": "^1.3.0",
 		"nuxt-dropzone": "^0.2.7",
+		"nuxt-edge": "^2.0.0-25621471.65432e6",
 		"one-liner": "^1.3.0",
 		"path": "^0.12.7",
 		"pg": "^7.4.3",
 		"randomstring": "^1.1.5",
+		"serve-static": "^1.13.2",
 		"sharp": "^0.20.3",
 		"v-clipboard": "^1.0.4",
 		"vue-analytics": "^5.9.1",
 		"vue-axios": "^2.0.2",
 		"vue-isyourpasswordsafe": "^1.0.1",
-		"vue-lazyload": "^1.2.2",
 		"vue-plyr": "^2.1.1",
 		"vue-timeago": "^3.4.4",
 		"vuex": "^3.0.1"
 	},
 	"devDependencies": {
-		"babel-eslint": "^8.2.2",
+		"autoprefixer": "^9.1.5",
+		"babel-eslint": "^9.0.0",
 		"cross-env": "^5.1.4",
-		"eslint": "^4.19.1",
-		"eslint-config-aqua": "^3.0.0",
-		"eslint-plugin-vue": "^4.4.0",
-		"node-sass": "^4.7.2",
+		"eslint": "^5.6.0",
+		"eslint-config-aqua": "^4.4.1",
+		"eslint-plugin-vue": "^5.0.0-beta.3",
+		"node-sass": "^4.9.3",
 		"nodemon": "^1.17.5",
 		"postcss-nested": "^3.0.0",
 		"ream": "^3.2.7",
-		"sass-loader": "^6.0.7",
+		"sass-loader": "^7.1.0",
 		"vue-eslint-parser": "^2.0.3"
 	},
 	"eslintConfig": {
-		"parser": "vue-eslint-parser",
-		"parserOptions": {
-			"parser": "babel-eslint"
-		},
 		"extends": [
-			"plugin:vue/recommended",
-			"aqua"
+			"aqua/vue",
+			"aqua/node"
 		],
-		"env": {
-			"browser": true,
-			"node": true
-		},
 		"rules": {
-			"func-names": 0,
-			"capitalized-comments": 0,
-			"max-len": 0,
-			"id-length": 0,
-			"no-warning-comments": 0,
-			"vue/html-indent": [
-				"error",
-				"tab"
-			],
-			"vue/max-attributes-per-line": [
-				2,
-				{
-					"singleline": 1,
-					"multiline": {
-						"max": 1,
-						"allowFirstLine": true
-					}
-				}
-			],
-			"vue/attribute-hyphenation": 0
+			"vue/attribute-hyphenation": 0,
+			"quote-props": 0
 		}
 	},
 	"keywords": [

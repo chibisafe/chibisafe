@@ -8,8 +8,8 @@
 			expanded>
 			<option
 				v-for="album in albums"
-				:value="album.id"
-				:key="album.id">
+				:key="album.id"
+				:value="album.id">
 				{{ album.name }}
 			</option>
 		</b-select>
@@ -29,20 +29,20 @@
 			ref="template">
 			<div class="dz-preview dz-file-preview">
 				<div class="dz-details">
-					<div class="dz-filename"><span data-dz-name/></div>
-					<div class="dz-size"><span data-dz-size/></div>
+					<div class="dz-filename"><span data-dz-name /></div>
+					<div class="dz-size"><span data-dz-size /></div>
 				</div>
 				<div class="result">
 					<div class="copyLink">
 						<b-tooltip label="Copy link">
-							<i class="icon-web-code"/>
+							<i class="icon-web-code" />
 						</b-tooltip>
 					</div>
 					<div class="openLink">
 						<b-tooltip label="Open file">
 							<a class="link"
 								target="_blank">
-								<i class="icon-web-url"/>
+								<i class="icon-web-url" />
 							</a>
 						</b-tooltip>
 					</div>
@@ -51,14 +51,14 @@
 					<div>
 						<span>
 							<span class="error-message"
-								data-dz-errormessage/>
-							<i class="icon-web-warning"/>
+								data-dz-errormessage />
+							<i class="icon-web-warning" />
 						</span>
 					</div>
 				</div>
 				<div class="dz-progress">
 					<span class="dz-upload"
-						data-dz-uploadprogress/>
+						data-dz-uploadprogress />
 				</div>
 				<!--
 				<div class="dz-error-message"><span data-dz-errormessage/></div>
@@ -72,7 +72,7 @@
 
 <script>
 import Dropzone from 'nuxt-dropzone';
-import '../../styles/dropzone.scss';
+import '~/assets/styles/dropzone.scss';
 
 export default {
 	components: { Dropzone },
@@ -107,7 +107,7 @@ export default {
 	},
 	mounted() {
 		this.dropzoneOptions = {
-			url: `${this.$config.baseURL}/upload`,
+			url: `${this.config.baseURL}/upload`,
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			parallelUploads: 5,
@@ -135,7 +135,7 @@ export default {
 		*/
 		async getAlbums() {
 			try {
-				const response = await this.axios.get(`${this.$config.baseURL}/albums/dropdown`);
+				const response = await this.axios.get(`${this.config.baseURL}/albums/dropdown`);
 				this.albums = response.data.albums;
 				this.updateDropzoneConfig();
 			} catch (error) {
@@ -218,7 +218,7 @@ export default {
 	}
 </style>
 <style lang="scss">
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	.filepond--panel-root {
 		background: transparent;
 		border: 2px solid #2c3340;

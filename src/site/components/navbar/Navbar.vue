@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	nav.navbar {
 		background: transparent;
 		box-shadow: none;
@@ -47,7 +47,7 @@
 		<div class="navbar-brand">
 			<router-link to="/"
 				class="navbar-item no-active">
-				<i class="icon-ecommerce-safebox"/> {{ config.serviceName }}
+				<i class="icon-ecommerce-safebox" /> {{ config.serviceName }}
 			</router-link>
 
 			<!--
@@ -78,12 +78,12 @@
 
 			<router-link v-if="!loggedIn"
 				class="navbar-item"
-				to="/login"><i class="hidden"/>Login</router-link>
+				to="/login"><i class="hidden" />Login</router-link>
 
 			<router-link v-else
 				to="/dashboard"
 				class="navbar-item no-active"
-				exact><i class="hidden"/>Dashboard</router-link>
+				exact><i class="hidden" />Dashboard</router-link>
 		</div>
 	</nav>
 </template>

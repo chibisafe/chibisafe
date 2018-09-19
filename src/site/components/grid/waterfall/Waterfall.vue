@@ -5,20 +5,19 @@
 </style>
 <template>
 	<div class="waterfall">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>
 // import {quickSort, getMinIndex, _, sum} from './util'
 
 const quickSort = (arr, type) => {
-	let left = [];
-	let right = [];
-	let povis;
+	const left = [];
+	const right = [];
 	if (arr.length <= 1) {
 		return arr;
 	}
-	povis = arr[0];
+	const povis = arr[0];
 	for (let i = 1; i < arr.length; i++) {
 		if (arr[i][type] < povis[type]) {
 			left.push(arr[i]);

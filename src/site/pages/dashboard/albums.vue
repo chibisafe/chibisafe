@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	section { background-color: $backgroundLight1 !important; }
 	section.hero div.hero-body {
 		align-items: baseline;
@@ -118,7 +118,7 @@
 	div.column > h2.subtitle { padding-top: 1px; }
 </style>
 <style lang="scss">
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 
 	.b-table {
 		.table-wrapper {
@@ -147,7 +147,7 @@
 								<b-input v-model="newAlbumName"
 									placeholder="Album name..."
 									type="text"
-									@keyup.enter.native="createAlbum"/>
+									@keyup.enter.native="createAlbum" />
 								<p class="control">
 									<button class="button is-primary"
 										@click="createAlbum">Create album</button>
@@ -227,14 +227,14 @@
 												label="Allow download"
 												centered>
 												<b-switch v-model="props.row.enableDownload"
-													@input="linkOptionsChanged(props.row)"/>
+													@input="linkOptionsChanged(props.row)" />
 											</b-table-column>
 
 											<b-table-column field="enabled"
 												label="Enabled"
 												centered>
 												<b-switch v-model="props.row.enabled"
-													@input="linkOptionsChanged(props.row)"/>
+													@input="linkOptionsChanged(props.row)" />
 											</b-table-column>
 
 											<!--
@@ -252,7 +252,7 @@
 										</template>
 										<template slot="empty">
 											<div class="has-text-centered">
-												<i class="icon-misc-mood-sad"/>
+												<i class="icon-misc-mood-sad" />
 											</div>
 											<div class="has-text-centered">
 												Nothing here
@@ -281,12 +281,10 @@
 
 <script>
 import Sidebar from '../../components/sidebar/Sidebar.vue';
-import Grid from '../../components/grid/Grid.vue';
 
 export default {
 	components: {
-		Sidebar,
-		Grid
+		Sidebar
 	},
 	data() {
 		return {
@@ -313,7 +311,7 @@ export default {
 	methods: {
 		async linkOptionsChanged(link) {
 			try {
-				const response = await this.axios.post(`${this.$config.baseURL}/album/link/edit`,
+				const response = await this.axios.post(`${this.config.baseURL}/album/link/edit`,
 					{
 						identifier: link.identifier,
 						enableDownload: link.enableDownload,
@@ -327,7 +325,7 @@ export default {
 		async createLink(album) {
 			album.isCreatingLink = true;
 			try {
-				const response = await this.axios.post(`${this.$config.baseURL}/album/link/new`,
+				const response = await this.axios.post(`${this.config.baseURL}/album/link/new`,
 					{ albumId: album.id });
 				this.$toast.open(response.data.message);
 				album.links.push({
@@ -346,7 +344,7 @@ export default {
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
 			try {
-				const response = await this.axios.post(`${this.$config.baseURL}/album/new`,
+				const response = await this.axios.post(`${this.config.baseURL}/album/new`,
 					{ name: this.newAlbumName });
 				this.newAlbumName = null;
 				this.$toast.open(response.data.message);
@@ -358,7 +356,7 @@ export default {
 		},
 		async getAlbums() {
 			try {
-				const response = await this.axios.get(`${this.$config.baseURL}/albums/mini`);
+				const response = await this.axios.get(`${this.config.baseURL}/albums/mini`);
 				for (const album of response.data.albums) {
 					album.isDetailsOpen = false;
 				}

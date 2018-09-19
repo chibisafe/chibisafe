@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/_colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	.item-move {
 		transition: all .25s cubic-bezier(.55,0,.1,1);
 		-webkit-transition: all .25s cubic-bezier(.55,0,.1,1);
@@ -99,25 +99,25 @@
 						position="is-top">
 						<a :href="`${item.url}`"
 							target="_blank">
-							<i class="icon-web-code"/>
+							<i class="icon-web-code" />
 						</a>
 					</b-tooltip>
 					<b-tooltip label="Albums"
 						position="is-top">
 						<a @click="manageAlbums(item)">
-							<i class="icon-interface-window"/>
+							<i class="icon-interface-window" />
 						</a>
 					</b-tooltip>
 					<b-tooltip label="Tags"
 						position="is-top">
 						<a @click="manageTags(item)">
-							<i class="icon-ecommerce-tag-c"/>
+							<i class="icon-ecommerce-tag-c" />
 						</a>
 					</b-tooltip>
 					<b-tooltip label="Delete"
 						position="is-top">
 						<a @click="deleteFile(item, index)">
-							<i class="icon-editorial-trash-a-l"/>
+							<i class="icon-editorial-trash-a-l" />
 						</a>
 					</b-tooltip>
 				</div>
@@ -155,6 +155,11 @@ export default {
 	data() {
 		return { showWaterfall: true };
 	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
+	},
 	methods: {
 		deleteFile(file, index) {
 			this.$dialog.confirm({
@@ -165,7 +170,7 @@ export default {
 				hasIcon: true,
 				onConfirm: async () => {
 					try {
-						const response = await this.axios.delete(`${this.$config.baseURL}/file/${file.id}`);
+						const response = await this.axios.delete(`${this.config.baseURL}/file/${file.id}`);
 						this.showWaterfall = false;
 						this.files.splice(index, 1);
 						this.$nextTick(() => {

@@ -2,6 +2,7 @@
 node_modules/
 _dist/
 .ream/
+.nuxt/
 
 # Log files
 logs/
@@ -15,3 +16,4 @@ logs/
 config.js
 database.db
 uploads/
+src/oldsite

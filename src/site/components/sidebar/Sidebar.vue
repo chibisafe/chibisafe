@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	.dashboard-menu {
 		a {
 			display: block;
@@ -25,19 +25,17 @@
 </style>
 <template>
 	<div class="dashboard-menu">
-		<router-link to="/"><i class="icon-ecommerce-safebox"/>lolisafe</router-link>
+		<router-link to="/"><i class="icon-ecommerce-safebox" />lolisafe</router-link>
 		<hr>
-		<a><i class="icon-interface-cloud-upload"/>Upload files</a>
+		<a><i class="icon-interface-cloud-upload" />Upload files</a>
 		<hr>
-		<router-link to="/dashboard"><i class="icon-com-pictures"/>Files</router-link>
-		<router-link to="/dashboard/albums"><i class="icon-interface-window"/>Albums</router-link>
-		<router-link to="/dashboard/tags"><i class="icon-ecommerce-tag-c"/>Tags</router-link>
+		<router-link to="/dashboard"><i class="icon-com-pictures" />Files</router-link>
+		<router-link to="/dashboard/albums"><i class="icon-interface-window" />Albums</router-link>
+		<router-link to="/dashboard/tags"><i class="icon-ecommerce-tag-c" />Tags</router-link>
 		<hr>
-		<router-link to="/dashboard/settings"><i class="icon-setting-gear-a"/>Settings</router-link>
+		<router-link to="/dashboard/settings"><i class="icon-setting-gear-a" />Settings</router-link>
 	</div>
 </template>
 <script>
-export default {
-
-}
+export default {};
 </script>

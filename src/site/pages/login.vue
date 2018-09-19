@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 </style>
 
 <template>
@@ -20,14 +20,14 @@
 							<b-input v-model="username"
 								type="text"
 								placeholder="Username"
-								@keyup.enter.native="login"/>
+								@keyup.enter.native="login" />
 						</b-field>
 						<b-field>
 							<b-input v-model="password"
 								type="password"
 								placeholder="Password"
 								password-reveal
-								@keyup.enter.native="login"/>
+								@keyup.enter.native="login" />
 						</b-field>
 
 						<p class="control has-addons is-pulled-right">
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Navbar from '../../components/navbar/Navbar.vue';
+import Navbar from '~/components/navbar/Navbar.vue';
 
 export default {
 	name: 'Login',
@@ -107,7 +107,7 @@ export default {
 				return;
 			}
 			this.isLoading = true;
-			this.axios.post(`${this.$config.baseURL}/auth/login`, {
+			this.axios.post(`${this.config.baseURL}/auth/login`, {
 				username: this.username,
 				password: this.password
 			}).then(res => {

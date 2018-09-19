@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-@import "../styles/_colors.scss";
+@import "~/assets/styles/_colors.scss";
 	h2 {
 		font-weight: 100;
 		color: $textColor;
@@ -10,7 +10,7 @@
 
 <template>
 	<section class="hero is-fullheight">
-		<Navbar :isWhite="true"/>
+		<Navbar :isWhite="true" />
 		<div class="hero-body">
 			<div class="container">
 				<h2>404エラ</h2>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Navbar from '../components/navbar/Navbar.vue';
+import Navbar from '~/components/navbar/Navbar.vue';
 
 export default {
 	components: { Navbar },

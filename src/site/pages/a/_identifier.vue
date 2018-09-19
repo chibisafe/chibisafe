@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	section { background-color: $backgroundLight1 !important; }
 
 	section.hero div.hero-body.align-top {
@@ -14,7 +14,7 @@
 	}
 </style>
 <style lang="scss">
-	@import '../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 </style>
 
 <template>
@@ -49,24 +49,25 @@
 </template>
 
 <script>
-import Grid from '../components/grid/Grid.vue';
-import Loading from '../components/loading/CubeShadow.vue';
+import Grid from '~/components/grid/Grid.vue';
+import Loading from '~/components/loading/CubeShadow.vue';
 import axios from 'axios';
-import config from '../config.js';
+import config from '~/config.js';
 
 export default {
 	components: { Grid, Loading },
-	async getInitialData({ route, store }) {
+	async asyncData({ params, error }) {
 		try {
-			const res = await axios.get(`${config.baseURL}/album/${route.params.identifier}`);
-			const downloadLink = res.data.downloadEnabled ? `${config.baseURL}/album/${route.params.identifier}/zip` : null;
+			const res = await axios.get(`${config.baseURL}/album/${params.identifier}`);
+			const downloadLink = res.data.downloadEnabled ? `${config.baseURL}/album/${params.identifier}/zip` : null;
 			return {
 				name: res.data.name,
 				downloadEnabled: res.data.downloadEnabled,
 				files: res.data.files,
 				downloadLink
 			};
-		} catch (error) {
+		} catch (err) {
+			/*
 			return {
 				name: null,
 				downloadEnabled: false,
@@ -74,13 +75,20 @@ export default {
 				downloadLink: null,
 				error: error.response.status
 			};
+			*/
+			error({ statusCode: 404, message: 'Post not found' });
 		}
 	},
 	data() {
 		return {};
 	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
+	},
 	metaInfo() {
-		if (!this.files) {
+		if (this.files) {
 			return {
 				title: `${this.name ? this.name : ''}`,
 				meta: [
@@ -98,31 +106,31 @@ export default {
 					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
 				]
 			};
-		} else {
-			return {
-				title: `${this.name ? this.name : ''}`,
-				meta: [
-					{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
-					{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-					{ vmid: 'twitter:title', name: 'twitter:title', content: 'lolisafe' },
-					{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-					{ vmid: 'og:url', property: 'og:url', content: `${config.URL}/a/${this.$route.params.identifier}` },
-					{ vmid: 'og:title', property: 'og:title', content: 'lolisafe' },
-					{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
-				]
-			};
 		}
+		return {
+			title: `${this.name ? this.name : ''}`,
+			meta: [
+				{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
+				{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+				{ vmid: 'twitter:title', name: 'twitter:title', content: 'lolisafe' },
+				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+				{ vmid: 'og:url', property: 'og:url', content: `${config.URL}/a/${this.$route.params.identifier}` },
+				{ vmid: 'og:title', property: 'og:title', content: 'lolisafe' },
+				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
+			]
+		};
 	},
 	mounted() {
+		/*
 		if (this.error) {
 			if (this.error === 404) {
 				this.$toast.open('Album not found', true, 3000);
 				setTimeout(() => this.$router.push('/404'), 3000);
 				return;
-			} else {
-				this.$toast.open(`Error code ${this.error}`, true, 3000);
 			}
+			this.$toast.open(`Error code ${this.error}`, true, 3000);
 		}
+		*/
 		this.$ga.page({
 			page: `/a/${this.$route.params.identifier}`,
 			title: `Album | ${this.name}`,

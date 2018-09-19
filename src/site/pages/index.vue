@@ -1,30 +1,29 @@
 <style lang="scss" scoped>
-	@import "../styles/_colors.scss";
+	@import "~/assets/styles/_colors.scss";
 	div.home {
 		color: $textColor;
-		// background-color: #1e2430;
-	}
-	.columns {
-		.column {
-			&.centered {
-				display: flex;
-				align-items: center;
+		.columns {
+			.column {
+				&.centered {
+					display: flex;
+					align-items: center;
+				}
 			}
 		}
-	}
 
-	h4 {
-		color: $textColorHighlight;
-		margin-bottom: 1em;
-	}
-
-	p {
-		font-size: 1.25em;
-		font-weight: 600;
-		line-height: 1.5;
-
-		strong {
+		h4 {
 			color: $textColorHighlight;
+			margin-bottom: 1em;
+		}
+
+		p {
+			font-size: 1.25em;
+			font-weight: 600;
+			line-height: 1.5;
+
+			strong {
+				color: $textColorHighlight;
+			}
 		}
 	}
 </style>
@@ -32,7 +31,7 @@
 <template>
 	<div class="home">
 		<section class="hero is-fullheight has-text-centered">
-			<Navbar :isWhite="true"/>
+			<Navbar :isWhite="true" />
 			<div class="hero-body">
 				<div class="container">
 					<div class="columns">
@@ -64,10 +63,10 @@
 </template>
 
 <script>
-import Navbar from '../components/navbar/Navbar.vue';
-import Logo from '../components/logo/Logo.vue';
-import Uploader from '../components/uploader/Uploader.vue';
-import Links from '../components/home/links/Links.vue';
+import Navbar from '~/components/navbar/Navbar.vue';
+import Logo from '~/components/logo/Logo.vue';
+import Uploader from '~/components/uploader/Uploader.vue';
+import Links from '~/components/home/links/Links.vue';
 
 export default {
 	name: 'Home',

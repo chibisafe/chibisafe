@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/_colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	#logo {
 		-webkit-animation-delay: 0.5s;
 		animation-delay: 0.5s;
@@ -50,7 +50,7 @@
 
 <template>
 	<p id="logo">
-		<img src="../../public/images/logo.png">
+		<img src="~/assets/images/logo.png">
 	</p>
 </template>
 

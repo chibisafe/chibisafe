@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 </style>
 
 <template>
@@ -19,20 +19,20 @@
 						<b-field>
 							<b-input v-model="username"
 								type="text"
-								placeholder="Username"/>
+								placeholder="Username" />
 						</b-field>
 						<b-field>
 							<b-input v-model="password"
 								type="password"
 								placeholder="Password"
-								password-reveal/>
+								password-reveal />
 						</b-field>
 						<b-field>
 							<b-input v-model="rePassword"
 								type="password"
 								placeholder="Re-type Password"
 								password-reveal
-								@keyup.enter.native="register"/>
+								@keyup.enter.native="register" />
 						</b-field>
 
 						<p class="control has-addons is-pulled-right">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import Navbar from '../../components/navbar/Navbar.vue';
+import Navbar from '~/components/navbar/Navbar.vue';
 
 export default {
 	name: 'Register',
@@ -62,6 +62,11 @@ export default {
 			rePassword: null,
 			isLoading: false
 		};
+	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
 	},
 	metaInfo() {
 		return { title: 'Register' };
@@ -81,7 +86,7 @@ export default {
 				return;
 			}
 			this.isLoading = true;
-			this.axios.post(`${this.$config.baseURL}/auth/register`, {
+			this.axios.post(`${this.config.baseURL}/auth/register`, {
 				username: this.username,
 				password: this.password
 			}).then(response => {

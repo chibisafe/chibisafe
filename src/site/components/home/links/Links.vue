@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-	@import '../../../styles/_colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	.links {
 		margin-bottom: 3em;
 		align-items: stretch;
@@ -96,5 +96,5 @@
 	</div>
 </template>
 <script>
-export default {}
+export default {};
 </script>

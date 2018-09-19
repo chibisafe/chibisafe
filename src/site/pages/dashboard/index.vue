@@ -1,12 +1,12 @@
 <style lang="scss" scoped>
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 	section { background-color: $backgroundLight1 !important; }
 	section.hero div.hero-body {
 		align-items: baseline;
 	}
 </style>
 <style lang="scss">
-	@import '../../styles/colors.scss';
+	@import '~/assets/styles/_colors.scss';
 </style>
 
 
@@ -25,7 +25,7 @@
 						<hr>
 						-->
 						<Grid v-if="files.length"
-							:files="files"/>
+							:files="files" />
 					</div>
 				</div>
 			</div>
@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import Sidebar from '../../components/sidebar/Sidebar.vue';
-import Grid from '../../components/grid/Grid.vue';
+import Sidebar from '~/components/sidebar/Sidebar.vue';
+import Grid from '~/components/grid/Grid.vue';
 
 export default {
 	components: {
@@ -44,6 +44,11 @@ export default {
 	},
 	data() {
 		return { files: [] };
+	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
 	},
 	metaInfo() {
 		return { title: 'Uploads' };
@@ -59,7 +64,7 @@ export default {
 	methods: {
 		async getFiles() {
 			try {
-				const response = await this.axios.get(`${this.$config.baseURL}/files`);
+				const response = await this.axios.get(`${this.config.baseURL}/files`);
 				this.files = response.data.files;
 				console.log(this.files);
 			} catch (error) {

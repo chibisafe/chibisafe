@@ -5,7 +5,7 @@
 </style>
 <template>
 	<div class="waterfall-item">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>
