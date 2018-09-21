@@ -17,8 +17,6 @@
   "scripts": {
     "start": "node ./lolisafe.js",
     "pm2": "pm2 start --name lolisafe ./lolisafe.js",
-    "thumbs": "node ./scripts/thumbs.js",
-    "randver": "node -e \"console.log(require('randomstring').generate(10))\""
   },
   "dependencies": {
     "axios": "^0.18.0",
