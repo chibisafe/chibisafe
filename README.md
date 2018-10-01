@@ -63,7 +63,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [safe.fiery.me](https://safe.fiery.me): Just another clone.
 - [kayo.moe](https://kayo.moe): File hosting for all~
 - [dmca.gripe](https://dmca.gripe): a dmca-resistant, permanent file hosting service.
-- [succmy.wang](https://succmy.wang): A private clone with a funny name
+- [safe.succmy.wang](https://safe.succmy.wang): A private clone with a ~~funny~~ bad name
 - [namir.in](https://namir.in): A private clone dedicated to best girl.
 - [safe.waliant.pw](https://safe.waliant.pw): A generic private clone for personal use.
 - [a.hyper.lol](https://a.hyper.lol): My personal clone with some ~~terrible~~ great changes.
