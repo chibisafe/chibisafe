@@ -71,6 +71,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
 - [discordimages.com](https://discordimages.com): A file hosting service that is available for public use.
 - [uwu.ninja](https://uwu.ninja): UwU'ish your uploads with us, now. plz.
+- [criminals.host] (https://criminals.host): Redesigned, offshore by AZATEJ. 
 - Feel free to add yours here.
 
 ## Author
