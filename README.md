@@ -71,7 +71,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
 - [discordimages.com](https://discordimages.com): A file hosting service that is available for public use.
 - [uwu.ninja](https://uwu.ninja): UwU'ish your uploads with us, now. plz.
-- [vortex.64i.de](https://vortex.64i.de/): ShareX/WeebShit place for the 64i.de team
+- [vortex.64i.de](https://vortex.64i.de/): ShareX/WeebShit place for the 64i.de team and interested ones.
 - Feel free to add yours here.
 
 ## Author
