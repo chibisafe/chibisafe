@@ -37,6 +37,7 @@ module.exports = {
 	blockedExtensions: [
 		'.jar',
 		'.exe',
+		'.exec',
 		'.msi',
 		'.com',
 		'.bat',
