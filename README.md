@@ -66,7 +66,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [safe.succmy.wang](https://safe.succmy.wang): A private clone with a ~~funny~~ bad name
 - [namir.in](https://namir.in): A private clone dedicated to best girl.
 - [safe.waliant.pw](https://safe.waliant.pw): A generic private clone for personal use.
-- [a.hyper.lol](https://a.hyper.lol): My personal clone with some ~~terrible~~ great changes.
+- [wtf.hyper.lol](https://wtf.hyper.lol): My personal clone with some ~~terrible~~ great changes.
 - [discordjs.moe](https://discordjs.moe): A まじ卍 as fuck copy of lolisafe.moe
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
 - [discordimages.com](https://discordimages.com): A file hosting service that is available for public use.
