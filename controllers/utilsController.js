@@ -47,17 +47,25 @@ utilsController.generateThumbs = function(file, basedomain) {
 					})
 					.on('error', error => console.log('Error - ', error.message));
 			} else {
-				let size = {
+				let resizeOptions = {
 					width: 200,
-					height: 200
+					height: 200,
+					fit: 'contain',
+					background: {
+						r: 0,
+						g: 0,
+						b: 0,
+						alpha: 0
+					}
 				};
-				gm(path.join(__dirname, '..', config.uploads.folder, file.name))
-					.resize(size.width, size.height + '>')
-					.gravity('Center')
-					.extent(size.width, size.height)
-					.background('transparent')
-					.write(thumbname, error => {
-						if (error) console.log('Error - ', error);
+
+				sharp(path.join(__dirname, '..', config.uploads.folder, file.name))
+					.resize(resizeOptions)
+					.toFile(thumbname)
+					.catch((error) => {
+						if (error) {
+							console.log('Error - ', error);
+						}
 					});
 			}
 		}
