@@ -1,7 +1,7 @@
 const path = require('path');
 const config = require('../config.js');
 const fs = require('fs');
-const gm = require('gm');
+const sharp = require('sharp');
 const ffmpeg = require('fluent-ffmpeg');
 const db = require('knex')(config.database);
 
