@@ -55,6 +55,9 @@ module.exports = {
 		'.profile'
 	],
 
+	// Whether or not to allow files without extensions
+	blockEmptyExtension: false,
+
 	// Uploads config
 	uploads: {
 
