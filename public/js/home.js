@@ -190,7 +190,8 @@ upload.prepareShareX = function(){
   },\r\n\
   \"ResponseType\": \"Text\",\r\n\
   \"URL\": \"$json:files[0].url$\",\r\n\
-  \"ThumbnailURL\": \"$json:files[0].url$\"\r\n\
+  \"ThumbnailURL\": \"$json:files[0].url$\",\r\n\
+  \"DeletionURL\": \"$json:files[0].deleteUrl$\"\r\n\
 }";
 		var sharex_blob = new Blob([sharex_file], {type: "application/octet-binary"});
 		sharex_element.setAttribute("href", URL.createObjectURL(sharex_blob));
