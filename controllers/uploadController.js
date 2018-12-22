@@ -133,6 +133,7 @@ uploadsController.actuallyUpload = async (req, res, userid, albumid) => {
 };
 
 uploadsController.processFilesForDisplay = async (req, res, files, existingFiles, albumid) => {
+	const token = req.headers && req.headers.token ? req.headers.token : null;
 	let basedomain = config.domain;
 	if (files.length === 0) {
 		return res.json({
@@ -141,13 +142,17 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 				return {
 					name: file.name,
 					size: file.size,
-					url: `${basedomain}/${file.name}`
+					url: `${basedomain}/${file.name}`,
+					deleteUrl: token ? `${basedomain}/api/upload/delete/${token}/${file.id}` : null
 				};
 			})
 		});
 	}
 
-	await db.table('files').insert(files);
+	const insertedFiles = await db.table('files').insert(files);
+	files.forEach((file, index) => {
+		file.id = insertedFiles[index];
+	});
 	for (let efile of existingFiles) files.push(efile);
 
 	for (let file of files) {
@@ -178,15 +183,19 @@ uploadsController.processFilesForDisplay = async (req, res, files, existingFiles
 			return {
 				name: file.name,
 				size: file.size,
-				url: `${basedomain}/${file.name}`
+				url: `${basedomain}/${file.name}`,
+				deleteUrl: token ? `${basedomain}/api/upload/delete/${token}/${file.id}` : null
 			};
 		})
 	});
 };
 
 uploadsController.delete = async (req, res) => {
+	if (req && (!req.headers || !req.headers.token) && req.params.token) { // get the token from URL params, required for ShareX deletion
+		req.headers.token = req.params.token;
+	}
 	const user = await utils.authorize(req, res);
-	const id = req.body.id;
+	const id = req.body.id || req.params.id;
 	if (id === undefined || id === '') {
 		return res.json({ success: false, description: 'No file specified' });
 	}

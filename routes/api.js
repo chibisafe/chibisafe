@@ -19,6 +19,7 @@ routes.get('/uploads', (req, res, next) => uploadController.list(req, res, next)
 routes.get('/uploads/:page', (req, res, next) => uploadController.list(req, res, next));
 routes.post('/upload', (req, res, next) => uploadController.upload(req, res, next));
 routes.post('/upload/delete', (req, res, next) => uploadController.delete(req, res, next));
+routes.get('/upload/delete/:token/:id', (req, res, next) => uploadController.delete(req, res, next));
 routes.post('/upload/:albumid', (req, res, next) => uploadController.upload(req, res, next));
 routes.get('/album/get/:identifier', (req, res, next) => albumsController.get(req, res, next));
 routes.get('/album/zip/:identifier', (req, res, next) => albumsController.generateZip(req, res, next));
