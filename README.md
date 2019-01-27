@@ -71,6 +71,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
 - [criminals.host](https://criminals.host): Redesigned, offshore by AZATEJ.
 - [vortex.64i.de](https://vortex.64i.de/): ShareX/WeebShit place for the 64i.de team and interested ones.
+- [u.kawaaii.moe](http://u.kawaaii.moe/): Yet another clone with different & kawaii looks (10mb limit)
 - Feel free to add yours here.
 
 ## Author
