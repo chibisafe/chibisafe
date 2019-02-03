@@ -79,8 +79,7 @@ module.exports = {
 
 		/*
 			NOTE: Thumbnails are only for the admin panel and they require you
-			to install a separate binary called graphicsmagick (http://www.graphicsmagick.org)
-			for images and ffmpeg (https://ffmpeg.org/) for video files
+			to install a separate binary called ffmpeg (https://ffmpeg.org/) for video files
 		*/
 		generateThumbnails: false,
 
