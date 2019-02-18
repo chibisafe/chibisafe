@@ -34,14 +34,14 @@
 					<Grid v-if="files && files.length"
 						:files="files"
 						:isPublic="true"
-						:width="200"/>
+						:width="200" />
 				</div>
 			</div>
 		</template>
 		<template v-else>
 			<div class="hero-body">
 				<div class="container loading-container">
-					<Loading class="square"/>
+					<Loading class="square" />
 				</div>
 			</div>
 		</template>

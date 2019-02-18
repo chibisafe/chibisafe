@@ -2,7 +2,7 @@
 	"name": "lolisafe",
 	"version": "4.0.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"author": {
 		"name": "Pitu",
 		"email": "heyitspitu@gmail.com",
@@ -94,6 +94,8 @@
 		"uploader",
 		"file",
 		"vue",
-		"ssr"
+		"ssr",
+		"file uploader",
+		"images"
 	]
 }
