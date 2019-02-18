@@ -61,7 +61,8 @@ authController.register = async (req, res, next) => {
 			username: username,
 			password: hash,
 			token: token,
-			enabled: 1
+			enabled: 1,
+			admin: 0
 		});
 		return res.json({ success: true, token: token });
 	});

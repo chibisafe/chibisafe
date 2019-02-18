@@ -2,6 +2,7 @@ let panel = {};
 
 panel.page;
 panel.username;
+panel.admin;
 panel.token = localStorage.token;
 panel.filesView = localStorage.filesView;
 
@@ -37,6 +38,7 @@ panel.verifyToken = function(token, reloadOnError){
 		localStorage.token = token;
 		panel.token = token;
 		panel.username = response.data.username;
+		panel.admin = response.data.admin;
 		return panel.prepareDashboard();
 
 	})
@@ -152,7 +154,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 		}else{
 
 			var albumOrUser = 'Album';
-			if(panel.username === 'root')
+			if(panel.admin)
 				albumOrUser = 'User';
 
 			container.innerHTML = `
@@ -183,7 +185,7 @@ panel.getUploads = function(album = undefined, page = undefined){
 				var tr = document.createElement('tr');
 
 				var displayAlbumOrUser = item.album;
-				if(panel.username === 'root'){
+				if(panel.admin){
 					displayAlbumOrUser = '';
 					if(item.username !== undefined)
 						displayAlbumOrUser = item.username;

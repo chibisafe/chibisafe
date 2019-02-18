@@ -32,6 +32,7 @@ let init = function(db){
 		table.string('token');
 		table.integer('enabled');
 		table.integer('timestamp');
+		table.integer('admin');
 	}).then(() => {
 		db.table('users').where({username: 'root'}).then((user) => {
 			if(user.length > 0) return;
@@ -43,7 +44,8 @@ let init = function(db){
 					username: 'root',
 					password: hash,
 					token: require('randomstring').generate(64),
-					timestamp: Math.floor(Date.now() / 1000)
+					timestamp: Math.floor(Date.now() / 1000),
+					admin: 1
 				}).then(() => {});
 			});
 		});
