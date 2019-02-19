@@ -17,3 +17,4 @@ config.js
 database.db
 uploads/
 src/oldsite
+.env
