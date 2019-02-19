@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../utils/Util');
 
 class albumsGET extends Route {
@@ -8,7 +6,7 @@ class albumsGET extends Route {
 		super('/albums/mini', 'get');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		/*
 			Let's fetch the albums. This route will only return a small portion
 			of the album files for displaying on the dashboard. It's probably useless
@@ -72,7 +70,7 @@ class albumsDropdownGET extends Route {
 		super('/albums/dropdown', 'get');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		const albums = await db.table('albums')
 			.where('userId', user.id)
 			.select('id', 'name');

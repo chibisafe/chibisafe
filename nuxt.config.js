@@ -1,11 +1,20 @@
+require('dotenv').config();
 import autoprefixer from 'autoprefixer';
 import serveStatic from 'serve-static';
 import path from 'path';
-import config from './config';
 
 export default {
 	server: {
-		port: config.server.ports.frontend
+		port: process.env.WEBSITE_PORT
+	},
+	env: {
+		version: process.env.npm_package_version,
+		URL: process.env.DOMAIN,
+		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
+		serviceName: process.env.SERVICE_NAME,
+		maxFileSize: process.env.MAX_SIZE,
+		chunkSize: process.env.CHUNK_SIZE,
+		maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM
 	},
 	srcDir: 'src/site/',
 	head: {

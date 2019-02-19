@@ -1,8 +1,6 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
 const path = require('path');
 const Util = require('../../utils/Util');
-const db = require('knex')(config.server.database);
 const moment = require('moment');
 const log = require('../../utils/Log');
 const jetpack = require('fs-jetpack');
@@ -22,13 +20,13 @@ class uploadPOST extends Route {
 		super('/upload', 'post', { bypassAuth: true });
 	}
 
-	async run(req, res) {
+	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
-		if (!user && !config.uploads.allowAnonymousUploads) return res.status(401).json({ message: 'Not authorized to use this resource' });
-		return this.uploadFile(req, res, user);
+		if (!user && !process.env.PUBLIC_MODE) return res.status(401).json({ message: 'Not authorized to use this resource' });
+		return this.uploadFile(req, res, db, user);
 	}
 
-	async processFile(req, res, user, file) {
+	async processFile(req, res, db, user, file) {
 		/*
 			Check if the user is trying to upload to an album
 		*/
@@ -55,38 +53,37 @@ class uploadPOST extends Route {
 					We got a chunk that is not the last part, send smoke signal that we received it.
 				*/
 				return res.json({ message: 'Successfully uploaded chunk' });
-			} else {
-				/*
-					Seems we finally got the last part of a chunk upload
-				*/
-				const uploadsDir = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder);
-				const chunkedFileDir = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, 'chunks', file.body.uuid);
-				const chunkFiles = await jetpack.findAsync(chunkedFileDir, { matching: '*' });
-				const originalname = Util.getFilenameFromPath(chunkFiles[0].substring(0, chunkFiles[0].lastIndexOf('.')));
+			}
+			/*
+				Seems we finally got the last part of a chunk upload
+			*/
+			const uploadsDir = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER);
+			const chunkedFileDir = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'chunks', file.body.uuid);
+			const chunkFiles = await jetpack.findAsync(chunkedFileDir, { matching: '*' });
+			const originalname = Util.getFilenameFromPath(chunkFiles[0].substring(0, chunkFiles[0].lastIndexOf('.')));
 
-				const tempFile = {
-					filename: Util.getUniqueFilename(originalname),
-					originalname,
-					size: file.body.totalfilesize
-				};
+			const tempFile = {
+				filename: Util.getUniqueFilename(originalname),
+				originalname,
+				size: file.body.totalfilesize
+			};
 
-				for (const chunkFile of chunkFiles) {
-					try {
-						const data = await jetpack.readAsync(chunkFile, 'buffer'); // eslint-disable-line no-await-in-loop
-						await jetpack.appendAsync(path.join(uploadsDir, tempFile.filename), data); // eslint-disable-line no-await-in-loop
-					} catch (error) {
-						log.error(error);
-					}
-				}
-
+			for (const chunkFile of chunkFiles) {
 				try {
-					await jetpack.removeAsync(chunkedFileDir);
+					const data = await jetpack.readAsync(chunkFile, 'buffer'); // eslint-disable-line no-await-in-loop
+					await jetpack.appendAsync(path.join(uploadsDir, tempFile.filename), data); // eslint-disable-line no-await-in-loop
 				} catch (error) {
 					log.error(error);
 				}
-
-				upload = tempFile;
 			}
+
+			try {
+				await jetpack.removeAsync(chunkedFileDir);
+			} catch (error) {
+				log.error(error);
+			}
+
+			upload = tempFile;
 		}
 
 		/*
@@ -109,7 +106,7 @@ class uploadPOST extends Route {
 				message: 'Successfully uploaded file BUT IT EXISTED ALREADY',
 				name: exists.name,
 				size: exists.size,
-				url: `${config.filesServeLocation}/${exists.name}`
+				url: `${process.env.DOMAIN}/${exists.name}`
 			});
 
 			return Util.deleteFile(upload.filename);
@@ -147,7 +144,7 @@ class uploadPOST extends Route {
 			message: 'Successfully uploaded file',
 			name: upload.filename,
 			size: upload.size,
-			url: `${config.filesServeLocation}/${upload.filename}`
+			url: `${process.env.DOMAIN}/${upload.filename}`
 		});
 
 		/*
@@ -167,7 +164,7 @@ class uploadPOST extends Route {
 		/*
 			If exif removal has been force service-wide or requested by the user, remove it
 		*/
-		if (config.uploads.forceStripExif) { // || user.settings.stripExif) {
+		if (process.env.STRIP_EXIF) { // || user.settings.stripExif) {
 			// Util.removeExif(upload.filename);
 		}
 
@@ -177,11 +174,11 @@ class uploadPOST extends Route {
 		return Util.generateThumbnails(upload.filename);
 	}
 
-	uploadFile(req, res, user) {
+	uploadFile(req, res, db, user) {
 		const busboy = new Busboy({
 			headers: req.headers,
 			limits: {
-				fileSize: config.uploads.uploadMaxSize * (1000 * 1000),
+				fileSize: process.env.MAX_SIZE * (1000 * 1000),
 				files: 1
 			}
 		});
@@ -209,7 +206,8 @@ class uploadPOST extends Route {
 			Hey ther's a file! Let's upload it.
 		*/
 		busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-			let name, saveTo;
+			let name;
+			let saveTo;
 
 			/*
 				Let check whether the file is part of a chunk upload or if it's a standalone one.
@@ -219,15 +217,15 @@ class uploadPOST extends Route {
 			const ext = path.extname(filename).toLowerCase();
 			if (Util.isExtensionBlocked(ext)) return res.status(400).json({ message: 'This extension is not allowed.' });
 
-			if (!fileToUpload.body.uuid) {
+			if (fileToUpload.body.uuid) {
+				name = `${filename}.${fileToUpload.body.chunkindex}`;
+				const chunkDir = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'chunks', fileToUpload.body.uuid);
+				jetpack.dir(chunkDir);
+				saveTo = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'chunks', fileToUpload.body.uuid, name);
+			} else {
 				name = Util.getUniqueFilename(filename);
 				if (!name) return res.status(500).json({ message: 'There was a problem allocating a filename for your upload' });
-				saveTo = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, name);
-			} else {
-				name = `${filename}.${fileToUpload.body.chunkindex}`;
-				const chunkDir = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, 'chunks', fileToUpload.body.uuid);
-				jetpack.dir(chunkDir);
-				saveTo = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, 'chunks', fileToUpload.body.uuid, name);
+				saveTo = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, name);
 			}
 
 			/*
@@ -269,7 +267,7 @@ class uploadPOST extends Route {
 			return res.status(500).json({ message: 'There was an error uploading the file.' });
 		});
 
-		busboy.on('finish', () => this.processFile(req, res, user, fileToUpload));
+		busboy.on('finish', () => this.processFile(req, res, db, user, fileToUpload));
 		req.pipe(busboy);
 	}
 }

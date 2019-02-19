@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../utils/Util');
 
 class albumGET extends Route {
@@ -8,7 +6,7 @@ class albumGET extends Route {
 		super('/album/:identifier', 'get', { bypassAuth: true });
 	}
 
-	async run(req, res) {
+	async run(req, res, db) {
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 

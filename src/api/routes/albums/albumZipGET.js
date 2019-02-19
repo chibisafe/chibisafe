@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../utils/Util');
 const log = require('../../utils/Log');
 const path = require('path');
@@ -11,7 +9,7 @@ class albumGET extends Route {
 		super('/album/:identifier/zip', 'get', { bypassAuth: true });
 	}
 
-	async run(req, res) {
+	async run(req, res, db) {
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 
@@ -31,7 +29,7 @@ class albumGET extends Route {
 			If the date when the album was zipped is greater than the album's last edit, we just send the zip to the user
 		*/
 		if (album.zippedAt > album.editedAt) {
-			const filePath = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const exists = await jetpack.existsAsync(filePath);
 			/*
 				Make sure the file exists just in case, and if not, continue to it's generation.
@@ -65,7 +63,7 @@ class albumGET extends Route {
 			Util.createZip(filesToZip, album);
 			await db.table('albums').where('id', link.albumId).update('zippedAt', db.fn.now());
 
-			const filePath = path.join(__dirname, '..', '..', '..', '..', config.uploads.uploadFolder, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const fileName = `lolisafe-${identifier}.zip`;
 			return res.download(filePath, fileName);
 		} catch (error) {

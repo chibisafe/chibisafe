@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../utils/Util');
 const log = require('../../utils/Log');
 
@@ -9,7 +7,7 @@ class fileDELETE extends Route {
 		super('/file/:id', 'delete');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: 'Invalid file ID supplied' });
 

@@ -5,7 +5,7 @@ class verifyGET extends Route {
 		super('/verify', 'get');
 	}
 
-	run(req, res, user) {
+	run(req, res, db, user) {
 		const returnUser = {
 			id:	user.id,
 			username: user.username,

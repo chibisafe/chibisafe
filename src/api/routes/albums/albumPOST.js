@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const moment = require('moment');
 
 class albumPOST extends Route {
@@ -8,7 +6,7 @@ class albumPOST extends Route {
 		super('/album/new', 'post');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { name } = req.body;
 		if (!name) return res.status(400).json({ message: 'No name provided' });

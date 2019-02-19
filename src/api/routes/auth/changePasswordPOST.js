@@ -1,7 +1,5 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
 const log = require('../../utils/Log');
-const db = require('knex')(config.server.database);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
@@ -10,7 +8,7 @@ class changePasswordPOST extends Route {
 		super('/auth/password/change', 'post');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { password, newPassword } = req.body;
 		if (!password || !newPassword) return res.status(401).json({ message: 'Invalid body provided' });

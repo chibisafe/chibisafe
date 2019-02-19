@@ -1,9 +1,17 @@
-const config = require('../../../config');
+// const config = require('../../../config');
 const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
 const path = require('path');
 const JWT = require('jsonwebtoken');
-const db = require('knex')(config.server.database);
+const db = require('knex')({
+	client: process.env.DB_CLIENT,
+	connection: {
+		host: process.env.DB_HOST,
+		user: process.env.DB_USER,
+		password: process.env.DB_PASS,
+		database: process.env.DB_DATABASE
+	}
+});
 const moment = require('moment');
 const log = require('../utils/Log');
 const crypto = require('crypto');
@@ -13,10 +21,11 @@ const Zip = require('adm-zip');
 
 const imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
+const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 
 class Util {
 	static isExtensionBlocked(extension) {
-		return config.uploads.blockedExtensions.includes(extension);
+		return blockedExtensions.includes(extension);
 	}
 
 	static generateThumbnails(filename) {
@@ -36,38 +45,38 @@ class Util {
 		const ExifTransformer = require('exif-be-gone');
 		const toStream = require('buffer-to-stream');
 
-		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename), 'buffer');
-		const writer = jetpack.createWriteStream(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, `${filename}.noexif`));
+		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
+		const writer = jetpack.createWriteStream(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, `${filename}.noexif`));
 		toStream(file).pipe(new ExifTransformer()).pipe(writer);
 	}
 	*/
 
 	static async generateThumbnailForImage(filename, output) {
-		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename), 'buffer');
+		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
 		await sharp(file)
 			.resize(64, 64)
 			.toFormat('png')
-			.toFile(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', 'square', output));
+			.toFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', output));
 		await sharp(file)
 			.resize(225, null)
 			.toFormat('png')
-			.toFile(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', output));
+			.toFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', output));
 	}
 
 	static generateThumbnailForVideo(filename) {
-		ffmpeg(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename))
+		ffmpeg(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename))
 			.thumbnail({
 				timestamps: [0],
 				filename: '%b.png',
-				folder: path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', 'square'),
+				folder: path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square'),
 				size: '64x64'
 			})
 			.on('error', error => log.error(error.message));
-		ffmpeg(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename))
+		ffmpeg(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename))
 			.thumbnail({
 				timestamps: [0],
 				filename: '%b.png',
-				folder: path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs'),
+				folder: path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs'),
 				size: '150x?'
 			})
 			.on('error', error => log.error(error.message));
@@ -80,11 +89,11 @@ class Util {
 	}
 
 	static constructFilePublicLink(file) {
-		file.url = `${config.filesServeLocation}/${file.name}`;
+		file.url = `${process.env.DOMAIN}/${file.name}`;
 		const thumb = this.getFileThumbnail(file.name);
 		if (thumb) {
-			file.thumb = `${config.filesServeLocation}/thumbs/${thumb}`;
-			file.thumbSquare = `${config.filesServeLocation}/thumbs/square/${thumb}`;
+			file.thumb = `${process.env.DOMAIN}/thumbs/${thumb}`;
+			file.thumbSquare = `${process.env.DOMAIN}/thumbs/square/${thumb}`;
 		}
 		return file;
 	}
@@ -92,12 +101,13 @@ class Util {
 	static getUniqueFilename(name) {
 		const retry = (i = 0) => {
 			const filename = randomstring.generate({
-				length: config.uploads.generatedFilenameLength,
+				length: process.env.GENERATED_FILENAME_LENGTH,
 				capitalization: 'lowercase'
 			}) + path.extname(name);
-			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename));
+			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
 			if (!exists) return filename;
-			if (i < config.uploads.retryFilenameTimes) return retry(i + 1);
+			if (i < 5) return retry(i + 1);
+			log.error('Couldnt allocate identifier for file');
 			return null;
 		};
 		return retry();
@@ -106,7 +116,7 @@ class Util {
 	static getUniqueAlbumIdentifier() {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
-				length: config.albums.generatedAlbumLinkLength,
+				length: process.env.GENERATED_ALBUM_LENGTH,
 				capitalization: 'lowercase'
 			});
 			const exists = await db.table('links').where({ identifier }).first();
@@ -114,7 +124,7 @@ class Util {
 			/*
 				It's funny but if you do i++ the asignment never gets done resulting in an infinite loop
 			*/
-			if (i < config.albums.retryAlbumLinkTimes) return retry(i + 1);
+			if (i < 5) return retry(i + 1);
 			log.error('Couldnt allocate identifier for album');
 			return null;
 		};
@@ -122,7 +132,7 @@ class Util {
 	}
 
 	static async getFileHash(filename) {
-		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename), 'buffer');
+		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
 		if (!file) {
 			log.error(`There was an error reading the file < ${filename} > for hashing`);
 			return null;
@@ -140,9 +150,9 @@ class Util {
 	static async deleteFile(filename, deleteFromDB = false) {
 		const thumbName = this.getFileThumbnail(filename);
 		try {
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, filename));
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', thumbName));
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'thumbs', 'square', thumbName));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', thumbName));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', thumbName));
 			if (deleteFromDB) {
 				await db.table('files').where('name', filename).delete();
 			}
@@ -156,7 +166,7 @@ class Util {
 		try {
 			const files = await db.table('files').where({ albumId: id });
 			for (const file of files) {
-				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, file));
+				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
 			}
 			await db.table('files').where({ albumId: id }).delete();
 		} catch (error) {
@@ -169,7 +179,7 @@ class Util {
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return false;
 
-		return JWT.verify(token, config.server.secret, async (error, decoded) => {
+		return JWT.verify(token, process.env.SECRET, async (error, decoded) => {
 			if (error) {
 				log.error(error);
 				return false;
@@ -189,9 +199,9 @@ class Util {
 		try {
 			const zip = new Zip();
 			for (const file of files) {
-				zip.addLocalFile(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, file));
+				zip.addLocalFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
 			}
-			zip.writeZip(path.join(__dirname, '..', '..', '..', config.uploads.uploadFolder, 'zips', `${album.userId}-${album.id}.zip`));
+			zip.writeZip(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`));
 		} catch (error) {
 			log.error(error);
 		}

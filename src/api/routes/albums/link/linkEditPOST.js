@@ -1,6 +1,4 @@
 const Route = require('../../../structures/Route');
-const config = require('../../../../../config');
-const db = require('knex')(config.server.database);
 const log = require('../../../utils/Log');
 
 class linkEditPOST extends Route {
@@ -8,7 +6,7 @@ class linkEditPOST extends Route {
 		super('/album/link/edit', 'post');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { identifier, enabled, enableDownload, expiresAt } = req.body;
 		if (!identifier) return res.status(400).json({ message: 'Invalid album identifier supplied' });

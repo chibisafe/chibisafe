@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../utils/Util');
 
 class filesGET extends Route {
@@ -8,7 +6,7 @@ class filesGET extends Route {
 		super('/files', 'get');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		/*
 			Get all the files from the user
 		*/

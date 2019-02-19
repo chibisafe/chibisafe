@@ -3123,6 +3123,11 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
+dotenv@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
+  integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
+
 dropzone@^5.5.0:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.5.1.tgz#06e2f513e61d6aa363d4b556f18574f47cf7ba26"
@@ -7470,6 +7475,11 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qoa@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/qoa/-/qoa-0.2.0.tgz#2e4ea56a388982da570bf2025733b72e2f857aab"
+  integrity sha512-svEO3uevNU354fUBWgMxGJH0spF29EZRe140YL20PP+5C25V+u0eMeFforSIiop2879uXgxI+IFwibHBGcseEA==
 
 qs@6.5.2, qs@~6.5.2:
   version "6.5.2"

@@ -1,4 +1,5 @@
-const config = require('../../../config');
+require('dotenv').config();
+
 const log = require('../utils/Log');
 const express = require('express');
 const helmet = require('helmet');
@@ -8,17 +9,16 @@ const bodyParser = require('body-parser');
 const jetpack = require('fs-jetpack');
 const path = require('path');
 const Database = require('./Database');
-const oneliner = require('one-liner');
 
 const rateLimiter = new RateLimit({
-	windowMs: config.server.rateLimits.window,
-	max: config.server.rateLimits.max,
+	windowMs: process.env.RATE_LIMIT_WINDOW,
+	max: process.env.RATE_LIMIT_MAX,
 	delayMs: 0
 });
 
 class Server {
 	constructor() {
-		this.port = config.server.ports.backend;
+		this.port = process.env.SERVER_PORT;
 		this.server = express();
 		this.server.set('trust proxy', 1);
 		this.server.use(helmet());
@@ -36,12 +36,6 @@ class Server {
 		// this.server.use(rateLimiter);
 		this.routesFolder = path.join(__dirname, '..', 'routes');
 		this.database = new Database();
-		this.server.get('/config', (req, res) => res.json({
-			baseURL: config.backendLocation,
-			serviceName: config.serviceName,
-			maxFileSize: config.uploads.uploadMaxSize,
-			chunkSize: config.uploads.chunkSize
-		}));
 	}
 
 	registerAllTheRoutes() {
@@ -51,22 +45,10 @@ class Server {
 			if (Array.isArray(RouteClass)) routes = RouteClass;
 			for (const File of routes) {
 				const route = new File();
-				this.server[route.method](config.server.routePrefix + route.path, route.authorize.bind(route));
-				log.info(`Found route ${route.method.toUpperCase()} ${config.server.routePrefix}${route.path}`);
+				this.server[route.method](process.env.ROUTE_PREFIX + route.path, route.authorize.bind(route));
+				log.info(`Found route ${route.method.toUpperCase()} ${process.env.ROUTE_PREFIX}${route.path}`);
 			}
 		});
-	}
-
-	writeFrontendConfig() {
-		const template = oneliner`
-			module.exports = {
-				baseURL: '${config.backendLocation}',
-				serviceName: '${config.serviceName}',
-				maxFileSize: '${config.uploads.uploadMaxSize}',
-				chunkSize: '${config.uploads.chunkSize}'
-			}`;
-		jetpack.write(path.join(__dirname, '..', '..', 'frontend', 'config.js'), template);
-		log.success('Frontend config file generated successfully');
 	}
 
 	start() {

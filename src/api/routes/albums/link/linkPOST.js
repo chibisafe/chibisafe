@@ -1,6 +1,4 @@
 const Route = require('../../../structures/Route');
-const config = require('../../../../../config');
-const db = require('knex')(config.server.database);
 const Util = require('../../../utils/Util');
 const log = require('../../../utils/Log');
 
@@ -9,7 +7,7 @@ class linkPOST extends Route {
 		super('/album/link/new', 'post');
 	}
 
-	async run(req, res, user) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { albumId } = req.body;
 		if (!albumId) return res.status(400).json({ message: 'No album provided' });
@@ -24,7 +22,7 @@ class linkPOST extends Route {
 			Count the amount of links created for that album already and error out if max was reached
 		*/
 		const count = await db.table('links').where('albumId', albumId).count({ count: 'id' });
-		if (count[0].count >= config.albums.maxLinksPerAlbum) return res.status(400).json({ message: 'Maximum links per album reached' });
+		if (count[0].count >= process.env.MAX_LINKS_PER_ALBUM) return res.status(400).json({ message: 'Maximum links per album reached' });
 
 		/*
 			Try to allocate a new identifier on the db
