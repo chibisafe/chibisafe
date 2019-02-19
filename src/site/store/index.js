@@ -39,6 +39,7 @@ const mutations = {
 
 const actions = {
 	nuxtServerInit({ commit }, { req }) {
+		/* TODO: Get env variables from context/process */
 		const config = require('~/config.js');
 		commit('config', config);
 	}
