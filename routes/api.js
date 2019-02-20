@@ -4,6 +4,7 @@ const uploadController = require('../controllers/uploadController');
 const albumsController = require('../controllers/albumsController');
 const tokenController = require('../controllers/tokenController');
 const authController = require('../controllers/authController');
+const usersController = require('../controllers/usersController');
 
 routes.get('/check', (req, res, next) => {
 	return res.json({
@@ -33,5 +34,11 @@ routes.get('/albums/test', (req, res, next) => albumsController.test(req, res, n
 routes.get('/tokens', (req, res, next) => tokenController.list(req, res, next));
 routes.post('/tokens/verify', (req, res, next) => tokenController.verify(req, res, next));
 routes.post('/tokens/change', (req, res, next) => tokenController.change(req, res, next));
+routes.get('/users', (req, res, next) => usersController.list(req, res, next));
+routes.post('/user/:id/enable', (req, res, next) => usersController.enable(req, res, next));
+routes.post('/user/:id/disable', (req, res, next) => usersController.disable(req, res, next));
+routes.post('/user/:id/promote', (req, res, next) => usersController.promote(req, res, next));
+routes.post('/user/:id/demote', (req, res, next) => usersController.demote(req, res, next));
+routes.post('/user/:id/delete', (req, res, next) => usersController.delete(req, res, next));
 
 module.exports = routes;

@@ -72,6 +72,16 @@ panel.prepareDashboard = function(){
 
 	document.getElementById('itemLogout').innerHTML = `Logout ( ${panel.username} )`;
 
+	if(panel.admin){
+		let adminList = document.getElementById('menu').lastElementChild;
+		let html='<li><a id="itemUsers" onclick="panel.getUsers()">Users</a></li>';
+		adminList.innerHTML=html+adminList.innerHTML;
+
+		document.getElementById('itemUsers').addEventListener('click', function(){
+			panel.setActiveMenu(this);
+		});
+	}
+
 	panel.getAlbumsSidebar();
 };
 
@@ -217,6 +227,141 @@ panel.getUploads = function(album = undefined, page = undefined){
 
 };
 
+panel.getUsers = function(page = undefined){
+	if(page===undefined) page = 0;
+
+	let url = '/api/users'
+	axios.get(url, {
+		params: {
+			page
+		}
+	}).then(function (response){
+		let prevPage = 0;
+		let nextPage = page;
+
+		if(page > 0) prevPage = page - 1;
+		if(response.data.users.length === 25) nextPage = page + 1;
+
+		panel.page.innerHTML = '';
+		let container = document.createElement('div');
+		let pagination = `<nav class="pagination is-centered">
+			<a class="pagination-previous" onclick="panel.getUsers(${prevPage})">Previous</a>
+			<a class="pagination-next" onclick="panel.getUsers(${nextPage})">Next page</a>
+		</nav>`;
+		container.innerHTML = `
+			${pagination}
+			<hr>
+			<table class="table is-stripped is-narrow is-left">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Username</th>
+						<th>Administrator</th>
+						<th>Enabled</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="table">
+				</tbody>
+			</table>
+			<hr>
+			${pagination}
+		`;
+		panel.page.appendChild(container);
+
+		let table = document.getElementById('table');
+		let deletePage = response.data.users.length == 1 ? prevPage : page;
+		for(let user of response.data.users){
+			let tr = document.createElement('tr');
+
+			let actions=`<a class="button is-small is-danger is-outlined" title="Delete user" onclick="panel.deleteUser(${user.id}, ${deletePage})">
+				<span class="icon is-small">
+					<i class="fa fa-trash-o"></i>
+				</span>
+			</a>`;
+
+			if(user.enabled) actions+=`<a class="button is-small is-danger is-outlined" title="Disable user" onclick="panel.disableUser(${user.id}, ${page})">
+				<span class="icon is-small">
+					<i class="fa fa-pause"></i>
+				</span>
+			</a>`;
+			else actions+=`<a class="button is-small is-danger is-outlined" title="Enable user" onclick="panel.enableUser(${user.id}, ${page})">
+				<span class="icon is-small">
+					<i class="fa fa-play"></i>
+				</span>
+			</a>`;
+
+			if(user.admin) actions+=`<a class="button is-small is-danger is-outlined" title="Demote user" onclick="panel.demoteUser(${user.id}, ${page})">
+				<span class="icon is-small">
+					<i class="fa fa-warning"></i>
+				</span>
+			</a>`;
+			else actions+=`<a class="button is-small is-danger is-outlined" title="Promote user" onclick="panel.promoteUser(${user.id}, ${page})">
+				<span class="icon is-small">
+					<i class="fa fa-warning"></i>
+				</span>
+			</a>`;
+
+			tr.innerHTML = `<td>${user.id}</td>
+			<th>${user.username}</th>
+			<td>${user.admin}</td>
+			<td>${user.enabled}</td>
+			<td>${actions}</td>`;
+			table.appendChild(tr);
+		}
+	});
+}
+
+panel.disableUser = function(id, page){
+	axios.post(`/api/user/${id}/disable`).then(function(response){
+		if(response.data.success) panel.getUsers(page);
+		else swal({
+			title: "Error",
+			text: `Failed to disable user: ${response.data.description}`,
+			type: "error"
+		});
+	});
+}
+panel.enableUser = function(id, page){
+	axios.post(`/api/user/${id}/enable`).then(function(response){
+		if(response.data.success) panel.getUsers(page);
+		else swal({
+			title: "Error",
+			text: `Failed to enable user: ${response.data.description}`,
+			type: "error"
+		});
+	});
+}
+panel.demoteUser = function(id, page){
+	axios.post(`/api/user/${id}/demote`).then(function(response){
+		if(response.data.success) panel.getUsers(page);
+		else swal({
+			title: "Error",
+			text: `Failed to demote user: ${response.data.description}`,
+			type: "error"
+		});
+	});
+}
+panel.promoteUser = function(id, page){
+	axios.post(`/api/user/${id}/promote`).then(function(response){
+		if(response.data.success) panel.getUsers(page);
+		else swal({
+			title: "Error",
+			text: `Failed to promote user: ${response.data.description}`,
+			type: "error"
+		});
+	});
+}
+panel.deleteUser = function(id, page){
+	axios.post(`/api/user/${id}/delete`).then(function(response){
+		if(response.data.success) panel.getUsers(page);
+		else swal({
+			title: "Error",
+			text: `Failed to delete user: ${response.data.description}`,
+			type: "error"
+		});
+	});
+}
 panel.setFilesView = function(view, album, page){
 	localStorage.filesView = view;
 	panel.filesView = view;
