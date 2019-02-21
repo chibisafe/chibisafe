@@ -8,7 +8,6 @@ const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const jetpack = require('fs-jetpack');
 const path = require('path');
-const Database = require('./Database');
 
 const rateLimiter = new RateLimit({
 	windowMs: process.env.RATE_LIMIT_WINDOW,
@@ -35,7 +34,6 @@ class Server {
 		this.server.use(bodyParser.json());
 		// this.server.use(rateLimiter);
 		this.routesFolder = path.join(__dirname, '..', 'routes');
-		this.database = new Database();
 	}
 
 	registerAllTheRoutes() {

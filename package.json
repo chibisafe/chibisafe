@@ -10,11 +10,14 @@
 	},
 	"main": "src/_scripts/start.js",
 	"scripts": {
-		"setup": "node src/wizard.js",
-		"api": "node src/api/structures/Server",
-		"site": "nuxt",
+		"setup": "yarn build && node src/wizard.js",
+		"dev": "nuxt",
 		"build": "nuxt build",
-		"start": "cross-env NODE_ENV=production node src/start && nuxt start"
+		"migrate": "yarn knex migrate:latest",
+		"seed": "yarn knex seed:run",
+		"api": "node src/api/structures/Server",
+		"site": "cross-env NODE_ENV=production nuxt start",
+		"update": "git pull && yarn migrate && yarn build"
 	},
 	"repository": {
 		"type": "git",

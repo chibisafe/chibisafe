@@ -1,3 +1,4 @@
+const randomstring = require('randomstring');
 const jetpack = require('fs-jetpack');
 const qoa = require('qoa');
 qoa.config({
@@ -14,6 +15,10 @@ async function start() {
 		deny: 'n'
 	});
 	if (!confirm.run) process.exit(0);
+
+	console.log();
+	console.log('You can manually edit .env file after the wizard to edit values');
+	console.log();
 
 	const wizard = [
 		{
@@ -94,9 +99,34 @@ async function start() {
 			deny: 'n'
 		},
 		{
+			type: 'input',
+			query: 'Name of the admin account?',
+			handle: 'ADMIN_ACCOUNT'
+		},
+		{
 			type: 'secure',
 			query: 'Type a secure password for the root user:',
-			handle: 'ROOT_PASSWORD'
+			handle: 'ADMIN_PASSWORD'
+		},
+		{
+			type: 'input',
+			query: 'Database host',
+			handle: 'DB_HOST'
+		},
+		{
+			type: 'input',
+			query: 'Database user',
+			handle: 'DB_USER'
+		},
+		{
+			type: 'input',
+			query: 'Database password',
+			handle: 'DB_PASSWORD'
+		},
+		{
+			type: 'input',
+			query: 'Database name',
+			handle: 'DB_DATABASE'
 		}
 	];
 
@@ -109,13 +139,9 @@ async function start() {
 		RATE_LIMIT_WINDOW: 2,
 		RATE_LIMIT_MAX: 5,
 		DB_CLIENT: 'pg',
-		DB_HOST: 'localhost',
-		DB_USER: '',
-		DB_PASSWORD: '',
-		DB_DATABASE: '',
 		BLOCKED_EXTENSIONS: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 		UPLOAD_FOLDER: 'uploads',
-		SECRET: 'SuperSecretPassphraseHere',
+		SECRET: randomstring.generate(64),
 		MAX_LINKS_PER_ALBUM: 5
 	};
 
@@ -128,7 +154,11 @@ async function start() {
 	jetpack.write('.env', envfile);
 
 	console.log();
-	console.log('== .env file generated successfully. You can now run lolisafe ==');
+	console.log('=============================================');
+	console.log('==    .env file generated successfully.    ==');
+	console.log('=============================================');
+	console.log('== Run `yarn migrate` and `yarn seed` next ==');
+	console.log('=============================================');
 	console.log();
 }
 
