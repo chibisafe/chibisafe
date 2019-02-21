@@ -1,4 +1,4 @@
-require('dotenv').config();
+import dotenv from 'dotenv/config';
 import autoprefixer from 'autoprefixer';
 import serveStatic from 'serve-static';
 import path from 'path';
