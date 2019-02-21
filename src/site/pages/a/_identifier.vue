@@ -52,14 +52,13 @@
 import Grid from '~/components/grid/Grid.vue';
 import Loading from '~/components/loading/CubeShadow.vue';
 import axios from 'axios';
-import config from '~/config.js';
 
 export default {
 	components: { Grid, Loading },
-	async asyncData({ params, error }) {
+	async asyncData({ app, params, error }) {
 		try {
-			const res = await axios.get(`${config.baseURL}/album/${params.identifier}`);
-			const downloadLink = res.data.downloadEnabled ? `${config.baseURL}/album/${params.identifier}/zip` : null;
+			const res = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
+			const downloadLink = res.data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
 			return {
 				name: res.data.name,
 				downloadEnabled: res.data.downloadEnabled,

@@ -80,7 +80,6 @@
 		"node-sass": "^4.11.0",
 		"postcss-css-variables": "^0.11.0",
 		"postcss-nested": "^3.0.0",
-		"ream": "^3.2.7",
 		"sass-loader": "^7.1.0",
 		"vue-eslint-parser": "^2.0.3"
 	},
