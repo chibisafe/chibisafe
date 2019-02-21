@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const config = require('../../../../config');
-const db = require('knex')(config.server.database);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const JWT = require('jsonwebtoken');
@@ -10,7 +8,7 @@ class loginPOST extends Route {
 		super('/auth/login', 'post', { bypassAuth: true });
 	}
 
-	async run(req, res) {
+	async run(req, res, db) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { username, password } = req.body;
 		if (!username || !password) return res.status(401).json({ message: 'Invalid body provided' });
@@ -34,7 +32,7 @@ class loginPOST extends Route {
 			iss: 'lolisafe',
 			sub: user.id,
 			iat: moment.utc().valueOf()
-		}, config.server.secret, { expiresIn: '30d' });
+		}, process.env.SECRET, { expiresIn: '30d' });
 
 		return res.json({
 			message: 'Successfully logged in.',
