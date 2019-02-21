@@ -61,6 +61,7 @@
 		"randomstring": "^1.1.5",
 		"serve-static": "^1.13.2",
 		"sharp": "^0.20.3",
+		"sqlite3": "^4.0.6",
 		"v-clipboard": "^1.0.4",
 		"vue-analytics": "^5.16.2",
 		"vue-axios": "^2.0.2",
