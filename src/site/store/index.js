@@ -39,9 +39,15 @@ const mutations = {
 
 const actions = {
 	nuxtServerInit({ commit }, { req }) {
-		/* TODO: Get env variables from context/process */
-		const config = require('~/config.js');
-		commit('config', config);
+		commit('config', {
+			version: process.env.npm_package_version,
+			URL: process.env.DOMAIN,
+			baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
+			serviceName: process.env.SERVICE_NAME,
+			maxFileSize: process.env.MAX_SIZE,
+			chunkSize: process.env.CHUNK_SIZE,
+			maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM
+		});
 	}
 };
 
