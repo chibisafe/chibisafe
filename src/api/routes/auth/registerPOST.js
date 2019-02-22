@@ -51,7 +51,9 @@ class registerPOST extends Route {
 			apiKey: randomstring.generate(64),
 			apiKeyEditedAt: now,
 			createdAt: now,
-			editedAt: now
+			editedAt: now,
+			enabled: true,
+			isAdmin: false
 		});
 		return res.json({ message: 'The account was created successfully' });
 	}

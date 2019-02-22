@@ -3,8 +3,8 @@ exports.up = async knex => {
 		table.increments();
 		table.string('username');
 		table.string('password');
-		table.boolean('enabled').defaultTo(true);
-		table.boolean('isAdmin').defaultTo(false);
+		table.boolean('enabled');
+		table.boolean('isAdmin');
 		table.string('apiKey');
 		table.timestamp('passwordEditedAt');
 		table.timestamp('apiKeyEditedAt');
@@ -39,9 +39,9 @@ exports.up = async knex => {
 		table.integer('userId');
 		table.integer('albumId');
 		table.string('identifier');
-		table.integer('views').defaultTo(0);
-		table.boolean('enabled').defaultTo(true);
-		table.boolean('enableDownload').defaultTo(true);
+		table.integer('views');
+		table.boolean('enabled');
+		table.boolean('enableDownload');
 		table.timestamp('expiresAt');
 		table.timestamp('createdAt');
 		table.timestamp('editedAt');

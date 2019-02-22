@@ -37,7 +37,8 @@ class linkPOST extends Route {
 				albumId,
 				enabled: true,
 				enableDownload: true,
-				expiresAt: null
+				expiresAt: null,
+				views: 0
 			});
 
 			return res.json({

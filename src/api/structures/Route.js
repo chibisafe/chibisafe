@@ -8,7 +8,8 @@ const db = require('knex')({
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
 		filename: nodePath.join(__dirname, '..', '..', '..', 'database.sqlite')
-	}
+	},
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite' ? true : false
 });
 const moment = require('moment');
 const log = require('../utils/Log');

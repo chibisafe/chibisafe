@@ -16,6 +16,7 @@ exports.seed = async db => {
 			apiKeyEditedAt: now,
 			createdAt: now,
 			editedAt: now,
+			enabled: true,
 			isAdmin: true
 		});
 		console.log();

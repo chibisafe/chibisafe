@@ -118,19 +118,37 @@ class uploadPOST extends Route {
 			store the details on the database.
 		*/
 		const now = moment.utc().toDate();
-		let inserted = null;
+		let insertedId = null;
 		try {
-			inserted = await db.table('files').insert({
-				userId: user ? user.id : null,
-				name: upload.filename,
-				original: upload.originalname,
-				type: upload.mimetype || '',
-				size: upload.size,
-				hash,
-				ip: req.ip,
-				createdAt: now,
-				editedAt: now
-			}, 'id');
+			/*
+				This is so fucking dumb
+			*/
+			if (process.env.DB_CLIENT === 'sqlite3') {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: upload.filename,
+					original: upload.originalname,
+					type: upload.mimetype || '',
+					size: upload.size,
+					hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				});
+			} else {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: upload.filename,
+					original: upload.originalname,
+					type: upload.mimetype || '',
+					size: upload.size,
+					hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				}, 'id');
+			}
+
 			/*
 				TODO: Something funny here, I'm not sure since I don't use MySQL but I think the argument id
 				on the insert function on top behaves differently on psql/mysql/sqlite. Needs testing.
@@ -155,7 +173,7 @@ class uploadPOST extends Route {
 		*/
 		if (albumId) {
 			try {
-				await db.table('albumsFiles').insert({ albumId, fileId: inserted[0] });
+				await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
 				await db.table('albums').where('id', albumId).update('editedAt', now);
 			} catch (error) {
 				log.error('There was an error updating editedAt on an album');
