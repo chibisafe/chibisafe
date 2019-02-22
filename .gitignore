@@ -14,7 +14,7 @@ logs/
 
 # Lolisafe specifics
 config.js
-database.db
+database.sqlite
 uploads/
 src/oldsite
 .env
