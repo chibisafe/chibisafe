@@ -106,7 +106,8 @@ class uploadPOST extends Route {
 				message: 'Successfully uploaded file BUT IT EXISTED ALREADY',
 				name: exists.name,
 				size: exists.size,
-				url: `${process.env.DOMAIN}/${exists.name}`
+				url: `${process.env.DOMAIN}/${exists.name}`,
+				deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`
 			});
 
 			return Util.deleteFile(upload.filename);
@@ -145,6 +146,7 @@ class uploadPOST extends Route {
 			name: upload.filename,
 			size: upload.size,
 			url: `${process.env.DOMAIN}/${upload.filename}`
+			// deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`
 		});
 
 		/*
