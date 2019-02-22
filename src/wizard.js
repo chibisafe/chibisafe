@@ -109,23 +109,33 @@ async function start() {
 			handle: 'ADMIN_PASSWORD'
 		},
 		{
+			type: 'interactive',
+			query: 'Which predefined database do you want to use?',
+			handle: 'DB_CLIENT',
+			symbol: '>',
+			menu: [
+				'pg',
+				'sqlite'
+			]
+		},
+		{
 			type: 'input',
-			query: 'Database host',
+			query: 'Database host (Ignore if you selected sqlite3):',
 			handle: 'DB_HOST'
 		},
 		{
 			type: 'input',
-			query: 'Database user',
+			query: 'Database user (Ignore if you selected sqlite3):',
 			handle: 'DB_USER'
 		},
 		{
 			type: 'input',
-			query: 'Database password',
+			query: 'Database password (Ignore if you selected sqlite3):',
 			handle: 'DB_PASSWORD'
 		},
 		{
 			type: 'input',
-			query: 'Database name',
+			query: 'Database name (Ignore if you selected sqlite3):',
 			handle: 'DB_DATABASE'
 		}
 	];
@@ -138,7 +148,6 @@ async function start() {
 		ROUTE_PREFIX: '/api',
 		RATE_LIMIT_WINDOW: 2,
 		RATE_LIMIT_MAX: 5,
-		DB_CLIENT: 'pg',
 		BLOCKED_EXTENSIONS: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 		UPLOAD_FOLDER: 'uploads',
 		SECRET: randomstring.generate(64),
