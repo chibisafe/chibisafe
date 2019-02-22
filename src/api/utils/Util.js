@@ -1,4 +1,3 @@
-// const config = require('../../../config');
 const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
 const path = require('path');
@@ -10,7 +9,7 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: '../../../database.sqlite'
+		filename: path.join(__dirname, '..', '..', '..', 'database.sqlite')
 	}
 });
 const moment = require('moment');
