@@ -1,3 +1,4 @@
+const nodePath = require('path');
 const JWT = require('jsonwebtoken');
 const db = require('knex')({
 	client: process.env.DB_CLIENT,
@@ -6,7 +7,7 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: '../../../database.sqlite'
+		filename: nodePath.join(__dirname, '..', '..', '..', 'database.sqlite')
 	}
 });
 const moment = require('moment');
