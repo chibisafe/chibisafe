@@ -163,8 +163,8 @@ class uploadPOST extends Route {
 			message: 'Successfully uploaded file',
 			name: upload.filename,
 			size: upload.size,
-			url: `${process.env.DOMAIN}/${upload.filename}`
-			// deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`
+			url: `${process.env.DOMAIN}/${upload.filename}`,
+			deleteUrl: `${process.env.DOMAIN}/api/file/${insertedId[0]}`
 		});
 
 		/*
