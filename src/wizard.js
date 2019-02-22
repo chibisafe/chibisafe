@@ -115,7 +115,7 @@ async function start() {
 			symbol: '>',
 			menu: [
 				'pg',
-				'sqlite'
+				'sqlite3'
 			]
 		},
 		{
