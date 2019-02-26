@@ -148,11 +148,6 @@ class uploadPOST extends Route {
 					editedAt: now
 				}, 'id');
 			}
-
-			/*
-				TODO: Something funny here, I'm not sure since I don't use MySQL but I think the argument id
-				on the insert function on top behaves differently on psql/mysql/sqlite. Needs testing.
-			*/
 		} catch (error) {
 			log.error('There was an error saving the file to the database');
 			log.error(error);
