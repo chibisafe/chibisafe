@@ -19,6 +19,8 @@
 						<Sidebar/>
 					</div>
 					<div class="column">
+						<h2 class="subtitle">Your uploaded files</h2>
+						<hr>
 						<!--
 						<h1 class="title">Uploads</h1>
 						<h2 class="subtitle">Keep track of all your uploads in here</h2>

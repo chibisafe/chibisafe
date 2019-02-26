@@ -135,10 +135,9 @@
 			<div class="container">
 				<div class="columns">
 					<div class="column is-narrow">
-						<Sidebar/>
+						<Sidebar />
 					</div>
 					<div class="column">
-
 						<h2 class="subtitle">Manage your albums</h2>
 						<hr>
 
@@ -200,8 +199,6 @@
 
 								<div v-if="album.isDetailsOpen"
 									class="details">
-
-
 									<h2>Public links for this album:</h2>
 
 									<b-table

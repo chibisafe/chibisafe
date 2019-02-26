@@ -29,7 +29,7 @@ div#loading {
 
 $body-size: 14px !default;
 $family-primary: 'Nunito', BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-$size-normal: 0.75rem;
+$size-normal: 1rem;
 
 @import "../../../node_modules/bulma/bulma.sass";
 @import "../../../node_modules/buefy/src/scss/buefy.scss";
@@ -178,4 +178,8 @@ section#register a.is-text {
 
 .modal-card-head, .modal-card-foot {
 	background: $backgroundLight1;
+}
+
+.switch {
+	margin-top: 5px;
 }

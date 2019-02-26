@@ -23,20 +23,99 @@
 						<Sidebar />
 					</div>
 					<div class="column">
+						<h2 class="subtitle">Service settings</h2>
+						<hr>
 						<!--
 						<h1 class="title">Uploads</h1>
 						<h2 class="subtitle">Keep track of all your uploads in here</h2>
 						<hr>
 						-->
 
-						<div class="field">
+						<b-field label="Service name"
+							message="Please enter the name which this service is gonna be identified as"
+							horizontal>
+							<b-input v-model="options.serviceName"
+								expanded />
+						</b-field>
+
+						<b-field label="Upload folder"
+							message="Where to store the files relative to the working directory"
+							horizontal>
+							<b-input v-model="options.uploadFolder"
+								expanded />
+						</b-field>
+
+						<b-field label="Links per album"
+							message="Maximum links allowed per album"
+							horizontal>
+							<b-input v-model="options.linksPerAlbum"
+								type="number"
+								expanded />
+						</b-field>
+
+						<b-field label="Max upload size"
+							message="Maximum allowed file size in MB"
+							horizontal>
+							<b-input v-model="options.maxUploadSize"
+								expanded />
+						</b-field>
+
+						<b-field label="Filename length"
+							message="How many characters long should the generated filenames be"
+							horizontal>
+							<b-input v-model="options.filenameLength"
+								expanded />
+						</b-field>
+
+						<b-field label="Album link length"
+							message="How many characters a link for an album should have"
+							horizontal>
+							<b-input v-model="options.albumLength"
+								expanded />
+						</b-field>
+
+						<b-field label="Generate thumbnails"
+							message="Generate thumbnails when uploading a file if possible"
+							horizontal>
+							<b-switch v-model="options.generateThumbnails"
+								:true-value="true"
+								:false-value="false" />
+						</b-field>
+
+						<b-field label="Generate zips"
+							message="Allow generating zips to download entire albums"
+							horizontal>
+							<b-switch v-model="options.generateZips"
+								:true-value="true"
+								:false-value="false" />
+						</b-field>
+
+						<b-field label="Strip EXIF"
+							message="Remove EXIF metadata from uploaded files"
+							horizontal>
 							<b-switch v-model="options.removeExif"
-								true-value="Remove exif data when uploading files"
-								false-value="Don't remove exif data when uploading files"
-								type="is-success">
-								{{ options.removeExif }}
-							</b-switch>
-						</div>
+								:true-value="true"
+								:false-value="false" />
+						</b-field>
+
+						<b-field label="Public mode"
+							message="Enable anonymous uploades"
+							horizontal>
+							<b-switch v-model="options.publicMode"
+								:true-value="true"
+								:false-value="false" />
+						</b-field>
+
+						<b-field label="Enable creating account"
+							message="Enable creating new accounts in the platform"
+							horizontal>
+							<b-switch v-model="options.userAccounts"
+								:true-value="true"
+								:false-value="false" />
+						</b-field>
+
+						<button class="button is-primary"
+							@click="restartService">Restart service</button>
 					</div>
 				</div>
 			</div>
@@ -53,9 +132,7 @@ export default {
 	},
 	data() {
 		return {
-			options: {
-				removeExif: false
-			}
+			options: {}
 		};
 	},
 	metaInfo() {
@@ -69,7 +146,9 @@ export default {
 		});
 	},
 	methods: {
-
+		async restartService() {
+			//
+		}
 	}
 };
 </script>
