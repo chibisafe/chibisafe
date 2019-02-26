@@ -25,12 +25,26 @@
 				color: $textColorHighlight;
 			}
 		}
+
+		div.background {
+			position: fixed;
+			top: 0;
+			left: 0;
+			background: no-repeat scroll 50% 50%;
+			background-size: cover;
+			background-image: url('~assets/images/background.jpg');
+			z-index: -1;
+			height: 100vh;
+			width: 100%;
+			pointer-events: none;
+		}
 	}
 </style>
 
 <template>
 	<div class="home">
 		<section class="hero is-fullheight has-text-centered">
+			<div class="background" />
 			<Navbar :isWhite="true" />
 			<div class="hero-body">
 				<div class="container">
