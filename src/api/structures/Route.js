@@ -33,7 +33,7 @@ class Route {
 		return JWT.verify(token, process.env.SECRET, async (error, decoded) => {
 			if (error) {
 				log.error(error);
-				return res.status(401).json({ message: 'Your token appears to be invalid' });
+				return res.status(401).json({ message: 'Invalid token' });
 			}
 			const id = decoded ? decoded.sub : '';
 			const iat = decoded ? decoded.iat : '';
@@ -42,6 +42,7 @@ class Route {
 			if (!user) return res.status(401).json({ message: 'Invalid authorization' });
 			if (iat && iat < moment(user.passwordEditedAt).format('x')) return res.status(401).json({ message: 'Token expired' });
 			if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
+			if (this.options.adminOnly && !user.isAdmin) return res.status(401).json({ message: 'Invalid authorization' });
 
 			return this.run(req, res, db, user);
 		});
