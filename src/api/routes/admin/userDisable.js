@@ -1,8 +1,8 @@
 const Route = require('../../structures/Route');
 
-class userPromote extends Route {
+class userDisable extends Route {
 	constructor() {
-		super('/admin/users/promote', 'post', { adminOnly: true });
+		super('/admin/users/disable', 'post', { adminOnly: true });
 	}
 
 	async run(req, res, db) {
@@ -13,15 +13,15 @@ class userPromote extends Route {
 		try {
 			await db.table('users')
 				.where({ id })
-				.update({ isAdmin: true });
+				.update({ enabled: false });
 		} catch (error) {
 			return super.error(res, error);
 		}
 
 		return res.json({
-			message: 'Successfully promoted user'
+			message: 'Successfully disabled user'
 		});
 	}
 }
 
-module.exports = userPromote;
+module.exports = userDisable;

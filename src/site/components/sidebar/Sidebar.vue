@@ -44,15 +44,23 @@
 		<router-link to="/dashboard/account">
 			<i class="icon-ecommerce-tag-c" />Account
 		</router-link>
-		<hr>
-		<router-link to="/dashboard/users">
-			<i class="icon-setting-gear-a" />Users
-		</router-link>
-		<router-link to="/dashboard/settings">
-			<i class="icon-setting-gear-a" />Settings
-		</router-link>
+		<template v-if="user.isAdmin">
+			<hr>
+			<router-link to="/dashboard/users">
+				<i class="icon-setting-gear-a" />Users
+			</router-link>
+			<router-link to="/dashboard/settings">
+				<i class="icon-setting-gear-a" />Settings
+			</router-link>
+		</template>
 	</div>
 </template>
 <script>
-export default {};
+export default {
+	computed: {
+		user() {
+			return this.$store.state.user;
+		}
+	},
+};
 </script>

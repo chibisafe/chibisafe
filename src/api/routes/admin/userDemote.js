@@ -2,13 +2,13 @@ const Route = require('../../structures/Route');
 
 class userDemote extends Route {
 	constructor() {
-		super('/admin/users/demote', 'get', { adminOnly: true });
+		super('/admin/users/demote', 'post', { adminOnly: true });
 	}
 
 	async run(req, res, db) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { id } = req.body;
-		if (!id) return res.status(400).json({ message: 'No name provided' });
+		if (!id) return res.status(400).json({ message: 'No id provided' });
 
 		try {
 			await db.table('users')
@@ -19,7 +19,7 @@ class userDemote extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully promoted user'
+			message: 'Successfully demoted user'
 		});
 	}
 }
