@@ -105,7 +105,7 @@ async function start() {
 		},
 		{
 			type: 'secure',
-			query: 'Type a secure password for the root user:',
+			query: 'Type a secure password for the admin account:',
 			handle: 'ADMIN_PASSWORD'
 		},
 		{
