@@ -1,29 +1,6 @@
 // Let's first take care of having the customized colors ready.
 @import "./_colors.scss";
 
-// Loading screen is the first thing that shows up, let's put it at the top.
-div#loading {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100;
-	height: 100%;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	div.background {
-		position: absolute;
-		z-index: -1;
-		height: 100%;
-		width: 100%;
-		top: 0px;
-		left: 0px;
-		background: $background;
-	}
-}
-
 // Bulma/Buefy customization
 @import "../../../node_modules/bulma/sass/utilities/_all.sass";
 
@@ -34,33 +11,6 @@ $size-normal: 1rem;
 @import "../../../node_modules/bulma/bulma.sass";
 @import "../../../node_modules/buefy/src/scss/buefy.scss";
 
-/*
-.material-icons {
-	font-family: 'Material Icons';
-	font-weight: normal;
-	font-style: normal;
-	font-size: 24px;
-	line-height: 1;
-	letter-spacing: normal;
-	text-transform: none;
-	display: inline-block;
-	white-space: nowrap;
-	word-wrap: normal;
-	direction: ltr;
-	font-feature-settings: "liga";
-	-webkit-font-feature-settings: 'liga';
-	-webkit-font-smoothing: antialiased;
-}
-*/
-
-/*
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-	text-rendering: optimizeLegibility;
-}
-*/
 html {
 	// font-size: 100%;
 	font-size: 14px;
@@ -73,16 +23,25 @@ h4 {
 	line-height: 1.25em;
 }
 
-div.spacer {
-	&.mt1 { margin-top: 1em; }
-	&.mt2 { margin-top: 2em; }
-	&.mt3 { margin-top: 3em; }
-	&.mt4 { margin-top: 4em; }
-	&.mt5 { margin-top: 5em; }
-	&.mt6 { margin-top: 6em; }
-	&.mt7 { margin-top: 7em; }
-}
+.mt1 { margin-top: 1em; }
+.mt2 { margin-top: 2em; }
+.mt3 { margin-top: 3em; }
+.mt4 { margin-top: 4em; }
+.mt5 { margin-top: 5em; }
+.mt6 { margin-top: 6em; }
+.mt7 { margin-top: 7em; }
 
+.mb1 { margin-bottom: 1em; }
+.mb2 { margin-bottom: 2em; }
+.mb3 { margin-bottom: 3em; }
+.mb4 { margin-bottom: 4em; }
+.mb5 { margin-bottom: 5em; }
+.mb6 { margin-bottom: 6em; }
+.mb7 { margin-bottom: 7em; }
+
+.text-center {
+	text-align: center;
+}
 // Bulma color changes.
 .tooltip.is-top.is-primary:before { border-top: 5px solid #20222b; }
 .tooltip.is-primary:after { background: #20222b; }

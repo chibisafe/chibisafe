@@ -36,7 +36,12 @@ class loginPOST extends Route {
 
 		return res.json({
 			message: 'Successfully logged in.',
-			user: { username: user.username },
+			user: {
+				id:	user.id,
+				username: user.username,
+				apiKey: user.apiKey,
+				isAdmin: user.isAdmin
+			},
 			token: jwt,
 			apiKey: user.apiKey
 		});

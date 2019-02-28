@@ -70,7 +70,7 @@
 						<b-field label="Album link length"
 							message="How many characters a link for an album should have"
 							horizontal>
-							<b-input v-model="options.albumLength"
+							<b-input v-model="options.albumLinkLength"
 								expanded />
 						</b-field>
 
@@ -93,7 +93,7 @@
 						<b-field label="Strip EXIF"
 							message="Remove EXIF metadata from uploaded files"
 							horizontal>
-							<b-switch v-model="options.removeExif"
+							<b-switch v-model="options.stripExif"
 								:true-value="true"
 								:false-value="false" />
 						</b-field>
@@ -109,13 +109,15 @@
 						<b-field label="Enable creating account"
 							message="Enable creating new accounts in the platform"
 							horizontal>
-							<b-switch v-model="options.userAccounts"
+							<b-switch v-model="options.enableAccounts"
 								:true-value="true"
 								:false-value="false" />
 						</b-field>
 
-						<button class="button is-primary"
-							@click="restartService">Restart service</button>
+						<div class="mb2 mt2 text-center">
+							<button class="button is-primary"
+								@click="promptRestartService">Save and restart service</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -135,6 +137,11 @@ export default {
 			options: {}
 		};
 	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
+	},
 	metaInfo() {
 		return { title: 'Settings' };
 	},
@@ -144,10 +151,33 @@ export default {
 			title: 'Settings',
 			location: window.location.href
 		});
+
+		this.getSettings();
 	},
 	methods: {
+		async getSettings() {
+			try {
+				const response = await this.axios.get(`${this.config.baseURL}/service/config`);
+				this.options = response.data.config;
+				console.log(this.options);
+			} catch (error) {
+				this.$onPromiseError(error);
+			}
+		},
+		promptRestartService() {
+			this.$dialog.confirm({
+				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
+				onConfirm: () => this.restartService()
+			});
+		},
 		async restartService() {
-			//
+			try {
+				const response = await this.axios.post(`${this.config.baseURL}/service/restart`);
+				this.$toast.open(response.data.message);
+				return;
+			} catch (error) {
+				this.$onPromiseError(error);
+			}
 		}
 	}
 };

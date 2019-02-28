@@ -229,7 +229,7 @@ export default {
 				this.users = response.data.users;
 				console.log(this.users);
 			} catch (error) {
-				console.error(error);
+				this.$onPromiseError(error);
 			}
 		},
 		async changeEnabledStatus(row) {
@@ -239,7 +239,7 @@ export default {
 				});
 				this.$toast.open(response.data.message);
 			} catch (error) {
-				console.error(error);
+				this.$onPromiseError(error);
 			}
 		},
 		async changeIsAdmin(row) {
@@ -249,7 +249,7 @@ export default {
 				});
 				this.$toast.open(response.data.message);
 			} catch (error) {
-				console.error(error);
+				this.$onPromiseError(error);
 			}
 		}
 	}
