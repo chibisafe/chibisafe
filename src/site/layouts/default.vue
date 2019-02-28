@@ -73,7 +73,7 @@ export default {
 				this.showToast(error.response.data.message, true, 5000);
 				if (error.response.status === 429) return;
 				if (error.response.status === 502) return;
-				if (logout) {
+				if (error.response.data.message === 'Token expired') {
 					this.$logOut();
 					setTimeout(() => this.$router.push('/'), 3000);
 				}
