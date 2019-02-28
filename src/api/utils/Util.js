@@ -90,6 +90,10 @@ class Util {
 	}
 
 	static constructFilePublicLink(file) {
+		/*
+			TODO: This wont work without a reverse proxy serving both
+			the site and the API under the same domain. Pls fix.
+		*/
 		file.url = `${process.env.DOMAIN}/${file.name}`;
 		const thumb = this.getFileThumbnail(file.name);
 		if (thumb) {
@@ -170,6 +174,18 @@ class Util {
 				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
 			}
 			await db.table('files').where({ albumId: id }).delete();
+		} catch (error) {
+			log.error(error);
+		}
+	}
+
+	static async deleteAllFilesFromUser(id) {
+		try {
+			const files = await db.table('files').where({ userId: id });
+			for (const file of files) {
+				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
+			}
+			await db.table('files').where({ userId: id }).delete();
 		} catch (error) {
 			log.error(error);
 		}

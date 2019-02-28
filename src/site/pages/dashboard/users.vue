@@ -171,6 +171,12 @@
 										<b-switch v-model="props.row.isAdmin"
 											@input="changeIsAdmin(props.row)" />
 									</b-table-column>
+
+									<b-table-column field="purge"
+										centered>
+										<button class="button is-primary"
+											@click="promptPurgeFiles(props.row)">Purge files</button>
+									</b-table-column>
 								</template>
 								<template slot="empty">
 									<div class="has-text-centered">
@@ -245,6 +251,22 @@ export default {
 		async changeIsAdmin(row) {
 			try {
 				const response = await this.axios.post(`${this.config.baseURL}/admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
+					id: row.id
+				});
+				this.$toast.open(response.data.message);
+			} catch (error) {
+				this.$onPromiseError(error);
+			}
+		},
+		promptPurgeFiles(row) {
+			this.$dialog.confirm({
+				message: 'Are you sure you want to delete this user\'s files?',
+				onConfirm: () => this.purgeFiles(row)
+			});
+		},
+		async purgeFiles(row) {
+			try {
+				const response = await this.axios.post(`${this.config.baseURL}/admin/users/purge`, {
 					id: row.id
 				});
 				this.$toast.open(response.data.message);
