@@ -20,6 +20,11 @@ class loginPOST extends Route {
 		if (!user) return res.status(401).json({ message: 'Invalid authorization' });
 
 		/*
+			Checks if the user is disabled
+		*/
+		if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
+
+		/*
 			Checks if the password is right
 		*/
 		const comparePassword = await bcrypt.compare(password, user.password);

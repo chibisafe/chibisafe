@@ -49,9 +49,12 @@
 			<router-link to="/dashboard/users">
 				<i class="icon-setting-gear-a" />Users
 			</router-link>
+			<!--
+			TODO: Dont wanna deal with this now
 			<router-link to="/dashboard/settings">
 				<i class="icon-setting-gear-a" />Settings
 			</router-link>
+			-->
 		</template>
 	</div>
 </template>
