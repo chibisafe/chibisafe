@@ -51,7 +51,7 @@
 					<div class="columns">
 						<div class="column is-3 is-offset-2">
 							<div class="logo">
-								<Logo/>
+								<Logo />
 							</div>
 						</div>
 						<div class="column is-5 centered">
@@ -64,7 +64,10 @@
 						</div>
 					</div>
 					<div class="spacer mt7" />
-					<Uploader />
+					<Uploader v-if="config.publicMode && !loggedIn" />
+					<div v-else>
+						This site has disabled public uploads. You need an account.
+					</div>
 				</div>
 			</div>
 			<div class="hero-foot">
@@ -96,6 +99,9 @@ export default {
 	computed: {
 		loggedIn() {
 			return this.$store.state.loggedIn;
+		},
+		config() {
+			return this.$store.state.config;
 		}
 	},
 	mounted() {

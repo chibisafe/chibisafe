@@ -44,9 +44,11 @@ const actions = {
 			URL: process.env.DOMAIN,
 			baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
 			serviceName: process.env.SERVICE_NAME,
-			maxFileSize: process.env.MAX_SIZE,
-			chunkSize: process.env.CHUNK_SIZE,
-			maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM
+			maxFileSize: parseInt(process.env.MAX_SIZE, 10),
+			chunkSize: parseInt(process.env.CHUNK_SIZE, 10),
+			maxLinksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
+			publicMode: process.env.PUBLIC_MODE == 'true' ? true : false,
+			enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
 		});
 	}
 };

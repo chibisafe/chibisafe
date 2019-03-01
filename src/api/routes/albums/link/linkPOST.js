@@ -22,7 +22,7 @@ class linkPOST extends Route {
 			Count the amount of links created for that album already and error out if max was reached
 		*/
 		const count = await db.table('links').where('albumId', albumId).count({ count: 'id' });
-		if (count[0].count >= process.env.MAX_LINKS_PER_ALBUM) return res.status(400).json({ message: 'Maximum links per album reached' });
+		if (count[0].count >= parseInt(process.env.MAX_LINKS_PER_ALBUM, 10)) return res.status(400).json({ message: 'Maximum links per album reached' });
 
 		/*
 			Try to allocate a new identifier on the db

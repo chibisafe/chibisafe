@@ -10,14 +10,14 @@ const jetpack = require('fs-jetpack');
 const path = require('path');
 
 const rateLimiter = new RateLimit({
-	windowMs: process.env.RATE_LIMIT_WINDOW,
-	max: process.env.RATE_LIMIT_MAX,
+	windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
+	max: parseInt(process.env.RATE_LIMIT_MAX, 10),
 	delayMs: 0
 });
 
 class Server {
 	constructor() {
-		this.port = process.env.SERVER_PORT;
+		this.port = parseInt(process.env.SERVER_PORT, 10);
 		this.server = express();
 		this.server.set('trust proxy', 1);
 		this.server.use(helmet());

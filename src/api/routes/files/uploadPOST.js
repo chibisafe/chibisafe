@@ -181,7 +181,7 @@ class uploadPOST extends Route {
 		/*
 			If exif removal has been force service-wide or requested by the user, remove it
 		*/
-		if (process.env.STRIP_EXIF) { // || user.settings.stripExif) {
+		if (process.env.STRIP_EXIF == 'true') { // || user.settings.stripExif) {
 			// Util.removeExif(upload.filename);
 		}
 
@@ -195,7 +195,7 @@ class uploadPOST extends Route {
 		const busboy = new Busboy({
 			headers: req.headers,
 			limits: {
-				fileSize: process.env.MAX_SIZE * (1000 * 1000),
+				fileSize: parseInt(process.env.MAX_SIZE, 10) * (1000 * 1000),
 				files: 1
 			}
 		});

@@ -31,8 +31,10 @@
 						</b-field>
 
 						<p class="control has-addons is-pulled-right">
-							<router-link to="/register"
+							<router-link v-if="config.enableAccounts"
+								to="/register"
 								class="is-text">Don't have an account?</router-link>
+							<span v-else>Registration is closed at the moment</span>
 							<a id="loginBtn"
 								class="button"
 								@click="login">Log in</a>

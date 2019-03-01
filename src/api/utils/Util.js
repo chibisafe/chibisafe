@@ -106,7 +106,7 @@ class Util {
 	static getUniqueFilename(name) {
 		const retry = (i = 0) => {
 			const filename = randomstring.generate({
-				length: process.env.GENERATED_FILENAME_LENGTH,
+				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				capitalization: 'lowercase'
 			}) + path.extname(name);
 			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
@@ -121,7 +121,7 @@ class Util {
 	static getUniqueAlbumIdentifier() {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
-				length: process.env.GENERATED_ALBUM_LENGTH,
+				length: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
 				capitalization: 'lowercase'
 			});
 			const exists = await db.table('links').where({ identifier }).first();

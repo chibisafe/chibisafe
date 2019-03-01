@@ -10,7 +10,7 @@ class registerPOST extends Route {
 	}
 
 	async run(req, res, db) {
-		if (!process.env.USER_ACCOUNTS) return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
+		if (process.env.USER_ACCOUNTS == 'false') return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { username, password } = req.body;
 		if (!username || !password) return res.status(401).json({ message: 'Invalid body provided' });

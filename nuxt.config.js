@@ -14,7 +14,9 @@ export default {
 		serviceName: process.env.SERVICE_NAME,
 		maxFileSize: process.env.MAX_SIZE,
 		chunkSize: process.env.CHUNK_SIZE,
-		maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM
+		maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM,
+		publicMode: process.env.PUBLIC_MODE,
+		userAccounts: process.env.USER_ACCOUNTS
 	},
 	srcDir: 'src/site/',
 	head: {
