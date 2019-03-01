@@ -17,7 +17,7 @@
 		"seed": "yarn knex seed:run",
 		"api": "node src/api/structures/Server",
 		"site": "cross-env NODE_ENV=production nuxt start",
-		"update": "git pull && yarn migrate && yarn build"
+		"update": "git pull && yarn install && yarn migrate && yarn build"
 	},
 	"repository": {
 		"type": "git",
