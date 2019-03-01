@@ -72,7 +72,9 @@
 				<p class="bd-footer-subtitle">Deploy your own lolisafe</p>
 			</header>
 		</a>
-		<div class="link">
+		<div v-if="loggedIn"
+			class="link"
+			@click="createShareXThing">
 			<header class="bd-footer-star-header">
 				<h4 class="bd-footer-title">ShareX</h4>
 				<p class="bd-footer-subtitle">Upload from your Desktop</p>
@@ -96,5 +98,35 @@
 	</div>
 </template>
 <script>
-export default {};
+import { saveAs } from 'file-saver';
+export default {
+	computed: {
+		loggedIn() {
+			return this.$store.state.loggedIn;
+		},
+		token() {
+			return this.$store.state.token;
+		}
+	},
+	methods: {
+		createShareXThing() {
+			const sharexFile = `{
+				"Name": "${location.hostname}",
+				"DestinationType": "ImageUploader, FileUploader",
+				"RequestType": "POST",
+				"RequestURL": "${location.origin}/api/upload",
+				"FileFormName": "file",
+				"Headers": {
+					"authorization": "${this.token}",
+					"accept": "application/vnd.lolisafe.json"
+				},
+				"ResponseType": "Text",
+				"URL": "$json:url$",
+				"ThumbnailURL": "$json:url$"
+			}`;
+			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
+			saveAs(sharexBlob, `${location.hostname}.sxcu`);
+		}
+	}
+};
 </script>
