@@ -13,6 +13,7 @@ const { dump } = require('dumper.js');
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover.
 	TODO: If source is a video, generate a thumb of the first frame and save the video length.
 	TODO: Check that the async isAuthorized works and is not nulling out
+	TODO: Lowercase the file extensions
 */
 
 class uploadPOST extends Route {
