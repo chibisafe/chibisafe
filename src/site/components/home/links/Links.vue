@@ -117,7 +117,7 @@ export default {
 				"RequestURL": "${location.origin}/api/upload",
 				"FileFormName": "file",
 				"Headers": {
-					"authorization": "${this.token}",
+					"authorization": "Bearer ${this.token}",
 					"accept": "application/vnd.lolisafe.json"
 				},
 				"ResponseType": "Text",
