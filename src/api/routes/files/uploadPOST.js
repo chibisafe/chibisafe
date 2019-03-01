@@ -23,13 +23,7 @@ class uploadPOST extends Route {
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
 		// TODO: .env variables are all casted to strings. pepehands
-		// https://github.com/niftylettuce/dotenv-parse-variables
-		dump(user);
-		dump(process.env.PUBLIC_MODE);
-		console.log('user', user);
-		console.log('public_mode', process.env.PUBLIC_MODE);
-
-		if (!user && !process.env.PUBLIC_MODE) return res.status(401).json({ message: 'Not authorized to use this resource' });
+		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 		return this.uploadFile(req, res, db, user);
 	}
 
