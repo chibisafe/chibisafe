@@ -108,7 +108,7 @@ class Util {
 			const filename = randomstring.generate({
 				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				capitalization: 'lowercase'
-			}) + path.extname(name);
+			}) + path.extname(name).toLowerCase();
 			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
 			if (!exists) return filename;
 			if (i < 5) return retry(i + 1);

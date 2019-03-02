@@ -14,6 +14,21 @@ class filesGET extends Route {
 			.where('userId', user.id)
 			.orderBy('id', 'desc');
 
+		for (const file of files) {
+			file.albums = [];
+			const albumFiles = await db.table('albumsFiles')
+				.where('fileId', file.id);
+			if (!albumFiles.length) continue;
+
+			for (const albumFile of albumFiles) {
+				const album = await db.table('albums')
+					.where('id', albumFile.albumId)
+					.select('id', 'name')
+					.first();
+				if (!album) continue;
+				file.albums.push(album);
+			}
+		}
 		/*
 			For each file, create the public link to be able to display the file
 		*/

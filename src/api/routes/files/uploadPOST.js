@@ -6,14 +6,11 @@ const log = require('../../utils/Log');
 const jetpack = require('fs-jetpack');
 const Busboy = require('busboy');
 const fs = require('fs');
-const { dump } = require('dumper.js');
 /*
 	TODO: Strip exif data if the owner/user configured it as such
 	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover.
 	TODO: If source is a video, generate a thumb of the first frame and save the video length.
-	TODO: Check that the async isAuthorized works and is not nulling out
-	TODO: Lowercase the file extensions
 */
 
 class uploadPOST extends Route {
@@ -23,7 +20,6 @@ class uploadPOST extends Route {
 
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
-		// TODO: .env variables are all casted to strings. pepehands
 		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 		return this.uploadFile(req, res, db, user);
 	}

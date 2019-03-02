@@ -104,7 +104,7 @@
 					</b-tooltip>
 					<b-tooltip label="Albums"
 						position="is-top">
-						<a @click="manageAlbums(item)">
+						<a @click="$parent.openAlbumModal(item)">
 							<i class="icon-interface-window" />
 						</a>
 					</b-tooltip>
