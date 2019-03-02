@@ -64,7 +64,7 @@
 						</div>
 					</div>
 					<div class="spacer mt7" />
-					<Uploader v-if="config.publicMode && !loggedIn" />
+					<Uploader v-if="(config.publicMode) || (!config.publicMode && loggedIn)" />
 					<div v-else>
 						This site has disabled public uploads. You need an account.
 					</div>
