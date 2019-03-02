@@ -64,7 +64,6 @@
 		"sharp": "^0.21.3",
 		"sqlite3": "^4.0.6",
 		"v-clipboard": "^2.2.1",
-		"vue-analytics": "^5.16.2",
 		"vue-axios": "^2.1.4",
 		"vue-isyourpasswordsafe": "^1.0.2",
 		"vue-plyr": "^5.1.0",

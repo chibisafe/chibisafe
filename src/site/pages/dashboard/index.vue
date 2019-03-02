@@ -83,11 +83,6 @@ export default {
 	mounted() {
 		this.getFiles();
 		this.getAlbums();
-		this.$ga.page({
-			page: '/dashboard',
-			title: 'Dashboard',
-			location: window.location.href
-		});
 	},
 	methods: {
 		isAlbumSelected(id) {

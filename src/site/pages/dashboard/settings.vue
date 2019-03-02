@@ -146,12 +146,6 @@ export default {
 		return { title: 'Settings' };
 	},
 	mounted() {
-		this.$ga.page({
-			page: '/dashboard/settings',
-			title: 'Settings',
-			location: window.location.href
-		});
-
 		this.getSettings();
 	},
 	methods: {

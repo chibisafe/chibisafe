@@ -71,13 +71,6 @@ export default {
 	metaInfo() {
 		return { title: 'Register' };
 	},
-	mounted() {
-		this.$ga.page({
-			page: '/register',
-			title: 'Register',
-			location: window.location.href
-		});
-	},
 	methods: {
 		register() {
 			if (this.isLoading) return;

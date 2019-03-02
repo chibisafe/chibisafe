@@ -23,13 +23,6 @@
 import Navbar from '~/components/navbar/Navbar.vue';
 
 export default {
-	components: { Navbar },
-	mounted() {
-		this.$ga.page({
-			page: '/404',
-			title: 'Not Found',
-			location: window.location.href
-		});
-	}
+	components: { Navbar }
 };
 </script>

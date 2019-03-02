@@ -299,11 +299,6 @@ export default {
 	},
 	mounted() {
 		this.getAlbums();
-		this.$ga.page({
-			page: '/dashboard/albums',
-			title: 'Albums',
-			location: window.location.href
-		});
 	},
 	methods: {
 		async linkOptionsChanged(link) {

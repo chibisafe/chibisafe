@@ -130,11 +130,6 @@ export default {
 			this.$toast.open(`Error code ${this.error}`, true, 3000);
 		}
 		*/
-		this.$ga.page({
-			page: `/a/${this.$route.params.identifier}`,
-			title: `Album | ${this.name}`,
-			location: window.location.href
-		});
 	}
 };
 </script>

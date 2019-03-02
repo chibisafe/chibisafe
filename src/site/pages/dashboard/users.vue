@@ -222,11 +222,6 @@ export default {
 	},
 	mounted() {
 		this.getUsers();
-		this.$ga.page({
-			page: '/dashboard/users',
-			title: 'Users',
-			location: window.location.href
-		});
 	},
 	methods: {
 		async getUsers() {

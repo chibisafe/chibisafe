@@ -103,13 +103,6 @@ export default {
 		config() {
 			return this.$store.state.config;
 		}
-	},
-	mounted() {
-		this.$ga.page({
-			page: '/',
-			title: 'Home',
-			location: window.location.href
-		});
 	}
 };
 </script>

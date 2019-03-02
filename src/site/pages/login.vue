@@ -94,13 +94,6 @@ export default {
 	metaInfo() {
 		return { title: 'Login' };
 	},
-	mounted() {
-		this.$ga.page({
-			page: '/login',
-			title: 'Login',
-			location: window.location.href
-		});
-	},
 	methods: {
 		login() {
 			if (this.isLoading) return;

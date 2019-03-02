@@ -32,7 +32,6 @@ export default {
 		'~/plugins/vue-axios',
 		'~/plugins/buefy',
 		'~/plugins/v-clipboard',
-		'~/plugins/vue-analytics',
 		'~/plugins/vue-isyourpasswordsafe',
 		'~/plugins/vue-timeago'
 	],

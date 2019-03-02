@@ -64,7 +64,7 @@
 						</div>
 
 						<b-field label="Api key"
-							message="This API key lets you use the service from other apps?"
+							message="This API key lets you use the service from other apps"
 							horizontal>
 							<b-input v-model="user.apiKey"
 								expanded />
@@ -102,11 +102,6 @@ export default {
 		return { title: 'Account' };
 	},
 	mounted() {
-		this.$ga.page({
-			page: '/dashboard/account',
-			title: 'Settings',
-			location: window.location.href
-		});
 		this.getUserSetttings();
 	},
 	methods: {
