@@ -114,8 +114,8 @@ export default {
 			}
 		},
 		async changePassword() {
-			if (!this.user.password || !this.user.newPassword || !this.user.reNewPassword) return;
-			if (this.user.newPassword !== this.user.reNewPassword) return;
+			if (!this.user.password || !this.user.newPassword || !this.user.reNewPassword) return this.$showToast('One or more fields are missing', true);
+			if (this.user.newPassword !== this.user.reNewPassword) return this.$showToast('Passwords don\'t match', true);
 
 			try {
 				const response = await this.axios.post(`${this.config.baseURL}/user/password/change`,

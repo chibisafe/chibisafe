@@ -14,6 +14,12 @@ class changePasswordPOST extends Route {
 		if (!password || !newPassword) return res.status(401).json({ message: 'Invalid body provided' });
 		if (password === newPassword) return res.status(400).json({ message: 'Passwords have to be different' });
 
+		/*
+			Checks if the password is right
+		*/
+		const comparePassword = await bcrypt.compare(password, user.password);
+		if (!comparePassword) return res.status(401).json({ message: 'Current password is incorrect' });
+
 		if (newPassword.length < 6 || newPassword.length > 64) {
 			return res.status(400).json({ message: 'Password must have 6-64 characters' });
 		}
