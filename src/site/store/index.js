@@ -54,7 +54,6 @@ const actions = {
 };
 
 const setAuthorizationHeader = payload => {
-	console.log('hihi');
 	Vue.axios.defaults.headers.common.Authorization = payload ? `Bearer ${payload}` : '';
 };
 
