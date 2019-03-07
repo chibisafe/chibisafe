@@ -8,7 +8,7 @@ class linkEditPOST extends Route {
 
 	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
-		const { identifier, enabled, enableDownload, expiresAt } = req.body;
+		const { identifier, enableDownload, expiresAt } = req.body;
 		if (!identifier) return res.status(400).json({ message: 'Invalid album identifier supplied' });
 
 		/*
@@ -21,7 +21,6 @@ class linkEditPOST extends Route {
 			await db.table('links')
 				.where({ identifier })
 				.update({
-					enabled: enabled || false,
 					enableDownload: enableDownload || false,
 					expiresAt // This one should be null if not supplied
 				});

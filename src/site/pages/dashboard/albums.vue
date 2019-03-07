@@ -228,10 +228,10 @@
 											</b-table-column>
 
 											<b-table-column field="enabled"
-												label="Enabled"
+												label="Actions"
 												centered>
-												<b-switch v-model="props.row.enabled"
-													@input="linkOptionsChanged(props.row)" />
+												<button class="button is-danger"
+													@click="promptDeleteAlbumLink(props.row.identifier)">Delete link</button>
 											</b-table-column>
 
 											<!--
@@ -265,7 +265,6 @@
 											</div>
 										</template>
 									</b-table>
-
 								</div>
 							</div>
 						</div>
@@ -301,6 +300,21 @@ export default {
 		this.getAlbums();
 	},
 	methods: {
+		promptDeleteAlbumLink(identifier) {
+			this.$dialog.confirm({
+				message: 'Are you sure you want to delete this album link?',
+				onConfirm: () => this.deleteAlbumLink(identifier)
+			});
+		},
+		async deleteAlbumLink(identifier) {
+			console.log('> deleteAlbumLink', identifier);
+			try {
+				const response = await this.axios.delete(`${this.config.baseURL}/album/link/delete/${identifier}`);
+				return this.$toast.open(response.data.message);
+			} catch (error) {
+				return this.$onPromiseError(error);
+			}
+		},
 		async linkOptionsChanged(link) {
 			try {
 				const response = await this.axios.post(`${this.config.baseURL}/album/link/edit`,
