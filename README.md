@@ -69,7 +69,7 @@ Because of how nodejs apps work, if you want it attached to a domain name you wi
 - [i.liich.me](https://i.liich.me): Another private clone with a different look.
 - [criminals.host](https://criminals.host): Redesigned, offshore by AZATEJ.
 - [u.kawaaii.moe](https://u.kawaaii.moe/): Yet another clone with different & kawaii looks (10mb limit)
-- Feel free to add yours here.
+- [upld.pro](https://upld.pro/): Powerful and secure image host, with custom CSS
 
 ## Author
 
