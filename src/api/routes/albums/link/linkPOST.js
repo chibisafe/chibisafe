@@ -46,8 +46,7 @@ class linkPOST extends Route {
 				identifier
 			});
 		} catch (error) {
-			log.error(error);
-			return res.status(500).json({ message: 'There was a problem creating the link' });
+			return super.error(res, error);
 		}
 	}
 }

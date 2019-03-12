@@ -26,8 +26,7 @@ class linkEditPOST extends Route {
 				});
 			return res.json({ message: 'Editing the link was successful' });
 		} catch (error) {
-			log.error(error);
-			return res.json({ message: 'There was a problem editing the link' });
+			return super.error(res, error);
 		}
 	}
 }

@@ -23,7 +23,6 @@ class linkDELETE extends Route {
 				.where({ linkId: link.id })
 				.delete();
 		} catch (error) {
-			console.log(error);
 			return super.error(res, error);
 		}
 

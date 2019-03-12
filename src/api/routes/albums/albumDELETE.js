@@ -30,8 +30,7 @@ class albumDELETE extends Route {
 			await db.table('albums').where({ id }).delete();
 			return res.json({ message: 'The album was deleted successfully' });
 		} catch (error) {
-			log.error(error);
-			return res.json({ message: 'There was a problem deleting the album' });
+			return super.error(res, error);
 		}
 	}
 }
