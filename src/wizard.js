@@ -7,15 +7,6 @@ qoa.config({
 });
 
 async function start() {
-	const confirm = await qoa.confirm({
-		type: 'confirm',
-		query: 'Would you like to run the setup wizard now?',
-		handle: 'run',
-		accept: 'y',
-		deny: 'n'
-	});
-	if (!confirm.run) process.exit(0);
-
 	console.log();
 	console.log('You can manually edit .env file after the wizard to edit values');
 	console.log();
