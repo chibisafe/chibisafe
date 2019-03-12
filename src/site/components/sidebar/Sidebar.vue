@@ -29,8 +29,6 @@
 			<i class="icon-ecommerce-safebox" />lolisafe
 		</router-link>
 		<hr>
-		<a><i class="icon-interface-cloud-upload" />Upload files</a>
-		<hr>
 		<router-link to="/dashboard">
 			<i class="icon-com-pictures" />Files
 		</router-link>
