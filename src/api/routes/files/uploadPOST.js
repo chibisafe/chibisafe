@@ -11,6 +11,8 @@ const fs = require('fs');
 	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover.
 	TODO: If source is a video, generate a thumb of the first frame and save the video length.
+
+	TODO: Think if its worth making a folder with the user uuid in uploads/ and upload the pictures there so that this way at least not every single file will be in 1 directory
 */
 
 class uploadPOST extends Route {
