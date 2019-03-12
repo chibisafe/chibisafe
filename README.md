@@ -61,17 +61,7 @@ To make it easier and better than any other service, you can download [our Chrom
 Because of how nodejs apps work, if you want it attached to a domain name you will need to make a reverse proxy for it. Here is a tutorial [on how to do this with nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04). Keep in mind that this is only a requirement if you want to access your lolisafe service by using a domain name, otherwise you can use the service just fine by accessing it from your server's IP.
 
 ## Sites using lolisafe
-- [lolisafe.moe](https://lolisafe.moe): A small safe worth protecting.
-- [safe.fiery.me](https://safe.fiery.me): Just another clone.
-- [kayo.moe](https://kayo.moe): File hosting for all~
-- [dmca.gripe](https://dmca.gripe): a dmca-resistant, permanent file hosting service.
-- [safe.succmy.wang](https://safe.succmy.wang): A private clone with a ~~funny~~ bad name
-- [namir.in](https://namir.in): A private clone dedicated to best girl.
-- [discordjs.moe](https://discordjs.moe): A まじ卍 as fuck copy of lolisafe.moe
-- [i.liich.me](https://i.liich.me): Another private clone with a different look.
-- [criminals.host](https://criminals.host): Redesigned, offshore by AZATEJ.
-- [u.kawaaii.moe](https://u.kawaaii.moe/): Yet another clone with different & kawaii looks (10mb limit)
-- Feel free to add yours here.
+Refer to the [wiki](https://github.com/WeebDev/lolisafe/wiki/Sites-using-lolisafe)
 
 ## Author
 
