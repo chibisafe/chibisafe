@@ -142,7 +142,11 @@ async function start() {
 		BLOCKED_EXTENSIONS: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 		UPLOAD_FOLDER: 'uploads',
 		SECRET: randomstring.generate(64),
-		MAX_LINKS_PER_ALBUM: 5
+		MAX_LINKS_PER_ALBUM: 5,
+		META_THEME_COLOR: '#20222b',
+		META_DESCRIPTION: 'Blazing fast file uploader and bunker written in node! 🚀',
+		META_KEYWORDS: 'lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
+		META_TWITTER_HANDLE: '@its_pitu'
 	};
 
 	const allSettings = Object.assign(defaultSettings, response);
