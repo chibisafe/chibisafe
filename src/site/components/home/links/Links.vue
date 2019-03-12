@@ -88,7 +88,7 @@
 				<p class="bd-footer-subtitle">Upload from any website</p>
 			</header>
 		</a>
-		<router-link to="faq"
+		<router-link to="/faq"
 			class="link">
 			<header class="bd-footer-star-header">
 				<h4 class="bd-footer-title">FAQ</h4>
