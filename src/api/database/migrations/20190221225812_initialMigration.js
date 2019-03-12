@@ -1,6 +1,7 @@
 exports.up = async knex => {
 	await knex.schema.createTable('users', table => {
 		table.increments();
+		table.string('uuid');
 		table.string('username');
 		table.string('password');
 		table.boolean('enabled');
@@ -14,6 +15,7 @@ exports.up = async knex => {
 
 	await knex.schema.createTable('albums', table => {
 		table.increments();
+		table.string('uuid');
 		table.integer('userId');
 		table.string('name');
 		table.timestamp('zippedAt');
@@ -23,6 +25,7 @@ exports.up = async knex => {
 
 	await knex.schema.createTable('files', table => {
 		table.increments();
+		table.string('uuid');
 		table.integer('userId');
 		table.string('name');
 		table.string('original');
@@ -36,6 +39,7 @@ exports.up = async knex => {
 
 	await knex.schema.createTable('links', table => {
 		table.increments();
+		table.string('uuid');
 		table.integer('userId');
 		table.integer('albumId');
 		table.string('identifier');
