@@ -25,13 +25,10 @@ This guide asumes a lot of things, including that you know your way around linux
 Lolisafe is now installed, configured and ready. Now you need to serve it to the public by using a domain name.
 
 6. Check the [nginx](docs/nginx.md) file for a sample configuration that has every step to run lolisafe securely on production.
-7. After you finish setting up nginx, you need to start lolisafe by using pm2. If you want to use something else, figure out how. Run the following commands:
-```bash
-pm2 start npm --name "lolisafe.api" -- run api
-pm2 start npm --name "lolisafe.site" -- run site
-```
-(More info on why pm2 [here](docs/pm2.md))
 
+After you finish setting up nginx, you need to start lolisafe by using pm2. If you want to use something else, figure out how. (More info on why pm2 [here](docs/pm2.md))
+
+7. Run `pm2 start pm2.json`:
 8. Profit
 
 ### Cloudflare
