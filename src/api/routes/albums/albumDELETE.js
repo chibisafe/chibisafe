@@ -12,7 +12,7 @@ class albumDELETE extends Route {
 		if (!id) return res.status(400).json({ message: 'Invalid album ID supplied' });
 
 		/*
-			Check fi the album exists
+			Check if the album exists
 		*/
 		const album = await db.table('albums').where({ id, userId: user.id }).first();
 		if (!album) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });

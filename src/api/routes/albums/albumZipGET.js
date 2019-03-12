@@ -16,13 +16,17 @@ class albumGET extends Route {
 		/*
 			Make sure it exists and it's enabled
 		*/
-		const link = await db.table('links').where({ identifier, enabled: true }).first();
+		const link = await db.table('links')
+			.where({ identifier, enabled: true })
+			.first();
 		if (!link) return res.status(400).json({ message: 'The identifier supplied could not be found' });
 
 		/*
 			Same with the album, just to make sure is not a deleted album and a leftover link
 		*/
-		const album = await db.table('albums').where('id', link.albumId).first();
+		const album = await db.table('albums')
+			.where('id', link.albumId)
+			.first();
 		if (!album) return res.status(400).json({ message: 'Album not found' });
 
 		/*
@@ -43,12 +47,14 @@ class albumGET extends Route {
 		/*
 			Grab the files in a very unoptimized way. (This should be a join between both tables)
 		*/
-		const fileList = await db.table('albumsFiles').where('albumId', link.albumId).select('fileId');
+		const fileList = await db.table('albumsFiles')
+			.where('albumId', link.albumId)
+			.select('fileId');
 
 		/*
 			If there are no files, stop here
 		*/
-		if (!fileList) return res.status(400).json({ message: 'Can\'t download an empty album' });
+		if (!fileList || !fileList.length) return res.status(400).json({ message: 'Can\'t download an empty album' });
 
 		/*
 			Get the actual files
@@ -61,7 +67,9 @@ class albumGET extends Route {
 
 		try {
 			Util.createZip(filesToZip, album);
-			await db.table('albums').where('id', link.albumId).update('zippedAt', db.fn.now());
+			await db.table('albums')
+				.where('id', link.albumId)
+				.update('zippedAt', db.fn.now());
 
 			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const fileName = `lolisafe-${identifier}.zip`;
