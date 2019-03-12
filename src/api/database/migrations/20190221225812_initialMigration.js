@@ -3,7 +3,7 @@ exports.up = async knex => {
 		table.increments();
 		table.string('uuid');
 		table.string('username');
-		table.string('password');
+		table.text('password');
 		table.boolean('enabled');
 		table.boolean('isAdmin');
 		table.string('apiKey');
