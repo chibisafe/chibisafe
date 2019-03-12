@@ -109,6 +109,8 @@ class Util {
 				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				capitalization: 'lowercase'
 			}) + path.extname(name).toLowerCase();
+
+			// TODO: Change this to look for the file in the db instead of in the filesystem
 			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
 			if (!exists) return filename;
 			if (i < 5) return retry(i + 1);
@@ -171,9 +173,8 @@ class Util {
 		try {
 			const files = await db.table('files').where({ albumId: id });
 			for (const file of files) {
-				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
+				await this.deleteFile(file.name, true)
 			}
-			await db.table('files').where({ albumId: id }).delete();
 		} catch (error) {
 			log.error(error);
 		}
@@ -183,9 +184,8 @@ class Util {
 		try {
 			const files = await db.table('files').where({ userId: id });
 			for (const file of files) {
-				await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
+				await this.deleteFile(file.name, true)
 			}
-			await db.table('files').where({ userId: id }).delete();
 		} catch (error) {
 			log.error(error);
 		}
