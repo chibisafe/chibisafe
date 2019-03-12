@@ -9,6 +9,7 @@ class userDisable extends Route {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { id } = req.body;
 		if (!id) return res.status(400).json({ message: 'No id provided' });
+		if (id === user.id) return res.status(400).json({ message: 'You can\'t apply this action to yourself' });
 
 		try {
 			await db.table('users')
