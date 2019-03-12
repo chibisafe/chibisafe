@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-const state = {
+export const state = () => ({
 	loggedIn: false,
 	user: {},
 	token: null,
 	config: null
-};
+});
 
 /* eslint-disable no-shadow */
-const mutations = {
+export const mutations = {
 	loggedIn(state, payload) {
 		state.loggedIn = payload;
 	},
@@ -37,7 +37,7 @@ const mutations = {
 	}
 };
 
-const actions = {
+export const actions = {
 	nuxtServerInit({ commit }, { req }) {
 		commit('config', {
 			version: process.env.npm_package_version,
@@ -56,11 +56,3 @@ const actions = {
 const setAuthorizationHeader = payload => {
 	Vue.axios.defaults.headers.common.Authorization = payload ? `Bearer ${payload}` : '';
 };
-
-const store = () => new Vuex.Store({
-	state,
-	mutations,
-	actions
-});
-
-export default store;
