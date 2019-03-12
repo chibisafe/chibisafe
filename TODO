@@ -1,0 +1,33 @@
+- FAQ 404s
+- There's a vertical scrollbar on seemingly all pages even though there is no need for it
+- "Upload files" button on the dashboard doesn't do anything
+- "Tags" button on dashboard 404s
+- Passwords that contain special characters don't seem to work (refer to previous dms)
+
+- Users section on dashboard doesn't properly display the Enabled / Admin options (shows both as false for my admin account, the only one that exists)
+    * This is an issue with SQLite not supporting boolean fields, they get converted to 1 and 0
+
+- Purge files button in Users section doesn't seem to do anything (files remain in uploads folder)
+- Trying to access an album link seems to load endlessly if the album contains no images
+
+- Same as above happens even when the album link is disabled, (dis-)allow download makes no difference
+    * This is an issue with SQLite not supporting boolean fields, they get converted to 1 and 0
+
+- You can only disable but not delete album links, so if you make five you're stuck with those 5 forever
+- There is no tab name (just shows the web address) and no favicon (blank), even though instance name was set to "lolisafe" in wizard
+- "Classic mode for store/ is deprecated and will be removed in Nuxt 3."
+- Uploaded text file (via ShareX) does not show up in the dashboard's "Files" area
+    * Currently only pictures show up on the dashboard due to having thumbs
+
+- Albums and Tags buttons when hovering over an image in the "Files" section do nothing
+    * Album is fixed
+    * Tags is not
+
+- On the front page, the top left logo and text for lolisafe is very hard to read
+    * Not gonna bother with this, anyone can upload their own background and it's different on every screen resolution
+- Can't find a button to delete an album
+
+- Clicking on an album name leads to a 404 (e.g. https://i.robflop.me/dashboard/albums/1)
+- When toggling album options, it says "Editing the link was successfull", the 2nd l should be removed
+- Album options don't always seem to work? Sometimes I need to toggle an option on and off again for it to take effect (both dis-/enabled and downloads)
+    * Might be related to SQLite not supporting boolean fields issue

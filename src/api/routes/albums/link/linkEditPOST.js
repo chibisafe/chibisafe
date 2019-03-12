@@ -24,7 +24,7 @@ class linkEditPOST extends Route {
 					enableDownload: enableDownload || false,
 					expiresAt // This one should be null if not supplied
 				});
-			return res.json({ message: 'Editing the link was successfull' });
+			return res.json({ message: 'Editing the link was successful' });
 		} catch (error) {
 			log.error(error);
 			return res.json({ message: 'There was a problem editing the link' });
