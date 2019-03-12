@@ -233,19 +233,6 @@
 												<button class="button is-danger"
 													@click="promptDeleteAlbumLink(props.row.identifier)">Delete link</button>
 											</b-table-column>
-
-											<!--
-												Until it's decided if we want to delete links or just hide them from the list
-												this setting will be hidden. Discussion about it is encouraged on Discord.
-											-->
-											<!--
-											<b-table-column field="actions"
-												label="Actions"
-												centered>
-												<button class="button is-danger"
-													@click="deleteLink(props.row.identifier)">Delete link</button>
-											</b-table-column>
-											-->
 										</template>
 										<template slot="empty">
 											<div class="has-text-centered">

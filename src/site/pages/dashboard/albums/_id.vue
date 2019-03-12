@@ -17,7 +17,7 @@
 						<Sidebar />
 					</div>
 					<div class="column">
-						<h2 class="subtitle">Your uploaded files</h2>
+						<h2 class="subtitle">Files</h2>
 						<hr>
 						<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
 						<Grid v-if="files.length"
@@ -63,6 +63,7 @@ export default {
 	},
 	data() {
 		return {
+			name: null,
 			files: [],
 			albums: [],
 			isAlbumsModalActive: false,
@@ -75,7 +76,7 @@ export default {
 		}
 	},
 	metaInfo() {
-		return { title: 'Uploads' };
+		return { title: 'Album' };
 	},
 	mounted() {
 		this.getFiles();
@@ -98,16 +99,15 @@ export default {
 					fileId: this.showingModalForFile.id
 				});
 				this.$toast.open(response.data.message);
-
-				// Not the prettiest solution to refetch on each click but it'll do for now
 				this.getFiles();
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
 		},
 		async getFiles() {
+			// TODO: Make this think SSR with AsyncData
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/files`);
+				const response = await this.axios.get(`${this.config.baseURL}/album/${this.$route.params.id}/full`);
 				this.files = response.data.files;
 			} catch (error) {
 				console.error(error);
