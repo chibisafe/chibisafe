@@ -189,7 +189,7 @@
 										</div>
 										<div v-if="album.fileCount > 5"
 											class="thumb more no-background">
-											<router-link :to="`/dashboard/albums/${album.id}`">{{ album.fileCount - 5 }}+ more</router-link>
+											<router-link :to="`/dashboard/albums/${album.uuid}`">{{ album.fileCount - 5 }}+ more</router-link>
 										</div>
 									</template>
 									<template v-else>
@@ -263,6 +263,12 @@
 													@click="createLink(album)">Create new link</button>
 												{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created
 											</div>
+
+											<div class="has-text-left">
+												<button class="button is-danger"
+													style="float: right"
+													@click="promptDeleteAlbum(album.id)">Delete album</button>
+											</div>
 										</template>
 									</b-table>
 								</div>
@@ -300,6 +306,30 @@ export default {
 		this.getAlbums();
 	},
 	methods: {
+		promptDeleteAlbum(id) {
+			this.$dialog.confirm({
+				message: 'Are you sure you want to delete this album?',
+				onConfirm: () => this.deleteAlbum(id)
+			});
+		},
+		promptPurgeAlbum(id) {
+			this.$dialog.confirm({
+				message: 'Would you like to delete every file associated with this album?',
+				cancelText: 'No',
+				confirmText: 'Yes',
+				onConfirm: () => this.deleteAlbum(id, true),
+				onCancel: () => this.deleteAlbum(id, false)
+			});
+		},
+		async deleteAlbum(id, purge) {
+			try {
+				const response = await this.axios.delete(`${this.config.baseURL}/album/${id}/${purge ? true : ''}`);
+				this.getAlbums();
+				return this.$toast.open(response.data.message);
+			} catch (error) {
+				return this.$onPromiseError(error);
+			}
+		},
 		promptDeleteAlbumLink(identifier) {
 			this.$dialog.confirm({
 				message: 'Are you sure you want to delete this album link?',
@@ -341,9 +371,9 @@ export default {
 					enableDownload: true,
 					expiresAt: null
 				});
-				album.isCreatingLink = false;
 			} catch (error) {
 				this.$onPromiseError(error);
+			} finally {
 				album.isCreatingLink = false;
 			}
 		},
@@ -355,7 +385,6 @@ export default {
 				this.newAlbumName = null;
 				this.$toast.open(response.data.message);
 				this.getAlbums();
-				return;
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
@@ -367,9 +396,8 @@ export default {
 					album.isDetailsOpen = false;
 				}
 				this.albums = response.data.albums;
-				console.log(this.albums);
 			} catch (error) {
-				console.error(error);
+				this.$onPromiseError(error);
 			}
 		}
 	}

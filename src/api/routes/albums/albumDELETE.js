@@ -1,6 +1,5 @@
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
-const log = require('../../utils/Log');
 
 class albumDELETE extends Route {
 	constructor() {
