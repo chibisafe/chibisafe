@@ -20,12 +20,11 @@ exports.seed = async db => {
 			isAdmin: true
 		});
 		console.log();
-		console.log('====================================================');
-		console.log('==    Successfully created the admin account.     ==');
-		console.log('====================================================');
-		console.log('==      Run `yarn api` and `yarn site` next       ==');
-		console.log('== preferably with pm2 or tmux to keep them alive ==');
-		console.log('====================================================');
+		console.log('=========================================================');
+		console.log('==       Successfully created the admin account.       ==');
+		console.log('=========================================================');
+		console.log('==    Run `pm2 start pm2.json` to start the service    ==');
+		console.log('=========================================================');
 		console.log();
 	} catch (error) {
 		console.error(error);
