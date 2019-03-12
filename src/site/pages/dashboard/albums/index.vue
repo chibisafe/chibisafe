@@ -165,7 +165,7 @@
 								</div>
 								<div class="thumb">
 									<figure class="image is-64x64 thumb">
-										<img src="../../assets/images/blank.png">
+										<img src="~/assets/images/blank.png">
 									</figure>
 								</div>
 								<div class="info">
@@ -269,7 +269,7 @@
 </template>
 
 <script>
-import Sidebar from '../../components/sidebar/Sidebar.vue';
+import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
