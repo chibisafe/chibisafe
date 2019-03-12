@@ -40,8 +40,9 @@
 		</template>
 		<template v-else>
 			<div class="hero-body">
-				<div class="container loading-container">
-					<Loading class="square" />
+				<div class="container">
+					<h1 class="title">:(</h1>
+					<h2 class="subtitle">This album seems to be empty</h2>
 				</div>
 			</div>
 		</template>
