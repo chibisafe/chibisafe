@@ -19,12 +19,17 @@ const crypto = require('crypto');
 const sharp = require('sharp');
 const ffmpeg = require('fluent-ffmpeg');
 const Zip = require('adm-zip');
+const uuidv4 = require('uuid/v4');
 
 const imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 
 class Util {
+	static uuid() {
+		return uuidv4();
+	}
+
 	static isExtensionBlocked(extension) {
 		return blockedExtensions.includes(extension);
 	}
@@ -171,9 +176,13 @@ class Util {
 
 	static async deleteAllFilesFromAlbum(id) {
 		try {
-			const files = await db.table('files').where({ albumId: id });
-			for (const file of files) {
-				await this.deleteFile(file.name, true)
+			const fileAlbums = await db.table('albumsFiles').where({ albumId: id });
+			for (const fileAlbum of fileAlbums) {
+				const file = await db.table('files')
+					.where({ id: fileAlbum.fileId })
+					.first();
+				if (!file) continue;
+				await this.deleteFile(file.name, true);
 			}
 		} catch (error) {
 			log.error(error);
@@ -184,7 +193,22 @@ class Util {
 		try {
 			const files = await db.table('files').where({ userId: id });
 			for (const file of files) {
-				await this.deleteFile(file.name, true)
+				await this.deleteFile(file.name, true);
+			}
+		} catch (error) {
+			log.error(error);
+		}
+	}
+
+	static async deleteAllFilesFromTag(id) {
+		try {
+			const fileTags = await db.table('fileTags').where({ tagId: id });
+			for (const fileTag of fileTags) {
+				const file = await db.table('files')
+					.where({ id: fileTag.fileId })
+					.first();
+				if (!file) continue;
+				await this.deleteFile(file.name, true);
 			}
 		} catch (error) {
 			log.error(error);
