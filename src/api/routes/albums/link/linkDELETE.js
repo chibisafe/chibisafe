@@ -1,4 +1,5 @@
 const Route = require('../../../structures/Route');
+const { dump } = require('dumper.js');
 
 class linkDELETE extends Route {
 	constructor() {
@@ -6,6 +7,10 @@ class linkDELETE extends Route {
 	}
 
 	async run(req, res, db) {
+		console.log('------------------------------');
+		console.log('YES HI');
+		console.log('------------------------------');
+		console.log('WHO NEEDS FANCY DEBUGGING TOOLS ANYWAYS');
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 
@@ -13,6 +18,8 @@ class linkDELETE extends Route {
 			const link = await db.table('links')
 				.where({ identifier })
 				.first();
+
+			dump(link);
 
 			if (!link) return res.status(400).json({ message: 'Identifier doesn\'t exist' });
 
