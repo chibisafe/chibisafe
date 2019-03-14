@@ -189,7 +189,7 @@
 										</div>
 										<div v-if="album.fileCount > 5"
 											class="thumb more no-background">
-											<router-link :to="`/dashboard/albums/${album.uuid}`">{{ album.fileCount - 5 }}+ more</router-link>
+											<router-link :to="`/dashboard/albums/${album.id}`">{{ album.fileCount - 5 }}+ more</router-link>
 										</div>
 									</template>
 									<template v-else>

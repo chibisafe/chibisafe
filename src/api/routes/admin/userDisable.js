@@ -5,7 +5,7 @@ class userDisable extends Route {
 		super('/admin/users/disable', 'post', { adminOnly: true });
 	}
 
-	async run(req, res, db) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { id } = req.body;
 		if (!id) return res.status(400).json({ message: 'No id provided' });

@@ -6,7 +6,7 @@ class albumGET extends Route {
 		super('/album/:id/full', 'get');
 	}
 
-	async run(req, res, db) {
+	async run(req, res, db, user) {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: 'Invalid id supplied' });
 
