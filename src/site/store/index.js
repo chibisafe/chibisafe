@@ -17,20 +17,16 @@ export const mutations = {
 	},
 	user(state, payload) {
 		if (!payload) {
-			state.user = {};
-			localStorage.removeItem('lolisafe-user');
+			state.user = null;
 			return;
 		}
-		localStorage.setItem('lolisafe-user', JSON.stringify(payload));
 		state.user = payload;
 	},
 	token(state, payload) {
 		if (!payload) {
-			localStorage.removeItem('lolisafe-token');
 			state.token = null;
 			return;
 		}
-		localStorage.setItem('lolisafe-token', payload);
 		setAuthorizationHeader(payload);
 		state.token = payload;
 	},
