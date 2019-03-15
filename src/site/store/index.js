@@ -56,7 +56,7 @@ export const actions = {
 				commit('loggedIn', true);
 				commit('token', token);
 
-				const res = await axios.get(`${this.config.baseURL}/verify`);
+				const res = await axios.get(`${process.env.DOMAIN}${process.env.ROUTE_PREFIX}/verify`);
 				if (!res || !res.data.user);
 				commit('user', res.data.user);
 			} catch (error) {
