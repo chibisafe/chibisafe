@@ -1,9 +1,11 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import axios from 'axios';
+
+const cookieparser = process.server ? require('cookieparser') : null;
 
 export const state = () => ({
 	loggedIn: false,
-	user: {},
+	user: null,
 	token: null,
 	config: null
 });
@@ -38,7 +40,7 @@ export const mutations = {
 };
 
 export const actions = {
-	nuxtServerInit({ commit }, { req }) {
+	async nuxtServerInit({ commit }, { req }) {
 		commit('config', {
 			version: process.env.npm_package_version,
 			URL: process.env.DOMAIN,
@@ -50,6 +52,27 @@ export const actions = {
 			publicMode: process.env.PUBLIC_MODE == 'true' ? true : false,
 			enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
 		});
+
+		let token = null;
+		if (req.headers.cookie) {
+			try {
+				token = cookieparser.parse(req.headers.cookie).token;
+				commit('loggedIn', true);
+				commit('token', token);
+
+				const res = await axios.get(`${this.config.baseURL}/verify`);
+				if (!res || !res.data.user);
+				commit('user', res.data.user);
+			} catch (error) {
+				// TODO: Deactivate this on production
+				console.error(error);
+			}
+		}
+		commit('token', token);
+		if (!token) {
+			commit('user', null);
+			commit('loggedIn', false);
+		}
 	}
 };
 
