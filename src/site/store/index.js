@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 
-const cookieparser = process.server ? require('cookie-parser') : null;
+const cookieparser = process.server ? require('cookieparser') : null;
 
 export const state = () => ({
 	loggedIn: false,

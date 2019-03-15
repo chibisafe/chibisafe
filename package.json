@@ -38,7 +38,7 @@
 		"busboy": "^0.2.14",
 		"chalk": "^2.4.1",
 		"compression": "^1.7.2",
-		"cookie-parser": "^1.4.4",
+		"cookieparser": "^0.1.0",
 		"cors": "^2.8.5",
 		"dotenv": "^6.2.0",
 		"dumper.js": "^1.3.1",
