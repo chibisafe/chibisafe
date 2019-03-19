@@ -53,12 +53,13 @@ export const actions = {
 		if (req.headers.cookie) {
 			try {
 				token = cookieparser.parse(req.headers.cookie).token;
+				console.log(token);
 				commit('loggedIn', true);
 				commit('token', token);
-
-				const res = await axios.get(`${process.env.DOMAIN}${process.env.ROUTE_PREFIX}/verify`);
-				if (!res || !res.data.user);
-				commit('user', res.data.user);
+				const res = await axios.get(`${process.env.DOMAIN}${process.env.ROUTE_PREFIX}/verify`, {
+					headers: { authorization: `Bearer ${token}` }
+				});
+				if (res && res.data.user) commit('user', res.data.user);
 			} catch (error) {
 				// TODO: Deactivate this on production
 				console.error(error);

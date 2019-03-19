@@ -116,6 +116,7 @@ export default {
 					this.getUserData();
 				}
 				*/
+				document.cookie = `token=${encodeURIComponent(res.data.token)}`;
 				this.redirect();
 			}).catch(err => {
 				this.isLoading = false;

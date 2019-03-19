@@ -26,6 +26,7 @@ class Route {
 
 	authorize(req, res) {
 		if (this.options.bypassAuth) return this.run(req, res, db);
+		console.log(req.headers);
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return res.status(401).json({ message: 'No authorization header provided' });

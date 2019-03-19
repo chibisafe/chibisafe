@@ -11,9 +11,7 @@ exports.seed = async db => {
 		await db.table('users').insert({
 			username: process.env.ADMIN_ACCOUNT,
 			password: hash,
-			apiKey: randomstring.generate(64),
 			passwordEditedAt: now,
-			apiKeyEditedAt: now,
 			createdAt: now,
 			editedAt: now,
 			enabled: true,

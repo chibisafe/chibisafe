@@ -67,7 +67,8 @@
 							message="This API key lets you use the service from other apps"
 							horizontal>
 							<b-input v-model="user.apiKey"
-								expanded />
+								expanded
+								disabled />
 						</b-field>
 
 						<div class="mb2 mt2 text-center">
@@ -130,7 +131,8 @@ export default {
 		},
 		promptNewAPIKey() {
 			this.$dialog.confirm({
-				message: 'Are you sure you want to regenerate your API key?',
+				type: 'is-danger',
+				message: 'Are you sure you want to regenerate your API key? If you had a previous API key generated it will stop working. Make sure to write it down as this is the only time its gonna be displayed to you.',
 				onConfirm: () => this.requestNewAPIKey()
 			});
 		},
@@ -139,6 +141,7 @@ export default {
 				const response = await this.axios.post(`${this.config.baseURL}/user/apikey/change`);
 				this.user.apiKey = response.data.apiKey;
 				this.$toast.open(response.data.message);
+				this.$forceUpdate();
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
