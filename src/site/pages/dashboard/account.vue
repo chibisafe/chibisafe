@@ -132,7 +132,7 @@ export default {
 		promptNewAPIKey() {
 			this.$dialog.confirm({
 				type: 'is-danger',
-				message: 'Are you sure you want to regenerate your API key? If you had a previous API key generated it will stop working. Make sure to write it down as this is the only time its gonna be displayed to you.',
+				message: 'Are you sure you want to regenerate your API key? Previously generated API keys will stop working. Make sure to write the new key down as this is the only time it will be displayed to you.',
 				onConfirm: () => this.requestNewAPIKey()
 			});
 		},
