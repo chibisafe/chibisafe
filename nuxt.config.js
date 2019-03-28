@@ -54,7 +54,7 @@ export default {
 		]
 	},
 	plugins: [
-		'~/plugins/vue-axios',
+		'~/plugins/axios',
 		'~/plugins/buefy',
 		'~/plugins/v-clipboard',
 		'~/plugins/vue-isyourpasswordsafe',
@@ -64,6 +64,12 @@ export default {
 		{ path: '/', handler: serveStatic(path.join(__dirname, 'uploads')) }
 	],
 	css: [],
+	modules: [
+		'@nuxtjs/axios'
+	],
+	axios: {
+		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`
+	},
 	build: {
 		extractCSS: true,
 		postcss: [

@@ -1,5 +1,7 @@
+/*
 import Vue from 'vue';
 import axios from 'axios';
+*/
 
 const cookieparser = process.server ? require('cookieparser') : null;
 
@@ -27,7 +29,6 @@ export const mutations = {
 			state.token = null;
 			return;
 		}
-		setAuthorizationHeader(payload);
 		state.token = payload;
 	},
 	config(state, payload) {
@@ -36,7 +37,7 @@ export const mutations = {
 };
 
 export const actions = {
-	async nuxtServerInit({ commit }, { req }) {
+	async nuxtServerInit({ commit }, { app, req }) {
 		commit('config', {
 			version: process.env.npm_package_version,
 			URL: process.env.DOMAIN,
@@ -56,9 +57,11 @@ export const actions = {
 				commit('loggedIn', true);
 				commit('token', token);
 
-				const res = await axios.get(`${this.config.baseURL}/verify`);
-				if (!res || !res.data.user);
-				commit('user', res.data.user);
+				app.$axios.setToken(token, 'Bearer');
+
+				const data = await this.$axios.$get(`verify`);
+				if (!data || !data.user);
+				commit('user', data.user);
 			} catch (error) {
 				// TODO: Deactivate this on production
 				console.error(error);
@@ -69,9 +72,10 @@ export const actions = {
 			commit('user', null);
 			commit('loggedIn', false);
 		}
+	},
+	login({ commit }, { app, token, user }) {
+		commit('token', token);
+		commit('user', user);
+		commit('loggedIn', true);
 	}
-};
-
-const setAuthorizationHeader = payload => {
-	Vue.axios.defaults.headers.common.Authorization = payload ? `Bearer ${payload}` : '';
 };
