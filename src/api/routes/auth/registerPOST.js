@@ -1,7 +1,6 @@
 const Route = require('../../structures/Route');
 const log = require('../../utils/Log');
 const bcrypt = require('bcrypt');
-const randomstring = require('randomstring');
 const moment = require('moment');
 
 class registerPOST extends Route {
@@ -48,8 +47,6 @@ class registerPOST extends Route {
 			username,
 			password: hash,
 			passwordEditedAt: now,
-			apiKey: randomstring.generate(64),
-			apiKeyEditedAt: now,
 			createdAt: now,
 			editedAt: now,
 			enabled: true,

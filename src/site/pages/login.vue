@@ -109,7 +109,9 @@ export default {
 					password: this.password
 				});
 				this.$axios.setToken(data.token, 'Bearer');
+				document.cookie = `token=${encodeURIComponent(data.token)}`;
 				this.$store.dispatch('login', { token: data.token, user: data.user });
+
 				this.redirect();
 			} catch (error) {
 				this.$onPromiseError(error);

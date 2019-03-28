@@ -54,6 +54,7 @@ export const actions = {
 		if (req.headers.cookie) {
 			try {
 				token = cookieparser.parse(req.headers.cookie).token;
+				console.log(token);
 				commit('loggedIn', true);
 				commit('token', token);
 
