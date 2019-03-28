@@ -9,7 +9,6 @@ class verifyGET extends Route {
 		const returnUser = {
 			id:	user.id,
 			username: user.username,
-			apiKey: user.apiKey,
 			isAdmin: user.isAdmin
 		};
 
