@@ -13,6 +13,7 @@ const db = require('knex')({
 });
 const moment = require('moment');
 const log = require('../utils/Log');
+const bcrypt = require('bcrypt');
 
 class Route {
 	constructor(path, method, options) {
@@ -26,6 +27,8 @@ class Route {
 
 	authorize(req, res) {
 		if (this.options.bypassAuth) return this.run(req, res, db);
+		if (req.headers.apiKey) return this.authorizeApiKey(req, res, req.headers.apiKey);
+
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return res.status(401).json({ message: 'No authorization header provided' });
@@ -46,6 +49,17 @@ class Route {
 
 			return this.run(req, res, db, user);
 		});
+	}
+
+	authorizeApiKey(req, res, apiKey) {
+		if (this.options.noApiKey) return res.status(401).json({ message: 'Api Key not allowed for this resource' });
+
+		/*
+		Need to read more into how api keys work before proceeding any further
+
+		const comparePassword = await bcrypt.compare(password, user.password);
+		if (!comparePassword) return res.status(401).json({ message: 'Invalid authorization.' });
+		*/
 	}
 
 	run(req, res, db) { // eslint-disable-line no-unused-vars
