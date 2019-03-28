@@ -207,6 +207,7 @@ export default {
 	components: {
 		Sidebar
 	},
+	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			users: []
@@ -226,8 +227,8 @@ export default {
 	methods: {
 		async getUsers() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/admin/users`);
-				this.users = response.data.users;
+				const response = await this.$axios.$get(`admin/users`);
+				this.users = response.users;
 				console.log(this.users);
 			} catch (error) {
 				this.$onPromiseError(error);
@@ -235,20 +236,20 @@ export default {
 		},
 		async changeEnabledStatus(row) {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/admin/users/${row.enabled ? 'enable' : 'disable'}`, {
+				const response = await this.$axios.$post(`admin/users/${row.enabled ? 'enable' : 'disable'}`, {
 					id: row.id
 				});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
 		},
 		async changeIsAdmin(row) {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
+				const response = await this.$axios.$post(`admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
 					id: row.id
 				});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
@@ -261,10 +262,10 @@ export default {
 		},
 		async purgeFiles(row) {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/admin/users/purge`, {
+				const response = await this.$axios.$post(`admin/users/purge`, {
 					id: row.id
 				});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}

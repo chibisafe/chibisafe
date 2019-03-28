@@ -61,6 +61,7 @@ export default {
 		Sidebar,
 		Grid
 	},
+	middleware: 'auth',
 	data() {
 		return {
 			files: [],
@@ -93,11 +94,11 @@ export default {
 		},
 		async albumCheckboxClicked(value, id) {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/file/album/${value ? 'add' : 'del'}`, {
+				const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
 					albumId: id,
 					fileId: this.showingModalForFile.id
 				});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 
 				// Not the prettiest solution to refetch on each click but it'll do for now
 				this.getFiles();
@@ -107,16 +108,16 @@ export default {
 		},
 		async getFiles() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/files`);
-				this.files = response.data.files;
+				const response = await this.$axios.$get(`files`);
+				this.files = response.files;
 			} catch (error) {
 				console.error(error);
 			}
 		},
 		async getAlbums() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/albums/dropdown`);
-				this.albums = response.data.albums;
+				const response = await this.$axios.$get(`albums/dropdown`);
+				this.albums = response.albums;
 			} catch (error) {
 				this.$onPromiseError(error);
 			}

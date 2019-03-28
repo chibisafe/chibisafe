@@ -72,24 +72,26 @@ export default {
 		return { title: 'Register' };
 	},
 	methods: {
-		register() {
+		async register() {
 			if (this.isLoading) return;
 			if (this.password !== this.rePassword) {
 				this.$showToast('Passwords don\'t match', true);
 				return;
 			}
 			this.isLoading = true;
-			this.axios.post(`${this.config.baseURL}/auth/register`, {
-				username: this.username,
-				password: this.password
-			}).then(response => {
-				this.$showToast(response.data.message);
-				this.isLoading = false;
+
+			try {
+				const response = await this.$axios.$post(`auth/register`, {
+					username: this.username,
+					password: this.password
+				});
+				this.$showToast(response.message);
 				return this.$router.push('/login');
-			}).catch(err => {
+			} catch (error) {
+				this.$onPromiseError(error);
+			} finally {
 				this.isLoading = false;
-				this.$onPromiseError(err);
-			});
+			}
 		}
 	}
 };

@@ -3,14 +3,6 @@
 </template>
 <script>
 import Vue from 'vue';
-import Fuse from 'fuse.js';
-
-const protectedRoutes = [
-	'/dashboard',
-	'/dashboard/albums',
-	'/dashboard/settings'
-];
-
 export default {
 	computed: {
 		config() {
@@ -41,12 +33,14 @@ export default {
 		processCatch(error, logout) {
 			if (error.response && error.response.data && error.response.data.message) {
 				this.showToast(error.response.data.message, true, 5000);
+				/*
 				if (error.response.status === 429) return;
 				if (error.response.status === 502) return;
 				if (error.response.data.message === 'Token expired') {
 					this.$logOut();
 					setTimeout(() => this.$router.push('/'), 3000);
 				}
+				*/
 			} else {
 				console.error(error);
 				this.showToast('Something went wrong, please check the console :(', true, 5000);

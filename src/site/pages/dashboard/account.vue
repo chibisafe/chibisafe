@@ -67,7 +67,8 @@
 							message="This API key lets you use the service from other apps"
 							horizontal>
 							<b-input v-model="user.apiKey"
-								expanded />
+								expanded
+								disabled />
 						</b-field>
 
 						<div class="mb2 mt2 text-center">
@@ -88,6 +89,7 @@ export default {
 	components: {
 		Sidebar
 	},
+	middleware: 'auth',
 	data() {
 		return {
 			user: {}
@@ -107,8 +109,8 @@ export default {
 	methods: {
 		async getUserSetttings() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/users/me`);
-				this.user = response.data.user;
+				const response = await this.$axios.$get(`users/me`);
+				this.user = response.user;
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
@@ -118,12 +120,12 @@ export default {
 			if (this.user.newPassword !== this.user.reNewPassword) return this.$showToast('Passwords don\'t match', true);
 
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/user/password/change`,
+				const response = await this.$axios.$post(`user/password/change`,
 					{
 						password: this.user.password,
 						newPassword: this.user.newPassword
 					});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
@@ -136,9 +138,10 @@ export default {
 		},
 		async requestNewAPIKey() {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/user/apikey/change`);
-				this.user.apiKey = response.data.apiKey;
-				this.$toast.open(response.data.message);
+				const response = await this.$axios.$post(`user/apikey/change`);
+				this.user.apiKey = response.apiKey;
+				this.$forceUpdate();
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}

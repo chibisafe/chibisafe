@@ -275,6 +275,7 @@ export default {
 	components: {
 		Sidebar
 	},
+	middleware: 'auth',
 	data() {
 		return {
 			albums: [],
@@ -310,9 +311,9 @@ export default {
 		},
 		async deleteAlbum(id, purge) {
 			try {
-				const response = await this.axios.delete(`${this.config.baseURL}/album/${id}/${purge ? true : ''}`);
+				const response = await this.$axios.$delete(`album/${id}/${purge ? true : ''}`);
 				this.getAlbums();
-				return this.$toast.open(response.data.message);
+				return this.$toast.open(response.message);
 			} catch (error) {
 				return this.$onPromiseError(error);
 			}
@@ -326,21 +327,21 @@ export default {
 		async deleteAlbumLink(identifier) {
 			console.log('> deleteAlbumLink', identifier);
 			try {
-				const response = await this.axios.delete(`${this.config.baseURL}/album/link/delete/${identifier}`);
-				return this.$toast.open(response.data.message);
+				const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
+				return this.$toast.open(response.message);
 			} catch (error) {
 				return this.$onPromiseError(error);
 			}
 		},
 		async linkOptionsChanged(link) {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/album/link/edit`,
+				const response = await this.$axios.$post(`album/link/edit`,
 					{
 						identifier: link.identifier,
 						enableDownload: link.enableDownload,
 						enabled: link.enabled
 					});
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 			} catch (error) {
 				this.$onPromiseError(error);
 			}
@@ -348,11 +349,11 @@ export default {
 		async createLink(album) {
 			album.isCreatingLink = true;
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/album/link/new`,
+				const response = await this.$axios.$post(`album/link/new`,
 					{ albumId: album.id });
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 				album.links.push({
-					identifier: response.data.identifier,
+					identifier: response.identifier,
 					views: 0,
 					enabled: true,
 					enableDownload: true,
@@ -367,10 +368,10 @@ export default {
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/album/new`,
+				const response = await this.$axios.$post(`album/new`,
 					{ name: this.newAlbumName });
 				this.newAlbumName = null;
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 				this.getAlbums();
 			} catch (error) {
 				this.$onPromiseError(error);
@@ -378,11 +379,11 @@ export default {
 		},
 		async getAlbums() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/albums/mini`);
-				for (const album of response.data.albums) {
+				const response = await this.$axios.$get(`albums/mini`);
+				for (const album of response.albums) {
 					album.isDetailsOpen = false;
 				}
-				this.albums = response.data.albums;
+				this.albums = response.albums;
 			} catch (error) {
 				this.$onPromiseError(error);
 			}

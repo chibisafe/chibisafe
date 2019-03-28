@@ -95,32 +95,27 @@ export default {
 		return { title: 'Login' };
 	},
 	methods: {
-		login() {
+		async login() {
 			if (this.isLoading) return;
 			if (!this.username || !this.password) {
 				this.$showToast('Please fill both fields before attempting to log in.', true);
 				return;
 			}
 			this.isLoading = true;
-			this.axios.post(`${this.config.baseURL}/auth/login`, {
-				username: this.username,
-				password: this.password
-			}).then(res => {
-				this.$store.commit('token', res.data.token);
-				this.$store.commit('user', res.data.user);
-				/*
-				if (res.data.mfa) {
-					this.isMfaModalActive = true;
-					this.isLoading = false;
-				} else {
-					this.getUserData();
-				}
-				*/
+
+			try {
+				const data = await this.$axios.$post(`auth/login`, {
+					username: this.username,
+					password: this.password
+				});
+				this.$axios.setToken(data.token, 'Bearer');
+				this.$store.dispatch('login', { token: data.token, user: data.user });
 				this.redirect();
-			}).catch(err => {
+			} catch (error) {
+				this.$onPromiseError(error);
+			} finally {
 				this.isLoading = false;
-				this.$onPromiseError(err);
-			});
+			}
 		},
 		/*
 		mfa() {

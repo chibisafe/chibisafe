@@ -170,13 +170,13 @@ export default {
 				hasIcon: true,
 				onConfirm: async () => {
 					try {
-						const response = await this.axios.delete(`${this.config.baseURL}/file/${file.id}`);
+						const response = await this.$axios.$delete(`file/${file.id}`);
 						this.showWaterfall = false;
 						this.files.splice(index, 1);
 						this.$nextTick(() => {
 							this.showWaterfall = true;
 						});
-						return this.$toast.open(response.data.message);
+						return this.$toast.open(response.message);
 					} catch (error) {
 						return this.$onPromiseError(error);
 					}

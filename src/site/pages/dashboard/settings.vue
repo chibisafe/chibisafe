@@ -132,6 +132,7 @@ export default {
 	components: {
 		Sidebar
 	},
+	middleware: 'auth',
 	data() {
 		return {
 			options: {}
@@ -151,8 +152,8 @@ export default {
 	methods: {
 		async getSettings() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/service/config`);
-				this.options = response.data.config;
+				const response = await this.$axios.$get(`service/config`);
+				this.options = response.config;
 				console.log(this.options);
 			} catch (error) {
 				this.$onPromiseError(error);
@@ -166,8 +167,8 @@ export default {
 		},
 		async restartService() {
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/service/restart`);
-				this.$toast.open(response.data.message);
+				const response = await this.$axios.$post(`service/restart`);
+				this.$toast.open(response.message);
 				return;
 			} catch (error) {
 				this.$onPromiseError(error);

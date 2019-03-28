@@ -42,7 +42,7 @@
 		<router-link to="/dashboard/account">
 			<i class="icon-ecommerce-tag-c" />Account
 		</router-link>
-		<template v-if="user.isAdmin">
+		<template v-if="user && user.isAdmin">
 			<hr>
 			<router-link to="/dashboard/users">
 				<i class="icon-setting-gear-a" />Users
@@ -62,6 +62,6 @@ export default {
 		user() {
 			return this.$store.state.user;
 		}
-	},
+	}
 };
 </script>

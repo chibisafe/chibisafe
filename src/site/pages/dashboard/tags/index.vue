@@ -214,6 +214,7 @@ export default {
 	components: {
 		Sidebar
 	},
+	middleware: 'auth',
 	data() {
 		return {
 			tags: [],
@@ -249,9 +250,9 @@ export default {
 		},
 		async deleteTag(id, purge) {
 			try {
-				const response = await this.axios.delete(`${this.config.baseURL}/tags/${id}/${purge ? true : ''}`);
+				const response = await this.$axios.$delete(`tags/${id}/${purge ? true : ''}`);
 				this.getTags();
-				return this.$toast.open(response.data.message);
+				return this.$toast.open(response.message);
 			} catch (error) {
 				return this.$onPromiseError(error);
 			}
@@ -259,10 +260,10 @@ export default {
 		async createTag() {
 			if (!this.newTagName || this.newTagName === '') return;
 			try {
-				const response = await this.axios.post(`${this.config.baseURL}/tag/new`,
+				const response = await this.$axios.$post(`tag/new`,
 					{ name: this.newTagName });
 				this.newTagName = null;
-				this.$toast.open(response.data.message);
+				this.$toast.open(response.message);
 				this.getTags();
 			} catch (error) {
 				this.$onPromiseError(error);
@@ -270,11 +271,11 @@ export default {
 		},
 		async getTags() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/tags`);
-				for (const tag of response.data.tags) {
+				const response = await this.$axios.$get(`tags`);
+				for (const tag of response.tags) {
 					tag.isDetailsOpen = false;
 				}
-				this.tags = response.data.tags;
+				this.tags = response.tags;
 			} catch (error) {
 				this.$onPromiseError(error);
 			}

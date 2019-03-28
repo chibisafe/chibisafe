@@ -51,19 +51,26 @@
 
 <script>
 import Grid from '~/components/grid/Grid.vue';
-import Loading from '~/components/loading/CubeShadow.vue';
 import axios from 'axios';
 
 export default {
-	components: { Grid, Loading },
+	components: { Grid },
+	data() {
+		return {};
+	},
+	computed: {
+		config() {
+			return this.$store.state.config;
+		}
+	},
 	async asyncData({ app, params, error }) {
 		try {
-			const res = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
-			const downloadLink = res.data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
+			const data = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
+			const downloadLink = data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
 			return {
-				name: res.data.name,
-				downloadEnabled: res.data.downloadEnabled,
-				files: res.data.files,
+				name: data.name,
+				downloadEnabled: data.downloadEnabled,
+				files: data.files,
 				downloadLink
 			};
 		} catch (err) {
@@ -77,14 +84,6 @@ export default {
 			};
 			*/
 			error({ statusCode: 404, message: 'Post not found' });
-		}
-	},
-	data() {
-		return {};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
 		}
 	},
 	metaInfo() {

@@ -135,8 +135,8 @@ export default {
 		*/
 		async getAlbums() {
 			try {
-				const response = await this.axios.get(`${this.config.baseURL}/albums/dropdown`);
-				this.albums = response.data.albums;
+				const response = await this.$axios.$get(`albums/dropdown`);
+				this.albums = response.albums;
 				this.updateDropzoneConfig();
 			} catch (error) {
 				this.$onPromiseError(error);
