@@ -70,6 +70,7 @@ export const actions = {
 		}
 		commit('token', token);
 		if (!token) {
+			app.$axios.setToken('');
 			commit('user', null);
 			commit('loggedIn', false);
 		}
