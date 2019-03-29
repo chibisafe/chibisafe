@@ -5,10 +5,9 @@
 <template>
 	<section id="login"
 		class="hero is-fullheight">
-		<Navbar/>
+		<Navbar />
 		<div class="hero-body">
 			<div class="container has-text-left">
-
 				<h2 class="subtitle">What is lolisafe?</h2>
 				<article class="message">
 					<div class="message-body">
