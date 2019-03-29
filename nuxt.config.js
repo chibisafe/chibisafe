@@ -58,7 +58,8 @@ export default {
 		'~/plugins/buefy',
 		'~/plugins/v-clipboard',
 		'~/plugins/vue-isyourpasswordsafe',
-		'~/plugins/vue-timeago'
+		'~/plugins/vue-timeago',
+		'~/plugins/flexsearch'
 	],
 	serverMiddleware: [
 		{ path: '/', handler: serveStatic(path.join(__dirname, 'uploads')) }

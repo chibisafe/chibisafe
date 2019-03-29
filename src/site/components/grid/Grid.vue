@@ -79,6 +79,13 @@
 	<Waterfall
 		:gutterWidth="10"
 		:gutterHeight="4">
+		<!-- Gotta implement search and pagination here -->
+		<input v-model="searchTerm"
+			type="text"
+			placeholder="Search..."
+			@input="search()"
+			@keyup.enter="search()">
+
 		<WaterfallItem v-for="(item, index) in files"
 			v-if="showWaterfall && item.thumb"
 			:key="index"
@@ -153,14 +160,29 @@ export default {
 		}
 	},
 	data() {
-		return { showWaterfall: true };
+		return {
+			showWaterfall: true,
+			searchTerm: null
+		};
 	},
 	computed: {
 		config() {
 			return this.$store.state.config;
 		}
 	},
+	mounted() {
+		this.$search.items(this.files);
+	},
 	methods: {
+		async search() {
+			const data = await this.$search.do(this.searchTerm, [
+				'name',
+				'original',
+				'type',
+				'albums:name'
+			]);
+			console.log('> Search result data', data);
+		},
 		deleteFile(file, index) {
 			this.$dialog.confirm({
 				title: 'Deleting file',
