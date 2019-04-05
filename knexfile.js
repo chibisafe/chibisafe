@@ -6,8 +6,7 @@ module.exports = {
 		host: process.env.DB_HOST,
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
-		database: process.env.DB_DATABASE,
-		filename: 'database.sqlite'
+		database: process.env.DB_DATABASE
 	},
 	pool: {
 		min: process.env.DATABASE_POOL_MIN || 2,
@@ -18,6 +17,5 @@ module.exports = {
 	},
 	seeds: {
 		directory: 'src/api/database/seeds'
-	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite' ? true : false
+	}
 };

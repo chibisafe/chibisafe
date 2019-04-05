@@ -106,7 +106,7 @@ async function start() {
 			symbol: '>',
 			menu: [
 				'pg',
-				'sqlite3'
+				'mysql'
 			]
 		},
 		{
