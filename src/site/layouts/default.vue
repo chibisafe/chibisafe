@@ -35,5 +35,5 @@ export default {
 </script>
 <style lang="scss">
 	@import "~/assets/styles/style.scss";
-	@import "~/assets/styles/icons.min.css";
+	@import "~assets/styles/icons.min.css";
 </style>

@@ -8,13 +8,5 @@
 
 - Tags button when hovering over an image in the "Files" section do nothing
 
-
-- Album options don't always seem to work? Sometimes I need to toggle an option on and off again for it to take effect (both dis-/enabled and downloads)
-	* This is an issue with SQLite not supporting boolean fields, they get converted to 1 and 0
-- Users section on dashboard doesn't properly display the Enabled / Admin options (shows both as false for my admin account, the only one that exists)
-	* This is an issue with SQLite not supporting boolean fields, they get converted to 1 and 0
-- Same as above happens even when the album link is disabled, (dis-)allow download makes no difference
-	* This is an issue with SQLite not supporting boolean fields, they get converted to 1 and 0
-
 Think about implementing this https://i.kana.dev/24rcxzop.png
     - Invalidate a file after it has been downloaded/viewed.
