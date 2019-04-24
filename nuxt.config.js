@@ -8,6 +8,7 @@ export default {
 		port: process.env.WEBSITE_PORT
 	},
 	env: {
+		development: process.env.NODE_ENV !== 'production',
 		version: process.env.npm_package_version,
 		URL: process.env.DOMAIN,
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
@@ -66,15 +67,18 @@ export default {
 	],
 	css: [],
 	modules: [
-		'@nuxtjs/axios'
+		'@nuxtjs/axios',
+		'cookie-universal-nuxt'
 	],
 	axios: {
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`
 	},
 	build: {
 		extractCSS: true,
-		postcss: [
-			autoprefixer
-		]
+		postcss: {
+			preset: {
+				autoprefixer
+			}
+		}
 	}
 };

@@ -1,3 +1,4 @@
+const nodePath = require('path');
 const JWT = require('jsonwebtoken');
 const db = require('knex')({
 	client: process.env.DB_CLIENT,
@@ -5,8 +6,38 @@ const db = require('knex')({
 		host: process.env.DB_HOST,
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
-		database: process.env.DB_DATABASE
-	}
+		database: process.env.DB_DATABASE,
+		filename: nodePath.join(__dirname, '..', '..', '..', 'database.sqlite')
+	},
+	postProcessResponse: result => {
+		/*
+			Fun fact: Depending on the database used by the user and given that I don't want
+			to force a specific database for everyone because of the nature of this project,
+			some things like different data types for booleans need to be considered like in
+			the implementation below where sqlite returns 1 and 0 instead of true and false.
+		*/
+		const booleanFields = [
+			'enabled',
+			'enableDownload',
+			'isAdmin'
+		];
+
+		const processResponse = row => {
+			Object.keys(row).forEach(key => {
+				if (booleanFields.includes(key)) {
+					row[key] = row[key] === 1 ? true : false;
+				}
+			});
+			return row;
+		};
+
+		if (Array.isArray(result)) {
+			return result.map(row => processResponse(row));
+		}
+
+		return processResponse(result);
+	},
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3' ? true : false
 });
 const moment = require('moment');
 const log = require('../utils/Log');

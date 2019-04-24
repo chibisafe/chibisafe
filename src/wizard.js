@@ -105,6 +105,7 @@ async function start() {
 			handle: 'DB_CLIENT',
 			symbol: '>',
 			menu: [
+				'sqlite3',
 				'pg',
 				'mysql'
 			]
