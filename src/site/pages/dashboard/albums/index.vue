@@ -310,13 +310,9 @@ export default {
 			});
 		},
 		async deleteAlbum(id, purge) {
-			try {
-				const response = await this.$axios.$delete(`album/${id}/${purge ? true : ''}`);
-				this.getAlbums();
-				return this.$toast.open(response.message);
-			} catch (error) {
-				return this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$delete(`album/${id}/${purge ? true : ''}`);
+			this.getAlbums();
+			return this.$toast.open(response.message);
 		},
 		promptDeleteAlbumLink(identifier) {
 			this.$dialog.confirm({
@@ -325,29 +321,21 @@ export default {
 			});
 		},
 		async deleteAlbumLink(identifier) {
-			console.log('> deleteAlbumLink', identifier);
-			try {
-				const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
-				return this.$toast.open(response.message);
-			} catch (error) {
-				return this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
+			return this.$toast.open(response.message);
 		},
 		async linkOptionsChanged(link) {
-			try {
-				const response = await this.$axios.$post(`album/link/edit`,
-					{
-						identifier: link.identifier,
-						enableDownload: link.enableDownload,
-						enabled: link.enabled
-					});
-				this.$toast.open(response.message);
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$post(`album/link/edit`,
+				{
+					identifier: link.identifier,
+					enableDownload: link.enableDownload,
+					enabled: link.enabled
+				});
+			this.$toast.open(response.message);
 		},
 		async createLink(album) {
 			album.isCreatingLink = true;
+			// Since we actually want to change the state even if the call fails, use a try catch
 			try {
 				const response = await this.$axios.$post(`album/link/new`,
 					{ albumId: album.id });
@@ -360,33 +348,25 @@ export default {
 					expiresAt: null
 				});
 			} catch (error) {
-				this.$onPromiseError(error);
+				//
 			} finally {
 				album.isCreatingLink = false;
 			}
 		},
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
-			try {
-				const response = await this.$axios.$post(`album/new`,
-					{ name: this.newAlbumName });
-				this.newAlbumName = null;
-				this.$toast.open(response.message);
-				this.getAlbums();
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$post(`album/new`,
+				{ name: this.newAlbumName });
+			this.newAlbumName = null;
+			this.$toast.open(response.message);
+			this.getAlbums();
 		},
 		async getAlbums() {
-			try {
-				const response = await this.$axios.$get(`albums/mini`);
-				for (const album of response.albums) {
-					album.isDetailsOpen = false;
-				}
-				this.albums = response.albums;
-			} catch (error) {
-				this.$onPromiseError(error);
+			const response = await this.$axios.$get(`albums/mini`);
+			for (const album of response.albums) {
+				album.isDetailsOpen = false;
 			}
+			this.albums = response.albums;
 		}
 	}
 };

@@ -249,36 +249,24 @@ export default {
 			});
 		},
 		async deleteTag(id, purge) {
-			try {
-				const response = await this.$axios.$delete(`tags/${id}/${purge ? true : ''}`);
-				this.getTags();
-				return this.$toast.open(response.message);
-			} catch (error) {
-				return this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$delete(`tags/${id}/${purge ? true : ''}`);
+			this.getTags();
+			return this.$toast.open(response.message);
 		},
 		async createTag() {
 			if (!this.newTagName || this.newTagName === '') return;
-			try {
-				const response = await this.$axios.$post(`tag/new`,
-					{ name: this.newTagName });
-				this.newTagName = null;
-				this.$toast.open(response.message);
-				this.getTags();
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$post(`tag/new`,
+				{ name: this.newTagName });
+			this.newTagName = null;
+			this.$toast.open(response.message);
+			this.getTags();
 		},
 		async getTags() {
-			try {
-				const response = await this.$axios.$get(`tags`);
-				for (const tag of response.tags) {
-					tag.isDetailsOpen = false;
-				}
-				this.tags = response.tags;
-			} catch (error) {
-				this.$onPromiseError(error);
+			const response = await this.$axios.$get(`tags`);
+			for (const tag of response.tags) {
+				tag.isDetailsOpen = false;
 			}
+			this.tags = response.tags;
 		}
 	}
 };

@@ -151,13 +151,8 @@ export default {
 	},
 	methods: {
 		async getSettings() {
-			try {
-				const response = await this.$axios.$get(`service/config`);
-				this.options = response.config;
-				console.log(this.options);
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$get(`service/config`);
+			this.options = response.config;
 		},
 		promptRestartService() {
 			this.$dialog.confirm({
@@ -166,13 +161,8 @@ export default {
 			});
 		},
 		async restartService() {
-			try {
-				const response = await this.$axios.$post(`service/restart`);
-				this.$toast.open(response.message);
-				return;
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$post(`service/restart`);
+			this.$toast.open(response.message);
 		}
 	}
 };

@@ -108,27 +108,31 @@ export default {
 	},
 	methods: {
 		async getUserSetttings() {
-			try {
-				const response = await this.$axios.$get(`users/me`);
-				this.user = response.user;
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$get(`users/me`);
+			this.user = response.user;
 		},
 		async changePassword() {
-			if (!this.user.password || !this.user.newPassword || !this.user.reNewPassword) return this.$showToast('One or more fields are missing', true);
-			if (this.user.newPassword !== this.user.reNewPassword) return this.$showToast('Passwords don\'t match', true);
-
-			try {
-				const response = await this.$axios.$post(`user/password/change`,
-					{
-						password: this.user.password,
-						newPassword: this.user.newPassword
-					});
-				this.$toast.open(response.message);
-			} catch (error) {
-				this.$onPromiseError(error);
+			if (!this.user.password || !this.user.newPassword || !this.user.reNewPassword) {
+				this.$store.dispatch('alert', {
+					text: 'One or more fields are missing',
+					error: true
+				});
+				return;
 			}
+			if (this.user.newPassword !== this.user.reNewPassword) {
+				this.$store.dispatch('alert', {
+					text: 'Passwords don\'t match',
+					error: true
+				});
+				return;
+			}
+
+			const response = await this.$axios.$post(`user/password/change`,
+				{
+					password: this.user.password,
+					newPassword: this.user.newPassword
+				});
+			this.$toast.open(response.message);
 		},
 		promptNewAPIKey() {
 			this.$dialog.confirm({
@@ -138,14 +142,10 @@ export default {
 			});
 		},
 		async requestNewAPIKey() {
-			try {
-				const response = await this.$axios.$post(`user/apikey/change`);
-				this.user.apiKey = response.apiKey;
-				this.$forceUpdate();
-				this.$toast.open(response.message);
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$post(`user/apikey/change`);
+			this.user.apiKey = response.apiKey;
+			this.$forceUpdate();
+			this.$toast.open(response.message);
 		}
 	}
 };

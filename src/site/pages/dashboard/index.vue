@@ -93,34 +93,22 @@ export default {
 			this.isAlbumsModalActive = true;
 		},
 		async albumCheckboxClicked(value, id) {
-			try {
-				const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
-					albumId: id,
-					fileId: this.showingModalForFile.id
-				});
-				this.$toast.open(response.message);
+			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
+				albumId: id,
+				fileId: this.showingModalForFile.id
+			});
+			this.$toast.open(response.message);
 
-				// Not the prettiest solution to refetch on each click but it'll do for now
-				this.getFiles();
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			// Not the prettiest solution to refetch on each click but it'll do for now
+			this.getFiles();
 		},
 		async getFiles() {
-			try {
-				const response = await this.$axios.$get(`files`);
-				this.files = response.files;
-			} catch (error) {
-				console.error(error);
-			}
+			const response = await this.$axios.$get(`files`);
+			this.files = response.files;
 		},
 		async getAlbums() {
-			try {
-				const response = await this.$axios.$get(`albums/dropdown`);
-				this.albums = response.albums;
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$get(`albums/dropdown`);
+			this.albums = response.albums;
 		}
 	}
 };

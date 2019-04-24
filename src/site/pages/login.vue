@@ -98,7 +98,10 @@ export default {
 		async login() {
 			if (this.isLoading) return;
 			if (!this.username || !this.password) {
-				this.$showToast('Please fill both fields before attempting to log in.', true);
+				this.$store.dispatch('alert', {
+					text: 'Please fill both fields before attempting to log in.',
+					error: true
+				});
 				return;
 			}
 			this.isLoading = true;
@@ -114,7 +117,7 @@ export default {
 
 				this.redirect();
 			} catch (error) {
-				this.$onPromiseError(error);
+				//
 			} finally {
 				this.isLoading = false;
 			}

@@ -134,13 +134,9 @@ export default {
 			Get all available albums so the user can upload directly to one (or several soon™) of them.
 		*/
 		async getAlbums() {
-			try {
-				const response = await this.$axios.$get(`albums/dropdown`);
-				this.albums = response.albums;
-				this.updateDropzoneConfig();
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$get(`albums/dropdown`);
+			this.albums = response.albums;
+			this.updateDropzoneConfig();
 		},
 
 		/*
@@ -161,13 +157,15 @@ export default {
 		*/
 		dropzoneFilesAdded(files) {
 			this.alreadyAddedFiles = true;
-			// console.log(files);
 		},
 		dropzoneSuccess(file, response) {
 			this.processResult(file, response);
 		},
 		dropzoneError(file, message, xhr) {
-			this.$showToast('There was an error uploading this file. Check the console.', true, 5000);
+			this.$store.dispatch('alert', {
+				text: 'There was an error uploading this file. Check the console.',
+				error: true
+			});
 			console.error(file, message, xhr);
 		},
 		dropzoneChunksUploaded(file, done) {
@@ -190,7 +188,9 @@ export default {
 			if (!response.url) return;
 			file.previewTemplate.querySelector('.link').setAttribute('href', response.url);
 			file.previewTemplate.querySelector('.copyLink').addEventListener('click', () => {
-				this.$showToast('Link copied!', false, 1000);
+				this.$store.dispatch('alert', {
+					text: 'Link copied!'
+				});
 				this.$clipboard(response.url);
 			});
 		}

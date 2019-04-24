@@ -5,7 +5,7 @@
 <template>
 	<section id="register"
 		class="hero is-fullheight">
-		<Navbar/>
+		<Navbar />
 		<div class="hero-body">
 			<div class="container">
 				<h1 class="title">
@@ -75,7 +75,10 @@ export default {
 		async register() {
 			if (this.isLoading) return;
 			if (this.password !== this.rePassword) {
-				this.$showToast('Passwords don\'t match', true);
+				this.$store.dispatch('alert', {
+					text: 'Passwords don\'t match',
+					error: true
+				});
 				return;
 			}
 			this.isLoading = true;
@@ -85,10 +88,11 @@ export default {
 					username: this.username,
 					password: this.password
 				});
-				this.$showToast(response.message);
+
+				this.$store.dispatch('alert', { text: response.message });
 				return this.$router.push('/login');
 			} catch (error) {
-				this.$onPromiseError(error);
+				//
 			} finally {
 				this.isLoading = false;
 			}

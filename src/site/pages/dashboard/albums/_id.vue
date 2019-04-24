@@ -79,9 +79,16 @@ export default {
 	metaInfo() {
 		return { title: 'Album' };
 	},
-	mounted() {
-		this.getFiles();
-		this.getAlbums();
+	async asyncData({ $axios, route }) {
+		try {
+			const response = await $axios.$get(`album/${route.params.id}/full`);
+			return {
+				files: response.files ? response.files : []
+			};
+		} catch (error) {
+			console.error(error);
+			return { files: [] };
+		}
 	},
 	methods: {
 		isAlbumSelected(id) {
@@ -90,37 +97,22 @@ export default {
 			return found ? found.id ? true : false : false;
 		},
 		openAlbumModal(file) {
+			// Only get the list if the usuer actually wants to change a file's album, otherwise useless call
+			this.getAlbums();
 			this.showingModalForFile = file;
 			this.isAlbumsModalActive = true;
 		},
 		async albumCheckboxClicked(value, id) {
-			try {
-				const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
-					albumId: id,
-					fileId: this.showingModalForFile.id
-				});
-				this.$toast.open(response.message);
-				this.getFiles();
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
-		},
-		async getFiles() {
-			// TODO: Make this think SSR with AsyncData
-			try {
-				const response = await this.$axios.$get(`album/${this.$route.params.id}/full`);
-				this.files = response.files;
-			} catch (error) {
-				console.error(error);
-			}
+			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
+				albumId: id,
+				fileId: this.showingModalForFile.id
+			});
+			this.$toast.open(response.message);
+			this.getFiles();
 		},
 		async getAlbums() {
-			try {
-				const response = await this.$axios.$get(`albums/dropdown`);
-				this.albums = response.albums;
-			} catch (error) {
-				this.$onPromiseError(error);
-			}
+			const response = await this.$axios.$get(`albums/dropdown`);
+			this.albums = response.albums;
 		}
 	}
 };
