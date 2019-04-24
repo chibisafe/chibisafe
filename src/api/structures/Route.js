@@ -31,11 +31,9 @@ const db = require('knex')({
 			return row;
 		};
 
-		if (Array.isArray(result)) {
-			return result.map(row => processResponse(row));
-		}
-
-		return processResponse(result);
+		if (Array.isArray(result)) return result.map(row => processResponse(row));
+		if (typeof result === 'object') return processResponse(result);
+		return result;
 	},
 	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3' ? true : false
 });
