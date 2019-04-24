@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
+	article.message { background-color: #ffffff; }
 </style>
 
 <template>
