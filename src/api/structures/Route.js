@@ -25,7 +25,8 @@ const db = require('knex')({
 		const processResponse = row => {
 			Object.keys(row).forEach(key => {
 				if (booleanFields.includes(key)) {
-					row[key] = row[key] === 1 ? true : false;
+					if (row[key] === 0) row[key] = false;
+					else if (row[key] === 1) row[key] = true;
 				}
 			});
 			return row;
