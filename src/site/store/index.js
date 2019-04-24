@@ -1,15 +1,9 @@
-/*
-import Vue from 'vue';
-import axios from 'axios';
-*/
-
-const cookieparser = process.server ? require('cookieparser') : null;
-
 export const state = () => ({
 	loggedIn: false,
 	user: null,
 	token: null,
-	config: null
+	config: null,
+	alert: null
 });
 
 /* eslint-disable no-shadow */
@@ -18,26 +12,21 @@ export const mutations = {
 		state.loggedIn = payload;
 	},
 	user(state, payload) {
-		if (!payload) {
-			state.user = null;
-			return;
-		}
 		state.user = payload;
 	},
 	token(state, payload) {
-		if (!payload) {
-			state.token = null;
-			return;
-		}
 		state.token = payload;
 	},
 	config(state, payload) {
 		state.config = payload;
+	},
+	alert(state, payload) {
+		state.alert = payload;
 	}
 };
 
 export const actions = {
-	async nuxtServerInit({ commit }, { app, req }) {
+	async nuxtServerInit({ commit, dispatch }, { app, req }) {
 		commit('config', {
 			version: process.env.npm_package_version,
 			URL: process.env.DOMAIN,
@@ -50,34 +39,37 @@ export const actions = {
 			enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
 		});
 
-		let token = null;
-		if (req.headers.cookie) {
-			try {
-				token = cookieparser.parse(req.headers.cookie).token;
-				console.log(token);
-				commit('loggedIn', true);
-				commit('token', token);
+		const cookies = this.$cookies.getAll();
+		if (!cookies.token) return dispatch('logout');
 
-				app.$axios.setToken(token, 'Bearer');
-
-				const data = await this.$axios.$get(`verify`);
-				if (!data || !data.user);
-				commit('user', data.user);
-			} catch (error) {
-				// TODO: Deactivate this on production
-				console.error(error);
-			}
-		}
-		commit('token', token);
-		if (!token) {
-			app.$axios.setToken('');
-			commit('user', null);
-			commit('loggedIn', false);
+		commit('token', cookies.token);
+		try {
+			const response = await this.$axios.$get('verify');
+			dispatch('login', {
+				token: cookies.token,
+				user: response.user
+			});
+		} catch (error) {
+			dispatch('logout');
 		}
 	},
-	login({ commit }, { app, token, user }) {
+	login({ commit }, { token, user }) {
+		this.$cookies.set('token', token);
 		commit('token', token);
 		commit('user', user);
 		commit('loggedIn', true);
+	},
+	logout({ commit }) {
+		this.$cookies.remove('token');
+		commit('token', null);
+		commit('user', null);
+		commit('loggedIn', false);
+	},
+	alert({ commit }, payload) {
+		if (!payload) return commit('alert', null);
+		commit('alert', {
+			text: payload.text,
+			error: payload.error
+		});
 	}
 };
