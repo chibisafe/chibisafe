@@ -108,6 +108,7 @@ export default {
 	mounted() {
 		this.dropzoneOptions = {
 			url: `${this.config.baseURL}/upload`,
+			timeout: 300000, // 5 minutes
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			parallelUploads: 5,
@@ -118,7 +119,7 @@ export default {
 			chunking: true,
 			retryChunks: true,
 			retryChunksLimit: 3,
-			parallelChunkUploads: false,
+			parallelChunkUploads: true,
 			chunkSize: this.config.chunkSize * 1000000,
 			chunksUploaded: this.dropzoneChunksUploaded,
 			maxFilesize: this.config.maxFileSize,
