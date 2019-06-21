@@ -30,7 +30,7 @@
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
-    "eslint": "^4.18.1",
+    "eslint": "^4.18.2",
     "eslint-config-aqua": "^1.4.1"
   },
   "eslintConfig": {
