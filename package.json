@@ -66,7 +66,7 @@
 		"serve-static": "^1.13.2",
 		"sharp": "^0.21.3",
 		"sqlite3": "^4.0.6",
-		"uuid": "^3.3.2",
+		"uuid": "^3.3.3",
 		"v-clipboard": "^2.2.1",
 		"vue-axios": "^2.1.4",
 		"vue-isyourpasswordsafe": "^1.0.2",
