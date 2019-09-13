@@ -2330,10 +2330,15 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-core-js@^2.5.7, core-js@^2.6.5:
+core-js@^2.5.7:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
   integrity sha512-klh/kDpwX8hryYL14M9w/xei6vrv6sE8gTHDG7/T/+SEovB/G4ejwcfE/CBzO6Edsu+OETZMZ3wcX/EjUkrl5A==
+
+core-js@^3.1.4:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.2.1.tgz#cd41f38534da6cc59f7db050fe67307de9868b09"
+  integrity sha512-Qa5XSVefSVPRxy2XfUC13WbvqkxhkwB3ve+pgCQveNgYzbM/UxZeu1dcOX/xr4UmfUd+muuvsaxilQzCyUurMw==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2676,10 +2681,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-custom-event-polyfill@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-1.0.6.tgz#6b026e81cd9f7bc896bd6b016a427407bb068db1"
-  integrity sha512-3FxpFlzGcHrDykwWu+xWVXZ8PfykM/9/bI3zXb953sh+AjInZWcQmrnmvPoZgiqNjmbtTm10PWvYqvRW527x6g==
+custom-event-polyfill@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-1.0.7.tgz#9bc993ddda937c1a30ccd335614c6c58c4f87aee"
+  integrity sha512-TDDkd5DkaZxZFM8p+1I3yAlvM3rSr1wbrOliG4yJiwinMZN8z/iGL7BTlDkrJcYTmgUSb4ywVCc3ZaUtOtC76w==
 
 cycle@^1.0.3:
   version "1.0.3"
@@ -4982,10 +4987,10 @@ loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
-loadjs@^3.5.5:
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-3.5.5.tgz#2fbaa981ffdd079e0f8786ea75aeed643483b368"
-  integrity sha512-qBuLnKt4C6+vctutozFqPHQ6s4SSa9tcE64NsvDJ92UZmUrFvqGI1oVOtnZz2xwpgOT+2niQtHtQIDP4e/wlTA==
+loadjs@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-3.6.1.tgz#1e756ccd4f4c5ed4988085b330e1b4ad9b6a8340"
+  integrity sha512-AZEBw2GWdJk2IzBgQ+Wohoao5j+t0rajqK8dJu8jQqgYxDTxhmCt0ayMo/vCa0ZAMvZxnJcam6uLICfnVd8KAw==
 
 locate-path@^3.0.0:
   version "3.0.0"
@@ -6222,17 +6227,16 @@ platform@1.3.5:
   resolved "https://registry.yarnpkg.com/platform/-/platform-1.3.5.tgz#fb6958c696e07e2918d2eeda0f0bc9448d733444"
   integrity sha512-TuvHS8AOIZNAlE77WUDiR4rySV/VMptyMfcfeoMgs4P8apaZM3JrnbzBiixKUv+XR6i+BXrQh8WAnjaSPFO65Q==
 
-plyr@^3.4.7:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/plyr/-/plyr-3.5.0.tgz#e8b42c478b818fda6f5d1fe69bc86a7c731e0988"
-  integrity sha512-4sr6jQWQXZdsuxxl28aybCMywROpMXogSauCeD+5j0toSowC4r7hTio4BLzDfanz3QnFICJTue3Jv+G1KFeN6Q==
+plyr@^3.5.2:
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/plyr/-/plyr-3.5.6.tgz#1679d098af3fd0541bba62bc03f662f7c9ae6f2b"
+  integrity sha512-buudbt2qwZYjEdBXW9DvQ7t/LqaSbv9tSjCrqg7nTXVM5BXNdhuiJCyvko+5+DFMdp30mliyKGoOHGXz43OwrA==
   dependencies:
-    core-js "^2.6.5"
-    custom-event-polyfill "^1.0.6"
-    loadjs "^3.5.5"
+    core-js "^3.1.4"
+    custom-event-polyfill "^1.0.7"
+    loadjs "^3.6.1"
     rangetouch "^2.0.0"
-    raven-js "^3.27.0"
-    url-polyfill "^1.1.3"
+    url-polyfill "^1.1.5"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -7135,11 +7139,6 @@ rangetouch@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/rangetouch/-/rangetouch-2.0.0.tgz#5459cdb38b929326c5484ab47aac9632fbe3a896"
   integrity sha512-y66wTFbwh7KafYligRsmIYYR1kZY8U9tGHH9PgbVhBUFmGzPMsOSjslXPedgR5D3M9W1QKVbAf1AtaVAt7JJTw==
-
-raven-js@^3.27.0:
-  version "3.27.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.27.0.tgz#9f47c03e17933ce756e189f3669d49c441c1ba6e"
-  integrity sha512-vChdOL+yzecfnGA+B5EhEZkJ3kY3KlMzxEhShKh6Vdtooyl0yZfYNFQfYzgMf2v4pyQa+OTZ5esTxxgOOZDHqw==
 
 raw-body@2.3.3:
   version "2.3.3"
@@ -8588,10 +8587,10 @@ url-loader@^1.1.2:
     mime "^2.0.3"
     schema-utils "^1.0.0"
 
-url-polyfill@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/url-polyfill/-/url-polyfill-1.1.3.tgz#ce0bdf2e923aa6f66bc198ab776323dfc5a91e62"
-  integrity sha512-xIAXc0DyXJCd767sSeRu4eqisyYhR0z0sohWArCn+WPwIatD39xGrc09l+tluIUi6jGkpGa8Gz8TKwkKYxMQvQ==
+url-polyfill@^1.1.5:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/url-polyfill/-/url-polyfill-1.1.7.tgz#402ee84360eb549bbeb585f4c7971e79a31de9e3"
+  integrity sha512-ZrAxYWCREjmMtL8gSbSiKKLZZticgihCvVBtrFbUVpyoETt8GQJeG2okMWA8XryDAaHMjJfhnc+rnhXRbI4DXA==
 
 url@^0.11.0:
   version "0.11.0"
@@ -8756,12 +8755,12 @@ vue-no-ssr@^1.1.1:
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
 
-vue-plyr@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/vue-plyr/-/vue-plyr-5.1.0.tgz#278622d7522d29c6a2fdf78a9ccb70f1528aa480"
-  integrity sha512-HcbcBBzuSAzTYo1MxTt41Hh1rt/1O6UJX8fUpqAX+t+bQRw4NDSI05cqdupfvpPkDXmQPIO6PONx6OyXpuhQ8w==
+vue-plyr@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/vue-plyr/-/vue-plyr-5.1.3.tgz#38da58f71b952c3dbfa8c7fccc5b2471a118c654"
+  integrity sha512-Nx9uyn7OUfJ4FlcWs4u2N1YHuAdVhmlc/CEbT8IvwFOU9WP/8nxwOxMoAycMWrHK23a4MdYjrADEKC2QHWsw4A==
   dependencies:
-    plyr "^3.4.7"
+    plyr "^3.5.2"
 
 vue-router@^3.0.2:
   version "3.0.2"
