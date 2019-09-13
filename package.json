@@ -72,7 +72,7 @@
 		"vue-isyourpasswordsafe": "^1.0.2",
 		"vue-plyr": "^5.1.0",
 		"vue-timeago": "^3.4.4",
-		"vue2-transitions": "^0.2.3"
+		"vue2-transitions": "^0.3.0"
 	},
 	"devDependencies": {
 		"autoprefixer": "^9.4.7",
