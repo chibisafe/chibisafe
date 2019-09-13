@@ -22,10 +22,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/WeebDev/lolisafe"
+		"url": "https://github.com/Knallli/lolisafe"
 	},
 	"bugs": {
-		"url": "https://github.com/WeebDev/lolisafe/issues"
+		"url": "https://github.com/Knallli/lolisafe/issues"
 	},
 	"engines": {
 		"node": ">=8.0.0"
