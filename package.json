@@ -34,7 +34,7 @@
 		"@nuxtjs/axios": "^5.4.1",
 		"adm-zip": "^0.4.13",
 		"bcrypt": "^3.0.4",
-		"body-parser": "^1.18.3",
+		"body-parser": "^1.19.0",
 		"buefy": "0.8.3",
 		"busboy": "^0.2.14",
 		"chalk": "^2.4.1",
