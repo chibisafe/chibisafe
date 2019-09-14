@@ -64,7 +64,7 @@
 		"qoa": "^0.2.0",
 		"randomstring": "^1.1.5",
 		"serve-static": "^1.13.2",
-		"sharp": "^0.21.3",
+		"sharp": "^0.23.0",
 		"sqlite3": "^4.0.6",
 		"uuid": "^3.3.3",
 		"v-clipboard": "^2.2.1",
