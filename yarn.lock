@@ -3645,10 +3645,10 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
   integrity sha1-2uRqnXj74lKSJYzB54CkHZXAN4I=
 
-flexsearch@^0.6.22:
-  version "0.6.22"
-  resolved "https://registry.yarnpkg.com/flexsearch/-/flexsearch-0.6.22.tgz#7e3966a3c117ffc4381f5ad065f0a89b2b7418ed"
-  integrity sha512-Nit36q5LQlFEaLPckjN3xO9y0dZEb6rTDT7MIqlNdLe+5kGiHcBvAiBZBUR5DNZ+ySW6WGF8gCaud4eQocTUnw==
+flexsearch@^0.6.30:
+  version "0.6.30"
+  resolved "https://registry.yarnpkg.com/flexsearch/-/flexsearch-0.6.30.tgz#d3f14389c9a4e5758b12290b3bafcd383cdc53de"
+  integrity sha512-zDBhMWbM65TsJJPBYoxV+MENufDylNtMz38e6MLTShwwuHeRNBxRYGAxR0DlwSkC4u+X2S8mlcdROWXMDleNwQ==
 
 fluent-ffmpeg@^2.1.2:
   version "2.1.2"
