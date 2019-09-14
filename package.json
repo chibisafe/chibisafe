@@ -52,7 +52,7 @@
 		"helmet": "^3.15.1",
 		"imagesloaded": "^4.1.4",
 		"jsonwebtoken": "^8.5.0",
-		"knex": "^0.16.3",
+		"knex": "^0.19.4",
 		"moment": "^2.24.0",
 		"multer": "^1.4.2",
 		"mysql": "^2.16.0",
