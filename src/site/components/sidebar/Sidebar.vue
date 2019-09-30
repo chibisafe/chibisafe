@@ -35,9 +35,11 @@
 		<router-link to="/dashboard/albums">
 			<i class="icon-interface-window" />Albums
 		</router-link>
+		<!--
 		<router-link to="/dashboard/tags">
 			<i class="icon-ecommerce-tag-c" />Tags
 		</router-link>
+		-->
 		<hr>
 		<router-link to="/dashboard/account">
 			<i class="icon-ecommerce-tag-c" />Account
