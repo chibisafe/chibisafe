@@ -3,7 +3,7 @@ const Util = require('../../utils/Util');
 
 class albumDELETE extends Route {
 	constructor() {
-		super('/album/:id', 'delete');
+		super('/album/:id/purge', 'delete');
 	}
 
 	async run(req, res, db, user) {
@@ -17,9 +17,7 @@ class albumDELETE extends Route {
 		if (!album) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });
 
 		try {
-			/*
-				Delete the album
-			*/
+			await Util.deleteAllFilesFromAlbum(id);
 			await db.table('albums').where({ id }).delete();
 			return res.json({ message: 'The album was deleted successfully' });
 		} catch (error) {

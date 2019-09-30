@@ -249,7 +249,7 @@ export default {
 			});
 		},
 		async deleteTag(id, purge) {
-			const response = await this.$axios.$delete(`tags/${id}/${purge ? true : ''}`);
+			const response = await this.$axios.$delete(`tags/${id}/${purge ? 'purge' : ''}`);
 			this.getTags();
 			return this.$toast.open(response.message);
 		},

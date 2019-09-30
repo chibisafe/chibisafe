@@ -7,10 +7,6 @@ class linkDELETE extends Route {
 	}
 
 	async run(req, res, db) {
-		console.log('------------------------------');
-		console.log('YES HI');
-		console.log('------------------------------');
-		console.log('WHO NEEDS FANCY DEBUGGING TOOLS ANYWAYS');
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 

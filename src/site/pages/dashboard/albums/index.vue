@@ -300,17 +300,8 @@ export default {
 				onConfirm: () => this.deleteAlbum(id)
 			});
 		},
-		promptPurgeAlbum(id) {
-			this.$dialog.confirm({
-				message: 'Would you like to delete every file associated with this album?',
-				cancelText: 'No',
-				confirmText: 'Yes',
-				onConfirm: () => this.deleteAlbum(id, true),
-				onCancel: () => this.deleteAlbum(id, false)
-			});
-		},
-		async deleteAlbum(id, purge) {
-			const response = await this.$axios.$delete(`album/${id}/${purge ? true : ''}`);
+		async deleteAlbum(id) {
+			const response = await this.$axios.$delete(`album/${id}`);
 			this.getAlbums();
 			return this.$toast.open(response.message);
 		},
