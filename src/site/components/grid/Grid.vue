@@ -80,7 +80,8 @@
 		:gutterWidth="10"
 		:gutterHeight="4">
 		<!-- Gotta implement search and pagination here -->
-		<input v-model="searchTerm"
+		<input v-if="enableSearch"
+			v-model="searchTerm"
 			type="text"
 			placeholder="Search..."
 			@input="search()"
@@ -115,12 +116,14 @@
 							<i class="icon-interface-window" />
 						</a>
 					</b-tooltip>
+					<!--
 					<b-tooltip label="Tags"
 						position="is-top">
 						<a @click="manageTags(item)">
 							<i class="icon-ecommerce-tag-c" />
 						</a>
 					</b-tooltip>
+					-->
 					<b-tooltip label="Delete"
 						position="is-top">
 						<a @click="deleteFile(item, index)">
@@ -157,6 +160,10 @@ export default {
 		width: {
 			type: Number,
 			default: 150
+		},
+		enableSearch: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
