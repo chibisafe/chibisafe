@@ -21,7 +21,8 @@
 						<hr>
 						<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
 						<Grid v-if="files.length"
-							:files="files" />
+							:files="files"
+							:enableSearch="false" />
 					</div>
 				</div>
 			</div>
