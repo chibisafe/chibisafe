@@ -17,7 +17,7 @@ const fs = require('fs');
 
 class uploadPOST extends Route {
 	constructor() {
-		super('/upload', 'post', { bypassAuth: true });
+		super('/upload.....', 'post', { bypassAuth: true });
 	}
 
 	async run(req, res, db) {

@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const randomstring = require('randomstring');
 
 exports.seed = async db => {
 	const now = moment.utc().toDate();
