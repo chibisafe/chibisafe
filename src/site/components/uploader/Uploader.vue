@@ -108,14 +108,15 @@ export default {
 	mounted() {
 		this.dropzoneOptions = {
 			url: `${this.config.baseURL}/upload`,
-			timeout: 300000, // 5 minutes
+			timeout: 600000, // 10 minutes
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			parallelUploads: 5,
 			uploadMultiple: false,
 			maxFiles: 1000,
 			createImageThumbnails: false,
-			paramName: 'file',
+			paramName: 'files[]',
+			forceChunking: false,
 			chunking: true,
 			retryChunks: true,
 			retryChunksLimit: 3,
@@ -169,14 +170,18 @@ export default {
 			});
 			console.error(file, message, xhr);
 		},
-		dropzoneChunksUploaded(file, done) {
-			const response = JSON.parse(file.xhr.response);
-			if (!response.url) {
-				console.error('There was a problem uploading the file?');
-				return done();
-			}
+		async dropzoneChunksUploaded(file, done) {
+			const { data } = await this.$axios.post(`${this.config.baseURL}/upload/chunks`, {
+				files: [{
+					uuid: file.upload.uuid,
+					original: file.name,
+					size: file.size,
+					type: file.type,
+					count: file.upload.totalChunkCount
+				}]
+			});
 
-			this.processResult(file, response);
+			this.processResult(file, data);
 			this.$forceUpdate();
 			return done();
 		},

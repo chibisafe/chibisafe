@@ -155,6 +155,11 @@ class Util {
 		return hash.digest('hex');
 	}
 
+	static generateFileHash(data) {
+		const hash = crypto.createHash('sha1').update(data).digest('hex');
+		return hash;
+	}
+
 	static getFilenameFromPath(fullPath) {
 		return fullPath.replace(/^.*[\\\/]/, ''); // eslint-disable-line no-useless-escape
 	}
