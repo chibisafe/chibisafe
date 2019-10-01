@@ -60,7 +60,8 @@ export default {
 		'~/plugins/v-clipboard',
 		'~/plugins/vue-isyourpasswordsafe',
 		'~/plugins/vue-timeago',
-		'~/plugins/flexsearch'
+		'~/plugins/flexsearch',
+		'~/plugins/vuebar'
 	],
 	serverMiddleware: [
 		{ path: '/', handler: serveStatic(path.join(__dirname, 'uploads')) }
