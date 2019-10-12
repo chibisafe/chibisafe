@@ -24,7 +24,7 @@ export default {
 		alert() {
 			if (!this.alert) return;
 
-			this.$toast.open({
+			this.$buefy.toast.open({
 				duration: 3500,
 				message: this.alert.text,
 				position: 'is-bottom',

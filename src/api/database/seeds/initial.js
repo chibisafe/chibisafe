@@ -26,4 +26,4 @@ exports.seed = async db => {
 	} catch (error) {
 		console.error(error);
 	}
-}
+};

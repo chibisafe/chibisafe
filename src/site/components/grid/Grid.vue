@@ -191,7 +191,7 @@ export default {
 			console.log('> Search result data', data);
 		},
 		deleteFile(file, index) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				title: 'Deleting file',
 				message: 'Are you sure you want to <b>delete</b> this file?',
 				confirmText: 'Delete File',
@@ -204,7 +204,7 @@ export default {
 					this.$nextTick(() => {
 						this.showWaterfall = true;
 					});
-					return this.$toast.open(response.message);
+					return this.buefy.$toast.open(response.message);
 				}
 			});
 		}

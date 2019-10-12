@@ -132,10 +132,10 @@ export default {
 					password: this.user.password,
 					newPassword: this.user.newPassword
 				});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		promptNewAPIKey() {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to regenerate your API key? Previously generated API keys will stop working. Make sure to write the new key down as this is the only time it will be displayed to you.',
 				onConfirm: () => this.requestNewAPIKey()
@@ -145,7 +145,7 @@ export default {
 			const response = await this.$axios.$post(`user/apikey/change`);
 			this.user.apiKey = response.apiKey;
 			this.$forceUpdate();
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		}
 	}
 };

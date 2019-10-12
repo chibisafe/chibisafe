@@ -147,14 +147,14 @@ export default {
 			this.options = response.config;
 		},
 		promptRestartService() {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
 				onConfirm: () => this.restartService()
 			});
 		},
 		async restartService() {
 			const response = await this.$axios.$post(`service/restart`);
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		}
 	}
 };

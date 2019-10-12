@@ -5,7 +5,7 @@
 		box-shadow: none;
 
 		.navbar-brand {
-			width: 100%;
+			width: calc(100% - 2em);
 			align-items: flex-start;
 			padding: 1em;
 

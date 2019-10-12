@@ -234,13 +234,13 @@ export default {
 	},
 	methods: {
 		promptDeleteTag(id) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this tag?',
 				onConfirm: () => this.promptPurgeTag(id)
 			});
 		},
 		promptPurgeTag(id) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Would you like to delete every file associated with this tag?',
 				cancelText: 'No',
 				confirmText: 'Yes',
@@ -251,14 +251,14 @@ export default {
 		async deleteTag(id, purge) {
 			const response = await this.$axios.$delete(`tags/${id}/${purge ? 'purge' : ''}`);
 			this.getTags();
-			return this.$toast.open(response.message);
+			return this.$buefy.toast.open(response.message);
 		},
 		async createTag() {
 			if (!this.newTagName || this.newTagName === '') return;
 			const response = await this.$axios.$post(`tag/new`,
 				{ name: this.newTagName });
 			this.newTagName = null;
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 			this.getTags();
 		},
 		async getTags() {

@@ -107,7 +107,7 @@ export default {
 				albumId: id,
 				fileId: this.showingModalForFile.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 			this.getFiles();
 		},
 		async getAlbums() {

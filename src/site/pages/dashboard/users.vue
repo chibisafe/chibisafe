@@ -233,16 +233,16 @@ export default {
 			const response = await this.$axios.$post(`admin/users/${row.enabled ? 'enable' : 'disable'}`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		async changeIsAdmin(row) {
 			const response = await this.$axios.$post(`admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		promptPurgeFiles(row) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this user\'s files?',
 				onConfirm: () => this.purgeFiles(row)
 			});
@@ -251,7 +251,7 @@ export default {
 			const response = await this.$axios.$post(`admin/users/purge`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		}
 	}
 };
