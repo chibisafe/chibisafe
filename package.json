@@ -10,7 +10,7 @@
 	},
 	"main": "src/_scripts/start.js",
 	"scripts": {
-		"setup": "yarn build && node src/wizard.js",
+		"setup": "yarn build && node src/setup.js",
 		"dev": "nuxt",
 		"build": "nuxt build",
 		"migrate": "yarn knex migrate:latest",
