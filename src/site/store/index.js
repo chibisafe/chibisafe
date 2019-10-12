@@ -50,7 +50,7 @@ export const actions = {
 				user: response.user
 			});
 		} catch (error) {
-			dispatch('logout');
+			// dispatch('logout');
 		}
 	},
 	login({ commit }, { token, user }) {
