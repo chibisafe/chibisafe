@@ -33,6 +33,7 @@ class filesGET extends Route {
 			For each file, create the public link to be able to display the file
 		*/
 		for (let file of files) {
+			console.log(file);
 			file = Util.constructFilePublicLink(file);
 		}
 

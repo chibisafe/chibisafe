@@ -60,7 +60,7 @@ class uploadPOST extends Route {
 			await jetpack.removeAsync(chunkOutput);
 		}
 
-		return res.send(201, {
+		return res.status(201).send({
 			message: 'Sucessfully merged the chunk(s).',
 			...info
 			/*

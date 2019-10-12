@@ -3,6 +3,7 @@ const path = require('path');
 const Util = require('../../utils/Util');
 const jetpack = require('fs-jetpack');
 const multer = require('multer');
+const moment = require('moment');
 const upload = multer({
 	storage: multer.memoryStorage(),
 	limits: {
@@ -29,14 +30,24 @@ class uploadPOST extends Route {
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
 		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
+
 		return upload(req, res, async err => {
 			if (err) console.error(err.message);
 
-			const remappedKeys = this._remapKeys(req.body);
-			// const { uuid, chunkindex } = this._remapKeys(req.body);
+			const albumId = req.body.albumid || req.headers.albumid;
+			if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
+			if (albumId && user) {
+				const album = await db.table('albums').where({ id: albumId, userId: user.id }).first();
+				if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
+			}
+
 			let uploadedFile = {};
+			let originalFile;
+			let insertedId;
+
+			const remappedKeys = this._remapKeys(req.body);
 			for (const file of req.files) {
-				// console.log(file);
+				originalFile = file;
 				const ext = path.extname(file.originalname);
 				const hash = Util.generateFileHash(file.buffer);
 				const filename = Util.getUniqueFilename(file.originalname);
@@ -69,13 +80,62 @@ class uploadPOST extends Route {
 				}
 			}
 
-			if (!remappedKeys || !remappedKeys.uuid) Util.generateThumbnails(uploadedFile.name);
+			if (!remappedKeys || !remappedKeys.uuid) {
+				Util.generateThumbnails(uploadedFile.name);
+				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, originalFile);
+				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
+				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
+			}
 
-			return res.send(201, {
+			return res.status(201).send({
 				message: 'Sucessfully uploaded the file.',
 				...uploadedFile
 			});
 		});
+	}
+
+	async saveFileToDatabase(req, res, user, db, file, originalFile) {
+		/*
+			Save the upload information to the database
+		*/
+		const now = moment.utc().toDate();
+		let insertedId = null;
+		try {
+			/*
+				This is so fucking dumb
+			*/
+			if (process.env.DB_CLIENT === 'sqlite3') {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: file.name,
+					original: originalFile.originalname,
+					type: originalFile.mimetype || '',
+					size: file.size,
+					hash: file.hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				});
+			} else {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: file.name,
+					original: originalFile.originalname,
+					type: originalFile.mimetype || '',
+					size: file.size,
+					hash: file.hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				}, 'id');
+			}
+			return insertedId;
+		} catch (error) {
+			console.error('There was an error saving the file to the database');
+			console.error(error);
+			return null;
+			// return res.status(500).json({ message: 'There was an error uploading the file.' });
+		}
 	}
 
 	_remapKeys(body) {

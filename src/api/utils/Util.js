@@ -89,6 +89,7 @@ class Util {
 	}
 
 	static getFileThumbnail(filename) {
+		if (!filename) return null;
 		const ext = path.extname(filename).toLowerCase();
 		if (!imageExtensions.includes(ext) && !videoExtensions.includes(ext)) return null;
 		return `${filename.slice(0, -ext.length)}.png`;
