@@ -90,14 +90,6 @@
 								:false-value="false" />
 						</b-field>
 
-						<b-field label="Strip EXIF"
-							message="Remove EXIF metadata from uploaded files"
-							horizontal>
-							<b-switch v-model="options.stripExif"
-								:true-value="true"
-								:false-value="false" />
-						</b-field>
-
 						<b-field label="Public mode"
 							message="Enable anonymous uploades"
 							horizontal>

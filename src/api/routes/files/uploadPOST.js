@@ -7,7 +7,6 @@ const jetpack = require('fs-jetpack');
 const Busboy = require('busboy');
 const fs = require('fs');
 /*
-	TODO: Strip exif data if the owner/user configured it as such
 	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover.
 	TODO: If source is a video, generate a thumb of the first frame and save the video length.
@@ -174,13 +173,6 @@ class uploadPOST extends Route {
 				log.error('There was an error updating editedAt on an album');
 				log.error(error);
 			}
-		}
-
-		/*
-			If exif removal has been force service-wide or requested by the user, remove it
-		*/
-		if (process.env.STRIP_EXIF == 'true') { // || user.settings.stripExif) {
-			// Util.removeExif(upload.filename);
 		}
 
 		/*

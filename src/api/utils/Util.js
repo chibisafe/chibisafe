@@ -42,21 +42,6 @@ class Util {
 		return null;
 	}
 
-	/*
-	static async removeExif(filename) {
-		This needs more testing.
-		Even though the exif data seems to be stripped, no other online service
-		is recognizing the file as an image file.
-
-		const ExifTransformer = require('exif-be-gone');
-		const toStream = require('buffer-to-stream');
-
-		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
-		const writer = jetpack.createWriteStream(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, `${filename}.noexif`));
-		toStream(file).pipe(new ExifTransformer()).pipe(writer);
-	}
-	*/
-
 	static async generateThumbnailForImage(filename, output) {
 		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
 		await sharp(file)
