@@ -76,14 +76,37 @@
 
 			<div class="spacer" />
 
-			<router-link v-if="!loggedIn"
-				class="navbar-item"
-				to="/login"><i class="hidden" />Login</router-link>
-
-			<router-link v-else
-				to="/dashboard"
-				class="navbar-item no-active"
-				exact><i class="hidden" />Dashboard</router-link>
+			<template v-if="loggedIn">
+				<router-link
+					to="/dashboard"
+					class="navbar-item no-active"
+					exact>
+					<i class="hidden" />
+					Uploads
+				</router-link>
+				<router-link
+					to="/dashboard/albums"
+					class="navbar-item no-active"
+					exact>
+					<i class="hidden" />
+					Albums
+				</router-link>
+				<router-link
+					to="/dashboard/account"
+					class="navbar-item no-active"
+					exact>
+					<i class="hidden" />
+					Account
+				</router-link>
+			</template>
+			<template v-else>
+				<router-link
+					class="navbar-item"
+					to="/login">
+					<i class="hidden" />
+					Login
+				</router-link>
+			</template>
 		</div>
 	</nav>
 </template>
