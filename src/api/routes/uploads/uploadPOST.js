@@ -31,19 +31,20 @@ class uploadPOST extends Route {
 		const user = await Util.isAuthorized(req);
 		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 
+		const albumId = req.body.albumid || req.headers.albumid;
+		if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
+		if (albumId && user) {
+			const album = await db.table('albums').where({ id: albumId, userId: user.id }).first();
+			if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
+		}
+
 		return upload(req, res, async err => {
 			if (err) console.error(err.message);
-
-			const albumId = req.body.albumid || req.headers.albumid;
-			if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
-			if (albumId && user) {
-				const album = await db.table('albums').where({ id: albumId, userId: user.id }).first();
-				if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
-			}
 
 			let uploadedFile = {};
 			let originalFile;
 			let insertedId;
+			const now = moment.utc().toDate();
 
 			const remappedKeys = this._remapKeys(req.body);
 			for (const file of req.files) {
@@ -85,6 +86,19 @@ class uploadPOST extends Route {
 				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, originalFile);
 				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
 				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
+			}
+
+			/*
+				If the upload had an album specified we make sure to create the relation
+				and update the according timestamps..
+			*/
+			if (albumId) {
+				try {
+					await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
+					await db.table('albums').where('id', albumId).update('editedAt', now);
+				} catch (error) {
+					console.error(error);
+				}
 			}
 
 			return res.status(201).send({
