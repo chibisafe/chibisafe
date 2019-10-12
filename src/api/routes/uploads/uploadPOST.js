@@ -42,63 +42,66 @@ class uploadPOST extends Route {
 			if (err) console.error(err.message);
 
 			let uploadedFile = {};
-			let originalFile;
 			let insertedId;
-			const now = moment.utc().toDate();
 
 			const remappedKeys = this._remapKeys(req.body);
-			for (const file of req.files) {
-				originalFile = file;
-				const ext = path.extname(file.originalname);
-				const hash = Util.generateFileHash(file.buffer);
-				const filename = Util.getUniqueFilename(file.originalname);
-				if (remappedKeys && remappedKeys.uuid) {
-					const chunkOutput = path.join(__dirname,
-						'..',
-						'..',
-						'..',
-						'..',
-						process.env.UPLOAD_FOLDER,
-						'chunks',
-						remappedKeys.uuid,
-						`${remappedKeys.chunkindex.padStart(3, 0)}${ext || ''}`);
-					await jetpack.writeAsync(chunkOutput, file.buffer);
-				} else {
-					const output = path.join(__dirname,
-						'..',
-						'..',
-						'..',
-						'..',
-						process.env.UPLOAD_FOLDER,
-						filename);
-					await jetpack.writeAsync(output, file.buffer);
-					uploadedFile = {
-						name: filename,
-						hash,
-						size: file.buffer.length,
-						url: filename
-					};
-				}
+			const file = req.files[0];
+
+			const ext = path.extname(file.originalname);
+			const hash = Util.generateFileHash(file.buffer);
+
+			const filename = Util.getUniqueFilename(file.originalname);
+
+			/*
+				First let's get the hash of the file. This will be useful to check if the file
+				has already been upload by either the user or an anonymous user.
+				In case this is true, instead of uploading it again we retrieve the url
+				of the file that is already saved and thus don't store extra copies of the same file.
+
+				For this we need to wait until we have a filename so that we can delete the uploaded file.
+			*/
+			const exists = await this.checkIfFileExists(db, user, hash);
+			if (exists) return this.fileExists(res, exists, filename);
+
+			if (remappedKeys && remappedKeys.uuid) {
+				const chunkOutput = path.join(__dirname,
+					'..',
+					'..',
+					'..',
+					'..',
+					process.env.UPLOAD_FOLDER,
+					'chunks',
+					remappedKeys.uuid,
+					`${remappedKeys.chunkindex.padStart(3, 0)}${ext || ''}`);
+				await jetpack.writeAsync(chunkOutput, file.buffer);
+			} else {
+				const output = path.join(__dirname,
+					'..',
+					'..',
+					'..',
+					'..',
+					process.env.UPLOAD_FOLDER,
+					filename);
+				await jetpack.writeAsync(output, file.buffer);
+				uploadedFile = {
+					name: filename,
+					hash,
+					size: file.buffer.length,
+					url: filename
+				};
 			}
 
 			if (!remappedKeys || !remappedKeys.uuid) {
 				Util.generateThumbnails(uploadedFile.name);
-				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, originalFile);
+				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, file);
 				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
 				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
-			}
 
-			/*
-				If the upload had an album specified we make sure to create the relation
-				and update the according timestamps..
-			*/
-			if (albumId) {
-				try {
-					await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
-					await db.table('albums').where('id', albumId).update('editedAt', now);
-				} catch (error) {
-					console.error(error);
-				}
+				/*
+					If the upload had an album specified we make sure to create the relation
+					and update the according timestamps..
+				*/
+				this.saveFileToAlbum(db, albumId, insertedId);
 			}
 
 			return res.status(201).send({
@@ -106,6 +109,43 @@ class uploadPOST extends Route {
 				...uploadedFile
 			});
 		});
+	}
+
+	fileExists(res, exists, filename) {
+		res.json({
+			message: 'Successfully uploaded the file.',
+			name: exists.name,
+			hash: exists.hash,
+			size: exists.size,
+			url: `${process.env.DOMAIN}/${exists.name}`,
+			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
+			repeated: true
+		});
+
+		return Util.deleteFile(filename);
+	}
+
+	async checkIfFileExists(db, user, hash) {
+		const exists = await db.table('files')
+			.where(function() { // eslint-disable-line func-names
+				if (user) this.where('userId', user.id);
+				else this.whereNull('userId');
+			})
+			.where({ hash })
+			.first();
+		return exists;
+	}
+
+	async saveFileToAlbum(db, albumId, insertedId) {
+		if (!albumId) return;
+
+		const now = moment.utc().toDate();
+		try {
+			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
+			await db.table('albums').where('id', albumId).update('editedAt', now);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	async saveFileToDatabase(req, res, user, db, file, originalFile) {
