@@ -50,30 +50,6 @@
 				<i class="icon-ecommerce-safebox" /> {{ config.serviceName }}
 			</router-link>
 
-			<!--
-			<template v-if="loggedIn">
-				<router-link
-					to="/dashboard/uploads"
-					class="navbar-item no-active"
-					exact><i class="hidden"/>Uploads</router-link>
-
-				<router-link
-					to="/dashboard/albums"
-					class="navbar-item no-active"
-					exact><i class="hidden"/>Albums</router-link>
-
-				<router-link
-					to="/dashboard/tags"
-					class="navbar-item no-active"
-					exact><i class="hidden"/>Tags</router-link>
-
-				<router-link
-					to="/dashboard/settings"
-					class="navbar-item no-active"
-					exact><i class="hidden"/>Settings</router-link>
-			</template>
-			-->
-
 			<div class="spacer" />
 
 			<template v-if="loggedIn">
@@ -125,9 +101,6 @@ export default {
 	computed: {
 		loggedIn() {
 			return this.$store.state.loggedIn;
-		},
-		user() {
-			return this.$store.state.user;
 		},
 		config() {
 			return this.$store.state.config;

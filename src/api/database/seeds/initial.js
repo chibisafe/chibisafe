@@ -3,7 +3,7 @@ const moment = require('moment');
 
 exports.seed = async db => {
 	const now = moment.utc().toDate();
-	const user = await db.table('users').where({ username: 'root' }).first();
+	const user = await db.table('users').where({ username: process.env.ADMIN_ACCOUNT }).first();
 	if (user) return;
 	try {
 		const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);

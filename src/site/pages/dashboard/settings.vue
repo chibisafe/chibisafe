@@ -1,21 +1,5 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-	div.search-container {
-		display: flex;
-		justify-content: center;
-	}
-</style>
-<style lang="scss">
-	@import '~/assets/styles/_colors.scss';
-</style>
-
-
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -25,11 +9,6 @@
 					<div class="column">
 						<h2 class="subtitle">Service settings</h2>
 						<hr>
-						<!--
-						<h1 class="title">Uploads</h1>
-						<h2 class="subtitle">Keep track of all your uploads in here</h2>
-						<hr>
-						-->
 
 						<b-field label="Service name"
 							message="Please enter the name which this service is gonna be identified as"
@@ -129,11 +108,6 @@ export default {
 		return {
 			options: {}
 		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
 	},
 	metaInfo() {
 		return { title: 'Settings' };

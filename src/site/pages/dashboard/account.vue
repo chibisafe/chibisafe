@@ -1,21 +1,5 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-	div.search-container {
-		display: flex;
-		justify-content: center;
-	}
-</style>
-<style lang="scss">
-	@import '~/assets/styles/_colors.scss';
-</style>
-
-
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -94,11 +78,6 @@ export default {
 		return {
 			user: {}
 		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
 	},
 	metaInfo() {
 		return { title: 'Account' };

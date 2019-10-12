@@ -83,6 +83,16 @@ div#drag-overlay {
 	}
 }
 
+
+section.hero {
+	&.dashboard {
+		// background-color: $backgroundLight1 !important;
+		div.hero-body {
+			align-items: baseline;
+		}
+	}
+}
+
 section input, section a.button {
 	font-size: 14px !important;
 }

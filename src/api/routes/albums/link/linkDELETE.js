@@ -6,13 +6,13 @@ class linkDELETE extends Route {
 		super('/album/link/delete/:identifier', 'delete');
 	}
 
-	async run(req, res, db) {
+	async run(req, res, db, user) {
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 
 		try {
 			const link = await db.table('links')
-				.where({ identifier })
+				.where({ identifier, userId: user.id })
 				.first();
 
 			dump(link);

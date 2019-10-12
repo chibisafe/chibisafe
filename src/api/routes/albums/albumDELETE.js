@@ -14,7 +14,7 @@ class albumDELETE extends Route {
 			Check if the album exists
 		*/
 		const album = await db.table('albums').where({ id, userId: user.id }).first();
-		if (!album) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });
+		if (!album) return res.status(400).json({ message: 'The album doesn\'t exist or doesn\'t belong to the user' });
 
 		try {
 			/*

@@ -1,15 +1,9 @@
 <style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-
 	.albumsModal .columns .column { padding: .25rem; }
 </style>
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -70,11 +64,6 @@ export default {
 			isAlbumsModalActive: false,
 			showingModalForFile: null
 		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
 	},
 	metaInfo() {
 		return { title: 'Uploads' };

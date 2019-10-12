@@ -19,10 +19,14 @@ class uploadPOST extends Route {
 		super('/upload.....', 'post', { bypassAuth: true });
 	}
 
-	async run(req, res, db) {
+	run(req, res) {
+		return res.status(201).send();
+
+		/*
 		const user = await Util.isAuthorized(req);
 		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 		return this.uploadFile(req, res, db, user);
+		*/
 	}
 
 	async processFile(req, res, db, user, file) {

@@ -172,11 +172,6 @@ export default {
 			searchTerm: null
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
 	mounted() {
 		this.$search.items(this.files);
 	},

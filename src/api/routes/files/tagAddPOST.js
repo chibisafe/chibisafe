@@ -5,10 +5,14 @@ class tagAddPOST extends Route {
 		super('/file/tag/add', 'post');
 	}
 
-	run(req, res, db) {
+	async run(req, res, db, user) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { fileId, tagNames } = req.body;
 		if (!fileId || !tagNames.length) return res.status(400).json({ message: 'No tags provided' });
+
+		// Make sure the file belongs to the user
+		const file = await db.table('files').where({ id: fileId, userId: user.id }).first();
+		if (!file) return res.status(400).json({ message: 'File doesn\'t exist.' });
 
 		tagNames.forEach(async tag => {
 			try {

@@ -9,7 +9,7 @@
 </style>
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -70,11 +70,6 @@ export default {
 			isAlbumsModalActive: false,
 			showingModalForFile: null
 		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
 	},
 	metaInfo() {
 		return { title: 'Album' };

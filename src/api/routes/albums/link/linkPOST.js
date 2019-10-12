@@ -1,6 +1,5 @@
 const Route = require('../../../structures/Route');
 const Util = require('../../../utils/Util');
-const log = require('../../../utils/Log');
 
 class linkPOST extends Route {
 	constructor() {
@@ -15,7 +14,7 @@ class linkPOST extends Route {
 		/*
 			Make sure the album exists
 		*/
-		const exists = await db.table('albums').where('id', albumId).first();
+		const exists = await db.table('albums').where({ id: albumId, userId: user.id }).first();
 		if (!exists) return res.status(400).json({ message: 'Album doesn\t exist' });
 
 		/*
