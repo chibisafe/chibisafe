@@ -103,7 +103,7 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: 'admin',
+	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			options: {}

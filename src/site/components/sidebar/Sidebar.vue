@@ -46,12 +46,12 @@
 		</router-link>
 		<template v-if="user && user.isAdmin">
 			<hr>
-			<router-link to="/dashboard/users">
+			<router-link to="/dashboard/admin/users">
 				<i class="icon-setting-gear-a" />Users
 			</router-link>
 			<!--
 			TODO: Dont wanna deal with this now
-			<router-link to="/dashboard/settings">
+			<router-link to="/dashboard/admin/settings">
 				<i class="icon-setting-gear-a" />Settings
 			</router-link>
 			-->

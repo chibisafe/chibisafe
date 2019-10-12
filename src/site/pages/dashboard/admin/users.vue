@@ -146,7 +146,7 @@
 									<b-table-column field="username"
 										label="Username"
 										centered>
-										{{ props.row.username }}
+										<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">{{ props.row.username }}</nuxt-link>
 									</b-table-column>
 
 									<b-table-column field="enabled"
@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import Sidebar from '../../components/sidebar/Sidebar.vue';
+import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {

@@ -35,7 +35,8 @@
 						:files="files"
 						:isPublic="true"
 						:width="200"
-						:enableSearch="false" />
+						:enableSearch="false"
+						:enableToolbar="false" />
 				</div>
 			</div>
 		</template>
