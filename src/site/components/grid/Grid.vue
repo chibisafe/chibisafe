@@ -4,6 +4,30 @@
 		transition: all .25s cubic-bezier(.55,0,.1,1);
 		-webkit-transition: all .25s cubic-bezier(.55,0,.1,1);
 	}
+
+	div.toolbar {
+		padding: 1rem;
+
+		.block {
+			text-align: right;
+		}
+	}
+
+	span.extension {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2rem;
+		pointer-events: none;
+		opacity: .75;
+	}
+
 	div.actions {
 		opacity: 0;
 		-webkit-transition: opacity 0.1s linear;
@@ -23,6 +47,11 @@
 
 		span {
 			padding: 3px;
+			&.more {
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
 
 			&:nth-child(1), &:nth-child(2) {
 				align-items: flex-end;
@@ -38,7 +67,7 @@
 				justify-content: center;
 				align-items: center;
 				display: flex;
-				&:before {
+				&.btn:before {
 					content: '';
 					width: 30px;
 					height: 30px;
@@ -76,61 +105,174 @@
 </style>
 
 <template>
-	<Waterfall
-		:gutterWidth="10"
-		:gutterHeight="4">
-		<!-- Gotta implement search and pagination here -->
-		<input v-model="searchTerm"
-			type="text"
-			placeholder="Search..."
-			@input="search()"
-			@keyup.enter="search()">
+	<div>
+		<div v-if="enableToolbar"
+			class="toolbar">
+			<div class="block">
+				<b-radio v-model="showList"
+					name="name"
+					:native-value="true">
+					List
+				</b-radio>
+				<b-radio v-model="showList"
+					name="name"
+					:native-value="false">
+					Grid
+				</b-radio>
+			</div>
+		</div>
 
-		<WaterfallItem v-for="(item, index) in files"
-			v-if="showWaterfall && item.thumb"
-			:key="index"
-			:width="width"
-			move-class="item-move">
-			<template v-if="isPublic">
-				<a :href="`${item.url}`"
-					target="_blank">
-					<img :src="`${item.thumb}`">
-				</a>
-			</template>
-			<template v-else>
-				<img :src="`${item.thumb}`">
-				<div v-if="!isPublic"
-					:class="{ fixed }"
-					class="actions">
-					<b-tooltip label="Link"
-						position="is-top">
-						<a :href="`${item.url}`"
-							target="_blank">
-							<i class="icon-web-code" />
-						</a>
-					</b-tooltip>
-					<b-tooltip label="Albums"
-						position="is-top">
-						<a @click="$parent.openAlbumModal(item)">
-							<i class="icon-interface-window" />
-						</a>
-					</b-tooltip>
-					<b-tooltip label="Tags"
-						position="is-top">
-						<a @click="manageTags(item)">
-							<i class="icon-ecommerce-tag-c" />
-						</a>
-					</b-tooltip>
-					<b-tooltip label="Delete"
-						position="is-top">
-						<a @click="deleteFile(item, index)">
-							<i class="icon-editorial-trash-a-l" />
-						</a>
-					</b-tooltip>
-				</div>
-			</template>
-		</WaterfallItem>
-	</Waterfall>
+		<Waterfall v-if="!showList"
+			:gutterWidth="10"
+			:gutterHeight="4">
+			<!--
+				TODO: Implement search based on originalName, albumName and tags
+				<input v-if="enableSearch"
+					v-model="searchTerm"
+					type="text"
+					placeholder="Search..."
+					@input="search()"
+					@keyup.enter="search()">
+			 -->
+
+			<!-- TODO: Implement pagination -->
+
+			<WaterfallItem v-for="(item, index) in files"
+				v-if="showWaterfall"
+				:key="index"
+				:width="width"
+				move-class="item-move">
+				<template v-if="isPublic">
+					<a :href="`${item.url}`"
+						target="_blank">
+						<img :src="item.thumb ? item.thumb : blank">
+					</a>
+				</template>
+				<template v-else>
+					<img :src="item.thumb ? item.thumb : blank">
+					<span v-if="!item.thumb && item.name"
+						class="extension">{{ item.name.split('.').pop() }}</span>
+					<div v-if="!isPublic"
+						:class="{ fixed }"
+						class="actions">
+						<b-tooltip label="Link"
+							position="is-top">
+							<a :href="`${item.url}`"
+								target="_blank"
+								class="btn">
+								<i class="icon-web-code" />
+							</a>
+						</b-tooltip>
+						<b-tooltip label="Albums"
+							position="is-top">
+							<a class="btn"
+								@click="$parent.openAlbumModal(item)">
+								<i class="icon-interface-window" />
+							</a>
+						</b-tooltip>
+						<!--
+						<b-tooltip label="Tags"
+							position="is-top">
+							<a @click="manageTags(item)">
+								<i class="icon-ecommerce-tag-c" />
+							</a>
+						</b-tooltip>
+						-->
+						<b-tooltip label="Delete"
+							position="is-top">
+							<a class="btn"
+								@click="deleteFile(item, index)">
+								<i class="icon-editorial-trash-a-l" />
+							</a>
+						</b-tooltip>
+						<b-tooltip v-if="user && user.isAdmin"
+							label="More info"
+							position="is-top"
+							class="more">
+							<nuxt-link :to="`/dashboard/admin/file/${item.id}`">
+								<i class="icon-interface-more" />
+							</nuxt-link>
+						</b-tooltip>
+					</div>
+				</template>
+			</WaterfallItem>
+		</Waterfall>
+		<div v-else>
+			<b-table
+				:data="files || []"
+				:mobile-cards="true">
+				<template slot-scope="props">
+					<template v-if="!props.row.hideFromList">
+						<b-table-column field="url"
+							label="URL">
+							<a :href="props.row.url"
+								target="_blank">{{ props.row.url }}</a>
+						</b-table-column>
+
+						<b-table-column field="albums"
+							label="Albums"
+							centered>
+							<template v-for="(album, index) in props.row.albums">
+								<nuxt-link :key="index"
+									:to="`/dashboard/albums/${album.id}`">
+									{{ album.name }}
+								</nuxt-link>
+								<template v-if="index < props.row.albums.length - 1">, </template>
+							</template>
+
+							{{ props.row.username }}
+						</b-table-column>
+
+						<b-table-column field="uploaded"
+							label="Uploaded"
+							centered>
+							<span><timeago :since="props.row.createdAt" /></span>
+						</b-table-column>
+
+						<b-table-column field="purge"
+							centered>
+							<b-tooltip label="Albums"
+								position="is-top">
+								<a class="btn"
+									@click="$parent.openAlbumModal(props.row)">
+									<i class="icon-interface-window" />
+								</a>
+							</b-tooltip>
+							<b-tooltip label="Delete"
+								position="is-top"
+								class="is-danger">
+								<a class="is-danger"
+									@click="deleteFile(props.row)">
+									<i class="icon-editorial-trash-a-l" />
+								</a>
+							</b-tooltip>
+							<b-tooltip v-if="user && user.isAdmin"
+								label="More info"
+								position="is-top"
+								class="more">
+								<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
+									<i class="icon-interface-more" />
+								</nuxt-link>
+							</b-tooltip>
+						</b-table-column>
+					</template>
+				</template>
+				<template slot="empty">
+					<div class="has-text-centered">
+						<i class="icon-misc-mood-sad" />
+					</div>
+					<div class="has-text-centered">
+						Nothing here
+					</div>
+				</template>
+				<template slot="footer">
+					<div class="has-text-right">
+						{{ files.length }} files
+					</div>
+				</template>
+			</b-table>
+		</div>
+	</div>
 </template>
 <script>
 import Waterfall from './waterfall/Waterfall.vue';
@@ -157,21 +299,30 @@ export default {
 		width: {
 			type: Number,
 			default: 150
+		},
+		enableSearch: {
+			type: Boolean,
+			default: true
+		},
+		enableToolbar: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
 		return {
 			showWaterfall: true,
-			searchTerm: null
+			searchTerm: null,
+			showList: false
 		};
 	},
 	computed: {
-		config() {
-			return this.$store.state.config;
+		user() {
+			return this.$store.state.user;
+		},
+		blank() {
+			return require('@/assets/images/blank.png');
 		}
-	},
-	mounted() {
-		this.$search.items(this.files);
 	},
 	methods: {
 		async search() {
@@ -184,7 +335,7 @@ export default {
 			console.log('> Search result data', data);
 		},
 		deleteFile(file, index) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				title: 'Deleting file',
 				message: 'Are you sure you want to <b>delete</b> this file?',
 				confirmText: 'Delete File',
@@ -192,12 +343,17 @@ export default {
 				hasIcon: true,
 				onConfirm: async () => {
 					const response = await this.$axios.$delete(`file/${file.id}`);
-					this.showWaterfall = false;
-					this.files.splice(index, 1);
-					this.$nextTick(() => {
-						this.showWaterfall = true;
-					});
-					return this.$toast.open(response.message);
+					if (this.showList) {
+						file.hideFromList = true;
+						this.$forceUpdate();
+					} else {
+						this.showWaterfall = false;
+						this.files.splice(index, 1);
+						this.$nextTick(() => {
+							this.showWaterfall = true;
+						});
+					}
+					return this.$buefy.toast.open(response.message);
 				}
 			});
 		}

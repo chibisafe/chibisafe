@@ -52,7 +52,10 @@ class Route {
 		this.options = options || {};
 	}
 
-	authorize(req, res) {
+	async authorize(req, res) {
+		const banned = await db.table('bans').where({ ip: req.ip }).first();
+		if (banned) return res.status(401).json({ message: 'This IP has been banned from using the service.' });
+
 		if (this.options.bypassAuth) return this.run(req, res, db);
 		if (req.headers.apiKey) return this.authorizeApiKey(req, res, req.headers.apiKey);
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });

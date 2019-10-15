@@ -103,21 +103,18 @@ export default {
 	computed: {
 		loggedIn() {
 			return this.$store.state.loggedIn;
-		},
-		token() {
-			return this.$store.state.token;
 		}
 	},
 	methods: {
 		createShareXThing() {
 			const sharexFile = `{
-				"Name": "${location.hostname}",
+				"Name": "${this.$store.state.config.serviceName}",
 				"DestinationType": "ImageUploader, FileUploader",
 				"RequestType": "POST",
 				"RequestURL": "${location.origin}/api/upload",
-				"FileFormName": "file",
+				"FileFormName": "files[]",
 				"Headers": {
-					"authorization": "Bearer ${this.token}",
+					"authorization": "Bearer ${this.$store.state.token}",
 					"accept": "application/vnd.lolisafe.json"
 				},
 				"ResponseType": "Text",

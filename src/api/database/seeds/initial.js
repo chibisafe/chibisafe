@@ -1,10 +1,9 @@
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const randomstring = require('randomstring');
 
 exports.seed = async db => {
 	const now = moment.utc().toDate();
-	const user = await db.table('users').where({ username: 'root' }).first();
+	const user = await db.table('users').where({ username: process.env.ADMIN_ACCOUNT }).first();
 	if (user) return;
 	try {
 		const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
@@ -27,4 +26,4 @@ exports.seed = async db => {
 	} catch (error) {
 		console.error(error);
 	}
-}
+};

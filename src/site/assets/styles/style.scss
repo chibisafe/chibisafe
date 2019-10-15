@@ -14,7 +14,7 @@ $size-normal: 1rem;
 html {
 	// font-size: 100%;
 	font-size: 14px;
-	background-color: $background;
+	background-color: $backgroundLight1;
 }
 
 h4 {
@@ -41,6 +41,11 @@ h4 {
 
 .text-center {
 	text-align: center;
+}
+
+hr {
+	background-color: #c7c7c7;
+	height: 1px;
 }
 // Bulma color changes.
 .tooltip.is-top.is-primary:before { border-top: 5px solid #20222b; }
@@ -75,6 +80,16 @@ div#drag-overlay {
 		display: flex;
 		justify-content: center;
 		font-size: 2em;
+	}
+}
+
+
+section.hero {
+	&.dashboard {
+		// background-color: $backgroundLight1 !important;
+		div.hero-body {
+			align-items: baseline;
+		}
 	}
 }
 

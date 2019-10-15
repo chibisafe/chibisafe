@@ -1,15 +1,9 @@
 <style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-
 	.albumsModal .columns .column { padding: .25rem; }
 </style>
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -21,7 +15,8 @@
 						<hr>
 						<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
 						<Grid v-if="files.length"
-							:files="files" />
+							:files="files"
+							:enableSearch="false" />
 					</div>
 				</div>
 			</div>
@@ -70,11 +65,6 @@ export default {
 			showingModalForFile: null
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
 	metaInfo() {
 		return { title: 'Uploads' };
 	},
@@ -97,7 +87,7 @@ export default {
 				albumId: id,
 				fileId: this.showingModalForFile.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 
 			// Not the prettiest solution to refetch on each click but it'll do for now
 			this.getFiles();

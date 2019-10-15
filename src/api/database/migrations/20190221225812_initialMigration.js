@@ -62,6 +62,27 @@ exports.up = async knex => {
 		table.integer('albumId');
 		table.integer('linkId');
 	});
+
+	await knex.schema.createTable('tags', table => {
+		table.increments();
+		table.string('uuid');
+		table.integer('userId');
+		table.string('name');
+		table.timestamp('createdAt');
+		table.timestamp('editedAt');
+	});
+
+	await knex.schema.createTable('fileTags', table => {
+		table.increments();
+		table.integer('fileId');
+		table.integer('tagId');
+	});
+
+	await knex.schema.createTable('bans', table => {
+		table.increments();
+		table.string('ip');
+		table.timestamp('createdAt');
+	});
 };
 exports.down = async knex => {
 	await knex.schema.dropTableIfExists('users');
@@ -70,4 +91,7 @@ exports.down = async knex => {
 	await knex.schema.dropTableIfExists('links');
 	await knex.schema.dropTableIfExists('albumsFiles');
 	await knex.schema.dropTableIfExists('albumsLinks');
+	await knex.schema.dropTableIfExists('tags');
+	await knex.schema.dropTableIfExists('fileTags');
+	await knex.schema.dropTableIfExists('bans');
 };

@@ -6,15 +6,13 @@ class verifyGET extends Route {
 	}
 
 	run(req, res, db, user) {
-		const returnUser = {
-			id:	user.id,
-			username: user.username,
-			isAdmin: user.isAdmin
-		};
-
 		return res.json({
 			message: 'Successfully verified token',
-			user: returnUser
+			user: {
+				id:	user.id,
+				username: user.username,
+				isAdmin: user.isAdmin
+			}
 		});
 	}
 }

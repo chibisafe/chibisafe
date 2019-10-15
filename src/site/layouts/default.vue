@@ -1,8 +1,17 @@
 <template>
-	<nuxt />
+	<div v-bar>
+		<div>
+			<div class="layout">
+				<!--<Uploader />-->
+				<nuxt-child id="app" />
+			</div>
+		</div>
+	</div>
 </template>
 <script>
+import Uploader from '~/components/uploader/Filepond.vue';
 export default {
+	components: { Uploader },
 	computed: {
 		config() {
 			return this.$store.state.config;
@@ -15,7 +24,7 @@ export default {
 		alert() {
 			if (!this.alert) return;
 
-			this.$toast.open({
+			this.$buefy.toast.open({
 				duration: 3500,
 				message: this.alert.text,
 				position: 'is-bottom',
@@ -33,6 +42,8 @@ export default {
 };
 </script>
 <style lang="scss">
+	html { overflow: hidden !important; }
+	.layout { height: 100vh; }
 	@import "~/assets/styles/style.scss";
 	@import "~/assets/styles/icons.min.css";
 </style>

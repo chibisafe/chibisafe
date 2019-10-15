@@ -9,7 +9,7 @@
 </style>
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -71,11 +71,6 @@ export default {
 			showingModalForFile: null
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
 	metaInfo() {
 		return { title: 'Album' };
 	},
@@ -107,7 +102,7 @@ export default {
 				albumId: id,
 				fileId: this.showingModalForFile.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 			this.getFiles();
 		},
 		async getAlbums() {

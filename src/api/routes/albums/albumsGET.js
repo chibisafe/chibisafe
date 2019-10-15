@@ -18,6 +18,8 @@ class albumsGET extends Route {
 			.select('id', 'name', 'createdAt', 'editedAt');
 
 		for (const album of albums) {
+			// TODO: Optimize the shit out of this.
+
 			/*
 				Fetch every public link the album has
 			*/

@@ -17,7 +17,6 @@ class configGET extends Route {
 				albumLinkLength: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
 				generateThumbnails: process.env.GENERATE_THUMBNAILS == 'true' ? true : false,
 				generateZips: process.env.GENERATE_ZIPS == 'true' ? true : false,
-				stripExif: process.env.STRIP_EXIF == 'true' ? true : false,
 				publicMode: process.env.PUBLIC_MODE == 'true' ? true : false,
 				enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
 			}

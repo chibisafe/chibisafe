@@ -34,7 +34,9 @@
 					<Grid v-if="files && files.length"
 						:files="files"
 						:isPublic="true"
-						:width="200" />
+						:width="200"
+						:enableSearch="false"
+						:enableToolbar="false" />
 				</div>
 			</div>
 		</template>
@@ -65,7 +67,7 @@ export default {
 	},
 	async asyncData({ app, params, error }) {
 		try {
-			const data = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
+			const { data } = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
 			const downloadLink = data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
 			return {
 				name: data.name,
@@ -74,6 +76,7 @@ export default {
 				downloadLink
 			};
 		} catch (err) {
+			console.log('Error when retrieving album', err);
 			/*
 			return {
 				name: null,
@@ -118,18 +121,6 @@ export default {
 				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
 			]
 		};
-	},
-	mounted() {
-		/*
-		if (this.error) {
-			if (this.error === 404) {
-				this.$toast.open('Album not found', true, 3000);
-				setTimeout(() => this.$router.push('/404'), 3000);
-				return;
-			}
-			this.$toast.open(`Error code ${this.error}`, true, 3000);
-		}
-		*/
 	}
 };
 </script>

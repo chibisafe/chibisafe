@@ -1,21 +1,5 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-	div.search-container {
-		display: flex;
-		justify-content: center;
-	}
-</style>
-<style lang="scss">
-	@import '~/assets/styles/_colors.scss';
-</style>
-
-
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -25,11 +9,6 @@
 					<div class="column">
 						<h2 class="subtitle">Service settings</h2>
 						<hr>
-						<!--
-						<h1 class="title">Uploads</h1>
-						<h2 class="subtitle">Keep track of all your uploads in here</h2>
-						<hr>
-						-->
 
 						<b-field label="Service name"
 							message="Please enter the name which this service is gonna be identified as"
@@ -90,14 +69,6 @@
 								:false-value="false" />
 						</b-field>
 
-						<b-field label="Strip EXIF"
-							message="Remove EXIF metadata from uploaded files"
-							horizontal>
-							<b-switch v-model="options.stripExif"
-								:true-value="true"
-								:false-value="false" />
-						</b-field>
-
 						<b-field label="Public mode"
 							message="Enable anonymous uploades"
 							horizontal>
@@ -132,16 +103,11 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: 'auth',
+	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			options: {}
 		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
 	},
 	metaInfo() {
 		return { title: 'Settings' };
@@ -155,14 +121,14 @@ export default {
 			this.options = response.config;
 		},
 		promptRestartService() {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
 				onConfirm: () => this.restartService()
 			});
 		},
 		async restartService() {
 			const response = await this.$axios.$post(`service/restart`);
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		}
 	}
 };

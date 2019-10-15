@@ -5,7 +5,7 @@
 		box-shadow: none;
 
 		.navbar-brand {
-			width: 100%;
+			width: calc(100% - 2em);
 			align-items: flex-start;
 			padding: 1em;
 
@@ -50,40 +50,39 @@
 				<i class="icon-ecommerce-safebox" /> {{ config.serviceName }}
 			</router-link>
 
-			<!--
+			<div class="spacer" />
+
 			<template v-if="loggedIn">
 				<router-link
-					to="/dashboard/uploads"
+					to="/dashboard"
 					class="navbar-item no-active"
-					exact><i class="hidden"/>Uploads</router-link>
-
+					exact>
+					<i class="hidden" />
+					Uploads
+				</router-link>
 				<router-link
 					to="/dashboard/albums"
 					class="navbar-item no-active"
-					exact><i class="hidden"/>Albums</router-link>
-
+					exact>
+					<i class="hidden" />
+					Albums
+				</router-link>
 				<router-link
-					to="/dashboard/tags"
+					to="/dashboard/account"
 					class="navbar-item no-active"
-					exact><i class="hidden"/>Tags</router-link>
-
-				<router-link
-					to="/dashboard/settings"
-					class="navbar-item no-active"
-					exact><i class="hidden"/>Settings</router-link>
+					exact>
+					<i class="hidden" />
+					Account
+				</router-link>
 			</template>
-			-->
-
-			<div class="spacer" />
-
-			<router-link v-if="!loggedIn"
-				class="navbar-item"
-				to="/login"><i class="hidden" />Login</router-link>
-
-			<router-link v-else
-				to="/dashboard"
-				class="navbar-item no-active"
-				exact><i class="hidden" />Dashboard</router-link>
+			<template v-else>
+				<router-link
+					class="navbar-item"
+					to="/login">
+					<i class="hidden" />
+					Login
+				</router-link>
+			</template>
 		</div>
 	</nav>
 </template>
@@ -102,9 +101,6 @@ export default {
 	computed: {
 		loggedIn() {
 			return this.$store.state.loggedIn;
-		},
-		user() {
-			return this.$store.state.user;
 		},
 		config() {
 			return this.$store.state.config;

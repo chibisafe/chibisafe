@@ -1,14 +1,5 @@
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-	div.search-container {
-		display: flex;
-		justify-content: center;
-	}
-
 	div.view-container {
 		padding: 2rem;
 	}
@@ -130,7 +121,7 @@
 
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -295,34 +286,25 @@ export default {
 	},
 	methods: {
 		promptDeleteAlbum(id) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this album?',
 				onConfirm: () => this.deleteAlbum(id)
 			});
 		},
-		promptPurgeAlbum(id) {
-			this.$dialog.confirm({
-				message: 'Would you like to delete every file associated with this album?',
-				cancelText: 'No',
-				confirmText: 'Yes',
-				onConfirm: () => this.deleteAlbum(id, true),
-				onCancel: () => this.deleteAlbum(id, false)
-			});
-		},
-		async deleteAlbum(id, purge) {
-			const response = await this.$axios.$delete(`album/${id}/${purge ? true : ''}`);
+		async deleteAlbum(id) {
+			const response = await this.$axios.$delete(`album/${id}`);
 			this.getAlbums();
-			return this.$toast.open(response.message);
+			return this.$buefy.toast.open(response.message);
 		},
 		promptDeleteAlbumLink(identifier) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this album link?',
 				onConfirm: () => this.deleteAlbumLink(identifier)
 			});
 		},
 		async deleteAlbumLink(identifier) {
 			const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
-			return this.$toast.open(response.message);
+			return this.$buefy.toast.open(response.message);
 		},
 		async linkOptionsChanged(link) {
 			const response = await this.$axios.$post(`album/link/edit`,
@@ -331,7 +313,7 @@ export default {
 					enableDownload: link.enableDownload,
 					enabled: link.enabled
 				});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		async createLink(album) {
 			album.isCreatingLink = true;
@@ -339,7 +321,7 @@ export default {
 			try {
 				const response = await this.$axios.$post(`album/link/new`,
 					{ albumId: album.id });
-				this.$toast.open(response.message);
+				this.$buefy.toast.open(response.message);
 				album.links.push({
 					identifier: response.identifier,
 					views: 0,
@@ -358,7 +340,7 @@ export default {
 			const response = await this.$axios.$post(`album/new`,
 				{ name: this.newAlbumName });
 			this.newAlbumName = null;
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 			this.getAlbums();
 		},
 		async getAlbums() {

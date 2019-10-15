@@ -27,7 +27,7 @@ class tagPOST extends Route {
 			editedAt: now
 		});
 
-		return res.json({ message: 'The album was created successfully' });
+		return res.json({ message: 'The tag was created successfully' });
 	}
 }
 

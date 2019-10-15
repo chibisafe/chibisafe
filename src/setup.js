@@ -53,13 +53,6 @@ async function start() {
 		},
 		{
 			type: 'confirm',
-			query: 'Strip EXIF information from uploaded images if possible?',
-			handle: 'STRIP_EXIF',
-			accept: 'y',
-			deny: 'n'
-		},
-		{
-			type: 'confirm',
 			query: 'Serve files with node?',
 			handle: 'SERVE_WITH_NODE',
 			accept: 'y',

@@ -1,14 +1,5 @@
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-	div.search-container {
-		display: flex;
-		justify-content: center;
-	}
-
 	div.view-container {
 		padding: 2rem;
 	}
@@ -130,7 +121,7 @@
 
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns">
@@ -155,7 +146,7 @@
 									<b-table-column field="username"
 										label="Username"
 										centered>
-										{{ props.row.username }}
+										<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">{{ props.row.username }}</nuxt-link>
 									</b-table-column>
 
 									<b-table-column field="enabled"
@@ -201,7 +192,7 @@
 </template>
 
 <script>
-import Sidebar from '../../components/sidebar/Sidebar.vue';
+import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
@@ -233,16 +224,16 @@ export default {
 			const response = await this.$axios.$post(`admin/users/${row.enabled ? 'enable' : 'disable'}`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		async changeIsAdmin(row) {
 			const response = await this.$axios.$post(`admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		},
 		promptPurgeFiles(row) {
-			this.$dialog.confirm({
+			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this user\'s files?',
 				onConfirm: () => this.purgeFiles(row)
 			});
@@ -251,7 +242,7 @@ export default {
 			const response = await this.$axios.$post(`admin/users/purge`, {
 				id: row.id
 			});
-			this.$toast.open(response.message);
+			this.$buefy.toast.open(response.message);
 		}
 	}
 };
