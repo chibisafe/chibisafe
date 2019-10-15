@@ -29,6 +29,20 @@
 						Simply create a user on the site and every upload will be associated with your account, granting you access to your uploaded files through our dashboard.
 					</div>
 				</article>
+
+				<h2 class="subtitle">What are albums?</h2>
+				<article class="message">
+					<div class="message-body">
+						Albums are a simple way of sorting uploads together. Right now you can create albums through the dashboard and use them only with <a target="_blank" href="https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">our chrome extension</a> which will enable you to <strong>right click -&gt; send to lolisafe</strong> or to a desired album if you have any.
+					</div>
+				</article>
+
+				<h2 class="subtitle">Why should I use this?</h2>
+				<article class="message">
+					<div class="message-body">
+						There are too many file upload services out there, and a lot of them rely on the foundations of pomf which is ancient. In a desperate and unsuccessful attempt of finding a good file uploader that's easily extendable, lolisafe was born. We give you control over your files, we give you a way to sort your uploads into albums for ease of access and we give you an api to use with ShareX or any other thing that let's you make POST requests.
+					</div>
+				</article>
 			</div>
 		</div>
 	</section>

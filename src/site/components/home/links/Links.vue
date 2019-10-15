@@ -64,12 +64,12 @@
 </style>
 <template>
 	<div class="links">
-		<a href="https://github.com/Knallli/lolisafe"
+		<a href="https://github.com/WeebDev/lolisafe"
 			target="_blank"
 			class="link">
 			<header class="bd-footer-star-header">
 				<h4 class="bd-footer-title">GitHub</h4>
-				<p class="bd-footer-subtitle">View source code of this</p>
+				<p class="bd-footer-subtitle">Deploy your own lolisafe</p>
 			</header>
 		</a>
 		<div v-if="loggedIn"
