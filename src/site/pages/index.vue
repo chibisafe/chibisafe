@@ -67,7 +67,7 @@
 					<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
 					<!--<Filepond v-if="config.publicMode || (!config.publicMode && loggedIn)" />-->
 					<div v-else>
-						This site has disabled public uploads. You need an account.
+						Bitte melde dich an, um was hochzuladen
 					</div>
 				</div>
 			</div>

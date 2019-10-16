@@ -26,7 +26,7 @@
 <template>
 	<div class="dashboard-menu">
 		<router-link to="/">
-			<i class="icon-ecommerce-safebox" />lolisafe
+			<i class="icon-ecommerce-safebox" />Rahnserver
 		</router-link>
 		<hr>
 		<router-link to="/dashboard">
@@ -49,12 +49,9 @@
 			<router-link to="/dashboard/admin/users">
 				<i class="icon-setting-gear-a" />Users
 			</router-link>
-			<!--
-			TODO: Dont wanna deal with this now
 			<router-link to="/dashboard/admin/settings">
-				<i class="icon-setting-gear-a" />Settings
+				<i class="icon-setting-gear-a" />Server Settings (WIP)
 			</router-link>
-			-->
 		</template>
 	</div>
 </template>

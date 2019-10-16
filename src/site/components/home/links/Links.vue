@@ -64,12 +64,12 @@
 </style>
 <template>
 	<div class="links">
-		<a href="https://github.com/WeebDev/lolisafe"
+		<a href="https://github.com/Knallli/lolisafe"
 			target="_blank"
 			class="link">
 			<header class="bd-footer-star-header">
 				<h4 class="bd-footer-title">GitHub</h4>
-				<p class="bd-footer-subtitle">Deploy your own lolisafe</p>
+				<p class="bd-footer-subtitle">Mein Fork von dem ganzen</p>
 			</header>
 		</a>
 		<div v-if="loggedIn"
@@ -80,14 +80,6 @@
 				<p class="bd-footer-subtitle">Upload from your Desktop</p>
 			</header>
 		</div>
-		<a href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj"
-			target="_blank"
-			class="link">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">Extension</h4>
-				<p class="bd-footer-subtitle">Upload from any website</p>
-			</header>
-		</a>
 		<router-link to="/faq"
 			class="link">
 			<header class="bd-footer-star-header">

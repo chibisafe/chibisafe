@@ -86,6 +86,11 @@
 						</b-field>
 
 						<div class="mb2 mt2 text-center">
+							<button class="button is-primary">
+								Save and restart service</button>
+						</div>
+
+						<div class="mb2 mt2 text-center">
 							<button class="button is-primary"
 								@click="promptRestartService">Save and restart service</button>
 						</div>
