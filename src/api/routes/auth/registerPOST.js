@@ -9,9 +9,9 @@ class registerPOST extends Route {
 	}
 
 	async run(req, res, db) {
-		if (process.env.USER_ACCOUNTS == 'false') return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
+		if (process.env.USER_ACCOUNTS === 'false') return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
-		const { username, password } = req.body;
+		const { username, regkey, password } = req.body;
 		if (!username || !password) return res.status(401).json({ message: 'Invalid body provided' });
 
 		if (username.length < 4 || username.length > 32) {
@@ -26,6 +26,11 @@ class registerPOST extends Route {
 		*/
 		const user = await db.table('users').where('username', username).first();
 		if (user) return res.status(401).json({ message: 'Username already exists' });
+
+		/*
+			Make sure user has register key
+		*/
+		if (process.env.REGKEY !== regkey) return res.status(401).json({ message: 'Invalid registration key provided' });
 
 		/*
 			Hash the supplied password

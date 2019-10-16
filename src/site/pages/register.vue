@@ -34,6 +34,11 @@
 								password-reveal
 								@keyup.enter.native="register" />
 						</b-field>
+						<b-field>
+							<b-input v-model="regkey"
+								type="text"
+								placeholder="Registration key" />
+						</b-field>
 
 						<p class="control has-addons is-pulled-right">
 							<router-link to="/login"
@@ -60,6 +65,7 @@ export default {
 			username: null,
 			password: null,
 			rePassword: null,
+			regkey: null,
 			isLoading: false
 		};
 	},
@@ -86,7 +92,8 @@ export default {
 			try {
 				const response = await this.$axios.$post(`auth/register`, {
 					username: this.username,
-					password: this.password
+					password: this.password,
+					regkey: this.regkey
 				});
 
 				this.$store.dispatch('alert', { text: response.message });
