@@ -110,7 +110,7 @@ export default {
 					"accept": "application/vnd.lolisafe.json"
 				},
 				"ResponseType": "Text",
-				"URL": "$json:url$",
+				"URL": "${location.origin}/$json:name$",
 				"ThumbnailURL": "$json:url$"
 			}`;
 			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
