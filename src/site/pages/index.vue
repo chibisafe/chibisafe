@@ -65,7 +65,6 @@
 					</div>
 					<div class="spacer mt7" />
 					<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
-					<!--<Filepond v-if="config.publicMode || (!config.publicMode && loggedIn)" />-->
 					<div v-else>
 						This site has disabled public uploads. You need an account.
 					</div>
@@ -85,7 +84,6 @@ import Navbar from '~/components/navbar/Navbar.vue';
 import Logo from '~/components/logo/Logo.vue';
 import Uploader from '~/components/uploader/Uploader.vue';
 import Links from '~/components/home/links/Links.vue';
-import Filepond from '~/components/uploader/Filepond.vue';
 
 export default {
 	name: 'Home',
@@ -93,8 +91,7 @@ export default {
 		Navbar,
 		Logo,
 		Uploader,
-		Links,
-		Filepond
+		Links
 	},
 	data() {
 		return { albums: [] };

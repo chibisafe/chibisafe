@@ -225,26 +225,6 @@ export default {
 </style>
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';
-	.filepond--panel-root {
-		background: transparent;
-		border: 2px solid #2c3340;
-	}
-	.filepond--drop-label {
-		color: #c7ccd8;
-		pointer-events: none;
-	}
-
-	.filepond--item-panel {
-		background-color: #767b8b;
-	}
-
-	.filepond--root .filepond--drip-blob {
-		background-color: #7f8a9a
-	}
-
-	.filepond--drip {
-		background: black;
-	}
 
 	div.uploader-wrapper {
 		&.has-files {

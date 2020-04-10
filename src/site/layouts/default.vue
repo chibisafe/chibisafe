@@ -2,16 +2,13 @@
 	<div v-bar>
 		<div>
 			<div class="layout">
-				<!--<Uploader />-->
 				<nuxt-child id="app" />
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import Uploader from '~/components/uploader/Filepond.vue';
 export default {
-	components: { Uploader },
 	computed: {
 		config() {
 			return this.$store.state.config;
