@@ -23,21 +23,12 @@ h4 {
 	line-height: 1.25em;
 }
 
-.mt1 { margin-top: 1em; }
-.mt2 { margin-top: 2em; }
-.mt3 { margin-top: 3em; }
-.mt4 { margin-top: 4em; }
-.mt5 { margin-top: 5em; }
-.mt6 { margin-top: 6em; }
-.mt7 { margin-top: 7em; }
-
-.mb1 { margin-bottom: 1em; }
-.mb2 { margin-bottom: 2em; }
-.mb3 { margin-bottom: 3em; }
-.mb4 { margin-bottom: 4em; }
-.mb5 { margin-bottom: 5em; }
-.mb6 { margin-bottom: 6em; }
-.mb7 { margin-bottom: 7em; }
+@for $i from 1 through 10 {
+	.mt#{$i} { margin-top: $i + em; }
+	.mb#{$i} { margin-bottom: $i + em; }
+	.ml#{$i} { margin-left: $i + em; }
+	.mr#{$i} { margin-right: $i + em; }
+}
 
 .text-center {
 	text-align: center;
