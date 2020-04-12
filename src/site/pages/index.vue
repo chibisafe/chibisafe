@@ -44,7 +44,6 @@
 <template>
 	<div class="home">
 		<section class="hero is-fullheight has-text-centered">
-			<div class="background" />
 			<Navbar :isWhite="true" />
 			<div class="hero-body">
 				<div class="container">

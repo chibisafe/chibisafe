@@ -14,7 +14,16 @@ $size-normal: 1rem;
 html {
 	// font-size: 100%;
 	font-size: 14px;
-	background-color: $backgroundLight1;
+	background-color: $base-1;
+}
+
+body,
+h2.subtitle,
+label.label {
+	color: $defaultTextColor;
+}
+label.label {
+	font-weight: 300;
 }
 
 h4 {
