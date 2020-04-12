@@ -3,12 +3,15 @@
 		<div>
 			<div class="layout">
 				<nuxt-child id="app" />
+				<Footer />
 			</div>
 		</div>
 	</div>
 </template>
 <script>
+import Footer from '~/components/footer/Footer';
 export default {
+	components: { Footer },
 	computed: {
 		config() {
 			return this.$store.state.config;
