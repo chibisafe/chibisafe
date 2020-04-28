@@ -87,16 +87,6 @@ export default {
 	@import '~/assets/styles/_colors.scss';
 	footer {
 		svg.waves {
-			display: block;
-			bottom: -1px;
-			left: 0px;
-			right: 0px;
-			width: 100%;
-			background-color: transparent;
-			pointer-events: none;
-			user-select: none;
-			overflow: hidden;
-
 			.wave-1 {
 				fill: rgb(55, 61, 76);
 				transition: fill 400ms ease-in-out 0s;

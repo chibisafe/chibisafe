@@ -1,17 +1,23 @@
 <template>
 	<div v-bar>
 		<div>
-			<div class="layout">
-				<nuxt-child id="app" />
-				<Footer />
-			</div>
+			<section class="hero is-fullheight has-text-centered">
+				<Navbar :isWhite="true" />
+				<div class="hero-body">
+					<nuxt-child id="app" />
+				</div>
+				<div class="hero-foot">
+					<Footer />
+				</div>
+			</section>
 		</div>
 	</div>
 </template>
 <script>
+import Navbar from '~/components/navbar/Navbar.vue';
 import Footer from '~/components/footer/Footer';
 export default {
-	components: { Footer },
+	components: { Navbar, Footer },
 	computed: {
 		config() {
 			return this.$store.state.config;
@@ -43,7 +49,25 @@ export default {
 </script>
 <style lang="scss">
 	html { overflow: hidden !important; }
-	.layout { height: 100vh; }
+	.is-fullheight { height: 100vh; }
+	.hero-body {
+		padding: 3rem 0 !important;
+		#app {
+			width: 100%;
+			& > .container {
+				margin-top: 5rem;
+			}
+		}
+		> .hero {
+			min-height: auto !important;
+			height: auto !important;
+		}
+	}
 	@import "~/assets/styles/style.scss";
 	@import "~/assets/styles/icons.min.css";
+</style>
+<style lang="scss" scoped>
+	.hero-body {
+		align-items: baseline !important;
+	}
 </style>

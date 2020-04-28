@@ -1,7 +1,3 @@
-<style lang="scss" scoped>
-	.albumsModal .columns .column { padding: .25rem; }
-</style>
-
 <template>
 	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
@@ -103,3 +99,6 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	.albumsModal .columns .column { padding: .25rem; }
+</style>

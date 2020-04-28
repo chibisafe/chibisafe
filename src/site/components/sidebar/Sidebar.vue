@@ -1,34 +1,5 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	.dashboard-menu {
-		a {
-			display: block;
-			font-weight: 700;
-			color: #868686;
-			position: relative;
-			padding-left: 40px;
-			height: 35px;
-			&:hover, &:first-child {
-				color: $defaultTextColor;
-			}
-
-			i {
-				position: absolute;
-				font-size: 1.5em;
-				top: -4px;
-				left: 5px;
-			}
-		}
-
-		hr { margin-top: 0.6em; }
-	}
-</style>
 <template>
 	<div class="dashboard-menu">
-		<router-link to="/">
-			<i class="icon-ecommerce-safebox" />lolisafe
-		</router-link>
-		<hr>
 		<router-link to="/dashboard">
 			<i class="icon-com-pictures" />Files
 		</router-link>
@@ -40,12 +11,10 @@
 			<i class="icon-ecommerce-tag-c" />Tags
 		</router-link>
 		-->
-		<hr>
 		<router-link to="/dashboard/account">
 			<i class="icon-ecommerce-tag-c" />Account
 		</router-link>
 		<template v-if="user && user.isAdmin">
-			<hr>
 			<router-link to="/dashboard/admin/users">
 				<i class="icon-setting-gear-a" />Users
 			</router-link>
@@ -67,3 +36,31 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	@import '~/assets/styles/_colors.scss';
+	.dashboard-menu {
+		padding: 2rem;
+		border-radius: 8px;
+
+		a {
+			display: block;
+			font-weight: 700;
+			color: $textColor;
+			position: relative;
+			padding-left: 40px;
+			height: 35px;
+			&:hover{
+				color: white;
+			}
+
+			i {
+				position: absolute;
+				font-size: 1.5em;
+				top: -4px;
+				left: 5px;
+			}
+		}
+
+		hr { margin-top: 0.6em; }
+	}
+</style>

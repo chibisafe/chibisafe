@@ -1,88 +1,59 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	nav.navbar {
-		background: transparent;
-		box-shadow: none;
-
-		.navbar-brand {
-			width: calc(100% - 2em);
-			align-items: flex-start;
-			padding: 1em;
-
-			div.spacer { flex: 1 0 10px; }
-			a.navbar-item {
-				color: $defaultTextColor;
-				font-size: 16px;
-				font-weight: 700;
-				text-decoration-style: solid;
-			}
-			a.navbar-item:hover, a.navbar-item.is-active, a.navbar-link:hover, a.navbar-link.is-active {
-				text-decoration: underline;
-				background: transparent;
-			}
-
-			i {
-				font-size: 2em;
-				&.hidden {
-					width: 0px;
-					height: 1.5em;
-					pointer-events: none;
-				}
-			}
-		}
-
-		&.isWhite {
-			.navbar-brand {
-				a.navbar-item {
-					color: white;
-				}
-			}
-		}
-	}
-</style>
-
 <template>
 	<nav :class="{ isWhite }"
 		class="navbar is-transparent">
 		<div class="navbar-brand">
-			<router-link to="/"
-				class="navbar-item no-active">
-				<i class="icon-ecommerce-safebox" /> {{ config.serviceName }}
-			</router-link>
-
-			<div class="spacer" />
-
-			<template v-if="loggedIn">
+			<a role="button"
+				class="navbar-burger burger"
+				aria-label="menu"
+				aria-expanded="false"
+				data-target="navbarBasicExample">
+				<span aria-hidden="true" />
+				<span aria-hidden="true" />
+				<span aria-hidden="true" />
+			</a>
+		</div>
+		<div class="navbar-menu">
+			<div class="navbar-end">
 				<router-link
-					to="/dashboard"
+					to="/"
 					class="navbar-item no-active"
 					exact>
-					<i class="hidden" />
-					Uploads
+					Home
 				</router-link>
 				<router-link
-					to="/dashboard/albums"
+					to="/"
 					class="navbar-item no-active"
 					exact>
-					<i class="hidden" />
-					Albums
+					Docs
 				</router-link>
-				<router-link
-					to="/dashboard/account"
-					class="navbar-item no-active"
-					exact>
-					<i class="hidden" />
-					Account
-				</router-link>
-			</template>
-			<template v-else>
-				<router-link
-					class="navbar-item"
-					to="/login">
-					<i class="hidden" />
-					Login
-				</router-link>
-			</template>
+				<template v-if="loggedIn">
+					<router-link
+						to="/dashboard"
+						class="navbar-item no-active"
+						exact>
+						Uploads
+					</router-link>
+					<router-link
+						to="/dashboard/albums"
+						class="navbar-item no-active"
+						exact>
+						Albums
+					</router-link>
+					<router-link
+						to="/dashboard/account"
+						class="navbar-item no-active"
+						exact>
+						Account
+					</router-link>
+				</template>
+				<template v-else>
+					<router-link
+						class="navbar-item"
+						to="/login">
+						Login
+					</router-link>
+				</template>
+			</div>
 		</div>
 	</nav>
 </template>
@@ -113,3 +84,49 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	@import '~/assets/styles/_colors.scss';
+	nav.navbar {
+		background: transparent;
+		box-shadow: none;
+		.navbar-brand {
+			a.burger {
+				color: $defaultTextColor;
+			}
+		}
+		.navbar-menu {
+			height: 5rem;
+
+			.navbar-end {
+				padding-right: 2rem;
+			}
+			a.navbar-item {
+				color: $defaultTextColor;
+				font-size: 16px;
+				font-weight: 700;
+				text-decoration-style: solid;
+			}
+			a.navbar-item:hover, a.navbar-item.is-active, a.navbar-link:hover, a.navbar-link.is-active {
+				text-decoration: underline;
+				background: transparent;
+			}
+
+			i {
+				font-size: 2em;
+				&.hidden {
+					width: 0px;
+					height: 1.5em;
+					pointer-events: none;
+				}
+			}
+		}
+
+		&.isWhite {
+			.navbar-brand {
+				a.navbar-item {
+					color: white;
+				}
+			}
+		}
+	}
+</style>
