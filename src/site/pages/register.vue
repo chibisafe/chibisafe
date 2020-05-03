@@ -71,7 +71,7 @@ export default {
 	methods: {
 		async register() {
 			if (this.isLoading) return;
-			if (!this.username || !this.password || !this.rePassword) {
+			if (!this.username || !this.password || !this.rePassword || !this.regkey) {
 				this.$store.dispatch('alert', {
 					text: 'Please fill all fields before attempting to register.',
 					error: true
