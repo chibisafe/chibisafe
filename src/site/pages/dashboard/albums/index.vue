@@ -1,125 +1,3 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	div.view-container {
-		padding: 2rem;
-	}
-	div.album {
-		display: flex;
-		flex-wrap: wrap;
-		margin-bottom: 10px;
-
-		div.arrow-container {
-			width: 2em;
-			height: 64px;
-			position: relative;
-			cursor: pointer;
-
-			i {
-				border: 2px solid $defaultTextColor;
-				border-right: 0;
-				border-top: 0;
-				display: block;
-				height: 1em;
-				position: absolute;
-				transform: rotate(-135deg);
-				transform-origin: center;
-				width: 1em;
-				z-index: 4;
-				top: 22px;
-
-				-webkit-transition: transform 0.1s linear;
-				-moz-transition: transform 0.1s linear;
-				-ms-transition: transform 0.1s linear;
-				-o-transition: transform 0.1s linear;
-				transition: transform 0.1s linear;
-
-				&.active {
-					transform: rotate(-45deg);
-				}
-			}
-		}
-		div.thumb {
-			width: 64px;
-			height: 64px;
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
-		}
-
-		div.info {
-			margin-left: 15px;
-			h4 {
-				font-size: 1.5rem;
-				a {
-					color: $defaultTextColor;
-					font-weight: 400;
-					&:hover { text-decoration: underline; }
-				}
-			}
-			span { display: block; }
-			span:nth-child(3) {
-				font-size: 0.9rem;
-			}
-		}
-
-		div.latest {
-			flex-grow: 1;
-			justify-content: flex-end;
-			display: flex;
-			margin-left: 15px;
-
-			span.no-files {
-				font-size: 1.5em;
-				color: #b1b1b1;
-				padding-top: 17px;
-			}
-
-			div.more {
-				width: 64px;
-				height: 64px;
-				background: white;
-				display: flex;
-				align-items: center;
-				padding: 10px;
-				text-align: center;
-				a {
-					line-height: 1rem;
-					color: $defaultTextColor;
-					&:hover { text-decoration: underline; }
-				}
-			}
-		}
-
-		div.details {
-			flex: 0 1 100%;
-			padding-left: 2em;
-			padding-top: 1em;
-			min-height: 50px;
-
-			.b-table {
-				padding: 2em 0em;
-
-				.table-wrapper {
-					-webkit-box-shadow: $boxShadowLight;
-							box-shadow: $boxShadowLight;
-				}
-			}
-		}
-	}
-
-	div.column > h2.subtitle { padding-top: 1px; }
-</style>
-<style lang="scss">
-	@import '~/assets/styles/_colors.scss';
-
-	.b-table {
-		.table-wrapper {
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
-		}
-	}
-</style>
-
-
 <template>
 	<section class="hero is-fullheight dashboard">
 		<div class="hero-body">
@@ -234,18 +112,20 @@
 											</div>
 										</template>
 										<template slot="footer">
-											<div class="has-text-right">
-												<button :class="{ 'is-loading': album.isCreatingLink }"
-													class="button is-primary"
-													style="float: left"
-													@click="createLink(album)">Create new link</button>
-												{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created
-											</div>
+											<div class="wrapper">
+												<div class="has-text-right">
+													<button :class="{ 'is-loading': album.isCreatingLink }"
+														class="button is-primary"
+														style="float: left"
+														@click="createLink(album)">Create new link</button>
+													{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created
+												</div>
 
-											<div class="has-text-left">
-												<button class="button is-danger"
-													style="float: right"
-													@click="promptDeleteAlbum(album.id)">Delete album</button>
+												<div class="has-text-left">
+													<button class="button is-danger"
+														style="float: right"
+														@click="promptDeleteAlbum(album.id)">Delete album</button>
+												</div>
 											</div>
 										</template>
 									</b-table>
@@ -353,3 +233,124 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	@import '~/assets/styles/_colors.scss';
+	div.view-container {
+		padding: 2rem;
+	}
+	div.album {
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: 10px;
+
+		div.arrow-container {
+			width: 2em;
+			height: 64px;
+			position: relative;
+			cursor: pointer;
+
+			i {
+				border: 2px solid $defaultTextColor;
+				border-right: 0;
+				border-top: 0;
+				display: block;
+				height: 1em;
+				position: absolute;
+				transform: rotate(-135deg);
+				transform-origin: center;
+				width: 1em;
+				z-index: 4;
+				top: 22px;
+
+				-webkit-transition: transform 0.1s linear;
+				-moz-transition: transform 0.1s linear;
+				-ms-transition: transform 0.1s linear;
+				-o-transition: transform 0.1s linear;
+				transition: transform 0.1s linear;
+
+				&.active {
+					transform: rotate(-45deg);
+				}
+			}
+		}
+		div.thumb {
+			width: 64px;
+			height: 64px;
+			-webkit-box-shadow: $boxShadowLight;
+					box-shadow: $boxShadowLight;
+		}
+
+		div.info {
+			margin-left: 15px;
+			text-align: left;
+			h4 {
+				font-size: 1.5rem;
+				a {
+					color: $defaultTextColor;
+					font-weight: 400;
+					&:hover { text-decoration: underline; }
+				}
+			}
+			span { display: block; }
+			span:nth-child(3) {
+				font-size: 0.9rem;
+			}
+		}
+
+		div.latest {
+			flex-grow: 1;
+			justify-content: flex-end;
+			display: flex;
+			margin-left: 15px;
+
+			span.no-files {
+				font-size: 1.5em;
+				color: #b1b1b1;
+				padding-top: 17px;
+			}
+
+			div.more {
+				width: 64px;
+				height: 64px;
+				background: white;
+				display: flex;
+				align-items: center;
+				padding: 10px;
+				text-align: center;
+				a {
+					line-height: 1rem;
+					color: $defaultTextColor;
+					&:hover { text-decoration: underline; }
+				}
+			}
+		}
+
+		div.details {
+			flex: 0 1 100%;
+			padding-left: 2em;
+			padding-top: 1em;
+			min-height: 50px;
+
+			.b-table {
+				padding: 2em 0em;
+
+				.table-wrapper {
+					-webkit-box-shadow: $boxShadowLight;
+							box-shadow: $boxShadowLight;
+				}
+			}
+		}
+	}
+
+	div.column > h2.subtitle { padding-top: 1px; }
+</style>
+<style lang="scss">
+	@import '~/assets/styles/_colors.scss';
+
+	.b-table {
+		.table-wrapper {
+			-webkit-box-shadow: $boxShadowLight;
+					box-shadow: $boxShadowLight;
+		}
+	}
+</style>

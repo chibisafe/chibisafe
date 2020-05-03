@@ -1,21 +1,15 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-</style>
-
 <template>
-	<section id="register"
-		class="hero is-fullheight">
-		<Navbar />
+	<section class="hero is-fullheight is-register">
 		<div class="hero-body">
 			<div class="container">
 				<h1 class="title">
 					Dashboard Access
 				</h1>
-				<h2 class="subtitle">
+				<h2 class="subtitle mb5">
 					Register for a new account
 				</h2>
 				<div class="columns">
-					<div class="column is-4">
+					<div class="column is-4 is-offset-4">
 						<b-field>
 							<b-input v-model="username"
 								type="text"
@@ -43,9 +37,9 @@
 						<p class="control has-addons is-pulled-right">
 							<router-link to="/login"
 								class="is-text">Already have an account?</router-link>
-							<a :class="{ 'is-loading': isLoading }"
-								class="button is-themed"
-								@click="register">Register</a>
+							<button class="button is-primary big ml1"
+								:disabled="isLoading"
+								@click="register">Register</button>
 						</p>
 					</div>
 				</div>
@@ -55,11 +49,8 @@
 </template>
 
 <script>
-import Navbar from '~/components/navbar/Navbar.vue';
-
 export default {
 	name: 'Register',
-	components: { Navbar },
 	data() {
 		return {
 			username: null,
@@ -80,6 +71,13 @@ export default {
 	methods: {
 		async register() {
 			if (this.isLoading) return;
+			if (!this.username || !this.password || !this.rePassword) {
+				this.$store.dispatch('alert', {
+					text: 'Please fill all fields before attempting to register.',
+					error: true
+				});
+				return;
+			}
 			if (this.password !== this.rePassword) {
 				this.$store.dispatch('alert', {
 					text: 'Passwords don\'t match',

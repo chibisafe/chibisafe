@@ -347,6 +347,16 @@
 	border-radius: 3px;
 	*/
 }
+.dropzone .dz-preview .result a {
+	cursor: pointer;
+	color: white;
+	text-transform: uppercase;
+	line-height: 30px;
+	&:hover {
+		color: white;
+		text-decoration: underline;;
+	}
+}
 .dropzone .dz-preview:hover .dz-image img {
 	-webkit-transform: scale(1.05, 1.05);
 	-moz-transform: scale(1.05, 1.05);

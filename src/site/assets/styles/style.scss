@@ -14,7 +14,26 @@ $size-normal: 1rem;
 html {
 	// font-size: 100%;
 	font-size: 14px;
-	background-color: $backgroundLight1;
+	background-color: $base-1;
+}
+
+a {
+	color: #5E81AC;
+	&:hover {
+		color: #81A1C1;
+		text-decoration: underline;
+	}
+}
+body,
+p,
+h1,
+h1.title,
+h2.subtitle,
+label.label {
+	color: $textColor;
+}
+label.label {
+	font-weight: 400;
 }
 
 h4 {
@@ -23,28 +42,19 @@ h4 {
 	line-height: 1.25em;
 }
 
-.mt1 { margin-top: 1em; }
-.mt2 { margin-top: 2em; }
-.mt3 { margin-top: 3em; }
-.mt4 { margin-top: 4em; }
-.mt5 { margin-top: 5em; }
-.mt6 { margin-top: 6em; }
-.mt7 { margin-top: 7em; }
-
-.mb1 { margin-bottom: 1em; }
-.mb2 { margin-bottom: 2em; }
-.mb3 { margin-bottom: 3em; }
-.mb4 { margin-bottom: 4em; }
-.mb5 { margin-bottom: 5em; }
-.mb6 { margin-bottom: 6em; }
-.mb7 { margin-bottom: 7em; }
+@for $i from 1 through 10 {
+	.mt#{$i} { margin-top: $i + em !important; }
+	.mb#{$i} { margin-bottom: $i + em !important; }
+	.ml#{$i} { margin-left: $i + em !important; }
+	.mr#{$i} { margin-right: $i + em !important; }
+}
 
 .text-center {
 	text-align: center;
 }
 
 hr {
-	background-color: #c7c7c7;
+	background-color: #c7c7c757;
 	height: 1px;
 }
 // Bulma color changes.
@@ -118,6 +128,21 @@ section p.control button {
 	Register and Login forms
 */
 
+section.hero.is-login, section.hero.is-register {
+	a {
+		font-size: 1.25em;
+		line-height: 2.5em;
+
+		&.button {
+			font-size: 14px !important;
+		}
+	}
+	input {
+		background: #323846;
+		border-radius: 0 !important;
+	}
+}
+/*
 section#login,
 section#register { background-color: $backgroundLight1 !important; }
 section#login input,
@@ -149,11 +174,77 @@ section#register a.is-text {
 	font-size: 1.25em;
 	line-height: 2.5em;
 }
-
+*/
 .modal-card-head, .modal-card-foot {
 	background: $backgroundLight1;
 }
 
 .switch {
 	margin-top: 5px;
+}
+
+.input, .taginput .taginput-container.is-focusable, .textarea, .select select {
+	border: 2px solid #21252d;
+	border-radius: .3em !important;
+	background: rgba(0, 0, 0, 0.15);
+	padding: 1rem;
+	color: $textColor;
+	height: 3rem;
+	&:focus,
+	&:hover {
+		border: 2px solid #21252d;
+	}
+	&::placeholder {
+		color: $textColor;
+	}
+}
+button.button.is-primary {
+	background-color: #323846;
+	border: 2px solid #21252d;
+	color: $textColor;
+	font-size: 1rem;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+	&:hover {
+		background-color: $base-2;
+	}
+	&.big {
+		font-size: 1.25rem;
+	}
+}
+svg.waves {
+	display: block;
+	bottom: -1px;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	background-color: transparent;
+	pointer-events: none;
+	user-select: none;
+	overflow: hidden;
+}
+div.field-body > div.field { text-align: left; }
+table.table {
+	background: $base-2;
+	color: $textColor;
+	border: 0;
+	thead {
+		th, td {
+			color: $textColor;
+		}
+	}
+	tfoot {
+		background: $base-1;
+		tr.table-footer {
+			.wrapper {
+				display: flex;
+				color: $textColor;
+				justify-content: space-evenly;
+			}
+		}
+	}
+	th, td {
+		border-color: #ffffff1c;
+	}
 }

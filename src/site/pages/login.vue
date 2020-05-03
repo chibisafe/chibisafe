@@ -1,21 +1,15 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-</style>
-
 <template>
-	<section id="login"
-		class="hero is-fullheight">
-		<Navbar/>
+	<section class="hero is-fullheight is-login">
 		<div class="hero-body">
 			<div class="container">
 				<h1 class="title">
 					Dashboard Access
 				</h1>
-				<h2 class="subtitle">
-					Login or register
+				<h2 class="subtitle mb5">
+					Login to access your files and folders
 				</h2>
 				<div class="columns">
-					<div class="column is-4">
+					<div class="column is-4 is-offset-4">
 						<b-field>
 							<b-input v-model="username"
 								type="text"
@@ -35,9 +29,8 @@
 								to="/register"
 								class="is-text">Don't have an account?</router-link>
 							<span v-else>Registration is closed at the moment</span>
-							<a id="loginBtn"
-								class="button"
-								@click="login">Log in</a>
+							<button class="button is-primary big ml1"
+								@click="login">login</button>
 						</p>
 					</div>
 				</div>
@@ -72,11 +65,8 @@
 </template>
 
 <script>
-import Navbar from '~/components/navbar/Navbar.vue';
-
 export default {
 	name: 'Login',
-	components: { Navbar },
 	data() {
 		return {
 			username: null,

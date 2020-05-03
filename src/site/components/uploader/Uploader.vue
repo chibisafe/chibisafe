@@ -22,7 +22,7 @@
 			@vdropzone-error="dropzoneError"
 			@vdropzone-files-added="dropzoneFilesAdded" />
 		<label class="add-more">
-			Add more files
+			Add or drop more files
 		</label>
 
 		<div id="template"
@@ -33,18 +33,11 @@
 					<div class="dz-size"><span data-dz-size /></div>
 				</div>
 				<div class="result">
-					<div class="copyLink">
-						<b-tooltip label="Copy link">
-							<i class="icon-web-code" />
-						</b-tooltip>
-					</div>
 					<div class="openLink">
-						<b-tooltip label="Open file">
-							<a class="link"
-								target="_blank">
-								<i class="icon-web-url" />
-							</a>
-						</b-tooltip>
+						<a class="link"
+							target="_blank">
+							Link
+						</a>
 					</div>
 				</div>
 				<div class="error">
@@ -193,12 +186,14 @@ export default {
 		processResult(file, response) {
 			if (!response.url) return;
 			file.previewTemplate.querySelector('.link').setAttribute('href', response.url);
+			/*
 			file.previewTemplate.querySelector('.copyLink').addEventListener('click', () => {
 				this.$store.dispatch('alert', {
 					text: 'Link copied!'
 				});
 				this.$clipboard(response.url);
 			});
+			*/
 		}
 	}
 };
@@ -210,41 +205,11 @@ export default {
 		width: 400px;
 		margin: 0 auto;
 		max-width: 100%;
-		transition-duration: 86ms;
-		transition-property: box-shadow,-webkit-transform;
-		transition-property: box-shadow,transform;
-		transition-property: box-shadow,transform,-webkit-transform;
-		will-change: box-shadow,transform;
-
-		&:hover, &.hasFiles {
-			box-shadow: 0 1rem 3rem 0rem rgba(10, 10, 10, 0.25);
-			-webkit-transform: translateY(-.5rem);
-			transform: translateY(-.5rem);
-		}
+		position: relative;
 	}
 </style>
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';
-	.filepond--panel-root {
-		background: transparent;
-		border: 2px solid #2c3340;
-	}
-	.filepond--drop-label {
-		color: #c7ccd8;
-		pointer-events: none;
-	}
-
-	.filepond--item-panel {
-		background-color: #767b8b;
-	}
-
-	.filepond--root .filepond--drip-blob {
-		background-color: #7f8a9a
-	}
-
-	.filepond--drip {
-		background: black;
-	}
 
 	div.uploader-wrapper {
 		&.has-files {
@@ -269,6 +234,7 @@ export default {
 					background: rgba(0, 0, 0, 0.15);
 					border-radius: .3em;
 					color: $uploaderDropdownColor;
+					padding: 0 0 0 1rem;
 				}
 			}
 		}

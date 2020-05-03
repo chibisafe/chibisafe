@@ -1,7 +1,64 @@
+<template>
+	<div class="links">
+		<a href="https://github.com/Knallli/lolisafe"
+			target="_blank"
+			class="link">
+			<header class="bd-footer-star-header">
+				<h4 class="bd-footer-title">GitHub</h4>
+				<p class="bd-footer-subtitle">Mein Fork von dem ganzen</p>
+			</header>
+		</a>
+		<div v-if="loggedIn"
+			class="link"
+			@click="createShareXThing">
+			<header class="bd-footer-star-header">
+				<h4 class="bd-footer-title">ShareX</h4>
+				<p class="bd-footer-subtitle">Upload from your Desktop</p>
+			</header>
+		</div>
+		<router-link to="/faq"
+			class="link">
+			<header class="bd-footer-star-header">
+				<h4 class="bd-footer-title">FAQ</h4>
+				<p class="bd-footer-subtitle">We got you covered</p>
+			</header>
+		</router-link>
+	</div>
+</template>
+<script>
+import { saveAs } from 'file-saver';
+export default {
+	computed: {
+		loggedIn() {
+			return this.$store.state.loggedIn;
+		}
+	},
+	methods: {
+		createShareXThing() {
+			const sharexFile = `{
+				"Name": "${this.$store.state.config.serviceName}",
+				"DestinationType": "ImageUploader, FileUploader",
+				"RequestType": "POST",
+				"RequestURL": "${location.origin}/api/upload",
+				"FileFormName": "files[]",
+				"Headers": {
+					"authorization": "Bearer ${this.$store.state.token}",
+					"accept": "application/vnd.lolisafe.json"
+				},
+				"ResponseType": "Text",
+				"URL": "${location.origin}/$json:name$",
+				"ThumbnailURL": "$json:url$"
+			}`;
+			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
+			saveAs(sharexBlob, `${location.hostname}.sxcu`);
+		}
+	}
+};
+</script>
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	.links {
-		margin-bottom: 3em;
+		margin: 7rem 0 3rem 0;
 		align-items: stretch;
 		display: flex;
 		justify-content: space-between;
@@ -62,60 +119,3 @@
 		}
 	}
 </style>
-<template>
-	<div class="links">
-		<a href="https://github.com/Knallli/lolisafe"
-			target="_blank"
-			class="link">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">GitHub</h4>
-				<p class="bd-footer-subtitle">Mein Fork von dem ganzen</p>
-			</header>
-		</a>
-		<div v-if="loggedIn"
-			class="link"
-			@click="createShareXThing">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">ShareX</h4>
-				<p class="bd-footer-subtitle">Upload from your Desktop</p>
-			</header>
-		</div>
-		<router-link to="/faq"
-			class="link">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">FAQ</h4>
-				<p class="bd-footer-subtitle">dunno</p>
-			</header>
-		</router-link>
-	</div>
-</template>
-<script>
-import { saveAs } from 'file-saver';
-export default {
-	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		}
-	},
-	methods: {
-		createShareXThing() {
-			const sharexFile = `{
-				"Name": "${this.$store.state.config.serviceName}",
-				"DestinationType": "ImageUploader, FileUploader",
-				"RequestType": "POST",
-				"RequestURL": "${location.origin}/api/upload",
-				"FileFormName": "files[]",
-				"Headers": {
-					"authorization": "Bearer ${this.$store.state.token}",
-					"accept": "application/vnd.lolisafe.json"
-				},
-				"ResponseType": "Text",
-				"URL": "${location.origin}/$json:name$",
-				"ThumbnailURL": "$json:url$"
-			}`;
-			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
-			saveAs(sharexBlob, `${location.hostname}.sxcu`);
-		}
-	}
-};
-</script>

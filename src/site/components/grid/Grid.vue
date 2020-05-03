@@ -26,6 +26,7 @@
 		font-size: 2rem;
 		pointer-events: none;
 		opacity: .75;
+		max-width: 150px;
 	}
 
 	div.actions {
@@ -146,6 +147,8 @@
 					<a :href="`${item.url}`"
 						target="_blank">
 						<img :src="item.thumb ? item.thumb : blank">
+						<span v-if="!item.thumb && item.name"
+							class="extension">{{ item.name.split('.').pop() }}</span>
 					</a>
 				</template>
 				<template v-else>
