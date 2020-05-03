@@ -1,38 +1,4 @@
 <template>
-<<<<<<< HEAD
-	<section id="login"
-		class="hero is-fullheight">
-		<Navbar />
-		<div class="hero-body">
-			<div class="container has-text-left">
-				<h2 class="subtitle">Was ist das?</h2>
-				<article class="message">
-					<div class="message-body">
-						Rahnserver ist ein fork des Projekts <a target="_blank" href="https://github.com/WeebDev/lolisafe">lolisafe</a>
-					</div>
-				</article>
-
-				<h2 class="subtitle">Kann ich das selber hosten?</h2>
-				<article class="message">
-					<div class="message-body">
-						Ja. gehe zu <a target="_blank" href="https://github.com/WeebDev/lolisafe">lolisafe's github repo</a> und folge dort den Anweisungen.
-					</div>
-				</article>
-
-				<h2 class="subtitle">Wo kann ich meine Uploads sehen?</h2>
-				<article class="message">
-					<div class="message-body">
-						Dazu musst du dich lediglich anmelden. Deine Dateien erscheinen auf dem Dashboard.
-					</div>
-				</article>
-
-				<h2 class="subtitle">Was sind Alben?</h2>
-				<article class="message">
-					<div class="message-body">
-						Mit Alben kannst du deine Uploads einfach gruppieren und eine Anzahl an Dateien mit einem Link teilen.
-					</div>
-				</article>
-=======
 	<div class="container has-text-left">
 		<h2 class="subtitle">What is lolisafe?</h2>
 		<article class="message">
@@ -44,7 +10,7 @@
 		<h2 class="subtitle">Can I run my own lolisafe?</h2>
 		<article class="message">
 			<div class="message-body">
-				Definitely. Head to <a target="_blank" href="https://github.com/WeebDev/lolisafe">our GitHub repo</a> and follow the instructions to clone, build and deploy it by yourself. It's super easy too!
+				Definitely. Head to <a target="_blank" href="https://github.com/Knallli/lolisafe">our GitHub repo</a> and follow the instructions to clone, build and deploy it by yourself. It's super easy too!
 			</div>
 		</article>
 
@@ -55,18 +21,10 @@
 			</div>
 		</article>
 
-		<h2 class="subtitle">What are albums?</h2>
-		<article class="message">
-			<div class="message-body">
-				Albums are a simple way of sorting uploads together. Right now you can create albums through the dashboard and use them only with <a target="_blank" href="https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">our chrome extension</a> which will enable you to <strong>right click -&gt; send to lolisafe</strong> or to a desired album if you have any.
-			</div>
-		</article>
-
 		<h2 class="subtitle">Why should I use this?</h2>
 		<article class="message">
 			<div class="message-body">
 				There are too many file upload services out there, and a lot of them rely on the foundations of pomf which is ancient. In a desperate and unsuccessful attempt of finding a good file uploader that's easily extendable, lolisafe was born. We give you control over your files, we give you a way to sort your uploads into albums for ease of access and we give you an api to use with ShareX or any other thing that let's you make POST requests.
->>>>>>> d63f1f57e9bd1314de204d92634ca1262d089111
 			</div>
 		</article>
 	</div>
