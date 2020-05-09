@@ -1,3 +1,4 @@
+import config from '../../../dist/config.json';
 export const state = () => ({
 	loggedIn: false,
 	user: null,
@@ -26,18 +27,8 @@ export const mutations = {
 };
 
 export const actions = {
-	async nuxtServerInit({ commit, dispatch }, { app, req }) {
-		commit('config', {
-			version: process.env.npm_package_version,
-			URL: process.env.DOMAIN,
-			baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
-			serviceName: process.env.SERVICE_NAME,
-			maxFileSize: parseInt(process.env.MAX_SIZE, 10),
-			chunkSize: parseInt(process.env.CHUNK_SIZE, 10),
-			maxLinksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
-			publicMode: process.env.PUBLIC_MODE == 'true' ? true : false,
-			enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
-		});
+	async nuxtClientInit({ commit, dispatch }, { app, req }) {
+		commit('config', config);
 
 		const cookies = this.$cookies.getAll();
 		if (!cookies.token) return dispatch('logout');

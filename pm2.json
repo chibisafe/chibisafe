@@ -1,20 +1,9 @@
 {
 	"apps" : [
 		{
-			"name": "lolisafe-api",
+			"name": "lolisafe",
 			"script": "npm",
-			"args": "run api",
-			"env": {
-				"NODE_ENV": "production"
-			},
-			"env_production" : {
-				"NODE_ENV": "production"
-			}
-		},
-		{
-			"name": "lolisafe-website",
-			"script": "npm",
-			"args": "run site",
+			"args": "run start",
 			"env": {
 				"NODE_ENV": "production"
 			},

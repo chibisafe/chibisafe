@@ -10,13 +10,13 @@
 	},
 	"main": "src/_scripts/start.js",
 	"scripts": {
-		"setup": "yarn build && node src/setup.js",
-		"dev": "nuxt",
+		"setup": "node src/setup.js && yarn build && yarn migrate && yarn seed",
 		"build": "nuxt build",
+		"start": "cross-env NODE_ENV=production node src/api/structures/Server",
+		"dev": "nuxt",
 		"migrate": "yarn knex migrate:latest",
 		"seed": "yarn knex seed:run",
 		"api": "node src/api/structures/Server",
-		"site": "cross-env NODE_ENV=production nuxt start",
 		"update": "git pull && yarn install && yarn migrate && yarn build && yarn restart",
 		"restart": "pm2 restart lolisafe-api && pm2 restart lolisafe-website"
 	},
