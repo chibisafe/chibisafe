@@ -1,6 +1,5 @@
 const Route = require('../../structures/Route');
 const moment = require('moment');
-const util = require('../../utils/Util');
 
 class tagPOST extends Route {
 	constructor() {
@@ -21,7 +20,6 @@ class tagPOST extends Route {
 		const now = moment.utc().toDate();
 		await db.table('tags').insert({
 			name,
-			uuid: util.uuid(),
 			userId: user.id,
 			createdAt: now,
 			editedAt: now
