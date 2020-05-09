@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const uuidv4 = require('uuid/v4');
 
 exports.seed = async db => {
 	const now = moment.utc().toDate();
@@ -9,7 +8,6 @@ exports.seed = async db => {
 	try {
 		const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
 		await db.table('users').insert({
-			uuid: uuidv4(),
 			username: process.env.ADMIN_ACCOUNT,
 			password: hash,
 			passwordEditedAt: now,
