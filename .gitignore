@@ -8,3 +8,5 @@ database.sqlite
 uploads/
 .env
 !src/api/routes/uploads
+db
+database.sqlite-journal
