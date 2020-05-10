@@ -39,7 +39,10 @@ const upload = multer({
 
 class uploadPOST extends Route {
 	constructor() {
-		super('/upload', 'post', { bypassAuth: true });
+		super('/upload', 'post', {
+			bypassAuth: true,
+			canApiKey: true
+		});
 	}
 
 	async run(req, res, db) {
