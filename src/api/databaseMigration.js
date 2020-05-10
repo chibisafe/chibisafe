@@ -63,6 +63,7 @@ const start = async () => {
 
 	const albums = await oldDb.table('albums');
 	for (const album of albums) {
+		if (!album.enabled || album.enabled == 0) continue;
 		const now = moment.utc().toDate();
 		const albumToInsert = {
 			id: album.id,
@@ -77,7 +78,7 @@ const start = async () => {
 			albumId: album.id,
 			identifier: album.identifier,
 			views: 0,
-			enabled: album.enabled == 1 ? true : false,
+			enabled: true,
 			enableDownload: true,
 			createdAt: now,
 			editedAt: now
