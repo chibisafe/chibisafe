@@ -69,7 +69,7 @@ class albumsGET extends Route {
 
 class albumsDropdownGET extends Route {
 	constructor() {
-		super('/albums/dropdown', 'get');
+		super('/albums/dropdown', 'get', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {

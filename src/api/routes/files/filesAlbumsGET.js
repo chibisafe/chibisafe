@@ -9,6 +9,9 @@ class filesGET extends Route {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: 'Invalid file ID supplied' });
 
+		const file = await db.table('files').where({ id, userId: user.id }).first();
+		if (!file) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });
+
 		let albums = [];
 		let albumFiles = await db.table('albumsFiles')
 			.where('fileId', id)

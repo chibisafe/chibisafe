@@ -18,7 +18,7 @@
 		"seed": "yarn knex seed:run",
 		"api": "node src/api/structures/Server",
 		"update": "git pull && yarn install && yarn migrate && yarn build && yarn restart",
-		"restart": "pm2 restart lolisafe-api && pm2 restart lolisafe-website"
+		"restart": "pm2 restart lolisafe"
 	},
 	"repository": {
 		"type": "git",

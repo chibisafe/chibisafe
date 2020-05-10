@@ -57,7 +57,9 @@ class Route {
 		if (banned) return res.status(401).json({ message: 'This IP has been banned from using the service.' });
 
 		if (this.options.bypassAuth) return this.run(req, res, db);
-		if (req.headers.apiKey) return this.authorizeApiKey(req, res, req.headers.apiKey);
+		// The only reason I call it token here and not Api Key is to be backwards compatible with the uploader and sharex
+		// Small price to pay.
+		if (req.headers.token) return this.authorizeApiKey(req, res, req.headers.token);
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
 
 		const token = req.headers.authorization.split(' ')[1];
@@ -81,15 +83,13 @@ class Route {
 		});
 	}
 
-	authorizeApiKey(req, res, apiKey) {
-		if (this.options.noApiKey) return res.status(401).json({ message: 'Api Key not allowed for this resource' });
+	async authorizeApiKey(req, res, apiKey) {
+		if (!this.options.canApiKey) return res.status(401).json({ message: 'Api Key not allowed for this resource' });
+		const user = await db.table('users').where({ apiKey }).first();
+		if (!user) return res.status(401).json({ message: 'Invalid authorization' });
+		if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
 
-		/*
-		Need to read more into how api keys work before proceeding any further
-
-		const comparePassword = await bcrypt.compare(password, user.password);
-		if (!comparePassword) return res.status(401).json({ message: 'Invalid authorization.' });
-		*/
+		return this.run(req, res, db, user);
 	}
 
 	run(req, res, db) { // eslint-disable-line no-unused-vars

@@ -6,7 +6,10 @@ const randomstring = require('randomstring');
 
 class uploadPOST extends Route {
 	constructor() {
-		super('/upload/chunks', 'post', { bypassAuth: true });
+		super('/upload/chunks', 'post', {
+			bypassAuth: true,
+			canApiKey: true
+		});
 	}
 
 	async run(req, res, db) {

@@ -1,12 +1,11 @@
 const Route = require('../../structures/Route');
 const randomstring = require('randomstring');
 const moment = require('moment');
-const bcrypt = require('bcrypt');
 const { dump } = require('dumper.js');
 
 class apiKeyPOST extends Route {
 	constructor() {
-		super('/user/apikey/change', 'post', { noApiKey: true });
+		super('/user/apikey/change', 'post');
 	}
 
 	async run(req, res, db, user) {
@@ -14,11 +13,10 @@ class apiKeyPOST extends Route {
 		const apiKey = randomstring.generate(64);
 
 		try {
-			const hash = await bcrypt.hash(apiKey, 10);
 			await db.table('users')
 				.where({ id: user.id })
 				.update({
-					apiKey: hash,
+					apiKey,
 					apiKeyEditedAt: now
 				});
 		} catch (error) {

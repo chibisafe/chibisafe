@@ -11,6 +11,7 @@ const upload = multer({
 		files: 1
 	},
 	fileFilter: (req, file, cb) => {
+		// TODO: Enable blacklisting of files/extensions
 		/*
 		if (options.blacklist.mimes.includes(file.mimetype)) {
 			return cb(new Error(`${file.mimetype} is a blacklisted filetype.`));
@@ -22,9 +23,26 @@ const upload = multer({
 	}
 }).array('files[]');
 
+/*
+	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
+	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover on the frontend.
+	TODO: If source is a video, generate a thumb of the first frame and save the video length to the file?
+			Another possible solution would be to play a gif on hover that grabs a few chunks like youtube.
+
+	TODO: Think if its worth making a folder with the user uuid in uploads/ and upload the pictures there so
+			that this way at least not every single file will be in 1 directory
+
+		- Addendum to this: Now that the default behaviour is to serve files with node, we can actually pull this off. Before this, having files in
+		subfolders meant messing with nginx and the paths, but now it should be fairly easy to re-arrange the folder structure with express.static
+		I see great value in this, open to suggestions.
+*/
+
 class uploadPOST extends Route {
 	constructor() {
-		super('/upload', 'post', { bypassAuth: true });
+		super('/upload', 'post', {
+			bypassAuth: true,
+			canApiKey: true
+		});
 	}
 
 	async run(req, res, db) {

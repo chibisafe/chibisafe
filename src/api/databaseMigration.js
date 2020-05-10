@@ -51,7 +51,7 @@ const start = async () => {
 			password: user.password,
 			enabled: user.enabled == 1 ? true : false,
 			isAdmin: false,
-			apiKey: user.token, // Is this the best way to do it?
+			apiKey: user.token,
 			passwordEditedAt: now,
 			apiKeyEditedAt: now,
 			createdAt: now,

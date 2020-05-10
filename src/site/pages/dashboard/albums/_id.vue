@@ -20,29 +20,6 @@
 				</div>
 			</div>
 		</div>
-
-		<b-modal :active.sync="isAlbumsModalActive"
-			:width="640"
-			scroll="keep">
-			<div class="card albumsModal">
-				<div class="card-content">
-					<div class="content">
-						<h3 class="subtitle">Select the albums this file should be a part of</h3>
-						<hr>
-						<div class="columns is-multiline">
-							<div v-for="(album, index) in albums"
-								:key="index"
-								class="column is-3">
-								<div class="field">
-									<b-checkbox :value="isAlbumSelected(album.id)"
-										@input="albumCheckboxClicked($event, album.id)">{{ album.name }}</b-checkbox>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</b-modal>
 	</section>
 </template>
 
@@ -59,10 +36,7 @@ export default {
 	data() {
 		return {
 			name: null,
-			files: [],
-			albums: [],
-			isAlbumsModalActive: false,
-			showingModalForFile: null
+			files: []
 		};
 	},
 	metaInfo() {
@@ -77,31 +51,6 @@ export default {
 		} catch (error) {
 			console.error(error);
 			return { files: [] };
-		}
-	},
-	methods: {
-		isAlbumSelected(id) {
-			if (!this.showingModalForFile) return;
-			const found = this.showingModalForFile.albums.find(el => el.id === id);
-			return found ? found.id ? true : false : false;
-		},
-		openAlbumModal(file) {
-			// Only get the list if the usuer actually wants to change a file's album, otherwise useless call
-			this.getAlbums();
-			this.showingModalForFile = file;
-			this.isAlbumsModalActive = true;
-		},
-		async albumCheckboxClicked(value, id) {
-			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
-				albumId: id,
-				fileId: this.showingModalForFile.id
-			});
-			this.$buefy.toast.open(response.message);
-			this.getFiles();
-		},
-		async getAlbums() {
-			const response = await this.$axios.$get(`albums/dropdown`);
-			this.albums = response.albums;
 		}
 	}
 };
