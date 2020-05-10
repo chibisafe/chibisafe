@@ -12,7 +12,9 @@ class usersGET extends Route {
 
 		try {
 			const user = await db.table('users').where({ id }).first();
-			const files = await db.table('files').where({ userId: user.id });
+			const files = await db.table('files')
+				.where({ userId: user.id })
+				.orderBy('id', 'desc');
 
 			for (let file of files) {
 				file = Util.constructFilePublicLink(file);
