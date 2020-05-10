@@ -13,6 +13,7 @@ class albumGET extends Route {
 		const { identifier } = req.params;
 		if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 
+		// TODO: Do we really want to let anyone create a zip of an album?
 		/*
 			Make sure it exists and it's enabled
 		*/
