@@ -142,7 +142,7 @@ class Util {
 	}
 
 	static generateFileHash(data) {
-		const hash = crypto.createHash('sha1').update(data).digest('hex');
+		const hash = crypto.createHash('md5').update(data).digest('hex');
 		return hash;
 	}
 

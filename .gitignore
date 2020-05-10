@@ -1,21 +1,12 @@
 # Packages
 node_modules/
-_dist/
-.ream/
+dist/
 .nuxt/
 
-# Log files
-logs/
-*.log
-
-# Miscellaneous
-.tmp/
-.vscode/
-
 # Lolisafe specifics
-config.js
 database.sqlite
 uploads/
-src/oldsite
 .env
 !src/api/routes/uploads
+db
+database.sqlite-journal

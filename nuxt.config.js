@@ -1,23 +1,24 @@
 import dotenv from 'dotenv/config';
 import autoprefixer from 'autoprefixer';
-import serveStatic from 'serve-static';
-import path from 'path';
+import jetpack from 'fs-jetpack';
+
+const clientConfig = {
+	development: process.env.NODE_ENV !== 'production',
+	version: process.env.npm_package_version,
+	URL: process.env.DOMAIN,
+	baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
+	serviceName: process.env.SERVICE_NAME,
+	maxFileSize: process.env.MAX_SIZE,
+	chunkSize: process.env.CHUNK_SIZE,
+	maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM,
+	publicMode: process.env.PUBLIC_MODE,
+	userAccounts: process.env.USER_ACCOUNTS
+};
 
 export default {
+	mode: 'spa',
 	server: {
 		port: process.env.WEBSITE_PORT
-	},
-	env: {
-		development: process.env.NODE_ENV !== 'production',
-		version: process.env.npm_package_version,
-		URL: process.env.DOMAIN,
-		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
-		serviceName: process.env.SERVICE_NAME,
-		maxFileSize: process.env.MAX_SIZE,
-		chunkSize: process.env.CHUNK_SIZE,
-		maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM,
-		publicMode: process.env.PUBLIC_MODE,
-		userAccounts: process.env.USER_ACCOUNTS
 	},
 	srcDir: 'src/site/',
 	head: {
@@ -61,10 +62,8 @@ export default {
 		'~/plugins/vue-isyourpasswordsafe',
 		'~/plugins/vue-timeago',
 		'~/plugins/flexsearch',
-		'~/plugins/vuebar'
-	],
-	serverMiddleware: [
-		{ path: '/', handler: serveStatic(path.join(__dirname, 'uploads')) }
+		'~/plugins/vuebar',
+		'~/plugins/nuxt-client-init'
 	],
 	css: [],
 	modules: [
@@ -79,6 +78,12 @@ export default {
 		postcss: {
 			preset: {
 				autoprefixer
+			}
+		},
+		extend(config, { isClient }) {
+			// Extend only webpack config for client-bundle
+			if (isClient) {
+				jetpack.write('dist/config.json', clientConfig);
 			}
 		}
 	}

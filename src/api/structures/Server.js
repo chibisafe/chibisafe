@@ -23,16 +23,24 @@ class Server {
 		this.server.use(helmet());
 		this.server.use(cors({ allowedHeaders: ['Accept', 'Authorization', 'Cache-Control', 'X-Requested-With', 'Content-Type', 'albumId'] }));
 		this.server.use((req, res, next) => {
-			/*
-				This bypasses the headers.accept for album download, since it's accesed directly through the browser.
-			*/
+			// This bypasses the headers.accept for album download, since it's accesed directly through the browser.
 			if ((req.url.includes('/api/album/') || req.url.includes('/zip')) && req.method === 'GET') return next();
+			// This bypasses the headers.accept if we are accessing the frontend
+			if (!req.url.includes('/api/') && req.method === 'GET') return next();
 			if (req.headers.accept && req.headers.accept.includes('application/vnd.lolisafe.json')) return next();
 			return res.status(405).json({ message: 'Incorrect `Accept` header provided' });
 		});
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
 		// this.server.use(rateLimiter);
+
+		// Serve the frontend if we are in production mode
+		if (process.env.NODE_ENV === 'production') {
+			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'dist')));
+		}
+		// Serve the uploads
+		this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
+
 		this.routesFolder = path.join(__dirname, '..', 'routes');
 	}
 

@@ -10,7 +10,7 @@
 		<h2 class="subtitle">Can I run my own lolisafe?</h2>
 		<article class="message">
 			<div class="message-body">
-				Definitely. Head to <a target="_blank" href="https://github.com/Knallli/lolisafe">our GitHub repo</a> and follow the instructions to clone, build and deploy it by yourself. It's super easy too!
+				Definitely. Head to <a target="_blank" href="https://github.com/WeebDev/lolisafe">our GitHub repo</a> and follow the instructions to clone, build and deploy it by yourself. It's super easy too!
 			</div>
 		</article>
 
@@ -18,6 +18,13 @@
 		<article class="message">
 			<div class="message-body">
 				Simply create a user on the site and every upload will be associated with your account, granting you access to your uploaded files through our dashboard.
+			</div>
+		</article>
+
+		<h2 class="subtitle">What are albums?</h2>
+		<article class="message">
+			<div class="message-body">
+				Albums are a simple way of sorting uploads together. Right now you can create albums through the dashboard and use them only with <a target="_blank" href="https://chrome.google.com/webstore/detail/loli-safe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">our chrome extension</a> which will enable you to <strong>right click -&gt; send to lolisafe</strong> or to a desired album if you have any.
 			</div>
 		</article>
 

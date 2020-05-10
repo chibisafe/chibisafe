@@ -19,7 +19,7 @@ async function start() {
 		},
 		{
 			type: 'input',
-			query: 'Port to run the Website in:',
+			query: 'Port to run the Website in when in dev mode:',
 			handle: 'WEBSITE_PORT'
 		},
 		{
