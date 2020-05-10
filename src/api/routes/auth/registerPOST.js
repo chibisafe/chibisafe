@@ -2,7 +2,6 @@ const Route = require('../../structures/Route');
 const log = require('../../utils/Log');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const uuidv4 = require('uuid/v4');
 
 class registerPOST extends Route {
 	constructor() {
@@ -45,7 +44,6 @@ class registerPOST extends Route {
 		*/
 		const now = moment.utc().toDate();
 		await db.table('users').insert({
-			uuid: uuidv4(),
 			username,
 			password: hash,
 			passwordEditedAt: now,
