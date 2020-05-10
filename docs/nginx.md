@@ -1,18 +1,13 @@
 ### Nginx config for SSL
-Make sure that: 
-- `backend` and `frontend` ports match your wizard config
+Make sure that:
+- `backend` port matches your wizard config
 - `client_max_body_size` matches your wizard config
 - You replace `your.domain` where pertinent
-- You point the `root` folder to your uploads folder
 
 
 ```nginx
 upstream backend {
     server 127.0.0.1:5000;
-}
-
-upstream frontend {
-    server 127.0.0.1:5005;
 }
 
 server {
@@ -55,27 +50,7 @@ server {
     client_max_body_size 90M;
     client_body_timeout 600s;
 
-    location / {
-        add_header Access-Control-Allow-Origin *;
-        root /path/to/your/uploads;
-        try_files $uri @proxy;
-    }
-
-    location @proxy {
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-NginX-Proxy true;
-        proxy_pass http://frontend;
-        proxy_redirect off;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_redirect off;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-	location /api {
+    location /api {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
