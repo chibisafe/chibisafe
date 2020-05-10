@@ -37,8 +37,9 @@ class Server {
 		// Serve the frontend if we are in production mode
 		if (process.env.NODE_ENV === 'production') {
 			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'dist')));
-			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
 		}
+		// Serve the uploads
+		this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
 
 		this.routesFolder = path.join(__dirname, '..', 'routes');
 	}
