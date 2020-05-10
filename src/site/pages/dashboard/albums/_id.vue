@@ -1,10 +1,4 @@
 <style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section { background-color: $backgroundLight1 !important; }
-	section.hero div.hero-body {
-		align-items: baseline;
-	}
-
 	.albumsModal .columns .column { padding: .25rem; }
 </style>
 
