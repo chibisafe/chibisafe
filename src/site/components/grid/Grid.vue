@@ -93,7 +93,9 @@
 					</template>
 				</WaterfallItem>
 			</Waterfall>
-			<button class="button is-primary"
+			<button
+				v-if="moreFiles"
+				class="button is-primary"
 				@click="loadMoreFilesWaterfall">Load more</button>
 		</template>
 		<div v-else>
@@ -252,6 +254,9 @@ export default {
 		},
 		gridFiles() {
 			return this.files.slice(this.filesOffsetWaterfall, this.filesOffsetEndWaterfall);
+		},
+		moreFiles() {
+			return this.files.length > this.filesOffsetEndWaterfall;
 		}
 	},
 	methods: {
