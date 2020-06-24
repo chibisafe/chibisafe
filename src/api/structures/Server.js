@@ -34,13 +34,8 @@ class Server {
 		this.server.use(bodyParser.json());
 		// this.server.use(rateLimiter);
 
-		// Serve the frontend if we are in production mode
-		if (process.env.NODE_ENV === 'production') {
-			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'dist')));
-		}
 		// Serve the uploads
 		this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
-
 		this.routesFolder = path.join(__dirname, '..', 'routes');
 	}
 
@@ -57,10 +52,32 @@ class Server {
 		});
 	}
 
+	serveNuxt() {
+		// Serve the frontend if we are in production mode
+		if (process.env.NODE_ENV === 'production') {
+			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'dist')));
+		}
+
+		/*
+			For vue router to work with express we need this fallback.
+			After all the routes are loaded and the static files handled and if the
+			user is trying to access a non-mapped route we serve the website instead
+			since it has routes of it's own that don't work if accessed directly
+		*/
+		this.server.all('*', (_req, res) => {
+			try {
+				res.sendFile(path.join(__dirname, '..', '..', '..', 'dist', 'index.html'));
+			} catch (error) {
+				res.json({ success: false, message: 'Something went wrong' });
+			}
+		});
+	}
+
 	start() {
 		jetpack.dir('uploads/chunks');
 		jetpack.dir('uploads/thumbs/square');
 		this.registerAllTheRoutes();
+		this.serveNuxt();
 		this.server.listen(this.port, () => {
 			log.success(`Backend ready and listening on port ${this.port}`);
 		});
