@@ -19,9 +19,6 @@ class albumsGET extends Route {
 		for (const album of albums) {
 			// TODO: Optimize the shit out of this. Ideally a JOIN that grabs all the needed stuff in 1 query instead of 3
 
-			// Fetch every public link the album has
-			// const links = await db.table('links').where('albumId', album.id); // eslint-disable-line no-await-in-loop
-
 			// Fetch the total amount of files each album has.
 			const fileCount = await db.table('albumsFiles') // eslint-disable-line no-await-in-loop
 				.where('albumId', album.id)

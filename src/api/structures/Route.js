@@ -40,7 +40,6 @@ const db = require('knex')({
 });
 const moment = require('moment');
 const log = require('../utils/Log');
-const bcrypt = require('bcrypt');
 
 class Route {
 	constructor(path, method, options) {
