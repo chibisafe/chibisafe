@@ -28,7 +28,7 @@
 								:key="album.id"
 								class="album">
 								<div class="arrow-container"
-									@click="album.isDetailsOpen = !album.isDetailsOpen">
+									@click="fetchAlbumDetails(album)">
 									<i :class="{ active: album.isDetailsOpen }"
 										class="icon-arrow" />
 								</div>
@@ -165,6 +165,12 @@ export default {
 		this.getAlbums();
 	},
 	methods: {
+		async fetchAlbumDetails(album) {
+			const response = await this.$axios.$get(`album/${album.id}/links`);
+			album.links = response.links;
+			album.isDetailsOpen = !album.isDetailsOpen;
+			this.$forceUpdate();
+		},
 		promptDeleteAlbum(id) {
 			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this album?',

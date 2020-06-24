@@ -13,33 +13,12 @@ class albumGET extends Route {
 		const album = await db.table('albums').where({ id, userId: user.id }).first();
 		if (!album) return res.status(404).json({ message: 'Album not found' });
 
-		/*
-			Grab the files in a very unoptimized way. (This should be a join between both tables)
-		*/
-		const fileList = await db.table('albumsFiles').where('albumId', id).select('fileId');
-		const fileIds = fileList.map(el => el.fileId);
-		const files = await db.table('files')
-			.whereIn('id', fileIds)
-			.orderBy('id', 'desc');
+		const files = await db.table('albumsFiles')
+			.where({ albumId: id })
+			.join('files', 'albumsFiles.fileId', 'files.id')
+			.select('files.id', 'files.name')
+			.orderBy('files.id', 'desc');
 
-		for (const file of files) {
-			file.albums = [];
-			const albumFiles = await db.table('albumsFiles')
-				.where('fileId', file.id);
-			if (!albumFiles.length) continue;
-
-			for (const albumFile of albumFiles) {
-				const album = await db.table('albums')
-					.where('id', albumFile.albumId)
-					.select('id', 'name')
-					.first();
-				if (!album) continue;
-				file.albums.push(album);
-			}
-		}
-		/*
-			For each file, create the public link to be able to display the file
-		*/
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}

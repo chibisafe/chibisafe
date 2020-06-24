@@ -13,49 +13,37 @@ class albumsGET extends Route {
 			for anyone consuming the API outside of the lolisafe frontend.
 		*/
 		const albums = await db.table('albums')
-			.where('userId', user.id)
-			// .where('enabled', true)
-			.select('id', 'name', 'createdAt', 'editedAt');
+			.where('albums.userId', user.id)
+			.select('id', 'name', 'editedAt');
 
 		for (const album of albums) {
-			// TODO: Optimize the shit out of this.
+			// TODO: Optimize the shit out of this. Ideally a JOIN that grabs all the needed stuff in 1 query instead of 3
 
-			/*
-				Fetch every public link the album has
-			*/
-			const links = await db.table('links').where('albumId', album.id); // eslint-disable-line no-await-in-loop
+			// Fetch every public link the album has
+			// const links = await db.table('links').where('albumId', album.id); // eslint-disable-line no-await-in-loop
 
-			/*
-				Fetch the total amount of files each album has.
-			*/
+			// Fetch the total amount of files each album has.
 			const fileCount = await db.table('albumsFiles') // eslint-disable-line no-await-in-loop
 				.where('albumId', album.id)
 				.count({ count: 'id' });
 
-			/*
-				Fetch the file list from each album but limit it to 5 per album
-			*/
+			// Fetch the file list from each album but limit it to 5 per album
 			const filesToFetch = await db.table('albumsFiles') // eslint-disable-line no-await-in-loop
 				.where('albumId', album.id)
 				.select('fileId')
 				.orderBy('id', 'desc')
 				.limit(5);
 
-			/*
-				Fetch the actual files
-			*/
+			// Fetch the actual files
 			const files = await db.table('files') // eslint-disable-line no-await-in-loop
 				.whereIn('id', filesToFetch.map(el => el.fileId))
-				.select('id', 'name', 'hash', 'original', 'size', 'type', 'createdAt', 'editedAt');
+				.select('id', 'name');
 
-			/*
-				Fetch thumbnails and stuff
-			*/
+			// Fetch thumbnails and stuff
 			for (let file of files) {
 				file = Util.constructFilePublicLink(file);
 			}
 
-			album.links = links;
 			album.fileCount = fileCount[0].count;
 			album.files = files;
 		}
