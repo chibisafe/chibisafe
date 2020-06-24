@@ -15,7 +15,7 @@ class linkDELETE extends Route {
 				.where({ identifier, userId: user.id })
 				.first();
 
-			if (!link) return res.status(400).json({ message: 'Identifier doesn\'t exist' });
+			if (!link) return res.status(400).json({ message: 'Identifier doesn\'t exist or doesnt\'t belong to the user' });
 
 			await db.table('links')
 				.where({ id: link.id })
