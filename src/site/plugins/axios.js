@@ -13,6 +13,10 @@ export default function({ $axios, store }) {
 				text: error.response.data.message,
 				error: true
 			});
+
+			if (error.response.data.message.indexOf('Token expired') !== -1) {
+				store.dispatch('logout');
+			}
 		}
 	});
 }
