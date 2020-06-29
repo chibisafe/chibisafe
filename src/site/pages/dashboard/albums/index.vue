@@ -17,7 +17,8 @@
 									type="text"
 									@keyup.enter.native="createAlbum" />
 								<p class="control">
-									<button class="button is-primary"
+									<button outlined
+										class="button is-primary"
 										@click="createAlbum">Create album</button>
 								</p>
 							</b-field>
@@ -97,8 +98,7 @@
 											</b-table-column>
 
 											<b-table-column field="enabled"
-												label="Actions"
-												centered>
+												numeric>
 												<button class="button is-danger"
 													@click="promptDeleteAlbumLink(props.row.identifier)">Delete link</button>
 											</b-table-column>
@@ -112,19 +112,25 @@
 											</div>
 										</template>
 										<template slot="footer">
-											<div class="wrapper">
-												<div class="has-text-right">
-													<button :class="{ 'is-loading': album.isCreatingLink }"
-														class="button is-primary"
-														style="float: left"
-														@click="createLink(album)">Create new link</button>
-													{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created
+											<div class="level is-paddingless">
+												<div class="level-left">
+													<div class="level-item">
+														<button :class="{ 'is-loading': album.isCreatingLink }"
+															class="button is-primary"
+															style="float: left"
+															@click="createLink(album)">Create new link</button>
+													</div>
+													<div class="level-item">
+														<span class="has-text-default">{{ album.links.length }} / {{ config.maxLinksPerAlbum }} links created</span>
+													</div>
 												</div>
 
-												<div class="has-text-left">
-													<button class="button is-danger"
-														style="float: right"
-														@click="promptDeleteAlbum(album.id)">Delete album</button>
+												<div class="level-right">
+													<div class="level-item">
+														<button class="button is-danger"
+															style="float: right"
+															@click="promptDeleteAlbum(album.id)">Delete album</button>
+													</div>
 												</div>
 											</div>
 										</template>
@@ -244,6 +250,12 @@ export default {
 	div.view-container {
 		padding: 2rem;
 	}
+
+	div.search-container {
+		padding: 1rem 2rem;
+		background-color: $base-2;
+	}
+
 	div.album {
 		display: flex;
 		flex-wrap: wrap;
@@ -349,6 +361,8 @@ export default {
 	}
 
 	div.column > h2.subtitle { padding-top: 1px; }
+
+	div.no-background { background: none !important; }
 </style>
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';

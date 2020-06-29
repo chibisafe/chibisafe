@@ -107,6 +107,10 @@
 	}
 
 	div.column > h2.subtitle { padding-top: 1px; }
+
+	div.no-background {
+		background: none;
+	}
 </style>
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';

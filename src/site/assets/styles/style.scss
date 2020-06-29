@@ -248,3 +248,12 @@ table.table {
 		border-color: #ffffff1c;
 	}
 }
+
+// helpers
+.has-text-default {
+	color: $textColor;
+}
+
+.has-text-default-highlight {
+	color: $textColorHighlight;
+}
