@@ -19,7 +19,8 @@
 		</div>
 		<div class="container uploader">
 			<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
-			<div v-else>
+			<div v-else
+				class="has-text-centered is-size-4 has-text-danger">
 				This site has disabled public uploads. You need an account.
 			</div>
 			<Links />
