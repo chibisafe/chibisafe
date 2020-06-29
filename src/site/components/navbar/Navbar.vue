@@ -45,6 +45,11 @@
 						exact>
 						Account
 					</router-link>
+					<a
+						class="navbar-item"
+						@click="logOut">
+						Logout
+					</a>
 				</template>
 				<template v-else>
 					<router-link
@@ -79,7 +84,8 @@ export default {
 	},
 	methods: {
 		logOut() {
-			this.$emit('logout');
+			this.$store.dispatch('logout');
+			this.$router.replace('/login');
 		}
 	}
 };
