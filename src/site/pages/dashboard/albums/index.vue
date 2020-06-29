@@ -35,7 +35,7 @@
 								</div>
 								<div class="thumb">
 									<figure class="image is-64x64 thumb">
-										<img src="~/assets/images/blank.png">
+										<img src="~/assets/images/blank_darker.png">
 									</figure>
 								</div>
 								<div class="info">
