@@ -8,15 +8,16 @@
 				<div class="column">
 					<h2 class="subtitle">Your uploaded files</h2>
 					<hr>
+
 					<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
-					<Grid v-if="files.length"
-						:files="paginatedFiles"
+					<Grid v-if="count"
+						:files="files"
 						:enableSearch="false"
 						class="grid" />
 
 					<b-pagination
-						v-if="files.length > perPage"
-						:total="files.length"
+						v-if="count > perPage"
+						:total="count"
 						:per-page="perPage"
 						:current.sync="current"
 						class="pagination"
@@ -46,25 +47,26 @@ export default {
 	data() {
 		return {
 			files: [],
+			count: 0,
 			current: 1,
 			perPage: 20
 		};
 	},
-	computed: {
-		paginatedFiles() {
-			return this.files.slice((this.current - 1) * this.perPage, this.current * this.perPage);
-		}
-	},
 	metaInfo() {
 		return { title: 'Uploads' };
+	},
+	watch: {
+		current: 'getFiles'
 	},
 	mounted() {
 		this.getFiles();
 	},
 	methods: {
 		async getFiles() {
-			const response = await this.$axios.$get(`files`);
+			// TODO: Cache a few pages once fetched
+			const response = await this.$axios.$get(`files`, { params: { page: this.current, limit: this.perPage }});
 			this.files = response.files;
+			this.count = response.count;
 		}
 	}
 };

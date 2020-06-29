@@ -17,7 +17,8 @@
 		</div>
 
 		<template v-if="!showList">
-			<Waterfall :gutterWidth="10"
+			<Waterfall v-if="showWaterfall"
+				:gutterWidth="10"
 				:gutterHeight="4">
 				<!--
 					TODO: Implement search based on originalName, albumName and tags
@@ -32,7 +33,6 @@
 				<!-- TODO: Implement pagination -->
 
 				<WaterfallItem v-for="(item, index) in gridFiles"
-					v-if="showWaterfall"
 					:key="index"
 					:width="width"
 					move-class="item-move">

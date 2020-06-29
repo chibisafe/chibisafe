@@ -122,7 +122,7 @@ class Util {
 			/*
 				It's funny but if you do i++ the asignment never gets done resulting in an infinite loop
 			*/
-			if (i < 5) return retry(i + 1);
+			if (i < 5) return retry(++i);
 			log.error('Couldnt allocate identifier for album');
 			return null;
 		};

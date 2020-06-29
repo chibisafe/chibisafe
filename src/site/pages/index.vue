@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="section">
 		<div class="container">
 			<div class="columns">
 				<div class="column is-3 is-offset-2">
