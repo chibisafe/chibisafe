@@ -1,64 +1,62 @@
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">Account settings</h2>
+					<hr>
+
+					<b-field label="Username"
+						message="Nothing to do here"
+						horizontal>
+						<b-input v-model="user.username"
+							expanded
+							disabled />
+					</b-field>
+
+					<b-field label="Current password"
+						message="If you want to change your password input the current one here"
+						horizontal>
+						<b-input v-model="user.password"
+							type="password"
+							expanded />
+					</b-field>
+
+					<b-field label="New password"
+						message="Your new password"
+						horizontal>
+						<b-input v-model="user.newPassword"
+							type="password"
+							expanded />
+					</b-field>
+
+					<b-field label="New password again"
+						message="Your new password once again"
+						horizontal>
+						<b-input v-model="user.reNewPassword"
+							type="password"
+							expanded />
+					</b-field>
+
+					<div class="mb2 mt2 text-center">
+						<button class="button is-primary"
+							@click="changePassword">Change password</button>
 					</div>
-					<div class="column">
-						<h2 class="subtitle">Account settings</h2>
-						<hr>
 
-						<b-field label="Username"
-							message="Nothing to do here"
-							horizontal>
-							<b-input v-model="user.username"
-								expanded
-								disabled />
-						</b-field>
+					<b-field label="Api key"
+						message="This API key lets you use the service from other apps"
+						horizontal>
+						<b-input v-model="user.apiKey"
+							expanded
+							disabled />
+					</b-field>
 
-						<b-field label="Current password"
-							message="If you want to change your password input the current one here"
-							horizontal>
-							<b-input v-model="user.password"
-								type="password"
-								expanded />
-						</b-field>
-
-						<b-field label="New password"
-							message="Your new password"
-							horizontal>
-							<b-input v-model="user.newPassword"
-								type="password"
-								expanded />
-						</b-field>
-
-						<b-field label="New password again"
-							message="Your new password once again"
-							horizontal>
-							<b-input v-model="user.reNewPassword"
-								type="password"
-								expanded />
-						</b-field>
-
-						<div class="mb2 mt2 text-center">
-							<button class="button is-primary"
-								@click="changePassword">Change password</button>
-						</div>
-
-						<b-field label="Api key"
-							message="This API key lets you use the service from other apps"
-							horizontal>
-							<b-input v-model="user.apiKey"
-								expanded
-								disabled />
-						</b-field>
-
-						<div class="mb2 mt2 text-center">
-							<button class="button is-primary"
-								@click="promptNewAPIKey">Request new API key</button>
-						</div>
+					<div class="mb2 mt2 text-center">
+						<button class="button is-primary"
+							@click="promptNewAPIKey">Request new API key</button>
 					</div>
 				</div>
 			</div>

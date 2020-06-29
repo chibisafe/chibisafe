@@ -2,50 +2,48 @@
 	.underline { text-decoration: underline; }
 </style>
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">User details</h2>
+					<hr>
+
+					<b-field label="User Id"
+						horizontal>
+						<span>{{ user.id }}</span>
+					</b-field>
+
+					<b-field label="Username"
+						horizontal>
+						<span>{{ user.username }}</span>
+					</b-field>
+
+					<b-field label="Enabled"
+						horizontal>
+						<span>{{ user.enabled }}</span>
+					</b-field>
+
+					<b-field label="Registered"
+						horizontal>
+						<span><timeago :since="user.createdAt" /></span>
+					</b-field>
+
+					<b-field label="Files"
+						horizontal>
+						<span>{{ files.length }}</span>
+					</b-field>
+
+					<div class="mb2 mt2 text-center">
+						<button class="button is-danger"
+							@click="promptDisableUser">Disable user</button>
 					</div>
-					<div class="column">
-						<h2 class="subtitle">User details</h2>
-						<hr>
 
-						<b-field label="User Id"
-							horizontal>
-							<span>{{ user.id }}</span>
-						</b-field>
-
-						<b-field label="Username"
-							horizontal>
-							<span>{{ user.username }}</span>
-						</b-field>
-
-						<b-field label="Enabled"
-							horizontal>
-							<span>{{ user.enabled }}</span>
-						</b-field>
-
-						<b-field label="Registered"
-							horizontal>
-							<span><timeago :since="user.createdAt" /></span>
-						</b-field>
-
-						<b-field label="Files"
-							horizontal>
-							<span>{{ files.length }}</span>
-						</b-field>
-
-						<div class="mb2 mt2 text-center">
-							<button class="button is-danger"
-								@click="promptDisableUser">Disable user</button>
-						</div>
-
-						<Grid v-if="files.length"
-							:files="files" />
-					</div>
+					<Grid v-if="files.length"
+						:files="files" />
 				</div>
 			</div>
 		</div>

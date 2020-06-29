@@ -1,5 +1,5 @@
 <template>
-	<b-navbar :class="{ isWhite }" 
+	<b-navbar :class="{ isWhite }"
 		transparent>
 		<template slot="end">
 			<b-navbar-item tag="div">
@@ -12,7 +12,7 @@
 			</b-navbar-item>
 			<b-navbar-item tag="div">
 				<router-link
-					to="/"
+					to="/faq"
 					class="navbar-item no-active"
 					exact>
 					Docs

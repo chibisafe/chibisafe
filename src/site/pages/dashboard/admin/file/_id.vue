@@ -2,96 +2,94 @@
 	.underline { text-decoration: underline; }
 </style>
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">File details</h2>
+					<hr>
+
+					<div class="columns">
+						<div class="column is-6">
+							<b-field label="ID"
+								horizontal>
+								<span>{{ file.id }}</span>
+							</b-field>
+
+							<b-field label="Name"
+								horizontal>
+								<span>{{ file.name }}</span>
+							</b-field>
+
+							<b-field label="Original Name"
+								horizontal>
+								<span>{{ file.original }}</span>
+							</b-field>
+
+							<b-field label="IP"
+								horizontal>
+								<span class="underline">{{ file.ip }}</span>
+							</b-field>
+
+							<b-field label="Link"
+								horizontal>
+								<a :href="file.url"
+									target="_blank">{{ file.url }}</a>
+							</b-field>
+
+							<b-field label="Size"
+								horizontal>
+								<span>{{ formatBytes(file.size) }}</span>
+							</b-field>
+
+							<b-field label="Hash"
+								horizontal>
+								<span>{{ file.hash }}</span>
+							</b-field>
+
+							<b-field label="Uploaded"
+								horizontal>
+								<span><timeago :since="file.createdAt" /></span>
+							</b-field>
+						</div>
+						<div class="column is-6">
+							<b-field label="User Id"
+								horizontal>
+								<span>{{ user.id }}</span>
+							</b-field>
+
+							<b-field label="Username"
+								horizontal>
+								<span>{{ user.username }}</span>
+							</b-field>
+
+							<b-field label="Enabled"
+								horizontal>
+								<span>{{ user.enabled }}</span>
+							</b-field>
+
+							<b-field label="Registered"
+								horizontal>
+								<span><timeago :since="user.createdAt" /></span>
+							</b-field>
+
+							<b-field label="Files"
+								horizontal>
+								<span>
+									<nuxt-link :to="`/dashboard/admin/user/${user.id}`">{{ user.fileCount }}</nuxt-link>
+								</span>
+							</b-field>
+						</div>
 					</div>
-					<div class="column">
-						<h2 class="subtitle">File details</h2>
-						<hr>
 
-						<div class="columns">
-							<div class="column is-6">
-								<b-field label="ID"
-									horizontal>
-									<span>{{ file.id }}</span>
-								</b-field>
-
-								<b-field label="Name"
-									horizontal>
-									<span>{{ file.name }}</span>
-								</b-field>
-
-								<b-field label="Original Name"
-									horizontal>
-									<span>{{ file.original }}</span>
-								</b-field>
-
-								<b-field label="IP"
-									horizontal>
-									<span class="underline">{{ file.ip }}</span>
-								</b-field>
-
-								<b-field label="Link"
-									horizontal>
-									<a :href="file.url"
-										target="_blank">{{ file.url }}</a>
-								</b-field>
-
-								<b-field label="Size"
-									horizontal>
-									<span>{{ formatBytes(file.size) }}</span>
-								</b-field>
-
-								<b-field label="Hash"
-									horizontal>
-									<span>{{ file.hash }}</span>
-								</b-field>
-
-								<b-field label="Uploaded"
-									horizontal>
-									<span><timeago :since="file.createdAt" /></span>
-								</b-field>
-							</div>
-							<div class="column is-6">
-								<b-field label="User Id"
-									horizontal>
-									<span>{{ user.id }}</span>
-								</b-field>
-
-								<b-field label="Username"
-									horizontal>
-									<span>{{ user.username }}</span>
-								</b-field>
-
-								<b-field label="Enabled"
-									horizontal>
-									<span>{{ user.enabled }}</span>
-								</b-field>
-
-								<b-field label="Registered"
-									horizontal>
-									<span><timeago :since="user.createdAt" /></span>
-								</b-field>
-
-								<b-field label="Files"
-									horizontal>
-									<span>
-										<nuxt-link :to="`/dashboard/admin/user/${user.id}`">{{ user.fileCount }}</nuxt-link>
-									</span>
-								</b-field>
-							</div>
-						</div>
-
-						<div class="mb2 mt2 text-center">
-							<button class="button is-danger"
-								@click="promptBanIP">Ban IP</button>
-							<button class="button is-danger"
-								@click="promptDisableUser">Disable user</button>
-						</div>
+					<div class="mb2 mt2 text-center">
+						<button class="button is-danger"
+							@click="promptBanIP">Ban IP</button>
+						<button class="button is-danger"
+							@click="promptDisableUser">Disable user</button>
 					</div>
 				</div>
 			</div>

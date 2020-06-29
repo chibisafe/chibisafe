@@ -167,7 +167,7 @@
 					</div>
 				</template>
 				<template slot="footer">
-					<div class="has-text-right">
+					<div class="has-text-right has-text-default">
 						{{ files.length }} files
 					</div>
 				</template>
@@ -197,6 +197,7 @@
 		</b-modal>
 	</div>
 </template>
+
 <script>
 import Waterfall from './waterfall/Waterfall.vue';
 import WaterfallItem from './waterfall/WaterfallItem.vue';
@@ -328,6 +329,7 @@ export default {
 	}
 };
 </script>
+
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	.item-move {

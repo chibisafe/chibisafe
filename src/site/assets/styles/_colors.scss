@@ -7,13 +7,12 @@ $base-5: #4C566A;
 
 $background: #1e2430;
 $backgroundAccent: #20222b;
+$backgroundAccentLighter: #53555E;
 $backgroundLight1: #f5f6f8;
 
 // customize navbar
 $navbar-background-color: $backgroundAccent;
 $navbar-item-color: #f5f6f8;
-
-
 
 // $defaultTextColor: #4a4a4a;
 $defaultTextColor: rgb(236, 239, 244);
@@ -31,3 +30,19 @@ $uploaderDropdownColor: #797979;
 
 $boxShadow: 0 10px 15px rgba(4,39,107,0.2);
 $boxShadowLight: rgba(15, 17, 21, 0.35) 0px 6px 9px 0px;
+
+// pagination
+
+$pagination-color: $defaultTextColor;
+
+$pagination-focus-color: $textColorHighlight;
+$pagination-focus-border-color: $textColorHighlight;
+
+$pagination-active-color: $textColorHighlight;
+$pagination-active-border-color: $textColorHighlight;
+
+$pagination-hover-color: $textColorHighlight;
+$pagination-hover-border-color: $textColorHighlight;
+
+$pagination-current-background-color: $base-3;
+$pagination-current-border-color: $base-2;

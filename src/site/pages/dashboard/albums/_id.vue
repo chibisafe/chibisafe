@@ -3,20 +3,18 @@
 </style>
 
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
-					</div>
-					<div class="column">
-						<h2 class="subtitle">Files</h2>
-						<hr>
-						<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
-						<Grid v-if="files.length"
-							:files="files" />
-					</div>
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">Files</h2>
+					<hr>
+					<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
+					<Grid v-if="files.length"
+						:files="files" />
 				</div>
 			</div>
 		</div>

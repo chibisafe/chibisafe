@@ -17,7 +17,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container uploader">
 			<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
 			<div v-else>
 				This site has disabled public uploads. You need an account.
@@ -78,5 +78,9 @@ export default {
 				color: $textColorHighlight;
 			}
 		}
+	}
+
+	.uploader {
+		margin-top: 2rem;
 	}
 </style>

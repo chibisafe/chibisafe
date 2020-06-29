@@ -16,9 +16,9 @@
 </style>
 
 <template>
-	<section class="hero is-fullheight">
+	<section class="section is-fullheight">
 		<template v-if="files && files.length">
-			<div class="hero-body align-top">
+			<div class="align-top">
 				<div class="container">
 					<h1 class="title">{{ name }}</h1>
 					<h2 class="subtitle">Serving {{ files ? files.length : 0 }} files</h2>
@@ -27,23 +27,19 @@
 					<hr>
 				</div>
 			</div>
-			<div class="hero-body">
-				<div class="container">
-					<Grid v-if="files && files.length"
-						:files="files"
-						:isPublic="true"
-						:width="200"
-						:enableSearch="false"
-						:enableToolbar="false" />
-				</div>
+			<div class="container">
+				<Grid v-if="files && files.length"
+					:files="files"
+					:isPublic="true"
+					:width="200"
+					:enableSearch="false"
+					:enableToolbar="false" />
 			</div>
 		</template>
 		<template v-else>
-			<div class="hero-body">
-				<div class="container">
-					<h1 class="title">:(</h1>
-					<h2 class="subtitle">This album seems to be empty</h2>
-				</div>
+			<div class="container">
+				<h1 class="title">:(</h1>
+				<h2 class="subtitle">This album seems to be empty</h2>
 			</div>
 		</template>
 	</section>

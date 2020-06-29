@@ -121,69 +121,67 @@
 
 
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
-					</div>
-					<div class="column">
-						<h2 class="subtitle">Manage your users</h2>
-						<hr>
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">Manage your users</h2>
+					<hr>
 
-						<div class="view-container">
-							<b-table
-								:data="users || []"
-								:mobile-cards="true">
-								<template slot-scope="props">
-									<b-table-column field="id"
-										label="Id"
-										centered>
-										{{ props.row.id }}
-									</b-table-column>
+					<div class="view-container">
+						<b-table
+							:data="users || []"
+							:mobile-cards="true">
+							<template slot-scope="props">
+								<b-table-column field="id"
+									label="Id"
+									centered>
+									{{ props.row.id }}
+								</b-table-column>
 
-									<b-table-column field="username"
-										label="Username"
-										centered>
-										<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">{{ props.row.username }}</nuxt-link>
-									</b-table-column>
+								<b-table-column field="username"
+									label="Username"
+									centered>
+									<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">{{ props.row.username }}</nuxt-link>
+								</b-table-column>
 
-									<b-table-column field="enabled"
-										label="Enabled"
-										centered>
-										<b-switch v-model="props.row.enabled"
-											@input="changeEnabledStatus(props.row)" />
-									</b-table-column>
+								<b-table-column field="enabled"
+									label="Enabled"
+									centered>
+									<b-switch v-model="props.row.enabled"
+										@input="changeEnabledStatus(props.row)" />
+								</b-table-column>
 
-									<b-table-column field="isAdmin"
-										label="Admin"
-										centered>
-										<b-switch v-model="props.row.isAdmin"
-											@input="changeIsAdmin(props.row)" />
-									</b-table-column>
+								<b-table-column field="isAdmin"
+									label="Admin"
+									centered>
+									<b-switch v-model="props.row.isAdmin"
+										@input="changeIsAdmin(props.row)" />
+								</b-table-column>
 
-									<b-table-column field="purge"
-										centered>
-										<button class="button is-primary"
-											@click="promptPurgeFiles(props.row)">Purge files</button>
-									</b-table-column>
-								</template>
-								<template slot="empty">
-									<div class="has-text-centered">
-										<i class="icon-misc-mood-sad" />
-									</div>
-									<div class="has-text-centered">
-										Nothing here
-									</div>
-								</template>
-								<template slot="footer">
-									<div class="has-text-right">
-										{{ users.length }} users
-									</div>
-								</template>
-							</b-table>
-						</div>
+								<b-table-column field="purge"
+									centered>
+									<button class="button is-primary"
+										@click="promptPurgeFiles(props.row)">Purge files</button>
+								</b-table-column>
+							</template>
+							<template slot="empty">
+								<div class="has-text-centered">
+									<i class="icon-misc-mood-sad" />
+								</div>
+								<div class="has-text-centered">
+									Nothing here
+								</div>
+							</template>
+							<template slot="footer">
+								<div class="has-text-right">
+									{{ users.length }} users
+								</div>
+							</template>
+						</b-table>
 					</div>
 				</div>
 			</div>
