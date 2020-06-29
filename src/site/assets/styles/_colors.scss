@@ -9,10 +9,18 @@ $background: #1e2430;
 $backgroundAccent: #20222b;
 $backgroundLight1: #f5f6f8;
 
+// customize navbar
+$navbar-background-color: $backgroundAccent;
+$navbar-item-color: #f5f6f8;
+
+
+
 // $defaultTextColor: #4a4a4a;
 $defaultTextColor: rgb(236, 239, 244);
 $textColor: #c7ccd8;
 $textColorHighlight: white;
+
+$input-hover-color: $textColor;
 
 $basePink: #ff015b;
 $basePinkHover: rgb(196, 4, 71);

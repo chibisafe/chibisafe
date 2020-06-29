@@ -1,66 +1,67 @@
 <template>
-	<nav :class="{ isWhite }"
-		class="navbar is-transparent">
-		<div class="navbar-brand">
-			<a role="button"
-				class="navbar-burger burger"
-				aria-label="menu"
-				aria-expanded="false"
-				data-target="navbarBasicExample">
-				<span aria-hidden="true" />
-				<span aria-hidden="true" />
-				<span aria-hidden="true" />
-			</a>
-		</div>
-		<div class="navbar-menu">
-			<div class="navbar-end">
+	<b-navbar :class="{ isWhite }" 
+		transparent>
+		<template slot="end">
+			<b-navbar-item tag="div">
 				<router-link
 					to="/"
 					class="navbar-item no-active"
 					exact>
 					Home
 				</router-link>
+			</b-navbar-item>
+			<b-navbar-item tag="div">
 				<router-link
 					to="/"
 					class="navbar-item no-active"
 					exact>
 					Docs
 				</router-link>
-				<template v-if="loggedIn">
+			</b-navbar-item>
+			<template v-if="loggedIn">
+				<b-navbar-item tag="div">
 					<router-link
 						to="/dashboard"
 						class="navbar-item no-active"
 						exact>
 						Uploads
 					</router-link>
+				</b-navbar-item>
+				<b-navbar-item tag="div">
 					<router-link
 						to="/dashboard/albums"
 						class="navbar-item no-active"
 						exact>
 						Albums
 					</router-link>
+				</b-navbar-item>
+				<b-navbar-item tag="div">
 					<router-link
 						to="/dashboard/account"
 						class="navbar-item no-active"
 						exact>
 						Account
 					</router-link>
+				</b-navbar-item>
+				<b-navbar-item tag="div">
 					<a
 						class="navbar-item"
 						@click="logOut">
 						Logout
 					</a>
-				</template>
-				<template v-else>
+				</b-navbar-item>
+			</template>
+			<template v-else>
+				<b-navbar-item tag="div">
 					<router-link
 						class="navbar-item"
 						to="/login">
 						Login
 					</router-link>
-				</template>
-			</div>
-		</div>
-	</nav>
+				</b-navbar-item>
+			</template>
+		</template>
+	</b-navbar>
 </template>
 
 <script>
