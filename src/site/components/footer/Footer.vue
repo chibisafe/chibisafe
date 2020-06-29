@@ -35,8 +35,6 @@
 							</div>
 							<div class="column">
 								<a href="https://github.com/weebdev/lolisafe">GitHub</a>
-								<a href="https://patreon.com/pitu">Patreon</a>
-								<a href="https://discord.gg/5g6vgwn">Discord</a>
 							</div>
 							<div class="column">
 								<a v-if="loggedIn"
