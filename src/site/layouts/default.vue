@@ -13,7 +13,7 @@
 import Navbar from '~/components/navbar/Navbar.vue';
 import Footer from '~/components/footer/Footer';
 export default {
-	components: { 
+	components: {
 		Navbar, 
 		Footer
 	},
@@ -48,7 +48,10 @@ export default {
 </script>
 <style lang="scss">
 	html { overflow: hidden !important; }
-	.is-fullheight { height: 100vh !important; }
+	.is-fullheight { 
+		min-height: 100vh !important; 
+		height: max-content;
+	}
 	.nuxt-app > .section {
 		min-height: auto !important;
 		height: auto !important;
