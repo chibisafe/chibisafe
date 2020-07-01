@@ -33,7 +33,7 @@
 				<!-- TODO: Implement pagination -->
 
 				<WaterfallItem v-for="(item, index) in gridFiles"
-					:key="index"
+					:key="item.id"
 					:width="width"
 					move-class="item-move">
 					<template v-if="isPublic">
@@ -93,10 +93,6 @@
 					</template>
 				</WaterfallItem>
 			</Waterfall>
-			<button
-				v-if="moreFiles"
-				class="button is-primary"
-				@click="loadMoreFilesWaterfall">Load more</button>
 		</template>
 		<div v-else>
 			<b-table
@@ -254,16 +250,10 @@ export default {
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {
-			return this.files.slice(this.filesOffsetWaterfall, this.filesOffsetEndWaterfall);
+			return this.files;
 		},
-		moreFiles() {
-			return this.files.length > this.filesOffsetEndWaterfall;
-		}
 	},
 	methods: {
-		loadMoreFilesWaterfall() {
-			this.filesOffsetEndWaterfall = this.filesOffsetEndWaterfall + this.filesPerPageWaterfall;
-		},
 		async search() {
 			const data = await this.$search.do(this.searchTerm, [
 				'name',
