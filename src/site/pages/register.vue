@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 	name: 'Register',
 	data() {
@@ -52,11 +54,7 @@ export default {
 			isLoading: false
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
+	computed: mapState(['config', 'auth']),
 	metaInfo() {
 		return { title: 'Register' };
 	},
@@ -72,7 +70,7 @@ export default {
 			}
 			if (this.password !== this.rePassword) {
 				this.$store.dispatch('alert', {
-					text: 'Passwords don\'t match',
+					text: "Passwords don't match",
 					error: true
 				});
 				return;

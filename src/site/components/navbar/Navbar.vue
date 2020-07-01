@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
 	props: {
 		isWhite: {
@@ -76,12 +78,8 @@ export default {
 		return { hamburger: false };
 	},
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		config() {
-			return this.$store.state.config;
-		}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState(['config'])
 	},
 	methods: {
 		logOut() {

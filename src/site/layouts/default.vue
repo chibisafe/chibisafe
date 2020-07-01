@@ -12,22 +12,18 @@
 <script>
 import Navbar from '~/components/navbar/Navbar.vue';
 import Footer from '~/components/footer/Footer';
+import { mapState } from 'vuex';
+
 export default {
 	components: {
-		Navbar, 
+		Navbar,
 		Footer
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		},
-		alert() {
-			return this.$store.state.alert;
-		}
-	},
+	computed: mapState(['config', 'alert']),
 	watch: {
-		alert() {
-			if (!this.alert) return;
+		'alert.text'() {
+			console.log('aaaaaaaa');
+			if (!this.alert.text) return;
 
 			this.$buefy.toast.open({
 				duration: 3500,
@@ -36,34 +32,40 @@ export default {
 				type: this.alert.error ? 'is-danger' : 'is-success'
 			});
 
-			setTimeout(() => {
-				this.$store.dispatch('alert', null);
-			}, 3500);
+			this.$store.dispatch('alert/clear', null);
 		}
 	},
 	mounted() {
-		console.log(`%c lolisafe %c v${this.config.version} %c`, 'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff', 'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff', 'background:transparent');
+		console.log(
+			`%c lolisafe %c v${this.config.version} %c`,
+			'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
+			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
+			'background:transparent'
+		);
 	}
 };
 </script>
+
 <style lang="scss">
-	html { overflow: hidden !important; }
-	.is-fullheight { 
-		min-height: 100vh !important; 
-		height: max-content;
-	}
-	.nuxt-app > .section {
-		min-height: auto !important;
-		height: auto !important;
-	}
-	@import "~/assets/styles/style.scss";
-	@import "~/assets/styles/icons.min.css";
+html {
+	overflow: hidden !important;
+}
+.is-fullheight {
+	min-height: 100vh !important;
+	height: max-content;
+}
+.nuxt-app > .section {
+	min-height: auto !important;
+	height: auto !important;
+}
+@import '~/assets/styles/style.scss';
+@import '~/assets/styles/icons.min.css';
 </style>
 <style lang="scss" scoped>
-	.default-body {
-		align-items: baseline !important;
-	}
-	.scroll-area {
-		height: 100vh;
-	}
+.default-body {
+	align-items: baseline !important;
+}
+.scroll-area {
+	height: 100vh;
+}
 </style>

@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 	name: 'Login',
 	data() {
@@ -74,40 +76,31 @@ export default {
 			isLoading: false
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
+	computed: mapState(['config', 'auth']),
 	metaInfo() {
 		return { title: 'Login' };
 	},
+	created() {
+		if (this.auth.loggedIn) {
+			this.redirect();
+		}
+	},
 	methods: {
 		async login() {
-			if (this.isLoading) return;
-			if (!this.username || !this.password) {
-				this.$store.dispatch('alert', {
+			if (this.auth.isLoading) return;
+
+			const { username, password } = this;
+			if (!username || !password) {
+				this.$store.dispatch('alert/set', {
 					text: 'Please fill both fields before attempting to log in.',
 					error: true
 				});
 				return;
 			}
-			this.isLoading = true;
 
-			try {
-				const data = await this.$axios.$post(`auth/login`, {
-					username: this.username,
-					password: this.password
-				});
-				this.$axios.setToken(data.token, 'Bearer');
-				document.cookie = `token=${encodeURIComponent(data.token)}`;
-				this.$store.dispatch('login', { token: data.token, user: data.user });
-
+			await this.$store.dispatch('auth/login', { username, password });
+			if (this.auth.loggedIn) {
 				this.redirect();
-			} catch (error) {
-				//
-			} finally {
-				this.isLoading = false;
 			}
 		},
 		/*
@@ -126,7 +119,7 @@ export default {
 				});
 		},*/
 		redirect() {
-			this.$store.commit('loggedIn', true);
+			console.log('redirect');
 			if (typeof this.$route.query.redirect !== 'undefined') {
 				this.$router.push(this.$route.query.redirect);
 				return;

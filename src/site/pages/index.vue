@@ -28,6 +28,8 @@
 	</div>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 import Logo from '~/components/logo/Logo.vue';
 import Uploader from '~/components/uploader/Uploader.vue';
 import Links from '~/components/home/links/Links.vue';
@@ -43,12 +45,8 @@ export default {
 		return { albums: [] };
 	},
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		config() {
-			return this.$store.state.config;
-		}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState(['config'])
 	}
 };
 </script>
