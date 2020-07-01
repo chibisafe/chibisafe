@@ -1,37 +1,40 @@
 <template>
 	<div>
-		<div v-if="enableToolbar"
-			class="toolbar">
-			<div class="block">
-				<b-radio v-model="showList"
-					name="name"
-					:native-value="true">
-					List
-				</b-radio>
-				<b-radio v-model="showList"
-					name="name"
-					:native-value="false">
-					Grid
-				</b-radio>
+		<nav class="level">
+			<div class="level-left">
+				<div class="level-item">
+					<slot name="pagination" />
+				</div>
 			</div>
-		</div>
+			<div v-if="enableToolbar"
+				class="level-right toolbar">
+				<div class="level-item">
+					<div class="block">
+						<b-radio v-model="showList"
+							name="name"
+							:native-value="true">
+							List
+						</b-radio>
+						<b-radio v-model="showList"
+							name="name"
+							:native-value="false">
+							Grid
+						</b-radio>
+					</div>
+				</div>
+			</div>
+		</nav>
 
 		<template v-if="!showList">
 			<Waterfall v-if="showWaterfall"
 				:gutterWidth="10"
 				:gutterHeight="4">
-				<!--
-					TODO: Implement search based on originalName, albumName and tags
-					<input v-if="enableSearch"
-						v-model="searchTerm"
-						type="text"
-						placeholder="Search..."
-						@input="search()"
-						@keyup.enter="search()">
-				-->
-
-				<!-- TODO: Implement pagination -->
-
+				<input v-if="enableSearch"
+					v-model="searchTerm"
+					type="text"
+					placeholder="Search..."
+					@input="search()"
+					@keyup.enter="search()">	
 				<WaterfallItem v-for="(item, index) in gridFiles"
 					:key="item.id"
 					:width="width"
@@ -289,7 +292,7 @@ export default {
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return;
 			const found = this.showingModalForFile.albums.find(el => el.id === id);
-			return found ? found.id ? true : false : false;
+			return found && found.id ? true : false;
 		},
 		async openAlbumModal(file) {
 			this.showingModalForFile = file;
