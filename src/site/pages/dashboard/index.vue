@@ -9,7 +9,6 @@
 					<h2 class="subtitle">Your uploaded files</h2>
 					<hr>
 
-					<!-- TODO: Add a list view so the user can see the files that don't have thumbnails, like text documents -->
 					<Grid v-if="count"
 						:files="files"
 						:enableSearch="false"
@@ -49,7 +48,7 @@ export default {
 			files: [],
 			count: 0,
 			current: 1,
-			perPage: 20
+			perPage: 30
 		};
 	},
 	metaInfo() {
@@ -58,8 +57,22 @@ export default {
 	watch: {
 		current: 'getFiles'
 	},
-	mounted() {
-		this.getFiles();
+	async asyncData({ $axios, route }) {
+		const perPage = 30;
+		const current = 1; // current page
+
+		try {
+			const response = await $axios.$get(`files`, { params: { page: current, limit: perPage }});
+			return {
+				files: response.files || [],
+				count: response.count || 0,
+				current,
+				perPage
+			};
+		} catch (error) {
+			console.error(error);
+			return { files: [] };
+		}
 	},
 	methods: {
 		async getFiles() {
