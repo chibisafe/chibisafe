@@ -31,7 +31,11 @@ export default {
 			{ hid: 'theme-color', name: 'theme-color', content: `${process.env.META_THEME_COLOR}` },
 			{ hid: 'description', name: 'description', content: `${process.env.META_DESCRIPTION}` },
 			{ hid: 'keywords', name: 'keywords', content: `${process.env.META_KEYWORDS}` },
-			{ hid: 'apple-mobile-web-app-title', name: 'apple-mobile-web-app-title', content: `${process.env.SERVICE_NAME}` },
+			{
+				hid: 'apple-mobile-web-app-title',
+				name: 'apple-mobile-web-app-title',
+				content: `${process.env.SERVICE_NAME}`
+			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
 			// { hid: 'msapplication-config', name: 'msapplication-config', content: `${process.env.DOMAIN}/browserconfig.xml` },
 			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
@@ -66,10 +70,7 @@ export default {
 		'~/plugins/nuxt-client-init'
 	],
 	css: [],
-	modules: [
-		'@nuxtjs/axios',
-		'cookie-universal-nuxt'
-	],
+	modules: ['@nuxtjs/axios', 'cookie-universal-nuxt'],
 	axios: {
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`
 	},
@@ -80,10 +81,13 @@ export default {
 				autoprefixer
 			}
 		},
-		extend(config, { isClient }) {
+		extend(config, { isClient, isDev }) {
 			// Extend only webpack config for client-bundle
 			if (isClient) {
 				jetpack.write('dist/config.json', clientConfig);
+			}
+			if (isDev) {
+				config.devtool = isClient ? 'source-map' : 'inline-source-map';
 			}
 		}
 	}
