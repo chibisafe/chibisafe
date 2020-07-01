@@ -21,7 +21,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
 
-const imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webp'];
+const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 
