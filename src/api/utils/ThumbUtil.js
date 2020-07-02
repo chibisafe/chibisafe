@@ -2,7 +2,7 @@ const jetpack = require('fs-jetpack');
 const path = require('path');
 const sharp = require('sharp');
 const ffmpeg = require('fluent-ffmpeg');
-const generatePreview = require('ffmpeg-generate-video-preview');
+const previewUtil = require('./PreviewUtil');
 
 const log = require('./Log');
 
@@ -17,7 +17,7 @@ class ThumbUtil {
 	static generateThumbnails(filename) {
 		const ext = path.extname(filename).toLowerCase();
 		const output = `${filename.slice(0, -ext.length)}.png`;
-		const previewOutput = `${filename.slice(0, -ext.length)}.gif`;
+		const previewOutput = `${filename.slice(0, -ext.length)}.webm`;
 
 		if (ThumbUtil.imageExtensions.includes(ext)) return this.generateThumbnailForImage(filename, output);
 		if (ThumbUtil.videoExtensions.includes(ext)) return this.generateThumbnailForVideo(filename, previewOutput);
@@ -38,7 +38,7 @@ class ThumbUtil {
 			.toFile(path.join(ThumbUtil.thumbPath, output));
 	}
 
-	static generateThumbnailForVideo(filename, output) {
+	static async generateThumbnailForVideo(filename, output) {
 		const filePath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename);
 
 		ffmpeg(filePath)
@@ -60,10 +60,11 @@ class ThumbUtil {
 			.on('error', error => log.error(error.message));
 
 		try {
-			generatePreview({
+			await previewUtil({
 				input: filePath,
 				width: 150,
-				output: path.join(ThumbUtil.videoPreviewPath, output)
+				output: path.join(ThumbUtil.videoPreviewPath, output),
+				log: console.log
 			});
 		} catch (e) {
 			console.error(e);
