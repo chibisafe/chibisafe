@@ -82,8 +82,8 @@ export default {
 		...mapState(['config'])
 	},
 	methods: {
-		logOut() {
-			this.$store.dispatch('logout');
+		async logOut() {
+			await this.$store.dispatch('auth/logout');
 			this.$router.replace('/login');
 		}
 	}

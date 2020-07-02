@@ -49,15 +49,15 @@
 	</footer>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'file-saver';
+
 export default {
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		version() {
-			return this.$store.state.config.version;
-		}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState({
+			version: state => state.config.version
+		})
 	},
 	methods: {
 		createShareXThing() {

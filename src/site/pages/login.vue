@@ -99,6 +99,7 @@ export default {
 			}
 
 			await this.$store.dispatch('auth/login', { username, password });
+
 			if (this.auth.loggedIn) {
 				this.redirect();
 			}
@@ -119,7 +120,6 @@ export default {
 				});
 		},*/
 		redirect() {
-			console.log('redirect');
 			if (typeof this.$route.query.redirect !== 'undefined') {
 				this.$router.push(this.$route.query.redirect);
 				return;

@@ -10,7 +10,8 @@ const getDefaultState = () => ({
 export const state = getDefaultState;
 
 export const getters = {
-	isLoggedIn: state => state.loggedIn
+	isLoggedIn: state => state.loggedIn,
+	getApiKey: state => state.user?.apiKey
 };
 
 export const actions = {
@@ -35,6 +36,36 @@ export const actions = {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
 		}
 	},
+	async fetchCurrentUser({ commit, dispatch }) {
+		try {
+			const data = await this.$axios.$get(`users/me`);
+			commit('setUser', data.user);
+		} catch (e) {
+			dispatch('alert/set', { text: e.message, error: true }, { root: true });
+		}
+	},
+	async changePassword({ dispatch }, { password, newPassword }) {
+		try {
+			const response = await this.$axios.$post(`user/password/change`, {
+				password,
+				newPassword
+			});
+
+			return response;
+		} catch (e) {
+			dispatch('alert/set', { text: e.message, error: true }, { root: true });
+		}
+	},
+	async requestAPIKey({ commit, dispatch }) {
+		try {
+			const response = await this.$axios.$post(`user/apikey/change`);
+			commit('setApiKey', response.apiKey);
+
+			return response;
+		} catch (e) {
+			dispatch('alert/set', { text: e.message, error: true }, { root: true });
+		}
+	},
 	logout({ commit }) {
 		commit('logout');
 	}
@@ -43,6 +74,12 @@ export const actions = {
 export const mutations = {
 	setToken(state, token) {
 		state.token = token;
+	},
+	setApiKey(state, apiKey) {
+		state.user.apiKey = apiKey;
+	},
+	setUser(state, user) {
+		state.user = user;
 	},
 	loginRequest(state) {
 		state.isLoading = true;

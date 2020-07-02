@@ -99,7 +99,7 @@ export default {
 			fetch: 'images/fetch'
 		}),
 		fetchPaginate() {
-			this.fetch(this.current)
+			this.fetch(this.current);
 		}
 	}
 };

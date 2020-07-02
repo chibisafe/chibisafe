@@ -198,6 +198,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Waterfall from './waterfall/Waterfall.vue';
 import WaterfallItem from './waterfall/WaterfallItem.vue';
 
@@ -246,9 +248,9 @@ export default {
 		};
 	},
 	computed: {
-		user() {
-			return this.$store.state.user;
-		},
+		...mapState({
+			user: state => state.auth.user
+		}),
 		blank() {
 			return require('@/assets/images/blank.png');
 		},

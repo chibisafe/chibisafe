@@ -10,8 +10,8 @@ export const state = () => ({
 });
 
 export const getters = {
-	getTotalFiles: state => state.pagination.totalFiles,
-	getFetchedCount: state => state.files.length,
+	getTotalFiles: ({ pagination }) => pagination.totalFiles,
+	getFetchedCount: ({ files }) => files.length,
 	shouldPaginate: ({ pagination }) => pagination.totalFiles > pagination.limit,
 	getLimit: ({ pagination }) => pagination.limit
 };

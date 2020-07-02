@@ -6,13 +6,11 @@
 		<router-link to="/dashboard/albums">
 			<i class="icon-interface-window" />Albums
 		</router-link>
-		<!--
 		<router-link to="/dashboard/tags">
 			<i class="icon-ecommerce-tag-c" />Tags
 		</router-link>
-		-->
 		<router-link to="/dashboard/account">
-			<i class="icon-ecommerce-tag-c" />Account
+			<i class="icon-user-alt" />Account
 		</router-link>
 		<template v-if="user && user.isAdmin">
 			<router-link to="/dashboard/admin/users">
@@ -28,13 +26,14 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
-	computed: {
-		user() {
-			return this.$store.state.user;
-		}
-	}
+	computed: mapState({
+		user: state => state.auth.user
+	})
 };
+
 </script>
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
