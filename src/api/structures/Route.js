@@ -7,7 +7,7 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: nodePath.join(__dirname, '..', '..', '..', 'database.sqlite')
+		filename: nodePath.join(__dirname, '../../../database.sqlite')
 	},
 	postProcessResponse: result => {
 		/*
@@ -16,11 +16,7 @@ const db = require('knex')({
 			some things like different data types for booleans need to be considered like in
 			the implementation below where sqlite returns 1 and 0 instead of true and false.
 		*/
-		const booleanFields = [
-			'enabled',
-			'enableDownload',
-			'isAdmin'
-		];
+		const booleanFields = ['enabled', 'enableDownload', 'isAdmin'];
 
 		const processResponse = row => {
 			Object.keys(row).forEach(key => {
@@ -52,7 +48,10 @@ class Route {
 	}
 
 	async authorize(req, res) {
-		const banned = await db.table('bans').where({ ip: req.ip }).first();
+		const banned = await db
+			.table('bans')
+			.where({ ip: req.ip })
+			.first();
 		if (banned) return res.status(401).json({ message: 'This IP has been banned from using the service.' });
 
 		if (this.options.bypassAuth) return this.run(req, res, db);
@@ -72,11 +71,16 @@ class Route {
 			const id = decoded ? decoded.sub : '';
 			const iat = decoded ? decoded.iat : '';
 
-			const user = await db.table('users').where({ id }).first();
+			const user = await db
+				.table('users')
+				.where({ id })
+				.first();
 			if (!user) return res.status(401).json({ message: 'Invalid authorization' });
-			if (iat && iat < moment(user.passwordEditedAt).format('x')) return res.status(401).json({ message: 'Token expired' });
+			if (iat && iat < moment(user.passwordEditedAt).format('x'))
+				return res.status(401).json({ message: 'Token expired' });
 			if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
-			if (this.options.adminOnly && !user.isAdmin) return res.status(401).json({ message: 'Invalid authorization' });
+			if (this.options.adminOnly && !user.isAdmin)
+				return res.status(401).json({ message: 'Invalid authorization' });
 
 			return this.run(req, res, db, user);
 		});
@@ -84,14 +88,18 @@ class Route {
 
 	async authorizeApiKey(req, res, apiKey) {
 		if (!this.options.canApiKey) return res.status(401).json({ message: 'Api Key not allowed for this resource' });
-		const user = await db.table('users').where({ apiKey }).first();
+		const user = await db
+			.table('users')
+			.where({ apiKey })
+			.first();
 		if (!user) return res.status(401).json({ message: 'Invalid authorization' });
 		if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
 
 		return this.run(req, res, db, user);
 	}
 
-	run(req, res, db) { // eslint-disable-line no-unused-vars
+	run(req, res, db) {
+		// eslint-disable-line no-unused-vars
 		return;
 	}
 
