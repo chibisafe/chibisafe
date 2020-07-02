@@ -1,0 +1,17 @@
+{
+	"discord.enabled": true,
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"files.insertFinalNewline": true,
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.eslintIntergration": true,
+	"vetur.validation.template": false,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"prettier.disableLanguages": ["vue"],
+	"vetur.format.enable": true,
+	"files.eol": "\n"
+}

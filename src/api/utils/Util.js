@@ -24,6 +24,8 @@ const ThumbUtil = require('./ThumbUtil');
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 
 class Util {
+	static uploadPath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER);
+
 	static uuid() {
 		return uuidv4();
 	}
@@ -55,7 +57,7 @@ class Util {
 				}) + path.extname(name).toLowerCase();
 
 			// TODO: Change this to look for the file in the db instead of in the filesystem
-			const exists = jetpack.exists(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
+			const exists = jetpack.exists(path.join(Util.uploadPath, filename));
 			if (!exists) return filename;
 			if (i < 5) return retry(i + 1);
 			log.error('Couldnt allocate identifier for file');
@@ -86,10 +88,7 @@ class Util {
 	}
 
 	static async getFileHash(filename) {
-		const file = await jetpack.readAsync(
-			path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename),
-			'buffer'
-		);
+		const file = await jetpack.readAsync(path.join(Util.uploadPath, filename), 'buffer');
 		if (!file) {
 			log.error(`There was an error reading the file < ${filename} > for hashing`);
 			return null;
@@ -115,13 +114,9 @@ class Util {
 	static async deleteFile(filename, deleteFromDB = false) {
 		const thumbName = ThumbUtil.getFileThumbnail(filename);
 		try {
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
-			await jetpack.removeAsync(
-				path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', thumbName)
-			);
-			await jetpack.removeAsync(
-				path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', thumbName)
-			);
+			await jetpack.removeAsync(path.join(Util.uploadPath, filename));
+			await ThumbUtil.removeThumbs(thumbName);
+
 			if (deleteFromDB) {
 				await db
 					.table('files')
@@ -205,7 +200,7 @@ class Util {
 		try {
 			const zip = new Zip();
 			for (const file of files) {
-				zip.addLocalFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, file));
+				zip.addLocalFile(path.join(Util.uploadPath, file));
 			}
 			zip.writeZip(
 				path.join(
