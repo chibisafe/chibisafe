@@ -2,7 +2,7 @@ const jetpack = require('fs-jetpack');
 const path = require('path');
 const sharp = require('sharp');
 const ffmpeg = require('fluent-ffmpeg');
-const previewUtil = require('./PreviewUtil');
+const previewUtil = require('./videoPreview/FragmentPreview');
 
 const log = require('./Log');
 

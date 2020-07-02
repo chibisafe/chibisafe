@@ -1,8 +1,6 @@
 const ffmpeg = require('fluent-ffmpeg');
 const probe = require('ffmpeg-probe');
 
-const path = require('path');
-
 const noop = () => {};
 
 module.exports = async opts => {
@@ -61,7 +59,7 @@ module.exports = async opts => {
 		ffmpeg(input)
 			.outputOptions(['-vsync', 'vfr'])
 			.outputOptions(['-q:v', quality, '-vf', filter])
-			.outputOption('-an')
+			.noAudio()
 			.outputFormat('webm')
 			.output(output)
 			.on('start', cmd => log && log({ cmd }))
