@@ -16,6 +16,7 @@ exports.up = async knex => {
 		table.increments();
 		table.integer('userId');
 		table.string('name');
+		table.boolean('nsfw');
 		table.timestamp('zippedAt');
 		table.timestamp('createdAt');
 		table.timestamp('editedAt');
@@ -28,6 +29,7 @@ exports.up = async knex => {
 		table.string('original');
 		table.string('type');
 		table.integer('size');
+		table.boolean('nsfw');
 		table.string('hash');
 		table.string('ip');
 		table.timestamp('createdAt');
