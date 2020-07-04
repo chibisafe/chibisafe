@@ -10,6 +10,10 @@ $backgroundAccent: #20222b;
 $backgroundAccentLighter: #53555e;
 $backgroundLight1: #f5f6f8;
 
+$scheme-main: $background;
+$scheme-main-bis: $backgroundAccent;
+$scheme-main-ter: $backgroundAccentLighter;
+
 // customize navbar
 $navbar-background-color: $backgroundAccent;
 $navbar-item-color: #f5f6f8;
@@ -47,6 +51,10 @@ $pagination-current-background-color: $base-3;
 $pagination-current-border-color: $base-2;
 
 // loading
-
 $loading-background: rgba(0, 0, 0, 0.8);
 $loading-background: rgba(40, 40, 40, 0.66);
+
+// dialogs
+$modal-card-body-background-color: $background;
+$modal-card-head-background-color: $backgroundAccent;
+$modal-card-foot-border-top: 1px solid rgba(255, 255, 255, 0.1098);

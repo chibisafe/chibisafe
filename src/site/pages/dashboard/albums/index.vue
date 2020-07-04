@@ -18,7 +18,8 @@
 									@keyup.enter.native="createAlbum" />
 								<p class="control">
 									<button outlined
-										class="button is-primary"
+										class="button is-black"
+										:disabled="isCreatingAlbum"
 										@click="createAlbum">Create album</button>
 								</p>
 							</b-field>
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import AlbumEntry from '~/components/album/AlbumEntry.vue';
 
@@ -51,7 +52,8 @@ export default {
 	}],
 	data() {
 		return {
-			newAlbumName: null
+			newAlbumName: null,
+			isCreatingAlbum: false
 		};
 	},
 	computed: mapState(['config', 'albums']),
@@ -59,13 +61,23 @@ export default {
 		return { title: 'Uploads' };
 	},
 	methods: {
+		...mapActions({
+			'alert': 'alert/set'
+		}),
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
-			const response = await this.$axios.$post(`album/new`,
-				{ name: this.newAlbumName });
-			this.newAlbumName = null;
-			this.$buefy.toast.open(response.message);
-			this.getAlbums();
+
+			this.isCreatingAlbum = true;
+			try {
+				const response = await this.$store.dispatch('albums/createAlbum', this.newAlbumName);
+
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
+			} finally {
+				this.isCreatingAlbum = false;
+				this.newAlbumName = null;
+			}
 		}
 	}
 };

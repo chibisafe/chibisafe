@@ -14,7 +14,9 @@
 			<h4>
 				<router-link :to="`/dashboard/albums/${album.id}`">{{ album.name }}</router-link>
 			</h4>
-			<span>Updated <timeago :since="album.editedAt" /></span>
+			<span>
+				Created <span class="is-inline has-text-weight-semibold"><timeago :since="album.createdAt" /></span>
+			</span>
 			<span>{{ album.fileCount || 0 }} files</span>
 		</div>
 		<div class="latest is-hidden-mobile">
@@ -40,7 +42,7 @@
 		</div>
 
 		<AlbumDetails v-if="isExpanded"
-			:details="getDetails"
+			:details="getDetails(album.id)"
 			:albumId="album.id" />
 	</div>
 </template>
@@ -62,13 +64,10 @@ export default {
 	computed: {
 		...mapGetters({
 			isExpandedGetter: 'albums/isExpanded',
-			getDetailsGetter: 'albums/getDetails'
+			getDetails: 'albums/getDetails'
 		}),
 		isExpanded() {
 			return this.isExpandedGetter(this.album.id);
-		},
-		getDetails() {
-			return this.getDetailsGetter(this.album.id);
 		}
 	},
 	methods: {

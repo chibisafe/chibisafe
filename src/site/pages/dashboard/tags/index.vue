@@ -228,12 +228,14 @@ export default {
 	methods: {
 		promptDeleteTag(id) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Are you sure you want to delete this tag?',
 				onConfirm: () => this.promptPurgeTag(id)
 			});
 		},
 		promptPurgeTag(id) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Would you like to delete every file associated with this tag?',
 				cancelText: 'No',
 				confirmText: 'Yes',

@@ -85,6 +85,7 @@ export default {
 	methods: {
 		promptDisableUser() {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Are you sure you want to disable the account of the user that uploaded this file?',
 				onConfirm: () => this.disableUser()
 			});

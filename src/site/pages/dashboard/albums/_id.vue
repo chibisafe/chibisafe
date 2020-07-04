@@ -10,25 +10,53 @@
 					<Sidebar />
 				</div>
 				<div class="column">
-					<h2 class="subtitle">Files</h2>
+					<nav class="level">
+						<div class="level-left">
+							<div class="level-item">
+								<h2 class="subtitle">Files</h2>
+							</div>
+						</div>
+						<div class="level-right">
+							<div class="level-item">
+								<b-field>
+									<b-input
+										placeholder="Search"
+										type="search"/>
+									<p class="control">
+										<button
+											outlined
+											class="button is-primary">
+											Search
+										</button>
+									</p>
+								</b-field>
+							</div>
+						</div>
+					</nav>
+
 					<hr>
 
 					<Grid v-if="files.length"
-						:files="files" />
-
-					<b-pagination
-						v-if="count > perPage"
-						:total="count"
-						:per-page="perPage"
-						:current.sync="current"
-						class="pagination"
-						icon-prev="icon-interface-arrow-left"
-						icon-next="icon-interface-arrow-right"
-						icon-pack="icon"
-						aria-next-label="Next page"
-						aria-previous-label="Previous page"
-						aria-page-label="Page"
-						aria-current-label="Current page" />
+						:files="files"
+						:total="count">
+						<template v-slot:pagination>
+							<b-pagination
+								v-if="count > perPage"
+								:total="count"
+								:per-page="perPage"
+								:current.sync="current"
+								range-before="2"
+								range-after="2"
+								class="pagination-slot"
+								icon-prev="icon-interface-arrow-left"
+								icon-next="icon-interface-arrow-right"
+								icon-pack="icon"
+								aria-next-label="Next page"
+								aria-previous-label="Previous page"
+								aria-page-label="Page"
+								aria-current-label="Current page" />
+						</template>
+					</Grid>
 				</div>
 			</div>
 		</div>

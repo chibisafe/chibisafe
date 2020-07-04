@@ -29,12 +29,6 @@
 			<Waterfall v-if="showWaterfall"
 				:gutterWidth="10"
 				:gutterHeight="4">
-				<input v-if="enableSearch"
-					v-model="searchTerm"
-					type="text"
-					placeholder="Search..."
-					@input="search()"
-					@keyup.enter="search()">	
 				<WaterfallItem v-for="(item, index) in gridFiles"
 					:key="item.id"
 					:width="width"
@@ -167,7 +161,7 @@
 				</template>
 				<template slot="footer">
 					<div class="has-text-right has-text-default">
-						{{ files.length }} files
+						Showing {{ files.length }} files ({{ total }} total)
 					</div>
 				</template>
 			</b-table>
@@ -212,6 +206,10 @@ export default {
 		files: {
 			type: Array,
 			default: () => []
+		},
+		total: {
+			type: Number,
+			default: 0
 		},
 		fixed: {
 			type: Boolean,

@@ -25,13 +25,13 @@
 					label="Allow download"
 					centered>
 					<b-switch v-model="props.row.enableDownload"
-						@input="linkOptionsChanged(props.row)" />
+						@input="updateLinkOptions(albumId, props.row)" />
 				</b-table-column>
 
 				<b-table-column field="enabled"
 					numeric>
 					<button class="button is-danger"
-						@click="promptDeleteAlbumLink(props.row.identifier)">Delete link</button>
+						@click="promptDeleteAlbumLink(albumId, props.row.identifier)">Delete link</button>
 				</b-table-column>
 			</template>
 			<template slot="empty">
@@ -42,6 +42,7 @@
 					Nothing here
 				</div>
 			</template>
+
 			<template slot="footer">
 				<div class="level is-paddingless">
 					<div class="level-left">
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	props: {
@@ -90,55 +91,65 @@ export default {
 	},
 	computed: mapState(['config']),
 	methods: {
+		...mapActions({
+			deleteAlbumAction: 'albums/deleteAlbum',
+			deleteAlbumLinkAction: 'albums/deleteLink',
+			updateLinkOptionsAction: 'albums/updateLinkOptions',
+			createLinkAction: 'albums/createLink',
+			alert: 'alert/set'
+		}),
 		promptDeleteAlbum(id) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Are you sure you want to delete this album?',
 				onConfirm: () => this.deleteAlbum(id)
 			});
 		},
-		async deleteAlbum(id) {
-			const response = await this.$axios.$delete(`album/${id}`);
-			this.getAlbums();
-			return this.$buefy.toast.open(response.message);
-		},
-		promptDeleteAlbumLink(identifier) {
+		promptDeleteAlbumLink(albumId, identifier) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Are you sure you want to delete this album link?',
-				onConfirm: () => this.deleteAlbumLink(identifier)
+				onConfirm: () => this.deleteAlbumLink({ albumId, identifier })
 			});
 		},
-		async deleteAlbumLink(identifier) {
-			const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
-			return this.$buefy.toast.open(response.message);
-		},
-		async linkOptionsChanged(link) {
-			const response = await this.$axios.$post(`album/link/edit`,
-				{
-					identifier: link.identifier,
-					enableDownload: link.enableDownload,
-					enabled: link.enabled
-				});
-			this.$buefy.toast.open(response.message);
-		},
-		async createLink(album) {
-			album.isCreatingLink = true;
-			// Since we actually want to change the state even if the call fails, use a try catch
+		async deleteAlbum(id) {
 			try {
-				const response = await this.$axios.$post(`album/link/new`,
-					{ albumId: album.id });
-				this.$buefy.toast.open(response.message);
-				album.links.push({
-					identifier: response.identifier,
-					views: 0,
-					enabled: true,
-					enableDownload: true,
-					expiresAt: null
-				});
-			} catch (error) {
-				//
+				const response = await this.deleteAlbumAction(id);
+
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
+			} 
+		},
+		async deleteAlbumLink(id) {
+			try {
+				const response = await this.deleteAlbumLinkAction(id);
+
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
+			} 
+		},
+		async createLink(albumId) {
+			this.isCreatingLink = true;
+			try {
+				const response = await this.createLinkAction(albumId);
+
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
 			} finally {
-				album.isCreatingLink = false;
+				this.isCreatingLink = false;
 			}
+		},
+		async updateLinkOptions(albumId, linkOpts) {
+			try {
+				const response = await this.updateLinkOptionsAction({ albumId, linkOpts });
+
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
+			} 
 		}
 	}
 };
