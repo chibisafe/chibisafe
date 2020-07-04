@@ -30,7 +30,9 @@
 
 				<b-table-column field="enabled"
 					numeric>
-					<button class="button is-danger"
+					<button :class="{ 'is-loading': isDeleting(props.row.identifier) }"
+						class="button is-danger"
+						:disabled="isDeleting(props.row.identifier)"
 						@click="promptDeleteAlbumLink(albumId, props.row.identifier)">Delete link</button>
 				</b-table-column>
 			</template>
@@ -86,7 +88,8 @@ export default {
 	},
 	data() {
 		return {
-			isCreatingLink: false
+			isCreatingLink: false,
+			isDeletingLinks: [],
 		}
 	},
 	computed: mapState(['config']),
@@ -109,7 +112,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this album link?',
-				onConfirm: () => this.deleteAlbumLink({ albumId, identifier })
+				onConfirm: () => this.deleteAlbumLink(albumId, identifier)
 			});
 		},
 		async deleteAlbum(id) {
@@ -121,14 +124,17 @@ export default {
 				this.alert({ text: e.message, error: true });
 			} 
 		},
-		async deleteAlbumLink(id) {
+		async deleteAlbumLink(albumId, identifier) {
+			this.isDeletingLinks.push(identifier);
 			try {
-				const response = await this.deleteAlbumLinkAction(id);
+				const response = await this.deleteAlbumLinkAction({ albumId, identifier });
 
 				this.alert({ text: response.message, error: false });
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
-			} 
+			} finally {
+				this.isDeletingLinks = this.isDeletingLinks.filter(e => e !== identifier);
+			}
 		},
 		async createLink(albumId) {
 			this.isCreatingLink = true;
@@ -150,6 +156,9 @@ export default {
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
 			} 
+		},
+		isDeleting(identifier) {
+			return this.isDeletingLinks.indexOf(identifier) > -1;
 		}
 	}
 };
