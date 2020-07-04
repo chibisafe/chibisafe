@@ -14,17 +14,22 @@ class linkEditPOST extends Route {
 		/*
 			Make sure the link exists
 		*/
-		const link = await db.table('links').where({ identifier, userId: user.id }).first();
-		if (!link) return res.status(400).json({ message: 'The link doesn\'t exist or doesn\'t belong to the user' });
+		const link = await db
+			.table('links')
+			.where({ identifier, userId: user.id })
+			.first();
+		if (!link) return res.status(400).json({ message: "The link doesn't exist or doesn't belong to the user" });
 
 		try {
-			await db.table('links')
+			const updateObj = {
+				enableDownload: enableDownload || false,
+				expiresAt // This one should be null if not supplied
+			};
+			await db
+				.table('links')
 				.where({ identifier })
-				.update({
-					enableDownload: enableDownload || false,
-					expiresAt // This one should be null if not supplied
-				});
-			return res.json({ message: 'Editing the link was successful' });
+				.update(updateObj);
+			return res.json({ message: 'Editing the link was successful', data: updateObj });
 		} catch (error) {
 			return super.error(res, error);
 		}
