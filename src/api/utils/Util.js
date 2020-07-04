@@ -40,10 +40,11 @@ class Util {
 			the site and the API under the same domain. Pls fix.
 		*/
 		file.url = `${process.env.DOMAIN}/${file.name}`;
-		const thumb = ThumbUtil.getFileThumbnail(file.name);
+		const { thumb, preview } = ThumbUtil.getFileThumbnail(file.name) || {};
 		if (thumb) {
 			file.thumb = `${process.env.DOMAIN}/thumbs/${thumb}`;
 			file.thumbSquare = `${process.env.DOMAIN}/thumbs/square/${thumb}`;
+			file.preview = preview && `${process.env.DOMAIN}/thumbs/preview/${preview}`;
 		}
 		return file;
 	}

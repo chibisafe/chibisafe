@@ -72,10 +72,16 @@ class ThumbUtil {
 	}
 
 	static getFileThumbnail(filename) {
+		// TODO: refactor so we don't do the same compare multiple times (poor cpu cycles)
 		if (!filename) return null;
 		const ext = path.extname(filename).toLowerCase();
 		if (!ThumbUtil.imageExtensions.includes(ext) && !ThumbUtil.videoExtensions.includes(ext)) return null;
-		return `${filename.slice(0, -ext.length)}.png`;
+		if (ThumbUtil.imageExtensions.includes(ext)) return { thumb: `${filename.slice(0, -ext.length)}.png` };
+		if (ThumbUtil.videoExtensions.includes(ext))
+			return {
+				thumb: `${filename.slice(0, -ext.length)}.png`,
+				preview: `${filename.slice(0, -ext.length)}.webm`
+			};
 	}
 
 	static async removeThumbs(thumbName) {

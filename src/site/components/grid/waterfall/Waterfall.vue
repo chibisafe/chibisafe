@@ -170,7 +170,7 @@ export default {
 					return;
 				}
 				child.el.style.top = `${offsetArr[position]}px`;
-				offsetArr[position] += (child.height + this.gutterHeight);
+				offsetArr[position] += child.height + this.gutterHeight;
 				this.$el.style.height = `${Math.max.apply(Math, offsetArr)}px`;
 			});
 			this.$emit('rendered', this);

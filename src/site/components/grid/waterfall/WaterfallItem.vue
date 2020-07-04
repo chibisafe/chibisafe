@@ -1,13 +1,15 @@
-<style>
+<style scoped>
 	.waterfall-item {
 		position: absolute;
 	}
 </style>
+
 <template>
 	<div class="waterfall-item">
 		<slot />
 	</div>
 </template>
+
 <script>
 import imagesLoaded from 'imagesloaded';
 export default {
@@ -20,6 +22,10 @@ export default {
 		width: {
 			type: Number,
 			default: 150
+		},
+		video: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -35,13 +41,28 @@ export default {
 		this.$el.style.display = 'none';
 		this.$el.style.width = `${this.width}px`;
 		this.emit();
-		imagesLoaded(this.$el, () => {
-			this.$el.style.left = '-9999px';
-			this.$el.style.top = '-9999px';
-			this.$el.style.display = 'block';
-			this.height = this.$el.offsetHeight;
-			this.itemWidth = this.$el.offsetWidth;
-		});
+		if (this.video) {
+			const videoEl = this.$slots.default.find(e => e.tag?.toLowerCase() === 'video');
+			const el = videoEl.elm;
+			console.log(videoEl);
+			console.log(el);
+			el.onloadeddata = () => {
+				console.log('loaded');
+				this.$el.style.left = '-9999px';
+				this.$el.style.top = '-9999px';
+				this.$el.style.display = 'block';
+				this.height = el.offsetHeight + 5;
+				this.itemWidth = el.offsetWidth;
+			}
+		} else {
+			imagesLoaded(this.$el, () => {
+				this.$el.style.left = '-9999px';
+				this.$el.style.top = '-9999px';
+				this.$el.style.display = 'block';
+				this.height = this.$el.offsetHeight;
+				this.itemWidth = this.$el.offsetWidth;
+			});
+		}
 	},
 	methods: {
 		emit() {

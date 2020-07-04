@@ -32,6 +32,7 @@
 				<WaterfallItem v-for="(item, index) in gridFiles"
 					:key="item.id"
 					:width="width"
+					:video="!!item.preview"
 					move-class="item-move">
 					<template v-if="isPublic">
 						<a :href="`${item.url}`"
@@ -42,7 +43,11 @@
 						</a>
 					</template>
 					<template v-else>
-						<img :src="item.thumb ? item.thumb : blank">
+						<img v-if="!item.preview" :class="{'hidden': item.preview}" 
+							:src="item.thumb ? item.thumb : blank">
+						<video v-if="item.preview" autoplay loop>
+  							<source :src="item.preview" type="video/mp4" />
+						</video>
 						<span v-if="!item.thumb && item.name"
 							class="extension">{{ item.name.split('.').pop() }}</span>
 						<div v-if="!isPublic"
@@ -56,21 +61,20 @@
 									<i class="icon-web-code" />
 								</a>
 							</b-tooltip>
+							<b-tooltip label="Tags"
+								position="is-top">
+								<a class="btn"
+									@click="manageTags(item)">
+									<i class="icon-ecommerce-tag-c" />
+								</a>
+							</b-tooltip>
 							<b-tooltip label="Albums"
 								position="is-top">
 								<a class="btn"
 									@click="openAlbumModal(item)">
 									<i class="icon-interface-window" />
 								</a>
-							</b-tooltip>
-							<!--
-							<b-tooltip label="Tags"
-								position="is-top">
-								<a @click="manageTags(item)">
-									<i class="icon-ecommerce-tag-c" />
-								</a>
-							</b-tooltip>
-							-->
+							</b-tooltip>							
 							<b-tooltip label="Delete"
 								position="is-top">
 								<a class="btn"
@@ -318,6 +322,9 @@ export default {
 			const response = await this.$axios.$get(`albums/dropdown`);
 			this.albums = response.albums;
 			this.$forceUpdate();
+		},
+		mouseOverTest() {
+			console.log('aaaaaa');
 		}
 	}
 };
@@ -385,6 +392,7 @@ export default {
 			&:nth-child(1), &:nth-child(3) {
 				justify-content: flex-end;
 			}
+
 			a {
 				width: 30px;
 				height: 30px;
@@ -428,6 +436,10 @@ export default {
 			flex-basis: 33%;
 			text-align: left;
 		}
+	}
+
+	img.hidden {
+		display: none;
 	}
 </style>
 
