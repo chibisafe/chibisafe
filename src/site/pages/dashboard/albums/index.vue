@@ -7,26 +7,33 @@
 						<Sidebar />
 					</div>
 					<div class="column">
-						<h2 class="subtitle">Manage your albums</h2>
+						<h2 class="subtitle">
+							Manage your albums
+						</h2>
 						<hr>
 
 						<div class="search-container">
 							<b-field>
-								<b-input v-model="newAlbumName"
+								<b-input
+									v-model="newAlbumName"
 									placeholder="Album name..."
 									type="text"
 									@keyup.enter.native="createAlbum" />
 								<p class="control">
-									<button outlined
+									<button
+										outlined
 										class="button is-black"
 										:disabled="isCreatingAlbum"
-										@click="createAlbum">Create album</button>
+										@click="createAlbum">
+										Create album
+									</button>
 								</p>
 							</b-field>
 						</div>
 
 						<div class="view-container">
-							<AlbumEntry v-for="album in albums.list"
+							<AlbumEntry
+								v-for="album in albums.list"
 								:key="album.id"
 								:album="album" />
 						</div>
@@ -45,15 +52,19 @@ import AlbumEntry from '~/components/album/AlbumEntry.vue';
 export default {
 	components: {
 		Sidebar,
-		AlbumEntry
+		AlbumEntry,
 	},
 	middleware: ['auth', ({ store }) => {
-		store.dispatch('albums/fetch');
+		try {
+			store.dispatch('albums/fetch');
+		} catch (e) {
+			this.alert({ text: e.message, error: true });
+		}
 	}],
 	data() {
 		return {
 			newAlbumName: null,
-			isCreatingAlbum: false
+			isCreatingAlbum: false,
 		};
 	},
 	computed: mapState(['config', 'albums']),
@@ -62,7 +73,7 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			'alert': 'alert/set'
+			'alert': 'alert/set',
 		}),
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
@@ -78,8 +89,8 @@ export default {
 				this.isCreatingAlbum = false;
 				this.newAlbumName = null;
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

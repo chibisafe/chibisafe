@@ -5,26 +5,22 @@ export const state = () => ({
 	list: [],
 	isListLoading: false,
 	albumDetails: {},
-	expandedAlbums: []
+	expandedAlbums: [],
 });
 
 export const getters = {
-	isExpanded: state => id => state.expandedAlbums.indexOf(id) > -1,
-	getDetails: state => id => state.albumDetails[id] || {}
+	isExpanded: (state) => (id) => state.expandedAlbums.indexOf(id) > -1,
+	getDetails: (state) => (id) => state.albumDetails[id] || {},
 };
 
 export const actions = {
-	async fetch({ commit, dispatch }) {
-		try {
-			commit('albumsRequest');
-			const response = await this.$axios.$get(`albums/mini`);
+	async fetch({ commit }) {
+		commit('albumsRequest');
+		const response = await this.$axios.$get('albums/mini');
 
-			commit('setAlbums', response.albums);
+		commit('setAlbums', response.albums);
 
-			return response;
-		} catch (e) {
-			dispatch('alert/set', { text: e.message, error: true }, { root: true });
-		}
+		return response;
 	},
 
 	async fetchDetails({ commit }, albumId) {
@@ -33,15 +29,15 @@ export const actions = {
 		commit('setDetails', {
 			id: albumId,
 			details: {
-				links: response.links
-			}
+				links: response.links,
+			},
 		});
 
 		return response;
 	},
 
 	async createAlbum({ commit }, name) {
-		const response = await this.$axios.$post(`album/new`, { name });
+		const response = await this.$axios.$post('album/new', { name });
 
 		commit('addAlbum', response.data);
 
@@ -57,7 +53,7 @@ export const actions = {
 	},
 
 	async createLink({ commit }, albumId) {
-		const response = await this.$axios.$post(`album/link/new`, { albumId });
+		const response = await this.$axios.$post('album/link/new', { albumId });
 
 		commit('addAlbumLink', { albumId, data: response.data });
 
@@ -65,10 +61,10 @@ export const actions = {
 	},
 
 	async updateLinkOptions({ commit }, { albumId, linkOpts }) {
-		const response = await this.$axios.$post(`album/link/edit`, {
+		const response = await this.$axios.$post('album/link/edit', {
 			identifier: linkOpts.identifier,
 			enableDownload: linkOpts.enableDownload,
-			enabled: linkOpts.enabled
+			enabled: linkOpts.enabled,
 		});
 
 		commit('updateAlbumLinkOpts', { albumId, linkOpts: response.data });
@@ -82,7 +78,7 @@ export const actions = {
 		commit('removeAlbumLink', { albumId, identifier });
 
 		return response;
-	}
+	},
 };
 
 export const mutations = {
@@ -109,7 +105,7 @@ export const mutations = {
 	},
 	updateAlbumLinkOpts(state, { albumId, linkOpts }) {
 		const foundIndex = state.albumDetails[albumId].links.findIndex(
-			({ identifier }) => identifier === linkOpts.identifier
+			({ identifier }) => identifier === linkOpts.identifier,
 		);
 		const link = state.albumDetails[albumId].links[foundIndex];
 		state.albumDetails[albumId].links[foundIndex] = { ...link, ...linkOpts };
@@ -125,5 +121,5 @@ export const mutations = {
 		} else {
 			state.expandedAlbums.push(id);
 		}
-	}
+	},
 };

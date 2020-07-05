@@ -13,7 +13,14 @@
 					<nav class="level">
 						<div class="level-left">
 							<div class="level-item">
-								<h2 class="subtitle">Files</h2>
+								<h1 class="title is-3">
+									{{ name }}
+								</h1>
+							</div>
+							<div class="level-item">
+								<h2 class="subtitle is-5">
+									({{ totalFiles }} files)
+								</h2>
 							</div>
 						</div>
 						<div class="level-right">
@@ -21,7 +28,7 @@
 								<b-field>
 									<b-input
 										placeholder="Search"
-										type="search"/>
+										type="search" />
 									<p class="control">
 										<button
 											outlined
@@ -36,14 +43,15 @@
 
 					<hr>
 
-					<Grid v-if="files.length"
-						:files="files"
-						:total="count">
+					<Grid
+						v-if="totalFiles"
+						:files="album.files"
+						:total="totalFiles">
 						<template v-slot:pagination>
 							<b-pagination
-								v-if="count > perPage"
-								:total="count"
-								:per-page="perPage"
+								v-if="shouldPaginate"
+								:total="totalFiles"
+								:per-page="limit"
 								:current.sync="current"
 								range-before="2"
 								range-after="2"
@@ -64,53 +72,65 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
+
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Grid from '~/components/grid/Grid.vue';
 
 export default {
 	components: {
 		Sidebar,
-		Grid
+		Grid,
 	},
-	middleware: 'auth',
+	middleware: ['auth', ({ route, store }) => {
+		store.dispatch('album/fetchById', { id: route.params.id });
+	}],
 	data() {
 		return {
-			name: null,
-			files: [],
-			count: 0,
 			current: 1,
-			perPage: 30
 		};
+	},
+	computed: {
+		...mapGetters({
+			totalFiles: 'album/getTotalFiles',
+			shouldPaginate: 'album/shouldPaginate',
+			limit: 'album/getLimit',
+			name: 'album/getName',
+		}),
+		...mapState(['album']),
+		id() {
+			return this.$route.params.id;
+		},
 	},
 	metaInfo() {
 		return { title: 'Album' };
 	},
 	watch: {
-		current: 'getFiles'
-	},
-	async asyncData({ $axios, route }) {
-		const perPage = 30;
-		const current = 1; // current page
-
-		try {
-			const response = await $axios.$get(`album/${route.params.id}/full`, { params: { page: current, limit: perPage }});
-			return {
-				files: response.files || [],
-				count: response.count || 0,
-				current,
-				perPage
-			};
-		} catch (error) {
-			console.error(error);
-			return { files: [] };
-		}
+		current: 'fetchPaginate',
 	},
 	methods: {
-		async getFiles() {
-			const response = await this.$axios.$get(`album/${this.$route.params.id}/full`, { params: { page: this.current, limit: this.perPage }});
-			this.files = response.files;
-			this.count = response.count;
-		}
+		...mapActions({
+			fetch: 'album/fetchById',
+		}),
+		fetchPaginate() {
+			this.fetch({ id: this.id, page: this.current });
+		},
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+	div.grid {
+		margin-bottom: 1rem;
+	}
+
+	.pagination-slot {
+		padding: 1rem 0;
+	}
+</style>
+
+<style lang="scss">
+	.pagination-slot > .pagination-previous, .pagination-slot > .pagination-next {
+		display: none !important;
+	}
+</style>
