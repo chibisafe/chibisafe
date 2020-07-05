@@ -4,14 +4,14 @@ const getDefaultState = () => ({
 	loggedIn: false,
 	isLoading: false,
 	user: null,
-	token: null
+	token: null,
 });
 
 export const state = getDefaultState;
 
 export const getters = {
-	isLoggedIn: state => state.loggedIn,
-	getApiKey: state => state.user?.apiKey
+	isLoggedIn: (state) => state.loggedIn,
+	getApiKey: (state) => state.user?.apiKey,
 };
 
 export const actions = {
@@ -27,7 +27,7 @@ export const actions = {
 		commit('loginRequest');
 
 		try {
-			const data = await this.$axios.$post(`auth/login`, { username, password });
+			const data = await this.$axios.$post('auth/login', { username, password });
 			this.$axios.setToken(data.token, 'Bearer');
 
 			commit('setToken', data.token);
@@ -38,7 +38,7 @@ export const actions = {
 	},
 	async fetchCurrentUser({ commit, dispatch }) {
 		try {
-			const data = await this.$axios.$get(`users/me`);
+			const data = await this.$axios.$get('users/me');
 			commit('setUser', data.user);
 		} catch (e) {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
@@ -46,9 +46,9 @@ export const actions = {
 	},
 	async changePassword({ dispatch }, { password, newPassword }) {
 		try {
-			const response = await this.$axios.$post(`user/password/change`, {
+			const response = await this.$axios.$post('user/password/change', {
 				password,
-				newPassword
+				newPassword,
 			});
 
 			return response;
@@ -58,7 +58,7 @@ export const actions = {
 	},
 	async requestAPIKey({ commit, dispatch }) {
 		try {
-			const response = await this.$axios.$post(`user/apikey/change`);
+			const response = await this.$axios.$post('user/apikey/change');
 			commit('setApiKey', response.apiKey);
 
 			return response;
@@ -68,7 +68,7 @@ export const actions = {
 	},
 	logout({ commit }) {
 		commit('logout');
-	}
+	},
 };
 
 export const mutations = {
@@ -94,5 +94,5 @@ export const mutations = {
 		this.$cookies.remove('token');
 		// reset state to default
 		Object.assign(state, getDefaultState());
-	}
+	},
 };

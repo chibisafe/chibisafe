@@ -6,18 +6,13 @@
 					<slot name="pagination" />
 				</div>
 			</div>
-			<div v-if="enableToolbar"
-				class="level-right toolbar">
+			<div v-if="enableToolbar" class="level-right toolbar">
 				<div class="level-item">
 					<div class="block">
-						<b-radio v-model="showList"
-							name="name"
-							:native-value="true">
+						<b-radio v-model="showList" name="name" :native-value="true">
 							List
 						</b-radio>
-						<b-radio v-model="showList"
-							name="name"
-							:native-value="false">
+						<b-radio v-model="showList" name="name" :native-value="false">
 							Grid
 						</b-radio>
 					</div>
@@ -26,66 +21,71 @@
 		</nav>
 
 		<template v-if="!showList">
-			<Waterfall v-if="showWaterfall"
+			<Waterfall
+				v-if="showWaterfall"
 				:gutterWidth="10"
 				:gutterHeight="4">
-				<WaterfallItem v-for="(item, index) in gridFiles"
+				<WaterfallItem
+					v-for="(item, index) in gridFiles"
 					:key="item.id"
 					:width="width"
-					:video="!!item.preview"
 					move-class="item-move">
 					<template v-if="isPublic">
-						<a :href="`${item.url}`"
-							target="_blank">
+						<a
+							:href="`${item.url}`"
+							class="preview-container"
+							target="_blank"
+							@mouseenter.self.stop.prevent="item.preview && mouseOver(item.id)"
+							@mouseleave.self.stop.prevent="item.preview && mouseOut(item.id)">
+
 							<img :src="item.thumb ? item.thumb : blank">
-							<span v-if="!item.thumb && item.name"
-								class="extension">{{ item.name.split('.').pop() }}</span>
+							<div v-if="item.preview && isHovered(item.id)" class="preview">
+								<video ref="video" class="preview" autoplay loop muted>
+									<source :src="item.preview" type="video/mp4">
+								</video>
+							</div>
+
+							<span v-if="!item.thumb && item.name" class="extension">{{
+								item.name.split('.').pop()
+							}}</span>
 						</a>
 					</template>
 					<template v-else>
-						<img v-if="!item.preview" :class="{'hidden': item.preview}" 
-							:src="item.thumb ? item.thumb : blank">
-						<video v-if="item.preview" autoplay loop>
-  							<source :src="item.preview" type="video/mp4" />
-						</video>
-						<span v-if="!item.thumb && item.name"
-							class="extension">{{ item.name.split('.').pop() }}</span>
-						<div v-if="!isPublic"
+						<img :src="item.thumb ? item.thumb : blank">
+						<div v-if="item.preview && isHovered(item.id)" class="preview">
+							<video ref="video" class="preview" autoplay loop muted>
+								<source :src="item.preview" type="video/mp4">
+							</video>
+						</div>
+
+						<span v-if="!item.thumb && item.name" class="extension">{{ item.name.split('.').pop() }}</span>
+						<div
+							v-if="!isPublic"
 							:class="{ fixed }"
-							class="actions">
-							<b-tooltip label="Link"
-								position="is-top">
-								<a :href="`${item.url}`"
-									target="_blank"
-									class="btn">
+							class="actions"
+							@mouseenter.self.stop.prevent="item.preview && mouseOver(item.id)"
+							@mouseleave.self.stop.prevent="item.preview && mouseOut(item.id)">
+							<b-tooltip label="Link" position="is-top">
+								<a :href="`${item.url}`" target="_blank" class="btn">
 									<i class="icon-web-code" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Tags"
-								position="is-top">
-								<a class="btn"
-									@click="manageTags(item)">
+							<b-tooltip label="Tags" position="is-top">
+								<a class="btn" @click="manageTags(item)">
 									<i class="icon-ecommerce-tag-c" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Albums"
-								position="is-top">
-								<a class="btn"
-									@click="openAlbumModal(item)">
+							<b-tooltip label="Albums" position="is-top">
+								<a class="btn" @click="openAlbumModal(item)">
 									<i class="icon-interface-window" />
 								</a>
-							</b-tooltip>							
-							<b-tooltip label="Delete"
-								position="is-top">
-								<a class="btn"
-									@click="deleteFile(item, index)">
+							</b-tooltip>
+							<b-tooltip label="Delete" position="is-top">
+								<a class="btn" @click="deleteFile(item, index)">
 									<i class="icon-editorial-trash-a-l" />
 								</a>
 							</b-tooltip>
-							<b-tooltip v-if="user && user.isAdmin"
-								label="More info"
-								position="is-top"
-								class="more">
+							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${item.id}`">
 									<i class="icon-interface-more" />
 								</nuxt-link>
@@ -96,58 +96,42 @@
 			</Waterfall>
 		</template>
 		<div v-else>
-			<b-table
-				:data="gridFiles || []"
-				:mobile-cards="true">
+			<b-table :data="gridFiles || []" :mobile-cards="true">
 				<template slot-scope="props">
 					<template v-if="!props.row.hideFromList">
-						<b-table-column field="url"
-							label="URL">
-							<a :href="props.row.url"
-								target="_blank">{{ props.row.url }}</a>
+						<b-table-column field="url" label="URL">
+							<a :href="props.row.url" target="_blank">{{ props.row.url }}</a>
 						</b-table-column>
 
-						<b-table-column field="albums"
-							label="Albums"
-							centered>
+						<b-table-column field="albums" label="Albums" centered>
 							<template v-for="(album, index) in props.row.albums">
-								<nuxt-link :key="index"
-									:to="`/dashboard/albums/${album.id}`">
+								<nuxt-link :key="index" :to="`/dashboard/albums/${album.id}`">
 									{{ album.name }}
 								</nuxt-link>
-								<template v-if="index < props.row.albums.length - 1">, </template>
+								<template v-if="index < props.row.albums.length - 1">
+									,
+								</template>
 							</template>
 
 							{{ props.row.username }}
 						</b-table-column>
 
-						<b-table-column field="uploaded"
-							label="Uploaded"
-							centered>
+						<b-table-column field="uploaded" label="Uploaded" centered>
 							<span><timeago :since="props.row.createdAt" /></span>
 						</b-table-column>
 
-						<b-table-column field="purge"
-							centered>
-							<b-tooltip label="Albums"
-								position="is-top">
-								<a class="btn"
-									@click="openAlbumModal(props.row)">
+						<b-table-column field="purge" centered>
+							<b-tooltip label="Albums" position="is-top">
+								<a class="btn" @click="openAlbumModal(props.row)">
 									<i class="icon-interface-window" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Delete"
-								position="is-top"
-								class="is-danger">
-								<a class="is-danger"
-									@click="deleteFile(props.row)">
+							<b-tooltip label="Delete" position="is-top" class="is-danger">
+								<a class="is-danger" @click="deleteFile(props.row)">
 									<i class="icon-editorial-trash-a-l" />
 								</a>
 							</b-tooltip>
-							<b-tooltip v-if="user && user.isAdmin"
-								label="More info"
-								position="is-top"
-								class="more">
+							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
 									<i class="icon-interface-more" />
 								</nuxt-link>
@@ -170,21 +154,23 @@
 				</template>
 			</b-table>
 		</div>
-		<b-modal :active.sync="isAlbumsModalActive"
-			:width="640"
-			scroll="keep">
+		<b-modal :active.sync="isAlbumsModalActive" :width="640" scroll="keep">
 			<div class="card albumsModal">
 				<div class="card-content">
 					<div class="content">
-						<h3 class="subtitle">Select the albums this file should be a part of</h3>
+						<h3 class="subtitle">
+							Select the albums this file should be a part of
+						</h3>
 						<hr>
+
 						<div class="albums-container">
-							<div v-for="(album, index) in albums"
-								:key="index"
-								class="album">
+							<div v-for="(album, index) in albums" :key="index" class="album">
 								<div class="field">
-									<b-checkbox :value="isAlbumSelected(album.id)"
-										@input="albumCheckboxClicked($event, album.id)">{{ album.name }}</b-checkbox>
+									<b-checkbox
+										:value="isAlbumSelected(album.id)"
+										@input="albumCheckboxClicked($event, album.id)">
+										{{ album.name }}
+									</b-checkbox>
 								</div>
 							</div>
 						</div>
@@ -204,37 +190,37 @@ import WaterfallItem from './waterfall/WaterfallItem.vue';
 export default {
 	components: {
 		Waterfall,
-		WaterfallItem
+		WaterfallItem,
 	},
 	props: {
 		files: {
 			type: Array,
-			default: () => []
+			default: () => [],
 		},
 		total: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		fixed: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isPublic: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		width: {
 			type: Number,
-			default: 150
+			default: 150,
 		},
 		enableSearch: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		enableToolbar: {
 			type: Boolean,
-			default: true
-		}
+			default: true,
+		},
 	},
 	data() {
 		return {
@@ -242,18 +228,20 @@ export default {
 			searchTerm: null,
 			showList: false,
 			albums: [],
+			hoveredItems: [],
 			isAlbumsModalActive: false,
 			showingModalForFile: null,
 			filesOffsetWaterfall: 0,
 			filesOffsetEndWaterfall: 50,
-			filesPerPageWaterfall: 50
+			filesPerPageWaterfall: 50,
 		};
 	},
 	computed: {
 		...mapState({
-			user: state => state.auth.user
+			user: (state) => state.auth.user,
 		}),
 		blank() {
+			// eslint-disable-next-line global-require, import/no-unresolved
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {
@@ -262,12 +250,7 @@ export default {
 	},
 	methods: {
 		async search() {
-			const data = await this.$search.do(this.searchTerm, [
-				'name',
-				'original',
-				'type',
-				'albums:name'
-			]);
+			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
 			console.log('> Search result data', data);
 		},
 		deleteFile(file, index) {
@@ -290,13 +273,13 @@ export default {
 						});
 					}
 					return this.$buefy.toast.open(response.message);
-				}
+				},
 			});
 		},
 		isAlbumSelected(id) {
-			if (!this.showingModalForFile) return;
-			const found = this.showingModalForFile.albums.find(el => el.id === id);
-			return found && found.id ? true : false;
+			if (!this.showingModalForFile) return false;
+			const found = this.showingModalForFile.albums.find((el) => el.id === id);
+			return !!(found && found.id);
 		},
 		async openAlbumModal(file) {
 			this.showingModalForFile = file;
@@ -311,7 +294,7 @@ export default {
 		async albumCheckboxClicked(value, id) {
 			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
 				albumId: id,
-				fileId: this.showingModalForFile.id
+				fileId: this.showingModalForFile.id,
 			});
 			this.$buefy.toast.open(response.message);
 
@@ -319,134 +302,166 @@ export default {
 			this.$parent.getFiles();
 		},
 		async getAlbums() {
-			const response = await this.$axios.$get(`albums/dropdown`);
+			const response = await this.$axios.$get('albums/dropdown');
 			this.albums = response.albums;
 			this.$forceUpdate();
 		},
-		mouseOverTest() {
-			console.log('aaaaaa');
-		}
-	}
+		mouseOver(id) {
+			console.log('in', id);
+			const foundIndex = this.hoveredItems.indexOf(id);
+			if (foundIndex > -1) return;
+			this.hoveredItems.push(id);
+			/// XXX: THIS IS NOT OK!
+			this.$nextTick(() => {
+				this.$refs.video.forEach((e) => e.play().catch(() => {}));
+			});
+		},
+		mouseOut(id) {
+			console.log('out', id);
+			const foundIndex = this.hoveredItems.indexOf(id);
+			if (foundIndex > -1) this.hoveredItems.splice(foundIndex, 1);
+		},
+		isHovered(id) {
+			return this.hoveredItems.includes(id);
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	.item-move {
-		transition: all .25s cubic-bezier(.55,0,.1,1);
+@import '~/assets/styles/_colors.scss';
+.item-move {
+	transition: all 0.25s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+div.toolbar {
+	padding: 1rem;
+
+	.block {
+		text-align: right;
 	}
+}
 
-	div.toolbar {
-		padding: 1rem;
+span.extension {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	pointer-events: none;
+	opacity: 0.75;
+	max-width: 150px;
+}
 
-		.block {
-			text-align: right;
+div.preview {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: calc(100% - 6px);
+	overflow: hidden;
+}
+
+.preview-container {
+	display: inline-block;
+}
+
+div.actions {
+	opacity: 0;
+	-webkit-transition: opacity 0.1s linear;
+	-moz-transition: opacity 0.1s linear;
+	-ms-transition: opacity 0.1s linear;
+	-o-transition: opacity 0.1s linear;
+	transition: opacity 0.1s linear;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: calc(100% - 6px);
+	// background: rgba(0, 0, 0, 0.5);
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0px, rgba(0, 0, 0, 0) 60px),
+		linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0px, rgba(0, 0, 0, 0) 45px);
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+
+	span {
+		padding: 3px;
+
+		&.more {
+			position: absolute;
+			top: 0;
+			right: 0;
 		}
-	}
 
-	span.extension {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		z-index: 0;
-		top: 0;
-		left: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		pointer-events: none;
-		opacity: .75;
-		max-width: 150px;
-	}
+		&:nth-child(1),
+		&:nth-child(2) {
+			align-items: flex-end;
+			padding-bottom: 10px;
+		}
 
-	div.actions {
-		opacity: 0;
-		-webkit-transition: opacity 0.1s linear;
-		-moz-transition: opacity 0.1s linear;
-		-ms-transition: opacity 0.1s linear;
-		-o-transition: opacity 0.1s linear;
-		transition: opacity 0.1s linear;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		width: 100%;
-		height: calc(100% - 6px);
-		background: rgba(0, 0, 0, 0.5);
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		&:nth-child(3),
+		&:nth-child(4) {
+			justify-content: flex-end;
+			padding-bottom: 10px;
+		}
 
-		span {
-			padding: 3px;
-			&.more {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-
-			&:nth-child(1), &:nth-child(2) {
-				align-items: flex-end;
-			}
-
-			&:nth-child(1), &:nth-child(3) {
-				justify-content: flex-end;
-			}
-
-			a {
+		a {
+			width: 30px;
+			height: 30px;
+			color: white;
+			justify-content: center;
+			align-items: center;
+			display: flex;
+			&.btn:before {
+				content: '';
 				width: 30px;
 				height: 30px;
-				color: white;
-				justify-content: center;
-				align-items: center;
-				display: flex;
-				&.btn:before {
-					content: '';
-					width: 30px;
-					height: 30px;
-					border: 1px solid white;
-					border-radius: 50%;
-					position: absolute;
-				}
+				border: 1px solid white;
+				border-radius: 50%;
+				position: absolute;
 			}
 		}
+	}
 
-		&.fixed {
-			position: relative;
-			opacity: 1;
-			background: none;
+	&.fixed {
+		position: relative;
+		opacity: 1;
+		background: none;
 
-			a {
-				width: auto;
-				height: auto;
-				color: $defaultTextColor;
-				&:before {
-					display: none;
-				}
+		a {
+			width: auto;
+			height: auto;
+			color: $defaultTextColor;
+			&:before {
+				display: none;
 			}
-
 		}
 	}
+}
 
-	.albums-container {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		.album {
-			flex-basis: 33%;
-			text-align: left;
-		}
+.albums-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	.album {
+		flex-basis: 33%;
+		text-align: left;
 	}
+}
 
-	img.hidden {
-		display: none;
-	}
-</style>
+.hidden {
+	display: none;
+}
 
-<style lang="scss">
-	.waterfall-item:hover {
-		div.actions {
-			opacity: 1
-		}
+.waterfall-item:hover {
+	div.actions {
+		opacity: 1;
 	}
+}
 </style>

@@ -25,7 +25,7 @@ export const actions = {
 		try {
 			const response = await this.$axios.$get(`files`, { params: { limit: state.pagination.limit, page } });
 
-			commit('updateFiles', { files: response.files });
+			commit('setFiles', { files: response.files });
 			commit('updatePaginationMeta', { totalFiles: response.count, page });
 		} catch (e) {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
@@ -45,7 +45,7 @@ export const mutations = {
 	setIsLoading(state) {
 		state.isLoading = true;
 	},
-	updateFiles(state, { files }) {
+	setFiles(state, { files }) {
 		state.files = files || [];
 		state.isLoading = false;
 	},

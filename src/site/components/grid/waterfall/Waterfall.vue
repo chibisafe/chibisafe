@@ -9,8 +9,6 @@
 	</div>
 </template>
 <script>
-// import {quickSort, getMinIndex, _, sum} from './util'
-
 const quickSort = (arr, type) => {
 	const left = [];
 	const right = [];
@@ -25,10 +23,10 @@ const quickSort = (arr, type) => {
 			right.push(arr[i]);
 		}
 	}
-	return quickSort(left, type).concat(povis, quickSort(right, type))
+	return quickSort(left, type).concat(povis, quickSort(right, type));
 };
 
-const getMinIndex = arr => {
+const getMinIndex = (arr) => {
 	let pos = 0;
 	for (let i = 0; i < arr.length; i++) {
 		if (arr[pos] > arr[i]) {
@@ -44,49 +42,53 @@ const _ = {
 	},
 	off(el, type, func, capture = false) {
 		el.removeEventListener(type, func, capture);
-	}
+	},
 };
 
-const sum = arr => arr.reduce((sum, val) => sum + val);
+const sum = (arr) => arr.reduce((acc, val) => acc + val, 0);
+
 export default {
 	name: 'Waterfall',
 	props: {
 		gutterWidth: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		gutterHeight: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		resizable: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		align: {
 			type: String,
-			default: 'center'
+			default: 'center',
 		},
 		fixWidth: {
-			type: Number
+			type: Number,
+			default: 0,
 		},
 		minCol: {
 			type: Number,
-			default: 1
+			default: 1,
 		},
 		maxCol: {
-			type: Number
+			type: Number,
+			default: 0,
 		},
 		percent: {
-			type: Array
-		}
+			type: Array,
+			default: null,
+		},
 	},
 	data() {
 		return {
 			timer: null,
 			colNum: 0,
 			lastWidth: 0,
-			percentWidthArr: []
+			percentWidthArr: [],
 		};
 	},
 	created() {
@@ -105,16 +107,16 @@ export default {
 	},
 	methods: {
 		calulate(arr) {
-			let pageWidth = this.fixWidth ? this.fixWidth : this.$el.offsetWidth;
+			const pageWidth = this.fixWidth ? this.fixWidth : this.$el.offsetWidth;
 			// 百分比布局计算
 			if (this.percent) {
 				this.colNum = this.percent.length;
 				const total = sum(this.percent);
-				this.percentWidthArr = this.percent.map(value => (value / total) * pageWidth);
+				this.percentWidthArr = this.percent.map((value) => (value / total) * pageWidth);
 				this.lastWidth = 0;
 			// 正常布局计算
 			} else {
-				this.colNum = parseInt(pageWidth / (arr.width + this.gutterWidth));
+				this.colNum = parseInt(pageWidth / (arr.width + this.gutterWidth), 10);
 				if (this.minCol && this.colNum < this.minCol) {
 					this.colNum = this.minCol;
 					this.lastWidth = 0;
@@ -136,14 +138,14 @@ export default {
 		render() {
 			// 重新排序
 			let childArr = [];
-			childArr = this.$children.map(child => child.getMeta());
+			childArr = this.$children.map((child) => child.getMeta());
 			childArr = quickSort(childArr, 'order');
 			// 计算列数
-			this.calulate(childArr[0])
-			let offsetArr = Array(this.colNum).fill(0);
+			this.calulate(childArr[0]);
+			const offsetArr = Array(this.colNum).fill(0);
 			// 渲染
-			childArr.forEach(child => {
-				let position = getMinIndex(offsetArr);
+			childArr.forEach((child) => {
+				const position = getMinIndex(offsetArr);
 				// 百分比布局渲染
 				if (this.percent) {
 					let left = 0;
@@ -171,10 +173,10 @@ export default {
 				}
 				child.el.style.top = `${offsetArr[position]}px`;
 				offsetArr[position] += child.height + this.gutterHeight;
-				this.$el.style.height = `${Math.max.apply(Math, offsetArr)}px`;
+				this.$el.style.height = `${Math.max(...offsetArr)}px`;
 			});
 			this.$emit('rendered', this);
-		}
-	}
+		},
+	},
 };
 </script>
