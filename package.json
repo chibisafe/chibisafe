@@ -43,6 +43,8 @@
 		"cors": "^2.8.5",
 		"dotenv": "^6.2.0",
 		"dumper.js": "^1.3.1",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
 		"express": "^4.16.4",
 		"express-rate-limit": "^3.4.0",
 		"ffmpeg-generate-video-preview": "^1.0.3",
@@ -77,26 +79,85 @@
 		"vuebar": "^0.0.20"
 	},
 	"devDependencies": {
+		"@nuxtjs/eslint-config": "^3.0.0",
 		"autoprefixer": "^9.4.7",
 		"babel-eslint": "^10.0.1",
 		"cross-env": "^5.2.0",
 		"eslint": "^5.13.0",
+		"eslint-config-airbnb-base": "^14.2.0",
 		"eslint-config-aqua": "^4.4.1",
+		"eslint-import-resolver-nuxt": "^1.0.1",
 		"eslint-plugin-vue": "^5.2.1",
 		"node-sass": "^4.11.0",
 		"nodemon": "^1.19.3",
 		"postcss-css-variables": "^0.11.0",
 		"postcss-nested": "^3.0.0",
+		"prettier": "adamjlev/prettier",
 		"sass-loader": "^7.1.0"
 	},
 	"eslintConfig": {
 		"extends": [
-			"aqua/vue",
-			"aqua/node"
+			"airbnb-base",
+			"plugin:eslint-plugin-vue/recommended"
 		],
+		"parserOptions": {
+			"parser": "babel-eslint",
+			"sourceType": "module"
+		},
 		"rules": {
+			"max-len": [
+				"error",
+				{
+					"code": 120,
+					"ignoreUrls": true,
+					"ignoreStrings": true,
+					"ignoreTemplateLiterals": true,
+					"ignoreRegExpLiterals": true
+				}
+			],
+			"class-methods-use-this": "off",
+			"no-param-reassign": "off",
+			"no-plusplus": "off",
 			"vue/attribute-hyphenation": 0,
-			"quote-props": 0
+			"vue/html-closing-bracket-newline": [
+				"error",
+				{
+					"singleline": "never",
+					"multiline": "never"
+				}
+			],
+			"vue/max-attributes-per-line": [
+				"error",
+				{
+					"singleline": 5,
+					"multiline": {
+						"max": 1,
+						"allowFirstLine": false
+					}
+				}
+			],
+			"quote-props": 0,
+			"indent": [
+				"error",
+				"tab"
+			],
+			"no-tabs": "off",
+			"vue/html-indent": [
+				"error",
+				"tab"
+			],
+			"import/no-extraneous-dependencies": "off"
+		},
+		"settings": {
+			"import/resolver": {
+				"nuxt": {
+					"nuxtSrcDir": "./src/site",
+					"extensions": [
+						".js",
+						".vue"
+					]
+				}
+			}
 		}
 	},
 	"keywords": [

@@ -5,13 +5,25 @@
 	"files.insertFinalNewline": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"prettier.eslintIntergration": true,
 	"vetur.validation.template": false,
 	"[javascript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[vue]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},
 	"prettier.disableLanguages": ["vue"],
 	"vetur.format.enable": true,
-	"files.eol": "\n"
+	"files.eol": "\n",
+	"vetur.format.defaultFormatter.html": "js-beautify-html",
+	"vetur.format.defaultFormatter.js": "prettier",
+	"vetur.format.defaultFormatter.scss": "prettier",
+	"vetur.format.defaultFormatter.stylus": "stylus-supremacy",
+	"vetur.format.defaultFormatter.ts": "vscode-typescript",
+	"eslint.alwaysShowStatus": true,
+	"eslint.format.enable": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }
