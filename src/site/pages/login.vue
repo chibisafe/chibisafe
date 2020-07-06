@@ -10,13 +10,15 @@
 			<div class="columns">
 				<div class="column is-4 is-offset-4">
 					<b-field>
-						<b-input v-model="username"
+						<b-input
+							v-model="username"
 							type="text"
 							placeholder="Username"
 							@keyup.enter.native="login" />
 					</b-field>
 					<b-field>
-						<b-input v-model="password"
+						<b-input
+							v-model="password"
 							type="password"
 							placeholder="Password"
 							password-reveal
@@ -24,12 +26,18 @@
 					</b-field>
 
 					<p class="control has-addons is-pulled-right">
-						<router-link v-if="config.userAccounts"
+						<router-link
+							v-if="config.userAccounts"
 							to="/register"
-							class="is-text">Don't have an account?</router-link>
+							class="is-text">
+							Don't have an account?
+						</router-link>
 						<span v-else>Registration is closed at the moment</span>
-						<button class="button is-primary big ml1"
-							@click="login">login</button>
+						<button
+							class="button is-primary big ml1"
+							@click="login">
+							login
+						</button>
 					</p>
 				</div>
 			</div>
@@ -73,7 +81,7 @@ export default {
 			password: null,
 			mfaCode: null,
 			isMfaModalActive: false,
-			isLoading: false
+			isLoading: false,
 		};
 	},
 	computed: mapState(['config', 'auth']),
@@ -87,21 +95,27 @@ export default {
 	},
 	methods: {
 		async login() {
-			if (this.auth.isLoading) return;
+			if (this.isLoading) return;
 
 			const { username, password } = this;
 			if (!username || !password) {
 				this.$store.dispatch('alert/set', {
 					text: 'Please fill both fields before attempting to log in.',
-					error: true
+					error: true,
 				});
 				return;
 			}
 
-			await this.$store.dispatch('auth/login', { username, password });
-
-			if (this.auth.loggedIn) {
-				this.redirect();
+			try {
+				this.isLoading = true;
+				await this.$store.dispatch('auth/login', { username, password });
+				if (this.auth.loggedIn) {
+					this.redirect();
+				}
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			} finally {
+				this.isLoading = false;
 			}
 		},
 		/*
@@ -118,14 +132,14 @@ export default {
 					this.isLoading = false;
 					this.$onPromiseError(err);
 				});
-		},*/
+		}, */
 		redirect() {
 			if (typeof this.$route.query.redirect !== 'undefined') {
 				this.$router.push(this.$route.query.redirect);
 				return;
 			}
 			this.$router.push('/dashboard');
-		}
-	}
+		},
+	},
 };
 </script>

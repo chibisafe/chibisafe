@@ -9,40 +9,51 @@
 					<Sidebar />
 				</div>
 				<div class="column">
-					<h2 class="subtitle">User details</h2>
+					<h2 class="subtitle">
+						User details
+					</h2>
 					<hr>
 
-					<b-field label="User Id"
+					<b-field
+						label="User Id"
 						horizontal>
 						<span>{{ user.id }}</span>
 					</b-field>
 
-					<b-field label="Username"
+					<b-field
+						label="Username"
 						horizontal>
 						<span>{{ user.username }}</span>
 					</b-field>
 
-					<b-field label="Enabled"
+					<b-field
+						label="Enabled"
 						horizontal>
 						<span>{{ user.enabled }}</span>
 					</b-field>
 
-					<b-field label="Registered"
+					<b-field
+						label="Registered"
 						horizontal>
 						<span><timeago :since="user.createdAt" /></span>
 					</b-field>
 
-					<b-field label="Files"
+					<b-field
+						label="Files"
 						horizontal>
 						<span>{{ files.length }}</span>
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
-						<button class="button is-danger"
-							@click="promptDisableUser">Disable user</button>
+						<button
+							class="button is-danger"
+							@click="promptDisableUser">
+							Disable user
+						</button>
 					</div>
 
-					<Grid v-if="files.length"
+					<Grid
+						v-if="files.length"
 						:files="files" />
 				</div>
 			</div>
@@ -57,14 +68,14 @@ import Grid from '~/components/grid/Grid.vue';
 export default {
 	components: {
 		Sidebar,
-		Grid
+		Grid,
 	},
 	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			options: {},
 			files: null,
-			user: null
+			user: null,
 		};
 	},
 	async asyncData({ $axios, route }) {
@@ -72,13 +83,13 @@ export default {
 			const response = await $axios.$get(`/admin/users/${route.params.id}`);
 			return {
 				files: response.files ? response.files : null,
-				user: response.user ? response.user : null
+				user: response.user ? response.user : null,
 			};
 		} catch (error) {
 			console.error(error);
 			return {
 				files: null,
-				user: null
+				user: null,
 			};
 		}
 	},
@@ -87,15 +98,15 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to disable the account of the user that uploaded this file?',
-				onConfirm: () => this.disableUser()
+				onConfirm: () => this.disableUser(),
 			});
 		},
 		async disableUser() {
 			const response = await this.$axios.$post('admin/users/disable', {
-				id: this.user.id
+				id: this.user.id,
 			});
 			this.$buefy.toast.open(response.message);
-		}
-	}
+		},
+	},
 };
 </script>

@@ -14,7 +14,7 @@
 						<div class="level-left">
 							<div class="level-item">
 								<h1 class="title is-3">
-									{{ name }}
+									{{ images.name }}
 								</h1>
 							</div>
 							<div class="level-item">
@@ -45,7 +45,7 @@
 
 					<Grid
 						v-if="totalFiles"
-						:files="album.files"
+						:files="images.files"
 						:total="totalFiles">
 						<template v-slot:pagination>
 							<b-pagination
@@ -83,7 +83,7 @@ export default {
 		Grid,
 	},
 	middleware: ['auth', ({ route, store }) => {
-		store.dispatch('album/fetchById', { id: route.params.id });
+		store.dispatch('images/fetchByAlbumId', { id: route.params.id });
 	}],
 	data() {
 		return {
@@ -92,12 +92,11 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			totalFiles: 'album/getTotalFiles',
-			shouldPaginate: 'album/shouldPaginate',
-			limit: 'album/getLimit',
-			name: 'album/getName',
+			totalFiles: 'images/getTotalFiles',
+			shouldPaginate: 'images/shouldPaginate',
+			limit: 'images/getLimit',
 		}),
-		...mapState(['album']),
+		...mapState(['images']),
 		id() {
 			return this.$route.params.id;
 		},
@@ -110,7 +109,7 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			fetch: 'album/fetchById',
+			fetch: 'images/fetchByAlbumId',
 		}),
 		fetchPaginate() {
 			this.fetch({ id: this.id, page: this.current });

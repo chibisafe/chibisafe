@@ -25,6 +25,7 @@ class albumGET extends Route {
 			.orderBy('files.id', 'desc');
 
 		// Create the links for each file
+		// eslint-disable-next-line no-restricted-syntax
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}

@@ -1,9 +1,3 @@
-<style scoped>
-	.waterfall-item {
-		position: absolute;
-	}
-</style>
-
 <template>
 	<div class="waterfall-item">
 		<slot />
@@ -80,3 +74,9 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+	.waterfall-item {
+		position: absolute;
+	}
+</style>

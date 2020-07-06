@@ -1,14 +1,14 @@
-<style>
-	.waterfall {
-		position: relative;
-	}
-</style>
 <template>
 	<div class="waterfall">
-		<slot />
+		<WaterfallItem v-for="(item, index) in items" :key="item.id" :ref="`item-${item.id}`" :width="itemWidth">
+			<slot :item="item" />
+		</WaterfallItem>
 	</div>
 </template>
+
 <script>
+import WaterfallItem from './WaterfallItem.vue';
+
 const quickSort = (arr, type) => {
 	const left = [];
 	const right = [];
@@ -49,6 +49,9 @@ const sum = (arr) => arr.reduce((acc, val) => acc + val, 0);
 
 export default {
 	name: 'Waterfall',
+	components: {
+		WaterfallItem,
+	},
 	props: {
 		gutterWidth: {
 			type: Number,
@@ -82,6 +85,14 @@ export default {
 			type: Array,
 			default: null,
 		},
+		itemWidth: {
+			type: Number,
+			default: 150,
+		},
+		items: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
@@ -89,7 +100,13 @@ export default {
 			colNum: 0,
 			lastWidth: 0,
 			percentWidthArr: [],
+			readyChildCount: 0,
 		};
+	},
+	watch: {
+		items() {
+			this.$nextTick(() => this.render('watch'));
+		},
 	},
 	created() {
 		this.$on('itemRender', () => {
@@ -97,13 +114,17 @@ export default {
 				clearTimeout(this.timer);
 			}
 			this.timer = setTimeout(() => {
-				this.render();
+				this.render('created');
 			}, 0);
 		});
 	},
 	mounted() {
 		this.resizeHandle();
 		this.$watch('resizable', this.resizeHandle);
+	},
+	beforeDestroy() {
+		this.$off('itemRender');
+		_.off(window, 'resize', this.render);
 	},
 	methods: {
 		calulate(arr) {
@@ -135,10 +156,12 @@ export default {
 				_.off(window, 'resize', this.render, false);
 			}
 		},
-		render() {
+		render(context) {
+			console.log(context);
+			if (!this.items) return;
 			// 重新排序
 			let childArr = [];
-			childArr = this.$children.map((child) => child.getMeta());
+			childArr = this.items.map(({ id }) => this.$refs[`item-${id}`][0].getMeta());
 			childArr = quickSort(childArr, 'order');
 			// 计算列数
 			this.calulate(childArr[0]);
@@ -180,3 +203,9 @@ export default {
 	},
 };
 </script>
+
+<style>
+	.waterfall {
+		position: relative;
+	}
+</style>

@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 const randomstring = require('randomstring');
 const jetpack = require('fs-jetpack');
 const qoa = require('qoa');
+
 qoa.config({
 	prefix: '>',
-	underlineQuery: false
+	underlineQuery: false,
 });
 
 async function start() {
@@ -15,82 +17,82 @@ async function start() {
 		{
 			type: 'input',
 			query: 'Port to run the API in:',
-			handle: 'SERVER_PORT'
+			handle: 'SERVER_PORT',
 		},
 		{
 			type: 'input',
 			query: 'Port to run the Website in when in dev mode:',
-			handle: 'WEBSITE_PORT'
+			handle: 'WEBSITE_PORT',
 		},
 		{
 			type: 'input',
 			query: 'Full domain this instance is gonna be running on (Ex: https://lolisafe.moe):',
-			handle: 'DOMAIN'
+			handle: 'DOMAIN',
 		},
 		{
 			type: 'input',
 			query: 'Name of the service? (Ex: lolisafe):',
-			handle: 'SERVICE_NAME'
+			handle: 'SERVICE_NAME',
 		},
 		{
 			type: 'input',
 			query: 'Maximum allowed upload file size in MB (Ex: 100):',
-			handle: 'MAX_SIZE'
+			handle: 'MAX_SIZE',
 		},
 		{
 			type: 'confirm',
 			query: 'Generate thumbnails for images/videos? (Requires ffmpeg installed and in your PATH)',
 			handle: 'GENERATE_THUMBNAILS',
 			accept: 'y',
-			deny: 'n'
+			deny: 'n',
 		},
 		{
 			type: 'confirm',
 			query: 'Allow users to download entire albums in ZIP format?',
 			handle: 'GENERATE_ZIPS',
 			accept: 'y',
-			deny: 'n'
+			deny: 'n',
 		},
 		{
 			type: 'confirm',
 			query: 'Serve files with node?',
 			handle: 'SERVE_WITH_NODE',
 			accept: 'y',
-			deny: 'n'
+			deny: 'n',
 		},
 		{
 			type: 'input',
 			query: 'Base number of characters for generated file URLs (12 should be good enough):',
-			handle: 'GENERATED_FILENAME_LENGTH'
+			handle: 'GENERATED_FILENAME_LENGTH',
 		},
 		{
 			type: 'input',
 			query: 'Base number of characters for generated album URLs (6 should be enough):',
-			handle: 'GENERATED_ALBUM_LENGTH'
+			handle: 'GENERATED_ALBUM_LENGTH',
 		},
 		{
 			type: 'confirm',
 			query: 'Run lolisafe in public mode? (People will be able to upload without an account)',
 			handle: 'PUBLIC_MODE',
 			accept: 'y',
-			deny: 'n'
+			deny: 'n',
 		},
 		{
 			type: 'confirm',
 			query: 'Enable user signup for new accounts?',
 			handle: 'USER_ACCOUNTS',
 			accept: 'y',
-			deny: 'n'
+			deny: 'n',
 		},
 		{
 			type: 'input',
 			query: 'Name of the admin account?',
-			handle: 'ADMIN_ACCOUNT'
+			handle: 'ADMIN_ACCOUNT',
 		},
 		{
 			type: 'secure',
 			query: 'Type a secure password for the admin account:',
-			handle: 'ADMIN_PASSWORD'
+			handle: 'ADMIN_PASSWORD',
 		},
 		{
 			type: 'interactive',
@@ -100,29 +102,29 @@ async function start() {
 			menu: [
 				'sqlite3',
 				'pg',
-				'mysql'
-			]
+				'mysql',
+			],
 		},
 		{
 			type: 'input',
 			query: 'Database host (Ignore if you selected sqlite3):',
-			handle: 'DB_HOST'
+			handle: 'DB_HOST',
 		},
 		{
 			type: 'input',
 			query: 'Database user (Ignore if you selected sqlite3):',
-			handle: 'DB_USER'
+			handle: 'DB_USER',
 		},
 		{
 			type: 'input',
 			query: 'Database password (Ignore if you selected sqlite3):',
-			handle: 'DB_PASSWORD'
+			handle: 'DB_PASSWORD',
 		},
 		{
 			type: 'input',
 			query: 'Database name (Ignore if you selected sqlite3):',
-			handle: 'DB_DATABASE'
-		}
+			handle: 'DB_DATABASE',
+		},
 	];
 
 	const response = await qoa.prompt(wizard);
@@ -140,12 +142,13 @@ async function start() {
 		META_THEME_COLOR: '#20222b',
 		META_DESCRIPTION: 'Blazing fast file uploader and bunker written in node! 🚀',
 		META_KEYWORDS: 'lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
-		META_TWITTER_HANDLE: '@its_pitu'
+		META_TWITTER_HANDLE: '@its_pitu',
 	};
 
 	const allSettings = Object.assign(defaultSettings, response);
 
 	const keys = Object.keys(allSettings);
+	// eslint-disable-next-line no-restricted-syntax
 	for (const item of keys) {
 		envfile += `${item}=${allSettings[item]}\n`;
 	}

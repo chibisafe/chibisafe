@@ -20,15 +20,21 @@
 		<template v-if="files && files.length">
 			<div class="align-top">
 				<div class="container">
-					<h1 class="title">{{ name }}</h1>
-					<h2 class="subtitle">Serving {{ files ? files.length : 0 }} files</h2>
-					<a v-if="downloadLink"
+					<h1 class="title">
+						{{ name }}
+					</h1>
+					<h2 class="subtitle">
+						Serving {{ files ? files.length : 0 }} files
+					</h2>
+					<a
+						v-if="downloadLink"
 						:href="downloadLink">Download Album</a>
 					<hr>
 				</div>
 			</div>
 			<div class="container">
-				<Grid v-if="files && files.length"
+				<Grid
+					v-if="files && files.length"
 					:files="files"
 					:isPublic="true"
 					:width="200"
@@ -38,16 +44,20 @@
 		</template>
 		<template v-else>
 			<div class="container">
-				<h1 class="title">:(</h1>
-				<h2 class="subtitle">This album seems to be empty</h2>
+				<h1 class="title">
+					:(
+				</h1>
+				<h2 class="subtitle">
+					This album seems to be empty
+				</h2>
 			</div>
 		</template>
 	</section>
 </template>
 
 <script>
-import Grid from '~/components/grid/Grid.vue';
 import axios from 'axios';
+import Grid from '~/components/grid/Grid.vue';
 
 export default {
 	components: { Grid },
@@ -57,7 +67,7 @@ export default {
 	computed: {
 		config() {
 			return this.$store.state.config;
-		}
+		},
 	},
 	async asyncData({ app, params, error }) {
 		try {
@@ -67,7 +77,7 @@ export default {
 				name: data.name,
 				downloadEnabled: data.downloadEnabled,
 				files: data.files,
-				downloadLink
+				downloadLink,
 			};
 		} catch (err) {
 			console.log('Error when retrieving album', err);
@@ -90,8 +100,8 @@ export default {
 					{ vmid: 'og:title', property: 'og:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
 					{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
 					{ vmid: 'og:image', property: 'og:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
-				]
+					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
+				],
 			};
 		}
 		return {
@@ -103,9 +113,9 @@ export default {
 				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
 				{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
 				{ vmid: 'og:title', property: 'og:title', content: 'lolisafe' },
-				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
-			]
+				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
+			],
 		};
-	}
+	},
 };
 </script>

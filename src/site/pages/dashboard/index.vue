@@ -9,7 +9,9 @@
 					<nav class="level">
 						<div class="level-left">
 							<div class="level-item">
-								<h2 class="subtitle">Your uploaded files</h2>
+								<h2 class="subtitle">
+									Your uploaded files
+								</h2>
 							</div>
 						</div>
 						<div class="level-right">
@@ -17,7 +19,7 @@
 								<b-field>
 									<b-input
 										placeholder="Search"
-										type="search"/>
+										type="search" />
 									<p class="control">
 										<button
 											outlined
@@ -28,15 +30,17 @@
 								</b-field>
 							</div>
 						</div>
-					</nav>					
+					</nav>
 					<hr>
 
 					<b-loading :active="images.isLoading" />
 
-					<Grid v-if="totalFiles"
+					<Grid
+						v-if="totalFiles && !isLoading"
 						:files="images.files"
 						:enableSearch="false"
-						class="grid">
+						class="grid"
+						@delete="handleFileDelete">
 						<template v-slot:pagination>
 							<b-pagination
 								v-if="shouldPaginate"
@@ -70,38 +74,44 @@ import Grid from '~/components/grid/Grid.vue';
 export default {
 	components: {
 		Sidebar,
-		Grid
+		Grid,
 	},
 	middleware: ['auth', ({ store }) => {
 		store.dispatch('images/fetch');
 	}],
 	data() {
 		return {
-			current: 1
+			current: 1,
+			isLoading: false,
 		};
 	},
 	computed: {
-		...mapGetters({ 
+		...mapGetters({
 			totalFiles: 'images/getTotalFiles',
 			shouldPaginate: 'images/shouldPaginate',
-			limit: 'images/getLimit'
+			limit: 'images/getLimit',
 		}),
-		...mapState(['images'])
+		...mapState(['images']),
 	},
 	metaInfo() {
 		return { title: 'Uploads' };
 	},
 	watch: {
-		current: 'fetchPaginate'
+		current: 'fetchPaginate',
 	},
 	methods: {
 		...mapActions({
-			fetch: 'images/fetch'
+			fetch: 'images/fetch',
 		}),
-		fetchPaginate() {
-			this.fetch(this.current);
-		}
-	}
+		async fetchPaginate() {
+			this.isLoading = true;
+			await this.fetch(this.current);
+			this.isLoading = false;
+		},
+		handleFileDelete(file) {
+			console.log('yep!', file.id);
+		},
+	},
 };
 </script>
 

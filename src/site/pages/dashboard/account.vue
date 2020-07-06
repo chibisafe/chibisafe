@@ -6,62 +6,82 @@
 					<Sidebar />
 				</div>
 				<div class="column">
-					<h2 class="subtitle">Account settings</h2>
+					<h2 class="subtitle">
+						Account settings
+					</h2>
 					<hr>
 
-					<b-field label="Username"
+					<b-field
+						label="Username"
 						message="Nothing to do here"
 						horizontal>
-						<b-input :value="user.username"
+						<b-input
+							:value="user.username"
 							expanded
 							disabled />
 					</b-field>
 
-					<b-field label="Current password"
+					<b-field
+						label="Current password"
 						message="If you want to change your password input the current one here"
 						horizontal>
-						<b-input v-model="password"
+						<b-input
+							v-model="password"
 							type="password"
 							expanded />
 					</b-field>
 
-					<b-field label="New password"
+					<b-field
+						label="New password"
 						message="Your new password"
 						horizontal>
-						<b-input v-model="newPassword"
+						<b-input
+							v-model="newPassword"
 							type="password"
 							expanded />
 					</b-field>
 
-					<b-field label="New password again"
+					<b-field
+						label="New password again"
 						message="Your new password once again"
 						horizontal>
-						<b-input v-model="reNewPassword"
+						<b-input
+							v-model="reNewPassword"
 							type="password"
 							expanded />
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
-						<button class="button is-primary"
-							@click="changePassword">Change password</button>
+						<button
+							class="button is-primary"
+							@click="changePassword">
+							Change password
+						</button>
 					</div>
 
-					<b-field label="API key"
+					<b-field
+						label="API key"
 						message="This API key lets you use the service from other apps"
 						horizontal>
 						<b-field expanded>
-							<b-input :value="apiKey"
+							<b-input
+								:value="apiKey"
 								expanded
 								disabled />
 							<p class="control">
-								<button class="button is-primary">Copy</button>
+								<button class="button is-primary">
+									Copy
+								</button>
 							</p>
 						</b-field>
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
-						<button class="button is-primary"
-							@click="promptNewAPIKey">Request new API key</button>
+						<button
+							class="button is-primary"
+							@click="promptNewAPIKey">
+							Request new API key
+						</button>
 					</div>
 				</div>
 			</div>
@@ -75,7 +95,7 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar
+		Sidebar,
 	},
 	middleware: ['auth', ({ store }) => {
 		store.dispatch('auth/fetchCurrentUser');
@@ -84,21 +104,21 @@ export default {
 		return {
 			password: '',
 			newPassword: '',
-			reNewPassword: ''
+			reNewPassword: '',
 		};
-	}, 
+	},
 	computed: {
 		...mapGetters({ 'apiKey': 'auth/getApiKey' }),
 		...mapState({
-			user: state => state.auth.user
-		})
+			user: (state) => state.auth.user,
+		}),
 	},
 	metaInfo() {
 		return { title: 'Account' };
 	},
 	methods: {
 		...mapActions({
-			getUserSetttings: 'auth/fetchCurrentUser'
+			getUserSetttings: 'auth/fetchCurrentUser',
 		}),
 		async changePassword() {
 			const { password, newPassword, reNewPassword } = this;
@@ -106,21 +126,21 @@ export default {
 			if (!password || !newPassword || !reNewPassword) {
 				this.$store.dispatch('alert/set', {
 					text: 'One or more fields are missing',
-					error: true
+					error: true,
 				});
 				return;
 			}
 			if (newPassword !== reNewPassword) {
 				this.$store.dispatch('alert/set', {
 					text: 'Passwords don\'t match',
-					error: true
+					error: true,
 				});
 				return;
 			}
 
 			const response = await this.$store.dispatch('auth/changePassword', {
 				password,
-				newPassword
+				newPassword,
 			});
 
 			if (response) {
@@ -131,13 +151,13 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to regenerate your API key? Previously generated API keys will stop working. Make sure to write the new key down as this is the only time it will be displayed to you.',
-				onConfirm: () => this.requestNewAPIKey()
+				onConfirm: () => this.requestNewAPIKey(),
 			});
 		},
 		async requestNewAPIKey() {
-			const response = await this.$store.dispatch('auth/requestAPIKey');		
+			const response = await this.$store.dispatch('auth/requestAPIKey');
 			this.$buefy.toast.open(response.message);
-		}
-	}
+		},
+	},
 };
 </script>

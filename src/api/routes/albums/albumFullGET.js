@@ -41,6 +41,7 @@ class albumGET extends Route {
 			count = files.length;
 		}
 
+		// eslint-disable-next-line no-restricted-syntax
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}
@@ -49,7 +50,7 @@ class albumGET extends Route {
 			message: 'Successfully retrieved album',
 			name: album.name,
 			files,
-			count
+			count,
 		});
 	}
 }

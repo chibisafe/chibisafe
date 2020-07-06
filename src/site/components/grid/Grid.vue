@@ -24,12 +24,10 @@
 			<Waterfall
 				v-if="showWaterfall"
 				:gutterWidth="10"
-				:gutterHeight="4">
-				<WaterfallItem
-					v-for="(item, index) in gridFiles"
-					:key="item.id"
-					:width="width"
-					move-class="item-move">
+				:gutterHeight="4"
+				:itemWidth="width"
+				:items="gridFiles">
+				<template v-slot="{item}">
 					<template v-if="isPublic">
 						<a
 							:href="`${item.url}`"
@@ -81,7 +79,7 @@
 								</a>
 							</b-tooltip>
 							<b-tooltip label="Delete" position="is-top">
-								<a class="btn" @click="deleteFile(item, index)">
+								<a class="btn" @click="deleteFile(item)">
 									<i class="icon-editorial-trash-a-l" />
 								</a>
 							</b-tooltip>
@@ -92,7 +90,7 @@
 							</b-tooltip>
 						</div>
 					</template>
-				</WaterfallItem>
+				</template>
 			</Waterfall>
 		</template>
 		<div v-else>
@@ -185,12 +183,10 @@
 import { mapState } from 'vuex';
 
 import Waterfall from './waterfall/Waterfall.vue';
-import WaterfallItem from './waterfall/WaterfallItem.vue';
 
 export default {
 	components: {
 		Waterfall,
-		WaterfallItem,
 	},
 	props: {
 		files: {
@@ -253,13 +249,13 @@ export default {
 			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
 			console.log('> Search result data', data);
 		},
-		deleteFile(file, index) {
-			this.$buefy.dialog.confirm({
+		deleteFile(file) {
+			this.$emit('delete', file);
+			/* this.$buefy.dialog.confirm({
 				title: 'Deleting file',
 				message: 'Are you sure you want to <b>delete</b> this file?',
 				confirmText: 'Delete File',
 				type: 'is-danger',
-				hasIcon: true,
 				onConfirm: async () => {
 					const response = await this.$axios.$delete(`file/${file.id}`);
 					if (this.showList) {
@@ -274,7 +270,7 @@ export default {
 					}
 					return this.$buefy.toast.open(response.message);
 				},
-			});
+			}); */
 		},
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return false;
@@ -311,10 +307,6 @@ export default {
 			const foundIndex = this.hoveredItems.indexOf(id);
 			if (foundIndex > -1) return;
 			this.hoveredItems.push(id);
-			/// XXX: THIS IS NOT OK!
-			this.$nextTick(() => {
-				this.$refs.video.forEach((e) => e.play().catch(() => {}));
-			});
 		},
 		mouseOut(id) {
 			console.log('out', id);
