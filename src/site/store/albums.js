@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import Vue from 'vue';
 
 export const state = () => ({

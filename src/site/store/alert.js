@@ -1,7 +1,6 @@
-/* eslint-disable no-shadow */
 const getDefaultState = () => ({
 	text: null,
-	error: false
+	error: false,
 });
 
 export const state = getDefaultState;
@@ -12,7 +11,7 @@ export const actions = {
 	},
 	clear({ commit }) {
 		commit('clear');
-	}
+	},
 };
 
 export const mutations = {
@@ -22,5 +21,5 @@ export const mutations = {
 	},
 	clear(state) {
 		Object.assign(state, getDefaultState());
-	}
+	},
 };

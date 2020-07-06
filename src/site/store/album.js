@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 export const state = () => ({
 	files: [],
 	name: null,
@@ -35,6 +34,10 @@ export const actions = {
 		} catch (e) {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
 		}
+	},
+	// TODO: Fix duplicate code between this store and files store
+	deleteFile({ commit }, fileId) {
+
 	},
 };
 
