@@ -25,6 +25,7 @@
 				v-if="showWaterfall"
 				:gutterWidth="10"
 				:gutterHeight="4"
+				:options="{fitWidth: true}"
 				:itemWidth="width"
 				:items="gridFiles">
 				<template v-slot="{item}">
@@ -449,6 +450,10 @@ div.actions {
 
 .hidden {
 	display: none;
+}
+
+.waterfall {
+	margin: 0 auto;
 }
 
 .waterfall-item:hover {

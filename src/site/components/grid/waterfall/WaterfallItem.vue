@@ -3,80 +3,8 @@
 		<slot />
 	</div>
 </template>
-
 <script>
-import imagesLoaded from 'imagesloaded';
-
 export default {
 	name: 'WaterfallItem',
-	props: {
-		order: {
-			type: Number,
-			default: 0,
-		},
-		width: {
-			type: Number,
-			default: 150,
-		},
-		video: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	data() {
-		return {
-			itemWidth: 0,
-			height: 0,
-		};
-	},
-	created() {
-		this.$watch(() => this.height, this.emit);
-	},
-	mounted() {
-		this.$el.style.display = 'none';
-		this.$el.style.width = `${this.width}px`;
-		this.emit();
-		if (this.video) {
-			// find first video object
-			const videoEl = this.$slots.default.find((e) => e.tag?.toLowerCase() === 'video');
-			const el = videoEl.elm;
-
-			// add event listener for video loaded
-			el.onloadeddata = () => {
-				this.$el.style.left = '-9999px';
-				this.$el.style.top = '-9999px';
-				this.$el.style.display = 'block';
-				this.height = el.offsetHeight + 5;
-				this.itemWidth = el.offsetWidth;
-			};
-		} else {
-			imagesLoaded(this.$el, () => {
-				this.$el.style.left = '-9999px';
-				this.$el.style.top = '-9999px';
-				this.$el.style.display = 'block';
-				this.height = this.$el.offsetHeight;
-				this.itemWidth = this.$el.offsetWidth;
-			});
-		}
-	},
-	methods: {
-		emit() {
-			this.$parent.$emit('itemRender');
-		},
-		getMeta() {
-			return {
-				el: this.$el,
-				height: this.height,
-				width: this.itemWidth,
-				order: this.order,
-			};
-		},
-	},
 };
 </script>
-
-<style scoped>
-	.waterfall-item {
-		position: absolute;
-	}
-</style>

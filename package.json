@@ -56,6 +56,7 @@
 		"imagesloaded": "^4.1.4",
 		"jsonwebtoken": "^8.5.0",
 		"knex": "^0.16.3",
+		"masonry-layout": "^4.2.2",
 		"moment": "^2.24.0",
 		"multer": "^1.4.1",
 		"mysql": "^2.16.0",
@@ -117,7 +118,28 @@
 			],
 			"class-methods-use-this": "off",
 			"no-param-reassign": "off",
-			"no-plusplus": "off",
+			"no-plusplus": [
+				"error",
+				{
+					"allowForLoopAfterthoughts": true
+				}
+			],
+			"no-underscore-dangle": [
+				"error",
+				{
+					"allow": [
+						"_id"
+					]
+				}
+			],
+			"import/extensions": [
+				"error",
+				"always",
+				{
+					"js": "never",
+					"ts": "never"
+				}
+			],
 			"vue/attribute-hyphenation": 0,
 			"vue/html-closing-bracket-newline": [
 				"error",
