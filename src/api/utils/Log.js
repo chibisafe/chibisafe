@@ -22,6 +22,11 @@ class Log {
 		else console.log(chalk.red(args)); // eslint-disable-line no-console
 	}
 
+	static debug(args) {
+		if (this.checkIfArrayOrObject(args)) dump(args);
+		else console.log(chalk.gray(args)); // eslint-disable-line no-console
+	}
+
 	/*
 	static dump(args) {
 		dump(args);

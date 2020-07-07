@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
 const path = require('path');
@@ -9,9 +10,9 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: path.join(__dirname, '..', '..', '..', 'database.sqlite')
+		filename: path.join(__dirname, '../../../database.sqlite'),
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite' ? true : false
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite',
 });
 const moment = require('moment');
 const crypto = require('crypto');
@@ -51,11 +52,10 @@ class Util {
 
 	static getUniqueFilename(name) {
 		const retry = (i = 0) => {
-			const filename =
-				randomstring.generate({
-					length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
-					capitalization: 'lowercase'
-				}) + path.extname(name).toLowerCase();
+			const filename =				randomstring.generate({
+				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
+				capitalization: 'lowercase',
+			}) + path.extname(name).toLowerCase();
 
 			// TODO: Change this to look for the file in the db instead of in the filesystem
 			const exists = jetpack.exists(path.join(Util.uploadPath, filename));
@@ -71,7 +71,7 @@ class Util {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
 				length: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
-				capitalization: 'lowercase'
+				capitalization: 'lowercase',
 			});
 			const exists = await db
 				.table('links')
@@ -138,7 +138,9 @@ class Util {
 					.table('files')
 					.where({ id: fileAlbum.fileId })
 					.first();
+
 				if (!file) continue;
+
 				await this.deleteFile(file.name, true);
 			}
 		} catch (error) {
@@ -211,13 +213,15 @@ class Util {
 					'..',
 					process.env.UPLOAD_FOLDER,
 					'zips',
-					`${album.userId}-${album.id}.zip`
-				)
+					`${album.userId}-${album.id}.zip`,
+				),
 			);
 		} catch (error) {
 			log.error(error);
 		}
 	}
+
+	static generateThumbnails = ThumbUtil.generateThumbnails;
 }
 
 module.exports = Util;

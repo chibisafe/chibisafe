@@ -8,19 +8,22 @@ const log = require('./Log');
 
 class ThumbUtil {
 	static imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
+
 	static videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
-	static thumbPath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs');
-	static squareThumbPath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square');
-	static videoPreviewPath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'preview');
+	static thumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs');
+
+	static squareThumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'square');
+
+	static videoPreviewPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'preview');
 
 	static generateThumbnails(filename) {
 		const ext = path.extname(filename).toLowerCase();
 		const output = `${filename.slice(0, -ext.length)}.png`;
 		const previewOutput = `${filename.slice(0, -ext.length)}.webm`;
 
-		if (ThumbUtil.imageExtensions.includes(ext)) return this.generateThumbnailForImage(filename, output);
-		if (ThumbUtil.videoExtensions.includes(ext)) return this.generateThumbnailForVideo(filename, previewOutput);
+		if (ThumbUtil.imageExtensions.includes(ext)) return ThumbUtil.generateThumbnailForImage(filename, output);
+		if (ThumbUtil.videoExtensions.includes(ext)) return ThumbUtil.generateThumbnailForVideo(filename, previewOutput);
 		return null;
 	}
 
@@ -46,28 +49,28 @@ class ThumbUtil {
 				timestamps: [0],
 				filename: '%b.png',
 				folder: ThumbUtil.squareThumbPath,
-				size: '64x64'
+				size: '64x64',
 			})
-			.on('error', error => log.error(error.message));
+			.on('error', (error) => log.error(error.message));
 
 		ffmpeg(filePath)
 			.thumbnail({
 				timestamps: [0],
 				filename: '%b.png',
 				folder: ThumbUtil.thumbPath,
-				size: '150x?'
+				size: '150x?',
 			})
-			.on('error', error => log.error(error.message));
+			.on('error', (error) => log.error(error.message));
 
 		try {
 			await previewUtil({
 				input: filePath,
 				width: 150,
 				output: path.join(ThumbUtil.videoPreviewPath, output),
-				log: console.log
+				log: log.debug,
 			});
 		} catch (e) {
-			console.error(e);
+			log.error(e);
 		}
 	}
 
@@ -77,16 +80,22 @@ class ThumbUtil {
 		const ext = path.extname(filename).toLowerCase();
 		if (!ThumbUtil.imageExtensions.includes(ext) && !ThumbUtil.videoExtensions.includes(ext)) return null;
 		if (ThumbUtil.imageExtensions.includes(ext)) return { thumb: `${filename.slice(0, -ext.length)}.png` };
-		if (ThumbUtil.videoExtensions.includes(ext))
+		if (ThumbUtil.videoExtensions.includes(ext)) {
 			return {
 				thumb: `${filename.slice(0, -ext.length)}.png`,
-				preview: `${filename.slice(0, -ext.length)}.webm`
+				preview: `${filename.slice(0, -ext.length)}.webm`,
 			};
+		}
 	}
 
-	static async removeThumbs(thumbName) {
-		await jetpack.removeAsync(path.join(ThumbUtil.thumbPath, thumbName));
-		await jetpack.removeAsync(ThumbUtil.squareThumbPath, thumbName);
+	static async removeThumbs({ thumb, preview }) {
+		if (thumb) {
+			await jetpack.removeAsync(path.join(ThumbUtil.thumbPath, thumb));
+			await jetpack.removeAsync(path.join(ThumbUtil.squareThumbPath, thumb));
+		}
+		if (preview) {
+			await jetpack.removeAsync(path.join(ThumbUtil.videoPreviewPath, preview));
+		}
 	}
 }
 
