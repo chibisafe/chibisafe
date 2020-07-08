@@ -11,7 +11,10 @@ class usersGET extends Route {
 		if (!id) return res.status(400).json({ message: 'Invalid user ID supplied' });
 
 		try {
-			const user = await db.table('users').where({ id }).first();
+			const user = await db.table('users')
+				.select('id, username, enabled, createdAt, editeadAt, apiKeyEditedAt, isAdmin')
+				.where({ id })
+				.first();
 			const files = await db.table('files')
 				.where({ userId: user.id })
 				.orderBy('id', 'desc');

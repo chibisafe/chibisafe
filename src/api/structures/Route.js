@@ -77,7 +77,9 @@ class Route {
 				.where({ id })
 				.first();
 			if (!user) return res.status(401).json({ message: 'Invalid authorization' });
-			if (iat && iat < moment(user.passwordEditedAt).format('x')) { return res.status(401).json({ message: 'Token expired' }); }
+			if (iat && iat < moment(user.passwordEditedAt).format('x')) {
+				return res.status(401).json({ message: 'Token expired' });
+			}
 			if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
 			if (this.options.adminOnly && !user.isAdmin) { return res.status(401).json({ message: 'Invalid authorization' }); }
 
