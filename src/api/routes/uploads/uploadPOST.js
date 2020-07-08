@@ -84,10 +84,7 @@ class uploadPOST extends Route {
 
 			if (remappedKeys && remappedKeys.uuid) {
 				const chunkOutput = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					'chunks',
 					remappedKeys.uuid,
@@ -95,10 +92,7 @@ class uploadPOST extends Route {
 				await jetpack.writeAsync(chunkOutput, file.buffer);
 			} else {
 				const output = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					filename);
 				await jetpack.writeAsync(output, file.buffer);
