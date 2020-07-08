@@ -30,6 +30,12 @@ export const actions = {
 		commit('setToken', data.token);
 		commit('loginSuccess', { token: data.token, user: data.user });
 	},
+	async register(_, { username, password }) {
+		return this.$axios.$post('auth/register', {
+			username,
+			password,
+		});
+	},
 	async fetchCurrentUser({ commit, dispatch }) {
 		try {
 			const data = await this.$axios.$get('users/me');
@@ -83,13 +89,13 @@ export const mutations = {
 		state.isLoading = true;
 	},
 	loginSuccess(state, { user }) {
-		this.$cookies.set('token', state.token);
+		this.$cookies.set('token', state.token, { path: '/' });
 		state.user = user;
 		state.loggedIn = true;
 		state.isLoading = false;
 	},
 	logout(state) {
-		this.$cookies.remove('token');
+		this.$cookies.remove('token', { path: '/' });
 		// reset state to default
 		Object.assign(state, getDefaultState());
 	},

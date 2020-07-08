@@ -25,20 +25,32 @@
 							@keyup.enter.native="login" />
 					</b-field>
 
-					<p class="control has-addons is-pulled-right">
-						<router-link
-							v-if="config.userAccounts"
-							to="/register"
-							class="is-text">
-							Don't have an account?
-						</router-link>
-						<span v-else>Registration is closed at the moment</span>
-						<button
-							class="button is-primary big ml1"
-							@click="login">
-							login
-						</button>
-					</p>
+					<p class="control has-addons is-pulled-right" />
+
+					<div class="level">
+						<div class="level-left">
+							<div class="level-item">
+								<router-link
+									v-if="config.userAccounts"
+									to="/register"
+									class="is-text">
+									Don't have an account?
+								</router-link>
+								<span v-else>Registration is closed at the moment</span>
+							</div>
+						</div>
+
+						<div class="level-right">
+							<p class="level-item">
+								<b-button
+									size="is-medium"
+									type="is-lolisafe"
+									@click="login">
+									Login
+								</b-button>
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -99,10 +111,7 @@ export default {
 
 			const { username, password } = this;
 			if (!username || !password) {
-				this.$store.dispatch('alert/set', {
-					text: 'Please fill both fields before attempting to log in.',
-					error: true,
-				});
+				this.$notifier.error('Please fill both fields before attempting to log in.');
 				return;
 			}
 
@@ -113,7 +122,7 @@ export default {
 					this.redirect();
 				}
 			} catch (e) {
-				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+				this.$notifier.error(e.message);
 			} finally {
 				this.isLoading = false;
 			}

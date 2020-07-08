@@ -52,11 +52,11 @@
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
-						<button
-							class="button is-primary"
+						<b-button
+							type="is-lolisafe"
 							@click="changePassword">
 							Change password
-						</button>
+						</b-button>
 					</div>
 
 					<b-field
@@ -69,19 +69,21 @@
 								expanded
 								disabled />
 							<p class="control">
-								<button class="button is-primary">
+								<b-button
+									type="is-lolisafe"
+									@click="copyKey">
 									Copy
-								</button>
+								</b-button>
 							</p>
 						</b-field>
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
-						<button
-							class="button is-primary"
+						<b-button
+							type="is-lolisafe"
 							@click="promptNewAPIKey">
 							Request new API key
-						</button>
+						</b-button>
 					</div>
 				</div>
 			</div>
@@ -153,6 +155,10 @@ export default {
 				message: 'Are you sure you want to regenerate your API key? Previously generated API keys will stop working. Make sure to write the new key down as this is the only time it will be displayed to you.',
 				onConfirm: () => this.requestNewAPIKey(),
 			});
+		},
+		copyKey() {
+			this.$clipboard(this.apiKey);
+			this.$notifier.success('API key copied to clipboard');
 		},
 		async requestNewAPIKey() {
 			const response = await this.$store.dispatch('auth/requestAPIKey');

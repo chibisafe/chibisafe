@@ -13,7 +13,7 @@
 
 					<div class="view-container">
 						<b-table
-							:data="users || []"
+							:data="users"
 							:mobile-cards="true">
 							<template slot-scope="props">
 								<b-table-column
@@ -37,7 +37,7 @@
 									label="Enabled"
 									centered>
 									<b-switch
-										v-model="props.row.enabled"
+										:value="props.row.enabled"
 										@input="changeEnabledStatus(props.row)" />
 								</b-table-column>
 
@@ -46,18 +46,18 @@
 									label="Admin"
 									centered>
 									<b-switch
-										v-model="props.row.isAdmin"
+										:value="props.row.isAdmin"
 										@input="changeIsAdmin(props.row)" />
 								</b-table-column>
 
 								<b-table-column
 									field="purge"
 									centered>
-									<button
-										class="button is-primary"
+									<b-button
+										type="is-danger"
 										@click="promptPurgeFiles(props.row)">
 										Purge files
-									</button>
+									</b-button>
 								</b-table-column>
 							</template>
 							<template slot="empty">
@@ -82,45 +82,42 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
 		Sidebar,
 	},
-	middleware: ['auth', 'admin'],
-	data() {
-		return {
-			users: [],
-		};
-	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		},
-	},
+	middleware: ['auth', 'admin', ({ route, store }) => {
+		try {
+			store.dispatch('admin/fetchUsers', route.params.id);
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error(e);
+		}
+	}],
+	computed: mapState({
+		users: (state) => state.admin.users,
+		config: (state) => state.config,
+	}),
 	metaInfo() {
 		return { title: 'Uploads' };
 	},
-	mounted() {
-		this.getUsers();
-	},
 	methods: {
-		async getUsers() {
-			const response = await this.$axios.$get('admin/users');
-			this.users = response.users;
-		},
 		async changeEnabledStatus(row) {
-			const response = await this.$axios.$post(`admin/users/${row.enabled ? 'enable' : 'disable'}`, {
-				id: row.id,
-			});
-			this.$buefy.toast.open(response.message);
+			if (row.enabled) {
+				this.$handler.executeAction('admin/disableUser', row.id);
+			} else {
+				this.$handler.executeAction('admin/enableUser', row.id);
+			}
 		},
 		async changeIsAdmin(row) {
-			const response = await this.$axios.$post(`admin/users/${row.isAdmin ? 'promote' : 'demote'}`, {
-				id: row.id,
-			});
-			this.$buefy.toast.open(response.message);
+			if (row.isAdmin) {
+				this.$handler.executeAction('admin/demoteUser', row.id);
+			} else {
+				this.$handler.executeAction('admin/promoteUser', row.id);
+			}
 		},
 		promptPurgeFiles(row) {
 			this.$buefy.dialog.confirm({
@@ -129,10 +126,7 @@ export default {
 			});
 		},
 		async purgeFiles(row) {
-			const response = await this.$axios.$post('admin/users/purge', {
-				id: row.id,
-			});
-			this.$buefy.toast.open(response.message);
+			this.$handler.executeAction('admin/purgeUserFiles', row.id);
 		},
 	},
 };

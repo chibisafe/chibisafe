@@ -1,12 +1,19 @@
+import AlertTypes from '~/constants/alertTypes';
+
 const getDefaultState = () => ({
-	text: null,
-	error: false,
+	message: null,
+	type: null,
+	snackbar: false,
 });
 
 export const state = getDefaultState;
 
 export const actions = {
 	set({ commit }, data) {
+		// Only exists for backwards compatibility, remove one day
+		if (data.error === true) data.type = AlertTypes.ERROR;
+		if (data.text !== undefined) data.message = data.text;
+
 		commit('set', data);
 	},
 	clear({ commit }) {
@@ -15,9 +22,10 @@ export const actions = {
 };
 
 export const mutations = {
-	set(state, { text, error }) {
-		state.text = text;
-		state.error = error;
+	set(state, { message, type, snackbar }) {
+		state.message = message;
+		state.type = type;
+		state.snackbar = snackbar || false;
 	},
 	clear(state) {
 		Object.assign(state, getDefaultState());

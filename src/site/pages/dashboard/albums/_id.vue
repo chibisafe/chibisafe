@@ -30,11 +30,9 @@
 										placeholder="Search"
 										type="search" />
 									<p class="control">
-										<button
-											outlined
-											class="button is-primary">
+										<b-button type="is-lolisafe">
 											Search
-										</button>
+										</b-button>
 									</p>
 								</b-field>
 							</div>

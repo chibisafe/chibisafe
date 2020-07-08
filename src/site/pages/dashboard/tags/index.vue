@@ -144,11 +144,11 @@
 								type="text"
 								@keyup.enter.native="createTag" />
 							<p class="control">
-								<button
-									class="button is-primary"
+								<b-button
+									type="is-lolisafe"
 									@click="createTag">
 									Create tags
-								</button>
+								</b-button>
 							</p>
 						</b-field>
 					</div>

@@ -10,7 +10,7 @@ export const getDefaultState = () => ({
 	},
 	name: null,
 	downloadEnabled: false,
-	filesAlbums: {},
+	filesAlbums: {}, // map of file ids with a list of album objects the file is in
 });
 
 export const state = getDefaultState;
