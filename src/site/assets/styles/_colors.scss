@@ -55,6 +55,17 @@ $loading-background: rgba(0, 0, 0, 0.8);
 $loading-background: rgba(40, 40, 40, 0.66);
 
 // dialogs
+$modal-card-title-color: $textColor;
 $modal-card-body-background-color: $background;
 $modal-card-head-background-color: $backgroundAccent;
+$modal-card-head-border-bottom: 1px solid rgba(255, 255, 255, 0.1098);
 $modal-card-foot-border-top: 1px solid rgba(255, 255, 255, 0.1098);
+
+// sidebar
+$sidebar-background: $base-1;
+$sidebar-box-shadow: none;
+
+//
+$menu-item-color: $textColor;
+$menu-item-hover-color: $textColorHighlight;
+$menu-item-active-background-color: $backgroundAccent;

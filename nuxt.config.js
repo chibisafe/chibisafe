@@ -72,6 +72,10 @@ export default {
 	],
 	css: [],
 	modules: ['@nuxtjs/axios', 'cookie-universal-nuxt'],
+	router: {
+		linkActiveClass: 'is-active',
+		linkExactActiveClass: 'is-active',
+	},
 	axios: {
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
 	},

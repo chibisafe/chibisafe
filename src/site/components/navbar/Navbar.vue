@@ -1,5 +1,6 @@
 <template>
-	<b-navbar :class="{ isWhite }"
+	<b-navbar
+		:class="{ isWhite }"
 		transparent>
 		<template slot="end">
 			<b-navbar-item tag="div">
@@ -71,24 +72,25 @@ export default {
 	props: {
 		isWhite: {
 			type: Boolean,
-			default: false
-		}
+			default: false,
+		},
 	},
 	data() {
 		return { hamburger: false };
 	},
 	computed: {
 		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
-		...mapState(['config'])
+		...mapState(['config']),
 	},
 	methods: {
 		async logOut() {
 			await this.$store.dispatch('auth/logout');
 			this.$router.replace('/login');
-		}
-	}
+		},
+	},
 };
 </script>
+
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	nav.navbar {

@@ -12,6 +12,8 @@ $size-normal: 1rem;
 @import '../../../node_modules/bulma/bulma.sass';
 @import '../../../node_modules/buefy/src/scss/buefy.scss';
 
+@import '@mdi/font/css/materialdesignicons.css';
+
 html {
 	// font-size: 100%;
 	font-size: 14px;
@@ -335,4 +337,10 @@ table.table {
 .pagination a,
 .pagination a:hover {
 	text-decoration: none;
+}
+
+// fix control icons
+.control.has-icons-left .icon, .control.has-icons-right .icon {
+	height: 3rem;
+	padding-right: 1rem;
 }
