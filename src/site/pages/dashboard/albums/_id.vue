@@ -83,6 +83,7 @@ export default {
 		Grid,
 	},
 	middleware: ['auth', ({ route, store }) => {
+		store.commit('images/resetState');
 		store.dispatch('images/fetchByAlbumId', { id: route.params.id });
 	}],
 	data() {

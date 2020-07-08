@@ -70,7 +70,7 @@
 								</a>
 							</b-tooltip>
 							<b-tooltip label="Tags" position="is-top">
-								<a class="btn" @click="manageTags(item)">
+								<a class="btn" @click="false && manageTags(item)">
 									<i class="icon-ecommerce-tag-c" />
 								</a>
 							</b-tooltip>
@@ -163,7 +163,7 @@
 						<hr>
 
 						<div class="albums-container">
-							<div v-for="(album, index) in albums" :key="index" class="album">
+							<div v-for="(album, index) in albums" :key="album.id" class="album">
 								<div class="field">
 									<b-checkbox
 										:value="isAlbumSelected(album.id)"
@@ -224,7 +224,6 @@ export default {
 			showWaterfall: true,
 			searchTerm: null,
 			showList: false,
-			albums: [],
 			hoveredItems: [],
 			isAlbumsModalActive: false,
 			showingModalForFile: null,
@@ -236,6 +235,8 @@ export default {
 	computed: {
 		...mapState({
 			user: (state) => state.auth.user,
+			albums: (state) => state.albums.tinyDetails,
+			images: (state) => state.images,
 		}),
 		blank() {
 			// eslint-disable-next-line global-require, import/no-unresolved
@@ -245,33 +246,31 @@ export default {
 			return this.files;
 		},
 	},
+	created() {
+		this.getAlbums();
+	},
 	methods: {
 		async search() {
 			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
 			console.log('> Search result data', data);
 		},
 		deleteFile(file) {
-			this.$emit('delete', file);
-			/* this.$buefy.dialog.confirm({
+			// this.$emit('delete', file);
+			this.$buefy.dialog.confirm({
 				title: 'Deleting file',
 				message: 'Are you sure you want to <b>delete</b> this file?',
 				confirmText: 'Delete File',
 				type: 'is-danger',
 				onConfirm: async () => {
-					const response = await this.$axios.$delete(`file/${file.id}`);
-					if (this.showList) {
-						file.hideFromList = true;
-						this.$forceUpdate();
-					} else {
-						this.showWaterfall = false;
-						this.files.splice(index, 1);
-						this.$nextTick(() => {
-							this.showWaterfall = true;
-						});
+					try {
+						const response = await this.$store.dispatch('images/deleteFile', file.id);
+
+						this.$buefy.toast.open(response.message);
+					} catch (e) {
+						this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
 					}
-					return this.$buefy.toast.open(response.message);
 				},
-			}); */
+			});
 		},
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return false;
@@ -279,38 +278,52 @@ export default {
 			return !!(found && found.id);
 		},
 		async openAlbumModal(file) {
+			const { id } = file;
 			this.showingModalForFile = file;
 			this.showingModalForFile.albums = [];
+
+			try {
+				await this.$store.dispatch('images/getFileAlbums', id);
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
+			this.showingModalForFile.albums = this.images.filesAlbums[id];
+
 			this.isAlbumsModalActive = true;
-
-			const response = await this.$axios.$get(`file/${file.id}/albums`);
-			this.showingModalForFile.albums = response.albums;
-
-			this.getAlbums();
 		},
-		async albumCheckboxClicked(value, id) {
-			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
-				albumId: id,
-				fileId: this.showingModalForFile.id,
-			});
-			this.$buefy.toast.open(response.message);
+		async albumCheckboxClicked(add, id) {
+			try {
+				let response;
+				if (add) {
+					response = await this.$store.dispatch('images/addToAlbum', {
+						albumId: id,
+						fileId: this.showingModalForFile.id,
+					});
+				} else {
+					response = await this.$store.dispatch('images/removeFromAlbum', {
+						albumId: id,
+						fileId: this.showingModalForFile.id,
+					});
+				}
 
-			// Not the prettiest solution to refetch on each click but it'll do for now
-			this.$parent.getFiles();
+				this.$buefy.toast.open(response.message);
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
 		},
 		async getAlbums() {
-			const response = await this.$axios.$get('albums/dropdown');
-			this.albums = response.albums;
-			this.$forceUpdate();
+			try {
+				await this.$store.dispatch('albums/getTinyDetails');
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
 		},
 		mouseOver(id) {
-			console.log('in', id);
 			const foundIndex = this.hoveredItems.indexOf(id);
 			if (foundIndex > -1) return;
 			this.hoveredItems.push(id);
 		},
 		mouseOut(id) {
-			console.log('out', id);
 			const foundIndex = this.hoveredItems.indexOf(id);
 			if (foundIndex > -1) this.hoveredItems.splice(foundIndex, 1);
 		},

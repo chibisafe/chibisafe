@@ -33,14 +33,13 @@
 					</nav>
 					<hr>
 
-					<b-loading :active="images.isLoading" />
+					<!-- <b-loading :active="images.isLoading" /> -->
 
 					<Grid
 						v-if="totalFiles && !isLoading"
 						:files="images.files"
 						:enableSearch="false"
-						class="grid"
-						@delete="handleFileDelete">
+						class="grid">
 						<template v-slot:pagination>
 							<b-pagination
 								v-if="shouldPaginate"
@@ -77,6 +76,7 @@ export default {
 		Grid,
 	},
 	middleware: ['auth', ({ store }) => {
+		store.commit('images/resetState');
 		store.dispatch('images/fetch');
 	}],
 	data() {
@@ -107,9 +107,6 @@ export default {
 			this.isLoading = true;
 			await this.fetch(this.current);
 			this.isLoading = false;
-		},
-		handleFileDelete(file) {
-			console.log('yep!', file.id);
 		},
 	},
 };

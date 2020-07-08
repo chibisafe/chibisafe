@@ -19,7 +19,8 @@
 		</div>
 		<div class="container uploader">
 			<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
-			<div v-else
+			<div
+				v-else
 				class="has-text-centered is-size-4 has-text-danger">
 				This site has disabled public uploads. You need an account.
 			</div>
@@ -39,15 +40,15 @@ export default {
 	components: {
 		Logo,
 		Uploader,
-		Links
+		Links,
 	},
 	data() {
 		return { albums: [] };
 	},
 	computed: {
 		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
-		...mapState(['config'])
-	}
+		...mapState(['config']),
+	},
 };
 </script>
 <style lang="scss" scoped>
