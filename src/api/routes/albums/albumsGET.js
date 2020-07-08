@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
 
@@ -19,17 +20,15 @@ class albumsGET extends Route {
 			.orderBy('createdAt', 'desc');
 
 		for (const album of albums) {
-			// TODO: Optimize the shit out of this. Ideally a JOIN that grabs all the needed stuff in 1 query instead of 3
-
 			// Fetch the total amount of files each album has.
-			const fileCount = await db
-				.table('albumsFiles') // eslint-disable-line no-await-in-loop
+			const fileCount = await db // eslint-disable-line no-await-in-loop
+				.table('albumsFiles')
 				.where('albumId', album.id)
 				.count({ count: 'id' });
 
 			// Fetch the file list from each album but limit it to 5 per album
-			const files = await db
-				.table('albumsFiles') // eslint-disable-line no-await-in-loop
+			const files = await db // eslint-disable-line no-await-in-loop
+				.table('albumsFiles')
 				.join('files', { 'files.id': 'albumsFiles.fileId' })
 				.where('albumId', album.id)
 				.select('files.id', 'files.name')
@@ -47,7 +46,7 @@ class albumsGET extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved albums',
-			albums
+			albums,
 		});
 	}
 }
@@ -64,7 +63,7 @@ class albumsDropdownGET extends Route {
 			.select('id', 'name');
 		return res.json({
 			message: 'Successfully retrieved albums',
-			albums
+			albums,
 		});
 	}
 }

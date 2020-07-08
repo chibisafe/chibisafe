@@ -1,7 +1,9 @@
 <template>
-	<div :class="{ 'has-files': alreadyAddedFiles }"
+	<div
+		:class="{ 'has-files': alreadyAddedFiles }"
 		class="uploader-wrapper">
-		<b-select v-if="loggedIn"
+		<b-select
+			v-if="loggedIn"
 			v-model="selectedAlbum"
 			placeholder="Upload to album"
 			size="is-medium"
@@ -13,7 +15,8 @@
 				{{ album.name }}
 			</option>
 		</b-select>
-		<dropzone v-if="showDropzone"
+		<dropzone
+			v-if="showDropzone"
 			id="dropzone"
 			ref="el"
 			:options="dropzoneOptions"
@@ -25,16 +28,22 @@
 			Add or drop more files
 		</label>
 
-		<div id="template"
+		<div
+			id="template"
 			ref="template">
 			<div class="dz-preview dz-file-preview">
 				<div class="dz-details">
-					<div class="dz-filename"><span data-dz-name /></div>
-					<div class="dz-size"><span data-dz-size /></div>
+					<div class="dz-filename">
+						<span data-dz-name />
+					</div>
+					<div class="dz-size">
+						<span data-dz-size />
+					</div>
 				</div>
 				<div class="result">
 					<div class="openLink">
-						<a class="link"
+						<a
+							class="link"
 							target="_blank">
 							Link
 						</a>
@@ -43,14 +52,16 @@
 				<div class="error">
 					<div>
 						<span>
-							<span class="error-message"
+							<span
+								class="error-message"
 								data-dz-errormessage />
 							<i class="icon-web-warning" />
 						</span>
 					</div>
 				</div>
 				<div class="dz-progress">
-					<span class="dz-upload"
+					<span
+						class="dz-upload"
 						data-dz-uploadprogress />
 				</div>
 				<!--
@@ -64,6 +75,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 import Dropzone from 'nuxt-dropzone';
 import '~/assets/styles/dropzone.scss';
 
@@ -75,20 +88,15 @@ export default {
 			files: [],
 			dropzoneOptions: {},
 			showDropzone: false,
-			albums: [],
-			selectedAlbum: null
+			selectedAlbum: null,
 		};
 	},
 	computed: {
-		config() {
-			return this.$store.state.config;
-		},
-		token() {
-			return this.$store.state.token;
-		},
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		}
+		...mapState({
+			config: (state) => state.config,
+			albums: (state) => state.albums.tinyDetails,
+		}),
+		...mapGetters({ loggedIn: 'auth/isLoggedIn', token: 'auth/getToken' }),
 	},
 	watch: {
 		loggedIn() {
@@ -96,7 +104,7 @@ export default {
 		},
 		selectedAlbum() {
 			this.updateDropzoneConfig();
-		}
+		},
 	},
 	mounted() {
 		this.dropzoneOptions = {
@@ -119,7 +127,7 @@ export default {
 			maxFilesize: this.config.maxFileSize,
 			previewTemplate: this.$refs.template.innerHTML,
 			dictDefaultMessage: 'Drag & Drop your files or click to browse',
-			headers: { Accept: 'application/vnd.lolisafe.json' }
+			headers: { Accept: 'application/vnd.lolisafe.json' },
 		};
 		this.showDropzone = true;
 		if (this.loggedIn) this.getAlbums();
@@ -129,8 +137,11 @@ export default {
 			Get all available albums so the user can upload directly to one (or several soon™) of them.
 		*/
 		async getAlbums() {
-			const response = await this.$axios.$get(`albums/dropdown`);
-			this.albums = response.albums;
+			try {
+				await this.$store.dispatch('albums/getTinyDetails');
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
 			this.updateDropzoneConfig();
 		},
 
@@ -143,14 +154,14 @@ export default {
 			this.$refs.el.setOption('headers', {
 				Accept: 'application/vnd.lolisafe.json',
 				Authorization: this.token ? `Bearer ${this.token}` : '',
-				albumId: this.selectedAlbum ? this.selectedAlbum : null
+				albumId: this.selectedAlbum ? this.selectedAlbum : null,
 			});
 		},
 
 		/*
 			Dropzone stuff
 		*/
-		dropzoneFilesAdded(files) {
+		dropzoneFilesAdded() {
 			this.alreadyAddedFiles = true;
 		},
 		dropzoneSuccess(file, response) {
@@ -159,7 +170,7 @@ export default {
 		dropzoneError(file, message, xhr) {
 			this.$store.dispatch('alert', {
 				text: 'There was an error uploading this file. Check the console.',
-				error: true
+				error: true,
 			});
 			console.error(file, message, xhr);
 		},
@@ -170,12 +181,11 @@ export default {
 					original: file.name,
 					size: file.size,
 					type: file.type,
-					count: file.upload.totalChunkCount
-				}]
+					count: file.upload.totalChunkCount,
+				}],
 			});
 
 			this.processResult(file, data);
-			this.$forceUpdate();
 			return done();
 		},
 
@@ -194,8 +204,8 @@ export default {
 				this.$clipboard(response.url);
 			});
 			*/
-		}
-	}
+		},
+	},
 };
 </script>
 <style lang="scss" scoped>

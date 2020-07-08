@@ -5,6 +5,7 @@ export const state = () => ({
 	isListLoading: false,
 	albumDetails: {},
 	expandedAlbums: [],
+	tinyDetails: [],
 });
 
 export const getters = {
@@ -21,7 +22,6 @@ export const actions = {
 
 		return response;
 	},
-
 	async fetchDetails({ commit }, albumId) {
 		const response = await this.$axios.$get(`album/${albumId}/links`);
 
@@ -34,7 +34,6 @@ export const actions = {
 
 		return response;
 	},
-
 	async createAlbum({ commit }, name) {
 		const response = await this.$axios.$post('album/new', { name });
 
@@ -42,7 +41,6 @@ export const actions = {
 
 		return response;
 	},
-
 	async deleteAlbum({ commit }, albumId) {
 		const response = await this.$axios.$delete(`album/${albumId}`);
 
@@ -50,7 +48,6 @@ export const actions = {
 
 		return response;
 	},
-
 	async createLink({ commit }, albumId) {
 		const response = await this.$axios.$post('album/link/new', { albumId });
 
@@ -58,7 +55,6 @@ export const actions = {
 
 		return response;
 	},
-
 	async updateLinkOptions({ commit }, { albumId, linkOpts }) {
 		const response = await this.$axios.$post('album/link/edit', {
 			identifier: linkOpts.identifier,
@@ -70,11 +66,17 @@ export const actions = {
 
 		return response;
 	},
-
 	async deleteLink({ commit }, { albumId, identifier }) {
 		const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
 
 		commit('removeAlbumLink', { albumId, identifier });
+
+		return response;
+	},
+	async getTinyDetails({ commit }) {
+		const response = await this.$axios.$get('albums/dropdown');
+
+		commit('setTinyDetails', response);
 
 		return response;
 	},
@@ -111,7 +113,7 @@ export const mutations = {
 	},
 	removeAlbumLink(state, { albumId, identifier }) {
 		const foundIndex = state.albumDetails[albumId].links.findIndex(({ identifier: id }) => id === identifier);
-		state.albumDetails[albumId].links.splice(foundIndex, 1);
+		if (foundIndex > -1) state.albumDetails[albumId].links.splice(foundIndex, 1);
 	},
 	toggleExpandedState(state, id) {
 		const foundIndex = state.expandedAlbums.indexOf(id);
@@ -120,5 +122,8 @@ export const mutations = {
 		} else {
 			state.expandedAlbums.push(id);
 		}
+	},
+	setTinyDetails(state, { albums }) {
+		state.tinyDetails = albums;
 	},
 };
