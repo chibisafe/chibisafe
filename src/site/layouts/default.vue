@@ -21,19 +21,28 @@ export default {
 		Navbar,
 		Footer,
 	},
-	computed: mapState(['config']),
+	computed: mapState(['config', 'alert']),
 	created() {
-		this.$store.watch((state) => state.alert.text, () => {
-			const { text, error } = this.$store.state.alert;
+		this.$store.watch((state) => state.alert.message, () => {
+			const { message, type, snackbar } = this.alert;
 
-			if (!text) return;
+			if (!message) return;
 
-			this.$buefy.toast.open({
-				duration: 3500,
-				message: text,
-				position: 'is-bottom',
-				type: error ? 'is-danger' : 'is-success',
-			});
+			if (snackbar) {
+				this.$buefy.snackbar.open({
+					duration: 3500,
+					position: 'is-bottom',
+					message,
+					type,
+				});
+			} else {
+				this.$buefy.toast.open({
+					duration: 3500,
+					position: 'is-bottom',
+					message,
+					type,
+				});
+			}
 
 			this.$store.dispatch('alert/clear', null);
 		});
