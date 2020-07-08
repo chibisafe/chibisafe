@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const log = require('../utils/Log');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -8,11 +7,14 @@ const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const jetpack = require('fs-jetpack');
 const path = require('path');
+const morgan = require('morgan');
+const log = require('../utils/Log');
+const ThumbUtil = require('../utils/ThumbUtil');
 
 const rateLimiter = new RateLimit({
 	windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
 	max: parseInt(process.env.RATE_LIMIT_MAX, 10),
-	delayMs: 0
+	delayMs: 0,
 });
 
 class Server {
@@ -32,16 +34,38 @@ class Server {
 		});
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
+		if (process.env.NODE_ENV !== 'production') {
+			this.server.use(morgan('combined', {
+				skip(req) {
+					let ext = req.path.split('.').pop();
+					if (ext) { ext = `.${ext.toLowerCase()}`; }
+
+					if (
+						ThumbUtil.imageExtensions.indexOf(ext) > -1
+						|| ThumbUtil.videoExtensions.indexOf(ext) > -1
+						|| req.path.indexOf('_nuxt') > -1
+						|| req.path.indexOf('favicon.ico') > -1
+					) {
+						return true;
+					}
+					return false;
+				},
+				'stream': {
+					write(str) { log.debug(str); },
+				},
+			}));
+		}
 		// this.server.use(rateLimiter);
 
 		// Serve the uploads
-		this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
-		this.routesFolder = path.join(__dirname, '..', 'routes');
+		this.server.use(express.static(path.join(__dirname, '../../../uploads')));
+		this.routesFolder = path.join(__dirname, '../routes');
 	}
 
 	registerAllTheRoutes() {
-		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach(routeFile => {
-			const RouteClass = require(path.join('..', '..', '..', routeFile));
+		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach((routeFile) => {
+			// eslint-disable-next-line import/no-dynamic-require, global-require
+			const RouteClass = require(path.join('../../../', routeFile));
 			let routes = [RouteClass];
 			if (Array.isArray(RouteClass)) routes = RouteClass;
 			for (const File of routes) {
@@ -55,7 +79,7 @@ class Server {
 	serveNuxt() {
 		// Serve the frontend if we are in production mode
 		if (process.env.NODE_ENV === 'production') {
-			this.server.use(express.static(path.join(__dirname, '..', '..', '..', 'dist')));
+			this.server.use(express.static(path.join(__dirname, '../../../dist')));
 		}
 
 		/*
@@ -66,7 +90,7 @@ class Server {
 		*/
 		this.server.all('*', (_req, res) => {
 			try {
-				res.sendFile(path.join(__dirname, '..', '..', '..', 'dist', 'index.html'));
+				res.sendFile(path.join(__dirname, '../../../dist/index.html'));
 			} catch (error) {
 				res.json({ success: false, message: 'Something went wrong' });
 			}

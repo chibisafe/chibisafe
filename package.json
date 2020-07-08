@@ -31,6 +31,7 @@
 		"node": ">=8.0.0"
 	},
 	"dependencies": {
+		"@mdi/font": "^5.3.45",
 		"@nuxtjs/axios": "^5.4.1",
 		"adm-zip": "^0.4.13",
 		"bcrypt": "^4.0.1",
@@ -58,6 +59,7 @@
 		"knex": "^0.16.3",
 		"masonry-layout": "^4.2.2",
 		"moment": "^2.24.0",
+		"morgan": "^1.10.0",
 		"multer": "^1.4.1",
 		"mysql": "^2.16.0",
 		"nuxt": "2.12.2",
@@ -168,7 +170,9 @@
 				"error",
 				"tab"
 			],
-			"import/no-extraneous-dependencies": "off"
+			"import/no-extraneous-dependencies": "off",
+			"no-restricted-syntax": "off",
+			"no-continue": "off"
 		},
 		"settings": {
 			"import/resolver": {

@@ -7,9 +7,9 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: nodePath.join(__dirname, '../../../database.sqlite')
+		filename: nodePath.join(__dirname, '../../../database.sqlite'),
 	},
-	postProcessResponse: result => {
+	postProcessResponse: (result) => {
 		/*
 			Fun fact: Depending on the database used by the user and given that I don't want
 			to force a specific database for everyone because of the nature of this project,
@@ -18,8 +18,8 @@ const db = require('knex')({
 		*/
 		const booleanFields = ['enabled', 'enableDownload', 'isAdmin'];
 
-		const processResponse = row => {
-			Object.keys(row).forEach(key => {
+		const processResponse = (row) => {
+			Object.keys(row).forEach((key) => {
 				if (booleanFields.includes(key)) {
 					if (row[key] === 0) row[key] = false;
 					else if (row[key] === 1) row[key] = true;
@@ -28,11 +28,11 @@ const db = require('knex')({
 			return row;
 		};
 
-		if (Array.isArray(result)) return result.map(row => processResponse(row));
+		if (Array.isArray(result)) return result.map((row) => processResponse(row));
 		if (typeof result === 'object') return processResponse(result);
 		return result;
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3' ? true : false
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3',
 });
 const moment = require('moment');
 const log = require('../utils/Log');
@@ -76,11 +76,9 @@ class Route {
 				.where({ id })
 				.first();
 			if (!user) return res.status(401).json({ message: 'Invalid authorization' });
-			if (iat && iat < moment(user.passwordEditedAt).format('x'))
-				return res.status(401).json({ message: 'Token expired' });
+			if (iat && iat < moment(user.passwordEditedAt).format('x')) { return res.status(401).json({ message: 'Token expired' }); }
 			if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
-			if (this.options.adminOnly && !user.isAdmin)
-				return res.status(401).json({ message: 'Invalid authorization' });
+			if (this.options.adminOnly && !user.isAdmin) { return res.status(401).json({ message: 'Invalid authorization' }); }
 
 			return this.run(req, res, db, user);
 		});
@@ -100,7 +98,7 @@ class Route {
 
 	run(req, res, db) {
 		// eslint-disable-line no-unused-vars
-		return;
+
 	}
 
 	error(res, error) {
