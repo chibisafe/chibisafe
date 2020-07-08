@@ -49,6 +49,8 @@ export const actions = {
 		} catch (e) {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
 		}
+
+		return null;
 	},
 	async requestAPIKey({ commit, dispatch }) {
 		try {
@@ -59,6 +61,8 @@ export const actions = {
 		} catch (e) {
 			dispatch('alert/set', { text: e.message, error: true }, { root: true });
 		}
+
+		return null;
 	},
 	logout({ commit }) {
 		commit('logout');

@@ -1,5 +1,5 @@
-const Route = require('../../structures/Route');
 const moment = require('moment');
+const Route = require('../../structures/Route');
 
 class albumPOST extends Route {
 	constructor() {
@@ -25,7 +25,7 @@ class albumPOST extends Route {
 			name,
 			userId: user.id,
 			createdAt: now,
-			editedAt: now
+			editedAt: now,
 		};
 
 		const dbRes = await db.table('albums').insert(insertObj);

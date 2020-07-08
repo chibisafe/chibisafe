@@ -20,7 +20,7 @@ class userDisable extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully disabled user'
+			message: 'Successfully disabled user',
 		});
 	}
 }

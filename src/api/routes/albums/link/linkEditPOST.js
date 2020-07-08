@@ -1,5 +1,4 @@
 const Route = require('../../../structures/Route');
-const log = require('../../../utils/Log');
 
 class linkEditPOST extends Route {
 	constructor() {
@@ -23,7 +22,7 @@ class linkEditPOST extends Route {
 		try {
 			const updateObj = {
 				enableDownload: enableDownload || false,
-				expiresAt // This one should be null if not supplied
+				expiresAt, // This one should be null if not supplied
 			};
 			await db
 				.table('links')

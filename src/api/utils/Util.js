@@ -52,7 +52,7 @@ class Util {
 
 	static getUniqueFilename(name) {
 		const retry = (i = 0) => {
-			const filename =				randomstring.generate({
+			const filename = randomstring.generate({
 				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				capitalization: 'lowercase',
 			}) + path.extname(name).toLowerCase();
@@ -81,7 +81,7 @@ class Util {
 			/*
 				It's funny but if you do i++ the asignment never gets done resulting in an infinite loop
 			*/
-			if (i < 5) return retry(++i);
+			if (i < 5) return retry(i + 1);
 			log.error('Couldnt allocate identifier for album');
 			return null;
 		};

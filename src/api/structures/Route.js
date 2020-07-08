@@ -55,7 +55,8 @@ class Route {
 		if (banned) return res.status(401).json({ message: 'This IP has been banned from using the service.' });
 
 		if (this.options.bypassAuth) return this.run(req, res, db);
-		// The only reason I call it token here and not Api Key is to be backwards compatible with the uploader and sharex
+		// The only reason I call it token here and not Api Key is to be backwards compatible
+		// with the uploader and sharex
 		// Small price to pay.
 		if (req.headers.token) return this.authorizeApiKey(req, res, req.headers.token);
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
@@ -96,10 +97,7 @@ class Route {
 		return this.run(req, res, db, user);
 	}
 
-	run(req, res, db) {
-		// eslint-disable-line no-unused-vars
-
-	}
+	run() {}
 
 	error(res, error) {
 		log.error(error);

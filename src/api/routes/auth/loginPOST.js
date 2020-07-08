@@ -1,7 +1,7 @@
-const Route = require('../../structures/Route');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const JWT = require('jsonwebtoken');
+const Route = require('../../structures/Route');
 
 class loginPOST extends Route {
 	constructor() {
@@ -36,7 +36,7 @@ class loginPOST extends Route {
 		const jwt = JWT.sign({
 			iss: 'lolisafe',
 			sub: user.id,
-			iat: moment.utc().valueOf()
+			iat: moment.utc().valueOf(),
 		}, process.env.SECRET, { expiresIn: '30d' });
 
 		return res.json({
@@ -45,10 +45,10 @@ class loginPOST extends Route {
 				id:	user.id,
 				username: user.username,
 				apiKey: user.apiKey,
-				isAdmin: user.isAdmin
+				isAdmin: user.isAdmin,
 			},
 			token: jwt,
-			apiKey: user.apiKey
+			apiKey: user.apiKey,
 		});
 	}
 }

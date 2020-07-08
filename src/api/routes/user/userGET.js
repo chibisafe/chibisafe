@@ -12,8 +12,8 @@ class usersGET extends Route {
 				id: user.id,
 				username: user.username,
 				isAdmin: user.isAdmin,
-				apiKey: user.apiKey
-			}
+				apiKey: user.apiKey,
+			},
 		});
 	}
 }

@@ -163,7 +163,7 @@
 						<hr>
 
 						<div class="albums-container">
-							<div v-for="(album, index) in albums" :key="album.id" class="album">
+							<div v-for="album in albums" :key="album.id" class="album">
 								<div class="field">
 									<b-checkbox
 										:value="isAlbumSelected(album.id)"
@@ -252,7 +252,7 @@ export default {
 	methods: {
 		async search() {
 			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
-			console.log('> Search result data', data);
+			console.log('> Search result data', data); // eslint-disable-line no-console
 		},
 		deleteFile(file) {
 			// this.$emit('delete', file);

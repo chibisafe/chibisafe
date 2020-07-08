@@ -1,25 +1,25 @@
-export default function({ $axios, store }) {
+export default function ({ $axios, store }) {
 	$axios.setHeader('accept', 'application/vnd.lolisafe.json');
 
-	$axios.onRequest(config => {
+	$axios.onRequest((config) => {
 		if (store.state.auth.token) {
-			config.headers.common['Authorization'] = `bearer ${store.state.auth.token}`;
+			config.headers.common.Authorization = `bearer ${store.state.auth.token}`;
 		}
 	});
 
-	$axios.onError(error => {
+	$axios.onError((error) => {
 		if (process.env.NODE_ENV !== 'production') console.error('[AXIOS Error]', error);
 		if (process.browser) {
 			if (process.env.NODE_ENV !== 'production') {
 				if (error.response?.data?.message) {
 					store.dispatch('alert/set', {
 						text: error.response.data.message,
-						error: true
+						error: true,
 					});
 				} else {
 					store.dispatch('alert/set', {
 						text: `[AXIOS]: ${error.message}`,
-						error: true
+						error: true,
 					});
 				}
 			}

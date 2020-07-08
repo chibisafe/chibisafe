@@ -172,6 +172,7 @@ export default {
 				text: 'There was an error uploading this file. Check the console.',
 				error: true,
 			});
+			// eslint-disable-next-line no-console
 			console.error(file, message, xhr);
 		},
 		async dropzoneChunksUploaded(file, done) {

@@ -1,8 +1,10 @@
 <template>
 	<div class="album">
-		<div class="arrow-container"
+		<div
+			class="arrow-container"
 			@click="toggleDetails(album)">
-			<i :class="{ active: isExpanded }"
+			<i
+				:class="{ active: isExpanded }"
 				class="icon-arrow" />
 		</div>
 		<div class="thumb">
@@ -12,7 +14,9 @@
 		</div>
 		<div class="info">
 			<h4>
-				<router-link :to="`/dashboard/albums/${album.id}`">{{ album.name }}</router-link>
+				<router-link :to="`/dashboard/albums/${album.id}`">
+					{{ album.name }}
+				</router-link>
 			</h4>
 			<span>
 				Created <span class="is-inline has-text-weight-semibold"><timeago :since="album.createdAt" /></span>
@@ -21,19 +25,24 @@
 		</div>
 		<div class="latest is-hidden-mobile">
 			<template v-if="album.fileCount > 0">
-				<div v-for="file of album.files"
+				<div
+					v-for="file of album.files"
 					:key="file.id"
 					class="thumb">
 					<figure class="image is-64x64">
-						<a :href="file.url"
+						<a
+							:href="file.url"
 							target="_blank">
 							<img :src="file.thumbSquare">
 						</a>
 					</figure>
 				</div>
-				<div v-if="album.fileCount > 5"
+				<div
+					v-if="album.fileCount > 5"
 					class="thumb more no-background">
-					<router-link :to="`/dashboard/albums/${album.id}`">{{ album.fileCount - 5 }}+ more</router-link>
+					<router-link :to="`/dashboard/albums/${album.id}`">
+						{{ album.fileCount - 5 }}+ more
+					</router-link>
 				</div>
 			</template>
 			<template v-else>
@@ -41,7 +50,8 @@
 			</template>
 		</div>
 
-		<AlbumDetails v-if="isExpanded"
+		<AlbumDetails
+			v-if="isExpanded"
 			:details="getDetails(album.id)"
 			:albumId="album.id" />
 	</div>
@@ -53,22 +63,22 @@ import AlbumDetails from '~/components/album/AlbumDetails.vue';
 
 export default {
 	components: {
-		AlbumDetails
+		AlbumDetails,
 	},
 	props: {
 		album: {
 			type: Object,
-			default: () => ({})
-		}
+			default: () => ({}),
+		},
 	},
 	computed: {
 		...mapGetters({
 			isExpandedGetter: 'albums/isExpanded',
-			getDetails: 'albums/getDetails'
+			getDetails: 'albums/getDetails',
 		}),
 		isExpanded() {
 			return this.isExpandedGetter(this.album.id);
-		}
+		},
 	},
 	methods: {
 		async toggleDetails(album) {
@@ -76,8 +86,8 @@ export default {
 				await this.$store.dispatch('albums/fetchDetails', album.id);
 			}
 			this.$store.commit('albums/toggleExpandedState', album.id);
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -175,4 +185,3 @@ export default {
 
 	div.no-background { background: none !important; }
 </style>
-

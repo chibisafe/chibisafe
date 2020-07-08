@@ -20,7 +20,7 @@ class userDemote extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully demoted user'
+			message: 'Successfully demoted user',
 		});
 	}
 }

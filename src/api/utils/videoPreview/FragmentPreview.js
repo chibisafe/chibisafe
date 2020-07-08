@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 const ffmpeg = require('fluent-ffmpeg');
 const probe = require('ffmpeg-probe');
 
@@ -24,7 +25,7 @@ const getStartTime = (vDuration, fDuration, ignoreBeforePercent, ignoreAfterPerc
 	return getRandomInt(ignoreBeforePercent * safeVDuration, ignoreAfterPercent * safeVDuration);
 };
 
-module.exports = async opts => {
+module.exports = async (opts) => {
 	const {
 		log = noop,
 
@@ -37,7 +38,7 @@ module.exports = async opts => {
 
 		fragmentDurationSecond = 3,
 		ignoreBeforePercent = 0.25,
-		ignoreAfterPercent = 0.75
+		ignoreAfterPercent = 0.75,
 	} = opts;
 
 	const info = await probe(input);
@@ -77,7 +78,7 @@ module.exports = async opts => {
 			.outputOptions([`-t ${fragmentDurationSecond}`])
 			.noAudio()
 			.output(output)
-			.on('start', cmd => log && log({ cmd }))
+			.on('start', (cmd) => log && log({ cmd }))
 			.on('end', resolve)
 			.on('error', reject)
 			.run();

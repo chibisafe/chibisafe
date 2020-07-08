@@ -27,12 +27,6 @@ class Log {
 		else console.log(chalk.gray(args)); // eslint-disable-line no-console
 	}
 
-	/*
-	static dump(args) {
-		dump(args);
-	}
-	*/
-
 	static checkIfArrayOrObject(thing) {
 		if (typeof thing === typeof [] || typeof thing === typeof {}) return true;
 		return false;

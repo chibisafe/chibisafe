@@ -6,34 +6,43 @@
 			:data="details.links || []"
 			:mobile-cards="true">
 			<template slot-scope="props">
-				<b-table-column field="identifier"
+				<b-table-column
+					field="identifier"
 					label="Link"
 					centered>
-					<a :href="`${config.URL}/a/${props.row.identifier}`"
+					<a
+						:href="`${config.URL}/a/${props.row.identifier}`"
 						target="_blank">
 						{{ props.row.identifier }}
 					</a>
 				</b-table-column>
 
-				<b-table-column field="views"
+				<b-table-column
+					field="views"
 					label="Views"
 					centered>
 					{{ props.row.views }}
 				</b-table-column>
 
-				<b-table-column field="enableDownload"
+				<b-table-column
+					field="enableDownload"
 					label="Allow download"
 					centered>
-					<b-switch v-model="props.row.enableDownload"
+					<b-switch
+						v-model="props.row.enableDownload"
 						@input="updateLinkOptions(albumId, props.row)" />
 				</b-table-column>
 
-				<b-table-column field="enabled"
+				<b-table-column
+					field="enabled"
 					numeric>
-					<button :class="{ 'is-loading': isDeleting(props.row.identifier) }"
+					<button
+						:class="{ 'is-loading': isDeleting(props.row.identifier) }"
 						class="button is-danger"
 						:disabled="isDeleting(props.row.identifier)"
-						@click="promptDeleteAlbumLink(albumId, props.row.identifier)">Delete link</button>
+						@click="promptDeleteAlbumLink(albumId, props.row.identifier)">
+						Delete link
+					</button>
 				</b-table-column>
 			</template>
 			<template slot="empty">
@@ -49,10 +58,13 @@
 				<div class="level is-paddingless">
 					<div class="level-left">
 						<div class="level-item">
-							<button :class="{ 'is-loading': isCreatingLink }"
+							<button
+								:class="{ 'is-loading': isCreatingLink }"
 								class="button is-primary"
 								style="float: left"
-								@click="createLink(albumId)">Create new link</button>
+								@click="createLink(albumId)">
+								Create new link
+							</button>
 						</div>
 						<div class="level-item">
 							<span class="has-text-default">{{ details.links.length }} / {{ config.maxLinksPerAlbum }} links created</span>
@@ -61,9 +73,12 @@
 
 					<div class="level-right">
 						<div class="level-item">
-							<button class="button is-danger"
+							<button
+								class="button is-danger"
 								style="float: right"
-								@click="promptDeleteAlbum(albumId)">Delete album</button>
+								@click="promptDeleteAlbum(albumId)">
+								Delete album
+							</button>
 						</div>
 					</div>
 				</div>
@@ -79,18 +94,18 @@ export default {
 	props: {
 		albumId: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		details: {
 			type: Object,
-			default: () => ({})
+			default: () => ({}),
 		},
 	},
 	data() {
 		return {
 			isCreatingLink: false,
 			isDeletingLinks: [],
-		}
+		};
 	},
 	computed: mapState(['config']),
 	methods: {
@@ -99,20 +114,20 @@ export default {
 			deleteAlbumLinkAction: 'albums/deleteLink',
 			updateLinkOptionsAction: 'albums/updateLinkOptions',
 			createLinkAction: 'albums/createLink',
-			alert: 'alert/set'
+			alert: 'alert/set',
 		}),
 		promptDeleteAlbum(id) {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this album?',
-				onConfirm: () => this.deleteAlbum(id)
+				onConfirm: () => this.deleteAlbum(id),
 			});
 		},
 		promptDeleteAlbumLink(albumId, identifier) {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this album link?',
-				onConfirm: () => this.deleteAlbumLink(albumId, identifier)
+				onConfirm: () => this.deleteAlbumLink(albumId, identifier),
 			});
 		},
 		async deleteAlbum(id) {
@@ -122,7 +137,7 @@ export default {
 				this.alert({ text: response.message, error: false });
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
-			} 
+			}
 		},
 		async deleteAlbumLink(albumId, identifier) {
 			this.isDeletingLinks.push(identifier);
@@ -133,7 +148,7 @@ export default {
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
 			} finally {
-				this.isDeletingLinks = this.isDeletingLinks.filter(e => e !== identifier);
+				this.isDeletingLinks = this.isDeletingLinks.filter((e) => e !== identifier);
 			}
 		},
 		async createLink(albumId) {
@@ -155,12 +170,12 @@ export default {
 				this.alert({ text: response.message, error: false });
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
-			} 
+			}
 		},
 		isDeleting(identifier) {
 			return this.isDeletingLinks.indexOf(identifier) > -1;
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -183,7 +198,6 @@ export default {
 		}
 	}
 </style>
-
 
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';

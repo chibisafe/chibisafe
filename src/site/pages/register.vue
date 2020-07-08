@@ -10,18 +10,21 @@
 			<div class="columns">
 				<div class="column is-4 is-offset-4">
 					<b-field>
-						<b-input v-model="username"
+						<b-input
+							v-model="username"
 							type="text"
 							placeholder="Username" />
 					</b-field>
 					<b-field>
-						<b-input v-model="password"
+						<b-input
+							v-model="password"
 							type="password"
 							placeholder="Password"
 							password-reveal />
 					</b-field>
 					<b-field>
-						<b-input v-model="rePassword"
+						<b-input
+							v-model="rePassword"
 							type="password"
 							placeholder="Re-type Password"
 							password-reveal
@@ -29,11 +32,17 @@
 					</b-field>
 
 					<p class="control has-addons is-pulled-right">
-						<router-link to="/login"
-							class="is-text">Already have an account?</router-link>
-						<button class="button is-primary big ml1"
+						<router-link
+							to="/login"
+							class="is-text">
+							Already have an account?
+						</router-link>
+						<button
+							class="button is-primary big ml1"
 							:disabled="isLoading"
-							@click="register">Register</button>
+							@click="register">
+							Register
+						</button>
 					</p>
 				</div>
 			</div>
@@ -51,7 +60,7 @@ export default {
 			username: null,
 			password: null,
 			rePassword: null,
-			isLoading: false
+			isLoading: false,
 		};
 	},
 	computed: mapState(['config', 'auth']),
@@ -64,23 +73,23 @@ export default {
 			if (!this.username || !this.password || !this.rePassword) {
 				this.$store.dispatch('alert', {
 					text: 'Please fill all fields before attempting to register.',
-					error: true
+					error: true,
 				});
 				return;
 			}
 			if (this.password !== this.rePassword) {
 				this.$store.dispatch('alert', {
 					text: "Passwords don't match",
-					error: true
+					error: true,
 				});
 				return;
 			}
 			this.isLoading = true;
 
 			try {
-				const response = await this.$axios.$post(`auth/register`, {
+				const response = await this.$axios.$post('auth/register', {
 					username: this.username,
-					password: this.password
+					password: this.password,
 				});
 
 				this.$store.dispatch('alert', { text: response.message });
@@ -90,7 +99,7 @@ export default {
 			} finally {
 				this.isLoading = false;
 			}
-		}
-	}
+		},
+	},
 };
 </script>

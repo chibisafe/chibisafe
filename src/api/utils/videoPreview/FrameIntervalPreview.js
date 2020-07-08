@@ -1,9 +1,10 @@
+/* eslint-disable no-bitwise */
 const ffmpeg = require('fluent-ffmpeg');
 const probe = require('ffmpeg-probe');
 
 const noop = () => {};
 
-module.exports = async opts => {
+module.exports = async (opts) => {
 	const {
 		log = noop,
 
@@ -15,13 +16,13 @@ module.exports = async opts => {
 		output,
 
 		numFrames,
-		numFramesPercent = 0.05
+		numFramesPercent = 0.05,
 	} = opts;
 
 	const info = await probe(input);
 	// const numFramesTotal = parseInt(info.streams[0].nb_frames, 10);
 	const { avg_frame_rate: avgFrameRate, duration } = info.streams[0];
-	const [frames, time] = avgFrameRate.split('/').map(e => parseInt(e, 10));
+	const [frames, time] = avgFrameRate.split('/').map((e) => parseInt(e, 10));
 
 	const numFramesTotal = (frames / time) * duration;
 
@@ -31,7 +32,7 @@ module.exports = async opts => {
 
 	const result = {
 		output,
-		numFrames: numFramesToCapture
+		numFrames: numFramesToCapture,
 	};
 
 	await new Promise((resolve, reject) => {
@@ -62,9 +63,9 @@ module.exports = async opts => {
 			.noAudio()
 			.outputFormat('webm')
 			.output(output)
-			.on('start', cmd => log && log({ cmd }))
+			.on('start', (cmd) => log && log({ cmd }))
 			.on('end', () => resolve())
-			.on('error', err => reject(err))
+			.on('error', (err) => reject(err))
 			.run();
 	});
 

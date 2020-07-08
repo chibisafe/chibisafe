@@ -20,7 +20,7 @@ class userPromote extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully promoted user'
+			message: 'Successfully promoted user',
 		});
 	}
 }

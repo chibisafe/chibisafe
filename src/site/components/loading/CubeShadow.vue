@@ -1,5 +1,6 @@
 <template>
-	<div :style="styles"
+	<div
+		:style="styles"
 		class="spinner spinner--cube-shadow" />
 </template>
 
@@ -8,16 +9,16 @@ export default {
 	props: {
 		size: {
 			type: String,
-			default: '60px'
+			default: '60px',
 		},
 		background: {
 			type: String,
-			default: '#9C27B0'
+			default: '#9C27B0',
 		},
 		duration: {
 			type: String,
-			default: '1.8s'
-		}
+			default: '1.8s',
+		},
 	},
 	computed: {
 		styles() {
@@ -25,10 +26,10 @@ export default {
 				width: this.size,
 				height: this.size,
 				backgroundColor: this.background,
-				animationDuration: this.duration
+				animationDuration: this.duration,
 			};
-		}
-	}
+		},
+	},
 };
 </script>
 

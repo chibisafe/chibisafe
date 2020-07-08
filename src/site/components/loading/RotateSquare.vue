@@ -1,5 +1,6 @@
 <template>
-	<div :style="styles"
+	<div
+		:style="styles"
 		class="spinner spinner--rotate-square-2" />
 </template>
 
@@ -8,18 +9,18 @@ export default {
 	props: {
 		size: {
 			type: String,
-			default: '40px'
-		}
+			default: '40px',
+		},
 	},
 	computed: {
 		styles() {
 			return {
 				width: this.size,
 				height: this.size,
-				display: 'inline-block'
+				display: 'inline-block',
 			};
-		}
-	}
+		},
+	},
 };
 </script>
 

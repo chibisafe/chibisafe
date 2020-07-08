@@ -1,5 +1,4 @@
 const Route = require('../../structures/Route');
-const Util = require('../../utils/Util');
 
 class tagsGET extends Route {
 	constructor() {
@@ -20,7 +19,7 @@ class tagsGET extends Route {
 
 			return res.json({
 				message: 'Successfully retrieved tags',
-				tags
+				tags,
 			});
 		} catch (error) {
 			return super.error(res, error);

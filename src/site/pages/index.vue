@@ -11,6 +11,7 @@
 					<div class="content-wrapper">
 						<h4>Blazing fast file uploader. <br>For real.</h4>
 						<p>
+							<!-- eslint-disable-next-line max-len -->
 							A <strong>modern</strong> and <strong>self-hosted</strong> file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.
 						</p>
 					</div>

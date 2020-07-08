@@ -28,15 +28,13 @@ class linkPOST extends Route {
 			.where('albumId', albumId)
 			.count({ count: 'id' })
 			.first();
-		if (count >= parseInt(process.env.MAX_LINKS_PER_ALBUM, 10))
-			return res.status(400).json({ message: 'Maximum links per album reached' });
+		if (count >= parseInt(process.env.MAX_LINKS_PER_ALBUM, 10)) return res.status(400).json({ message: 'Maximum links per album reached' });
 
 		/*
 			Try to allocate a new identifier on the db
 		*/
 		const identifier = await Util.getUniqueAlbumIdentifier();
-		if (!identifier)
-			return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
+		if (!identifier) return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
 
 		try {
 			const insertObj = {
@@ -46,13 +44,13 @@ class linkPOST extends Route {
 				enabled: true,
 				enableDownload: true,
 				expiresAt: null,
-				views: 0
+				views: 0,
 			};
 			await db.table('links').insert(insertObj);
 
 			return res.json({
 				message: 'The link was created successfully',
-				data: insertObj
+				data: insertObj,
 			});
 		} catch (error) {
 			return super.error(res, error);

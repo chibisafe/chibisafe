@@ -21,7 +21,7 @@ class filesGET extends Route {
 		return res.json({
 			message: 'Successfully retrieved file',
 			file,
-			user
+			user,
 		});
 	}
 }

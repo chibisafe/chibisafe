@@ -11,6 +11,7 @@ const morgan = require('morgan');
 const log = require('../utils/Log');
 const ThumbUtil = require('../utils/ThumbUtil');
 
+// eslint-disable-next-line no-unused-vars
 const rateLimiter = new RateLimit({
 	windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
 	max: parseInt(process.env.RATE_LIMIT_MAX, 10),

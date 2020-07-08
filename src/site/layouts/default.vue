@@ -1,27 +1,29 @@
 <template>
-	<div v-bar
+	<div
+		v-bar
 		class="scroll-area">
 		<div class="default-body">
 			<Navbar :isWhite="true" />
-			<nuxt-child id="app"
+			<nuxt-child
+				id="app"
 				class="nuxt-app is-height-max-content" />
 			<Footer />
 		</div>
 	</div>
 </template>
 <script>
-import Navbar from '~/components/navbar/Navbar.vue';
-import Footer from '~/components/footer/Footer';
 import { mapState } from 'vuex';
+import Navbar from '~/components/navbar/Navbar.vue';
+import Footer from '~/components/footer/Footer.vue';
 
 export default {
 	components: {
 		Navbar,
-		Footer
+		Footer,
 	},
 	computed: mapState(['config']),
 	created() {
-		this.$store.watch(state => state.alert.text, () => {
+		this.$store.watch((state) => state.alert.text, () => {
 			const { text, error } = this.$store.state.alert;
 
 			if (!text) return;
@@ -30,20 +32,21 @@ export default {
 				duration: 3500,
 				message: text,
 				position: 'is-bottom',
-				type: error ? 'is-danger' : 'is-success'
+				type: error ? 'is-danger' : 'is-success',
 			});
 
 			this.$store.dispatch('alert/clear', null);
-		})
+		});
 	},
 	mounted() {
+		// eslint-disable-next-line no-console
 		console.log(
 			`%c lolisafe %c v${this.config.version} %c`,
 			'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
 			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
-			'background:transparent'
+			'background:transparent',
 		);
-	}
+	},
 };
 </script>
 

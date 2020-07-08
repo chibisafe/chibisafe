@@ -123,7 +123,6 @@
 	}
 </style>
 
-
 <template>
 	<section class="section is-fullheight dashboard">
 		<div class="container">
@@ -132,27 +131,35 @@
 					<Sidebar />
 				</div>
 				<div class="column">
-					<h2 class="subtitle">Manage your tags</h2>
+					<h2 class="subtitle">
+						Manage your tags
+					</h2>
 					<hr>
 
 					<div class="search-container">
 						<b-field>
-							<b-input v-model="newTagName"
+							<b-input
+								v-model="newTagName"
 								placeholder="Tag name..."
 								type="text"
 								@keyup.enter.native="createTag" />
 							<p class="control">
-								<button class="button is-primary"
-									@click="createTag">Create tags</button>
+								<button
+									class="button is-primary"
+									@click="createTag">
+									Create tags
+								</button>
 							</p>
 						</b-field>
 					</div>
 
 					<div class="view-container">
-						<div v-for="tag in tags"
+						<div
+							v-for="tag in tags"
 							:key="tag.id"
 							class="album">
-							<div class="arrow-container"
+							<div
+								class="arrow-container"
 								@click="promptDeleteTag">
 								<i class="icon-arrow" />
 							</div>
@@ -165,7 +172,9 @@
 							-->
 							<div class="info">
 								<h4>
-									<router-link :to="`/dashboard/tags/${tag.id}`">{{ tag.name }}</router-link>
+									<router-link :to="`/dashboard/tags/${tag.id}`">
+										{{ tag.name }}
+									</router-link>
 								</h4>
 								<span>{{ tag.count || 0 }} files</span>
 							</div>
@@ -205,19 +214,19 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar
+		Sidebar,
 	},
 	middleware: 'auth',
 	data() {
 		return {
 			tags: [],
-			newTagName: null
+			newTagName: null,
 		};
 	},
 	computed: {
 		config() {
 			return this.$store.state.config;
-		}
+		},
 	},
 	metaInfo() {
 		return { title: 'Tags' };
@@ -230,7 +239,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this tag?',
-				onConfirm: () => this.promptPurgeTag(id)
+				onConfirm: () => this.promptPurgeTag(id),
 			});
 		},
 		promptPurgeTag(id) {
@@ -240,7 +249,7 @@ export default {
 				cancelText: 'No',
 				confirmText: 'Yes',
 				onConfirm: () => this.deleteTag(id, true),
-				onCancel: () => this.deleteTag(id, false)
+				onCancel: () => this.deleteTag(id, false),
 			});
 		},
 		async deleteTag(id, purge) {
@@ -250,19 +259,19 @@ export default {
 		},
 		async createTag() {
 			if (!this.newTagName || this.newTagName === '') return;
-			const response = await this.$axios.$post(`tag/new`,
+			const response = await this.$axios.$post('tag/new',
 				{ name: this.newTagName });
 			this.newTagName = null;
 			this.$buefy.toast.open(response.message);
 			this.getTags();
 		},
 		async getTags() {
-			const response = await this.$axios.$get(`tags`);
+			const response = await this.$axios.$get('tags');
 			for (const tag of response.tags) {
 				tag.isDetailsOpen = false;
 			}
 			this.tags = response.tags;
-		}
-	}
+		},
+	},
 };
 </script>

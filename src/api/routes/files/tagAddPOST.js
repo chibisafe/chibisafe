@@ -14,7 +14,8 @@ class tagAddPOST extends Route {
 		const file = await db.table('files').where({ id: fileId, userId: user.id }).first();
 		if (!file) return res.status(400).json({ message: 'File doesn\'t exist.' });
 
-		tagNames.forEach(async tag => {
+		// eslint-disable-next-line consistent-return
+		tagNames.forEach(async (tag) => {
 			try {
 				await db.table('fileTags').insert({ fileId, tag });
 			} catch (error) {
@@ -23,7 +24,7 @@ class tagAddPOST extends Route {
 		});
 
 		return res.json({
-			message: 'Successfully added file to album'
+			message: 'Successfully added file to album',
 		});
 	}
 }
