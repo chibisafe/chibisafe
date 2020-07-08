@@ -69,6 +69,7 @@ export default {
 		'~/plugins/vuebar',
 		'~/plugins/nuxt-client-init',
 		'~/plugins/notifier',
+		'~/plugins/handler',
 	],
 	css: [],
 	modules: ['@nuxtjs/axios', 'cookie-universal-nuxt'],
