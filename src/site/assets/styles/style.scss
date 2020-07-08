@@ -1,4 +1,5 @@
 // Let's first take care of having the customized colors ready.
+@import './_bulma_colors_extender.scss';
 @import './_colors.scss';
 
 // Bulma/Buefy customization
@@ -221,7 +222,7 @@ section#register a.is-text {
 		color: $textColor;
 	}
 }
-button.button.is-primary {
+/* button.button.is-primary {
 	background-color: #323846;
 	border: 2px solid #21252d;
 	color: $textColor;
@@ -235,7 +236,7 @@ button.button.is-primary {
 	&.big {
 		font-size: 1.25rem;
 	}
-}
+} */
 svg.waves {
 	display: block;
 	bottom: -1px;
