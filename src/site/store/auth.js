@@ -1,6 +1,10 @@
 const getDefaultState = () => ({
 	loggedIn: false,
-	user: null,
+	user: {
+		id: null,
+		isAdmin: false,
+		username: null,
+	},
 	token: null,
 });
 

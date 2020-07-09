@@ -24,9 +24,9 @@ export default function ({ $axios, store }) {
 				}
 			}
 
-			if (error.response?.data?.message.indexOf('Token expired') !== -1) {
+			/* if (error.response?.data?.message.indexOf('Token expired') !== -1) {
 				store.dispatch('auth/logout');
-			}
+			} */
 		}
 	});
 }

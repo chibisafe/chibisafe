@@ -287,7 +287,7 @@ export default {
 			} catch (e) {
 				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
 			}
-			this.showingModalForFile.albums = this.images.filesAlbums[id];
+			this.showingModalForFile.albums = this.images.fileAlbumsMap[id];
 
 			this.isAlbumsModalActive = true;
 		},

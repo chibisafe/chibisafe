@@ -28,7 +28,7 @@
 					<b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
 				</template>
 				<b-menu-item icon="account" label="Users" tag="nuxt-link" to="/dashboard/admin/users" exact />
-				<b-menu-item icon="cog-outline" label="Settings" disabled />
+				<b-menu-item icon="cog-outline" label="Settings" tag="nuxt-link" to="/dashboard/admin/settings" exact />
 			</b-menu-item>
 			<b-menu-item
 				class="item"

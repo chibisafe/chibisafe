@@ -10,7 +10,8 @@ export const getDefaultState = () => ({
 	},
 	name: null,
 	downloadEnabled: false,
-	filesAlbums: {}, // map of file ids with a list of album objects the file is in
+	fileAlbumsMap: {}, // map of file ids with a list of album objects the file is in
+	filesTags: {}, // map of file ids with a list of tag objects for the file
 });
 
 export const state = getDefaultState;
@@ -105,19 +106,19 @@ export const mutations = {
 		}
 	},
 	setFileAlbums(state, { fileId, albums }) {
-		Vue.set(state.filesAlbums, fileId, albums);
+		Vue.set(state.fileAlbumsMap, fileId, albums);
 	},
 	addAlbumToFile(state, { fileId, album }) {
-		if (!state.filesAlbums[fileId]) return;
+		if (!state.fileAlbumsMap[fileId]) return;
 
-		state.filesAlbums[fileId].push(album);
+		state.fileAlbumsMap[fileId].push(album);
 	},
 	removeAlbumFromFile(state, { fileId, albumId }) {
-		if (!state.filesAlbums[fileId]) return;
+		if (!state.fileAlbumsMap[fileId]) return;
 
-		const foundIndex = state.filesAlbums[fileId].findIndex(({ id }) => id === albumId);
+		const foundIndex = state.fileAlbumsMap[fileId].findIndex(({ id }) => id === albumId);
 		if (foundIndex > -1) {
-			state.filesAlbums[fileId].splice(foundIndex, 1);
+			state.fileAlbumsMap[fileId].splice(foundIndex, 1);
 		}
 	},
 	resetState(state) {

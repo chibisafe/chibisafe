@@ -15,6 +15,12 @@ export const state = () => ({
 });
 
 export const actions = {
+	async fetchSettings({ commit }) {
+		const response = await this.$axios.$get('service/config');
+		commit('setSettings', response);
+
+		return response;
+	},
 	async fetchUsers({ commit }) {
 		const response = await this.$axios.$get('admin/users');
 		commit('setUsers', response);
@@ -22,8 +28,20 @@ export const actions = {
 		return response;
 	},
 	async fetchUser({ commit }, id) {
-		const response = await this.$axios.$get(`/admin/users/${id}`);
+		const response = await this.$axios.$get(`admin/users/${id}`);
 		commit('setUserInfo', response);
+
+		return response;
+	},
+	async fetchFile({ commit }, id) {
+		const response = await this.$axios.$get(`file/${id}`);
+		commit('setFile', response);
+		commit('setUserInfo', response);
+
+		return response;
+	},
+	async banIP(_, ip) {
+		const response = await this.$axios.$post('admin/ban/ip', { ip });
 
 		return response;
 	},
@@ -60,15 +78,26 @@ export const actions = {
 
 		return response;
 	},
+	async restartService() {
+		const response = await this.$axios.$post('service/restart');
+
+		return response;
+	},
 };
 
 export const mutations = {
+	setSettings(state, { config }) {
+		state.settings = config;
+	},
 	setUsers(state, { users }) {
 		state.users = users;
 	},
 	setUserInfo(state, { user, files }) {
 		state.user = { ...state.user, ...user };
 		state.user.files = files || [];
+	},
+	setFile(state, { file }) {
+		state.file = file || {};
 	},
 	changeUserState(state, { userId, enabled, isAdmin }) {
 		const foundIndex = state.users.findIndex(({ id }) => id === userId);

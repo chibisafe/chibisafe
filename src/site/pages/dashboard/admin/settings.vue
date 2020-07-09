@@ -16,7 +16,7 @@
 						message="Please enter the name which this service is gonna be identified as"
 						horizontal>
 						<b-input
-							v-model="options.serviceName"
+							v-model="settings.serviceName"
 							expanded />
 					</b-field>
 
@@ -25,7 +25,7 @@
 						message="Where to store the files relative to the working directory"
 						horizontal>
 						<b-input
-							v-model="options.uploadFolder"
+							v-model="settings.uploadFolder"
 							expanded />
 					</b-field>
 
@@ -34,7 +34,7 @@
 						message="Maximum links allowed per album"
 						horizontal>
 						<b-input
-							v-model="options.linksPerAlbum"
+							v-model="settings.linksPerAlbum"
 							type="number"
 							expanded />
 					</b-field>
@@ -44,7 +44,7 @@
 						message="Maximum allowed file size in MB"
 						horizontal>
 						<b-input
-							v-model="options.maxUploadSize"
+							v-model="settings.maxUploadSize"
 							expanded />
 					</b-field>
 
@@ -53,7 +53,7 @@
 						message="How many characters long should the generated filenames be"
 						horizontal>
 						<b-input
-							v-model="options.filenameLength"
+							v-model="settings.filenameLength"
 							expanded />
 					</b-field>
 
@@ -62,7 +62,7 @@
 						message="How many characters a link for an album should have"
 						horizontal>
 						<b-input
-							v-model="options.albumLinkLength"
+							v-model="settings.albumLinkLength"
 							expanded />
 					</b-field>
 
@@ -71,7 +71,7 @@
 						message="Generate thumbnails when uploading a file if possible"
 						horizontal>
 						<b-switch
-							v-model="options.generateThumbnails"
+							v-model="settings.generateThumbnails"
 							:true-value="true"
 							:false-value="false" />
 					</b-field>
@@ -81,7 +81,7 @@
 						message="Allow generating zips to download entire albums"
 						horizontal>
 						<b-switch
-							v-model="options.generateZips"
+							v-model="settings.generateZips"
 							:true-value="true"
 							:false-value="false" />
 					</b-field>
@@ -91,7 +91,7 @@
 						message="Enable anonymous uploades"
 						horizontal>
 						<b-switch
-							v-model="options.publicMode"
+							v-model="settings.publicMode"
 							:true-value="true"
 							:false-value="false" />
 					</b-field>
@@ -101,7 +101,7 @@
 						message="Enable creating new accounts in the platform"
 						horizontal>
 						<b-switch
-							v-model="options.enableAccounts"
+							v-model="settings.enableAccounts"
 							:true-value="true"
 							:false-value="false" />
 					</b-field>
@@ -120,38 +120,36 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
 		Sidebar,
 	},
-	middleware: ['auth', 'admin'],
-	data() {
-		return {
-			options: {},
-		};
-	},
+	middleware: ['auth', 'admin', ({ store }) => {
+		try {
+			store.dispatch('admin/fetchSettings');
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error(e);
+		}
+	}],
 	metaInfo() {
 		return { title: 'Settings' };
 	},
-	mounted() {
-		this.getSettings();
-	},
+	computed: mapState({
+		settings: (state) => state.admin.settings,
+	}),
 	methods: {
-		async getSettings() {
-			const response = await this.$axios.$get('service/config');
-			this.options = response.config;
-		},
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
 				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
 				onConfirm: () => this.restartService(),
 			});
 		},
-		async restartService() {
-			const response = await this.$axios.$post('service/restart');
-			this.$buefy.toast.open(response.message);
+		restartService() {
+			this.$handler.executeAction('admin/restartService');
 		},
 	},
 };
