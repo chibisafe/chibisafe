@@ -12,7 +12,7 @@ class usersGET extends Route {
 
 		try {
 			const user = await db.table('users')
-				.select('id, username, enabled, createdAt, editeadAt, apiKeyEditedAt, isAdmin')
+				.select('id', 'username', 'enabled', 'createdAt', 'editedAt', 'apiKeyEditedAt', 'isAdmin')
 				.where({ id })
 				.first();
 			const files = await db.table('files')
