@@ -1,8 +1,8 @@
+const path = require('path');
+const jetpack = require('fs-jetpack');
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
 const log = require('../../utils/Log');
-const path = require('path');
-const jetpack = require('fs-jetpack');
 
 class albumGET extends Route {
 	constructor() {
@@ -21,7 +21,7 @@ class albumGET extends Route {
 			.where({
 				identifier,
 				enabled: true,
-				enableDownload: true
+				enableDownload: true,
 			})
 			.first();
 		if (!link) return res.status(400).json({ message: 'The supplied identifier could not be found' });
@@ -64,11 +64,11 @@ class albumGET extends Route {
 		/*
 			Get the actual files
 		*/
-		const fileIds = fileList.map(el => el.fileId);
+		const fileIds = fileList.map((el) => el.fileId);
 		const files = await db.table('files')
 			.whereIn('id', fileIds)
 			.select('name');
-		const filesToZip = files.map(el => el.name);
+		const filesToZip = files.map((el) => el.name);
 
 		try {
 			Util.createZip(filesToZip, album);

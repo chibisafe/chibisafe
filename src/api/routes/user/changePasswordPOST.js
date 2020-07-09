@@ -1,7 +1,7 @@
-const Route = require('../../structures/Route');
-const log = require('../../utils/Log');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
+const Route = require('../../structures/Route');
+const log = require('../../utils/Log');
 
 class changePasswordPOST extends Route {
 	constructor() {
@@ -36,7 +36,7 @@ class changePasswordPOST extends Route {
 		const now = moment.utc().toDate();
 		await db.table('users').where('id', user.id).update({
 			password: hash,
-			passwordEditedAt: now
+			passwordEditedAt: now,
 		});
 
 		return res.json({ message: 'The password was changed successfully' });

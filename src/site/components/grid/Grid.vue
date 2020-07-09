@@ -1,152 +1,136 @@
 <template>
 	<div>
-		<div v-if="enableToolbar"
-			class="toolbar">
-			<div class="block">
-				<b-radio v-model="showList"
-					name="name"
-					:native-value="true">
-					List
-				</b-radio>
-				<b-radio v-model="showList"
-					name="name"
-					:native-value="false">
-					Grid
-				</b-radio>
+		<nav class="level">
+			<div class="level-left">
+				<div class="level-item">
+					<slot name="pagination" />
+				</div>
 			</div>
-		</div>
+			<div v-if="enableToolbar" class="level-right toolbar">
+				<div class="level-item">
+					<div class="block">
+						<b-radio v-model="showList" name="name" :native-value="true">
+							List
+						</b-radio>
+						<b-radio v-model="showList" name="name" :native-value="false">
+							Grid
+						</b-radio>
+					</div>
+				</div>
+			</div>
+		</nav>
 
 		<template v-if="!showList">
-			<Waterfall v-if="showWaterfall"
+			<Waterfall
+				v-if="showWaterfall"
 				:gutterWidth="10"
-				:gutterHeight="4">
-				<!--
-					TODO: Implement search based on originalName, albumName and tags
-					<input v-if="enableSearch"
-						v-model="searchTerm"
-						type="text"
-						placeholder="Search..."
-						@input="search()"
-						@keyup.enter="search()">
-				-->
-
-				<!-- TODO: Implement pagination -->
-
-				<WaterfallItem v-for="(item, index) in gridFiles"
-					:key="item.id"
-					:width="width"
-					move-class="item-move">
+				:gutterHeight="4"
+				:options="{fitWidth: true}"
+				:itemWidth="width"
+				:items="gridFiles">
+				<template v-slot="{item}">
 					<template v-if="isPublic">
-						<a :href="`${item.url}`"
-							target="_blank">
+						<a
+							:href="`${item.url}`"
+							class="preview-container"
+							target="_blank"
+							@mouseenter.self.stop.prevent="item.preview && mouseOver(item.id)"
+							@mouseleave.self.stop.prevent="item.preview && mouseOut(item.id)">
+
 							<img :src="item.thumb ? item.thumb : blank">
-							<span v-if="!item.thumb && item.name"
-								class="extension">{{ item.name.split('.').pop() }}</span>
+							<div v-if="item.preview && isHovered(item.id)" class="preview">
+								<video ref="video" class="preview" autoplay loop muted>
+									<source :src="item.preview" type="video/mp4">
+								</video>
+							</div>
+
+							<span v-if="!item.thumb && item.name" class="extension">{{
+								item.name.split('.').pop()
+							}}</span>
 						</a>
 					</template>
 					<template v-else>
 						<img :src="item.thumb ? item.thumb : blank">
-						<span v-if="!item.thumb && item.name"
-							class="extension">{{ item.name.split('.').pop() }}</span>
-						<div v-if="!isPublic"
+						<div v-if="item.preview && isHovered(item.id)" class="preview">
+							<video ref="video" class="preview" autoplay loop muted>
+								<source :src="item.preview" type="video/mp4">
+							</video>
+						</div>
+
+						<span v-if="!item.thumb && item.name" class="extension">{{ item.name.split('.').pop() }}</span>
+						<div
+							v-if="!isPublic"
 							:class="{ fixed }"
-							class="actions">
-							<b-tooltip label="Link"
-								position="is-top">
-								<a :href="`${item.url}`"
-									target="_blank"
-									class="btn">
+							class="actions"
+							@mouseenter.self.stop.prevent="item.preview && mouseOver(item.id)"
+							@mouseleave.self.stop.prevent="item.preview && mouseOut(item.id)">
+							<b-tooltip label="Link" position="is-top">
+								<a :href="`${item.url}`" target="_blank" class="btn">
 									<i class="icon-web-code" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Albums"
-								position="is-top">
-								<a class="btn"
-									@click="openAlbumModal(item)">
-									<i class="icon-interface-window" />
-								</a>
-							</b-tooltip>
-							<!--
-							<b-tooltip label="Tags"
-								position="is-top">
-								<a @click="manageTags(item)">
+							<b-tooltip label="Tags" position="is-top">
+								<a class="btn" @click="false && manageTags(item)">
 									<i class="icon-ecommerce-tag-c" />
 								</a>
 							</b-tooltip>
-							-->
-							<b-tooltip label="Delete"
-								position="is-top">
-								<a class="btn"
-									@click="deleteFile(item, index)">
+							<b-tooltip label="Albums" position="is-top">
+								<a class="btn" @click="openAlbumModal(item)">
+									<i class="icon-interface-window" />
+								</a>
+							</b-tooltip>
+							<b-tooltip label="Delete" position="is-top">
+								<a class="btn" @click="deleteFile(item)">
 									<i class="icon-editorial-trash-a-l" />
 								</a>
 							</b-tooltip>
-							<b-tooltip v-if="user && user.isAdmin"
-								label="More info"
-								position="is-top"
-								class="more">
+							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${item.id}`">
 									<i class="icon-interface-more" />
 								</nuxt-link>
 							</b-tooltip>
 						</div>
 					</template>
-				</WaterfallItem>
+				</template>
 			</Waterfall>
 		</template>
 		<div v-else>
-			<b-table
-				:data="gridFiles || []"
-				:mobile-cards="true">
+			<b-table :data="gridFiles || []" :mobile-cards="true">
 				<template slot-scope="props">
 					<template v-if="!props.row.hideFromList">
-						<b-table-column field="url"
-							label="URL">
-							<a :href="props.row.url"
-								target="_blank">{{ props.row.url }}</a>
+						<b-table-column field="url" label="URL">
+							<a :href="props.row.url" target="_blank">{{ props.row.url }}</a>
 						</b-table-column>
 
-						<b-table-column field="albums"
-							label="Albums"
-							centered>
+						<b-table-column field="albums" label="Albums" centered>
 							<template v-for="(album, index) in props.row.albums">
-								<nuxt-link :key="index"
-									:to="`/dashboard/albums/${album.id}`">
+								<nuxt-link :key="index" :to="`/dashboard/albums/${album.id}`">
 									{{ album.name }}
 								</nuxt-link>
-								<template v-if="index < props.row.albums.length - 1">, </template>
+								<template v-if="index < props.row.albums.length - 1">
+									,
+								</template>
 							</template>
 
 							{{ props.row.username }}
 						</b-table-column>
 
-						<b-table-column field="uploaded"
-							label="Uploaded"
-							centered>
+						<b-table-column field="uploaded" label="Uploaded" centered>
 							<span><timeago :since="props.row.createdAt" /></span>
 						</b-table-column>
 
-						<b-table-column field="purge"
-							centered>
-							<b-tooltip label="Albums"
-								position="is-top">
-								<a class="btn"
-									@click="openAlbumModal(props.row)">
+						<b-table-column field="purge" centered>
+							<b-tooltip label="Albums" position="is-top">
+								<a class="btn" @click="openAlbumModal(props.row)">
 									<i class="icon-interface-window" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Delete"
-								position="is-top"
-								class="is-danger">
-								<a class="is-danger"
-									@click="deleteFile(props.row)">
+							<b-tooltip label="Delete" position="is-top" class="is-danger">
+								<a class="is-danger" @click="deleteFile(props.row)">
 									<i class="icon-editorial-trash-a-l" />
 								</a>
 							</b-tooltip>
-							<b-tooltip v-if="user && user.isAdmin"
-								label="More info"
-								position="is-top"
-								class="more">
+							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
 									<i class="icon-interface-more" />
 								</nuxt-link>
@@ -164,26 +148,28 @@
 				</template>
 				<template slot="footer">
 					<div class="has-text-right has-text-default">
-						{{ files.length }} files
+						Showing {{ files.length }} files ({{ total }} total)
 					</div>
 				</template>
 			</b-table>
 		</div>
-		<b-modal :active.sync="isAlbumsModalActive"
-			:width="640"
-			scroll="keep">
+		<b-modal :active.sync="isAlbumsModalActive" :width="640" scroll="keep">
 			<div class="card albumsModal">
 				<div class="card-content">
 					<div class="content">
-						<h3 class="subtitle">Select the albums this file should be a part of</h3>
+						<h3 class="subtitle">
+							Select the albums this file should be a part of
+						</h3>
 						<hr>
+
 						<div class="albums-container">
-							<div v-for="(album, index) in albums"
-								:key="index"
-								class="album">
+							<div v-for="album in albums" :key="album.id" class="album">
 								<div class="field">
-									<b-checkbox :value="isAlbumSelected(album.id)"
-										@input="albumCheckboxClicked($event, album.id)">{{ album.name }}</b-checkbox>
+									<b-checkbox
+										:value="isAlbumSelected(album.id)"
+										@input="albumCheckboxClicked($event, album.id)">
+										{{ album.name }}
+									</b-checkbox>
 								</div>
 							</div>
 						</div>
@@ -195,243 +181,297 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Waterfall from './waterfall/Waterfall.vue';
-import WaterfallItem from './waterfall/WaterfallItem.vue';
 
 export default {
 	components: {
 		Waterfall,
-		WaterfallItem
 	},
 	props: {
 		files: {
 			type: Array,
-			default: () => []
+			default: () => [],
+		},
+		total: {
+			type: Number,
+			default: 0,
 		},
 		fixed: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isPublic: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		width: {
 			type: Number,
-			default: 150
+			default: 150,
 		},
 		enableSearch: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		enableToolbar: {
 			type: Boolean,
-			default: true
-		}
+			default: true,
+		},
 	},
 	data() {
 		return {
 			showWaterfall: true,
 			searchTerm: null,
 			showList: false,
-			albums: [],
+			hoveredItems: [],
 			isAlbumsModalActive: false,
 			showingModalForFile: null,
 			filesOffsetWaterfall: 0,
 			filesOffsetEndWaterfall: 50,
-			filesPerPageWaterfall: 50
+			filesPerPageWaterfall: 50,
 		};
 	},
 	computed: {
-		user() {
-			return this.$store.state.user;
-		},
+		...mapState({
+			user: (state) => state.auth.user,
+			albums: (state) => state.albums.tinyDetails,
+			images: (state) => state.images,
+		}),
 		blank() {
+			// eslint-disable-next-line global-require, import/no-unresolved
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {
 			return this.files;
 		},
 	},
+	created() {
+		this.getAlbums();
+	},
 	methods: {
 		async search() {
-			const data = await this.$search.do(this.searchTerm, [
-				'name',
-				'original',
-				'type',
-				'albums:name'
-			]);
-			console.log('> Search result data', data);
+			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
+			console.log('> Search result data', data); // eslint-disable-line no-console
 		},
-		deleteFile(file, index) {
+		deleteFile(file) {
+			// this.$emit('delete', file);
 			this.$buefy.dialog.confirm({
 				title: 'Deleting file',
 				message: 'Are you sure you want to <b>delete</b> this file?',
 				confirmText: 'Delete File',
 				type: 'is-danger',
-				hasIcon: true,
 				onConfirm: async () => {
-					const response = await this.$axios.$delete(`file/${file.id}`);
-					if (this.showList) {
-						file.hideFromList = true;
-						this.$forceUpdate();
-					} else {
-						this.showWaterfall = false;
-						this.files.splice(index, 1);
-						this.$nextTick(() => {
-							this.showWaterfall = true;
-						});
+					try {
+						const response = await this.$store.dispatch('images/deleteFile', file.id);
+
+						this.$buefy.toast.open(response.message);
+					} catch (e) {
+						this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
 					}
-					return this.$buefy.toast.open(response.message);
-				}
+				},
 			});
 		},
 		isAlbumSelected(id) {
-			if (!this.showingModalForFile) return;
-			const found = this.showingModalForFile.albums.find(el => el.id === id);
-			return found ? found.id ? true : false : false;
+			if (!this.showingModalForFile) return false;
+			const found = this.showingModalForFile.albums.find((el) => el.id === id);
+			return !!(found && found.id);
 		},
 		async openAlbumModal(file) {
+			const { id } = file;
 			this.showingModalForFile = file;
 			this.showingModalForFile.albums = [];
+
+			try {
+				await this.$store.dispatch('images/getFileAlbums', id);
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
+			this.showingModalForFile.albums = this.images.fileAlbumsMap[id];
+
 			this.isAlbumsModalActive = true;
-
-			const response = await this.$axios.$get(`file/${file.id}/albums`);
-			this.showingModalForFile.albums = response.albums;
-
-			this.getAlbums();
 		},
-		async albumCheckboxClicked(value, id) {
-			const response = await this.$axios.$post(`file/album/${value ? 'add' : 'del'}`, {
-				albumId: id,
-				fileId: this.showingModalForFile.id
-			});
-			this.$buefy.toast.open(response.message);
+		async albumCheckboxClicked(add, id) {
+			try {
+				let response;
+				if (add) {
+					response = await this.$store.dispatch('images/addToAlbum', {
+						albumId: id,
+						fileId: this.showingModalForFile.id,
+					});
+				} else {
+					response = await this.$store.dispatch('images/removeFromAlbum', {
+						albumId: id,
+						fileId: this.showingModalForFile.id,
+					});
+				}
 
-			// Not the prettiest solution to refetch on each click but it'll do for now
-			this.$parent.getFiles();
+				this.$buefy.toast.open(response.message);
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
 		},
 		async getAlbums() {
-			const response = await this.$axios.$get(`albums/dropdown`);
-			this.albums = response.albums;
-			this.$forceUpdate();
-		}
-	}
+			try {
+				await this.$store.dispatch('albums/getTinyDetails');
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
+		},
+		mouseOver(id) {
+			const foundIndex = this.hoveredItems.indexOf(id);
+			if (foundIndex > -1) return;
+			this.hoveredItems.push(id);
+		},
+		mouseOut(id) {
+			const foundIndex = this.hoveredItems.indexOf(id);
+			if (foundIndex > -1) this.hoveredItems.splice(foundIndex, 1);
+		},
+		isHovered(id) {
+			return this.hoveredItems.includes(id);
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	.item-move {
-		transition: all .25s cubic-bezier(.55,0,.1,1);
+@import '~/assets/styles/_colors.scss';
+.item-move {
+	transition: all 0.25s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+div.toolbar {
+	padding: 1rem;
+
+	.block {
+		text-align: right;
 	}
+}
 
-	div.toolbar {
-		padding: 1rem;
+span.extension {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	pointer-events: none;
+	opacity: 0.75;
+	max-width: 150px;
+}
 
-		.block {
-			text-align: right;
+div.preview {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: calc(100% - 6px);
+	overflow: hidden;
+}
+
+.preview-container {
+	display: inline-block;
+}
+
+div.actions {
+	opacity: 0;
+	-webkit-transition: opacity 0.1s linear;
+	-moz-transition: opacity 0.1s linear;
+	-ms-transition: opacity 0.1s linear;
+	-o-transition: opacity 0.1s linear;
+	transition: opacity 0.1s linear;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: calc(100% - 6px);
+	// background: rgba(0, 0, 0, 0.5);
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0px, rgba(0, 0, 0, 0) 60px),
+		linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0px, rgba(0, 0, 0, 0) 45px);
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+
+	span {
+		padding: 3px;
+
+		&.more {
+			position: absolute;
+			top: 0;
+			right: 0;
 		}
-	}
 
-	span.extension {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		z-index: 0;
-		top: 0;
-		left: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		pointer-events: none;
-		opacity: .75;
-		max-width: 150px;
-	}
+		&:nth-child(1),
+		&:nth-child(2) {
+			align-items: flex-end;
+			padding-bottom: 10px;
+		}
 
-	div.actions {
-		opacity: 0;
-		-webkit-transition: opacity 0.1s linear;
-		-moz-transition: opacity 0.1s linear;
-		-ms-transition: opacity 0.1s linear;
-		-o-transition: opacity 0.1s linear;
-		transition: opacity 0.1s linear;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		width: 100%;
-		height: calc(100% - 6px);
-		background: rgba(0, 0, 0, 0.5);
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		&:nth-child(3),
+		&:nth-child(4) {
+			justify-content: flex-end;
+			padding-bottom: 10px;
+		}
 
-		span {
-			padding: 3px;
-			&.more {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-
-			&:nth-child(1), &:nth-child(2) {
-				align-items: flex-end;
-			}
-
-			&:nth-child(1), &:nth-child(3) {
-				justify-content: flex-end;
-			}
-			a {
+		a {
+			width: 30px;
+			height: 30px;
+			color: white;
+			justify-content: center;
+			align-items: center;
+			display: flex;
+			&.btn:before {
+				content: '';
 				width: 30px;
 				height: 30px;
-				color: white;
-				justify-content: center;
-				align-items: center;
-				display: flex;
-				&.btn:before {
-					content: '';
-					width: 30px;
-					height: 30px;
-					border: 1px solid white;
-					border-radius: 50%;
-					position: absolute;
-				}
+				border: 1px solid white;
+				border-radius: 50%;
+				position: absolute;
 			}
 		}
+	}
 
-		&.fixed {
-			position: relative;
-			opacity: 1;
-			background: none;
+	&.fixed {
+		position: relative;
+		opacity: 1;
+		background: none;
 
-			a {
-				width: auto;
-				height: auto;
-				color: $defaultTextColor;
-				&:before {
-					display: none;
-				}
+		a {
+			width: auto;
+			height: auto;
+			color: $defaultTextColor;
+			&:before {
+				display: none;
 			}
-
 		}
 	}
+}
 
-	.albums-container {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		.album {
-			flex-basis: 33%;
-			text-align: left;
-		}
+.albums-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	.album {
+		flex-basis: 33%;
+		text-align: left;
 	}
-</style>
+}
 
-<style lang="scss">
-	.waterfall-item:hover {
-		div.actions {
-			opacity: 1
-		}
+.hidden {
+	display: none;
+}
+
+.waterfall {
+	margin: 0 auto;
+}
+
+.waterfall-item:hover {
+	div.actions {
+		opacity: 1;
 	}
+}
 </style>

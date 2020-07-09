@@ -12,7 +12,7 @@ class usersGET extends Route {
 
 			return res.json({
 				message: 'Successfully retrieved users',
-				users
+				users,
 			});
 		} catch (error) {
 			return super.error(res, error);

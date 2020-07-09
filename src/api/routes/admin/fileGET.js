@@ -11,7 +11,10 @@ class filesGET extends Route {
 		if (!id) return res.status(400).json({ message: 'Invalid file ID supplied' });
 
 		let file = await db.table('files').where({ id }).first();
-		const user = await db.table('users').where({ id: file.userId }).first();
+		const user = await db.table('users')
+			.select('id', 'username', 'enabled', 'createdAt', 'editedAt', 'apiKeyEditedAt', 'isAdmin')
+			.where({ id: file.userId })
+			.first();
 		file = Util.constructFilePublicLink(file);
 
 		// Additional relevant data
@@ -21,7 +24,7 @@ class filesGET extends Route {
 		return res.json({
 			message: 'Successfully retrieved file',
 			file,
-			user
+			user,
 		});
 	}
 }

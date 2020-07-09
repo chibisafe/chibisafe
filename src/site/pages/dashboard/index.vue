@@ -6,27 +6,56 @@
 					<Sidebar />
 				</div>
 				<div class="column">
-					<h2 class="subtitle">Your uploaded files</h2>
+					<nav class="level">
+						<div class="level-left">
+							<div class="level-item">
+								<h2 class="subtitle">
+									Your uploaded files
+								</h2>
+							</div>
+						</div>
+						<div class="level-right">
+							<div class="level-item">
+								<b-field>
+									<b-input
+										placeholder="Search"
+										type="search" />
+									<p class="control">
+										<b-button type="is-lolisafe">
+											Search
+										</b-button>
+									</p>
+								</b-field>
+							</div>
+						</div>
+					</nav>
 					<hr>
 
-					<Grid v-if="count"
-						:files="files"
-						:enableSearch="false"
-						class="grid" />
+					<!-- <b-loading :active="images.isLoading" /> -->
 
-					<b-pagination
-						v-if="count > perPage"
-						:total="count"
-						:per-page="perPage"
-						:current.sync="current"
-						class="pagination"
-						icon-prev="icon-interface-arrow-left"
-						icon-next="icon-interface-arrow-right"
-						icon-pack="icon"
-						aria-next-label="Next page"
-						aria-previous-label="Previous page"
-						aria-page-label="Page"
-						aria-current-label="Current page" />
+					<Grid
+						v-if="totalFiles && !isLoading"
+						:files="images.files"
+						:enableSearch="false"
+						class="grid">
+						<template v-slot:pagination>
+							<b-pagination
+								v-if="shouldPaginate"
+								:total="totalFiles"
+								:per-page="limit"
+								:current.sync="current"
+								range-before="2"
+								range-after="2"
+								class="pagination-slot"
+								icon-prev="icon-interface-arrow-left"
+								icon-next="icon-interface-arrow-right"
+								icon-pack="icon"
+								aria-next-label="Next page"
+								aria-previous-label="Previous page"
+								aria-page-label="Page"
+								aria-current-label="Current page" />
+						</template>
+					</Grid>
 				</div>
 			</div>
 		</div>
@@ -34,59 +63,65 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
+
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Grid from '~/components/grid/Grid.vue';
 
 export default {
 	components: {
 		Sidebar,
-		Grid
+		Grid,
 	},
-	middleware: 'auth',
+	middleware: ['auth', ({ store }) => {
+		store.commit('images/resetState');
+		store.dispatch('images/fetch');
+	}],
 	data() {
 		return {
-			files: [],
-			count: 0,
 			current: 1,
-			perPage: 30
+			isLoading: false,
 		};
+	},
+	computed: {
+		...mapGetters({
+			totalFiles: 'images/getTotalFiles',
+			shouldPaginate: 'images/shouldPaginate',
+			limit: 'images/getLimit',
+		}),
+		...mapState(['images']),
 	},
 	metaInfo() {
 		return { title: 'Uploads' };
 	},
 	watch: {
-		current: 'getFiles'
-	},
-	async asyncData({ $axios, route }) {
-		const perPage = 30;
-		const current = 1; // current page
-
-		try {
-			const response = await $axios.$get(`files`, { params: { page: current, limit: perPage }});
-			return {
-				files: response.files || [],
-				count: response.count || 0,
-				current,
-				perPage
-			};
-		} catch (error) {
-			console.error(error);
-			return { files: [] };
-		}
+		current: 'fetchPaginate',
 	},
 	methods: {
-		async getFiles() {
-			// TODO: Cache a few pages once fetched
-			const response = await this.$axios.$get(`files`, { params: { page: this.current, limit: this.perPage }});
-			this.files = response.files;
-			this.count = response.count;
-		}
-	}
+		...mapActions({
+			fetch: 'images/fetch',
+		}),
+		async fetchPaginate() {
+			this.isLoading = true;
+			await this.fetch(this.current);
+			this.isLoading = false;
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
 	div.grid {
 		margin-bottom: 1rem;
+	}
+
+	.pagination-slot {
+		padding: 1rem 0;
+	}
+</style>
+
+<style lang="scss">
+	.pagination-slot > .pagination-previous, .pagination-slot > .pagination-next {
+		display: none !important;
 	}
 </style>

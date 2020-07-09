@@ -1,64 +1,80 @@
 <template>
-	<div class="dashboard-menu">
-		<router-link to="/dashboard">
-			<i class="icon-com-pictures" />Files
-		</router-link>
-		<router-link to="/dashboard/albums">
-			<i class="icon-interface-window" />Albums
-		</router-link>
-		<!--
-		<router-link to="/dashboard/tags">
-			<i class="icon-ecommerce-tag-c" />Tags
-		</router-link>
-		-->
-		<router-link to="/dashboard/account">
-			<i class="icon-ecommerce-tag-c" />Account
-		</router-link>
-		<template v-if="user && user.isAdmin">
-			<router-link to="/dashboard/admin/users">
-				<i class="icon-setting-gear-a" />Users
-			</router-link>
-			<!--
-			TODO: Dont wanna deal with this now
-			<router-link to="/dashboard/admin/settings">
-				<i class="icon-setting-gear-a" />Settings
-			</router-link>
-			-->
-		</template>
-	</div>
+	<b-menu class="dashboard-menu">
+		<b-menu-list label="Menu">
+			<b-menu-item
+				class="item"
+				icon="information-outline"
+				label="Dashboard"
+				tag="nuxt-link"
+				to="/dashboard"
+				exact />
+			<b-menu-item
+				class="item"
+				icon="image-multiple-outline"
+				label="Albums"
+				tag="nuxt-link"
+				to="/dashboard/albums"
+				exact />
+			<b-menu-item
+				class="item"
+				icon="tag-outline"
+				label="Tags"
+				tag="nuxt-link"
+				to="/dashboard/tags"
+				exact />
+			<b-menu-item icon="settings" expanded>
+				<template slot="label" slot-scope="props">
+					Administration
+					<b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
+				</template>
+				<b-menu-item icon="account" label="Users" tag="nuxt-link" to="/dashboard/admin/users" exact />
+				<b-menu-item icon="cog-outline" label="Settings" tag="nuxt-link" to="/dashboard/admin/settings" exact />
+			</b-menu-item>
+			<b-menu-item
+				class="item"
+				icon="account-cog-outline"
+				label="My account"
+				tag="nuxt-link"
+				to="/dashboard/account"
+				exact />
+		</b-menu-list>
+		<b-menu-list label="Actions">
+			<b-menu-item icon="exit-to-app" label="Logout" tag="nuxt-link" to="/logout" exact />
+		</b-menu-list>
+	</b-menu>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
-	computed: {
-		user() {
-			return this.$store.state.user;
-		}
-	}
+	computed: mapState({
+		user: (state) => state.auth.user,
+	}),
+	methods: {
+		isRouteActive(id) {
+			if (this.$route.path.includes(id)) {
+				return true;
+			}
+			return false;
+		},
+	},
 };
+
 </script>
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	.dashboard-menu {
-		padding: 2rem;
-		border-radius: 8px;
+		::v-deep a:hover {
+			cursor: pointer;
+			text-decoration: none;
+		}
 
-		a {
-			display: block;
-			font-weight: 700;
-			color: $textColor;
-			position: relative;
-			padding-left: 40px;
-			height: 35px;
-			&:hover{
-				color: white;
-			}
+		::v-deep .icon {
+			margin-right: 0.5rem;
+		}
 
-			i {
-				position: absolute;
-				font-size: 1.5em;
-				top: -4px;
-				left: 5px;
-			}
+		::v-deep .icon.is-pulled-right {
+			margin-right: 0;
 		}
 
 		hr { margin-top: 0.6em; }

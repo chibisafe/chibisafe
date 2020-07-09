@@ -1,5 +1,6 @@
 <template>
-	<b-navbar :class="{ isWhite }"
+	<b-navbar
+		:class="{ isWhite }"
 		transparent>
 		<template slot="end">
 			<b-navbar-item tag="div">
@@ -65,32 +66,31 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
 	props: {
 		isWhite: {
 			type: Boolean,
-			default: false
-		}
+			default: false,
+		},
 	},
 	data() {
 		return { hamburger: false };
 	},
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		config() {
-			return this.$store.state.config;
-		}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState(['config']),
 	},
 	methods: {
-		logOut() {
-			this.$store.dispatch('logout');
+		async logOut() {
+			await this.$store.dispatch('auth/logout');
 			this.$router.replace('/login');
-		}
-	}
+		},
+	},
 };
 </script>
+
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	nav.navbar {

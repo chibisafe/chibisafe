@@ -11,6 +11,7 @@
 					<div class="content-wrapper">
 						<h4>Blazing fast file uploader. <br>For real.</h4>
 						<p>
+							<!-- eslint-disable-next-line max-len -->
 							A <strong>modern</strong> and <strong>self-hosted</strong> file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.
 						</p>
 					</div>
@@ -19,7 +20,8 @@
 		</div>
 		<div class="container uploader">
 			<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
-			<div v-else
+			<div
+				v-else
 				class="has-text-centered is-size-4 has-text-danger">
 				This site has disabled public uploads. You need an account.
 			</div>
@@ -28,6 +30,8 @@
 	</div>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 import Logo from '~/components/logo/Logo.vue';
 import Uploader from '~/components/uploader/Uploader.vue';
 import Links from '~/components/home/links/Links.vue';
@@ -37,19 +41,15 @@ export default {
 	components: {
 		Logo,
 		Uploader,
-		Links
+		Links,
 	},
 	data() {
 		return { albums: [] };
 	},
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		config() {
-			return this.$store.state.config;
-		}
-	}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState(['config']),
+	},
 };
 </script>
 <style lang="scss" scoped>

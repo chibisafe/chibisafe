@@ -1,12 +1,18 @@
 <template>
+	<!-- eslint-disable max-len -->
 	<footer>
-		<svg viewBox="0 0 1920 250"
+		<svg
+			viewBox="0 0 1920 250"
 			class="waves">
-			<path d="M1920 250H0V0s126.707 78.536 349.975 80.05c177.852 1.203 362.805-63.874 553.803-63.874 290.517 0 383.458 57.712 603.992 61.408 220.527 3.696 278.059-61.408 412.23-17.239"
+
+			<path
+				d="M1920 250H0V0s126.707 78.536 349.975 80.05c177.852 1.203 362.805-63.874 553.803-63.874 290.517 0 383.458 57.712 603.992 61.408 220.527 3.696 278.059-61.408 412.23-17.239"
 				class="wave-1" />
-			<path d="M1920 144s-467.917 116.857-1027.243-17.294C369.986 1.322 0 45.578 0 45.578V250h1920V144z"
+			<path
+				d="M1920 144s-467.917 116.857-1027.243-17.294C369.986 1.322 0 45.578 0 45.578V250h1920V144z"
 				class="wave-2" />
-			<path d="M0 195.553s208.547-75.581 701.325-20.768c376.707 41.908 520.834-67.962 722.545-67.962 222.926 0 311.553 83.523 496.129 86.394V250H0v-54.447z"
+			<path
+				d="M0 195.553s208.547-75.581 701.325-20.768c376.707 41.908 520.834-67.962 722.545-67.962 222.926 0 311.553 83.523 496.129 86.394V250H0v-54.447z"
 				class="wave-3" />
 		</svg>
 		<div>
@@ -15,7 +21,8 @@
 					<div class="column is-narrow">
 						<h4>lolisafe</h4>
 						<span>© 2017-2020
-							<a href="https://github.com/pitu"
+							<a
+								href="https://github.com/pitu"
 								class="no-block">Pitu</a>
 						</span><br>
 						<span>v{{ version }}</span>
@@ -24,20 +31,33 @@
 						<div class="columns is-gapless">
 							<div class="column" />
 							<div class="column">
-								<nuxt-link to="/">Home</nuxt-link>
-								<nuxt-link to="/faq">FAQ</nuxt-link>
+								<nuxt-link to="/">
+									Home
+								</nuxt-link>
+								<nuxt-link to="/faq">
+									FAQ
+								</nuxt-link>
 							</div>
 							<div class="column">
-								<nuxt-link to="/dashboard">Dashboard</nuxt-link>
-								<nuxt-link to="/dashboard">Files</nuxt-link>
-								<nuxt-link to="/dashboard/albums">Albums</nuxt-link>
-								<nuxt-link to="/dashboard/account">Account</nuxt-link>
+								<nuxt-link to="/dashboard">
+									Dashboard
+								</nuxt-link>
+								<nuxt-link to="/dashboard">
+									Files
+								</nuxt-link>
+								<nuxt-link to="/dashboard/albums">
+									Albums
+								</nuxt-link>
+								<nuxt-link to="/dashboard/account">
+									Account
+								</nuxt-link>
 							</div>
 							<div class="column">
 								<a href="https://github.com/weebdev/lolisafe">GitHub</a>
 							</div>
 							<div class="column">
-								<a v-if="loggedIn"
+								<a
+									v-if="loggedIn"
 									@click="createShareXThing">ShareX Config</a>
 								<a href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">Chrome Extension</a>
 							</div>
@@ -48,27 +68,32 @@
 		</div>
 	</footer>
 </template>
+
 <script>
+/* eslint-disable no-restricted-globals */
+
+import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'file-saver';
+
 export default {
 	computed: {
-		loggedIn() {
-			return this.$store.state.loggedIn;
-		},
-		version() {
-			return this.$store.state.config.version;
-		}
+		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapState({
+			version: (state) => state.config.version,
+			serviceName: (state) => state.config.serviceName,
+			token: (state) => state.auth.token,
+		}),
 	},
 	methods: {
 		createShareXThing() {
 			const sharexFile = `{
-				"Name": "${this.$store.state.config.serviceName}",
+				"Name": "${this.serviceName}",
 				"DestinationType": "ImageUploader, FileUploader",
 				"RequestType": "POST",
 				"RequestURL": "${location.origin}/api/upload",
 				"FileFormName": "files[]",
 				"Headers": {
-					"authorization": "Bearer ${this.$store.state.token}",
+					"authorization": "Bearer ${this.token}",
 					"accept": "application/vnd.lolisafe.json"
 				},
 				"ResponseType": "Text",
@@ -77,10 +102,11 @@ export default {
 			}`;
 			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 			saveAs(sharexBlob, `${location.hostname}.sxcu`);
-		}
-	}
+		},
+	},
 };
 </script>
+
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	footer {

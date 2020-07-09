@@ -1,28 +1,31 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-console */
 const nodePath = require('path');
 const moment = require('moment');
 
 const oldDb = require('knex')({
 	client: 'sqlite3',
 	connection: {
-		filename: nodePath.join(__dirname, '..', '..', 'db')
+		filename: nodePath.join(__dirname, '..', '..', 'db'),
 	},
-	useNullAsDefault: true
+	useNullAsDefault: true,
 });
 
 const newDb = require('knex')({
 	client: 'sqlite3',
 	connection: {
-		filename: nodePath.join(__dirname, '..', '..', 'database.sqlite')
+		filename: nodePath.join(__dirname, '..', '..', 'database.sqlite'),
 	},
-	postProcessResponse: result => {
+	postProcessResponse: (result) => {
 		const booleanFields = [
 			'enabled',
 			'enableDownload',
-			'isAdmin'
+			'isAdmin',
 		];
 
-		const processResponse = row => {
-			Object.keys(row).forEach(key => {
+		const processResponse = (row) => {
+			Object.keys(row).forEach((key) => {
 				if (booleanFields.includes(key)) {
 					if (row[key] === 0) row[key] = false;
 					else if (row[key] === 1) row[key] = true;
@@ -31,11 +34,11 @@ const newDb = require('knex')({
 			return row;
 		};
 
-		if (Array.isArray(result)) return result.map(row => processResponse(row));
+		if (Array.isArray(result)) return result.map((row) => processResponse(row));
 		if (typeof result === 'object') return processResponse(result);
 		return result;
 	},
-	useNullAsDefault: true
+	useNullAsDefault: true,
 });
 
 const start = async () => {
@@ -49,13 +52,13 @@ const start = async () => {
 			id: user.id,
 			username: user.username,
 			password: user.password,
-			enabled: user.enabled == 1 ? true : false,
+			enabled: user.enabled == 1,
 			isAdmin: false,
 			apiKey: user.token,
 			passwordEditedAt: now,
 			apiKeyEditedAt: now,
 			createdAt: now,
-			editedAt: now
+			editedAt: now,
 		};
 		await newDb.table('users').insert(userToInsert);
 	}
@@ -71,7 +74,7 @@ const start = async () => {
 			name: album.name,
 			zippedAt: album.zipGeneratedAt ? moment.unix(album.zipGeneratedAt).toDate() : null,
 			createdAt: moment.unix(album.timestamp).toDate(),
-			editedAt: moment.unix(album.editedAt).toDate()
+			editedAt: moment.unix(album.editedAt).toDate(),
 		};
 		const linkToInsert = {
 			userId: album.userid,
@@ -81,13 +84,13 @@ const start = async () => {
 			enabled: true,
 			enableDownload: true,
 			createdAt: now,
-			editedAt: now
+			editedAt: now,
 		};
 		await newDb.table('albums').insert(albumToInsert);
 		const insertedId = await newDb.table('links').insert(linkToInsert);
 		await newDb.table('albumsLinks').insert({
 			albumId: album.id,
-			linkId: insertedId[0]
+			linkId: insertedId[0],
 		});
 	}
 	console.log('Finished migrating albums...');
@@ -106,12 +109,12 @@ const start = async () => {
 			hash: file.hash,
 			ip: file.ip,
 			createdAt: moment.unix(file.timestamp).toDate(),
-			editedAt: moment.unix(file.timestamp).toDate()
+			editedAt: moment.unix(file.timestamp).toDate(),
 		};
 		filesToInsert.push(fileToInsert);
 		albumsFilesToInsert.push({
 			albumId: file.albumid,
-			fileId: file.id
+			fileId: file.id,
 		});
 	}
 	await newDb.batchInsert('files', filesToInsert, 20);

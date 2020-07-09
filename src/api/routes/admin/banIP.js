@@ -17,7 +17,7 @@ class banIP extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully banned the ip'
+			message: 'Successfully banned the ip',
 		});
 	}
 }

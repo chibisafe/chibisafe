@@ -18,7 +18,7 @@ class filesGET extends Route {
 			.select('albumId');
 
 		if (albumFiles.length) {
-			albumFiles = albumFiles.map(a => a.albumId);
+			albumFiles = albumFiles.map((a) => a.albumId);
 			albums = await db.table('albums')
 				.whereIn('id', albumFiles)
 				.select('id', 'name');
@@ -26,7 +26,7 @@ class filesGET extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved file albums',
-			albums
+			albums,
 		});
 	}
 }

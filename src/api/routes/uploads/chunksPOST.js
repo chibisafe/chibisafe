@@ -1,27 +1,27 @@
-const Route = require('../../structures/Route');
 const path = require('path');
-const Util = require('../../utils/Util');
 const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
+const Util = require('../../utils/Util');
+const Route = require('../../structures/Route');
 
 class uploadPOST extends Route {
 	constructor() {
 		super('/upload/chunks', 'post', {
 			bypassAuth: true,
-			canApiKey: true
+			canApiKey: true,
 		});
 	}
 
-	async run(req, res, db) {
+	async run(req, res) {
 		const filename = Util.getUniqueFilename(randomstring.generate(32));
 		// console.log('Files', req.body.files);
 		const info = {
 			size: req.body.files[0].size,
-			url: `${process.env.DOMAIN}/`
+			url: `${process.env.DOMAIN}/`,
 		};
 
 		for (const chunk of req.body.files) {
-			const { uuid, count } = chunk;
+			const { uuid } = chunk;
 			// console.log('Chunk', chunk);
 
 			const chunkOutput = path.join(__dirname,
@@ -65,7 +65,7 @@ class uploadPOST extends Route {
 
 		return res.status(201).send({
 			message: 'Sucessfully merged the chunk(s).',
-			...info
+			...info,
 			/*
 			name: `${filename}${ext || ''}`,
 			size: exists.size,

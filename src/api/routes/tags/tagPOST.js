@@ -1,5 +1,5 @@
-const Route = require('../../structures/Route');
 const moment = require('moment');
+const Route = require('../../structures/Route');
 
 class tagPOST extends Route {
 	constructor() {
@@ -22,7 +22,7 @@ class tagPOST extends Route {
 			name,
 			userId: user.id,
 			createdAt: now,
-			editedAt: now
+			editedAt: now,
 		});
 
 		return res.json({ message: 'The tag was created successfully' });

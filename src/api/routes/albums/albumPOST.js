@@ -1,5 +1,5 @@
-const Route = require('../../structures/Route');
 const moment = require('moment');
+const Route = require('../../structures/Route');
 
 class albumPOST extends Route {
 	constructor() {
@@ -14,18 +14,25 @@ class albumPOST extends Route {
 		/*
 			Check that an album with that name doesn't exist yet
 		*/
-		const album = await db.table('albums').where({ name, userId: user.id }).first();
-		if (album) return res.status(401).json({ message: 'There\'s already an album with that name' });
+		const album = await db
+			.table('albums')
+			.where({ name, userId: user.id })
+			.first();
+		if (album) return res.status(401).json({ message: "There's already an album with that name" });
 
 		const now = moment.utc().toDate();
-		await db.table('albums').insert({
+		const insertObj = {
 			name,
 			userId: user.id,
 			createdAt: now,
-			editedAt: now
-		});
+			editedAt: now,
+		};
 
-		return res.json({ message: 'The album was created successfully' });
+		const dbRes = await db.table('albums').insert(insertObj);
+
+		insertObj.id = dbRes.pop();
+
+		return res.json({ message: 'The album was created successfully', data: insertObj });
 	}
 }
 

@@ -25,7 +25,8 @@ class albumDelPOST extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully removed file from album'
+			message: 'Successfully removed file from album',
+			data: { fileId, album: { id: album.id, name: album.name } },
 		});
 	}
 }

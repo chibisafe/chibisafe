@@ -1,15 +1,19 @@
 // Let's first take care of having the customized colors ready.
-@import "./_colors.scss";
+@import './_bulma_colors_extender.scss';
+@import './_colors.scss';
 
 // Bulma/Buefy customization
-@import "../../../node_modules/bulma/sass/utilities/_all.sass";
+@import '../../../node_modules/bulma/sass/utilities/_all.sass';
 
 $body-size: 14px !default;
-$family-primary: 'Nunito', BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-primary: 'Nunito', BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+	'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 $size-normal: 1rem;
 
-@import "../../../node_modules/bulma/bulma.sass";
-@import "../../../node_modules/buefy/src/scss/buefy.scss";
+@import '../../../node_modules/bulma/bulma.sass';
+@import '../../../node_modules/buefy/src/scss/buefy.scss';
+
+@import '@mdi/font/css/materialdesignicons.css';
 
 html {
 	// font-size: 100%;
@@ -18,9 +22,9 @@ html {
 }
 
 a {
-	color: #5E81AC;
+	color: #5e81ac;
 	&:hover {
-		color: #81A1C1;
+		color: #81a1c1;
 		text-decoration: underline;
 	}
 }
@@ -43,10 +47,18 @@ h4 {
 }
 
 @for $i from 1 through 10 {
-	.mt#{$i} { margin-top: $i + em !important; }
-	.mb#{$i} { margin-bottom: $i + em !important; }
-	.ml#{$i} { margin-left: $i + em !important; }
-	.mr#{$i} { margin-right: $i + em !important; }
+	.mt#{$i} {
+		margin-top: $i + em !important;
+	}
+	.mb#{$i} {
+		margin-bottom: $i + em !important;
+	}
+	.ml#{$i} {
+		margin-left: $i + em !important;
+	}
+	.mr#{$i} {
+		margin-right: $i + em !important;
+	}
 }
 
 .text-center {
@@ -58,8 +70,12 @@ hr {
 	height: 1px;
 }
 // Bulma color changes.
-.tooltip.is-top.is-primary:before { border-top: 5px solid #20222b; }
-.tooltip.is-primary:after { background: #20222b; }
+.tooltip.is-top.is-primary:before {
+	border-top: 5px solid #20222b;
+}
+.tooltip.is-primary:after {
+	background: #20222b;
+}
 
 div#drag-overlay {
 	position: fixed;
@@ -93,7 +109,6 @@ div#drag-overlay {
 	}
 }
 
-
 section.hero {
 	&.dashboard {
 		// background-color: $backgroundLight1 !important;
@@ -103,10 +118,12 @@ section.hero {
 	}
 }
 
-section input, section a.button {
+section input,
+section a.button {
 	font-size: 14px !important;
 }
-section input, section p.control a.button {
+section input,
+section p.control a.button {
 	border-left: 0px !important;
 	border-top: 0px !important;
 	border-right: 0px !important;
@@ -114,13 +131,15 @@ section input, section p.control a.button {
 	box-shadow: 0 0 0 !important;
 }
 
-section p.control a.button { margin-left: 10px !important; }
+section p.control a.button {
+	margin-left: 10px !important;
+}
 section p.control button {
 	height: 100%;
 	font-size: 12px;
 }
 
-.switch input[type=checkbox] + .check:before {
+.switch input[type='checkbox'] + .check:before {
 	background: #fbfbfb;
 }
 
@@ -128,7 +147,8 @@ section p.control button {
 	Register and Login forms
 */
 
-section.hero.is-login, section.hero.is-register {
+section.hero.is-login,
+section.hero.is-register {
 	a {
 		font-size: 1.25em;
 		line-height: 2.5em;
@@ -174,18 +194,22 @@ section#register a.is-text {
 	font-size: 1.25em;
 	line-height: 2.5em;
 }
-*/
+
 .modal-card-head, .modal-card-foot {
 	background: $backgroundLight1;
 }
+*/
 
 .switch {
 	margin-top: 5px;
 }
 
-.input, .taginput .taginput-container.is-focusable, .textarea, .select select {
+.input,
+.taginput .taginput-container.is-focusable,
+.textarea,
+.select select {
 	border: 2px solid #21252d;
-	border-radius: .3em !important;
+	border-radius: 0.3em !important;
 	background: rgba(0, 0, 0, 0.15);
 	padding: 1rem;
 	color: $textColor;
@@ -198,21 +222,21 @@ section#register a.is-text {
 		color: $textColor;
 	}
 }
-button.button.is-primary {
+/* button.button.is-primary {
 	background-color: #323846;
 	border: 2px solid #21252d;
 	color: $textColor;
 	font-size: 1rem;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
 	&:hover {
 		background-color: $base-2;
 	}
 	&.big {
 		font-size: 1.25rem;
 	}
-}
+} */
 svg.waves {
 	display: block;
 	bottom: -1px;
@@ -224,13 +248,16 @@ svg.waves {
 	user-select: none;
 	overflow: hidden;
 }
-div.field-body > div.field { text-align: left; }
+div.field-body > div.field {
+	text-align: left;
+}
 table.table {
 	background: $base-2;
 	color: $textColor;
 	border: 0;
 	thead {
-		th, td {
+		th,
+		td {
 			color: $textColor;
 		}
 	}
@@ -244,60 +271,55 @@ table.table {
 			}
 		}
 	}
-	th, td {
+	th,
+	td {
 		border-color: #ffffff1c;
 	}
 }
 
 // vue-bar
 .vb > .vb-dragger {
-    z-index: 5;
-    width: 12px;
-    right: 0;
+	z-index: 5;
+	width: 12px;
+	right: 0;
 }
 
 .vb > .vb-dragger > .vb-dragger-styler {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: rotate3d(0,0,0,0);
-    transform: rotate3d(0,0,0,0);
-    -webkit-transition:
-        background-color 100ms ease-out,
-        margin 100ms ease-out,
-        height 100ms ease-out;
-    transition:
-        background-color 100ms ease-out,
-        margin 100ms ease-out,
-        height 100ms ease-out;
-    background-color: $backgroundAccent;
-    margin: 5px 5px 5px 0;
-    border-radius: 20px;
-    height: calc(100% - 10px);
-    display: block;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: rotate3d(0, 0, 0, 0);
+	transform: rotate3d(0, 0, 0, 0);
+	-webkit-transition: background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out;
+	transition: background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out;
+	background-color: $backgroundAccent;
+	margin: 5px 5px 5px 0;
+	border-radius: 20px;
+	height: calc(100% - 10px);
+	display: block;
 }
 
 .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
-    background-color: $backgroundAccentLighter;
+	background-color: $backgroundAccentLighter;
 }
 
 .vb > .vb-dragger:hover > .vb-dragger-styler {
-    background-color: $backgroundAccentLighter;
-    margin: 0px;
-    height: 100%;
+	background-color: $backgroundAccentLighter;
+	margin: 0px;
+	height: 100%;
 }
 
 .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
-    background-color: $backgroundAccentLighter;
-    margin: 0px;
-    height: 100%;
+	background-color: $backgroundAccentLighter;
+	margin: 0px;
+	height: 100%;
 }
 
 .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
-    background-color: $backgroundAccentLighter;
+	background-color: $backgroundAccentLighter;
 }
 
-.vb-content{
-	overflow: auto !important 
+.vb-content {
+	overflow: auto !important;
 }
 
 // helpers
@@ -313,7 +335,13 @@ table.table {
 	height: max-content;
 }
 
-.pagination a, .pagination a:hover {
+.pagination a,
+.pagination a:hover {
 	text-decoration: none;
 }
 
+// fix control icons
+.control.has-icons-left .icon, .control.has-icons-right .icon {
+	height: 3rem;
+	padding-right: 1rem;
+}
