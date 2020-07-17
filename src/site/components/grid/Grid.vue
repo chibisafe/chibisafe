@@ -96,7 +96,7 @@
 			<button
 				v-if="moreFiles"
 				class="button is-primary"
-				@click="loadMoreFilesWaterfall">Load more</button>
+				@click="loadMoreFiles">Load more</button>
 		</template>
 		<div v-else>
 			<b-table
@@ -172,6 +172,10 @@
 					</div>
 				</template>
 			</b-table>
+			<button
+				v-if="moreFiles"
+				class="button is-primary mt2"
+				@click="loadMoreFiles">Load more</button>
 		</div>
 		<b-modal :active.sync="isAlbumsModalActive"
 			:width="640"
@@ -240,9 +244,9 @@ export default {
 			albums: [],
 			isAlbumsModalActive: false,
 			showingModalForFile: null,
-			filesOffsetWaterfall: 0,
-			filesOffsetEndWaterfall: 50,
-			filesPerPageWaterfall: 50
+			filesOffset: 0,
+			filesOffsetEnd: 50,
+			filesPerPage: 50
 		};
 	},
 	computed: {
@@ -250,18 +254,18 @@ export default {
 			return this.$store.state.user;
 		},
 		blank() {
-			return require('@/assets/images/blank.png');
+			return require('@/assets/images/blank2.jpg');
 		},
 		gridFiles() {
-			return this.files.slice(this.filesOffsetWaterfall, this.filesOffsetEndWaterfall);
+			return this.files.slice(this.filesOffset, this.filesOffsetEnd);
 		},
 		moreFiles() {
-			return this.files.length > this.filesOffsetEndWaterfall;
+			return this.files.length > this.filesOffsetEnd;
 		}
 	},
 	methods: {
-		loadMoreFilesWaterfall() {
-			this.filesOffsetEndWaterfall = this.filesOffsetEndWaterfall + this.filesPerPageWaterfall;
+		loadMoreFiles() {
+			this.filesOffsetEnd = this.filesOffsetEnd + this.filesPerPage;
 		},
 		async search() {
 			const data = await this.$search.do(this.searchTerm, [
