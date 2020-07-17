@@ -208,10 +208,8 @@ class Util {
 
 	static async isAuthorized(req) {
 		if (req.headers.token) {
-			if (!this.options.canApiKey) return false;
 			const user = await db.table('users').where({ apiKey: req.headers.token }).first();
-			if (!user) return false;
-			if (!user.enabled) return false;
+			if (!user || !user.enabled) return false;
 			return true;
 		}
 
