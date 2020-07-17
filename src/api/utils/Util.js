@@ -36,7 +36,7 @@ class Util {
 
 	static generateThumbnails(filename) {
 		const ext = path.extname(filename).toLowerCase();
-		const output = `${filename.slice(0, -ext.length)}.png`;
+		const output = `${filename.slice(0, -ext.length)}.webp`;
 		if (imageExtensions.includes(ext)) return this.generateThumbnailForImage(filename, output);
 		if (videoExtensions.includes(ext)) return this.generateThumbnailForVideo(filename);
 		return null;
@@ -46,11 +46,11 @@ class Util {
 		const file = await jetpack.readAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename), 'buffer');
 		await sharp(file)
 			.resize(64, 64)
-			.toFormat('png')
+			.toFormat('webp')
 			.toFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', output));
 		await sharp(file)
 			.resize(225, null)
-			.toFormat('png')
+			.toFormat('webp')
 			.toFile(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', output));
 	}
 
@@ -76,8 +76,9 @@ class Util {
 	static getFileThumbnail(filename) {
 		if (!filename) return null;
 		const ext = path.extname(filename).toLowerCase();
-		if (!imageExtensions.includes(ext) && !videoExtensions.includes(ext)) return null;
-		return `${filename.slice(0, -ext.length)}.png`;
+		const extension = imageExtensions.includes(ext) ? 'webp' : videoExtensions.includes(ext) ? 'png' : null;
+		if (!extension) return null;
+		return `${filename.slice(0, -ext.length)}.${extension}`;
 	}
 
 	static constructFilePublicLink(file) {
