@@ -210,7 +210,7 @@ class Util {
 		if (req.headers.token) {
 			const user = await db.table('users').where({ apiKey: req.headers.token }).first();
 			if (!user || !user.enabled) return false;
-			return true;
+			return user;
 		}
 
 		if (!req.headers.authorization) return false;
