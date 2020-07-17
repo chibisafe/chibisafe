@@ -12,3 +12,7 @@ For starters we recommend cloning the new version somewhere else instead of `git
 
 ### Known issues of migrating
 - The thumbnails in the album view don't show up. That's because they don't exist, this will get solved as you upload new stuff so the newly uploaded files get the proper thumbnail created.
+
+### Breaking changes
+- You need to update the lolisafe browser if you use it, since it won't work with the new version automatically. Instead of pasting your token into it, you need to log in to lolisafe, go to your user settings and generate an `API KEY`, which you will use to access the service from 3rd party apps like the browser extension, ShareX, etc.
+- To upload a file to an album directly users used to use the endpoint `/api/upload/${albumId}`. This is no longer the case. To upload directly to an album now it's necessary to pass a header called `albumid` with an integer as the value of the album to which you want to upload a file to.
