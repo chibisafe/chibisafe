@@ -154,13 +154,19 @@ class Util {
 		const thumbName = this.getFileThumbnail(filename);
 		try {
 			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename));
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', thumbName));
-			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', thumbName));
 			if (deleteFromDB) {
 				await db.table('files').where('name', filename).delete();
 			}
 		} catch (error) {
 			log.error(`There was an error removing the file < ${filename} >`);
+			log.error(error);
+		}
+
+		try {
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', thumbName));
+			await jetpack.removeAsync(path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, 'thumbs', 'square', thumbName));
+		} catch (error) {
+			log.error(`There was an error removing the thumbs for file < ${filename} >`);
 			log.error(error);
 		}
 	}
