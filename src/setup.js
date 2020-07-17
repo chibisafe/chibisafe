@@ -155,8 +155,6 @@ async function start() {
 	console.log('=============================================');
 	console.log('==    .env file generated successfully.    ==');
 	console.log('=============================================');
-	console.log('== Run `yarn migrate` and `yarn seed` next ==');
-	console.log('=============================================');
 	console.log();
 }
 

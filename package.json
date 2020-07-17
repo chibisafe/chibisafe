@@ -8,7 +8,6 @@
 		"email": "heyitspitu@gmail.com",
 		"url": "https://github.com/Pitu"
 	},
-	"main": "src/_scripts/start.js",
 	"scripts": {
 		"setup": "node src/setup.js && yarn build && yarn migrate && yarn seed",
 		"build": "nuxt build",
@@ -18,7 +17,7 @@
 		"seed": "yarn knex seed:run",
 		"api": "node src/api/structures/Server",
 		"update": "git pull && yarn install && yarn migrate && yarn build && yarn restart",
-		"restart": "pm2 restart lolisafe-api && pm2 restart lolisafe-website"
+		"restart": "pm2 restart lolisafe"
 	},
 	"repository": {
 		"type": "git",
@@ -28,7 +27,7 @@
 		"url": "https://github.com/WeebDev/lolisafe/issues"
 	},
 	"engines": {
-		"node": ">=8.0.0"
+		"node": ">=12.0.0"
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.4.1",
