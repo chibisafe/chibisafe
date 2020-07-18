@@ -4,6 +4,9 @@
 [![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fpitu&style=flat-square)](https://www.patreon.com/pitu)
 [![Support me](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/kana)
 
+### Attention
+If you are upgrading from v3 to v4 (current release) and you want to keep your files and relations please read the [migration guide](docs/migration.md).
+
 ### Pre-requisites
 This guide asumes a lot of things, including that you know your way around linux, nginx and internet in general.
 
