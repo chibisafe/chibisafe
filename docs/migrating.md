@@ -11,9 +11,6 @@ For starters we recommend cloning the new version somewhere else instead of `git
 - Restart nginx with `sudo nginx -s reload`.
 - And lastly start your lolisafe instance with `pm2 start pm2.json`.
 
-### Known issues of migrating
-- The thumbnails in the album view don't show up. That's because they don't exist, this will get solved as you upload new stuff so the newly uploaded files get the proper thumbnail created.
-
 ### Breaking changes
 - If you are using the lolisafe extension from one of the stores, the new version has been submitted and could take up to a week to get approved. In the meantime you can load the unpacked extension by cloning [this repo](https://github.com/WeebDev/loli-safe-extension).
 - The lolisafe browser extension needs your new token. Instead of pasting your jwt token into it like before, you need to log in to lolisafe, go to your user settings and generate an `API KEY`, which you will use to access the service from 3rd party apps like the browser extension, ShareX, etc.
