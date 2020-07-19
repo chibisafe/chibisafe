@@ -81,7 +81,7 @@ export default {
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
 	},
 	build: {
-		extractCSS: true,
+		extractCSS: process.env.NODE_ENV === 'production',
 		postcss: {
 			preset: {
 				autoprefixer,
