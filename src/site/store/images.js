@@ -8,10 +8,11 @@ export const getDefaultState = () => ({
 		limit: 30,
 		totalFiles: 0,
 	},
-	name: null,
-	downloadEnabled: false,
+	albumName: null,
+	albumDownloadEnabled: false,
+	fileExtraInfoMap: {}, // information about the selected file
 	fileAlbumsMap: {}, // map of file ids with a list of album objects the file is in
-	filesTags: {}, // map of file ids with a list of tag objects for the file
+	fileTagsMap: {}, // map of file ids with a list of tag objects for the file
 });
 
 export const state = getDefaultState;
@@ -55,6 +56,15 @@ export const actions = {
 
 		return response;
 	},
+	async fetchFileMeta({ commit }, fileId) {
+		const response = await this.$axios.$get(`file/${fileId}`);
+
+		commit('setFileAlbums', { ...response, fileId });
+		commit('setFileTags', { ...response, fileId });
+		commit('setFileExtraInfo', { ...response, fileId });
+
+		return response;
+	},
 	async getFileAlbums({ commit }, fileId) {
 		const response = await this.$axios.$get(`file/${fileId}/albums`);
 
@@ -90,10 +100,11 @@ export const mutations = {
 		state.isLoading = true;
 	},
 	setFilesAndMeta(state, {
-		files, name, page, count,
+		files, name, page, count, downloadEnabled,
 	}) {
 		state.files = files || [];
-		state.name = name ?? null;
+		state.albumName = name ?? null;
+		state.downloadEnabled = downloadEnabled ?? false;
 		state.isLoading = false;
 		state.pagination.page = page || 1;
 		state.pagination.totalFiles = count || 0;
@@ -107,6 +118,12 @@ export const mutations = {
 	},
 	setFileAlbums(state, { fileId, albums }) {
 		Vue.set(state.fileAlbumsMap, fileId, albums);
+	},
+	setFileTags(state, { fileId, tags }) {
+		Vue.set(state.fileTagsMap, fileId, tags);
+	},
+	setFileExtraInfo(state, { fileId, file }) {
+		Vue.set(state.fileExtraInfoMap, fileId, file);
 	},
 	addAlbumToFile(state, { fileId, album }) {
 		if (!state.fileAlbumsMap[fileId]) return;

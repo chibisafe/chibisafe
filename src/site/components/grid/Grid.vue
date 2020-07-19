@@ -75,7 +75,7 @@
 								</a>
 							</b-tooltip>
 							<b-tooltip label="Albums" position="is-top">
-								<a class="btn" @click="openAlbumModal(item)">
+								<a class="btn" @click="handleFileModal(item)">
 									<i class="icon-interface-window" />
 								</a>
 							</b-tooltip>
@@ -121,7 +121,7 @@
 
 						<b-table-column field="purge" centered>
 							<b-tooltip label="Albums" position="is-top">
-								<a class="btn" @click="openAlbumModal(props.row)">
+								<a class="btn" @click="handleFileModal(props.row)">
 									<i class="icon-interface-window" />
 								</a>
 							</b-tooltip>
@@ -153,7 +153,10 @@
 				</template>
 			</b-table>
 		</div>
-		<b-modal :active.sync="isAlbumsModalActive" :width="640" scroll="keep">
+		<b-modal :active.sync="isAlbumsModalActive" scroll="keep">
+			<ImageInfo :file="modalData.file" />
+		</b-modal>
+		<!-- <b-modal :active.sync="isAlbumsModalActive" :width="640" scroll="keep">
 			<div class="card albumsModal">
 				<div class="card-content">
 					<div class="content">
@@ -176,7 +179,7 @@
 					</div>
 				</div>
 			</div>
-		</b-modal>
+		</b-modal> -->
 	</div>
 </template>
 
@@ -184,10 +187,12 @@
 import { mapState } from 'vuex';
 
 import Waterfall from './waterfall/Waterfall.vue';
+import ImageInfo from '~/components/image-modal/ImageInfo.vue';
 
 export default {
 	components: {
 		Waterfall,
+		ImageInfo,
 	},
 	props: {
 		files: {
@@ -230,6 +235,11 @@ export default {
 			filesOffsetWaterfall: 0,
 			filesOffsetEndWaterfall: 50,
 			filesPerPageWaterfall: 50,
+			modalData: {
+				file: null,
+				tags: null,
+				albums: null,
+			},
 		};
 	},
 	computed: {
@@ -317,6 +327,20 @@ export default {
 			} catch (e) {
 				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
 			}
+		},
+		async handleFileModal(file) {
+			const { id } = file;
+
+			try {
+				await this.$store.dispatch('images/fetchFileMeta', id);
+				this.modalData.file = this.images.fileExtraInfoMap[id];
+				this.modalData.albums = this.images.fileAlbumsMap[id];
+				this.modalData.tags = this.images.fileTagsMap[id];
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
+
+			this.isAlbumsModalActive = true;
 		},
 		mouseOver(id) {
 			const foundIndex = this.hoveredItems.indexOf(id);

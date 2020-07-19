@@ -3,7 +3,7 @@ const Util = require('../../utils/Util');
 
 class filesGET extends Route {
 	constructor() {
-		super('/file/:id', 'get', { adminOnly: true });
+		super('/admin/file/:id', 'get', { adminOnly: true });
 	}
 
 	async run(req, res, db) {

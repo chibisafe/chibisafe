@@ -34,7 +34,7 @@ export const actions = {
 		return response;
 	},
 	async fetchFile({ commit }, id) {
-		const response = await this.$axios.$get(`file/${id}`);
+		const response = await this.$axios.$get(`admin/file/${id}`);
 		commit('setFile', response);
 		commit('setUserInfo', response);
 
