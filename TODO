@@ -1,5 +1,4 @@
 - There's a vertical scrollbar on seemingly all pages even though there is no need for it
-- Passwords that contain special characters don't seem to work (refer to previous dms)
 
 - Uploaded text file (via ShareX) does not show up in the dashboard's "Files" area
 	* Currently only pictures show up on the dashboard due to having thumbs
@@ -9,3 +8,5 @@
 	- Think of a strategy to achieve this in a nice manner
 
 - Can't delete/rename albums when going into album view. Or ever.
+- Dark theme the annoying popups for deleting and other stuff
+- Logout button

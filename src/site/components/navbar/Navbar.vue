@@ -45,11 +45,12 @@
 					</router-link>
 				</b-navbar-item>
 				<b-navbar-item tag="div">
-					<a
-						class="navbar-item"
-						@click="logOut">
+					<router-link
+						to="/"
+						class="navbar-item no-active"
+						@click.native="logOut">
 						Logout
-					</a>
+					</router-link>
 				</b-navbar-item>
 			</template>
 			<template v-else>

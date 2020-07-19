@@ -175,7 +175,13 @@ class Util {
 		}
 	}
 
-	static isAuthorized(req) {
+	static async isAuthorized(req) {
+		if (req.headers.token) {
+			const user = await db.table('users').where({ apiKey: req.headers.token }).first();
+			if (!user || !user.enabled) return false;
+			return user;
+		}
+
 		if (!req.headers.authorization) return false;
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return false;

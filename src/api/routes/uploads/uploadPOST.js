@@ -117,6 +117,7 @@ class uploadPOST extends Route {
 				this.saveFileToAlbum(db, albumId, insertedId);
 			}
 
+			uploadedFile = Util.constructFilePublicLink(uploadedFile);
 			return res.status(201).send({
 				message: 'Sucessfully uploaded the file.',
 				...uploadedFile,
@@ -125,6 +126,7 @@ class uploadPOST extends Route {
 	}
 
 	fileExists(res, exists, filename) {
+		exists = Util.constructFilePublicLink(exists);
 		res.json({
 			message: 'Successfully uploaded the file.',
 			name: exists.name,

@@ -16,13 +16,8 @@ async function start() {
 	const wizard = [
 		{
 			type: 'input',
-			query: 'Port to run the API in:',
+			query: 'Port to run lolisafe in:',
 			handle: 'SERVER_PORT',
-		},
-		{
-			type: 'input',
-			query: 'Port to run the Website in when in dev mode:',
-			handle: 'WEBSITE_PORT',
 		},
 		{
 			type: 'input',
@@ -41,13 +36,6 @@ async function start() {
 		},
 		{
 			type: 'confirm',
-			query: 'Generate thumbnails for images/videos? (Requires ffmpeg installed and in your PATH)',
-			handle: 'GENERATE_THUMBNAILS',
-			accept: 'y',
-			deny: 'n',
-		},
-		{
-			type: 'confirm',
 			query: 'Allow users to download entire albums in ZIP format?',
 			handle: 'GENERATE_ZIPS',
 			accept: 'y',
@@ -55,31 +43,14 @@ async function start() {
 		},
 		{
 			type: 'confirm',
-			query: 'Serve files with node?',
-			handle: 'SERVE_WITH_NODE',
-			accept: 'y',
-			deny: 'n',
-		},
-		{
-			type: 'input',
-			query: 'Base number of characters for generated file URLs (12 should be good enough):',
-			handle: 'GENERATED_FILENAME_LENGTH',
-		},
-		{
-			type: 'input',
-			query: 'Base number of characters for generated album URLs (6 should be enough):',
-			handle: 'GENERATED_ALBUM_LENGTH',
-		},
-		{
-			type: 'confirm',
-			query: 'Run lolisafe in public mode? (People will be able to upload without an account)',
+			query: 'Allow people to upload files without an account?',
 			handle: 'PUBLIC_MODE',
 			accept: 'y',
 			deny: 'n',
 		},
 		{
 			type: 'confirm',
-			query: 'Enable user signup for new accounts?',
+			query: 'Allow people to create new accounts?',
 			handle: 'USER_ACCOUNTS',
 			accept: 'y',
 			deny: 'n',
@@ -131,6 +102,11 @@ async function start() {
 	let envfile = '';
 
 	const defaultSettings = {
+		GENERATED_FILENAME_LENGTH: 12,
+		GENERATED_ALBUM_LENGTH: 6,
+		WEBSITE_PORT: 5001,
+		SERVE_WITH_NODE: true,
+		GENERATE_THUMBNAILS: true,
 		CHUNK_SIZE: 90,
 		ROUTE_PREFIX: '/api',
 		RATE_LIMIT_WINDOW: 2,
@@ -157,8 +133,6 @@ async function start() {
 	console.log();
 	console.log('=============================================');
 	console.log('==    .env file generated successfully.    ==');
-	console.log('=============================================');
-	console.log('== Run `yarn migrate` and `yarn seed` next ==');
 	console.log('=============================================');
 	console.log();
 }

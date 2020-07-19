@@ -152,6 +152,12 @@
 					</div>
 				</template>
 			</b-table>
+			<button
+				v-if="moreFiles"
+				class="button is-primary mt2"
+				@click="loadMoreFiles">
+				Load more
+			</button>
 		</div>
 		<b-modal :active.sync="isAlbumsModalActive" scroll="keep">
 			<ImageInfo :file="modalData.file" />
