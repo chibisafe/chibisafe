@@ -10,10 +10,15 @@ $family-primary: 'Nunito', BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Robot
 	'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 $size-normal: 1rem;
 
-@import '../../../node_modules/bulma/bulma.sass';
-@import '../../../node_modules/buefy/src/scss/buefy.scss';
+/* @import '../../../node_modules/bulma/bulma.sass';
+@import '../../../node_modules/buefy/src/scss/buefy.scss'; */
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
 
 @import '@mdi/font/css/materialdesignicons.css';
+
+@import './bulma-divider.scss';
 
 html {
 	// font-size: 100%;
@@ -204,24 +209,6 @@ section#register a.is-text {
 	margin-top: 5px;
 }
 
-.input,
-.taginput .taginput-container.is-focusable,
-.textarea,
-.select select {
-	border: 2px solid #21252d;
-	border-radius: 0.3em !important;
-	background: rgba(0, 0, 0, 0.15);
-	padding: 1rem;
-	color: $textColor;
-	height: 3rem;
-	&:focus,
-	&:hover {
-		border: 2px solid #21252d;
-	}
-	&::placeholder {
-		color: $textColor;
-	}
-}
 /* button.button.is-primary {
 	background-color: #323846;
 	border: 2px solid #21252d;
@@ -276,6 +263,29 @@ table.table {
 		border-color: #ffffff1c;
 	}
 }
+
+.lolisafe-input input,
+.lolisafe-select select,
+.lolisafe-textarea textarea {
+	border: 2px solid #21252d;
+	border-radius: 0.3em !important;
+	background: rgba(0, 0, 0, 0.15);
+	padding: 1rem;
+	color: $textColor;
+	height: 3rem;
+	&:focus,
+	&:hover {
+		border: 2px solid #21252d;
+	}
+	&::placeholder {
+		color: $textColor;
+	}
+} 
+
+.lolisafe-input .icon {
+	color: #323846 !important;
+}
+
 
 // vue-bar
 .vb > .vb-dragger {
@@ -344,4 +354,48 @@ table.table {
 .control.has-icons-left .icon, .control.has-icons-right .icon {
 	height: 3rem;
 	padding-right: 1rem;
+}
+
+.is-marginless {
+	margin: 0 !important;
+}
+
+.fucking-opl-shut-up {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lolisafe-on-border.field.is-floating-label .label:before {
+	background-color: $lolisafe;
+}
+
+.is-lolisafe.divider::after, .is-lolisafe.divider::before {
+	background-color: #21252d;
+}
+
+.lolisafe.taginput {
+	.taginput-container {
+		background-color: #21252d;
+		border: 2px solid #21252d;
+		border-radius: 0.3em !important;
+
+		input {
+			background-color: #21252d;
+			color: $textColor;
+			&::placeholder {
+				color: $textColor;
+			}
+		}
+
+		.icon {
+			padding-left: 15px;
+		}
+
+		&:focus,
+		&:hover,
+		&:active {
+			border: 2px solid #21252d;
+		}
+	}
 }

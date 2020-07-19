@@ -14,7 +14,7 @@
 						<div class="level-left">
 							<div class="level-item">
 								<h1 class="title is-3">
-									{{ images.name }}
+									{{ images.albumName }}
 								</h1>
 							</div>
 							<div class="level-item">
@@ -27,6 +27,7 @@
 							<div class="level-item">
 								<b-field>
 									<b-input
+										class="lolisafe-input"
 										placeholder="Search"
 										type="search" />
 									<p class="control">

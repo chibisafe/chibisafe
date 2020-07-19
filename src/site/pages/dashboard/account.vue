@@ -16,6 +16,7 @@
 						message="Nothing to do here"
 						horizontal>
 						<b-input
+							class="lolisafe-input"
 							:value="user.username"
 							expanded
 							disabled />
@@ -27,6 +28,7 @@
 						horizontal>
 						<b-input
 							v-model="password"
+							class="lolisafe-input"
 							type="password"
 							expanded />
 					</b-field>
@@ -37,6 +39,7 @@
 						horizontal>
 						<b-input
 							v-model="newPassword"
+							class="lolisafe-input"
 							type="password"
 							expanded />
 					</b-field>
@@ -47,6 +50,7 @@
 						horizontal>
 						<b-input
 							v-model="reNewPassword"
+							class="lolisafe-input"
 							type="password"
 							expanded />
 					</b-field>
@@ -65,6 +69,7 @@
 						horizontal>
 						<b-field expanded>
 							<b-input
+								class="lolisafe-input"
 								:value="apiKey"
 								expanded
 								disabled />

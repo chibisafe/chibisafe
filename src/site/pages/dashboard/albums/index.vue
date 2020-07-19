@@ -16,6 +16,7 @@
 							<b-field>
 								<b-input
 									v-model="newAlbumName"
+									class="lolisafe-input"
 									placeholder="Album name..."
 									type="text"
 									@keyup.enter.native="createAlbum" />

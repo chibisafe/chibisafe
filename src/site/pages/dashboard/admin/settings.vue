@@ -17,6 +17,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.serviceName"
+							class="lolisafe-input"
 							expanded />
 					</b-field>
 
@@ -26,6 +27,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.uploadFolder"
+							class="lolisafe-input"
 							expanded />
 					</b-field>
 
@@ -35,6 +37,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.linksPerAlbum"
+							class="lolisafe-input"
 							type="number"
 							expanded />
 					</b-field>
@@ -45,6 +48,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.maxUploadSize"
+							class="lolisafe-input"
 							expanded />
 					</b-field>
 
@@ -54,6 +58,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.filenameLength"
+							class="lolisafe-input"
 							expanded />
 					</b-field>
 
@@ -63,6 +68,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.albumLinkLength"
+							class="lolisafe-input"
 							expanded />
 					</b-field>
 

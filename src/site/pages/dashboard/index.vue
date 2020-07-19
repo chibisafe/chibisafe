@@ -1,7 +1,7 @@
 <template>
 	<section class="section is-fullheight dashboard">
 		<div class="container">
-			<div class="columns is-variable is-0-mobile">
+			<div class="columns ">
 				<div class="column is-narrow">
 					<Sidebar />
 				</div>
@@ -18,6 +18,7 @@
 							<div class="level-item">
 								<b-field>
 									<b-input
+										class="lolisafe-input"
 										placeholder="Search"
 										type="search" />
 									<p class="control">

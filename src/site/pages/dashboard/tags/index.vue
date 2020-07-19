@@ -140,6 +140,7 @@
 						<b-field>
 							<b-input
 								v-model="newTagName"
+								class="lolisafe-input"
 								placeholder="Tag name..."
 								type="text"
 								@keyup.enter.native="createTag" />

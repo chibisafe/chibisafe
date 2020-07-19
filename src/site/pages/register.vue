@@ -12,12 +12,14 @@
 					<b-field>
 						<b-input
 							v-model="username"
+							class="lolisafe-input"
 							type="text"
 							placeholder="Username" />
 					</b-field>
 					<b-field>
 						<b-input
 							v-model="password"
+							class="lolisafe-input"
 							type="password"
 							placeholder="Password"
 							password-reveal />
@@ -25,6 +27,7 @@
 					<b-field>
 						<b-input
 							v-model="rePassword"
+							class="lolisafe-input"
 							type="password"
 							placeholder="Re-type Password"
 							password-reveal

@@ -12,6 +12,7 @@
 					<b-field>
 						<b-input
 							v-model="username"
+							class="lolisafe-input"
 							type="text"
 							placeholder="Username"
 							@keyup.enter.native="login" />
@@ -19,6 +20,7 @@
 					<b-field>
 						<b-input
 							v-model="password"
+							class="lolisafe-input"
 							type="password"
 							placeholder="Password"
 							password-reveal
