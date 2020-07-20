@@ -4,7 +4,7 @@ const log = require('../../utils/Log');
 
 class fileDELETE extends Route {
 	constructor() {
-		super('/file/:id', 'delete');
+		super('/file/:id', 'delete', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {
