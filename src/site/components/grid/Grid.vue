@@ -6,6 +6,7 @@
 					<slot name="pagination" />
 				</div>
 			</div>
+			<!-- TODO: Externalize this so it can be saved as an user config (and between re-renders) -->
 			<div v-if="enableToolbar" class="level-right toolbar">
 				<div class="level-item">
 					<div class="block">
@@ -66,27 +67,22 @@
 							@mouseleave.self.stop.prevent="item.preview && mouseOut(item.id)">
 							<b-tooltip label="Link" position="is-top">
 								<a :href="`${item.url}`" target="_blank" class="btn">
-									<i class="icon-web-code" />
+									<i class="mdi mdi-open-in-new" />
 								</a>
 							</b-tooltip>
-							<b-tooltip label="Tags" position="is-top">
-								<a class="btn" @click="false && manageTags(item)">
-									<i class="icon-ecommerce-tag-c" />
-								</a>
-							</b-tooltip>
-							<b-tooltip label="Albums" position="is-top">
+							<b-tooltip label="Edit" position="is-top">
 								<a class="btn" @click="handleFileModal(item)">
-									<i class="icon-interface-window" />
+									<i class="mdi mdi-pencil" />
 								</a>
 							</b-tooltip>
 							<b-tooltip label="Delete" position="is-top">
 								<a class="btn" @click="deleteFile(item)">
-									<i class="icon-editorial-trash-a-l" />
+									<i class="mdi mdi-delete" />
 								</a>
 							</b-tooltip>
 							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${item.id}`">
-									<i class="icon-interface-more" />
+									<i class="mdi mdi-dots-horizontal" />
 								</nuxt-link>
 							</b-tooltip>
 						</div>
@@ -120,19 +116,19 @@
 						</b-table-column>
 
 						<b-table-column field="purge" centered>
-							<b-tooltip label="Albums" position="is-top">
+							<b-tooltip label="Edit" position="is-top">
 								<a class="btn" @click="handleFileModal(props.row)">
-									<i class="icon-interface-window" />
+									<i class="mdi mdi-pencil" />
 								</a>
 							</b-tooltip>
 							<b-tooltip label="Delete" position="is-top" class="is-danger">
 								<a class="is-danger" @click="deleteFile(props.row)">
-									<i class="icon-editorial-trash-a-l" />
+									<i class="mdi mdi-delete" />
 								</a>
 							</b-tooltip>
 							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
 								<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
-									<i class="icon-interface-more" />
+									<i class="mdi mdi-dots-horizontal" />
 								</nuxt-link>
 							</b-tooltip>
 						</b-table-column>
@@ -159,33 +155,10 @@
 				Load more
 			</button>
 		</div>
-		<b-modal :active.sync="isAlbumsModalActive" scroll="keep">
-			<ImageInfo :file="modalData.file" />
-		</b-modal>
-		<!-- <b-modal :active.sync="isAlbumsModalActive" :width="640" scroll="keep">
-			<div class="card albumsModal">
-				<div class="card-content">
-					<div class="content">
-						<h3 class="subtitle">
-							Select the albums this file should be a part of
-						</h3>
-						<hr>
 
-						<div class="albums-container">
-							<div v-for="album in albums" :key="album.id" class="album">
-								<div class="field">
-									<b-checkbox
-										:value="isAlbumSelected(album.id)"
-										@input="albumCheckboxClicked($event, album.id)">
-										{{ album.name }}
-									</b-checkbox>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</b-modal> -->
+		<b-modal class="imageinfo-modal" :active.sync="isAlbumsModalActive">
+			<ImageInfo :file="modalData.file" :albums="modalData.albums" :tags="modalData.tags" />
+		</b-modal>
 	</div>
 </template>
 
@@ -263,7 +236,9 @@ export default {
 		},
 	},
 	created() {
+		// TODO: Create a middleware for this
 		this.getAlbums();
+		this.getTags();
 	},
 	methods: {
 		async search() {
@@ -347,6 +322,13 @@ export default {
 			}
 
 			this.isAlbumsModalActive = true;
+		},
+		async getTags() {
+			try {
+				await this.$store.dispatch('tags/fetch');
+			} catch (e) {
+				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
+			}
 		},
 		mouseOver(id) {
 			const foundIndex = this.hoveredItems.indexOf(id);
@@ -503,5 +485,14 @@ div.actions {
 	div.actions {
 		opacity: 1;
 	}
+}
+
+.imageinfo-modal::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+i.mdi {
+	font-size: 16px;
 }
 </style>

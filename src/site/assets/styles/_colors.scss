@@ -69,3 +69,15 @@ $sidebar-box-shadow: none;
 $menu-item-color: $textColor;
 $menu-item-hover-color: $textColorHighlight;
 $menu-item-active-background-color: $backgroundAccent;
+
+// dropdown 
+$dropdown-content-background-color: $background;
+$dropdown-item-hover-background-color: $backgroundAccentLighter;
+$dropdown-item-color: $textColor;
+$dropdown-item-hover-color: $textColorHighlight;
+$dropdown-item-active-color: $textColorHighlight;
+$dropdown-item-active-background-color: hsl(171, 100%, 41%); // $primary
+
+// tags
+$tag-background-color: $base-2;
+$tag-color: $textColor;

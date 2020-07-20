@@ -1,10 +1,13 @@
 <template>
 	<div class="container has-background-lolisafe">
 		<div class="columns is-marginless">
-			<div class="column fucking-opl-shut-up">
-				<img src="https://placehold.it/1024x10024">
+			<div class="column image-col has-centered-items">
+				<img v-if="!isVideo(file.type)" class="col-img" :src="file.url">
+				<video v-else class="col-vid" controls>
+					<source :src="file.url" :type="file.type">
+				</video>
 			</div>
-			<div class="column is-one-third">
+			<div class="column data-col is-one-third">
 				<div class="sticky">
 					<div class="divider is-lolisafe has-text-light">
 						File information
@@ -90,21 +93,16 @@
 							<span class="fake-input"><timeago :since="file.createdAt" /></span>
 						</div>
 					</b-field>
-					<div class="divider is-lolisafe has-text-light">
-						Albums
-					</div>
 
 					<div class="divider is-lolisafe has-text-light">
 						Tags
 					</div>
-					<b-field label="Add some tags">
-						<b-taginput
-							v-model="tags"
-							class="lolisafe"
-							ellipsis
-							icon="label"
-							placeholder="Add a tag" />
-					</b-field>
+					<Taginfo :imageId="file.id" :imageTags="tags" />
+
+					<div class="divider is-lolisafe has-text-light">
+						Albums
+					</div>
+					<Albuminfo :imageId="file.id" :imageAlbums="albums" />
 				</div>
 			</div>
 		</div>
@@ -114,17 +112,27 @@
 <script>
 import { mapState } from 'vuex';
 
+import Albuminfo from './AlbumInfo.vue';
+import Taginfo from './TagInfo.vue';
+
 export default {
+	components: {
+		Taginfo,
+		Albuminfo,
+	},
 	props: {
 		file: {
 			type: Object,
 			default: () => ({}),
 		},
-	},
-	data() {
-		return {
-			tags: [],
-		};
+		albums: {
+			type: Array,
+			default: () => ([]),
+		},
+		tags: {
+			type: Array,
+			default: () => ([]),
+		},
 	},
 	computed: mapState(['images']),
 	methods: {
@@ -138,6 +146,9 @@ export default {
 			const i = Math.floor(Math.log(bytes) / Math.log(k));
 
 			return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+		},
+		isVideo(type) {
+			return type.startsWith('video');
 		},
 	},
 };
@@ -175,5 +186,19 @@ export default {
 
 .divider:first-child {
     margin: 10px 0 25px;
+}
+
+.col-vid {
+	width: 100%;
+}
+
+.image-col {
+	align-items: start;
+}
+
+.data-col  {
+	@media screen and (min-width: 769px) {
+		padding-right: 1.5rem;
+	}
 }
 </style>

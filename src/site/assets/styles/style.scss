@@ -360,7 +360,7 @@ table.table {
 	margin: 0 !important;
 }
 
-.fucking-opl-shut-up {
+.has-centered-items {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -398,4 +398,8 @@ table.table {
 			border: 2px solid #21252d;
 		}
 	}
+}
+
+.dropdown-content a {
+	text-decoration: none;
 }

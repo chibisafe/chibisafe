@@ -1,7 +1,7 @@
 <template>
 	<div ref="waterfall" class="waterfall">
 		<WaterfallItem
-			v-for="(item, index) in items"
+			v-for="item in items"
 			:key="item.id"
 			:style="{ width: `${itemWidth}px`, marginBottom: `${gutterHeight}px` }"
 			:width="itemWidth">
@@ -13,6 +13,7 @@
 import WaterfallItem from './WaterfallItem.vue';
 
 const isBrowser = typeof window !== 'undefined';
+// eslint-disable-next-line global-require
 const Masonry = isBrowser ? window.Masonry || require('masonry-layout') : null;
 const imagesloaded = isBrowser ? require('imagesloaded') : null;
 

@@ -93,6 +93,20 @@ export const actions = {
 
 		return response;
 	},
+	async addTag({ commit }, { fileId, tagName }) {
+		const response = await this.$axios.$post('file/tag/add', { fileId, tagName });
+
+		commit('addTagToFile', response.data);
+
+		return response;
+	},
+	async removeTag({ commit }, { fileId, tagName }) {
+		const response = await this.$axios.$post('file/tag/del', { fileId, tagName });
+
+		commit('removeTagFromFile', response.data);
+
+		return response;
+	},
 };
 
 export const mutations = {
@@ -136,6 +150,19 @@ export const mutations = {
 		const foundIndex = state.fileAlbumsMap[fileId].findIndex(({ id }) => id === albumId);
 		if (foundIndex > -1) {
 			state.fileAlbumsMap[fileId].splice(foundIndex, 1);
+		}
+	},
+	addTagToFile(state, { fileId, tag }) {
+		if (!state.fileTagsMap[fileId]) return;
+
+		state.fileTagsMap[fileId].push(tag);
+	},
+	removeTagFromFile(state, { fileId, tag }) {
+		if (!state.fileTagsMap[fileId]) return;
+
+		const foundIndex = state.fileTagsMap[fileId].findIndex(({ id }) => id === tag.id);
+		if (foundIndex > -1) {
+			state.fileTagsMap[fileId].splice(foundIndex, 1);
 		}
 	},
 	resetState(state) {
