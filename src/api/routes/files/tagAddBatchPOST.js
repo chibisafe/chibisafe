@@ -1,6 +1,6 @@
 const Route = require('../../structures/Route');
 
-class tagAddPOST extends Route {
+class tagAddBatchPOST extends Route {
 	constructor() {
 		super('/file/tag/addBatch', 'post');
 	}
@@ -30,11 +30,11 @@ class tagAddPOST extends Route {
 
 		return res.json({
 			message: 'Successfully added tags to file',
-			data: addedTags,
+			data: { fileId, tags: addedTags },
 			errors,
 		});
 		// eslint-disable-next-line consistent-return
 	}
 }
 
-module.exports = tagAddPOST;
+module.exports = tagAddBatchPOST;

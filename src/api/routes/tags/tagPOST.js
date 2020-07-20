@@ -18,14 +18,18 @@ class tagPOST extends Route {
 		if (tag) return res.status(401).json({ message: 'There\'s already a tag with that name' });
 
 		const now = moment.utc().toDate();
-		await db.table('tags').insert({
+		const insertObj = {
 			name,
 			userId: user.id,
 			createdAt: now,
 			editedAt: now,
-		});
+		};
 
-		return res.json({ message: 'The tag was created successfully' });
+		const dbRes = await db.table('tags').insert(insertObj);
+
+		insertObj.id = dbRes.pop();
+
+		return res.json({ message: 'The tag was created successfully', data: insertObj });
 	}
 }
 
