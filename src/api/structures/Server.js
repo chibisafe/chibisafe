@@ -70,9 +70,13 @@ class Server {
 			let routes = [RouteClass];
 			if (Array.isArray(RouteClass)) routes = RouteClass;
 			for (const File of routes) {
-				const route = new File();
-				this.server[route.method](process.env.ROUTE_PREFIX + route.path, route.authorize.bind(route));
-				log.info(`Found route ${route.method.toUpperCase()} ${process.env.ROUTE_PREFIX}${route.path}`);
+				try {
+					const route = new File();
+					this.server[route.method](process.env.ROUTE_PREFIX + route.path, route.authorize.bind(route));
+					log.info(`Found route ${route.method.toUpperCase()} ${process.env.ROUTE_PREFIX}${route.path}`);
+				} catch (e) {
+					log.error(`Failed loading route from file ${routeFile} with error: ${e.message}`);
+				}
 			}
 		});
 	}
