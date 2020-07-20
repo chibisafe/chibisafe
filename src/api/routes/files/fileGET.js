@@ -31,7 +31,7 @@ class fileGET extends Route {
 		*/
 		const tags = await db.table('fileTags')
 			.where('fileId', id)
-			.join('tags', 'tags.id', 'fileTags.id')
+			.join('tags', 'tags.id', 'fileTags.tagId')
 			.select('tags.id', 'tags.uuid', 'tags.name');
 
 		return res.json({
