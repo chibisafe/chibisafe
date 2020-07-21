@@ -88,16 +88,8 @@ export default {
 
 .taginp {
 	::v-deep .dropdown-content {
-		background-color: hsl(0, 0%, 100%);
-
-		.dropdown-item {
-			color: hsl(0, 0%, 29%);
-
-			&:hover {
-				color: hsl(0, 0%, 4%);
-				background-color: hsl(0, 0%, 90%);
-			}
-		}
+		background-color: #323846;
+		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 	}
 }
 </style>

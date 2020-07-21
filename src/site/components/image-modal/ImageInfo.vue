@@ -102,7 +102,7 @@
 					<div class="divider is-lolisafe has-text-light">
 						Albums
 					</div>
-					<Albuminfo :imageId="file.id" :imageAlbums="albums" />
+					<Albuminfo :imageId="file.id" :imageAlbums="albums" :albums="tinyDetails" />
 				</div>
 			</div>
 		</div>
@@ -134,7 +134,10 @@ export default {
 			default: () => ([]),
 		},
 	},
-	computed: mapState(['images']),
+	computed: mapState({
+		images: (state) => state.images,
+		tinyDetails: (state) => state.albums.tinyDetails,
+	}),
 	methods: {
 		formatBytes(bytes, decimals = 2) {
 			if (bytes === 0) return '0 Bytes';

@@ -13,12 +13,12 @@
 		</button>
 
 		<b-dropdown-item
-			v-for="album in albums"
+			v-for="album in orderedAlbums"
 			:key="album.id"
 			:value="album.id"
 			aria-role="listitem"
 			@click="handleClick(album.id)">
-			<span>{{ album. name }}</span>
+			<span>{{ album.name }}</span>
 		</b-dropdown-item>
 	</b-dropdown>
 </template>
@@ -37,18 +37,37 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		albums: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
-			selectedOptions: this.imageAlbums.map((e) => e.id),
+			selectedOptions: [],
+			orderedAlbums: [],
 		};
 	},
-	computed: {
-		...mapState({
-			albums: (state) => state.albums.tinyDetails,
-		}),
+	created() {
+		this.orderedAlbums = this.getOrderedAlbums();
+		// we're sorting here instead of computed because we want sort on creation
+		// then the array's values should be frozen
+		this.selectedOptions = this.imageAlbums.map((e) => e.id);
 	},
 	methods: {
+		getOrderedAlbums() {
+			return [...this.albums].sort(
+				(a, b) => {
+					const selectedA = this.imageAlbums.findIndex(({ name }) => name === a.name) !== -1;
+					const selectedB = this.imageAlbums.findIndex(({ name }) => name === b.name) !== -1;
+
+					if (selectedA !== selectedB) {
+						return selectedA ? -1 : 1;
+					}
+					return a.name.localeCompare(b.name);
+				},
+			);
+		},
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return false;
 			const found = this.showingModalForFile.albums.find((el) => el.id === id);
