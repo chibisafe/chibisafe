@@ -200,5 +200,8 @@ export default {
 	@media screen and (min-width: 769px) {
 		padding-right: 1.5rem;
 	}
+	@media screen and (max-width: 769px) {
+		padding-bottom: 3rem;
+	}
 }
 </style>

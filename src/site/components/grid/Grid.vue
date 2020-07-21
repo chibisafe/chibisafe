@@ -148,12 +148,6 @@
 					</div>
 				</template>
 			</b-table>
-			<button
-				v-if="moreFiles"
-				class="button is-primary mt2"
-				@click="loadMoreFiles">
-				Load more
-			</button>
 		</div>
 
 		<b-modal class="imageinfo-modal" :active.sync="isAlbumsModalActive">
@@ -494,5 +488,13 @@ div.actions {
 
 i.mdi {
 	font-size: 16px;
+}
+
+.imageinfo-modal{
+	::v-deep .modal-content {
+		@media screen and (max-width: 768px) {
+			min-height: 100vh;
+		}
+	}
 }
 </style>
