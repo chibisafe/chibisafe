@@ -16,17 +16,7 @@
 						</div>
 						<div class="level-right">
 							<div class="level-item">
-								<b-field>
-									<b-input
-										class="lolisafe-input"
-										placeholder="Search"
-										type="search" />
-									<p class="control">
-										<b-button type="is-lolisafe">
-											Search
-										</b-button>
-									</p>
-								</b-field>
+								<Search @search="onSearch" />
 							</div>
 						</div>
 					</nav>
@@ -68,11 +58,13 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Grid from '~/components/grid/Grid.vue';
+import Search from '~/components/search/Search.vue';
 
 export default {
 	components: {
 		Sidebar,
 		Grid,
+		Search,
 	},
 	middleware: ['auth', ({ store }) => {
 		store.commit('images/resetState');
@@ -82,6 +74,7 @@ export default {
 		return {
 			current: 1,
 			isLoading: false,
+			search: '',
 		};
 	},
 	computed: {
@@ -98,6 +91,9 @@ export default {
 	watch: {
 		current: 'fetchPaginate',
 	},
+	created() {
+		this.filteredHints = this.hints; // fixes the issue where on pageload, suggestions wont load
+	},
 	methods: {
 		...mapActions({
 			fetch: 'images/fetch',
@@ -106,6 +102,9 @@ export default {
 			this.isLoading = true;
 			await this.fetch(this.current);
 			this.isLoading = false;
+		},
+		onSearch(query) {
+			this.searc = query;
 		},
 	},
 };

@@ -8,6 +8,7 @@ export const getDefaultState = () => ({
 		limit: 30,
 		totalFiles: 0,
 	},
+	search: '',
 	albumName: null,
 	albumDownloadEnabled: false,
 	fileExtraInfoMap: {}, // information about the selected file
