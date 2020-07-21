@@ -137,4 +137,8 @@ export default {
 			}
 		}
 	}
+
+	.no-active {
+		text-decoration: none !important;
+	}
 </style>
