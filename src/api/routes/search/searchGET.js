@@ -1,24 +1,62 @@
 const searchQuery = require('search-query-parser');
-const chrono = require('chrono-node');
-const Route = require('../../structures/Route');
 
-const options = { keywords: ['album', 'tag', 'user', 'before', 'after'], offsets: false };
+const Route = require('../../structures/Route');
+const Util = require('../../utils/Util');
+
+const queryHelper = require('../../utils/QueryHelper');
+
+const options = {
+	keywords: ['album', 'tag', 'before', 'after', 'file'],
+	offsets: false,
+	alwaysArray: true,
+	tokenize: true,
+};
+
 class configGET extends Route {
 	constructor() {
-		super('/search/:q', 'get', { bypassAuth: true });
+		super('/search/', 'get');
 	}
 
-	run(req, res) {
-		const { q } = req.params;
+	async run(req, res, db, user) {
+		let count = 0;
+
+		const { q } = req.query;
 		const parsed = searchQuery.parse(q, options);
 
-		if (parsed.before) {
-			parsed.before = chrono.parse(parsed.before);
+		let files = db.table('files')
+			.select('*')
+			.where({ 'files.userId': user.id })
+			.orderBy('files.createdAt', 'desc');
+
+		files = queryHelper.processQuery(db, files, parsed);
+
+		const query = files.toString();
+		const { page, limit = 100 } = req.query;
+
+		if (page && page >= 0) {
+			let dbRes = files.clone(); // clone the query to attach a count to it later on
+			files = await files.offset((page - 1) * limit).limit(limit);
+
+			dbRes = await dbRes.count('* as count').first();
+
+			count = dbRes.count;
+		} else {
+			files = await files; // execute the query
+			count = files.length;
 		}
-		if (parsed.after) {
-			parsed.after = chrono.parse(parsed.after);
+
+		// For each file, create the public link to be able to display the file
+		for (let file of files) {
+			file = Util.constructFilePublicLink(file);
 		}
-		return res.json(parsed);
+
+		return res.json({
+			message: 'Successfully retrieved files',
+			query,
+			parsed,
+			files,
+			count,
+		});
 	}
 }
 

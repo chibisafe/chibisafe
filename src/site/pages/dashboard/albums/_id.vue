@@ -55,12 +55,8 @@
 								aria-current-label="Current page" />
 						</template>
 					</Grid>
-					</search>
 				</div>
 			</div>
-			</nav>
-		</div>
-		</div>
 		</div>
 	</section>
 </template>
