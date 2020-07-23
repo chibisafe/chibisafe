@@ -103,8 +103,16 @@ export default {
 			await this.fetch(this.current);
 			this.isLoading = false;
 		},
+		sanitizeQuery(qry) {
+			// remove spaces between a search type selector `album:`
+			// and the value (ex `tag: 123` -> `tag:123`)
+			return (qry || '').replace(/(\w+):\s+/gi, '$1:');
+		},
 		onSearch(query) {
-			this.searc = query;
+			this.search = query;
+			this.$handler.executeAction('images/search', {
+				q: this.sanitizeQuery(query),
+			});
 		},
 	},
 };

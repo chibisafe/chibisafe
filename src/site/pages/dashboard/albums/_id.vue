@@ -25,17 +25,7 @@
 						</div>
 						<div class="level-right">
 							<div class="level-item">
-								<b-field>
-									<b-input
-										class="lolisafe-input"
-										placeholder="Search"
-										type="search" />
-									<p class="control">
-										<b-button type="is-lolisafe">
-											Search
-										</b-button>
-									</p>
-								</b-field>
+								<Search :hidden-hints="['album']" />
 							</div>
 						</div>
 					</nav>
@@ -43,7 +33,8 @@
 					<hr>
 
 					<Grid
-						v-if="totalFiles"
+						v-if="
+							totalFiles"
 						:files="images.files"
 						:total="totalFiles">
 						<template v-slot:pagination>
@@ -64,8 +55,12 @@
 								aria-current-label="Current page" />
 						</template>
 					</Grid>
+					</search>
 				</div>
 			</div>
+			</nav>
+		</div>
+		</div>
 		</div>
 	</section>
 </template>
@@ -75,11 +70,13 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Grid from '~/components/grid/Grid.vue';
+import Search from '~/components/search/Search.vue';
 
 export default {
 	components: {
 		Sidebar,
 		Grid,
+		Search,
 	},
 	middleware: ['auth', ({ route, store }) => {
 		store.commit('images/resetState');

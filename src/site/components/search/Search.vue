@@ -12,7 +12,8 @@
 					placeholder="Search"
 					type="search"
 					open-on-focus
-					@typing="handleTyping">
+					@typing="handleTyping"
+					@keydown.native.enter="onSubmit">
 					<template slot-scope="props">
 						<b>{{ props.option.name }}:</b>
 						<small>
@@ -36,6 +37,12 @@ import SearchInput from '~/components/search-input/SearchInput.vue';
 export default {
 	components: {
 		SearchInput,
+	},
+	props: {
+		hiddenHints: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
@@ -66,11 +73,17 @@ export default {
 					'valueFormat': 'specific date',
 					'hint': '',
 				},
+				{
+					'name': 'file',
+					'valueFormat': 'generated name',
+					'hint': '',
+				},
 			],
 			filteredHints: [],
 		};
 	},
 	created() {
+		this.hints = this.hints.filter(({ name }) => this.hiddenHints.indexOf(name) === -1);
 		this.filteredHints = this.hints; // fixes the issue where on pageload, suggestions wont load
 	},
 	methods: {
@@ -83,15 +96,19 @@ export default {
 		handleTyping(qry) {
 			qry = qry || '';
 			// get the last word or group of words
-			const lastWord = (qry.match(/("[^"]*")|[^;, ]+/g) || ['']).pop().toLowerCase();
+			let lastWord = (qry.match(/("[^"]*")|[^\s]+/g) || ['']).pop().toLowerCase();
 			// if there's an open/unbalanced quote, don't autosuggest
 			if (/^[^"]*("[^"]*"[^"]*)*(")[^"]*$/.test(qry)) { this.filteredHints = []; return; }
 			// don't autosuggest if we have an open query but no text yet
-			if (/:[\s|;|,]?$/gi.test(qry)) { this.filteredHints = []; return; }
+			if (/:\s+$/gi.test(qry)) { this.filteredHints = []; return; }
 			// if the above query didn't match (all quotes are balanced
 			// and the previous tag has value
 			// check if we're about to start a new tag
-			if (/[\s|;|,]+$/gi.test(qry)) { this.filteredHints = this.hints; return; }
+			if (/\s+$/gi.test(qry)) { this.filteredHints = this.hints; return; }
+
+			// ignore starting `-` from lastword, because - is used to
+			// exclude something, so -alb should autosuggest album
+			lastWord = lastWord.replace(/^-/, '');
 
 			// if we got here, then we handled all special cases
 			// now take last word, and check if we can autosuggest a tag
@@ -100,11 +117,11 @@ export default {
 				.toLowerCase()
 				.indexOf(lastWord) === 0);
 		},
-		sanitizeQuery(qry) {
-			// \w+:\s+? to transform 'tag: 123' into 'tag:123'
-		},
-		onSubmit() {
-			this.$emit('search', this.query);
+		onSubmit(event) {
+			if (event.key === 'Enter') {
+				if (/:$/gi.test(this.query)) { return; }
+			}
+			this.$emit('search', this.query, event);
 		},
 	},
 };

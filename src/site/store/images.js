@@ -108,6 +108,12 @@ export const actions = {
 
 		return response;
 	},
+	async search({ commit }, { q, albumId }) {
+		const optionalAlbum = albumId ? `&albumId=${albumId}` : '';
+		const response = await this.$axios.$get(`search/?q=${encodeURI(q)}${optionalAlbum}`);
+
+		return response;
+	},
 };
 
 export const mutations = {
