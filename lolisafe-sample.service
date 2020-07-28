@@ -1,0 +1,13 @@
+[Unit]
+Description=lolisafe, a small safe worth protecting.
+After=network.target
+
+[Service]
+Type=simple
+User=yourusername
+WorkingDirectory=/path/to/lolisafe
+ExecStart=/usr/bin/node /path/to/lolisafe/lolisafe.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
