@@ -55,6 +55,13 @@ export const actions = {
 
 		return response;
 	},
+	async createCustomLink({ commit }, { albumId, value }) {
+		const response = await this.$axios.$post('album/link/new', { albumId, identifier: value });
+
+		commit('addAlbumLink', { albumId, data: response.data });
+
+		return response;
+	},
 	async updateLinkOptions({ commit }, { albumId, linkOpts }) {
 		const response = await this.$axios.$post('album/link/edit', {
 			identifier: linkOpts.identifier,
