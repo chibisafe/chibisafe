@@ -22,7 +22,7 @@
 				tag="nuxt-link"
 				to="/dashboard/tags"
 				exact />
-			<b-menu-item icon="settings" expanded>
+			<b-menu-item icon="menu" expanded>
 				<template slot="label" slot-scope="props">
 					Administration
 					<b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />

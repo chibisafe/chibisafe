@@ -30,11 +30,28 @@ class linkPOST extends Route {
 			.first();
 		if (count >= parseInt(process.env.MAX_LINKS_PER_ALBUM, 10)) return res.status(400).json({ message: 'Maximum links per album reached' });
 
-		/*
-			Try to allocate a new identifier on the db
-		*/
-		const identifier = await Util.getUniqueAlbumIdentifier();
-		if (!identifier) return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
+		let { identifier } = req.body;
+		if (identifier) {
+			if (!user.isAdmin) return res.status(401).json({ message: 'Only administrators can create custom links' });
+
+			if (!(/^[a-zA-Z0-9-_]+$/.test(identifier))) return res.status(400).json({ message: 'Only alphanumeric, dashes, and underscore characters are allowed' });
+
+			/*
+				Make sure that the id doesn't already exists in the database
+			*/
+			const idExists = await db
+				.table('links')
+				.where({ identifier })
+				.first();
+
+			if (idExists) return res.status(400).json({ message: 'Album with this identifier already exists' });
+		} else {
+			/*
+				Try to allocate a new identifier in the database
+			*/
+			identifier = await Util.getUniqueAlbumIdentifier();
+			if (!identifier) return res.status(500).json({ message: 'There was a problem allocating a link for your album' });
+		}
 
 		try {
 			const insertObj = {

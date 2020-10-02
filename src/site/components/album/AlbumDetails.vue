@@ -58,7 +58,30 @@
 				<div class="level is-paddingless">
 					<div class="level-left">
 						<div class="level-item">
+							<b-field v-if="auth.user.isAdmin">
+								<p class="control">
+									<button
+										:class="{ 'is-loading': isCreatingLink }"
+										class="button is-primary reset-font-size-button"
+										style="float: left"
+										@click="createLink(albumId)">
+										Create new link
+									</button>
+								</p>
+								<p class="control">
+									<b-dropdown>
+										<button slot="trigger" class="button is-primary reset-font-size-button">
+											<b-icon icon="menu-down" />
+										</button>
+
+										<b-dropdown-item @click="createCustomLink(albumId)">
+											Custom link
+										</b-dropdown-item>
+									</b-dropdown>
+								</p>
+							</b-field>
 							<button
+								v-else
 								:class="{ 'is-loading': isCreatingLink }"
 								class="button is-primary"
 								style="float: left"
@@ -107,13 +130,14 @@ export default {
 			isDeletingLinks: [],
 		};
 	},
-	computed: mapState(['config']),
+	computed: mapState(['config', 'auth']),
 	methods: {
 		...mapActions({
 			deleteAlbumAction: 'albums/deleteAlbum',
 			deleteAlbumLinkAction: 'albums/deleteLink',
 			updateLinkOptionsAction: 'albums/updateLinkOptions',
 			createLinkAction: 'albums/createLink',
+			createCustomLinkAction: 'albums/createCustomLink',
 			alert: 'alert/set',
 		}),
 		promptDeleteAlbum(id) {
@@ -172,6 +196,17 @@ export default {
 				this.alert({ text: e.message, error: true });
 			}
 		},
+		async createCustomLink(albumId) {
+			this.$buefy.dialog.prompt({
+				message: 'Custom link identifier',
+				inputAttrs: {
+					placeholder: '',
+					maxlength: 10,
+				},
+				trapFocus: true,
+				onConfirm: (value) => this.$handler.executeAction('albums/createCustomLink', { albumId, value }),
+			});
+		},
 		isDeleting(identifier) {
 			return this.isDeletingLinks.indexOf(identifier) > -1;
 		},
@@ -181,6 +216,11 @@ export default {
 
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
+
+	.reset-font-size-button {
+		font-size: 1rem;
+		height: 2.25em;
+	}
 
 	div.details {
 		flex: 0 1 100%;
@@ -206,6 +246,22 @@ export default {
 		.table-wrapper {
 			-webkit-box-shadow: $boxShadowLight;
 					box-shadow: $boxShadowLight;
+		}
+	}
+
+	.dialog.modal .modal-card-body input {
+		border: 2px solid #21252d;
+		border-radius: 0.3em !important;
+		background: rgba(0, 0, 0, 0.15);
+		padding: 1rem;
+		color: $textColor;
+		height: 3rem;
+		&:focus,
+		&:hover {
+			border: 2px solid #21252d;
+		}
+		&::placeholder {
+			color: $textColor;
 		}
 	}
 </style>
