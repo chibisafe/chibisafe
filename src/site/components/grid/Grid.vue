@@ -92,48 +92,45 @@
 		</template>
 		<div v-else>
 			<b-table :data="gridFiles || []" :mobile-cards="true">
-				<template slot-scope="props">
-					<template v-if="!props.row.hideFromList">
-						<b-table-column field="url" label="URL">
-							<a :href="props.row.url" target="_blank">{{ props.row.url }}</a>
-						</b-table-column>
+				<b-table-column v-slot="props" field="url" label="URL">
+					<a :href="props.row.url" target="_blank">{{ props.row.url }}</a>
+				</b-table-column>
 
-						<b-table-column field="albums" label="Albums" centered>
-							<template v-for="(album, index) in props.row.albums">
-								<nuxt-link :key="index" :to="`/dashboard/albums/${album.id}`">
-									{{ album.name }}
-								</nuxt-link>
-								<template v-if="index < props.row.albums.length - 1">
-									,
-								</template>
-							</template>
-
-							{{ props.row.username }}
-						</b-table-column>
-
-						<b-table-column field="uploaded" label="Uploaded" centered>
-							<span><timeago :since="props.row.createdAt" /></span>
-						</b-table-column>
-
-						<b-table-column field="purge" centered>
-							<b-tooltip label="Edit" position="is-top">
-								<a class="btn" @click="handleFileModal(props.row)">
-									<i class="mdi mdi-pencil" />
-								</a>
-							</b-tooltip>
-							<b-tooltip label="Delete" position="is-top" class="is-danger">
-								<a class="is-danger" @click="deleteFile(props.row)">
-									<i class="mdi mdi-delete" />
-								</a>
-							</b-tooltip>
-							<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
-								<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
-									<i class="mdi mdi-dots-horizontal" />
-								</nuxt-link>
-							</b-tooltip>
-						</b-table-column>
+				<b-table-column v-slot="props" field="albums" label="Albums" centered>
+					<template v-for="(album, index) in props.row.albums">
+						<nuxt-link :key="index" :to="`/dashboard/albums/${album.id}`">
+							{{ album.name }}
+						</nuxt-link>
+						<template v-if="index < props.row.albums.length - 1">
+							,
+						</template>
 					</template>
-				</template>
+
+					{{ props.row.username }}
+				</b-table-column>
+
+				<b-table-column v-slot="props" field="uploaded" label="Uploaded" centered>
+					<span><timeago :since="props.row.createdAt" /></span>
+				</b-table-column>
+
+				<b-table-column v-slot="props" field="purge" centered>
+					<b-tooltip label="Edit" position="is-top">
+						<a class="btn" @click="handleFileModal(props.row)">
+							<i class="mdi mdi-pencil" />
+						</a>
+					</b-tooltip>
+					<b-tooltip label="Delete" position="is-top" class="is-danger">
+						<a class="is-danger" @click="deleteFile(props.row)">
+							<i class="mdi mdi-delete" />
+						</a>
+					</b-tooltip>
+					<b-tooltip v-if="user && user.isAdmin" label="More info" position="is-top" class="more">
+						<nuxt-link :to="`/dashboard/admin/file/${props.row.id}`">
+							<i class="mdi mdi-dots-horizontal" />
+						</nuxt-link>
+					</b-tooltip>
+				</b-table-column>
+
 				<template slot="empty">
 					<div class="has-text-centered">
 						<i class="icon-misc-mood-sad" />
@@ -226,7 +223,7 @@ export default {
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {
-			return this.files;
+			return (this.files || []).filter((v) => !v.hideFromList);
 		},
 	},
 	created() {

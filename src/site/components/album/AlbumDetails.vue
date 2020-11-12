@@ -5,46 +5,49 @@
 		<b-table
 			:data="details.links || []"
 			:mobile-cards="true">
-			<template slot-scope="props">
-				<b-table-column
-					field="identifier"
-					label="Link"
-					centered>
-					<a
-						:href="`${config.URL}/a/${props.row.identifier}`"
-						target="_blank">
-						{{ props.row.identifier }}
-					</a>
-				</b-table-column>
+			<b-table-column
+				v-slot="props"
+				field="identifier"
+				label="Link"
+				centered>
+				<a
+					:href="`${config.URL}/a/${props.row.identifier}`"
+					target="_blank">
+					{{ props.row.identifier }}
+				</a>
+			</b-table-column>
 
-				<b-table-column
-					field="views"
-					label="Views"
-					centered>
-					{{ props.row.views }}
-				</b-table-column>
+			<b-table-column
+				v-slot="props"
+				field="views"
+				label="Views"
+				centered>
+				{{ props.row.views }}
+			</b-table-column>
 
-				<b-table-column
-					field="enableDownload"
-					label="Allow download"
-					centered>
-					<b-switch
-						v-model="props.row.enableDownload"
-						@input="updateLinkOptions(albumId, props.row)" />
-				</b-table-column>
+			<b-table-column
+				v-slot="props"
+				field="enableDownload"
+				label="Allow download"
+				centered>
+				<b-switch
+					v-model="props.row.enableDownload"
+					@input="updateLinkOptions(albumId, props.row)" />
+			</b-table-column>
 
-				<b-table-column
-					field="enabled"
-					numeric>
-					<button
-						:class="{ 'is-loading': isDeleting(props.row.identifier) }"
-						class="button is-danger"
-						:disabled="isDeleting(props.row.identifier)"
-						@click="promptDeleteAlbumLink(albumId, props.row.identifier)">
-						Delete link
-					</button>
-				</b-table-column>
-			</template>
+			<b-table-column
+				v-slot="props"
+				field="enabled"
+				numeric>
+				<button
+					:class="{ 'is-loading': isDeleting(props.row.identifier) }"
+					class="button is-danger"
+					:disabled="isDeleting(props.row.identifier)"
+					@click="promptDeleteAlbumLink(albumId, props.row.identifier)">
+					Delete link
+				</button>
+			</b-table-column>
+
 			<template slot="empty">
 				<div class="has-text-centered">
 					<i class="icon-misc-mood-sad" />

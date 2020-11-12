@@ -35,7 +35,7 @@
 		"adm-zip": "^0.4.13",
 		"bcrypt": "^4.0.1",
 		"body-parser": "^1.18.3",
-		"buefy": "^0.8.20",
+		"buefy": "^0.9.4",
 		"busboy": "^0.2.14",
 		"chalk": "^2.4.1",
 		"chrono-node": "^2.1.4",
