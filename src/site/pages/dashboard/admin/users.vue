@@ -15,51 +15,55 @@
 						<b-table
 							:data="users"
 							:mobile-cards="true">
-							<template slot-scope="props">
-								<b-table-column
-									field="id"
-									label="Id"
-									centered>
-									{{ props.row.id }}
-								</b-table-column>
+							<b-table-column
+								v-slot="props"
+								field="id"
+								label="Id"
+								centered>
+								{{ props.row.id }}
+							</b-table-column>
 
-								<b-table-column
-									field="username"
-									label="Username"
-									centered>
-									<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">
-										{{ props.row.username }}
-									</nuxt-link>
-								</b-table-column>
+							<b-table-column
+								v-slot="props"
+								field="username"
+								label="Username"
+								centered>
+								<nuxt-link :to="`/dashboard/admin/user/${props.row.id}`">
+									{{ props.row.username }}
+								</nuxt-link>
+							</b-table-column>
 
-								<b-table-column
-									field="enabled"
-									label="Enabled"
-									centered>
-									<b-switch
-										:value="props.row.enabled"
-										@input="changeEnabledStatus(props.row)" />
-								</b-table-column>
+							<b-table-column
+								v-slot="props"
+								field="enabled"
+								label="Enabled"
+								centered>
+								<b-switch
+									:value="props.row.enabled"
+									@input="changeEnabledStatus(props.row)" />
+							</b-table-column>
 
-								<b-table-column
-									field="isAdmin"
-									label="Admin"
-									centered>
-									<b-switch
-										:value="props.row.isAdmin"
-										@input="changeIsAdmin(props.row)" />
-								</b-table-column>
+							<b-table-column
+								v-slot="props"
+								field="isAdmin"
+								label="Admin"
+								centered>
+								<b-switch
+									:value="props.row.isAdmin"
+									@input="changeIsAdmin(props.row)" />
+							</b-table-column>
 
-								<b-table-column
-									field="purge"
-									centered>
-									<b-button
-										type="is-danger"
-										@click="promptPurgeFiles(props.row)">
-										Purge files
-									</b-button>
-								</b-table-column>
-							</template>
+							<b-table-column
+								v-slot="props"
+								field="purge"
+								centered>
+								<b-button
+									type="is-danger"
+									@click="promptPurgeFiles(props.row)">
+									Purge files
+								</b-button>
+							</b-table-column>
+
 							<template slot="empty">
 								<div class="has-text-centered">
 									<i class="icon-misc-mood-sad" />

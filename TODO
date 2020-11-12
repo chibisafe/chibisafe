@@ -9,5 +9,3 @@
 - Add an stats page that displays statistics about the server like free space, free/used memory, etc
 	- Add statistics of total disk space used by a specific user (?)
 	- Page that lists all files ordered by size, useful to find big files
-
-- Admins should be able to add custom URLs to their albums, as long as it's not conflicting with another id
