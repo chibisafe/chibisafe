@@ -22,21 +22,18 @@
 			<div v-else>
 				This site has disabled public uploads. You need an account.
 			</div>
-			<Links />
 		</div>
 	</div>
 </template>
 <script>
 import Logo from '~/components/logo/Logo.vue';
 import Uploader from '~/components/uploader/Uploader.vue';
-import Links from '~/components/home/links/Links.vue';
 
 export default {
 	name: 'Home',
 	components: {
 		Logo,
 		Uploader,
-		Links
 	},
 	data() {
 		return { albums: [] };

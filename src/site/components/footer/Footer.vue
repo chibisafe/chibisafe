@@ -13,12 +13,8 @@
 			<div class="container">
 				<div class="columns">
 					<div class="column is-narrow">
-						<h4>lolisafe</h4>
-						<span>© 2017-2020
-							<a href="https://github.com/pitu"
-								class="no-block">Pitu</a>
-						</span><br>
-						<span>v{{ version }}</span>
+						<h4>waffsafe</h4>
+						<span>lolisafe v{{ version }}-dev</span>
 					</div>
 					<div class="column">
 						<div class="columns is-gapless">
@@ -32,11 +28,6 @@
 								<nuxt-link to="/dashboard">Files</nuxt-link>
 								<nuxt-link to="/dashboard/albums">Albums</nuxt-link>
 								<nuxt-link to="/dashboard/account">Account</nuxt-link>
-							</div>
-							<div class="column">
-								<a href="https://github.com/weebdev/lolisafe">GitHub</a>
-								<a href="https://patreon.com/pitu">Patreon</a>
-								<a href="https://discord.gg/5g6vgwn">Discord</a>
 							</div>
 							<div class="column">
 								<a v-if="loggedIn"

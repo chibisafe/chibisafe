@@ -78,7 +78,7 @@ class Server {
 		jetpack.dir('uploads/thumbs/square');
 		this.registerAllTheRoutes();
 		this.serveNuxt();
-		const server = this.server.listen(this.port, () => {
+		const server = this.server.listen(this.port, '0.0.0.0', () => {
 			log.success(`Backend ready and listening on port ${this.port}`);
 		});
 		server.setTimeout(600000);
