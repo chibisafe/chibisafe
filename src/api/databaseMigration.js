@@ -62,7 +62,7 @@ const oldDb = require('knex')({
 const newDb = require('knex')({
 	client: 'sqlite3',
 	connection: {
-		filename: nodePath.join(__dirname, '../../', 'database.sqlite')
+		filename: nodePath.join(__dirname, '../../database/', 'database.sqlite')
 	},
 	postProcessResponse: result => {
 		const booleanFields = [

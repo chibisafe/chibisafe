@@ -10,7 +10,7 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: path.join(__dirname, '../../../database.sqlite')
+		filename: path.join(__dirname, '../../../database/database.sqlite')
 	},
 	useNullAsDefault: process.env.DB_CLIENT === 'sqlite'
 });

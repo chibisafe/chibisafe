@@ -129,6 +129,7 @@ async function start() {
 		envfile += `${item}=${allSettings[item]}\n`;
 	}
 	jetpack.write('.env', envfile);
+	jetpack.dir('database');
 
 	console.log();
 	console.log('=============================================');
