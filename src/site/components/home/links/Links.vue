@@ -123,7 +123,6 @@ export default {
 
 			&:hover {
 				box-shadow: 0 3rem 3rem -1.25rem rgba(10,10,10,.1);
-				-webkit-transform: translateY(-.5rem);
 				transform: translateY(-.5rem);
 			}
 		}

@@ -8,13 +8,10 @@ const log = require('./Log');
 
 class ThumbUtil {
 	static imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
-
 	static videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
 	static thumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs');
-
 	static squareThumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'square');
-
 	static videoPreviewPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'preview');
 
 	static generateThumbnails(filename) {

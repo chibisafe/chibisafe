@@ -388,10 +388,6 @@ div.preview {
 
 div.actions {
 	opacity: 0;
-	-webkit-transition: opacity 0.1s linear;
-	-moz-transition: opacity 0.1s linear;
-	-ms-transition: opacity 0.1s linear;
-	-o-transition: opacity 0.1s linear;
 	transition: opacity 0.1s linear;
 	position: absolute;
 	top: 0px;

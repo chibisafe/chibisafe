@@ -16,7 +16,7 @@
 			"request": "launch",
 			"name": "[DEV] Launch ThumbGen",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\src\\api\\generateThumbs"
+			"program": "${workspaceFolder}\\src\\api\\utils\\generateThumbs"
 		},
 		{
 			"type": "chrome",

@@ -164,11 +164,6 @@ export default {
 				width: 1em;
 				z-index: 4;
 				top: 22px;
-
-				-webkit-transition: transform 0.1s linear;
-				-moz-transition: transform 0.1s linear;
-				-ms-transition: transform 0.1s linear;
-				-o-transition: transform 0.1s linear;
 				transition: transform 0.1s linear;
 
 				&.active {
@@ -179,8 +174,7 @@ export default {
 		div.thumb {
 			width: 64px;
 			height: 64px;
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
+			box-shadow: $boxShadowLight;
 		}
 
 		div.info {
@@ -237,8 +231,7 @@ export default {
 				padding: 2em 0em;
 
 				.table-wrapper {
-					-webkit-box-shadow: $boxShadowLight;
-							box-shadow: $boxShadowLight;
+					box-shadow: $boxShadowLight;
 				}
 			}
 		}
@@ -248,8 +241,7 @@ export default {
 
 	.b-table {
 		.table-wrapper {
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
+			box-shadow: $boxShadowLight;
 		}
 	}
 </style>

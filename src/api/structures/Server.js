@@ -7,9 +7,7 @@ const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const jetpack = require('fs-jetpack');
 const path = require('path');
-const morgan = require('morgan');
 const log = require('../utils/Log');
-const ThumbUtil = require('../utils/ThumbUtil');
 
 // eslint-disable-next-line no-unused-vars
 const rateLimiter = new RateLimit({
@@ -35,27 +33,6 @@ class Server {
 		});
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
-		if (process.env.NODE_ENV !== 'production') {
-			this.server.use(morgan('combined', {
-				skip(req) {
-					let ext = req.path.split('.').pop();
-					if (ext) { ext = `.${ext.toLowerCase()}`; }
-
-					if (
-						ThumbUtil.imageExtensions.indexOf(ext) > -1 ||
-						ThumbUtil.videoExtensions.indexOf(ext) > -1 ||
-						req.path.indexOf('_nuxt') > -1 ||
-						req.path.indexOf('favicon.ico') > -1
-					) {
-						return true;
-					}
-					return false;
-				},
-				stream: {
-					write(str) { log.debug(str); }
-				}
-			}));
-		}
 		// this.server.use(rateLimiter);
 
 		// Serve the uploads

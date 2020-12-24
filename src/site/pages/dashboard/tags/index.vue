@@ -26,11 +26,6 @@
 				width: 1em;
 				z-index: 4;
 				top: 22px;
-
-				-webkit-transition: transform 0.1s linear;
-				-moz-transition: transform 0.1s linear;
-				-ms-transition: transform 0.1s linear;
-				-o-transition: transform 0.1s linear;
 				transition: transform 0.1s linear;
 
 				&.active {
@@ -41,8 +36,7 @@
 		div.thumb {
 			width: 64px;
 			height: 64px;
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
+			box-shadow: $boxShadowLight;
 		}
 
 		div.info {
@@ -99,8 +93,7 @@
 				padding: 2em 0em;
 
 				.table-wrapper {
-					-webkit-box-shadow: $boxShadowLight;
-							box-shadow: $boxShadowLight;
+					box-shadow: $boxShadowLight;
 				}
 			}
 		}
@@ -117,8 +110,7 @@
 
 	.b-table {
 		.table-wrapper {
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
+			box-shadow: $boxShadowLight;
 		}
 	}
 </style>

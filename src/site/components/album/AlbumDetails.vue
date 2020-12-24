@@ -235,8 +235,7 @@ export default {
 			padding: 2em 0em;
 
 			.table-wrapper {
-				-webkit-box-shadow: $boxShadowLight;
-						box-shadow: $boxShadowLight;
+				box-shadow: $boxShadowLight;
 			}
 		}
 	}
@@ -247,8 +246,7 @@ export default {
 
 	.b-table {
 		.table-wrapper {
-			-webkit-box-shadow: $boxShadowLight;
-					box-shadow: $boxShadowLight;
+			box-shadow: $boxShadowLight;
 		}
 	}
 
