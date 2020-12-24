@@ -2,7 +2,7 @@
 node_modules/
 dist/
 .nuxt/
-
+logs/
 # Lolisafe specifics
 database.sqlite
 uploads/

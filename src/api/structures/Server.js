@@ -7,6 +7,8 @@ const RateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const jetpack = require('fs-jetpack');
 const path = require('path');
+const morgan = require('morgan');
+const rfs = require('rotating-file-stream');
 const log = require('../utils/Log');
 
 // eslint-disable-next-line no-unused-vars
@@ -33,6 +35,14 @@ class Server {
 		});
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
+
+		if (process.env.NODE_ENV === 'production') {
+			const accessLogStream = rfs.createStream('access.log', {
+				interval: '1d', // rotate daily
+				path: path.join(__dirname, '../../../logs', 'log')
+			});
+			this.server.use(morgan('combined', { stream: accessLogStream }));
+		}
 		// this.server.use(rateLimiter);
 
 		// Serve the uploads
