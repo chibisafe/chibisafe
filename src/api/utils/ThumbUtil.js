@@ -16,7 +16,7 @@ class ThumbUtil {
 
 	static generateThumbnails(filename) {
 		const ext = path.extname(filename).toLowerCase();
-		const output = `${filename.slice(0, -ext.length)}.png`;
+		const output = `${filename.slice(0, -ext.length)}.webp`;
 		const previewOutput = `${filename.slice(0, -ext.length)}.webm`;
 
 		// eslint-disable-next-line max-len
@@ -32,11 +32,11 @@ class ThumbUtil {
 		const file = await jetpack.readAsync(filePath, 'buffer');
 		await sharp(file)
 			.resize(64, 64)
-			.toFormat('png')
+			.toFormat('webp')
 			.toFile(path.join(ThumbUtil.squareThumbPath, output));
 		await sharp(file)
 			.resize(225, null)
-			.toFormat('png')
+			.toFormat('webp')
 			.toFile(path.join(ThumbUtil.thumbPath, output));
 	}
 
@@ -46,7 +46,7 @@ class ThumbUtil {
 		ffmpeg(filePath)
 			.thumbnail({
 				timestamps: [0],
-				filename: '%b.png',
+				filename: '%b.webp',
 				folder: ThumbUtil.squareThumbPath,
 				size: '64x64'
 			})
@@ -55,7 +55,7 @@ class ThumbUtil {
 		ffmpeg(filePath)
 			.thumbnail({
 				timestamps: [0],
-				filename: '%b.png',
+				filename: '%b.webp',
 				folder: ThumbUtil.thumbPath,
 				size: '150x?'
 			})
