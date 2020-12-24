@@ -65,8 +65,7 @@ class ThumbUtil {
 			await previewUtil({
 				input: filePath,
 				width: 150,
-				output: path.join(ThumbUtil.videoPreviewPath, output),
-				log: log.debug
+				output: path.join(ThumbUtil.videoPreviewPath, output)
 			});
 		} catch (e) {
 			log.error(e);
