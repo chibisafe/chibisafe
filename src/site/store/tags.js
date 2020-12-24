@@ -1,5 +1,5 @@
 export const state = () => ({
-	tagsList: [],
+	tagsList: []
 });
 
 export const actions = {
@@ -23,7 +23,7 @@ export const actions = {
 		commit('deleteTag', response.data);
 
 		return response;
-	},
+	}
 };
 
 export const mutations = {
@@ -36,5 +36,5 @@ export const mutations = {
 	deleteTag(state, { id: tagId }) {
 		const foundIndex = state.tagsList.findIndex(({ id }) => id === tagId);
 		state.tagsList.splice(foundIndex, 1);
-	},
+	}
 };

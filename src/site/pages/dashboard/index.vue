@@ -64,7 +64,7 @@ export default {
 	components: {
 		Sidebar,
 		Grid,
-		Search,
+		Search
 	},
 	middleware: ['auth', ({ store }) => {
 		store.commit('images/resetState');
@@ -74,29 +74,29 @@ export default {
 		return {
 			current: 1,
 			isLoading: false,
-			search: '',
+			search: ''
 		};
 	},
 	computed: {
 		...mapGetters({
 			totalFiles: 'images/getTotalFiles',
 			shouldPaginate: 'images/shouldPaginate',
-			limit: 'images/getLimit',
+			limit: 'images/getLimit'
 		}),
-		...mapState(['images']),
+		...mapState(['images'])
 	},
 	metaInfo() {
 		return { title: 'Uploads' };
 	},
 	watch: {
-		current: 'fetchPaginate',
+		current: 'fetchPaginate'
 	},
 	created() {
 		this.filteredHints = this.hints; // fixes the issue where on pageload, suggestions wont load
 	},
 	methods: {
 		...mapActions({
-			fetch: 'images/fetch',
+			fetch: 'images/fetch'
 		}),
 		async fetchPaginate() {
 			this.isLoading = true;
@@ -111,10 +111,10 @@ export default {
 		onSearch(query) {
 			this.search = query;
 			this.$handler.executeAction('images/search', {
-				q: this.sanitizeQuery(query),
+				q: this.sanitizeQuery(query)
 			});
-		},
-	},
+		}
+	}
 };
 </script>
 

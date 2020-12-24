@@ -38,7 +38,7 @@ module.exports = async (opts) => {
 
 		fragmentDurationSecond = 3,
 		ignoreBeforePercent = 0.25,
-		ignoreAfterPercent = 0.75,
+		ignoreAfterPercent = 0.75
 	} = opts;
 
 	const info = await probe(input);

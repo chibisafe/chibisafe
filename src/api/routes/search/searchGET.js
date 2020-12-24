@@ -9,7 +9,7 @@ const options = {
 	keywords: ['album', 'tag', 'before', 'after', 'file'],
 	offsets: false,
 	alwaysArray: true,
-	tokenize: true,
+	tokenize: true
 };
 
 class configGET extends Route {
@@ -55,7 +55,7 @@ class configGET extends Route {
 			query,
 			parsed,
 			files,
-			count,
+			count
 		});
 	}
 }

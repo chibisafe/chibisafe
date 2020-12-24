@@ -73,22 +73,22 @@ export default {
 	props: {
 		isWhite: {
 			type: Boolean,
-			default: false,
-		},
+			default: false
+		}
 	},
 	data() {
 		return { hamburger: false };
 	},
 	computed: {
 		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
-		...mapState(['config']),
+		...mapState(['config'])
 	},
 	methods: {
 		async logOut() {
 			await this.$store.dispatch('auth/logout');
 			this.$router.replace('/login');
-		},
-	},
+		}
+	}
 };
 </script>
 

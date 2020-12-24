@@ -27,7 +27,7 @@ class tagAddPOST extends Route {
 
 		return res.json({
 			message: 'Successfully added tag to file',
-			data: { fileId, tag },
+			data: { fileId, tag }
 		});
 		// eslint-disable-next-line consistent-return
 	}

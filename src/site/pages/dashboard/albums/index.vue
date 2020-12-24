@@ -53,7 +53,7 @@ import AlbumEntry from '~/components/album/AlbumEntry.vue';
 export default {
 	components: {
 		Sidebar,
-		AlbumEntry,
+		AlbumEntry
 	},
 	middleware: ['auth', ({ store }) => {
 		try {
@@ -65,7 +65,7 @@ export default {
 	data() {
 		return {
 			newAlbumName: null,
-			isCreatingAlbum: false,
+			isCreatingAlbum: false
 		};
 	},
 	computed: mapState(['config', 'albums']),
@@ -74,7 +74,7 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			'alert': 'alert/set',
+			'alert': 'alert/set'
 		}),
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;
@@ -90,8 +90,8 @@ export default {
 				this.isCreatingAlbum = false;
 				this.newAlbumName = null;
 			}
-		},
-	},
+		}
+	}
 };
 </script>
 

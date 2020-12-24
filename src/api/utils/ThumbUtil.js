@@ -51,7 +51,7 @@ class ThumbUtil {
 				timestamps: [0],
 				filename: '%b.png',
 				folder: ThumbUtil.squareThumbPath,
-				size: '64x64',
+				size: '64x64'
 			})
 			.on('error', (error) => log.error(error.message));
 
@@ -60,7 +60,7 @@ class ThumbUtil {
 				timestamps: [0],
 				filename: '%b.png',
 				folder: ThumbUtil.thumbPath,
-				size: '150x?',
+				size: '150x?'
 			})
 			.on('error', (error) => log.error(error.message));
 
@@ -69,7 +69,7 @@ class ThumbUtil {
 				input: filePath,
 				width: 150,
 				output: path.join(ThumbUtil.videoPreviewPath, output),
-				log: log.debug,
+				log: log.debug
 			});
 		} catch (e) {
 			log.error(e);
@@ -87,7 +87,7 @@ class ThumbUtil {
 		if (isVideo) {
 			return {
 				thumb: `${filename.slice(0, -ext.length)}.png`,
-				preview: `${filename.slice(0, -ext.length)}.webm`,
+				preview: `${filename.slice(0, -ext.length)}.webm`
 			};
 		}
 

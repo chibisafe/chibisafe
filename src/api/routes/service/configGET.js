@@ -18,8 +18,8 @@ class configGET extends Route {
 				generateThumbnails: process.env.GENERATE_THUMBNAILS === 'true',
 				generateZips: process.env.GENERATE_ZIPS === 'true',
 				publicMode: process.env.PUBLIC_MODE === 'true',
-				enableAccounts: process.env.USER_ACCOUNTS === 'true',
-			},
+				enableAccounts: process.env.USER_ACCOUNTS === 'true'
+			}
 		});
 	}
 }

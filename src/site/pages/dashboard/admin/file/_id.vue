@@ -127,7 +127,7 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar,
+		Sidebar
 	},
 	middleware: ['auth', 'admin', ({ route, store }) => {
 		try {
@@ -143,7 +143,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to disable the account of the user that uploaded this file?',
-				onConfirm: () => this.disableUser(),
+				onConfirm: () => this.disableUser()
 			});
 		},
 		disableUser() {
@@ -153,7 +153,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to ban the IP this file was uploaded from?',
-				onConfirm: () => this.banIP(),
+				onConfirm: () => this.banIP()
 			});
 		},
 		banIP() {
@@ -169,7 +169,7 @@ export default {
 			const i = Math.floor(Math.log(bytes) / Math.log(k));
 
 			return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
-		},
-	},
+		}
+	}
 };
 </script>

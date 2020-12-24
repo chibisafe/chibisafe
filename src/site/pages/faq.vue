@@ -56,7 +56,7 @@ export default {
 	},
 	metaInfo() {
 		return { title: 'Faq' };
-	},
+	}
 };
 </script>
 

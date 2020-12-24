@@ -36,7 +36,7 @@ class changePasswordPOST extends Route {
 		const now = moment.utc().toDate();
 		await db.table('users').where('id', user.id).update({
 			password: hash,
-			passwordEditedAt: now,
+			passwordEditedAt: now
 		});
 
 		return res.json({ message: 'The password was changed successfully' });

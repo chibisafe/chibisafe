@@ -90,11 +90,11 @@ export default {
 		value: [Number, String],
 		data: {
 			type: Array,
-			default: () => [],
+			default: () => []
 		},
 		field: {
 			type: String,
-			default: 'value',
+			default: 'value'
 		},
 		keepFirst: Boolean,
 		clearOnSelect: Boolean,
@@ -106,12 +106,12 @@ export default {
 		maxHeight: [String, Number],
 		dropdownPosition: {
 			type: String,
-			default: 'auto',
+			default: 'auto'
 		},
 		iconRight: String,
 		iconRightClickable: Boolean,
 		appendToBody: Boolean,
-		customSelector: Function,
+		customSelector: Function
 	},
 	data() {
 		return {
@@ -125,7 +125,7 @@ export default {
 			style: {},
 			_isAutocomplete: true,
 			_elementRef: 'input',
-			_bodyEl: undefined, // Used to append to body
+			_bodyEl: undefined // Used to append to body
 		};
 	},
 	computed: {
@@ -202,9 +202,9 @@ export default {
 				// eslint-disable-next-line no-nested-ternary
 				maxHeight: this.maxHeight === undefined
 					// eslint-disable-next-line no-restricted-globals
-					? null : (isNaN(this.maxHeight) ? this.maxHeight : `${this.maxHeight}px`),
+					? null : (isNaN(this.maxHeight) ? this.maxHeight : `${this.maxHeight}px`)
 			};
-		},
+		}
 	},
 	watch: {
 		/**
@@ -258,7 +258,7 @@ export default {
 			if (this.keepFirst) {
 				this.selectFirstOption(value);
 			}
-		},
+		}
 	},
 	created() {
 		if (typeof window !== 'undefined') {
@@ -507,10 +507,10 @@ export default {
 					left: `${left}px`,
 					width: `${trigger.clientWidth}px`,
 					maxWidth: `${trigger.clientWidth}px`,
-					zIndex: '99',
+					zIndex: '99'
 				};
 			}
-		},
-	},
+		}
+	}
 };
 </script>

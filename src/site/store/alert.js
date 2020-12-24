@@ -3,7 +3,7 @@ import AlertTypes from '~/constants/alertTypes';
 const getDefaultState = () => ({
 	message: null,
 	type: null,
-	snackbar: false,
+	snackbar: false
 });
 
 export const state = getDefaultState;
@@ -18,7 +18,7 @@ export const actions = {
 	},
 	clear({ commit }) {
 		commit('clear');
-	},
+	}
 };
 
 export const mutations = {
@@ -29,5 +29,5 @@ export const mutations = {
 	},
 	clear(state) {
 		Object.assign(state, getDefaultState());
-	},
+	}
 };

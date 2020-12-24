@@ -10,9 +10,9 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: path.join(__dirname, '../../../database.sqlite'),
+		filename: path.join(__dirname, '../../../database.sqlite')
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite',
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite'
 });
 const moment = require('moment');
 const crypto = require('crypto');
@@ -25,7 +25,7 @@ const ThumbUtil = require('./ThumbUtil');
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 
 class Util {
-	static uploadPath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER);
+	static uploadPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER);
 
 	static uuid() {
 		return uuidv4();
@@ -54,7 +54,7 @@ class Util {
 		const retry = (i = 0) => {
 			const filename = randomstring.generate({
 				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
-				capitalization: 'lowercase',
+				capitalization: 'lowercase'
 			}) + path.extname(name).toLowerCase();
 
 			// TODO: Change this to look for the file in the db instead of in the filesystem
@@ -71,7 +71,7 @@ class Util {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
 				length: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
-				capitalization: 'lowercase',
+				capitalization: 'lowercase'
 			});
 			const exists = await db
 				.table('links')
@@ -214,13 +214,11 @@ class Util {
 			zip.writeZip(
 				path.join(
 					__dirname,
-					'..',
-					'..',
-					'..',
+					'../../../',
 					process.env.UPLOAD_FOLDER,
 					'zips',
-					`${album.userId}-${album.id}.zip`,
-				),
+					`${album.userId}-${album.id}.zip`
+				)
 			);
 		} catch (error) {
 			log.error(error);

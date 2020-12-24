@@ -13,5 +13,5 @@ Vue.prototype.$search = {
 	do: async (term, field) => {
 		const results = await search.search(term, { field });
 		return results;
-	},
+	}
 };

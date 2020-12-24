@@ -19,7 +19,7 @@ class unBanIP extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully unbanned the ip',
+			message: 'Successfully unbanned the ip'
 		});
 	}
 }

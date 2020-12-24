@@ -41,15 +41,15 @@ export default {
 	components: {
 		Logo,
 		Uploader,
-		Links,
+		Links
 	},
 	data() {
 		return { albums: [] };
 	},
 	computed: {
 		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
-		...mapState(['config']),
-	},
+		...mapState(['config'])
+	}
 };
 </script>
 <style lang="scss" scoped>

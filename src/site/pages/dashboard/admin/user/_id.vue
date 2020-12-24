@@ -76,7 +76,7 @@ import Grid from '~/components/grid/Grid.vue';
 export default {
 	components: {
 		Sidebar,
-		Grid,
+		Grid
 	},
 	middleware: ['auth', 'admin', ({ route, store }) => {
 		try {
@@ -88,25 +88,25 @@ export default {
 	}],
 	data() {
 		return {
-			options: {},
+			options: {}
 		};
 	},
 	computed: mapState({
-		user: (state) => state.admin.user,
+		user: (state) => state.admin.user
 	}),
 	methods: {
 		promptDisableUser() {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to disable the account of this user?',
-				onConfirm: () => this.disableUser(),
+				onConfirm: () => this.disableUser()
 			});
 		},
 		promptEnableUser() {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to enable the account of this user?',
-				onConfirm: () => this.enableUser(),
+				onConfirm: () => this.enableUser()
 			});
 		},
 		disableUser() {
@@ -114,7 +114,7 @@ export default {
 		},
 		enableUser() {
 			this.$handler.executeAction('admin/enableUser', this.user.id);
-		},
-	},
+		}
+	}
 };
 </script>

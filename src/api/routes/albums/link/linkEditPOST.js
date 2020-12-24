@@ -22,7 +22,7 @@ class linkEditPOST extends Route {
 		try {
 			const updateObj = {
 				enableDownload: enableDownload || false,
-				expiresAt, // This one should be null if not supplied
+				expiresAt // This one should be null if not supplied
 			};
 			await db
 				.table('links')

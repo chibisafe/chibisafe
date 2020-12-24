@@ -120,17 +120,17 @@ export default {
 	props: {
 		albumId: {
 			type: Number,
-			default: 0,
+			default: 0
 		},
 		details: {
 			type: Object,
-			default: () => ({}),
-		},
+			default: () => ({})
+		}
 	},
 	data() {
 		return {
 			isCreatingLink: false,
-			isDeletingLinks: [],
+			isDeletingLinks: []
 		};
 	},
 	computed: mapState(['config', 'auth']),
@@ -141,20 +141,20 @@ export default {
 			updateLinkOptionsAction: 'albums/updateLinkOptions',
 			createLinkAction: 'albums/createLink',
 			createCustomLinkAction: 'albums/createCustomLink',
-			alert: 'alert/set',
+			alert: 'alert/set'
 		}),
 		promptDeleteAlbum(id) {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this album?',
-				onConfirm: () => this.deleteAlbum(id),
+				onConfirm: () => this.deleteAlbum(id)
 			});
 		},
 		promptDeleteAlbumLink(albumId, identifier) {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this album link?',
-				onConfirm: () => this.deleteAlbumLink(albumId, identifier),
+				onConfirm: () => this.deleteAlbumLink(albumId, identifier)
 			});
 		},
 		async deleteAlbum(id) {
@@ -204,16 +204,16 @@ export default {
 				message: 'Custom link identifier',
 				inputAttrs: {
 					placeholder: '',
-					maxlength: 10,
+					maxlength: 10
 				},
 				trapFocus: true,
-				onConfirm: (value) => this.$handler.executeAction('albums/createCustomLink', { albumId, value }),
+				onConfirm: (value) => this.$handler.executeAction('albums/createCustomLink', { albumId, value })
 			});
 		},
 		isDeleting(identifier) {
 			return this.isDeletingLinks.indexOf(identifier) > -1;
-		},
-	},
+		}
+	}
 };
 </script>
 

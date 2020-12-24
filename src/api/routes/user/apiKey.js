@@ -17,7 +17,7 @@ class apiKeyPOST extends Route {
 				.where({ id: user.id })
 				.update({
 					apiKey,
-					apiKeyEditedAt: now,
+					apiKeyEditedAt: now
 				});
 		} catch (error) {
 			dump(error);
@@ -26,7 +26,7 @@ class apiKeyPOST extends Route {
 
 		return res.json({
 			message: 'Successfully created new api key',
-			apiKey,
+			apiKey
 		});
 	}
 }

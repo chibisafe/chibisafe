@@ -74,7 +74,7 @@ export default {
 			username: null,
 			password: null,
 			rePassword: null,
-			isLoading: false,
+			isLoading: false
 		};
 	},
 	computed: mapState(['config', 'auth']),
@@ -98,7 +98,7 @@ export default {
 			try {
 				const response = await this.$store.dispatch('auth/register', {
 					username: this.username,
-					password: this.password,
+					password: this.password
 				});
 
 				this.$notifier.success(response.message);
@@ -109,7 +109,7 @@ export default {
 			} finally {
 				this.isLoading = false;
 			}
-		},
-	},
+		}
+	}
 };
 </script>

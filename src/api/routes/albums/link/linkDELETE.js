@@ -27,7 +27,7 @@ class linkDELETE extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully deleted link',
+			message: 'Successfully deleted link'
 		});
 	}
 }

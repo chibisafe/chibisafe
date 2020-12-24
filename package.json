@@ -175,7 +175,11 @@
 			"import/no-extraneous-dependencies": "off",
 			"no-restricted-syntax": "off",
 			"no-continue": "off",
-			"no-await-in-loop": "off"
+			"no-await-in-loop": "off",
+			"comma-dangle": [
+				"error",
+				"never"
+			]
 		},
 		"settings": {
 			"import/resolver": {

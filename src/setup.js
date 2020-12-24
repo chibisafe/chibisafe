@@ -5,7 +5,7 @@ const qoa = require('qoa');
 
 qoa.config({
 	prefix: '>',
-	underlineQuery: false,
+	underlineQuery: false
 });
 
 async function start() {
@@ -17,53 +17,53 @@ async function start() {
 		{
 			type: 'input',
 			query: 'Port to run lolisafe in:',
-			handle: 'SERVER_PORT',
+			handle: 'SERVER_PORT'
 		},
 		{
 			type: 'input',
 			query: 'Full domain this instance is gonna be running on (Ex: https://lolisafe.moe):',
-			handle: 'DOMAIN',
+			handle: 'DOMAIN'
 		},
 		{
 			type: 'input',
 			query: 'Name of the service? (Ex: lolisafe):',
-			handle: 'SERVICE_NAME',
+			handle: 'SERVICE_NAME'
 		},
 		{
 			type: 'input',
 			query: 'Maximum allowed upload file size in MB (Ex: 100):',
-			handle: 'MAX_SIZE',
+			handle: 'MAX_SIZE'
 		},
 		{
 			type: 'confirm',
 			query: 'Allow users to download entire albums in ZIP format?',
 			handle: 'GENERATE_ZIPS',
 			accept: 'y',
-			deny: 'n',
+			deny: 'n'
 		},
 		{
 			type: 'confirm',
 			query: 'Allow people to upload files without an account?',
 			handle: 'PUBLIC_MODE',
 			accept: 'y',
-			deny: 'n',
+			deny: 'n'
 		},
 		{
 			type: 'confirm',
 			query: 'Allow people to create new accounts?',
 			handle: 'USER_ACCOUNTS',
 			accept: 'y',
-			deny: 'n',
+			deny: 'n'
 		},
 		{
 			type: 'input',
 			query: 'Name of the admin account?',
-			handle: 'ADMIN_ACCOUNT',
+			handle: 'ADMIN_ACCOUNT'
 		},
 		{
 			type: 'secure',
 			query: 'Type a secure password for the admin account:',
-			handle: 'ADMIN_PASSWORD',
+			handle: 'ADMIN_PASSWORD'
 		},
 		{
 			type: 'interactive',
@@ -73,29 +73,29 @@ async function start() {
 			menu: [
 				'sqlite3',
 				'pg',
-				'mysql',
-			],
+				'mysql'
+			]
 		},
 		{
 			type: 'input',
 			query: 'Database host (Ignore if you selected sqlite3):',
-			handle: 'DB_HOST',
+			handle: 'DB_HOST'
 		},
 		{
 			type: 'input',
 			query: 'Database user (Ignore if you selected sqlite3):',
-			handle: 'DB_USER',
+			handle: 'DB_USER'
 		},
 		{
 			type: 'input',
 			query: 'Database password (Ignore if you selected sqlite3):',
-			handle: 'DB_PASSWORD',
+			handle: 'DB_PASSWORD'
 		},
 		{
 			type: 'input',
 			query: 'Database name (Ignore if you selected sqlite3):',
-			handle: 'DB_DATABASE',
-		},
+			handle: 'DB_DATABASE'
+		}
 	];
 
 	const response = await qoa.prompt(wizard);
@@ -118,7 +118,7 @@ async function start() {
 		META_THEME_COLOR: '#20222b',
 		META_DESCRIPTION: 'Blazing fast file uploader and bunker written in node! 🚀',
 		META_KEYWORDS: 'lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
-		META_TWITTER_HANDLE: '@its_pitu',
+		META_TWITTER_HANDLE: '@its_pitu'
 	};
 
 	const allSettings = Object.assign(defaultSettings, response);

@@ -9,7 +9,7 @@ const upload = multer({
 	storage: multer.memoryStorage(),
 	limits: {
 		fileSize: parseInt(process.env.MAX_SIZE, 10) * (1000 * 1000),
-		files: 1,
+		files: 1
 	},
 	fileFilter: (req, file, cb) =>
 	// TODO: Enable blacklisting of files/extensions
@@ -21,7 +21,7 @@ const upload = multer({
 		}
 		*/
 		cb(null, true)
-	,
+
 }).array('files[]');
 
 /*
@@ -41,7 +41,7 @@ class uploadPOST extends Route {
 	constructor() {
 		super('/upload', 'post', {
 			bypassAuth: true,
-			canApiKey: true,
+			canApiKey: true
 		});
 	}
 
@@ -100,7 +100,7 @@ class uploadPOST extends Route {
 					name: filename,
 					hash,
 					size: file.buffer.length,
-					url: filename,
+					url: filename
 				};
 			}
 
@@ -120,7 +120,7 @@ class uploadPOST extends Route {
 			uploadedFile = Util.constructFilePublicLink(uploadedFile);
 			return res.status(201).send({
 				message: 'Sucessfully uploaded the file.',
-				...uploadedFile,
+				...uploadedFile
 			});
 		});
 	}
@@ -134,7 +134,7 @@ class uploadPOST extends Route {
 			size: exists.size,
 			url: `${process.env.DOMAIN}/${exists.name}`,
 			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
-			repeated: true,
+			repeated: true
 		});
 
 		return Util.deleteFile(filename);
@@ -183,7 +183,7 @@ class uploadPOST extends Route {
 					hash: file.hash,
 					ip: req.ip,
 					createdAt: now,
-					editedAt: now,
+					editedAt: now
 				});
 			} else {
 				insertedId = await db.table('files').insert({
@@ -195,7 +195,7 @@ class uploadPOST extends Route {
 					hash: file.hash,
 					ip: req.ip,
 					createdAt: now,
-					editedAt: now,
+					editedAt: now
 				}, 'id');
 			}
 			return insertedId;

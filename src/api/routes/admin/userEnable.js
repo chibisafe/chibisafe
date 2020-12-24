@@ -20,7 +20,7 @@ class userEnable extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully enabled user',
+			message: 'Successfully enabled user'
 		});
 	}
 }

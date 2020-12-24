@@ -8,7 +8,7 @@ class uploadPOST extends Route {
 	constructor() {
 		super('/upload/chunks', 'post', {
 			bypassAuth: true,
-			canApiKey: true,
+			canApiKey: true
 		});
 	}
 
@@ -17,7 +17,7 @@ class uploadPOST extends Route {
 		// console.log('Files', req.body.files);
 		const info = {
 			size: req.body.files[0].size,
-			url: `${process.env.DOMAIN}/`,
+			url: `${process.env.DOMAIN}/`
 		};
 
 		for (const chunk of req.body.files) {
@@ -56,7 +56,7 @@ class uploadPOST extends Route {
 
 		return res.status(201).send({
 			message: 'Sucessfully merged the chunk(s).',
-			...info,
+			...info
 			/*
 			name: `${filename}${ext || ''}`,
 			size: exists.size,

@@ -3,9 +3,9 @@ const getDefaultState = () => ({
 	user: {
 		id: null,
 		isAdmin: false,
-		username: null,
+		username: null
 	},
-	token: null,
+	token: null
 });
 
 export const state = getDefaultState;
@@ -13,7 +13,7 @@ export const state = getDefaultState;
 export const getters = {
 	isLoggedIn: (state) => state.loggedIn,
 	getApiKey: (state) => state.user?.apiKey,
-	getToken: (state) => state.token,
+	getToken: (state) => state.token
 };
 
 export const actions = {
@@ -37,7 +37,7 @@ export const actions = {
 	async register(_, { username, password }) {
 		return this.$axios.$post('auth/register', {
 			username,
-			password,
+			password
 		});
 	},
 	async fetchCurrentUser({ commit, dispatch }) {
@@ -52,7 +52,7 @@ export const actions = {
 		try {
 			const response = await this.$axios.$post('user/password/change', {
 				password,
-				newPassword,
+				newPassword
 			});
 
 			return response;
@@ -76,7 +76,7 @@ export const actions = {
 	},
 	logout({ commit }) {
 		commit('logout');
-	},
+	}
 };
 
 export const mutations = {
@@ -102,5 +102,5 @@ export const mutations = {
 		this.$cookies.remove('token', { path: '/' });
 		// reset state to default
 		Object.assign(state, getDefaultState());
-	},
+	}
 };

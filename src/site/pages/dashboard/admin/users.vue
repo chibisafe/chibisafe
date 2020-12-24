@@ -91,7 +91,7 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar,
+		Sidebar
 	},
 	middleware: ['auth', 'admin', ({ route, store }) => {
 		try {
@@ -103,7 +103,7 @@ export default {
 	}],
 	computed: mapState({
 		users: (state) => state.admin.users,
-		config: (state) => state.config,
+		config: (state) => state.config
 	}),
 	metaInfo() {
 		return { title: 'Uploads' };
@@ -126,13 +126,13 @@ export default {
 		promptPurgeFiles(row) {
 			this.$buefy.dialog.confirm({
 				message: 'Are you sure you want to delete this user\'s files?',
-				onConfirm: () => this.purgeFiles(row),
+				onConfirm: () => this.purgeFiles(row)
 			});
 		},
 		async purgeFiles(row) {
 			this.$handler.executeAction('admin/purgeUserFiles', row.id);
-		},
-	},
+		}
+	}
 };
 </script>
 

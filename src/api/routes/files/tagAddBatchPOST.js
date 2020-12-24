@@ -31,7 +31,7 @@ class tagAddBatchPOST extends Route {
 		return res.json({
 			message: 'Successfully added tags to file',
 			data: { fileId, tags: addedTags },
-			errors,
+			errors
 		});
 		// eslint-disable-next-line consistent-return
 	}

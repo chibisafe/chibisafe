@@ -88,15 +88,15 @@ export default {
 			files: [],
 			dropzoneOptions: {},
 			showDropzone: false,
-			selectedAlbum: null,
+			selectedAlbum: null
 		};
 	},
 	computed: {
 		...mapState({
 			config: (state) => state.config,
-			albums: (state) => state.albums.tinyDetails,
+			albums: (state) => state.albums.tinyDetails
 		}),
-		...mapGetters({ loggedIn: 'auth/isLoggedIn', token: 'auth/getToken' }),
+		...mapGetters({ loggedIn: 'auth/isLoggedIn', token: 'auth/getToken' })
 	},
 	watch: {
 		loggedIn() {
@@ -104,7 +104,7 @@ export default {
 		},
 		selectedAlbum() {
 			this.updateDropzoneConfig();
-		},
+		}
 	},
 	mounted() {
 		this.dropzoneOptions = {
@@ -127,7 +127,7 @@ export default {
 			maxFilesize: this.config.maxFileSize,
 			previewTemplate: this.$refs.template.innerHTML,
 			dictDefaultMessage: 'Drag & Drop your files or click to browse',
-			headers: { Accept: 'application/vnd.lolisafe.json' },
+			headers: { Accept: 'application/vnd.lolisafe.json' }
 		};
 		this.showDropzone = true;
 		if (this.loggedIn) this.getAlbums();
@@ -154,7 +154,7 @@ export default {
 			this.$refs.el.setOption('headers', {
 				Accept: 'application/vnd.lolisafe.json',
 				Authorization: this.token ? `Bearer ${this.token}` : '',
-				albumId: this.selectedAlbum ? this.selectedAlbum : null,
+				albumId: this.selectedAlbum ? this.selectedAlbum : null
 			});
 		},
 
@@ -170,7 +170,7 @@ export default {
 		dropzoneError(file, message, xhr) {
 			this.$store.dispatch('alert', {
 				text: 'There was an error uploading this file. Check the console.',
-				error: true,
+				error: true
 			});
 			// eslint-disable-next-line no-console
 			console.error(file, message, xhr);
@@ -182,8 +182,8 @@ export default {
 					original: file.name,
 					size: file.size,
 					type: file.type,
-					count: file.upload.totalChunkCount,
-				}],
+					count: file.upload.totalChunkCount
+				}]
 			});
 
 			this.processResult(file, data);
@@ -205,8 +205,8 @@ export default {
 				this.$clipboard(response.url);
 			});
 			*/
-		},
-	},
+		}
+	}
 };
 </script>
 <style lang="scss" scoped>

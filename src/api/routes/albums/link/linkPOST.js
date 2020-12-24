@@ -61,13 +61,13 @@ class linkPOST extends Route {
 				enabled: true,
 				enableDownload: true,
 				expiresAt: null,
-				views: 0,
+				views: 0
 			};
 			await db.table('links').insert(insertObj);
 
 			return res.json({
 				message: 'The link was created successfully',
-				data: insertObj,
+				data: insertObj
 			});
 		} catch (error) {
 			return super.error(res, error);

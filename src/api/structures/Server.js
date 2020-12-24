@@ -15,7 +15,7 @@ const ThumbUtil = require('../utils/ThumbUtil');
 const rateLimiter = new RateLimit({
 	windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
 	max: parseInt(process.env.RATE_LIMIT_MAX, 10),
-	delayMs: 0,
+	delayMs: 0
 });
 
 class Server {
@@ -52,8 +52,8 @@ class Server {
 					return false;
 				},
 				'stream': {
-					write(str) { log.debug(str); },
-				},
+					write(str) { log.debug(str); }
+				}
 			}));
 		}
 		// this.server.use(rateLimiter);

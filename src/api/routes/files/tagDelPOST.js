@@ -29,7 +29,7 @@ class tagDelPost extends Route {
 
 		return res.json({
 			message: 'Successfully removed tag from file',
-			data: { fileId, tag },
+			data: { fileId, tag }
 		});
 		// eslint-disable-next-line consistent-return
 	}

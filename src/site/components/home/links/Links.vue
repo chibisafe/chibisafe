@@ -1,6 +1,7 @@
 <template>
 	<div class="links">
-		<a href="https://github.com/WeebDev/lolisafe"
+		<a
+			href="https://github.com/WeebDev/lolisafe"
 			target="_blank"
 			class="link">
 			<header class="bd-footer-star-header">
@@ -8,15 +9,21 @@
 				<p class="bd-footer-subtitle">Deploy your own lolisafe</p>
 			</header>
 		</a>
-		<div v-if="loggedIn"
+		<div
+			v-if="loggedIn"
 			class="link"
 			@click="createShareXThing">
 			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">ShareX</h4>
-				<p class="bd-footer-subtitle">Upload from your Desktop</p>
+				<h4 class="bd-footer-title">
+					ShareX
+				</h4>
+				<p class="bd-footer-subtitle">
+					Upload from your Desktop
+				</p>
 			</header>
 		</div>
-		<a href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj"
+		<a
+			href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj"
 			target="_blank"
 			class="link">
 			<header class="bd-footer-star-header">
@@ -24,17 +31,23 @@
 				<p class="bd-footer-subtitle">Upload from any website</p>
 			</header>
 		</a>
-		<router-link to="/faq"
+		<router-link
+			to="/faq"
 			class="link">
 			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">FAQ</h4>
-				<p class="bd-footer-subtitle">We got you covered</p>
+				<h4 class="bd-footer-title">
+					FAQ
+				</h4>
+				<p class="bd-footer-subtitle">
+					We got you covered
+				</p>
 			</header>
 		</router-link>
 	</div>
 </template>
 <script>
 import { saveAs } from 'file-saver';
+
 export default {
 	computed: {
 		loggedIn() {

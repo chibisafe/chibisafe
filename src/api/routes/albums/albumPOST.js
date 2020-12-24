@@ -25,7 +25,7 @@ class albumPOST extends Route {
 			name,
 			userId: user.id,
 			createdAt: now,
-			editedAt: now,
+			editedAt: now
 		};
 
 		const dbRes = await db.table('albums').insert(insertObj);

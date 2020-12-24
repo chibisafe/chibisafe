@@ -118,25 +118,25 @@ import Taginfo from './TagInfo.vue';
 export default {
 	components: {
 		Taginfo,
-		Albuminfo,
+		Albuminfo
 	},
 	props: {
 		file: {
 			type: Object,
-			default: () => ({}),
+			default: () => ({})
 		},
 		albums: {
 			type: Array,
-			default: () => ([]),
+			default: () => ([])
 		},
 		tags: {
 			type: Array,
-			default: () => ([]),
-		},
+			default: () => ([])
+		}
 	},
 	computed: mapState({
 		images: (state) => state.images,
-		tinyDetails: (state) => state.albums.tinyDetails,
+		tinyDetails: (state) => state.albums.tinyDetails
 	}),
 	methods: {
 		formatBytes(bytes, decimals = 2) {
@@ -152,8 +152,8 @@ export default {
 		},
 		isVideo(type) {
 			return type.startsWith('video');
-		},
-	},
+		}
+	}
 };
 </script>
 

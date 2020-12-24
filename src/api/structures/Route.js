@@ -7,7 +7,7 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: nodePath.join(__dirname, '../../../database.sqlite'),
+		filename: nodePath.join(__dirname, '../../../database.sqlite')
 	},
 	postProcessResponse: (result) => {
 		/*
@@ -32,7 +32,7 @@ const db = require('knex')({
 		if (typeof result === 'object') return processResponse(result);
 		return result;
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3',
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3'
 });
 const moment = require('moment');
 const log = require('../utils/Log');

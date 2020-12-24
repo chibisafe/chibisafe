@@ -50,7 +50,7 @@ class albumGET extends Route {
 			message: 'Successfully retrieved album',
 			name: album.name,
 			files,
-			count,
+			count
 		});
 	}
 }

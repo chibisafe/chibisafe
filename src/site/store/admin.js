@@ -8,10 +8,10 @@ export const state = () => ({
 		editedAt: null,
 		apiKeyEditedAt: null,
 		isAdmin: null,
-		files: [],
+		files: []
 	},
 	file: {},
-	settings: {},
+	settings: {}
 });
 
 export const actions = {
@@ -82,7 +82,7 @@ export const actions = {
 		const response = await this.$axios.$post('service/restart');
 
 		return response;
-	},
+	}
 };
 
 export const mutations = {
@@ -118,5 +118,5 @@ export const mutations = {
 				state.user.isAdmin = isAdmin;
 			}
 		}
-	},
+	}
 };

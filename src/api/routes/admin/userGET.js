@@ -26,7 +26,7 @@ class usersGET extends Route {
 			return res.json({
 				message: 'Successfully retrieved user',
 				user,
-				files,
+				files
 			});
 		} catch (error) {
 			return super.error(res, error);

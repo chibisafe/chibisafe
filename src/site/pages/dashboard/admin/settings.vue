@@ -131,7 +131,7 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar,
+		Sidebar
 	},
 	middleware: ['auth', 'admin', ({ store }) => {
 		try {
@@ -145,18 +145,18 @@ export default {
 		return { title: 'Settings' };
 	},
 	computed: mapState({
-		settings: (state) => state.admin.settings,
+		settings: (state) => state.admin.settings
 	}),
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
 				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
-				onConfirm: () => this.restartService(),
+				onConfirm: () => this.restartService()
 			});
 		},
 		restartService() {
 			this.$handler.executeAction('admin/restartService');
-		},
-	},
+		}
+	}
 };
 </script>

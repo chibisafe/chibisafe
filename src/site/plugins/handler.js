@@ -8,18 +8,18 @@ export default ({ store }, inject) => {
 
 				store.commit('alert/set', {
 					message: response?.message ?? 'Executed sucesfully',
-					type: AlertTypes.SUCCESS,
+					type: AlertTypes.SUCCESS
 				});
 
 				return response;
 			} catch (e) {
 				store.commit('alert/set', {
 					message: e.message,
-					type: AlertTypes.ERROR,
+					type: AlertTypes.ERROR
 				});
 
 				return null;
 			}
-		},
+		}
 	});
 };

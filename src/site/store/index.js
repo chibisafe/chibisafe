@@ -10,7 +10,7 @@ export const actions = {
 
 		commit('auth/setToken', cookies.token);
 		return dispatch('auth/verify');
-	},
+	}
 	/* 	alert({ commit }, payload) {
 		if (!payload) return commit('alert', null);
 		commit('alert', {

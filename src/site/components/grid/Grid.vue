@@ -162,37 +162,37 @@ import ImageInfo from '~/components/image-modal/ImageInfo.vue';
 export default {
 	components: {
 		Waterfall,
-		ImageInfo,
+		ImageInfo
 	},
 	props: {
 		files: {
 			type: Array,
-			default: () => [],
+			default: () => []
 		},
 		total: {
 			type: Number,
-			default: 0,
+			default: 0
 		},
 		fixed: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
 		isPublic: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
 		width: {
 			type: Number,
-			default: 150,
+			default: 150
 		},
 		enableSearch: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
 		enableToolbar: {
 			type: Boolean,
-			default: true,
-		},
+			default: true
+		}
 	},
 	data() {
 		return {
@@ -208,15 +208,15 @@ export default {
 			modalData: {
 				file: null,
 				tags: null,
-				albums: null,
-			},
+				albums: null
+			}
 		};
 	},
 	computed: {
 		...mapState({
 			user: (state) => state.auth.user,
 			albums: (state) => state.albums.tinyDetails,
-			images: (state) => state.images,
+			images: (state) => state.images
 		}),
 		blank() {
 			// eslint-disable-next-line global-require, import/no-unresolved
@@ -224,7 +224,7 @@ export default {
 		},
 		gridFiles() {
 			return (this.files || []).filter((v) => !v.hideFromList);
-		},
+		}
 	},
 	created() {
 		// TODO: Create a middleware for this
@@ -251,7 +251,7 @@ export default {
 					} catch (e) {
 						this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
 					}
-				},
+				}
 			});
 		},
 		isAlbumSelected(id) {
@@ -279,12 +279,12 @@ export default {
 				if (add) {
 					response = await this.$store.dispatch('images/addToAlbum', {
 						albumId: id,
-						fileId: this.showingModalForFile.id,
+						fileId: this.showingModalForFile.id
 					});
 				} else {
 					response = await this.$store.dispatch('images/removeFromAlbum', {
 						albumId: id,
-						fileId: this.showingModalForFile.id,
+						fileId: this.showingModalForFile.id
 					});
 				}
 
@@ -332,8 +332,8 @@ export default {
 		},
 		isHovered(id) {
 			return this.hoveredItems.includes(id);
-		},
-	},
+		}
+	}
 };
 </script>
 

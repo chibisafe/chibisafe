@@ -215,19 +215,19 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar,
+		Sidebar
 	},
 	middleware: 'auth',
 	data() {
 		return {
 			tags: [],
-			newTagName: null,
+			newTagName: null
 		};
 	},
 	computed: {
 		config() {
 			return this.$store.state.config;
-		},
+		}
 	},
 	metaInfo() {
 		return { title: 'Tags' };
@@ -240,7 +240,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to delete this tag?',
-				onConfirm: () => this.promptPurgeTag(id),
+				onConfirm: () => this.promptPurgeTag(id)
 			});
 		},
 		promptPurgeTag(id) {
@@ -250,7 +250,7 @@ export default {
 				cancelText: 'No',
 				confirmText: 'Yes',
 				onConfirm: () => this.deleteTag(id, true),
-				onCancel: () => this.deleteTag(id, false),
+				onCancel: () => this.deleteTag(id, false)
 			});
 		},
 		async deleteTag(id, purge) {
@@ -272,7 +272,7 @@ export default {
 				tag.isDetailsOpen = false;
 			}
 			this.tags = response.tags;
-		},
-	},
+		}
+	}
 };
 </script>

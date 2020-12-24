@@ -6,14 +6,14 @@ export const getDefaultState = () => ({
 	pagination: {
 		page: 1,
 		limit: 30,
-		totalFiles: 0,
+		totalFiles: 0
 	},
 	search: '',
 	albumName: null,
 	albumDownloadEnabled: false,
 	fileExtraInfoMap: {}, // information about the selected file
 	fileAlbumsMap: {}, // map of file ids with a list of album objects the file is in
-	fileTagsMap: {}, // map of file ids with a list of tag objects for the file
+	fileTagsMap: {} // map of file ids with a list of tag objects for the file
 });
 
 export const state = getDefaultState;
@@ -23,7 +23,7 @@ export const getters = {
 	getFetchedCount: ({ files }) => files.length,
 	shouldPaginate: ({ pagination }) => pagination.totalFiles > pagination.limit,
 	getLimit: ({ pagination }) => pagination.limit,
-	getName: ({ name }) => name,
+	getName: ({ name }) => name
 };
 
 export const actions = {
@@ -50,7 +50,7 @@ export const actions = {
 		page = page || 1;
 
 		const response = await this.$axios.$get(`album/${id}/full`, {
-			params: { limit: state.pagination.limit, page },
+			params: { limit: state.pagination.limit, page }
 		});
 
 		commit('setFilesAndMeta', { ...response, page });
@@ -113,7 +113,7 @@ export const actions = {
 		const response = await this.$axios.$get(`search/?q=${encodeURI(q)}${optionalAlbum}`);
 
 		return response;
-	},
+	}
 };
 
 export const mutations = {
@@ -121,7 +121,7 @@ export const mutations = {
 		state.isLoading = true;
 	},
 	setFilesAndMeta(state, {
-		files, name, page, count, downloadEnabled,
+		files, name, page, count, downloadEnabled
 	}) {
 		state.files = files || [];
 		state.albumName = name ?? null;
@@ -174,5 +174,5 @@ export const mutations = {
 	},
 	resetState(state) {
 		Object.assign(state, getDefaultState());
-	},
+	}
 };

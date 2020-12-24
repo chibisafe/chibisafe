@@ -22,7 +22,7 @@ class tagPOST extends Route {
 			name,
 			userId: user.id,
 			createdAt: now,
-			editedAt: now,
+			editedAt: now
 		};
 
 		const dbRes = await db.table('tags').insert(insertObj);

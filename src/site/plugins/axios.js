@@ -14,12 +14,12 @@ export default function ({ $axios, store }) {
 				if (error.response?.data?.message) {
 					store.dispatch('alert/set', {
 						text: error.response.data.message,
-						error: true,
+						error: true
 					});
 				} else {
 					store.dispatch('alert/set', {
 						text: `[AXIOS]: ${error.message}`,
-						error: true,
+						error: true
 					});
 				}
 			}

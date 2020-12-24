@@ -20,6 +20,6 @@ export default ({ store }, inject) => {
 		error(message, snackbar) {
 			this.showMessage({ message, type: AlertTypes.ERROR, snackbar });
 		},
-		types: AlertTypes,
+		types: AlertTypes
 	});
 };

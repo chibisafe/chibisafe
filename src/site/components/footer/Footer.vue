@@ -81,8 +81,8 @@ export default {
 		...mapState({
 			version: (state) => state.config.version,
 			serviceName: (state) => state.config.serviceName,
-			token: (state) => state.auth.token,
-		}),
+			token: (state) => state.auth.token
+		})
 	},
 	methods: {
 		createShareXThing() {
@@ -102,8 +102,8 @@ export default {
 			}`;
 			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 			saveAs(sharexBlob, `${location.hostname}.sxcu`);
-		},
-	},
+		}
+	}
 };
 </script>
 

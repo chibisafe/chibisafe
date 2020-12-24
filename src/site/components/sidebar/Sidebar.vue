@@ -48,7 +48,7 @@ import { mapState } from 'vuex';
 
 export default {
 	computed: mapState({
-		user: (state) => state.auth.user,
+		user: (state) => state.auth.user
 	}),
 	methods: {
 		isRouteActive(id) {
@@ -56,8 +56,8 @@ export default {
 				return true;
 			}
 			return false;
-		},
-	},
+		}
+	}
 };
 
 </script>

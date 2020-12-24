@@ -6,5 +6,5 @@ export default {
 	ERROR: 'is-danger',
 	DARK: 'is-dark',
 	LIGHT: 'is-light',
-	WHITE: 'is-white',
+	WHITE: 'is-white'
 };

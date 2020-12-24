@@ -23,24 +23,24 @@ export default {
 	props: {
 		imageId: {
 			type: Number,
-			default: 0,
+			default: 0
 		},
 		imageTags: {
 			type: Array,
-			default: () => [],
-		},
+			default: () => []
+		}
 	},
 	data() {
 		return {
-			filteredTags: [],
+			filteredTags: []
 		};
 	},
 	computed: {
 		...mapState({
-			tags: (state) => state.tags.tagsList,
+			tags: (state) => state.tags.tagsList
 		}),
 		selectedTags() { return this.imageTags.map((e) => e.name); },
-		lowercaseTags() { return this.imageTags.map((e) => e.name.toLowerCase()); },
+		lowercaseTags() { return this.imageTags.map((e) => e.name.toLowerCase()); }
 	},
 	methods: {
 		getFilteredTags(str) {
@@ -78,8 +78,8 @@ export default {
 		},
 		tagRemoved(tag) {
 			this.$handler.executeAction('images/removeTag', { fileId: this.imageId, tagName: tag });
-		},
-	},
+		}
+	}
 };
 </script>
 

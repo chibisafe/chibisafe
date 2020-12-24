@@ -16,7 +16,7 @@ module.exports = async (opts) => {
 		output,
 
 		numFrames,
-		numFramesPercent = 0.05,
+		numFramesPercent = 0.05
 	} = opts;
 
 	const info = await probe(input);
@@ -32,7 +32,7 @@ module.exports = async (opts) => {
 
 	const result = {
 		output,
-		numFrames: numFramesToCapture,
+		numFrames: numFramesToCapture
 	};
 
 	await new Promise((resolve, reject) => {

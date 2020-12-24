@@ -5,12 +5,12 @@ export const state = () => ({
 	isListLoading: false,
 	albumDetails: {},
 	expandedAlbums: [],
-	tinyDetails: [],
+	tinyDetails: []
 });
 
 export const getters = {
 	isExpanded: (state) => (id) => state.expandedAlbums.indexOf(id) > -1,
-	getDetails: (state) => (id) => state.albumDetails[id] || {},
+	getDetails: (state) => (id) => state.albumDetails[id] || {}
 };
 
 export const actions = {
@@ -28,8 +28,8 @@ export const actions = {
 		commit('setDetails', {
 			id: albumId,
 			details: {
-				links: response.links,
-			},
+				links: response.links
+			}
 		});
 
 		return response;
@@ -66,7 +66,7 @@ export const actions = {
 		const response = await this.$axios.$post('album/link/edit', {
 			identifier: linkOpts.identifier,
 			enableDownload: linkOpts.enableDownload,
-			enabled: linkOpts.enabled,
+			enabled: linkOpts.enabled
 		});
 
 		commit('updateAlbumLinkOpts', { albumId, linkOpts: response.data });
@@ -86,7 +86,7 @@ export const actions = {
 		commit('setTinyDetails', response);
 
 		return response;
-	},
+	}
 };
 
 export const mutations = {
@@ -113,7 +113,7 @@ export const mutations = {
 	},
 	updateAlbumLinkOpts(state, { albumId, linkOpts }) {
 		const foundIndex = state.albumDetails[albumId].links.findIndex(
-			({ identifier }) => identifier === linkOpts.identifier,
+			({ identifier }) => identifier === linkOpts.identifier
 		);
 		const link = state.albumDetails[albumId].links[foundIndex];
 		state.albumDetails[albumId].links[foundIndex] = { ...link, ...linkOpts };
@@ -132,5 +132,5 @@ export const mutations = {
 	},
 	setTinyDetails(state, { albums }) {
 		state.tinyDetails = albums;
-	},
+	}
 };

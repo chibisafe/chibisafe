@@ -8,11 +8,11 @@ export const state = () => ({
 	chunkSize: 90,
 	maxLinksPerAlbum: 5,
 	publicMode: false,
-	userAccounts: false,
+	userAccounts: false
 });
 
 export const mutations = {
 	set(state, config) {
 		Object.assign(state, config);
-	},
+	}
 };

@@ -46,7 +46,7 @@ class albumsGET extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved albums',
-			albums,
+			albums
 		});
 	}
 }
@@ -63,7 +63,7 @@ class albumsDropdownGET extends Route {
 			.select('id', 'name');
 		return res.json({
 			message: 'Successfully retrieved albums',
-			albums,
+			albums
 		});
 	}
 }

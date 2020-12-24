@@ -14,7 +14,7 @@ class linkPOST extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved links',
-			links,
+			links
 		});
 	}
 }

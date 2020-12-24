@@ -63,22 +63,22 @@ import AlbumDetails from '~/components/album/AlbumDetails.vue';
 
 export default {
 	components: {
-		AlbumDetails,
+		AlbumDetails
 	},
 	props: {
 		album: {
 			type: Object,
-			default: () => ({}),
-		},
+			default: () => ({})
+		}
 	},
 	computed: {
 		...mapGetters({
 			isExpandedGetter: 'albums/isExpanded',
-			getDetails: 'albums/getDetails',
+			getDetails: 'albums/getDetails'
 		}),
 		isExpanded() {
 			return this.isExpandedGetter(this.album.id);
-		},
+		}
 	},
 	methods: {
 		async toggleDetails(album) {
@@ -86,8 +86,8 @@ export default {
 				await this.$store.dispatch('albums/fetchDetails', album.id);
 			}
 			this.$store.commit('albums/toggleExpandedState', album.id);
-		},
-	},
+		}
+	}
 };
 </script>
 

@@ -20,29 +20,29 @@ const imagesloaded = isBrowser ? require('imagesloaded') : null;
 export default {
 	name: 'Waterfall',
 	components: {
-		WaterfallItem,
+		WaterfallItem
 	},
 	props: {
 		options: {
 			type: Object,
-			default: () => {},
+			default: () => {}
 		},
 		items: {
 			type: Array,
-			default: () => [],
+			default: () => []
 		},
 		itemWidth: {
 			type: Number,
-			default: 150,
+			default: 150
 		},
 		gutterWidth: {
 			type: Number,
-			default: 10,
+			default: 10
 		},
 		gutterHeight: {
 			type: Number,
-			default: 4,
-		},
+			default: 4
+		}
 	},
 	mounted() {
 		this.initializeMasonry();
@@ -62,7 +62,7 @@ export default {
 				node,
 				() => {
 					this.masonry.layout();
-				},
+				}
 			);
 		},
 		performLayout() {
@@ -101,7 +101,7 @@ export default {
 				removed,
 				appended,
 				prepended,
-				moved,
+				moved
 			};
 		},
 		initializeMasonry() {
@@ -111,8 +111,8 @@ export default {
 					{
 						columnWidth: this.itemWidth,
 						gutter: this.gutterWidth,
-						...this.options,
-					},
+						...this.options
+					}
 				);
 				this.domChildren = this.getNewDomChildren();
 			}
@@ -122,8 +122,8 @@ export default {
 			const children = this.options && this.options.itemSelector
 				? node.querySelectorAll(this.options.itemSelector) : node.children;
 			return Array.prototype.slice.call(children);
-		},
-	},
+		}
+	}
 };
 </script>
 

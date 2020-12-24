@@ -4,7 +4,7 @@ class QueryHelper {
 	static parsers = {
 		before: (val) => QueryHelper.parseChronoList(val),
 		after: (val) => QueryHelper.parseChronoList(val),
-		tag: (val) => QueryHelper.sanitizeTags(val),
+		tag: (val) => QueryHelper.sanitizeTags(val)
 	};
 
 	static requirementHandlers = {
@@ -13,14 +13,14 @@ class QueryHelper {
 			.join('albums', 'albumsFiles.albumId', '=', 'album.id'),
 		tag: (knex) => knex
 			.join('fileTags', 'files.id', '=', 'fileTags.fileId')
-			.join('tags', 'fileTags.tagId', '=', 'tags.id'),
+			.join('tags', 'fileTags.tagId', '=', 'tags.id')
 	}
 
 	static fieldToSQLMapping = {
 		album: 'albums.name',
 		tag: 'tags.name',
 		before: 'files.createdAt',
-		after: 'files.createdAt',
+		after: 'files.createdAt'
 	}
 
 	static handlers = {
@@ -53,7 +53,7 @@ class QueryHelper {
 				}
 			}
 			return knex;
-		},
+		}
 	}
 
 	static verify(field, list) {

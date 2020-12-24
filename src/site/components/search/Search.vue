@@ -36,13 +36,13 @@ import SearchInput from '~/components/search-input/SearchInput.vue';
 
 export default {
 	components: {
-		SearchInput,
+		SearchInput
 	},
 	props: {
 		hiddenHints: {
 			type: Array,
-			default: () => [],
-		},
+			default: () => []
+		}
 	},
 	data() {
 		return {
@@ -51,35 +51,35 @@ export default {
 				{
 					'name': 'tag',
 					'valueFormat': 'name',
-					'hint': '',
+					'hint': ''
 				},
 				{
 					'name': 'album',
 					'valueFormat': 'name',
-					'hint': '',
+					'hint': ''
 				},
 				{
 					'name': 'before',
 					'valueFormat': 'specific date',
-					'hint': '',
+					'hint': ''
 				},
 				{
 					'name': 'during',
 					'valueFormat': 'specific date',
-					'hint': '',
+					'hint': ''
 				},
 				{
 					'name': 'after',
 					'valueFormat': 'specific date',
-					'hint': '',
+					'hint': ''
 				},
 				{
 					'name': 'file',
 					'valueFormat': 'generated name',
-					'hint': '',
-				},
+					'hint': ''
+				}
 			],
-			filteredHints: [],
+			filteredHints: []
 		};
 	},
 	created() {
@@ -122,8 +122,8 @@ export default {
 				if (/:$/gi.test(this.query)) { return; }
 			}
 			this.$emit('search', this.query, event);
-		},
-	},
+		}
+	}
 };
 </script>
 

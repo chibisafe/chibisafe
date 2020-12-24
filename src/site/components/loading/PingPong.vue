@@ -19,8 +19,8 @@ export default {
 	props: {
 		size: {
 			type: String,
-			default: '60px',
-		},
+			default: '60px'
+		}
 	},
 	computed: {
 		innerStyles() {
@@ -30,10 +30,10 @@ export default {
 		styles() {
 			return {
 				width: this.size,
-				height: this.size,
+				height: this.size
 			};
-		},
-	},
+		}
+	}
 };
 </script>
 

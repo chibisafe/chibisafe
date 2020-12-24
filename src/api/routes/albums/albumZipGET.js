@@ -21,7 +21,7 @@ class albumGET extends Route {
 			.where({
 				identifier,
 				enabled: true,
-				enableDownload: true,
+				enableDownload: true
 			})
 			.first();
 		if (!link) return res.status(400).json({ message: 'The supplied identifier could not be found' });
@@ -38,7 +38,7 @@ class albumGET extends Route {
 			If the date when the album was zipped is greater than the album's last edit, we just send the zip to the user
 		*/
 		if (album.zippedAt > album.editedAt) {
-			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const exists = await jetpack.existsAsync(filePath);
 			/*
 				Make sure the file exists just in case, and if not, continue to it's generation.
@@ -76,7 +76,7 @@ class albumGET extends Route {
 				.where('id', link.albumId)
 				.update('zippedAt', db.fn.now());
 
-			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const fileName = `lolisafe-${identifier}.zip`;
 			return res.download(filePath, fileName);
 		} catch (error) {

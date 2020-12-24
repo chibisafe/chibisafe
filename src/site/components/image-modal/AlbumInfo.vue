@@ -31,21 +31,21 @@ export default {
 	props: {
 		imageId: {
 			type: Number,
-			default: 0,
+			default: 0
 		},
 		imageAlbums: {
 			type: Array,
-			default: () => [],
+			default: () => []
 		},
 		albums: {
 			type: Array,
-			default: () => [],
-		},
+			default: () => []
+		}
 	},
 	data() {
 		return {
 			selectedOptions: [],
-			orderedAlbums: [],
+			orderedAlbums: []
 		};
 	},
 	created() {
@@ -65,7 +65,7 @@ export default {
 						return selectedA ? -1 : 1;
 					}
 					return a.name.localeCompare(b.name);
-				},
+				}
 			);
 		},
 		isAlbumSelected(id) {
@@ -78,15 +78,15 @@ export default {
 			if (this.selectedOptions.indexOf(id) > -1) {
 				this.$handler.executeAction('images/addToAlbum', {
 					albumId: id,
-					fileId: this.imageId,
+					fileId: this.imageId
 				});
 			} else {
 				this.$handler.executeAction('images/removeFromAlbum', {
 					albumId: id,
-					fileId: this.imageId,
+					fileId: this.imageId
 				});
 			}
-		},
-	},
+		}
+	}
 };
 </script>

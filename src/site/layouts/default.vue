@@ -19,7 +19,7 @@ import Footer from '~/components/footer/Footer.vue';
 export default {
 	components: {
 		Navbar,
-		Footer,
+		Footer
 	},
 	computed: mapState(['config', 'alert']),
 	created() {
@@ -33,14 +33,14 @@ export default {
 					duration: 3500,
 					position: 'is-bottom',
 					message,
-					type,
+					type
 				});
 			} else {
 				this.$buefy.toast.open({
 					duration: 3500,
 					position: 'is-bottom',
 					message,
-					type,
+					type
 				});
 			}
 
@@ -53,9 +53,9 @@ export default {
 			`%c lolisafe %c v${this.config.version} %c`,
 			'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
 			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
-			'background:transparent',
+			'background:transparent'
 		);
-	},
+	}
 };
 </script>
 

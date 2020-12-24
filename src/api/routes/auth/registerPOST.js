@@ -50,7 +50,7 @@ class registerPOST extends Route {
 			createdAt: now,
 			editedAt: now,
 			enabled: true,
-			isAdmin: false,
+			isAdmin: false
 		});
 		return res.json({ message: 'The account was created successfully' });
 	}

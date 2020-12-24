@@ -15,7 +15,7 @@ exports.seed = async (db) => {
 			createdAt: now,
 			editedAt: now,
 			enabled: true,
-			isAdmin: true,
+			isAdmin: true
 		});
 		console.log();
 		console.log('=========================================================');

@@ -102,7 +102,7 @@ import Sidebar from '~/components/sidebar/Sidebar.vue';
 
 export default {
 	components: {
-		Sidebar,
+		Sidebar
 	},
 	middleware: ['auth', ({ store }) => {
 		store.dispatch('auth/fetchCurrentUser');
@@ -111,21 +111,21 @@ export default {
 		return {
 			password: '',
 			newPassword: '',
-			reNewPassword: '',
+			reNewPassword: ''
 		};
 	},
 	computed: {
 		...mapGetters({ 'apiKey': 'auth/getApiKey' }),
 		...mapState({
-			user: (state) => state.auth.user,
-		}),
+			user: (state) => state.auth.user
+		})
 	},
 	metaInfo() {
 		return { title: 'Account' };
 	},
 	methods: {
 		...mapActions({
-			getUserSetttings: 'auth/fetchCurrentUser',
+			getUserSetttings: 'auth/fetchCurrentUser'
 		}),
 		async changePassword() {
 			const { password, newPassword, reNewPassword } = this;
@@ -133,21 +133,21 @@ export default {
 			if (!password || !newPassword || !reNewPassword) {
 				this.$store.dispatch('alert/set', {
 					text: 'One or more fields are missing',
-					error: true,
+					error: true
 				});
 				return;
 			}
 			if (newPassword !== reNewPassword) {
 				this.$store.dispatch('alert/set', {
 					text: 'Passwords don\'t match',
-					error: true,
+					error: true
 				});
 				return;
 			}
 
 			const response = await this.$store.dispatch('auth/changePassword', {
 				password,
-				newPassword,
+				newPassword
 			});
 
 			if (response) {
@@ -158,7 +158,7 @@ export default {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
 				message: 'Are you sure you want to regenerate your API key? Previously generated API keys will stop working. Make sure to write the new key down as this is the only time it will be displayed to you.',
-				onConfirm: () => this.requestNewAPIKey(),
+				onConfirm: () => this.requestNewAPIKey()
 			});
 		},
 		copyKey() {
@@ -168,7 +168,7 @@ export default {
 		async requestNewAPIKey() {
 			const response = await this.$store.dispatch('auth/requestAPIKey');
 			this.$buefy.toast.open(response.message);
-		},
-	},
+		}
+	}
 };
 </script>

@@ -95,7 +95,7 @@ export default {
 			password: null,
 			mfaCode: null,
 			isMfaModalActive: false,
-			isLoading: false,
+			isLoading: false
 		};
 	},
 	computed: mapState(['config', 'auth']),
@@ -150,7 +150,7 @@ export default {
 				return;
 			}
 			this.$router.push('/dashboard');
-		},
-	},
+		}
+	}
 };
 </script>

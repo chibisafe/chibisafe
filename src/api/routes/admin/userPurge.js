@@ -18,7 +18,7 @@ class userDemote extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully deleted the user\'s files',
+			message: 'Successfully deleted the user\'s files'
 		});
 	}
 }

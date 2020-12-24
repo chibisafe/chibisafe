@@ -38,7 +38,7 @@ class fileGET extends Route {
 			message: 'Successfully retrieved file',
 			file,
 			albums,
-			tags,
+			tags
 		});
 	}
 }

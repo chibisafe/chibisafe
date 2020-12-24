@@ -72,7 +72,7 @@ export default {
 	components: {
 		Sidebar,
 		Grid,
-		Search,
+		Search
 	},
 	middleware: ['auth', ({ route, store }) => {
 		store.commit('images/resetState');
@@ -80,34 +80,34 @@ export default {
 	}],
 	data() {
 		return {
-			current: 1,
+			current: 1
 		};
 	},
 	computed: {
 		...mapGetters({
 			totalFiles: 'images/getTotalFiles',
 			shouldPaginate: 'images/shouldPaginate',
-			limit: 'images/getLimit',
+			limit: 'images/getLimit'
 		}),
 		...mapState(['images']),
 		id() {
 			return this.$route.params.id;
-		},
+		}
 	},
 	metaInfo() {
 		return { title: 'Album' };
 	},
 	watch: {
-		current: 'fetchPaginate',
+		current: 'fetchPaginate'
 	},
 	methods: {
 		...mapActions({
-			fetch: 'images/fetchByAlbumId',
+			fetch: 'images/fetchByAlbumId'
 		}),
 		fetchPaginate() {
 			this.fetch({ id: this.id, page: this.current });
-		},
-	},
+		}
+	}
 };
 </script>
 
