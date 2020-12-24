@@ -30,7 +30,7 @@ class ThumbUtil {
 	}
 
 	static async generateThumbnailForImage(filename, output) {
-		const filePath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename);
+		const filePath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, filename);
 
 		const file = await jetpack.readAsync(filePath, 'buffer');
 		await sharp(file)
@@ -44,7 +44,7 @@ class ThumbUtil {
 	}
 
 	static async generateThumbnailForVideo(filename, output) {
-		const filePath = path.join(__dirname, '..', '..', '..', process.env.UPLOAD_FOLDER, filename);
+		const filePath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, filename);
 
 		ffmpeg(filePath)
 			.thumbnail({

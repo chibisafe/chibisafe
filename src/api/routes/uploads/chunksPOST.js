@@ -25,20 +25,14 @@ class uploadPOST extends Route {
 			// console.log('Chunk', chunk);
 
 			const chunkOutput = path.join(__dirname,
-				'..',
-				'..',
-				'..',
-				'..',
+				'../../../../',
 				process.env.UPLOAD_FOLDER,
 				'chunks',
 				uuid);
 			const chunkDir = await jetpack.list(chunkOutput);
 			const ext = path.extname(chunkDir[0]);
 			const output = path.join(__dirname,
-				'..',
-				'..',
-				'..',
-				'..',
+				'../../../../',
 				process.env.UPLOAD_FOLDER,
 				`${filename}${ext || ''}`);
 			chunkDir.sort();
@@ -49,10 +43,7 @@ class uploadPOST extends Route {
 
 			for (let i = 0; i < chunkDir.length; i++) {
 				const dir = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					'chunks',
 					uuid,
