@@ -65,7 +65,6 @@ export default {
 		'~/plugins/v-clipboard',
 		'~/plugins/vue-isyourpasswordsafe',
 		'~/plugins/vue-timeago',
-		'~/plugins/flexsearch',
 		'~/plugins/vuebar',
 		'~/plugins/nuxt-client-init',
 		'~/plugins/notifier',
