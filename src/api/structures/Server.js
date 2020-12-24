@@ -92,6 +92,7 @@ class Server {
 	start() {
 		jetpack.dir('uploads/chunks');
 		jetpack.dir('uploads/thumbs/square');
+		jetpack.dir('uploads/thumbs/preview');
 		this.registerAllTheRoutes();
 		this.serveNuxt();
 		const server = this.server.listen(this.port, () => {

@@ -83,7 +83,7 @@ class ThumbUtil {
 		if (isImage) return { thumb: `${filename.slice(0, -ext.length)}.webp` };
 		if (isVideo) {
 			return {
-				thumb: `${filename.slice(0, -ext.length)}.png`,
+				thumb: `${filename.slice(0, -ext.length)}.webp`,
 				preview: `${filename.slice(0, -ext.length)}.webm`
 			};
 		}
