@@ -7,17 +7,17 @@ module.exports = {
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: 'database.sqlite',
+		filename: 'database.sqlite'
 	},
 	pool: {
 		min: process.env.DATABASE_POOL_MIN || 2,
-		max: process.env.DATABASE_POOL_MAX || 10,
+		max: process.env.DATABASE_POOL_MAX || 10
 	},
 	migrations: {
-		directory: 'src/api/database/migrations',
+		directory: 'src/api/database/migrations'
 	},
 	seeds: {
-		directory: 'src/api/database/seeds',
+		directory: 'src/api/database/seeds'
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3',
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3'
 };

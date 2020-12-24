@@ -12,13 +12,13 @@ const clientConfig = {
 	chunkSize: parseInt(process.env.CHUNK_SIZE, 10),
 	maxLinksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
 	publicMode: process.env.PUBLIC_MODE === 'true',
-	userAccounts: process.env.USER_ACCOUNTS === 'true',
+	userAccounts: process.env.USER_ACCOUNTS === 'true'
 };
 
 export default {
 	mode: 'spa',
 	server: {
-		port: process.env.WEBSITE_PORT,
+		port: process.env.WEBSITE_PORT
 	},
 	srcDir: 'src/site/',
 	head: {
@@ -34,7 +34,7 @@ export default {
 			{
 				hid: 'apple-mobile-web-app-title',
 				name: 'apple-mobile-web-app-title',
-				content: `${process.env.SERVICE_NAME}`,
+				content: `${process.env.SERVICE_NAME}`
 			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
 			// { hid: 'msapplication-config', name: 'msapplication-config', content: `${process.env.DOMAIN}/browserconfig.xml` },
@@ -50,14 +50,14 @@ export default {
 			{ hid: 'og:description', property: 'og:description', content: `${process.env.META_DESCRIPTION}` },
 			{ hid: 'og:image', property: 'og:image', content: `${process.env.DOMAIN}/share.jpg` },
 			{ hid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${process.env.DOMAIN}/share.jpg` },
-			{ hid: 'og:site_name', property: 'og:site_name', content: `${process.env.SERVICE_NAME}` },
+			{ hid: 'og:site_name', property: 'og:site_name', content: `${process.env.SERVICE_NAME}` }
 		],
 		link: [
 			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700' },
 
 			// This one is a pain in the ass to make it customizable, so you should edit it manually
-			{ type: 'application/json+oembed', href: `${process.env.DOMAIN}/oembed.json` },
-		],
+			{ type: 'application/json+oembed', href: `${process.env.DOMAIN}/oembed.json` }
+		]
 	},
 	plugins: [
 		'~/plugins/axios',
@@ -69,23 +69,23 @@ export default {
 		'~/plugins/vuebar',
 		'~/plugins/nuxt-client-init',
 		'~/plugins/notifier',
-		'~/plugins/handler',
+		'~/plugins/handler'
 	],
 	css: [],
 	modules: ['@nuxtjs/axios', 'cookie-universal-nuxt'],
 	router: {
 		linkActiveClass: 'is-active',
-		linkExactActiveClass: 'is-active',
+		linkExactActiveClass: 'is-active'
 	},
 	axios: {
-		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`,
+		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`
 	},
 	build: {
 		extractCSS: process.env.NODE_ENV === 'production',
 		postcss: {
 			preset: {
-				autoprefixer,
-			},
+				autoprefixer
+			}
 		},
 		extend(config, { isClient, isDev }) {
 			// Extend only webpack config for client-bundle
@@ -95,6 +95,6 @@ export default {
 			if (isDev) {
 				config.devtool = isClient ? 'source-map' : 'inline-source-map';
 			}
-		},
-	},
+		}
+	}
 };
