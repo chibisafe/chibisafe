@@ -56,7 +56,7 @@ class uploadPOST extends Route {
 			if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
 		}
 
-		return upload(req, res, async (err) => {
+		return upload(req, res, async err => {
 			if (err) console.error(err.message);
 
 			let uploadedFile = {};
@@ -142,7 +142,7 @@ class uploadPOST extends Route {
 
 	async checkIfFileExists(db, user, hash) {
 		const exists = await db.table('files')
-			.where(function () { // eslint-disable-line func-names
+			.where(function() { // eslint-disable-line func-names
 				if (user) this.where('userId', user.id);
 				else this.whereNull('userId');
 			})

@@ -24,22 +24,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
 	name: 'Albuminfo',
 	props: {
 		imageId: {
-			type: Number,
-			default: 0
+			'type': Number,
+			'default': 0
 		},
 		imageAlbums: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		},
 		albums: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		}
 	},
 	data() {
@@ -52,7 +50,7 @@ export default {
 		this.orderedAlbums = this.getOrderedAlbums();
 		// we're sorting here instead of computed because we want sort on creation
 		// then the array's values should be frozen
-		this.selectedOptions = this.imageAlbums.map((e) => e.id);
+		this.selectedOptions = this.imageAlbums.map(e => e.id);
 	},
 	methods: {
 		getOrderedAlbums() {
@@ -70,8 +68,8 @@ export default {
 		},
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return false;
-			const found = this.showingModalForFile.albums.find((el) => el.id === id);
-			return !!(found && found.id);
+			const found = this.showingModalForFile.albums.find(el => el.id === id);
+			return Boolean(found && found.id);
 		},
 		async handleClick(id) {
 			// here the album should be already removed from the selected list

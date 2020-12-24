@@ -74,7 +74,7 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			'alert': 'alert/set'
+			alert: 'alert/set'
 		}),
 		async createAlbum() {
 			if (!this.newAlbumName || this.newAlbumName === '') return;

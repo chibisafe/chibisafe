@@ -97,12 +97,12 @@
 					<div class="divider is-lolisafe has-text-light">
 						Tags
 					</div>
-					<Taginfo :imageId="file.id" :imageTags="tags" />
+					<Taginfo :image-id="file.id" :image-tags="tags" />
 
 					<div class="divider is-lolisafe has-text-light">
 						Albums
 					</div>
-					<Albuminfo :imageId="file.id" :imageAlbums="albums" :albums="tinyDetails" />
+					<Albuminfo :image-id="file.id" :image-albums="albums" :albums="tinyDetails" />
 				</div>
 			</div>
 		</div>
@@ -122,21 +122,21 @@ export default {
 	},
 	props: {
 		file: {
-			type: Object,
-			default: () => ({})
+			'type': Object,
+			'default': () => ({})
 		},
 		albums: {
-			type: Array,
-			default: () => ([])
+			'type': Array,
+			'default': () => ([])
 		},
 		tags: {
-			type: Array,
-			default: () => ([])
+			'type': Array,
+			'default': () => ([])
 		}
 	},
 	computed: mapState({
-		images: (state) => state.images,
-		tinyDetails: (state) => state.albums.tinyDetails
+		images: state => state.images,
+		tinyDetails: state => state.albums.tinyDetails
 	}),
 	methods: {
 		formatBytes(bytes, decimals = 2) {
@@ -148,6 +148,7 @@ export default {
 
 			const i = Math.floor(Math.log(bytes) / Math.log(k));
 
+			// eslint-disable-next-line no-mixed-operators
 			return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 		},
 		isVideo(type) {

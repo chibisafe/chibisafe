@@ -22,12 +22,12 @@ export default {
 	name: 'Taginfo',
 	props: {
 		imageId: {
-			type: Number,
-			default: 0
+			'type': Number,
+			'default': 0
 		},
 		imageTags: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		}
 	},
 	data() {
@@ -37,14 +37,14 @@ export default {
 	},
 	computed: {
 		...mapState({
-			tags: (state) => state.tags.tagsList
+			tags: state => state.tags.tagsList
 		}),
-		selectedTags() { return this.imageTags.map((e) => e.name); },
-		lowercaseTags() { return this.imageTags.map((e) => e.name.toLowerCase()); }
+		selectedTags() { return this.imageTags.map(e => e.name); },
+		lowercaseTags() { return this.imageTags.map(e => e.name.toLowerCase()); }
 	},
 	methods: {
 		getFilteredTags(str) {
-			this.filteredTags = this.tags.map((e) => e.name).filter((e) => {
+			this.filteredTags = this.tags.map(e => e.name).filter(e => {
 				// check if the search string matches any of the tags
 				const sanitezedTag = e.toString().toLowerCase();
 				const matches = sanitezedTag.indexOf(str.toLowerCase()) >= 0;

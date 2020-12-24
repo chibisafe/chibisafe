@@ -145,7 +145,7 @@ export default {
 		return { title: 'Settings' };
 	},
 	computed: mapState({
-		settings: (state) => state.admin.settings
+		settings: state => state.admin.settings
 	}),
 	methods: {
 		promptRestartService() {

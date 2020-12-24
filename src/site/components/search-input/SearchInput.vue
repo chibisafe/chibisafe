@@ -89,12 +89,12 @@ export default {
 	props: {
 		value: [Number, String],
 		data: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		},
 		field: {
-			type: String,
-			default: 'value'
+			'type': String,
+			'default': 'value'
 		},
 		keepFirst: Boolean,
 		clearOnSelect: Boolean,
@@ -105,8 +105,8 @@ export default {
 		clearable: Boolean,
 		maxHeight: [String, Number],
 		dropdownPosition: {
-			type: String,
-			default: 'auto'
+			'type': String,
+			'default': 'auto'
 		},
 		iconRight: String,
 		iconRightClickable: Boolean,
@@ -159,25 +159,25 @@ export default {
          * Check if exists default slot
          */
 		hasDefaultSlot() {
-			return !!this.$scopedSlots.default;
+			return Boolean(this.$scopedSlots.default);
 		},
 		/**
          * Check if exists "empty" slot
          */
 		hasEmptySlot() {
-			return !!this.$slots.empty;
+			return Boolean(this.$slots.empty);
 		},
 		/**
          * Check if exists "header" slot
          */
 		hasHeaderSlot() {
-			return !!this.$slots.header;
+			return Boolean(this.$slots.header);
 		},
 		/**
          * Check if exists "footer" slot
          */
 		hasFooterSlot() {
-			return !!this.$slots.footer;
+			return Boolean(this.$slots.footer);
 		},
 		/**
          * Apply dropdownPosition property
@@ -202,7 +202,8 @@ export default {
 				// eslint-disable-next-line no-nested-ternary
 				maxHeight: this.maxHeight === undefined
 					// eslint-disable-next-line no-restricted-globals
-					? null : (isNaN(this.maxHeight) ? this.maxHeight : `${this.maxHeight}px`)
+					? null
+					: (isNaN(this.maxHeight) ? this.maxHeight : `${this.maxHeight}px`)
 			};
 		}
 	},
@@ -239,7 +240,7 @@ export default {
 			}
 			// Close dropdown if input is clear or else open it
 			if (this.hasFocus && (!this.openOnFocus || value)) {
-				this.isActive = !!value;
+				this.isActive = Boolean(value);
 			}
 		},
 		/**
@@ -378,8 +379,8 @@ export default {
          * reached it's end.
          */
 		checkIfReachedTheEndOfScroll(list) {
-			if (list.clientHeight !== list.scrollHeight
-                && list.scrollTop + list.clientHeight >= list.scrollHeight) {
+			if (list.clientHeight !== list.scrollHeight &&
+                list.scrollTop + list.clientHeight >= list.scrollHeight) {
 				this.$emit('infinite-scroll');
 			}
 		},
@@ -396,9 +397,9 @@ export default {
 				if (this.$refs.dropdown === undefined) return;
 				const rect = this.$refs.dropdown.getBoundingClientRect();
 				this.isListInViewportVertically = (
-					rect.top >= 0
-                    && rect.bottom <= (window.innerHeight
-                        || document.documentElement.clientHeight)
+					rect.top >= 0 &&
+                    rect.bottom <= (window.innerHeight ||
+                        document.documentElement.clientHeight)
 				);
 				if (this.appendToBody) {
 					this.updateAppendToBody();
@@ -425,9 +426,9 @@ export default {
 					list.scrollTop = element.offsetTop;
 				} else if (element.offsetTop >= visMax) {
 					list.scrollTop = (
-						element.offsetTop
-                        - list.clientHeight
-                        + element.clientHeight
+						element.offsetTop -
+                        list.clientHeight +
+                        element.clientHeight
 					);
 				}
 			} else {
@@ -487,7 +488,7 @@ export default {
 			if (dropdownMenu && trigger) {
 				// update wrapper dropdown
 				const root = this.$data._bodyEl;
-				root.classList.forEach((item) => root.classList.remove(item));
+				root.classList.forEach(item => root.classList.remove(item));
 				root.classList.add('autocomplete');
 				root.classList.add('control');
 				if (this.expandend) {
@@ -496,10 +497,10 @@ export default {
 				const rect = trigger.getBoundingClientRect();
 				let top = rect.top + window.scrollY;
 				const left = rect.left + window.scrollX;
-				if (!this.isOpenedTop) {
-					top += trigger.clientHeight;
-				} else {
+				if (this.isOpenedTop) {
 					top -= dropdownMenu.clientHeight;
+				} else {
+					top += trigger.clientHeight;
 				}
 				this.style = {
 					position: 'absolute',

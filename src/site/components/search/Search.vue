@@ -6,7 +6,7 @@
 					ref="autocomplete"
 					v-model="query"
 					:data="filteredHints"
-					:customSelector="handleSelect"
+					:custom-selector="handleSelect"
 					field="name"
 					class="lolisafe-input search"
 					placeholder="Search"
@@ -40,8 +40,8 @@ export default {
 	},
 	props: {
 		hiddenHints: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		}
 	},
 	data() {
@@ -49,34 +49,34 @@ export default {
 			query: '',
 			hints: [
 				{
-					'name': 'tag',
-					'valueFormat': 'name',
-					'hint': ''
+					name: 'tag',
+					valueFormat: 'name',
+					hint: ''
 				},
 				{
-					'name': 'album',
-					'valueFormat': 'name',
-					'hint': ''
+					name: 'album',
+					valueFormat: 'name',
+					hint: ''
 				},
 				{
-					'name': 'before',
-					'valueFormat': 'specific date',
-					'hint': ''
+					name: 'before',
+					valueFormat: 'specific date',
+					hint: ''
 				},
 				{
-					'name': 'during',
-					'valueFormat': 'specific date',
-					'hint': ''
+					name: 'during',
+					valueFormat: 'specific date',
+					hint: ''
 				},
 				{
-					'name': 'after',
-					'valueFormat': 'specific date',
-					'hint': ''
+					name: 'after',
+					valueFormat: 'specific date',
+					hint: ''
 				},
 				{
-					'name': 'file',
-					'valueFormat': 'generated name',
-					'hint': ''
+					name: 'file',
+					valueFormat: 'generated name',
+					hint: ''
 				}
 			],
 			filteredHints: []
@@ -98,13 +98,22 @@ export default {
 			// get the last word or group of words
 			let lastWord = (qry.match(/("[^"]*")|[^\s]+/g) || ['']).pop().toLowerCase();
 			// if there's an open/unbalanced quote, don't autosuggest
-			if (/^[^"]*("[^"]*"[^"]*)*(")[^"]*$/.test(qry)) { this.filteredHints = []; return; }
+			if (/^[^"]*("[^"]*"[^"]*)*(")[^"]*$/.test(qry)) {
+				this.filteredHints = [];
+				return;
+			}
 			// don't autosuggest if we have an open query but no text yet
-			if (/:\s+$/gi.test(qry)) { this.filteredHints = []; return; }
+			if (/:\s+$/gi.test(qry)) {
+				this.filteredHints = [];
+				return;
+			}
 			// if the above query didn't match (all quotes are balanced
 			// and the previous tag has value
 			// check if we're about to start a new tag
-			if (/\s+$/gi.test(qry)) { this.filteredHints = this.hints; return; }
+			if (/\s+$/gi.test(qry)) {
+				this.filteredHints = this.hints;
+				return;
+			}
 
 			// ignore starting `-` from lastword, because - is used to
 			// exclude something, so -alb should autosuggest album
@@ -112,7 +121,7 @@ export default {
 
 			// if we got here, then we handled all special cases
 			// now take last word, and check if we can autosuggest a tag
-			this.filteredHints = this.hints.filter((hint) => hint.name
+			this.filteredHints = this.hints.filter(hint => hint.name
 				.toString()
 				.toLowerCase()
 				.indexOf(lastWord) === 0);

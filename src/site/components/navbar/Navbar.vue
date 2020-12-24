@@ -72,8 +72,8 @@ import { mapState, mapGetters } from 'vuex';
 export default {
 	props: {
 		isWhite: {
-			type: Boolean,
-			default: false
+			'type': Boolean,
+			'default': false
 		}
 	},
 	data() {

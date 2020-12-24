@@ -19,8 +19,8 @@
 export default {
 	props: {
 		size: {
-			type: String,
-			default: '40px'
+			'type': String,
+			'default': '40px'
 		}
 	},
 	computed: {

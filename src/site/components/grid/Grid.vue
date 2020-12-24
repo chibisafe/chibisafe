@@ -23,10 +23,10 @@
 
 		<template v-if="!images.showList">
 			<Waterfall
-				:gutterWidth="10"
-				:gutterHeight="4"
+				:gutter-width="10"
+				:gutter-height="4"
 				:options="{fitWidth: true}"
-				:itemWidth="width"
+				:item-width="width"
 				:items="gridFiles">
 				<template v-slot="{item}">
 					<template v-if="isPublic">
@@ -165,32 +165,32 @@ export default {
 	},
 	props: {
 		files: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		},
 		total: {
-			type: Number,
-			default: 0
+			'type': Number,
+			'default': 0
 		},
 		fixed: {
-			type: Boolean,
-			default: false
+			'type': Boolean,
+			'default': false
 		},
 		isPublic: {
-			type: Boolean,
-			default: false
+			'type': Boolean,
+			'default': false
 		},
 		width: {
-			type: Number,
-			default: 150
+			'type': Number,
+			'default': 150
 		},
 		enableSearch: {
-			type: Boolean,
-			default: true
+			'type': Boolean,
+			'default': true
 		},
 		enableToolbar: {
-			type: Boolean,
-			default: true
+			'type': Boolean,
+			'default': true
 		}
 	},
 	data() {
@@ -212,16 +212,16 @@ export default {
 	},
 	computed: {
 		...mapState({
-			user: (state) => state.auth.user,
-			albums: (state) => state.albums.tinyDetails,
-			images: (state) => state.images
+			user: state => state.auth.user,
+			albums: state => state.albums.tinyDetails,
+			images: state => state.images
 		}),
 		blank() {
 			// eslint-disable-next-line global-require, import/no-unresolved
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {
-			return (this.files || []).filter((v) => !v.hideFromList);
+			return (this.files || []).filter(v => !v.hideFromList);
 		}
 	},
 	watch: {
@@ -259,8 +259,8 @@ export default {
 		},
 		isAlbumSelected(id) {
 			if (!this.showingModalForFile) return false;
-			const found = this.showingModalForFile.albums.find((el) => el.id === id);
-			return !!(found && found.id);
+			const found = this.showingModalForFile.albums.find(el => el.id === id);
+			return Boolean(found && found.id);
 		},
 		async openAlbumModal(file) {
 			const { id } = file;

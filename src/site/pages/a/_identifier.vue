@@ -36,10 +36,10 @@
 				<Grid
 					v-if="files && files.length"
 					:files="files"
-					:isPublic="true"
+					:is-public="true"
 					:width="200"
-					:enableSearch="false"
-					:enableToolbar="false" />
+					:enable-search="false"
+					:enable-toolbar="false" />
 			</div>
 		</template>
 		<template v-else>

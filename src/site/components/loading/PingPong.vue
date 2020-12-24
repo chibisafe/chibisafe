@@ -18,8 +18,8 @@
 export default {
 	props: {
 		size: {
-			type: String,
-			default: '60px'
+			'type': String,
+			'default': '60px'
 		}
 	},
 	computed: {

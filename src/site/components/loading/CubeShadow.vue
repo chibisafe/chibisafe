@@ -8,16 +8,16 @@
 export default {
 	props: {
 		size: {
-			type: String,
-			default: '60px'
+			'type': String,
+			'default': '60px'
 		},
 		background: {
-			type: String,
-			default: '#9C27B0'
+			'type': String,
+			'default': '#9C27B0'
 		},
 		duration: {
-			type: String,
-			default: '1.8s'
+			'type': String,
+			'default': '1.8s'
 		}
 	},
 	computed: {

@@ -168,6 +168,7 @@ export default {
 
 			const i = Math.floor(Math.log(bytes) / Math.log(k));
 
+			// eslint-disable-next-line no-mixed-operators
 			return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 		}
 	}

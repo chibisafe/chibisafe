@@ -92,7 +92,7 @@ export default {
 		};
 	},
 	computed: mapState({
-		user: (state) => state.admin.user
+		user: state => state.admin.user
 	}),
 	methods: {
 		promptDisableUser() {

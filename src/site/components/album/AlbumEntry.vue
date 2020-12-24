@@ -53,7 +53,7 @@
 		<AlbumDetails
 			v-if="isExpanded"
 			:details="getDetails(album.id)"
-			:albumId="album.id" />
+			:album-id="album.id" />
 	</div>
 </template>
 
@@ -67,8 +67,8 @@ export default {
 	},
 	props: {
 		album: {
-			type: Object,
-			default: () => ({})
+			'type': Object,
+			'default': () => ({})
 		}
 	},
 	computed: {

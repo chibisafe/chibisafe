@@ -119,12 +119,12 @@ import { mapState, mapActions } from 'vuex';
 export default {
 	props: {
 		albumId: {
-			type: Number,
-			default: 0
+			'type': Number,
+			'default': 0
 		},
 		details: {
-			type: Object,
-			default: () => ({})
+			'type': Object,
+			'default': () => ({})
 		}
 	},
 	data() {
@@ -175,7 +175,7 @@ export default {
 			} catch (e) {
 				this.alert({ text: e.message, error: true });
 			} finally {
-				this.isDeletingLinks = this.isDeletingLinks.filter((e) => e !== identifier);
+				this.isDeletingLinks = this.isDeletingLinks.filter(e => e !== identifier);
 			}
 		},
 		async createLink(albumId) {
@@ -207,7 +207,7 @@ export default {
 					maxlength: 10
 				},
 				trapFocus: true,
-				onConfirm: (value) => this.$handler.executeAction('albums/createCustomLink', { albumId, value })
+				onConfirm: value => this.$handler.executeAction('albums/createCustomLink', { albumId, value })
 			});
 		},
 		isDeleting(identifier) {

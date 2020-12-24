@@ -1,11 +1,9 @@
 {
-	"discord.enabled": true,
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
 	"files.insertFinalNewline": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
-	"vetur.validation.template": false,
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},
@@ -15,11 +13,6 @@
 	"prettier.disableLanguages": ["vue"],
 	"vetur.format.enable": true,
 	"files.eol": "\n",
-	"vetur.format.defaultFormatter.html": "js-beautify-html",
-	"vetur.format.defaultFormatter.js": "prettier",
-	"vetur.format.defaultFormatter.scss": "prettier",
-	"vetur.format.defaultFormatter.stylus": "stylus-supremacy",
-	"vetur.format.defaultFormatter.ts": "vscode-typescript",
 	"eslint.alwaysShowStatus": true,
 	"eslint.format.enable": true,
 	"editor.codeActionsOnSave": {

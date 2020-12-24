@@ -3,7 +3,7 @@
 		v-bar
 		class="scroll-area">
 		<div class="default-body">
-			<Navbar :isWhite="true" />
+			<Navbar :is-white="true" />
 			<nuxt-child
 				id="app"
 				class="nuxt-app is-height-max-content" />
@@ -23,7 +23,7 @@ export default {
 	},
 	computed: mapState(['config', 'alert']),
 	created() {
-		this.$store.watch((state) => state.alert.message, () => {
+		this.$store.watch(state => state.alert.message, () => {
 			const { message, type, snackbar } = this.alert;
 
 			if (!message) return;

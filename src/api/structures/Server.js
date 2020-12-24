@@ -42,16 +42,16 @@ class Server {
 					if (ext) { ext = `.${ext.toLowerCase()}`; }
 
 					if (
-						ThumbUtil.imageExtensions.indexOf(ext) > -1
-						|| ThumbUtil.videoExtensions.indexOf(ext) > -1
-						|| req.path.indexOf('_nuxt') > -1
-						|| req.path.indexOf('favicon.ico') > -1
+						ThumbUtil.imageExtensions.indexOf(ext) > -1 ||
+						ThumbUtil.videoExtensions.indexOf(ext) > -1 ||
+						req.path.indexOf('_nuxt') > -1 ||
+						req.path.indexOf('favicon.ico') > -1
 					) {
 						return true;
 					}
 					return false;
 				},
-				'stream': {
+				stream: {
 					write(str) { log.debug(str); }
 				}
 			}));
@@ -64,7 +64,7 @@ class Server {
 	}
 
 	registerAllTheRoutes() {
-		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach((routeFile) => {
+		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach(routeFile => {
 			// eslint-disable-next-line import/no-dynamic-require, global-require
 			const RouteClass = require(path.join('../../../', routeFile));
 			let routes = [RouteClass];

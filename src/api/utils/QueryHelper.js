@@ -2,16 +2,16 @@ const chrono = require('chrono-node');
 
 class QueryHelper {
 	static parsers = {
-		before: (val) => QueryHelper.parseChronoList(val),
-		after: (val) => QueryHelper.parseChronoList(val),
-		tag: (val) => QueryHelper.sanitizeTags(val)
+		before: val => QueryHelper.parseChronoList(val),
+		after: val => QueryHelper.parseChronoList(val),
+		tag: val => QueryHelper.sanitizeTags(val)
 	};
 
 	static requirementHandlers = {
-		album: (knex) => knex
+		album: knex => knex
 			.join('albumsFiles', 'files.id', '=', 'albumsFiles.fileId')
 			.join('albums', 'albumsFiles.albumId', '=', 'album.id'),
-		tag: (knex) => knex
+		tag: knex => knex
 			.join('fileTags', 'files.id', '=', 'fileTags.fileId')
 			.join('tags', 'fileTags.tagId', '=', 'tags.id')
 	}
@@ -93,11 +93,11 @@ class QueryHelper {
 	}
 
 	static parseChronoList(list) {
-		return list.map((e) => chrono.parse(e));
+		return list.map(e => chrono.parse(e));
 	}
 
 	static sanitizeTags(list) {
-		return list.map((e) => e.replace(/\s/g, '_'));
+		return list.map(e => e.replace(/\s/g, '_'));
 	}
 
 	static generateInclusionForTags(db, knex, list) {

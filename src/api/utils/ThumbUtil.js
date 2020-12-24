@@ -53,7 +53,7 @@ class ThumbUtil {
 				folder: ThumbUtil.squareThumbPath,
 				size: '64x64'
 			})
-			.on('error', (error) => log.error(error.message));
+			.on('error', error => log.error(error.message));
 
 		ffmpeg(filePath)
 			.thumbnail({
@@ -62,7 +62,7 @@ class ThumbUtil {
 				folder: ThumbUtil.thumbPath,
 				size: '150x?'
 			})
-			.on('error', (error) => log.error(error.message));
+			.on('error', error => log.error(error.message));
 
 		try {
 			await previewUtil({

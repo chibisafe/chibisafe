@@ -10,7 +10,7 @@
 
 <template>
 	<section class="hero is-fullheight">
-		<Navbar :isWhite="true" />
+		<Navbar :is-white="true" />
 		<div class="hero-body">
 			<div class="container">
 				<h2>404エラ</h2>

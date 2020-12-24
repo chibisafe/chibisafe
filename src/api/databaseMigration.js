@@ -27,7 +27,7 @@ const generateThumbnailForImage = async (filename, output) => {
 	}
 };
 
-const generateThumbnailForVideo = (filename) => {
+const generateThumbnailForVideo = filename => {
 	try {
 		ffmpeg(nodePath.join(__dirname, '../../uploads', filename))
 			.thumbnail({
@@ -36,7 +36,7 @@ const generateThumbnailForVideo = (filename) => {
 				folder: nodePath.join(__dirname, '../../uploads/thumbs/square'),
 				size: '64x64'
 			})
-			.on('error', (error) => console.error(error.message));
+			.on('error', error => console.error(error.message));
 		ffmpeg(nodePath.join(__dirname, '../../uploads', filename))
 			.thumbnail({
 				timestamps: [0],
@@ -44,7 +44,7 @@ const generateThumbnailForVideo = (filename) => {
 				folder: nodePath.join(__dirname, '../../uploads/thumbs'),
 				size: '150x?'
 			})
-			.on('error', (error) => console.error(error.message));
+			.on('error', error => console.error(error.message));
 		console.log('finished', filename);
 	} catch (error) {
 		console.log('error', filename);
@@ -64,15 +64,15 @@ const newDb = require('knex')({
 	connection: {
 		filename: nodePath.join(__dirname, '../../', 'database.sqlite')
 	},
-	postProcessResponse: (result) => {
+	postProcessResponse: result => {
 		const booleanFields = [
 			'enabled',
 			'enableDownload',
 			'isAdmin'
 		];
 
-		const processResponse = (row) => {
-			Object.keys(row).forEach((key) => {
+		const processResponse = row => {
+			Object.keys(row).forEach(key => {
 				if (booleanFields.includes(key)) {
 					if (row[key] === 0) row[key] = false;
 					else if (row[key] === 1) row[key] = true;
@@ -81,7 +81,7 @@ const newDb = require('knex')({
 			return row;
 		};
 
-		if (Array.isArray(result)) return result.map((row) => processResponse(row));
+		if (Array.isArray(result)) return result.map(row => processResponse(row));
 		if (typeof result === 'object') return processResponse(result);
 		return result;
 	},

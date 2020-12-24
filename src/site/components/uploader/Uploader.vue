@@ -93,8 +93,8 @@ export default {
 	},
 	computed: {
 		...mapState({
-			config: (state) => state.config,
-			albums: (state) => state.albums.tinyDetails
+			config: state => state.config,
+			albums: state => state.albums.tinyDetails
 		}),
 		...mapGetters({ loggedIn: 'auth/isLoggedIn', token: 'auth/getToken' })
 	},

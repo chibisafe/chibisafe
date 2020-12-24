@@ -64,11 +64,11 @@ class albumGET extends Route {
 		/*
 			Get the actual files
 		*/
-		const fileIds = fileList.map((el) => el.fileId);
+		const fileIds = fileList.map(el => el.fileId);
 		const files = await db.table('files')
 			.whereIn('id', fileIds)
 			.select('name');
-		const filesToZip = files.map((el) => el.name);
+		const filesToZip = files.map(el => el.name);
 
 		try {
 			Util.createZip(filesToZip, album);

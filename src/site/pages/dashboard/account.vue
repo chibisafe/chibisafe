@@ -115,9 +115,9 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters({ 'apiKey': 'auth/getApiKey' }),
+		...mapGetters({ apiKey: 'auth/getApiKey' }),
 		...mapState({
-			user: (state) => state.auth.user
+			user: state => state.auth.user
 		})
 	},
 	metaInfo() {

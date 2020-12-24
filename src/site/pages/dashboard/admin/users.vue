@@ -102,8 +102,8 @@ export default {
 		}
 	}],
 	computed: mapState({
-		users: (state) => state.admin.users,
-		config: (state) => state.config
+		users: state => state.admin.users,
+		config: state => state.config
 	}),
 	metaInfo() {
 		return { title: 'Uploads' };

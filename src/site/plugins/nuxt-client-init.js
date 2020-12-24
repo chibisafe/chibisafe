@@ -1,3 +1,3 @@
-export default async (ctx) => {
+export default async ctx => {
 	await ctx.store.dispatch('nuxtClientInit', ctx);
 };

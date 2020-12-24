@@ -11,9 +11,9 @@ const getDefaultState = () => ({
 export const state = getDefaultState;
 
 export const getters = {
-	isLoggedIn: (state) => state.loggedIn,
-	getApiKey: (state) => state.user?.apiKey,
-	getToken: (state) => state.token
+	isLoggedIn: state => state.loggedIn,
+	getApiKey: state => state.user?.apiKey,
+	getToken: state => state.token
 };
 
 export const actions = {

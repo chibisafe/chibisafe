@@ -24,24 +24,24 @@ export default {
 	},
 	props: {
 		options: {
-			type: Object,
-			default: () => {}
+			'type': Object,
+			'default': () => {}
 		},
 		items: {
-			type: Array,
-			default: () => []
+			'type': Array,
+			'default': () => []
 		},
 		itemWidth: {
-			type: Number,
-			default: 150
+			'type': Number,
+			'default': 150
 		},
 		gutterWidth: {
-			type: Number,
-			default: 10
+			'type': Number,
+			'default': 10
 		},
 		gutterHeight: {
-			type: Number,
-			default: 4
+			'type': Number,
+			'default': 4
 		}
 	},
 	mounted() {
@@ -84,20 +84,20 @@ export default {
 			this.masonry.layout();
 		},
 		diffDomChildren() {
-			const oldChildren = this.domChildren.filter((element) => !!element.parentNode);
+			const oldChildren = this.domChildren.filter(element => Boolean(element.parentNode));
 			const newChildren = this.getNewDomChildren();
-			const removed = oldChildren.filter((oldChild) => !newChildren.includes(oldChild));
-			const domDiff = newChildren.filter((newChild) => !oldChildren.includes(newChild));
+			const removed = oldChildren.filter(oldChild => !newChildren.includes(oldChild));
+			const domDiff = newChildren.filter(newChild => !oldChildren.includes(newChild));
 			const prepended = domDiff.filter((newChild, index) => newChildren[index] === newChild);
-			const appended = domDiff.filter((el) => !prepended.includes(el));
+			const appended = domDiff.filter(el => !prepended.includes(el));
 			let moved = [];
 			if (removed.length === 0) {
 				moved = oldChildren.filter((child, index) => index !== newChildren.indexOf(child));
 			}
 			this.domChildren = newChildren;
 			return {
-				old: oldChildren,
-				new: newChildren,
+				'old': oldChildren,
+				'new': newChildren,
 				removed,
 				appended,
 				prepended,
@@ -120,15 +120,10 @@ export default {
 		getNewDomChildren() {
 			const node = this.$refs.waterfall;
 			const children = this.options && this.options.itemSelector
-				? node.querySelectorAll(this.options.itemSelector) : node.children;
+				? node.querySelectorAll(this.options.itemSelector)
+				: node.children;
 			return Array.prototype.slice.call(children);
 		}
 	}
 };
 </script>
-
-<style lang="scss" scoped>
-.wfi {
-
-}
-</style>

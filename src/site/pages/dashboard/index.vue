@@ -27,7 +27,7 @@
 					<Grid
 						v-if="totalFiles && !isLoading"
 						:files="images.files"
-						:enableSearch="false"
+						:enable-search="false"
 						class="grid">
 						<template v-slot:pagination>
 							<b-pagination
@@ -112,6 +112,7 @@ export default {
 			this.search = query;
 
 			const sanitizedQ = this.sanitizeQuery(query);
+			// eslint-disable-next-line no-negated-condition
 			if (!sanitizedQ.length) {
 				this.current = 1;
 				await this.fetch(this.current);

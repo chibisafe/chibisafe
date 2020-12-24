@@ -9,8 +9,8 @@ export const state = () => ({
 });
 
 export const getters = {
-	isExpanded: (state) => (id) => state.expandedAlbums.indexOf(id) > -1,
-	getDetails: (state) => (id) => state.albumDetails[id] || {}
+	isExpanded: state => id => state.expandedAlbums.indexOf(id) > -1,
+	getDetails: state => id => state.albumDetails[id] || {}
 };
 
 export const actions = {
