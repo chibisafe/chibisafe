@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 const randomstring = require('randomstring');
 const jetpack = require('fs-jetpack');
 const qoa = require('qoa');
+
 qoa.config({
 	prefix: '>',
 	underlineQuery: false
@@ -122,6 +124,7 @@ async function start() {
 	const allSettings = Object.assign(defaultSettings, response);
 
 	const keys = Object.keys(allSettings);
+	// eslint-disable-next-line no-restricted-syntax
 	for (const item of keys) {
 		envfile += `${item}=${allSettings[item]}\n`;
 	}

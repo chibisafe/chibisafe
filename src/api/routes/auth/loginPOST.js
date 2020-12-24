@@ -1,7 +1,7 @@
-const Route = require('../../structures/Route');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const JWT = require('jsonwebtoken');
+const Route = require('../../structures/Route');
 
 class loginPOST extends Route {
 	constructor() {

@@ -19,5 +19,5 @@ module.exports = {
 	seeds: {
 		directory: 'src/api/database/seeds'
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3' ? true : false
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3'
 };

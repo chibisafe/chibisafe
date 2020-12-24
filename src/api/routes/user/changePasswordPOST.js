@@ -1,7 +1,7 @@
-const Route = require('../../structures/Route');
-const log = require('../../utils/Log');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
+const Route = require('../../structures/Route');
+const log = require('../../utils/Log');
 
 class changePasswordPOST extends Route {
 	constructor() {

@@ -7,10 +7,26 @@ class filesGET extends Route {
 	}
 
 	async run(req, res, db, user) {
-		// Get all the files from the user
-		const files = await db.table('files')
-			.where('userId', user.id)
-			.orderBy('id', 'desc');
+		let count = 0;
+
+		let files = db.table('files')
+			.where({ userId: user.id })
+			.orderBy('createdAt', 'desc');
+
+		const { page, limit = 100 } = req.query;
+		if (page && page >= 0) {
+			files = await files.offset((page - 1) * limit).limit(limit);
+
+			const dbRes = await db.table('files')
+				.count('* as count')
+				.where({ userId: user.id })
+				.first();
+
+			count = dbRes.count;
+		} else {
+			files = await files; // execute the query
+			count = files.length;
+		}
 
 		// For each file, create the public link to be able to display the file
 		for (let file of files) {
@@ -19,7 +35,8 @@ class filesGET extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved files',
-			files
+			files,
+			count
 		});
 	}
 }

@@ -1,12 +1,14 @@
 <template>
-	<div :style="styles"
+	<div
+		:style="styles"
 		class="spinner spinner--ping-pong">
-		<div :style="innerStyles"
+		<div
+			:style="innerStyles"
 			class="spinner-inner">
 			<div class="board">
-				<div class="left"/>
-				<div class="right"/>
-				<div class="ball"/>
+				<div class="left" />
+				<div class="right" />
+				<div class="ball" />
 			</div>
 		</div>
 	</div>
@@ -22,7 +24,7 @@ export default {
 	},
 	computed: {
 		innerStyles() {
-			let size = parseInt(this.size);
+			const size = parseInt(this.size, 10);
 			return { transform: `scale(${size / 250})` };
 		},
 		styles() {
@@ -32,7 +34,7 @@ export default {
 			};
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss" scoped>

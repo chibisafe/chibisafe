@@ -1,8 +1,8 @@
-const Route = require('../../structures/Route');
 const path = require('path');
-const Util = require('../../utils/Util');
 const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
+const Util = require('../../utils/Util');
+const Route = require('../../structures/Route');
 
 class uploadPOST extends Route {
 	constructor() {
@@ -12,7 +12,7 @@ class uploadPOST extends Route {
 		});
 	}
 
-	async run(req, res, db) {
+	async run(req, res) {
 		const filename = Util.getUniqueFilename(randomstring.generate(32));
 		// console.log('Files', req.body.files);
 		const info = {
@@ -21,24 +21,18 @@ class uploadPOST extends Route {
 		};
 
 		for (const chunk of req.body.files) {
-			const { uuid, count } = chunk;
+			const { uuid } = chunk;
 			// console.log('Chunk', chunk);
 
 			const chunkOutput = path.join(__dirname,
-				'..',
-				'..',
-				'..',
-				'..',
+				'../../../../',
 				process.env.UPLOAD_FOLDER,
 				'chunks',
 				uuid);
 			const chunkDir = await jetpack.list(chunkOutput);
 			const ext = path.extname(chunkDir[0]);
 			const output = path.join(__dirname,
-				'..',
-				'..',
-				'..',
-				'..',
+				'../../../../',
 				process.env.UPLOAD_FOLDER,
 				`${filename}${ext || ''}`);
 			chunkDir.sort();
@@ -49,10 +43,7 @@ class uploadPOST extends Route {
 
 			for (let i = 0; i < chunkDir.length; i++) {
 				const dir = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					'chunks',
 					uuid,

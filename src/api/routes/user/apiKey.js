@@ -1,7 +1,7 @@
-const Route = require('../../structures/Route');
 const randomstring = require('randomstring');
 const moment = require('moment');
 const { dump } = require('dumper.js');
+const Route = require('../../structures/Route');
 
 class apiKeyPOST extends Route {
 	constructor() {

@@ -1,0 +1,16 @@
+// Import the initial variables
+@import "../../../node_modules/bulma/sass/utilities/initial-variables";
+@import "../../../node_modules/bulma/sass/utilities/functions";
+
+// Setup our custom colors
+$lolisafe: #323846;
+$lolisafe-invert: findColorInvert($lolisafe);
+
+// XXX: EXPERIMENTAL, CHECK IF WE NEED ORIGINAL PRIMARY ANYWHERE
+// $primary: $lolisafe;
+// $primary-invert: $lolisafe-invert;
+
+// declare custom colors
+$custom-colors: (
+  "lolisafe":($lolisafe, $lolisafe-invert)
+);

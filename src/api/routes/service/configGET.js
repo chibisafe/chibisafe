@@ -15,10 +15,10 @@ class configGET extends Route {
 				maxUploadSize: parseInt(process.env.MAX_SIZE, 10),
 				filenameLength: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				albumLinkLength: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
-				generateThumbnails: process.env.GENERATE_THUMBNAILS == 'true' ? true : false,
-				generateZips: process.env.GENERATE_ZIPS == 'true' ? true : false,
-				publicMode: process.env.PUBLIC_MODE == 'true' ? true : false,
-				enableAccounts: process.env.USER_ACCOUNTS == 'true' ? true : false
+				generateThumbnails: process.env.GENERATE_THUMBNAILS === 'true',
+				generateZips: process.env.GENERATE_ZIPS === 'true',
+				publicMode: process.env.PUBLIC_MODE === 'true',
+				enableAccounts: process.env.USER_ACCOUNTS === 'true'
 			}
 		});
 	}

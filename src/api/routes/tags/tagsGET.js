@@ -1,5 +1,4 @@
 const Route = require('../../structures/Route');
-const Util = require('../../utils/Util');
 
 class tagsGET extends Route {
 	constructor() {

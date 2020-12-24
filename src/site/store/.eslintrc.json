@@ -1,0 +1,5 @@
+{
+	"rules": {
+		"no-shadow": ["error", { "allow": ["state"] }]
+	}
+}

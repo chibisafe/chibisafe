@@ -24,7 +24,8 @@ class albumAddPOST extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully added file to album'
+			message: 'Successfully added file to album',
+			data: { fileId, album: { id: album.id, name: album.name } }
 		});
 	}
 }

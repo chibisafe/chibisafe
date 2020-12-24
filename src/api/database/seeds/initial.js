@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-exports.seed = async db => {
+exports.seed = async (db) => {
 	const now = moment.utc().toDate();
 	const user = await db.table('users').where({ username: process.env.ADMIN_ACCOUNT }).first();
 	if (user) return;

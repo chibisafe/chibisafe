@@ -1,37 +1,57 @@
 <template>
-	<section class="hero is-fullheight is-login">
-		<div class="hero-body">
-			<div class="container">
-				<h1 class="title">
-					Dashboard Access
-				</h1>
-				<h2 class="subtitle mb5">
-					Login to access your files and folders
-				</h2>
-				<div class="columns">
-					<div class="column is-4 is-offset-4">
-						<b-field>
-							<b-input v-model="username"
-								type="text"
-								placeholder="Username"
-								@keyup.enter.native="login" />
-						</b-field>
-						<b-field>
-							<b-input v-model="password"
-								type="password"
-								placeholder="Password"
-								password-reveal
-								@keyup.enter.native="login" />
-						</b-field>
+	<section class="section is-fullheight is-login">
+		<div class="container">
+			<h1 class="title">
+				Dashboard Access
+			</h1>
+			<h2 class="subtitle mb5">
+				Login to access your files and folders
+			</h2>
+			<div class="columns">
+				<div class="column is-4 is-offset-4">
+					<b-field>
+						<b-input
+							v-model="username"
+							class="lolisafe-input"
+							type="text"
+							placeholder="Username"
+							@keyup.enter.native="login" />
+					</b-field>
+					<b-field>
+						<b-input
+							v-model="password"
+							class="lolisafe-input"
+							type="password"
+							placeholder="Password"
+							password-reveal
+							@keyup.enter.native="login" />
+					</b-field>
 
-						<p class="control has-addons is-pulled-right">
-							<router-link v-if="config.userAccounts"
-								to="/register"
-								class="is-text">Don't have an account?</router-link>
-							<span v-else>Registration is closed at the moment</span>
-							<button class="button is-primary big ml1"
-								@click="login">login</button>
-						</p>
+					<p class="control has-addons is-pulled-right" />
+
+					<div class="level">
+						<div class="level-left">
+							<div class="level-item">
+								<router-link
+									v-if="config.userAccounts"
+									to="/register"
+									class="is-text">
+									Don't have an account?
+								</router-link>
+								<span v-else>Registration is closed at the moment</span>
+							</div>
+						</div>
+
+						<div class="level-right">
+							<p class="level-item">
+								<b-button
+									size="is-medium"
+									type="is-lolisafe"
+									@click="login">
+									Login
+								</b-button>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -65,6 +85,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 	name: 'Login',
 	data() {
@@ -76,38 +98,33 @@ export default {
 			isLoading: false
 		};
 	},
-	computed: {
-		config() {
-			return this.$store.state.config;
-		}
-	},
+	computed: mapState(['config', 'auth']),
 	metaInfo() {
 		return { title: 'Login' };
+	},
+	created() {
+		if (this.auth.loggedIn) {
+			this.redirect();
+		}
 	},
 	methods: {
 		async login() {
 			if (this.isLoading) return;
-			if (!this.username || !this.password) {
-				this.$store.dispatch('alert', {
-					text: 'Please fill both fields before attempting to log in.',
-					error: true
-				});
+
+			const { username, password } = this;
+			if (!username || !password) {
+				this.$notifier.error('Please fill both fields before attempting to log in.');
 				return;
 			}
-			this.isLoading = true;
 
 			try {
-				const data = await this.$axios.$post(`auth/login`, {
-					username: this.username,
-					password: this.password
-				});
-				this.$axios.setToken(data.token, 'Bearer');
-				document.cookie = `token=${encodeURIComponent(data.token)}`;
-				this.$store.dispatch('login', { token: data.token, user: data.user });
-
-				this.redirect();
-			} catch (error) {
-				//
+				this.isLoading = true;
+				await this.$store.dispatch('auth/login', { username, password });
+				if (this.auth.loggedIn) {
+					this.redirect();
+				}
+			} catch (e) {
+				this.$notifier.error(e.message);
 			} finally {
 				this.isLoading = false;
 			}
@@ -126,9 +143,8 @@ export default {
 					this.isLoading = false;
 					this.$onPromiseError(err);
 				});
-		},*/
+		}, */
 		redirect() {
-			this.$store.commit('loggedIn', true);
 			if (typeof this.$route.query.redirect !== 'undefined') {
 				this.$router.push(this.$route.query.redirect);
 				return;

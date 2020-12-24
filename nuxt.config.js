@@ -11,8 +11,8 @@ const clientConfig = {
 	maxFileSize: parseInt(process.env.MAX_SIZE, 10),
 	chunkSize: parseInt(process.env.CHUNK_SIZE, 10),
 	maxLinksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
-	publicMode: process.env.PUBLIC_MODE === 'true' ? true : false,
-	userAccounts: process.env.USER_ACCOUNTS === 'true' ? true : false
+	publicMode: process.env.PUBLIC_MODE === 'true',
+	userAccounts: process.env.USER_ACCOUNTS === 'true'
 };
 
 export default {
@@ -31,7 +31,11 @@ export default {
 			{ hid: 'theme-color', name: 'theme-color', content: `${process.env.META_THEME_COLOR}` },
 			{ hid: 'description', name: 'description', content: `${process.env.META_DESCRIPTION}` },
 			{ hid: 'keywords', name: 'keywords', content: `${process.env.META_KEYWORDS}` },
-			{ hid: 'apple-mobile-web-app-title', name: 'apple-mobile-web-app-title', content: `${process.env.SERVICE_NAME}` },
+			{
+				hid: 'apple-mobile-web-app-title',
+				name: 'apple-mobile-web-app-title',
+				content: `${process.env.SERVICE_NAME}`
+			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
 			// { hid: 'msapplication-config', name: 'msapplication-config', content: `${process.env.DOMAIN}/browserconfig.xml` },
 			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
@@ -63,27 +67,33 @@ export default {
 		'~/plugins/vue-timeago',
 		'~/plugins/flexsearch',
 		'~/plugins/vuebar',
-		'~/plugins/nuxt-client-init'
+		'~/plugins/nuxt-client-init',
+		'~/plugins/notifier',
+		'~/plugins/handler'
 	],
 	css: [],
-	modules: [
-		'@nuxtjs/axios',
-		'cookie-universal-nuxt'
-	],
+	modules: ['@nuxtjs/axios', 'cookie-universal-nuxt'],
+	router: {
+		linkActiveClass: 'is-active',
+		linkExactActiveClass: 'is-active'
+	},
 	axios: {
 		baseURL: `${process.env.DOMAIN}${process.env.ROUTE_PREFIX}`
 	},
 	build: {
-		extractCSS: true,
+		extractCSS: process.env.NODE_ENV === 'production',
 		postcss: {
 			preset: {
 				autoprefixer
 			}
 		},
-		extend(config, { isClient }) {
+		extend(config, { isClient, isDev }) {
 			// Extend only webpack config for client-bundle
 			if (isClient) {
 				jetpack.write('dist/config.json', clientConfig);
+			}
+			if (isDev) {
+				config.devtool = isClient ? 'source-map' : 'inline-source-map';
 			}
 		}
 	}

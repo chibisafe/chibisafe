@@ -7,23 +7,19 @@ const db = require('knex')({
 		user: process.env.DB_USER,
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
-		filename: nodePath.join(__dirname, '..', '..', '..', 'database.sqlite')
+		filename: nodePath.join(__dirname, '../../../database.sqlite')
 	},
-	postProcessResponse: result => {
+	postProcessResponse: (result) => {
 		/*
 			Fun fact: Depending on the database used by the user and given that I don't want
 			to force a specific database for everyone because of the nature of this project,
 			some things like different data types for booleans need to be considered like in
 			the implementation below where sqlite returns 1 and 0 instead of true and false.
 		*/
-		const booleanFields = [
-			'enabled',
-			'enableDownload',
-			'isAdmin'
-		];
+		const booleanFields = ['enabled', 'enableDownload', 'isAdmin'];
 
-		const processResponse = row => {
-			Object.keys(row).forEach(key => {
+		const processResponse = (row) => {
+			Object.keys(row).forEach((key) => {
 				if (booleanFields.includes(key)) {
 					if (row[key] === 0) row[key] = false;
 					else if (row[key] === 1) row[key] = true;
@@ -32,11 +28,11 @@ const db = require('knex')({
 			return row;
 		};
 
-		if (Array.isArray(result)) return result.map(row => processResponse(row));
+		if (Array.isArray(result)) return result.map((row) => processResponse(row));
 		if (typeof result === 'object') return processResponse(result);
 		return result;
 	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3' ? true : false
+	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3'
 });
 const moment = require('moment');
 const log = require('../utils/Log');
@@ -52,11 +48,15 @@ class Route {
 	}
 
 	async authorize(req, res) {
-		const banned = await db.table('bans').where({ ip: req.ip }).first();
+		const banned = await db
+			.table('bans')
+			.where({ ip: req.ip })
+			.first();
 		if (banned) return res.status(401).json({ message: 'This IP has been banned from using the service.' });
 
 		if (this.options.bypassAuth) return this.run(req, res, db);
-		// The only reason I call it token here and not Api Key is to be backwards compatible with the uploader and sharex
+		// The only reason I call it token here and not Api Key is to be backwards compatible
+		// with the uploader and sharex
 		// Small price to pay.
 		if (req.headers.token) return this.authorizeApiKey(req, res, req.headers.token);
 		if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
@@ -72,11 +72,16 @@ class Route {
 			const id = decoded ? decoded.sub : '';
 			const iat = decoded ? decoded.iat : '';
 
-			const user = await db.table('users').where({ id }).first();
+			const user = await db
+				.table('users')
+				.where({ id })
+				.first();
 			if (!user) return res.status(401).json({ message: 'Invalid authorization' });
-			if (iat && iat < moment(user.passwordEditedAt).format('x')) return res.status(401).json({ message: 'Token expired' });
+			if (iat && iat < moment(user.passwordEditedAt).format('x')) {
+				return res.status(401).json({ message: 'Token expired' });
+			}
 			if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
-			if (this.options.adminOnly && !user.isAdmin) return res.status(401).json({ message: 'Invalid authorization' });
+			if (this.options.adminOnly && !user.isAdmin) { return res.status(401).json({ message: 'Invalid authorization' }); }
 
 			return this.run(req, res, db, user);
 		});
@@ -84,16 +89,17 @@ class Route {
 
 	async authorizeApiKey(req, res, apiKey) {
 		if (!this.options.canApiKey) return res.status(401).json({ message: 'Api Key not allowed for this resource' });
-		const user = await db.table('users').where({ apiKey }).first();
+		const user = await db
+			.table('users')
+			.where({ apiKey })
+			.first();
 		if (!user) return res.status(401).json({ message: 'Invalid authorization' });
 		if (!user.enabled) return res.status(401).json({ message: 'This account has been disabled' });
 
 		return this.run(req, res, db, user);
 	}
 
-	run(req, res, db) { // eslint-disable-line no-unused-vars
-		return;
-	}
+	run() {}
 
 	error(res, error) {
 		log.error(error);

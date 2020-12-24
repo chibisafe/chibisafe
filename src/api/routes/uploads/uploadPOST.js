@@ -1,17 +1,18 @@
-const Route = require('../../structures/Route');
 const path = require('path');
-const Util = require('../../utils/Util');
 const jetpack = require('fs-jetpack');
 const multer = require('multer');
 const moment = require('moment');
+const Util = require('../../utils/Util');
+const Route = require('../../structures/Route');
+
 const upload = multer({
 	storage: multer.memoryStorage(),
 	limits: {
 		fileSize: parseInt(process.env.MAX_SIZE, 10) * (1000 * 1000),
 		files: 1
 	},
-	fileFilter: (req, file, cb) => {
-		// TODO: Enable blacklisting of files/extensions
+	fileFilter: (req, file, cb) =>
+	// TODO: Enable blacklisting of files/extensions
 		/*
 		if (options.blacklist.mimes.includes(file.mimetype)) {
 			return cb(new Error(`${file.mimetype} is a blacklisted filetype.`));
@@ -19,22 +20,21 @@ const upload = multer({
 			return cb(new Error(`${path.extname(file.originalname).toLowerCase()} is a blacklisted extension.`));
 		}
 		*/
-		return cb(null, true);
-	}
+		cb(null, true)
+
 }).array('files[]');
 
 /*
 	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
 	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover on the frontend.
-	TODO: If source is a video, generate a thumb of the first frame and save the video length to the file?
-			Another possible solution would be to play a gif on hover that grabs a few chunks like youtube.
 
 	TODO: Think if its worth making a folder with the user uuid in uploads/ and upload the pictures there so
 			that this way at least not every single file will be in 1 directory
 
-		- Addendum to this: Now that the default behaviour is to serve files with node, we can actually pull this off. Before this, having files in
-		subfolders meant messing with nginx and the paths, but now it should be fairly easy to re-arrange the folder structure with express.static
-		I see great value in this, open to suggestions.
+	XXX: Now that the default behaviour is to serve files with node, we can actually pull this off.
+		 Before this, having files in subfolders meant messing with nginx and the paths,
+		 but now it should be fairly easy to re-arrange the folder structure with express.static
+		 I see great value in this, open to suggestions.
 */
 
 class uploadPOST extends Route {
@@ -47,7 +47,7 @@ class uploadPOST extends Route {
 
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
-		if (!user && process.env.PUBLIC_MODE == 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
+		if (!user && process.env.PUBLIC_MODE === 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 
 		const albumId = req.body.albumid || req.headers.albumid;
 		if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
@@ -56,12 +56,13 @@ class uploadPOST extends Route {
 			if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
 		}
 
-		return upload(req, res, async err => {
+		return upload(req, res, async (err) => {
 			if (err) console.error(err.message);
 
 			let uploadedFile = {};
 			let insertedId;
 
+			// eslint-disable-next-line no-underscore-dangle
 			const remappedKeys = this._remapKeys(req.body);
 			const file = req.files[0];
 
@@ -83,10 +84,7 @@ class uploadPOST extends Route {
 
 			if (remappedKeys && remappedKeys.uuid) {
 				const chunkOutput = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					'chunks',
 					remappedKeys.uuid,
@@ -94,10 +92,7 @@ class uploadPOST extends Route {
 				await jetpack.writeAsync(chunkOutput, file.buffer);
 			} else {
 				const output = path.join(__dirname,
-					'..',
-					'..',
-					'..',
-					'..',
+					'../../../../',
 					process.env.UPLOAD_FOLDER,
 					filename);
 				await jetpack.writeAsync(output, file.buffer);
@@ -147,7 +142,7 @@ class uploadPOST extends Route {
 
 	async checkIfFileExists(db, user, hash) {
 		const exists = await db.table('files')
-			.where(function() { // eslint-disable-line func-names
+			.where(function () { // eslint-disable-line func-names
 				if (user) this.where('userId', user.id);
 				else this.whereNull('userId');
 			})
@@ -222,6 +217,7 @@ class uploadPOST extends Route {
 			}
 			return body;
 		}
+		return keys;
 	}
 }
 

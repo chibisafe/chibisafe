@@ -1,73 +1,84 @@
 <template>
-	<div v-bar>
-		<div>
-			<section class="hero is-fullheight has-text-centered">
-				<Navbar :isWhite="true" />
-				<div class="hero-body">
-					<nuxt-child id="app" />
-				</div>
-				<div class="hero-foot">
-					<Footer />
-				</div>
-			</section>
+	<div
+		v-bar
+		class="scroll-area">
+		<div class="default-body">
+			<Navbar :isWhite="true" />
+			<nuxt-child
+				id="app"
+				class="nuxt-app is-height-max-content" />
+			<Footer />
 		</div>
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import Navbar from '~/components/navbar/Navbar.vue';
-import Footer from '~/components/footer/Footer';
+import Footer from '~/components/footer/Footer.vue';
+
 export default {
-	components: { Navbar, Footer },
-	computed: {
-		config() {
-			return this.$store.state.config;
-		},
-		alert() {
-			return this.$store.state.alert;
-		}
+	components: {
+		Navbar,
+		Footer
 	},
-	watch: {
-		alert() {
-			if (!this.alert) return;
+	computed: mapState(['config', 'alert']),
+	created() {
+		this.$store.watch((state) => state.alert.message, () => {
+			const { message, type, snackbar } = this.alert;
 
-			this.$buefy.toast.open({
-				duration: 3500,
-				message: this.alert.text,
-				position: 'is-bottom',
-				type: this.alert.error ? 'is-danger' : 'is-success'
-			});
+			if (!message) return;
 
-			setTimeout(() => {
-				this.$store.dispatch('alert', null);
-			}, 3500);
-		}
+			if (snackbar) {
+				this.$buefy.snackbar.open({
+					duration: 3500,
+					position: 'is-bottom',
+					message,
+					type
+				});
+			} else {
+				this.$buefy.toast.open({
+					duration: 3500,
+					position: 'is-bottom',
+					message,
+					type
+				});
+			}
+
+			this.$store.dispatch('alert/clear', null);
+		});
 	},
 	mounted() {
-		console.log(`%c lolisafe %c v${this.config.version} %c`, 'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff', 'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff', 'background:transparent');
+		// eslint-disable-next-line no-console
+		console.log(
+			`%c lolisafe %c v${this.config.version} %c`,
+			'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
+			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
+			'background:transparent'
+		);
 	}
 };
 </script>
+
 <style lang="scss">
-	html { overflow: hidden !important; }
-	.is-fullheight { height: 100vh; }
-	.hero-body {
-		padding: 3rem 0 !important;
-		#app {
-			width: 100%;
-			& > .container {
-				margin-top: 5rem;
-			}
-		}
-		> .hero {
-			min-height: auto !important;
-			height: auto !important;
-		}
-	}
-	@import "~/assets/styles/style.scss";
-	@import "~/assets/styles/icons.min.css";
+html {
+	overflow: hidden !important;
+}
+.is-fullheight {
+	min-height: 100vh !important;
+	height: max-content;
+}
+.nuxt-app > .section {
+	min-height: auto !important;
+	height: auto !important;
+}
+@import '~/assets/styles/style.scss';
+@import '~/assets/styles/icons.min.css';
 </style>
 <style lang="scss" scoped>
-	.hero-body {
-		align-items: baseline !important;
-	}
+.default-body {
+	align-items: baseline !important;
+}
+.scroll-area {
+	height: 100vh;
+}
 </style>

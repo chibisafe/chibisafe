@@ -1,8 +1,8 @@
+const path = require('path');
+const jetpack = require('fs-jetpack');
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
 const log = require('../../utils/Log');
-const path = require('path');
-const jetpack = require('fs-jetpack');
 
 class albumGET extends Route {
 	constructor() {
@@ -38,7 +38,7 @@ class albumGET extends Route {
 			If the date when the album was zipped is greater than the album's last edit, we just send the zip to the user
 		*/
 		if (album.zippedAt > album.editedAt) {
-			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const exists = await jetpack.existsAsync(filePath);
 			/*
 				Make sure the file exists just in case, and if not, continue to it's generation.
@@ -64,11 +64,11 @@ class albumGET extends Route {
 		/*
 			Get the actual files
 		*/
-		const fileIds = fileList.map(el => el.fileId);
+		const fileIds = fileList.map((el) => el.fileId);
 		const files = await db.table('files')
 			.whereIn('id', fileIds)
 			.select('name');
-		const filesToZip = files.map(el => el.name);
+		const filesToZip = files.map((el) => el.name);
 
 		try {
 			Util.createZip(filesToZip, album);
@@ -76,7 +76,7 @@ class albumGET extends Route {
 				.where('id', link.albumId)
 				.update('zippedAt', db.fn.now());
 
-			const filePath = path.join(__dirname, '..', '..', '..', '..', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const fileName = `lolisafe-${identifier}.zip`;
 			return res.download(filePath, fileName);
 		} catch (error) {

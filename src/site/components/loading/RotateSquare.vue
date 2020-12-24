@@ -1,5 +1,6 @@
 <template>
-	<div :style="styles"
+	<div
+		:style="styles"
 		class="spinner spinner--rotate-square-2" />
 </template>
 

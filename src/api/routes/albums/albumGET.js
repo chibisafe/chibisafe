@@ -21,10 +21,11 @@ class albumGET extends Route {
 		const files = await db.table('albumsFiles')
 			.where({ albumId: link.albumId })
 			.join('files', 'albumsFiles.fileId', 'files.id')
-			.select('files.name')
+			.select('files.name', 'files.id')
 			.orderBy('files.id', 'desc');
 
 		// Create the links for each file
+		// eslint-disable-next-line no-restricted-syntax
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}

@@ -107,6 +107,10 @@
 	}
 
 	div.column > h2.subtitle { padding-top: 1px; }
+
+	div.no-background {
+		background: none;
+	}
 </style>
 <style lang="scss">
 	@import '~/assets/styles/_colors.scss';
@@ -119,77 +123,85 @@
 	}
 </style>
 
-
 <template>
-	<section class="hero is-fullheight dashboard">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns">
-					<div class="column is-narrow">
-						<Sidebar />
+	<section class="section is-fullheight dashboard">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-narrow">
+					<Sidebar />
+				</div>
+				<div class="column">
+					<h2 class="subtitle">
+						Manage your tags
+					</h2>
+					<hr>
+
+					<div class="search-container">
+						<b-field>
+							<b-input
+								v-model="newTagName"
+								class="lolisafe-input"
+								placeholder="Tag name..."
+								type="text"
+								@keyup.enter.native="createTag" />
+							<p class="control">
+								<b-button
+									type="is-lolisafe"
+									@click="createTag">
+									Create tags
+								</b-button>
+							</p>
+						</b-field>
 					</div>
-					<div class="column">
-						<h2 class="subtitle">Manage your tags</h2>
-						<hr>
 
-						<div class="search-container">
-							<b-field>
-								<b-input v-model="newTagName"
-									placeholder="Tag name..."
-									type="text"
-									@keyup.enter.native="createTag" />
-								<p class="control">
-									<button class="button is-primary"
-										@click="createTag">Create tags</button>
-								</p>
-							</b-field>
-						</div>
-
-						<div class="view-container">
-							<div v-for="tag in tags"
-								:key="tag.id"
-								class="album">
-								<div class="arrow-container"
-									@click="promptDeleteTag">
-									<i class="icon-arrow" />
-								</div>
-								<!--
-								<div class="thumb">
-									<figure class="image is-64x64 thumb">
-										<img src="~/assets/images/blank.png">
-									</figure>
-								</div>
-								-->
-								<div class="info">
-									<h4>
-										<router-link :to="`/dashboard/tags/${tag.id}`">{{ tag.name }}</router-link>
-									</h4>
-									<span>{{ tag.count || 0 }} files</span>
-								</div>
-								<!--
-								<div class="latest is-hidden-mobile">
-									<template v-if="album.fileCount > 0">
-										<div v-for="file of album.files"
-											:key="file.id"
-											class="thumb">
-											<figure class="image is-64x64">
-												<a :href="file.url"
-													target="_blank">
-													<img :src="file.thumbSquare">
-												</a>
-											</figure>
-										</div>
-										<div v-if="album.fileCount > 5"
-											class="thumb more no-background">
-											<router-link :to="`/dashboard/albums/${album.uuid}`">{{ album.fileCount - 5 }}+ more</router-link>
-										</div>
-									</template>
-									<template v-else>
-										<span class="no-files">Nothing to show here</span>
-									</template>
-								</div>
-								-->
+					<div class="view-container">
+						<div
+							v-for="tag in tags"
+							:key="tag.id"
+							class="album">
+							<div
+								class="arrow-container"
+								@click="promptDeleteTag">
+								<i class="icon-arrow" />
 							</div>
+							<!--
+							<div class="thumb">
+								<figure class="image is-64x64 thumb">
+									<img src="~/assets/images/blank.png">
+								</figure>
+							</div>
+							-->
+							<div class="info">
+								<h4>
+									<router-link :to="`/dashboard/tags/${tag.id}`">
+										{{ tag.name }}
+									</router-link>
+								</h4>
+								<span>{{ tag.count || 0 }} files</span>
+							</div>
+							<!--
+							<div class="latest is-hidden-mobile">
+								<template v-if="album.fileCount > 0">
+									<div v-for="file of album.files"
+										:key="file.id"
+										class="thumb">
+										<figure class="image is-64x64">
+											<a :href="file.url"
+												target="_blank">
+												<img :src="file.thumbSquare">
+											</a>
+										</figure>
+									</div>
+									<div v-if="album.fileCount > 5"
+										class="thumb more no-background">
+										<router-link :to="`/dashboard/albums/${album.uuid}`">{{ album.fileCount - 5 }}+ more</router-link>
+									</div>
+								</template>
+								<template v-else>
+									<span class="no-files">Nothing to show here</span>
+								</template>
+							</div>
+							-->
 						</div>
 					</div>
 				</div>
@@ -226,12 +238,14 @@ export default {
 	methods: {
 		promptDeleteTag(id) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Are you sure you want to delete this tag?',
 				onConfirm: () => this.promptPurgeTag(id)
 			});
 		},
 		promptPurgeTag(id) {
 			this.$buefy.dialog.confirm({
+				type: 'is-danger',
 				message: 'Would you like to delete every file associated with this tag?',
 				cancelText: 'No',
 				confirmText: 'Yes',
@@ -246,14 +260,14 @@ export default {
 		},
 		async createTag() {
 			if (!this.newTagName || this.newTagName === '') return;
-			const response = await this.$axios.$post(`tag/new`,
+			const response = await this.$axios.$post('tag/new',
 				{ name: this.newTagName });
 			this.newTagName = null;
 			this.$buefy.toast.open(response.message);
 			this.getTags();
 		},
 		async getTags() {
-			const response = await this.$axios.$get(`tags`);
+			const response = await this.$axios.$get('tags');
 			for (const tag of response.tags) {
 				tag.isDetailsOpen = false;
 			}

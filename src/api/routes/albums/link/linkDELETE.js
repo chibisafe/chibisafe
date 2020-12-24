@@ -1,5 +1,4 @@
 const Route = require('../../../structures/Route');
-const { dump } = require('dumper.js');
 
 class linkDELETE extends Route {
 	constructor() {
