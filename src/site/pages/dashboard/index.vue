@@ -108,11 +108,19 @@ export default {
 			// and the value (ex `tag: 123` -> `tag:123`)
 			return (qry || '').replace(/(\w+):\s+/gi, '$1:');
 		},
-		onSearch(query) {
+		async onSearch(query) {
 			this.search = query;
-			this.$handler.executeAction('images/search', {
-				q: this.sanitizeQuery(query)
-			});
+
+			const sanitizedQ = this.sanitizeQuery(query);
+			if (!sanitizedQ.length) {
+				this.current = 1;
+				await this.fetch(this.current);
+			} else {
+				this.$handler.executeAction('images/search', {
+					q: this.sanitizeQuery(query),
+					page: this.current
+				});
+			}
 		}
 	}
 };

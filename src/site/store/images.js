@@ -9,6 +9,7 @@ export const getDefaultState = () => ({
 		totalFiles: 0
 	},
 	search: '',
+	showList: false,
 	albumName: null,
 	albumDownloadEnabled: false,
 	fileExtraInfoMap: {}, // information about the selected file
@@ -108,11 +109,22 @@ export const actions = {
 
 		return response;
 	},
-	async search({ commit }, { q, albumId }) {
+	async search({ commit, dispatch }, { q, albumId, page }) {
 		const optionalAlbum = albumId ? `&albumId=${albumId}` : '';
-		const response = await this.$axios.$get(`search/?q=${encodeURI(q)}${optionalAlbum}`);
 
-		return response;
+		page = page || 1;
+
+		try {
+			const response = await this.$axios.$get(`search/?q=${encodeURI(q)}${optionalAlbum}`);
+
+			commit('setFilesAndMeta', { ...response, page });
+
+			return response;
+		} catch (e) {
+			dispatch('alert/set', { text: e.message, error: true }, { root: true });
+		}
+
+		return null;
 	}
 };
 
@@ -171,6 +183,9 @@ export const mutations = {
 		if (foundIndex > -1) {
 			state.fileTagsMap[fileId].splice(foundIndex, 1);
 		}
+	},
+	setShowList(state, showList) {
+		state.showList = showList;
 	},
 	resetState(state) {
 		Object.assign(state, getDefaultState());

@@ -21,9 +21,8 @@
 			</div>
 		</nav>
 
-		<template v-if="!showList">
+		<template v-if="!images.showList">
 			<Waterfall
-				v-if="showWaterfall"
 				:gutterWidth="10"
 				:gutterHeight="4"
 				:options="{fitWidth: true}"
@@ -196,7 +195,6 @@ export default {
 	},
 	data() {
 		return {
-			showWaterfall: true,
 			searchTerm: null,
 			showList: false,
 			hoveredItems: [],
@@ -226,10 +224,15 @@ export default {
 			return (this.files || []).filter((v) => !v.hideFromList);
 		}
 	},
+	watch: {
+		showList: 'displayTypeChange'
+	},
 	created() {
 		// TODO: Create a middleware for this
 		this.getAlbums();
 		this.getTags();
+
+		this.showList = this.images.showList;
 	},
 	methods: {
 		async search() {
@@ -332,6 +335,9 @@ export default {
 		},
 		isHovered(id) {
 			return this.hoveredItems.includes(id);
+		},
+		displayTypeChange(showList) {
+			this.$store.commit('images/setShowList', showList);
 		}
 	}
 };
