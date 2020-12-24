@@ -83,7 +83,7 @@ class ThumbUtil {
 		const isImage = ThumbUtil.imageExtensions.includes(ext);
 		const isVideo = ThumbUtil.videoExtensions.includes(ext);
 
-		if (isImage) return { thumb: `${filename.slice(0, -ext.length)}.png` };
+		if (isImage) return { thumb: `${filename.slice(0, -ext.length)}.webp` };
 		if (isVideo) {
 			return {
 				thumb: `${filename.slice(0, -ext.length)}.png`,
