@@ -109,10 +109,10 @@ export default {
 			meta: [
 				{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
 				{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-				{ vmid: 'twitter:title', name: 'twitter:title', content: 'lolisafe' },
+				{ vmid: 'twitter:title', name: 'twitter:title', content: 'chibisafe' },
 				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
 				{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
-				{ vmid: 'og:title', property: 'og:title', content: 'lolisafe' },
+				{ vmid: 'og:title', property: 'og:title', content: 'chibisafe' },
 				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
 			]
 		};

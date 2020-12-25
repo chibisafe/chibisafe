@@ -3,7 +3,7 @@
 		<b-taginput
 			:value="selectedTags"
 			:data="filteredTags"
-			class="lolisafe taginp"
+			class="chibisafe taginp"
 			ellipsis
 			icon="label"
 			placeholder="Add a tag"

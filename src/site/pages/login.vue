@@ -12,7 +12,7 @@
 					<b-field>
 						<b-input
 							v-model="username"
-							class="lolisafe-input"
+							class="chibisafe-input"
 							type="text"
 							placeholder="Username"
 							@keyup.enter.native="login" />
@@ -20,7 +20,7 @@
 					<b-field>
 						<b-input
 							v-model="password"
-							class="lolisafe-input"
+							class="chibisafe-input"
 							type="password"
 							placeholder="Password"
 							password-reveal
@@ -46,7 +46,7 @@
 							<p class="level-item">
 								<b-button
 									size="is-medium"
-									type="is-lolisafe"
+									type="is-chibisafe"
 									@click="login">
 									Login
 								</b-button>

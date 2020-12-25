@@ -1,12 +1,12 @@
 <template>
 	<div class="links">
 		<a
-			href="https://github.com/WeebDev/lolisafe"
+			href="https://github.com/WeebDev/chibisafe"
 			target="_blank"
 			class="link">
 			<header class="bd-footer-star-header">
 				<h4 class="bd-footer-title">GitHub</h4>
-				<p class="bd-footer-subtitle">Deploy your own lolisafe</p>
+				<p class="bd-footer-subtitle">Deploy your own chibisafe</p>
 			</header>
 		</a>
 		<div
@@ -64,7 +64,7 @@ export default {
 				"FileFormName": "files[]",
 				"Headers": {
 					"authorization": "Bearer ${this.$store.state.token}",
-					"accept": "application/vnd.lolisafe.json"
+					"accept": "application/vnd.chibisafe.json"
 				},
 				"ResponseType": "Text",
 				"URL": "$json:url$",

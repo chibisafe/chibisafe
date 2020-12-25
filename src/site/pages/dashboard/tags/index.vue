@@ -132,13 +132,13 @@
 						<b-field>
 							<b-input
 								v-model="newTagName"
-								class="lolisafe-input"
+								class="chibisafe-input"
 								placeholder="Tag name..."
 								type="text"
 								@keyup.enter.native="createTag" />
 							<p class="control">
 								<b-button
-									type="is-lolisafe"
+									type="is-chibisafe"
 									@click="createTag">
 									Create tags
 								</b-button>

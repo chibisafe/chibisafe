@@ -35,7 +35,7 @@ class Server {
 			if ((req.url.includes('/api/album/') || req.url.includes('/zip')) && req.method === 'GET') return next();
 			// This bypasses the headers.accept if we are accessing the frontend
 			if (!req.url.includes('/api/') && req.method === 'GET') return next();
-			if (req.headers.accept && req.headers.accept.includes('application/vnd.lolisafe.json')) return next();
+			if (req.headers.accept && req.headers.accept.includes('application/vnd.chibisafe.json')) return next();
 			return res.status(405).json({ message: 'Incorrect `Accept` header provided' });
 		});
 		this.server.use(bodyParser.urlencoded({ extended: true }));

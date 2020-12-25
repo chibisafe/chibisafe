@@ -269,9 +269,9 @@ table.table {
 	}
 }
 
-.lolisafe-input input,
-.lolisafe-select select,
-.lolisafe-textarea textarea {
+.chibisafe-input input,
+.chibisafe-select select,
+.chibisafe-textarea textarea {
 	border: 2px solid #21252d;
 	border-radius: 0.3em !important;
 	background: rgba(0, 0, 0, 0.15);
@@ -287,7 +287,7 @@ table.table {
 	}
 }
 
-.lolisafe-input .icon {
+.chibisafe-input .icon {
 	color: #323846 !important;
 }
 
@@ -368,15 +368,15 @@ table.table {
     align-items: center;
 }
 
-.lolisafe-on-border.field.is-floating-label .label:before {
-	background-color: $lolisafe;
+.chibisafe-on-border.field.is-floating-label .label:before {
+	background-color: $chibisafe;
 }
 
-.is-lolisafe.divider::after, .is-lolisafe.divider::before {
+.is-chibisafe.divider::after, .is-chibisafe.divider::before {
 	background-color: #21252d;
 }
 
-.lolisafe.taginput {
+.chibisafe.taginput {
 	.taginput-container {
 		background-color: #21252d;
 		border: 2px solid #21252d;

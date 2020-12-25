@@ -8,7 +8,7 @@
 					:data="filteredHints"
 					:custom-selector="handleSelect"
 					field="name"
-					class="lolisafe-input search"
+					class="chibisafe-input search"
 					placeholder="Search"
 					type="search"
 					open-on-focus
@@ -22,7 +22,7 @@
 					</template>
 				</SearchInput>
 				<p class="control">
-					<b-button type="is-lolisafe" @click="onSubmit">
+					<b-button type="is-chibisafe" @click="onSubmit">
 						Search
 					</b-button>
 				</p>

@@ -1,5 +1,5 @@
 {
-	"name": "lolisafe",
+	"name": "chibisafe",
 	"version": "4.0.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
@@ -17,14 +17,14 @@
 		"seed": "yarn knex seed:run",
 		"api": "node src/api/structures/Server",
 		"update": "git pull && yarn install && yarn migrate && yarn build && yarn restart",
-		"restart": "pm2 restart lolisafe"
+		"restart": "pm2 restart chibisafe"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/WeebDev/lolisafe"
+		"url": "https://github.com/WeebDev/chibisafe"
 	},
 	"bugs": {
-		"url": "https://github.com/WeebDev/lolisafe/issues"
+		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"engines": {
 		"node": ">=12.0.0"
@@ -114,6 +114,7 @@
 		}
 	},
 	"keywords": [
+		"chibisafe",
 		"lolisafe",
 		"upload",
 		"uploader",

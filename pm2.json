@@ -1,7 +1,7 @@
 {
 	"apps": [
 		{
-			"name": "lolisafe",
+			"name": "chibisafe",
 			"script": "npm",
 			"args": "run start",
 			"env": {

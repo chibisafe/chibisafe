@@ -12,14 +12,14 @@
 					<b-field>
 						<b-input
 							v-model="username"
-							class="lolisafe-input"
+							class="chibisafe-input"
 							type="text"
 							placeholder="Username" />
 					</b-field>
 					<b-field>
 						<b-input
 							v-model="password"
-							class="lolisafe-input"
+							class="chibisafe-input"
 							type="password"
 							placeholder="Password"
 							password-reveal />
@@ -27,7 +27,7 @@
 					<b-field>
 						<b-input
 							v-model="rePassword"
-							class="lolisafe-input"
+							class="chibisafe-input"
 							type="password"
 							placeholder="Re-type Password"
 							password-reveal
@@ -50,7 +50,7 @@
 							<p class="level-item">
 								<b-button
 									size="is-medium"
-									type="is-lolisafe"
+									type="is-chibisafe"
 									:disabled="isLoading"
 									@click="register">
 									Register

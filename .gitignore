@@ -3,7 +3,7 @@ node_modules/
 dist/
 .nuxt/
 logs/
-# Lolisafe specifics
+# Chibisafe specifics
 database.sqlite
 uploads/
 .env
