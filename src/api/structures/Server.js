@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+if (!process.env.SERVER_PORT) {
+	console.log('Run the setup script first or fill the .env file manually before starting');
+	process.exit(0);
+}
+
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -43,7 +48,9 @@ class Server {
 			});
 			this.server.use(morgan('combined', { stream: accessLogStream }));
 		}
-		// this.server.use(rateLimiter);
+
+		// Apply rate limiting to the api only
+		this.server.use('/api/', rateLimiter);
 
 		// Serve the uploads
 		this.server.use(express.static(path.join(__dirname, '../../../uploads')));
@@ -52,7 +59,6 @@ class Server {
 
 	registerAllTheRoutes() {
 		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach(routeFile => {
-			// eslint-disable-next-line import/no-dynamic-require, global-require
 			const RouteClass = require(path.join('../../../', routeFile));
 			let routes = [RouteClass];
 			if (Array.isArray(RouteClass)) routes = RouteClass;
