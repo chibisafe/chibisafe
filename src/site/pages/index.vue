@@ -1,31 +1,29 @@
 <template>
-	<div class="section">
-		<div class="container">
-			<div class="columns">
-				<div class="column is-3 is-offset-2">
-					<div class="logo">
-						<Logo />
-					</div>
-				</div>
-				<div class="column is-5 centered">
-					<div class="content-wrapper">
-						<h4>Blazing fast file uploader. <br>For real.</h4>
-						<p>
-							<!-- eslint-disable-next-line max-len -->
-							A <strong>modern</strong> and <strong>self-hosted</strong> file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.
-						</p>
-					</div>
-				</div>
-			</div>
+	<div>
+		<div class="logoContainer">
+			<Logo />
 		</div>
-		<div class="container uploader">
-			<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
-			<div
-				v-else
-				class="has-text-centered is-size-4 has-text-danger">
-				This site has disabled public uploads. You need an account.
+		<div class="leftSpacer">
+			<div class="mainBlock">
+				<div>
+					<h4>Blazing fast file uploader. For real.</h4>
+					<p>
+						A <strong>modern</strong> and self-hosted file upload service that can handle anything you throw at it.
+					</p>
+					<p>
+						With a fast API, chunked file uploads out of the box, beautiful masonry-style file manager and both individual and album sharing capabilities, this little tool was crafted with the best user experience in mind.<br>
+					</p>
+					<div class="mt4" />
+					<Uploader v-if="config.publicMode || (!config.publicMode && loggedIn)" />
+					<div
+						v-else
+						class="has-text-right is-size-4">
+						This site has disabled public uploads. You need an account.
+					</div>
+
+					<Links />
+				</div>
 			</div>
-			<Links />
 		</div>
 	</div>
 </template>
@@ -53,35 +51,48 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-	@import "~/assets/styles/_colors.scss";
-	.container {
-		color: $textColor;
-		.columns {
-			.column {
-				&.centered {
-					display: flex;
-					align-items: center;
-				}
+	.logoContainer {
+		position: fixed;
+		top: calc(45% - 188px);
+		left: calc(22% - 117px);
+	}
+	.leftSpacer {
+		width: 56%;
+		margin-left: auto;
+		position: relative;
+		.mainBlock {
+			height: calc(100vh - 52px);
+			position: relative;
+			margin: 0 5rem;
+			text-align: right;
+			> div {
+				position: absolute;
+				top: 25%;
 			}
 		}
-
-		h4 {
-			color: $textColorHighlight;
-			margin-bottom: 1em;
-		}
-
 		p {
 			font-size: 1.25em;
-			font-weight: 600;
-			line-height: 1.5;
-
-			strong {
-				color: $textColorHighlight;
-			}
+			margin-top: 1rem;
+		}
+		strong {
+			text-decoration: underline;
 		}
 	}
 
-	.uploader {
-		margin-top: 2rem;
+	@media (max-width: 1025px) {
+		.logoContainer {
+			position: relative;
+			top: 0;
+			left: 0;
+			text-align: center;
+		}
+		.leftSpacer {
+			width: 100%;
+			.mainBlock {
+				> div {
+					top: 5rem;
+				}
+			}
+		}
 	}
 </style>

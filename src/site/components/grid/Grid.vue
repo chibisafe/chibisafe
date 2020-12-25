@@ -217,7 +217,6 @@ export default {
 			images: state => state.images
 		}),
 		blank() {
-			// eslint-disable-next-line global-require, import/no-unresolved
 			return require('@/assets/images/blank.png');
 		},
 		gridFiles() {

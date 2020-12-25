@@ -3,6 +3,7 @@
 		v-bar
 		class="scroll-area">
 		<div class="default-body">
+			<div class="background" />
 			<Navbar :is-white="true" />
 			<nuxt-child
 				id="app"
@@ -50,8 +51,8 @@ export default {
 	mounted() {
 		// eslint-disable-next-line no-console
 		console.log(
-			`%c lolisafe %c v${this.config.version} %c`,
-			'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
+			`%c chibisafe %c v${this.config.version} %c`,
+			'background:#35495e; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
 			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
 			'background:transparent'
 		);
@@ -60,6 +61,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~/assets/styles/style.scss';
 html {
 	overflow: hidden !important;
 }
@@ -71,12 +73,32 @@ html {
 	min-height: auto !important;
 	height: auto !important;
 }
-@import '~/assets/styles/style.scss';
-@import '~/assets/styles/icons.min.css';
 </style>
 <style lang="scss" scoped>
 .default-body {
 	align-items: baseline !important;
+	overflow: auto;
+	height: 100vh;
+	.background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		background: no-repeat scroll 50% 50%;
+		background-size: cover;
+		z-index: -1;
+		height: 100vh;
+		width: 100%;
+		pointer-events: none;
+		background-image: url('~assets/images/background.jpg');
+		// Uncomment the following to test different backgrounds
+		/*
+			top: -10%;
+			left: -10%;
+			height: 120vh;
+			width: 120%;
+			filter: blur(15px);
+		*/
+	}
 }
 .scroll-area {
 	height: 100vh;

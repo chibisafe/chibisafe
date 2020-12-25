@@ -197,7 +197,7 @@ export default {
 }
 
 .image-col {
-	align-items: start;
+	align-items: center;
 }
 
 .data-col  {

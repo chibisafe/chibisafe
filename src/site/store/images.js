@@ -5,7 +5,7 @@ export const getDefaultState = () => ({
 	isLoading: false,
 	pagination: {
 		page: 1,
-		limit: 30,
+		limit: 50,
 		totalFiles: 0
 	},
 	search: '',

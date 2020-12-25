@@ -51,7 +51,7 @@ import { saveAs } from 'file-saver';
 export default {
 	computed: {
 		loggedIn() {
-			return this.$store.state.loggedIn;
+			return this.$store.state.auth.loggedIn;
 		}
 	},
 	methods: {
@@ -86,7 +86,8 @@ export default {
 
 		div.link { cursor: pointer; }
 		.link {
-			background: $backgroundAccent;
+			background: #0000002e;
+			border: 1px solid #00000061;
 			display: block;
 			width: calc(25% - 2rem);
 			border-radius: 6px;

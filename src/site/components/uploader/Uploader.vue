@@ -241,7 +241,7 @@ export default {
 			margin-bottom: 5px;
 			span.select {
 				select {
-					border: 2px solid #2c3340;
+					border: 1px solid #00000061;
 					background: rgba(0, 0, 0, 0.15);
 					border-radius: .3em;
 					color: $uploaderDropdownColor;

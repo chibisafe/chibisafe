@@ -11,14 +11,6 @@
 					Home
 				</router-link>
 			</b-navbar-item>
-			<b-navbar-item tag="div">
-				<router-link
-					to="/faq"
-					class="navbar-item no-active"
-					exact>
-					Docs
-				</router-link>
-			</b-navbar-item>
 			<template v-if="loggedIn">
 				<b-navbar-item tag="div">
 					<router-link
@@ -97,6 +89,7 @@ export default {
 	nav.navbar {
 		background: transparent;
 		box-shadow: none;
+		padding-right: 2rem;
 		.navbar-brand {
 			a.burger {
 				color: $defaultTextColor;

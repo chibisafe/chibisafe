@@ -20,6 +20,10 @@ $size-normal: 1rem;
 
 @import './bulma-divider.scss';
 
+html, body, #__nuxt, #__layout, .default-body, #app {
+	// height: 100% !important;
+}
+
 html {
 	// font-size: 100%;
 	font-size: 14px;
@@ -38,7 +42,8 @@ p,
 h1,
 h1.title,
 h2.subtitle,
-label.label {
+label.label,
+strong {
 	color: $textColor;
 }
 label.label {
