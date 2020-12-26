@@ -106,7 +106,7 @@ class uploadPOST extends Route {
 
 			if (!remappedKeys || !remappedKeys.uuid) {
 				Util.generateThumbnails(uploadedFile.name);
-				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, file);
+				insertedId = await Util.saveFileToDatabase(req, res, user, db, uploadedFile, file);
 				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
 				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
 
@@ -114,7 +114,7 @@ class uploadPOST extends Route {
 					If the upload had an album specified we make sure to create the relation
 					and update the according timestamps..
 				*/
-				this.saveFileToAlbum(db, albumId, insertedId);
+				Util.saveFileToAlbum(db, albumId, insertedId);
 			}
 
 			uploadedFile = Util.constructFilePublicLink(uploadedFile);
@@ -151,62 +151,6 @@ class uploadPOST extends Route {
 		return exists;
 	}
 
-	async saveFileToAlbum(db, albumId, insertedId) {
-		if (!albumId) return;
-
-		const now = moment.utc().toDate();
-		try {
-			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
-			await db.table('albums').where('id', albumId).update('editedAt', now);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async saveFileToDatabase(req, res, user, db, file, originalFile) {
-		/*
-			Save the upload information to the database
-		*/
-		const now = moment.utc().toDate();
-		let insertedId = null;
-		try {
-			/*
-				This is so fucking dumb
-			*/
-			if (process.env.DB_CLIENT === 'sqlite3') {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				});
-			} else {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				}, 'id');
-			}
-			return insertedId;
-		} catch (error) {
-			console.error('There was an error saving the file to the database');
-			console.error(error);
-			return null;
-			// return res.status(500).json({ message: 'There was an error uploading the file.' });
-		}
-	}
-
 	_remapKeys(body) {
 		const keys = Object.keys(body);
 		if (keys.length) {
@@ -217,7 +161,6 @@ class uploadPOST extends Route {
 			}
 			return body;
 		}
-		return keys;
 	}
 }
 

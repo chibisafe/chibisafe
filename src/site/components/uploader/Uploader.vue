@@ -184,6 +184,10 @@ export default {
 					type: file.type,
 					count: file.upload.totalChunkCount
 				}]
+			}, {
+				headers: {
+					albumId: this.selectedAlbum ? this.selectedAlbum : null
+				}
 			});
 
 			this.processResult(file, data);
