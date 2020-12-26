@@ -108,6 +108,17 @@ class Util {
 		return hash;
 	}
 
+	static async checkIfFileExists(db, user, hash) {
+		const exists = await db.table('files')
+			.where(function() { // eslint-disable-line func-names
+				if (user) this.where('userId', user.id);
+				else this.whereNull('userId');
+			})
+			.where({ hash })
+			.first();
+		return exists;
+	}
+
 	static getFilenameFromPath(fullPath) {
 		return fullPath.replace(/^.*[\\\/]/, ''); // eslint-disable-line no-useless-escape
 	}
@@ -226,6 +237,60 @@ class Util {
 	}
 
 	static generateThumbnails = ThumbUtil.generateThumbnails;
+	static async saveFileToDatabase(req, res, user, db, file, originalFile) {
+		/*
+			Save the upload information to the database
+		*/
+		const now = moment.utc().toDate();
+		let insertedId = null;
+		try {
+			/*
+				This is so fucking dumb
+			*/
+			if (process.env.DB_CLIENT === 'sqlite3') {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: file.name,
+					original: originalFile.originalname,
+					type: originalFile.mimetype || '',
+					size: file.size,
+					hash: file.hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				});
+			} else {
+				insertedId = await db.table('files').insert({
+					userId: user ? user.id : null,
+					name: file.name,
+					original: originalFile.originalname,
+					type: originalFile.mimetype || '',
+					size: file.size,
+					hash: file.hash,
+					ip: req.ip,
+					createdAt: now,
+					editedAt: now
+				}, 'id');
+			}
+			return insertedId;
+		} catch (error) {
+			console.error('There was an error saving the file to the database');
+			console.error(error);
+			return null;
+		}
+	}
+
+	static async saveFileToAlbum(db, albumId, insertedId) {
+		if (!albumId) return;
+
+		const now = moment.utc().toDate();
+		try {
+			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
+			await db.table('albums').where('id', albumId).update('editedAt', now);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 }
 
 module.exports = Util;

@@ -79,7 +79,7 @@ class uploadPOST extends Route {
 
 				For this we need to wait until we have a filename so that we can delete the uploaded file.
 			*/
-			const exists = await this.checkIfFileExists(db, user, hash);
+			const exists = await Util.checkIfFileExists(db, user, hash);
 			if (exists) return this.fileExists(res, exists, filename);
 
 			if (remappedKeys && remappedKeys.uuid) {
@@ -106,7 +106,7 @@ class uploadPOST extends Route {
 
 			if (!remappedKeys || !remappedKeys.uuid) {
 				Util.generateThumbnails(uploadedFile.name);
-				insertedId = await this.saveFileToDatabase(req, res, user, db, uploadedFile, file);
+				insertedId = await Util.saveFileToDatabase(req, res, user, db, uploadedFile, file);
 				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
 				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
 
@@ -114,7 +114,7 @@ class uploadPOST extends Route {
 					If the upload had an album specified we make sure to create the relation
 					and update the according timestamps..
 				*/
-				this.saveFileToAlbum(db, albumId, insertedId);
+				Util.saveFileToAlbum(db, albumId, insertedId);
 			}
 
 			uploadedFile = Util.constructFilePublicLink(uploadedFile);
@@ -140,73 +140,6 @@ class uploadPOST extends Route {
 		return Util.deleteFile(filename);
 	}
 
-	async checkIfFileExists(db, user, hash) {
-		const exists = await db.table('files')
-			.where(function() { // eslint-disable-line func-names
-				if (user) this.where('userId', user.id);
-				else this.whereNull('userId');
-			})
-			.where({ hash })
-			.first();
-		return exists;
-	}
-
-	async saveFileToAlbum(db, albumId, insertedId) {
-		if (!albumId) return;
-
-		const now = moment.utc().toDate();
-		try {
-			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
-			await db.table('albums').where('id', albumId).update('editedAt', now);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async saveFileToDatabase(req, res, user, db, file, originalFile) {
-		/*
-			Save the upload information to the database
-		*/
-		const now = moment.utc().toDate();
-		let insertedId = null;
-		try {
-			/*
-				This is so fucking dumb
-			*/
-			if (process.env.DB_CLIENT === 'sqlite3') {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				});
-			} else {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				}, 'id');
-			}
-			return insertedId;
-		} catch (error) {
-			console.error('There was an error saving the file to the database');
-			console.error(error);
-			return null;
-			// return res.status(500).json({ message: 'There was an error uploading the file.' });
-		}
-	}
-
 	_remapKeys(body) {
 		const keys = Object.keys(body);
 		if (keys.length) {
@@ -217,7 +150,6 @@ class uploadPOST extends Route {
 			}
 			return body;
 		}
-		return keys;
 	}
 }
 

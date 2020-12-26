@@ -12,7 +12,10 @@ class uploadPOST extends Route {
 		});
 	}
 
-	async run(req, res) {
+	async run(req, res, db) {
+		const user = await Util.isAuthorized(req);
+		if (!user && process.env.PUBLIC_MODE === 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
+
 		const filename = Util.getUniqueFilename(randomstring.generate(32));
 		// console.log('Files', req.body.files);
 		const info = {
@@ -40,6 +43,7 @@ class uploadPOST extends Route {
 			// Save some data
 			info.name = `${filename}${ext || ''}`;
 			info.url += `${filename}${ext || ''}`;
+			info.data = chunk;
 
 			for (let i = 0; i < chunkDir.length; i++) {
 				const dir = path.join(__dirname,
@@ -54,15 +58,40 @@ class uploadPOST extends Route {
 			await jetpack.removeAsync(chunkOutput);
 		}
 
+		/*
+			If a file with the same hash and user is found, delete this
+			uploaded copy and return a link to the original
+		*/
+		info.hash = await Util.getFileHash(info.name);
+		let existingFile = await Util.checkIfFileExists(db, user, info.hash);
+		if (existingFile) {
+			existingFile = Util.constructFilePublicLink(existingFile);
+			res.json({
+				message: 'Successfully uploaded the file.',
+				name: existingFile.name,
+				hash: existingFile.hash,
+				size: existingFile.size,
+				url: `${process.env.DOMAIN}/${existingFile.name}`,
+				deleteUrl: `${process.env.DOMAIN}/api/file/${existingFile.id}`,
+				repeated: true
+			});
+
+			return Util.deleteFile(info.name);
+		}
+
+		// Otherwise generate thumbs and do the rest
+		Util.generateThumbnails(info.name);
+		const insertedId = await Util.saveFileToDatabase(req, res, user, db, info, {
+			originalname: info.data.original, mimetype: info.data.type
+		});
+		if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
+		info.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
+		Util.saveFileToAlbum(db, req.headers.albumid, insertedId);
+		delete info.chunk;
+
 		return res.status(201).send({
 			message: 'Sucessfully merged the chunk(s).',
 			...info
-			/*
-			name: `${filename}${ext || ''}`,
-			size: exists.size,
-			url: `${process.env.DOMAIN}/${exists.name}`,
-			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`
-			*/
 		});
 	}
 }
