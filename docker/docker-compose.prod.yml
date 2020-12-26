@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+    nginx:
+        volumes:
+            - ./nginx-data:/etc/nginx
+
+    chibisafe:
+        volumes:
+            - ./chibisafe-data:/usr/chibisafe/uploads
+            - ./chibisafe-database:/usr/chibisafe/database
