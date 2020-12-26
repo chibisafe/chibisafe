@@ -79,7 +79,7 @@ class uploadPOST extends Route {
 
 				For this we need to wait until we have a filename so that we can delete the uploaded file.
 			*/
-			const exists = await this.checkIfFileExists(db, user, hash);
+			const exists = await Util.checkIfFileExists(db, user, hash);
 			if (exists) return this.fileExists(res, exists, filename);
 
 			if (remappedKeys && remappedKeys.uuid) {
@@ -138,17 +138,6 @@ class uploadPOST extends Route {
 		});
 
 		return Util.deleteFile(filename);
-	}
-
-	async checkIfFileExists(db, user, hash) {
-		const exists = await db.table('files')
-			.where(function() { // eslint-disable-line func-names
-				if (user) this.where('userId', user.id);
-				else this.whereNull('userId');
-			})
-			.where({ hash })
-			.first();
-		return exists;
 	}
 
 	_remapKeys(body) {

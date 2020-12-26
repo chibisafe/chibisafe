@@ -108,6 +108,17 @@ class Util {
 		return hash;
 	}
 
+	static async checkIfFileExists(db, user, hash) {
+		const exists = await db.table('files')
+			.where(function() { // eslint-disable-line func-names
+				if (user) this.where('userId', user.id);
+				else this.whereNull('userId');
+			})
+			.where({ hash })
+			.first();
+		return exists;
+	}
+
 	static getFilenameFromPath(fullPath) {
 		return fullPath.replace(/^.*[\\\/]/, ''); // eslint-disable-line no-useless-escape
 	}

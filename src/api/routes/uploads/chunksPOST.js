@@ -58,6 +58,28 @@ class uploadPOST extends Route {
 			await jetpack.removeAsync(chunkOutput);
 		}
 
+		/*
+			If a file with the same hash and user is found, delete this
+			uploaded copy and return a link to the original
+		*/
+		info.hash = await Util.getFileHash(info.name);
+		let existingFile = await Util.checkIfFileExists(db, user, info.hash);
+		if (existingFile) {
+			existingFile = Util.constructFilePublicLink(existingFile);
+			res.json({
+				message: 'Successfully uploaded the file.',
+				name: existingFile.name,
+				hash: existingFile.hash,
+				size: existingFile.size,
+				url: `${process.env.DOMAIN}/${existingFile.name}`,
+				deleteUrl: `${process.env.DOMAIN}/api/file/${existingFile.id}`,
+				repeated: true
+			});
+
+			return Util.deleteFile(info.name);
+		}
+
+		// Otherwise generate thumbs and do the rest
 		Util.generateThumbnails(info.name);
 		const insertedId = await Util.saveFileToDatabase(req, res, user, db, info, {
 			originalname: info.data.original, mimetype: info.data.type
