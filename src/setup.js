@@ -61,11 +61,6 @@ async function start() {
 			handle: 'ADMIN_ACCOUNT'
 		},
 		{
-			type: 'secure',
-			query: 'Type a secure password for the admin account:',
-			handle: 'ADMIN_PASSWORD'
-		},
-		{
 			type: 'interactive',
 			query: 'Which predefined database do you want to use?',
 			handle: 'DB_CLIENT',
@@ -102,6 +97,7 @@ async function start() {
 	let envfile = '';
 
 	const defaultSettings = {
+		ADMIN_PASSWORD: randomstring.generate(16),
 		GENERATED_FILENAME_LENGTH: 12,
 		GENERATED_ALBUM_LENGTH: 6,
 		WEBSITE_PORT: 5001,
@@ -132,9 +128,12 @@ async function start() {
 	jetpack.dir('database');
 
 	console.log();
-	console.log('=============================================');
-	console.log('==    .env file generated successfully.    ==');
-	console.log('=============================================');
+	console.log('====================================================');
+	console.log('==        .env file generated successfully.       ==');
+	console.log('====================================================');
+	console.log(`== Your admin password is: ${defaultSettings.ADMIN_PASSWORD}       ==`);
+	console.log('== MAKE SURE TO CHANGE IT AFTER YOUR FIRST LOGIN! ==');
+	console.log('====================================================');
 	console.log();
 }
 
