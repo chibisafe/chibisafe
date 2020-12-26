@@ -44,7 +44,7 @@ class albumGET extends Route {
 				Make sure the file exists just in case, and if not, continue to it's generation.
 			*/
 			if (exists) {
-				const fileName = `chibisafe-${identifier}.zip`;
+				const fileName = `${process.env.SERVICE_NAME}-${identifier}.zip`;
 				return res.download(filePath, fileName);
 			}
 		}
@@ -77,7 +77,7 @@ class albumGET extends Route {
 				.update('zippedAt', db.fn.now());
 
 			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
-			const fileName = `chibisafe-${identifier}.zip`;
+			const fileName = `${process.env.SERVICE_NAME}-${identifier}.zip`;
 			return res.download(filePath, fileName);
 		} catch (error) {
 			log.error(error);
