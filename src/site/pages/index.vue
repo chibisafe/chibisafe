@@ -89,8 +89,12 @@ export default {
 		.leftSpacer {
 			width: 100%;
 			.mainBlock {
+				height: auto;
+				padding: 2rem 0;
 				> div {
-					top: 5rem;
+					top: 0rem;
+					position: relative;
+					text-align: center;
 				}
 			}
 		}

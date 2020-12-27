@@ -405,3 +405,10 @@ table.table {
 .dropdown-content a {
 	text-decoration: none;
 }
+
+.button {
+	color: $textColor;
+	&:hover {
+		color: white;
+	}
+}

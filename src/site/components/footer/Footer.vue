@@ -83,9 +83,10 @@ export default {
 
 		.container {
 			.column {
-				margin-right: 2rem;
-				&.bottom-up {
-					@media screen and (min-width: 1025px) {
+				text-align: center;
+				@media screen and (min-width: 1025px) {
+					margin-right: 2rem;
+					&.bottom-up {
 						display: flex;
 						flex-direction: column;
 						justify-content: flex-end;
