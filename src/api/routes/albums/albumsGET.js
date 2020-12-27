@@ -16,7 +16,7 @@ class albumsGET extends Route {
 		const albums = await db
 			.table('albums')
 			.where('albums.userId', user.id)
-			.select('id', 'name', 'createdAt', 'editedAt')
+			.select('id', 'name', 'nsfw', 'createdAt', 'editedAt')
 			.orderBy('createdAt', 'desc');
 
 		for (const album of albums) {

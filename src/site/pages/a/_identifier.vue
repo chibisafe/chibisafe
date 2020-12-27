@@ -1,20 +1,3 @@
-<style lang="scss" scoped>
-	@import '~/assets/styles/_colors.scss';
-	section.hero div.hero-body.align-top {
-		align-items: baseline;
-		flex-grow: 0;
-		padding-bottom: 0;
-	}
-
-	div.loading-container {
-		justify-content: center;
-		display: flex;
-	}
-</style>
-<style lang="scss">
-	@import '~/assets/styles/_colors.scss';
-</style>
-
 <template>
 	<section class="section is-fullheight">
 		<template v-if="files && files.length">
@@ -33,13 +16,30 @@
 				</div>
 			</div>
 			<div class="container">
-				<Grid
-					v-if="files && files.length"
-					:files="files"
-					:is-public="true"
-					:width="200"
-					:enable-search="false"
-					:enable-toolbar="false" />
+				<template v-if="!isNsfw || (isNsfw && nsfwConsent)">
+					<Grid
+						v-if="files && files.length"
+						:files="files"
+						:is-public="true"
+						:width="200"
+						:enable-search="false"
+						:enable-toolbar="false" />
+				</template>
+				<template v-else>
+					<div class="nsfw">
+						<i class="mdi mdi-alert mdi-48px" />
+						<h1>NSFW Content</h1>
+						<p>
+							This album contains images or videos that are not safe for work or are inappropriate to view in some situations.<br>
+							Do you wish to proceed?
+						</p>
+						<button
+							class="button is-danger"
+							@click="nsfwConsent = true">
+							Show me the content
+						</button>
+					</div>
+				</template>
 			</div>
 		</template>
 		<template v-else>
@@ -62,7 +62,9 @@ import Grid from '~/components/grid/Grid.vue';
 export default {
 	components: { Grid },
 	data() {
-		return {};
+		return {
+			nsfwConsent: false
+		};
 	},
 	computed: {
 		config() {
@@ -77,7 +79,8 @@ export default {
 				name: data.name,
 				downloadEnabled: data.downloadEnabled,
 				files: data.files,
-				downloadLink
+				downloadLink,
+				isNsfw: data.isNsfw
 			};
 		} catch (err) {
 			console.log('Error when retrieving album', err);
@@ -119,3 +122,32 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	section.hero div.hero-body.align-top {
+		align-items: baseline;
+		flex-grow: 0;
+		padding-bottom: 0;
+	}
+
+	div.loading-container {
+		justify-content: center;
+		display: flex;
+	}
+	.nsfw {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: 50vh;
+
+		h1 {
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+		p {
+			font-size: 1.5rem;
+			margin-bottom: 2rem;
+			text-align: center;
+		}
+	}
+</style>

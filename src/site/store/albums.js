@@ -73,6 +73,15 @@ export const actions = {
 
 		return response;
 	},
+	async toggleNsfw({ commit }, { albumId, nsfw }) {
+		const response = await this.$axios.$post('album/edit', {
+			id: albumId,
+			nsfw
+		});
+		commit('updateNsfw', { albumId, nsfw });
+
+		return response;
+	},
 	async deleteLink({ commit }, { albumId, identifier }) {
 		const response = await this.$axios.$delete(`album/link/delete/${identifier}`);
 
@@ -117,6 +126,9 @@ export const mutations = {
 		);
 		const link = state.albumDetails[albumId].links[foundIndex];
 		state.albumDetails[albumId].links[foundIndex] = { ...link, ...linkOpts };
+	},
+	updateNsfw(state, { albumId, value }) {
+		state.list.find(el => el.id === albumId).nsfw = value;
 	},
 	removeAlbumLink(state, { albumId, identifier }) {
 		const foundIndex = state.albumDetails[albumId].links.findIndex(({ identifier: id }) => id === identifier);

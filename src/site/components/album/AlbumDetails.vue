@@ -99,6 +99,13 @@
 
 					<div class="level-right">
 						<div class="level-item">
+							<b-switch
+								v-model="isNsfw"
+								:false-value="0"
+								:true-value="1"
+								@input="toggleNsfw()" />
+						</div>
+						<div class="level-item">
 							<button
 								class="button is-danger"
 								style="float: right"
@@ -133,7 +140,15 @@ export default {
 			isDeletingLinks: []
 		};
 	},
-	computed: mapState(['config', 'auth']),
+	computed: {
+		...mapState(['config', 'auth']),
+		isNsfw() {
+			return this.$store.state.albums.list.find(a => a.id === this.albumId).nsfw;
+		}
+	},
+	mounted() {
+		console.log(this.isNsfw);
+	},
 	methods: {
 		...mapActions({
 			deleteAlbumAction: 'albums/deleteAlbum',
@@ -141,6 +156,7 @@ export default {
 			updateLinkOptionsAction: 'albums/updateLinkOptions',
 			createLinkAction: 'albums/createLink',
 			createCustomLinkAction: 'albums/createCustomLink',
+			toggleNsfw: 'albums/toggleNsfw',
 			alert: 'alert/set'
 		}),
 		promptDeleteAlbum(id) {
@@ -194,6 +210,17 @@ export default {
 			try {
 				const response = await this.updateLinkOptionsAction({ albumId, linkOpts });
 
+				this.alert({ text: response.message, error: false });
+			} catch (e) {
+				this.alert({ text: e.message, error: true });
+			}
+		},
+		async toggleNsfw() {
+			try {
+				const response = await this.toggleNsfw({
+					albumId: this.albumId,
+					nsfw: !this.isNsfw
+				});
 				this.alert({ text: response.message, error: false });
 			} catch (e) {
 				this.alert({ text: e.message, error: true });

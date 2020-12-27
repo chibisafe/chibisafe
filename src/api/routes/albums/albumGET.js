@@ -37,6 +37,7 @@ class albumGET extends Route {
 			message: 'Successfully retrieved files',
 			name: album.name,
 			downloadEnabled: link.enableDownload,
+			isNsfw: album.nsfw,
 			files
 		});
 	}
