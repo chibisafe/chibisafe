@@ -53,7 +53,8 @@
 		<AlbumDetails
 			v-if="isExpanded"
 			:details="getDetails(album.id)"
-			:album-id="album.id" />
+			:album-id="album.id"
+			:nsfw="album.nsfw" />
 	</div>
 </template>
 

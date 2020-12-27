@@ -16,7 +16,7 @@ const db = require('knex')({
 			some things like different data types for booleans need to be considered like in
 			the implementation below where sqlite returns 1 and 0 instead of true and false.
 		*/
-		const booleanFields = ['enabled', 'enableDownload', 'isAdmin'];
+		const booleanFields = ['enabled', 'enableDownload', 'isAdmin', 'nsfw'];
 
 		const processResponse = row => {
 			Object.keys(row).forEach(key => {

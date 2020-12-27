@@ -127,8 +127,8 @@ export const mutations = {
 		const link = state.albumDetails[albumId].links[foundIndex];
 		state.albumDetails[albumId].links[foundIndex] = { ...link, ...linkOpts };
 	},
-	updateNsfw(state, { albumId, value }) {
-		state.list.find(el => el.id === albumId).nsfw = value;
+	updateNsfw(state, { albumId, nsfw }) {
+		state.list.find(el => el.id === albumId).nsfw = nsfw;
 	},
 	removeAlbumLink(state, { albumId, identifier }) {
 		const foundIndex = state.albumDetails[albumId].links.findIndex(({ identifier: id }) => id === identifier);

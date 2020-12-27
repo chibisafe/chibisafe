@@ -16,7 +16,7 @@ class albumEditPOST extends Route {
 
 		try {
 			const updateObj = {
-				name: name ? name : album.name,
+				name: name || album.name,
 				nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw
 			};
 			await db
