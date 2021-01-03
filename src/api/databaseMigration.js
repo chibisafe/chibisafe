@@ -1,55 +1,7 @@
-/* eslint-disable eqeqeq */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-console */
 const nodePath = require('path');
 const moment = require('moment');
 const jetpack = require('fs-jetpack');
-const sharp = require('sharp');
-const ffmpeg = require('fluent-ffmpeg');
-
-const imageExtensions = ['.jpg', '.jpeg', '.bmp', '.gif', '.png', '.webp'];
-const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
-
-const generateThumbnailForImage = async (filename, output) => {
-	try {
-		const file = await jetpack.readAsync(nodePath.join(__dirname, '../../uploads', filename), 'buffer');
-		await sharp(file)
-			.resize(64, 64)
-			.toFormat('webp')
-			.toFile(nodePath.join(__dirname, '../../uploads/thumbs/square', output));
-		await sharp(file)
-			.resize(225, null)
-			.toFormat('webp')
-			.toFile(nodePath.join(__dirname, '../../uploads/thumbs', output));
-		console.log('finished', filename);
-	} catch (error) {
-		console.log('error', filename);
-	}
-};
-
-const generateThumbnailForVideo = filename => {
-	try {
-		ffmpeg(nodePath.join(__dirname, '../../uploads', filename))
-			.thumbnail({
-				timestamps: [0],
-				filename: '%b.png',
-				folder: nodePath.join(__dirname, '../../uploads/thumbs/square'),
-				size: '64x64'
-			})
-			.on('error', error => console.error(error.message));
-		ffmpeg(nodePath.join(__dirname, '../../uploads', filename))
-			.thumbnail({
-				timestamps: [0],
-				filename: '%b.png',
-				folder: nodePath.join(__dirname, '../../uploads/thumbs'),
-				size: '150x?'
-			})
-			.on('error', error => console.error(error.message));
-		console.log('finished', filename);
-	} catch (error) {
-		console.log('error', filename);
-	}
-};
+const ThumbUtil = require('./utils/ThumbUtil');
 
 const oldDb = require('knex')({
 	client: 'sqlite3',
@@ -68,7 +20,8 @@ const newDb = require('knex')({
 		const booleanFields = [
 			'enabled',
 			'enableDownload',
-			'isAdmin'
+			'isAdmin',
+			'nsfw'
 		];
 
 		const processResponse = row => {
@@ -170,10 +123,7 @@ const start = async () => {
 
 		const filename = file.name;
 		if (!jetpack.exists(nodePath.join(__dirname, '../../uploads', filename))) continue;
-		const ext = nodePath.extname(filename).toLowerCase();
-		const output = `${filename.slice(0, -ext.length)}.webp`;
-		if (imageExtensions.includes(ext)) await generateThumbnailForImage(filename, output);
-		if (videoExtensions.includes(ext)) generateThumbnailForVideo(filename);
+		ThumbUtil.generateThumbnails(filename);
 	}
 	await newDb.batchInsert('files', filesToInsert, 20);
 	await newDb.batchInsert('albumsFiles', albumsFilesToInsert, 20);
