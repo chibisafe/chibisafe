@@ -27,15 +27,14 @@ This guide asumes a lot of things, including that you know your way around linux
 - `node` version 12+
 - `build-essential` package installed to build dependencies
 - `ffmpeg` package installed if you want video thumbnails
-- `yarn` package installed. If you'd like to use npm instead change `package.json` accordingly
 - `pm2` globally installed (`npm i -g pm2`) to keep the service alive at all times.
 - A database, postgresql preferably. You can also fall back to sqlite3 which ships by default.
 
 ### Installing
 
 1. Clone the repository and `cd` into it
-2. Run `yarn install`
-3. Run `yarn setup`
+2. Run `npm i`
+3. Run `npm run setup`
 
 Chibisafe is now installed, configured and ready. Now you need to serve it to the public by using a domain name.
 
