@@ -1,14 +1,15 @@
-.DS_Store
-!.gitkeep
+# Packages
 node_modules/
-uploads/
+dist/
+.nuxt/
 logs/
-database/db
-config.js
-start.json
-npm-debug.log
-pages/custom/**
-migrate.js
-yarn.lock
-package-lock.json
-.vscode/
+# Chibisafe specifics
+database.sqlite
+uploads/
+.env
+!src/api/routes/uploads
+db
+database.sqlite-journal
+docker/nginx/chibisafe.moe.conf
+docker-compose.config.yml
+/coverage

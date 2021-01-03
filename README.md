@@ -1,71 +1,54 @@
-![lolisafe](https://lolisafe.moe/8KFePddY.png)
+<p align="center">
+  <img width="234" height="376" src="https://lolisafe.moe/xjoghu.png">
+</p>
+
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kanadeko/Kuro/master/LICENSE)
 [![Chat / Support](https://img.shields.io/badge/Chat%20%2F%20Support-discord-7289DA.svg?style=flat-square)](https://discord.gg/5g6vgwn)
-[![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fpitu&style=flat-square)](https://www.patreon.com/pitu)
+[![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dpitu%26type%3Dpledges&style=flat-square)](https://www.patreon.com/pitu)
 [![Support me](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/kana)
 
-# lolisafe, a small safe worth protecting.
+### Attention
+If you are upgrading from v3 to v4 (current release) and you want to keep your files and relations please read the [migration guide](docs/migrating.md).
 
-## What's new in v3.0.0
-- Backend rewrite to make it faster, better and easier to extend
-- Album downloads (Thanks to [PascalTemel](https://github.com/PascalTemel))
-- See releases for changelog
+### What is this?
+Chibisafe is a file uploader service written in node that aims to to be easy to use and easy to set up. It's mainly intended for images and videos, but it accepts anything you throw at it.
+- You can run it in public or private mode, making it so only people with user accounts can upload files as well as controlling if user signup is enabled or not.
+- Out of the box support for ShareX configuration letting you upload screenshots and screencaptures directly to your chibisafe instance.
+- Browser extension to be able to right click any image/video and upload it directly to your chibisafe instance.
+- Chunk uploads enabled by default to be able to handle big boi files.
+- API Key support so you can integrate the service with whatever you desire.
+- Albums, tags and Discord-like search function
+- User list and control panel
 
-If you're upgrading from a version prior to v3.0.0 make sure to run `node database/migration.js` **ONCE** to create the missing columns on the database.
+### Pre-requisites
+This guide asumes a lot of things, including that you know your way around linux, nginx and internet in general.
 
-## Running
-1. Ensure you have at least version 7.6.0 of node installed
-2. Clone the repo
-3. Rename `config.sample.js` to `config.js`
-4. Modify port, domain and privacy options if desired
-5. run `npm install` to install all dependencies
-6. run `pm2 start lolisafe.js` or `node lolisafe.js` to start the service
+- Decently updated version of linux
+- `node` version 12+
+- `build-essential` package installed to build dependencies
+- `ffmpeg` package installed if you want video thumbnails
+- `yarn` package installed. If you'd like to use npm instead change `package.json` accordingly
+- `pm2` globally installed (`npm i -g pm2`) to keep the service alive at all times.
+- A database, postgresql preferably. You can also fall back to sqlite3 which ships by default.
 
-## Getting started
-This service supports running both as public and private. The only difference is that one needs a token to upload and the other one doesn't. If you want it to be public so anyone can upload files either from the website or API, just set the option `private: false` in the `config.js` file. In case you want to run it privately, you should set `private: true`.
+### Installing
 
-Upon running the service for the first time, it's gonna create a user account with the username `root` and password `root`. This is your admin account and you should change the password immediately. This account will let you manage all uploaded files and remove any if necessary.
+1. Clone the repository and `cd` into it
+2. Run `yarn install`
+3. Run `yarn setup`
 
-The option `serveFilesWithNode` in the `config.js` dictates if you want lolisafe to serve the files or nginx/apache once they are uploaded. The main difference between the two is the ease of use and the chance of analytics in the future.
-If you set it to `true`, the uploaded files will be located after the host like:
-	https://lolisafe.moe/yourFile.jpg
+Chibisafe is now installed, configured and ready. Now you need to serve it to the public by using a domain name.
 
-If you set it to `false`, you need to set nginx to directly serve whatever folder it is you are serving your
-downloads in. This also gives you the ability to serve them, for example, like this:
-	https://files.lolisafe.moe/yourFile.jpg
+6. Check the [nginx](docs/nginx.md) file for a sample configuration that has every step to run chibisafe securely on production.
 
-Both cases require you to type the domain where the files will be served on the `domain` key below.
-Which one you use is ultimately up to you. Either way, I've provided a sample config files for nginx that you can use to set it up quickly and painlessly!
-- [Normal Version](https://github.com/WeebDev/lolisafe/blob/master/nginx.sample.conf)
-- [SSL Version](https://github.com/WeebDev/lolisafe/blob/master/nginx-ssl.sample.conf)
+After you finish setting up nginx, you need to start chibisafe by using pm2. If you want to use something else like forever, ensure that the process spawned from `npm run start` never dies.
 
-If you set `enableUserAccounts: true`, people will be able to create accounts on the service to keep track of their uploaded files and create albums to upload stuff to, pretty much like imgur does, but only through the API. Every user account has a token that the user can use to upload stuff through the API. You can find this token on the section called `Change your token` on the administration dashboard, and if it gets leaked or compromised you can renew it by clicking the button titled `Request new token`.
-
-## Cloudflare Support
-If you are running lolisafe behind Cloudflare there is support to make the NGINX logs have the user's IP instead of Cloudflare's IP. You will need to compile NGINX from source with `--with-http_realip_module` as well as uncomment the following line in the NGINX config: `include /path/to/lolisafe/real-ip-from-cf;`
-
-## Using lolisafe
-Once the service starts you can start hitting the upload endpoint at `/api/upload` with any file. If you're using the frontend to do so then you are pretty much set, but if you're using the API to upload make sure the form name is set to `files[]` and the form type to `multipart/form-data`. If the service is running in private mode, don't forget to send a header of type `token: YOUR-CLIENT-TOKEN` to validate the request.
-
-A sample of the JSON returned from the endpoint can be seen below:
-```json
-{
-	"name": "EW7C.png",
-	"size": "71400",
-	"url": "https://i.kanacchi.moe/EW7C.png"
-}
-```
-
-To make it easier and better than any other service, you can download [our Chrome extension](https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj). That will let you configure your hostname and tokens, so that you can simply `right click` ->  `loli-safe` -> `send to safe` on any image/audio/video file on the web.
-
-Because of how nodejs apps work, if you want it attached to a domain name you will need to make a reverse proxy for it. Here is a tutorial [on how to do this with nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04). Keep in mind that this is only a requirement if you want to access your lolisafe service by using a domain name, otherwise you can use the service just fine by accessing it from your server's IP.
-
-## Sites using lolisafe
-Refer to the [wiki](https://github.com/WeebDev/lolisafe/wiki/Sites-using-lolisafe)
+7. Run `pm2 start pm2.json`:
+8. Profit
 
 ## Author
 
-**lolisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/lolisafe/blob/master/LICENSE) License.<br>
+**Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/chibisafe/blob/master/LICENSE) License.<br>
 Authored and maintained by Pitu.
 
-> [lolisafe.moe](https://lolisafe.moe) · GitHub [@Pitu](https://github.com/Pitu)
+> [chibisafe.moe](https://chibisafe.moe) · GitHub [@Pitu](https://github.com/Pitu)

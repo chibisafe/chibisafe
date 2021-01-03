@@ -1,0 +1,22 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"files.insertFinalNewline": true,
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[vue]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"prettier.disableLanguages": ["vue"],
+	"vetur.format.enable": true,
+	"files.eol": "\n",
+	"eslint.alwaysShowStatus": true,
+	"eslint.format.enable": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+}
