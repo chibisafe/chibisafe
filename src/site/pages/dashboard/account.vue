@@ -120,9 +120,6 @@ export default {
 			user: state => state.auth.user
 		})
 	},
-	metaInfo() {
-		return { title: 'Account' };
-	},
 	methods: {
 		...mapActions({
 			getUserSetttings: 'auth/fetchCurrentUser'
@@ -169,6 +166,11 @@ export default {
 			const response = await this.$store.dispatch('auth/requestAPIKey');
 			this.$buefy.toast.open(response.message);
 		}
+	},
+	head() {
+		return {
+			title: 'Account'
+		};
 	}
 };
 </script>

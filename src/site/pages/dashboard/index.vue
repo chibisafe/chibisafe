@@ -85,9 +85,6 @@ export default {
 		}),
 		...mapState(['images'])
 	},
-	metaInfo() {
-		return { title: 'Uploads' };
-	},
 	watch: {
 		current: 'fetchPaginate'
 	},
@@ -123,6 +120,11 @@ export default {
 				});
 			}
 		}
+	},
+	head() {
+		return {
+			title: 'Dashboard'
+		};
 	}
 };
 </script>

@@ -54,8 +54,10 @@ export default {
 	data() {
 		return {};
 	},
-	metaInfo() {
-		return { title: 'Faq' };
+	head() {
+		return {
+			title: 'FAQ'
+		};
 	}
 };
 </script>

@@ -78,9 +78,6 @@ export default {
 		};
 	},
 	computed: mapState(['config', 'auth']),
-	metaInfo() {
-		return { title: 'Register' };
-	},
 	methods: {
 		async register() {
 			if (this.isLoading) return;
@@ -110,6 +107,11 @@ export default {
 				this.isLoading = false;
 			}
 		}
+	},
+	head() {
+		return {
+			title: 'Register'
+		};
 	}
 };
 </script>

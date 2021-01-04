@@ -105,9 +105,6 @@ export default {
 		users: state => state.admin.users,
 		config: state => state.config
 	}),
-	metaInfo() {
-		return { title: 'Uploads' };
-	},
 	methods: {
 		async changeEnabledStatus(row) {
 			if (row.enabled) {
@@ -132,6 +129,11 @@ export default {
 		async purgeFiles(row) {
 			this.$handler.executeAction('admin/purgeUserFiles', row.id);
 		}
+	},
+	head() {
+		return {
+			title: 'Users'
+		};
 	}
 };
 </script>

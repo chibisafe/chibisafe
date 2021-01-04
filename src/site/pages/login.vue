@@ -151,6 +151,11 @@ export default {
 			}
 			this.$router.push('/dashboard');
 		}
+	},
+	head() {
+		return {
+			title: 'Login'
+		};
 	}
 };
 </script>

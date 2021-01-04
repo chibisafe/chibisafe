@@ -141,9 +141,6 @@ export default {
 			console.error(e);
 		}
 	}],
-	metaInfo() {
-		return { title: 'Settings' };
-	},
 	computed: mapState({
 		settings: state => state.admin.settings
 	}),
@@ -157,6 +154,11 @@ export default {
 		restartService() {
 			this.$handler.executeAction('admin/restartService');
 		}
+	},
+	head() {
+		return {
+			title: 'Service settings'
+		};
 	}
 };
 </script>

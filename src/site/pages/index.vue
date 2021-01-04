@@ -47,6 +47,11 @@ export default {
 	computed: {
 		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
 		...mapState(['config'])
+	},
+	head() {
+		return {
+			title: 'Home'
+		};
 	}
 };
 </script>

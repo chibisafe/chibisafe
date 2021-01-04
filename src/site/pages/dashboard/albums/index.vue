@@ -69,9 +69,6 @@ export default {
 		};
 	},
 	computed: mapState(['config', 'albums']),
-	metaInfo() {
-		return { title: 'Uploads' };
-	},
 	methods: {
 		...mapActions({
 			alert: 'alert/set'
@@ -91,6 +88,11 @@ export default {
 				this.newAlbumName = null;
 			}
 		}
+	},
+	head() {
+		return {
+			title: 'Albums'
+		};
 	}
 };
 </script>
