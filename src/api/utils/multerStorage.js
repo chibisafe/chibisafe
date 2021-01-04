@@ -8,7 +8,7 @@ function DiskStorage(opts) {
 
 	if (typeof opts.destination === 'string') {
 		jetpack.dir(opts.destination);
-		this.getDestination = function($0, $1, cb) { cb(null, opts.destination); };
+		this.getDestination = ($0, $1, cb) => { cb(null, opts.destination); };
 	} else {
 		this.getDestination = opts.destination;
 	}
@@ -86,6 +86,4 @@ DiskStorage.prototype._removeFile = function _removeFile(req, file, cb) {
 	fs.unlink(path, cb);
 };
 
-module.exports = function(opts) {
-	return new DiskStorage(opts);
-};
+module.exports = opts => new DiskStorage(opts);

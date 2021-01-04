@@ -28,6 +28,6 @@ exports.up = async knex => {
 		table.unique(['fileId', 'tagId']);
 	});
 };
-exports.down = async knex => {
+exports.down = async () => {
 	// Nothing
 };

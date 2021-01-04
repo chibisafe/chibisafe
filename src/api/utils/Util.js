@@ -35,6 +35,10 @@ class Util {
 		return blockedExtensions.includes(extension);
 	}
 
+	static getMimeFromType(fileTypeMimeObj) {
+		return fileTypeMimeObj ? fileTypeMimeObj.mime : undefined;
+	}
+
 	static constructFilePublicLink(file) {
 		/*
 			TODO: This wont work without a reverse proxy serving both
@@ -225,6 +229,7 @@ class Util {
 
 	static async storeFileToDb(req, res, user, file, db) {
 		const dbFile = await db.table('files')
+			// eslint-disable-next-line func-names
 			.where(function() {
 				if (user === undefined) {
 					this.whereNull('userId');
