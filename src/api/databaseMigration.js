@@ -118,10 +118,12 @@ const start = async () => {
 			editedAt: moment.unix(file.timestamp).toDate()
 		};
 		filesToInsert.push(fileToInsert);
-		albumsFilesToInsert.push({
-			albumId: file.albumid,
-			fileId: file.id
-		});
+		if (file.albumid) {
+			albumsFilesToInsert.push({
+				albumId: file.albumid,
+				fileId: file.id
+			});
+		}
 
 		const filename = file.name;
 		if (!jetpack.exists(nodePath.join(__dirname, '../../uploads', filename))) continue;
