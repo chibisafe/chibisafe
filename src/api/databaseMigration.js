@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const nodePath = require('path');
 const moment = require('moment');
 const jetpack = require('fs-jetpack');
