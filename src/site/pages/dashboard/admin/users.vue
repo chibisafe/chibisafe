@@ -12,6 +12,56 @@
 					<hr>
 
 					<div class="view-container">
+						<button v-if="!isCreateUserOpen"
+							class="button is-chibisafe"
+							@click="isCreateUserOpen = true">
+							New user
+						</button>
+						<div v-if="isCreateUserOpen"
+							class="userCreate">
+							<div class="columns">
+								<div class="column is-4 is-offset-4">
+									<b-field>
+										<b-input
+											v-model="username"
+											class="chibisafe-input"
+											type="text"
+											placeholder="Username" />
+									</b-field>
+									<b-field>
+										<b-input
+											v-model="password"
+											class="chibisafe-input"
+											type="password"
+											placeholder="Password"
+											password-reveal
+											@keyup.enter.native="register" />
+									</b-field>
+									<div class="level">
+										<!-- Left side -->
+										<div class="level-left">
+											<div class="level-item">
+												<button class="button is-chibisafe"
+													@click="cleanUpRegister">
+													Cancel
+												</button>
+											</div>
+										</div>
+										<!-- Right side -->
+										<div class="level-right">
+											<p class="level-item">
+												<b-button
+													type="is-chibisafe"
+													:disabled="isLoading"
+													@click="register">
+													Register
+												</b-button>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<b-table
 							:data="users"
 							:mobile-cards="true">
@@ -101,6 +151,14 @@ export default {
 			console.error(e);
 		}
 	}],
+	data() {
+		return {
+			isCreateUserOpen: false,
+			username: null,
+			password: null,
+			isLoading: null
+		};
+	},
 	computed: mapState({
 		users: state => state.admin.users,
 		config: state => state.config
@@ -128,6 +186,34 @@ export default {
 		},
 		async purgeFiles(row) {
 			this.$handler.executeAction('admin/purgeUserFiles', row.id);
+		},
+		async register() {
+			if (this.isLoading) return;
+
+			if (!this.username || !this.password) {
+				this.$notifier.error('Please fill all fields before attempting to register.');
+				return;
+			}
+			this.isLoading = true;
+
+			try {
+				const response = await this.$store.dispatch('auth/register', {
+					username: this.username,
+					password: this.password
+				});
+				this.$store.dispatch('admin/fetchUsers');
+				this.$notifier.success(response.message);
+				return this.cleanUpRegister();
+			} catch (error) {
+				this.$notifier.error(error.message);
+			} finally {
+				this.isLoading = false;
+			}
+		},
+		cleanUpRegister() {
+			this.isCreateUserOpen = false;
+			this.username = null;
+			this.password = null;
 		}
 	},
 	head() {
@@ -142,6 +228,12 @@ export default {
 	@import '~/assets/styles/_colors.scss';
 	div.view-container {
 		padding: 2rem;
+		> .button {
+			margin-bottom: 1rem;
+		}
+		.userCreate {
+			margin-bottom: 2rem;
+		}
 	}
 	div.album {
 		display: flex;
