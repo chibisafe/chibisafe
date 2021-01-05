@@ -6,6 +6,8 @@ You will need to edit the parameters:
 - `WorkingDirectory` to the **FULL** path to your chibisafe, `/home/chibisafe/chibisafe` for example.
 - `EnvironmentFile` the same as the above, with the addition of `/.env`, `/home/chibisafe/chibisafe/.env`
 
+Example below.
+
 ```[Unit]
 Description=chibisafe, easy to use file uploader
 After=network.target
