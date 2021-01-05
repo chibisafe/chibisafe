@@ -127,7 +127,7 @@ class Util {
 		const thumbName = ThumbUtil.getFileThumbnail(filename);
 		try {
 			await jetpack.removeAsync(path.join(Util.uploadPath, filename));
-			await ThumbUtil.removeThumbs(thumbName);
+			if (thumbName) await ThumbUtil.removeThumbs(thumbName);
 
 			if (deleteFromDB) {
 				await db
