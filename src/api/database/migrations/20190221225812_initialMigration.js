@@ -80,6 +80,7 @@ exports.up = async knex => {
 		table.timestamp('createdAt');
 	});
 };
+
 exports.down = async knex => {
 	await knex.schema.dropTableIfExists('users');
 	await knex.schema.dropTableIfExists('albums');

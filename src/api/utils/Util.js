@@ -3,26 +3,19 @@ const jetpack = require('fs-jetpack');
 const randomstring = require('randomstring');
 const path = require('path');
 const JWT = require('jsonwebtoken');
-const db = require('knex')({
-	client: process.env.DB_CLIENT,
-	connection: {
-		host: process.env.DB_HOST,
-		user: process.env.DB_USER,
-		password: process.env.DB_PASSWORD,
-		database: process.env.DB_DATABASE,
-		filename: path.join(__dirname, '../../../database/database.sqlite')
-	},
-	useNullAsDefault: process.env.DB_CLIENT === 'sqlite'
-});
+const db = require('../structures/Database');
 const moment = require('moment');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
 
 const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
+const StatsGenerator = require('./StatsGenerator');
 
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
+
+let statsLastSavedTime = null;
 
 class Util {
 	static uploadPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER);
@@ -315,6 +308,35 @@ class Util {
 		}
 
 		return extname + multi;
+	}
+
+	static async saveStatsToDb() {
+		// if we alredy saved a stats to the db, and there were no new changes to the db since then
+		// skip generating and saving new stats.
+		// XXX: Should we save non-db related statistics to the database anyway? (like performance, disk usage)
+		if (statsLastSavedTime && statsLastSavedTime > db.userParams.lastMutationTime) {
+			return;
+		}
+
+		const now = moment.utc().toDate();
+		const stats = await StatsGenerator.getStats(db);
+
+		let batchId = 1;
+
+		const res = (await db('statistics').max({ lastBatch: 'batchId' }))[0];
+		if (res && res.lastBatch) {
+			batchId = res.lastBatch + 1;
+		}
+
+		try {
+			for (const [type, data] of Object.entries(stats)) {
+				await db.table('statistics').insert({ type, data: JSON.stringify(data), createdAt: now, batchId });
+			}
+
+			statsLastSavedTime = now.getTime();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 }
 
