@@ -1,0 +1,13 @@
+[Unit]
+Description=chibisafe, easy to use file uploader
+After=network.target
+
+[Service]
+Type=simple
+User=yourusername
+WorkingDirectory=/path/to/chibisafe
+ExecStart=/usr/bin/npm start /path/to/lolisafe/chibisafe.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
