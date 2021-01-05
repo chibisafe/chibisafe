@@ -4,7 +4,8 @@ For starters we recommend cloning the new version somewhere else instead of `git
 
 - After cloning move your `uploads` folder from the v3 folder to the new v4 folder.
 - Then copy your `database/db` file from your v3 folder to the root of your v4 folder.
-- You then need to run `npm start setup` from the v4 folder and finish the setup process.
+- Make sure to install the dependencies by running `npm i`
+- You then need to run `npm run setup` from the v4 folder and finish the setup process.
 - Once that's done you need to manually run `node src/api/databaseMigration.js` from the root folder of v4.
 - This will migrate the v3 database to v4 and regenerate every single thumbnail in webp to save bandwidth.
 - After the migration finishes, the last step is to update your nginx config with the [newly provided script](./nginx.md).
