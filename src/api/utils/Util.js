@@ -15,7 +15,6 @@ const db = require('knex')({
 	useNullAsDefault: process.env.DB_CLIENT === 'sqlite'
 });
 const moment = require('moment');
-const crypto = require('crypto');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
 
@@ -87,37 +86,6 @@ class Util {
 			return null;
 		};
 		return retry();
-	}
-
-	static async getFileHash(filename) {
-		const file = await jetpack.readAsync(path.join(Util.uploadPath, filename), 'buffer');
-		if (!file) {
-			log.error(`There was an error reading the file < ${filename} > for hashing`);
-			return null;
-		}
-
-		const hash = crypto.createHash('md5');
-		hash.update(file, 'utf8');
-		return hash.digest('hex');
-	}
-
-	static generateFileHash(data) {
-		const hash = crypto
-			.createHash('md5')
-			.update(data)
-			.digest('hex');
-		return hash;
-	}
-
-	static async checkIfFileExists(db, user, hash) {
-		const exists = await db.table('files')
-			.where(function() { // eslint-disable-line func-names
-				if (user) this.where('userId', user.id);
-				else this.whereNull('userId');
-			})
-			.where({ hash })
-			.first();
-		return exists;
 	}
 
 	static getFilenameFromPath(fullPath) {
@@ -238,48 +206,6 @@ class Util {
 	}
 
 	static generateThumbnails = ThumbUtil.generateThumbnails;
-	static async saveFileToDatabase(req, res, user, db, file, originalFile) {
-		/*
-			Save the upload information to the database
-		*/
-		const now = moment.utc().toDate();
-		let insertedId = null;
-		try {
-			/*
-				This is so fucking dumb
-			*/
-			if (process.env.DB_CLIENT === 'sqlite3') {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				});
-			} else {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				}, 'id');
-			}
-			return insertedId;
-		} catch (error) {
-			console.error('There was an error saving the file to the database');
-			console.error(error);
-			return null;
-		}
-	}
 
 	static async fileExists(res, exists, filename) {
 		exists = Util.constructFilePublicLink(exists);
