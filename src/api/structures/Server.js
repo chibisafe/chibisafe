@@ -29,7 +29,7 @@ class Server {
 		this.server = express();
 		this.server.set('trust proxy', 1);
 		this.server.use(helmet());
-		this.server.use(cors({ allowedHeaders: ['Accept', 'Authorization', 'Cache-Control', 'X-Requested-With', 'Content-Type', 'albumId'] }));
+		this.server.use(cors({ allowedHeaders: ['Accept', 'Authorization', 'Cache-Control', 'X-Requested-With', 'Content-Type', 'albumId', 'finishedChunks'] }));
 		this.server.use((req, res, next) => {
 			// This bypasses the headers.accept for album download, since it's accesed directly through the browser.
 			if ((req.url.includes('/api/album/') || req.url.includes('/zip')) && req.method === 'GET') return next();

@@ -121,7 +121,7 @@ export default {
 			chunking: true,
 			retryChunks: true,
 			retryChunksLimit: 3,
-			parallelChunkUploads: true,
+			parallelChunkUploads: false,
 			chunkSize: this.config.chunkSize * 1000000,
 			chunksUploaded: this.dropzoneChunksUploaded,
 			maxFilesize: this.config.maxFileSize,
@@ -176,7 +176,7 @@ export default {
 			console.error(file, message, xhr);
 		},
 		async dropzoneChunksUploaded(file, done) {
-			const { data } = await this.$axios.post(`${this.config.baseURL}/upload/chunks`, {
+			const { data } = await this.$axios.post(`${this.config.baseURL}/upload`, {
 				files: [{
 					uuid: file.upload.uuid,
 					original: file.name,
@@ -186,7 +186,8 @@ export default {
 				}]
 			}, {
 				headers: {
-					albumId: this.selectedAlbum ? this.selectedAlbum : null
+					albumId: this.selectedAlbum ? this.selectedAlbum : null,
+					finishedChunks: true
 				}
 			});
 
