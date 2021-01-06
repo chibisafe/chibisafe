@@ -160,7 +160,7 @@ const uploadFile = async (req, res) => {
 
 	const infoMap = req.files.map(file => ({
 		path: path.join(uploadDir, file.filename),
-		data: file
+		data: { ...file, mimetype: Util.getMimeFromType(file.fileType) || file.mimetype || '' }
 	}));
 
 	return infoMap[0];
@@ -189,6 +189,8 @@ const finishChunks = async req => {
 			*/
 
 			file.extname = typeof file.original === 'string' ? Util.getExtension(file.original) : '';
+			file.fileType = chunksData[file.uuid].fileType;
+			file.mimetype = Util.getMimeFromType(chunksData[file.uuid].fileType) || file.mimetype || '';
 
 			if (Util.isExtensionBlocked(file.extname)) {
 				throw `${file.extname ? `${file.extname.substr(1).toUpperCase()} files` : 'Files with no extension'} are not permitted.`; // eslint-disable-line no-throw-literal
@@ -218,7 +220,7 @@ const finishChunks = async req => {
 				filename: name,
 				originalname: file.original || '',
 				extname: file.extname,
-				mimetype: file.type || '',
+				mimetype: file.mimetype,
 				size: file.size,
 				hash
 			};

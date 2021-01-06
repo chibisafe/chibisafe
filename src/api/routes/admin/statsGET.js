@@ -1,6 +1,4 @@
 const Route = require('../../structures/Route');
-const Util = require('../../utils/Util');
-
 const StatsGenerator = require('../../utils/StatsGenerator');
 
 // Thank you Bobby for the stats code https://github.com/BobbyWibowo/lolisafe/blob/safe.fiery.me/controllers/utilsController.js

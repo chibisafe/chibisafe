@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const blake3 = require('blake3');
 const jetpack = require('fs-jetpack');
+const FileType = require('file-type');
 
 function DiskStorage(opts) {
 	this.getFilename = opts.filename;
@@ -52,25 +53,44 @@ DiskStorage.prototype._handleFile = function _handleFile(req, file, cb) {
 			file.stream.on('data', d => hash.update(d));
 
 			if (file._isChunk) {
-				file.stream.on('end', () => {
-					cb(null, {
-						destination,
-						filename,
-						path: finalPath
+				if (file._chunksData.chunks === 0) {
+					FileType.stream(file.stream).then(ftStream => {
+						file._chunksData.fileType = ftStream.fileType;
+						file.stream.on('end', () => {
+							cb(null, {
+								destination,
+								filename,
+								path: finalPath,
+								fileType: file._chunksData.fileType
+							});
+						});
+						ftStream.pipe(outStream, { end: false });
 					});
-				});
-				file.stream.pipe(outStream, { end: false });
+				} else {
+					file.stream.on('end', () => {
+						cb(null, {
+							destination,
+							filename,
+							path: finalPath,
+							fileType: file._chunksData.fileType
+						});
+					});
+					file.stream.pipe(outStream, { end: false });
+				}
 			} else {
-				outStream.on('finish', () => {
-					cb(null, {
-						destination,
-						filename,
-						path: finalPath,
-						size: outStream.bytesWritten,
-						hash: hash.digest('hex')
+				FileType.stream(file.stream).then(ftStream => {
+					outStream.on('finish', () => {
+						cb(null, {
+							destination,
+							filename,
+							path: finalPath,
+							size: outStream.bytesWritten,
+							hash: hash.digest('hex'),
+							fileType: ftStream.fileType
+						});
 					});
+					ftStream.pipe(outStream);
 				});
-				file.stream.pipe(outStream);
 			}
 		});
 	});
