@@ -255,7 +255,7 @@ class uploadPOST extends Route {
 		const user = await Util.isAuthorized(req);
 		if (!user && process.env.PUBLIC_MODE === 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
 		const { finishedchunks } = req.headers;
-		const albumId = req.headers.albumid ? req.headers.albumid === 'null' ? null : req.headers.albumid : null; // askjdhakjsdhkjhaskjdfhsadjkfghsadjkhgdfkjgh undefined or null as string
+		const albumId = req.headers.albumid ? req.headers.albumid === 'null' ? null : req.headers.albumid : null;
 		if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
 		if (albumId && user) {
 			const album = await db.table('albums').where({ id: albumId, userId: user.id }).first();
