@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
 	"author": {
