@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
 	"author": {
@@ -38,6 +38,7 @@
 		"@nuxtjs/axios": "^5.4.1",
 		"adm-zip": "^0.4.13",
 		"bcrypt": "^5.0.0",
+		"blake3": "^2.1.4",
 		"body-parser": "^1.18.3",
 		"buefy": "^0.9.4",
 		"busboy": "^0.2.14",

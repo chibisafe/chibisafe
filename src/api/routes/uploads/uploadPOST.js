@@ -1,41 +1,247 @@
 const path = require('path');
 const jetpack = require('fs-jetpack');
 const multer = require('multer');
-const moment = require('moment');
 const Util = require('../../utils/Util');
 const Route = require('../../structures/Route');
+const multerStorage = require('../../utils/multerStorage');
 
-const upload = multer({
-	storage: multer.memoryStorage(),
+const chunksData = {};
+const chunkedUploadsTimeout = 1800000;
+const chunksDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'chunks');
+const uploadDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER);
+
+class ChunksData {
+	constructor(uuid, root) {
+		this.uuid = uuid;
+		this.root = root;
+		this.filename = 'tmp';
+		this.chunks = 0;
+		this.stream = null;
+		this.hasher = null;
+	}
+
+	onTimeout() {
+		if (this.stream && !this.stream.writableEnded) {
+			this.stream.end();
+		}
+		if (this.hasher) {
+			this.hasher.dispose();
+		}
+		cleanUpChunks(this.uuid, true);
+	}
+
+	setTimeout(delay) {
+		this.clearTimeout();
+		this._timeout = setTimeout(this.onTimeout.bind(this), delay);
+	}
+
+	clearTimeout() {
+		if (this._timeout) {
+			clearTimeout(this._timeout);
+		}
+	}
+}
+
+const initChunks = async uuid => {
+	if (chunksData[uuid] === undefined) {
+		const root = path.join(chunksDir, uuid);
+		await jetpack.dirAsync(root);
+		chunksData[uuid] = new ChunksData(uuid, root);
+	}
+	chunksData[uuid].setTimeout(chunkedUploadsTimeout);
+	return chunksData[uuid];
+};
+
+const executeMulter = multer({
+	// Guide: https://github.com/expressjs/multer#limits
 	limits: {
 		fileSize: parseInt(process.env.MAX_SIZE, 10) * (1000 * 1000),
+		// Maximum number of non-file fields.
+		// Dropzone.js will add 6 extra fields for chunked uploads.
+		// We don't use them for anything else.
+		fields: 6,
+		// Maximum number of file fields.
+		// Chunked uploads still need to provide ONLY 1 file field.
+		// Otherwise, only one of the files will end up being properly stored,
+		// and that will also be as a chunk.
 		files: 1
 	},
-	fileFilter: (req, file, cb) =>
-	// TODO: Enable blacklisting of files/extensions
-		/*
-		if (options.blacklist.mimes.includes(file.mimetype)) {
-			return cb(new Error(`${file.mimetype} is a blacklisted filetype.`));
-		} else if (options.blacklist.extensions.some(ext => path.extname(file.originalname).toLowerCase() === ext)) {
-			return cb(new Error(`${path.extname(file.originalname).toLowerCase()} is a blacklisted extension.`));
+	fileFilter(req, file, cb) {
+		file.extname = Util.getExtension(file.originalname);
+		if (Util.isExtensionBlocked(file.extname)) {
+			return cb(`${file.extname ? `${file.extname.substr(1).toUpperCase()} files` : 'Files with no extension'} are not permitted.`);
 		}
-		*/
-		cb(null, true)
 
+		// Re-map Dropzone keys so people can manually use the API without prepending 'dz'
+		for (const key in req.body) {
+			if (!/^dz/.test(key)) continue;
+			req.body[key.replace(/^dz/, '')] = req.body[key];
+			delete req.body[key];
+		}
+
+		return cb(null, true);
+	},
+	storage: multerStorage({
+		destination(req, file, cb) {
+			// Is file a chunk!?
+			file._isChunk = req.body.uuid !== undefined && req.body.chunkindex !== undefined;
+
+			if (file._isChunk) {
+				initChunks(req.body.uuid)
+					.then(chunksData => {
+						file._chunksData = chunksData;
+						cb(null, chunksData.root);
+					})
+					.catch(error => {
+						console.error(error);
+						return cb('Could not process the chunked upload. Try again?');
+					});
+			} else {
+				return cb(null, uploadDir);
+			}
+		},
+
+		filename(req, file, cb) {
+			if (file._isChunk) {
+				return cb(null, chunksData[req.body.uuid].filename);
+			}
+			const name = Util.getUniqueFilename(file.extname);
+			if (name) return cb(null, name);
+			return cb('ERROR');
+		}
+	})
 }).array('files[]');
 
-/*
-	TODO: If source has transparency generate a png thumbnail, otherwise a jpg.
-	TODO: If source is a gif, generate a thumb of the first frame and play the gif on hover on the frontend.
+const uploadFile = async (req, res) => {
+	const error = await new Promise(resolve => executeMulter(req, res, err => resolve(err)));
 
-	TODO: Think if its worth making a folder with the user uuid in uploads/ and upload the pictures there so
-			that this way at least not every single file will be in 1 directory
+	if (error) {
+		const suppress = [
+			'LIMIT_FILE_SIZE',
+			'LIMIT_UNEXPECTED_FILE'
+		];
+		if (suppress.includes(error.code)) {
+			throw error.toString();
+		} else {
+			throw error;
+		}
+	}
 
-	XXX: Now that the default behaviour is to serve files with node, we can actually pull this off.
-		 Before this, having files in subfolders meant messing with nginx and the paths,
-		 but now it should be fairly easy to re-arrange the folder structure with express.static
-		 I see great value in this, open to suggestions.
-*/
+	if (!req.files || !req.files.length) {
+		throw 'No files.'; // eslint-disable-line no-throw-literal
+	}
+
+	// If the uploaded file is a chunk then just say that it was a success
+	const uuid = req.body.uuid;
+	if (chunksData[uuid] !== undefined) {
+		req.files.forEach(file => {
+			chunksData[uuid].chunks++;
+		});
+		res.json({ success: true });
+		return;
+	}
+
+	const infoMap = req.files.map(file => ({
+		path: path.join(uploadDir, file.filename),
+		data: file
+	}));
+
+	return infoMap[0];
+};
+
+const finishChunks = async (req, res) => {
+	const check = file => typeof file.uuid !== 'string' ||
+    !chunksData[file.uuid] ||
+    chunksData[file.uuid].chunks < 2;
+
+	const files = req.body.files;
+	if (!Array.isArray(files) || !files.length || files.some(check)) {
+		throw 'An unexpected error occurred.'; // eslint-disable-line no-throw-literal
+	}
+
+	const infoMap = [];
+	try {
+		await Promise.all(files.map(async file => {
+			// Close stream
+			chunksData[file.uuid].stream.end();
+
+			/*
+			if (chunksData[file.uuid].chunks > maxChunksCount) {
+				throw 'Too many chunks.'; // eslint-disable-line no-throw-literal
+			}
+			*/
+
+			file.extname = typeof file.original === 'string' ? Util.getExtension(file.original) : '';
+
+			if (Util.isExtensionBlocked(file.extname)) {
+				throw `${file.extname ? `${file.extname.substr(1).toUpperCase()} files` : 'Files with no extension'} are not permitted.`; // eslint-disable-line no-throw-literal
+			}
+
+			file.size = chunksData[file.uuid].stream.bytesWritten;
+
+			// Double-check file size
+			const tmpfile = path.join(chunksData[file.uuid].root, chunksData[file.uuid].filename);
+			const lstat = await jetpack.inspect(tmpfile);
+			if (lstat.size !== file.size) {
+				throw `File size mismatched (${lstat.size} vs. ${file.size}).`; // eslint-disable-line no-throw-literal
+			}
+
+			// Generate name
+			const name = Util.getUniqueFilename(file.extname);
+
+			// Move tmp file to final destination
+			const destination = path.join(uploadDir, name);
+			await jetpack.move(tmpfile, destination);
+			const hash = chunksData[file.uuid].hasher.digest('hex');
+
+			// Continue even when encountering errors
+			await cleanUpChunks(file.uuid).catch(console.error);
+
+			const data = {
+				filename: name,
+				originalname: file.original || '',
+				extname: file.extname,
+				mimetype: file.type || '',
+				size: file.size,
+				hash
+			};
+
+			infoMap.push({ path: destination, data });
+		}));
+
+		return infoMap[0];
+	} catch (error) {
+		// Dispose unfinished hasher and clean up leftover chunks
+		// Should continue even when encountering errors
+		files.forEach(file => {
+			if (chunksData[file.uuid] === undefined) return;
+			try {
+				if (chunksData[file.uuid].hasher) {
+					chunksData[file.uuid].hasher.dispose();
+				}
+			} catch (_) {}
+			cleanUpChunks(file.uuid).catch(console.error);
+		});
+
+		// Re-throw error
+		throw error;
+	}
+};
+
+const cleanUpChunks = async (uuid, onTimeout) => {
+	// Remove tmp file
+	await jetpack.removeAsync(path.join(chunksData[uuid].root, chunksData[uuid].filename))
+		.catch(error => {
+			if (error.code !== 'ENOENT') console.error(error);
+		});
+
+	// Remove UUID dir
+	await jetpack.removeAsync(chunksData[uuid].root);
+
+	// Delete cached chunks data
+	if (!onTimeout) chunksData[uuid].clearTimeout();
+	delete chunksData[uuid];
+};
 
 class uploadPOST extends Route {
 	constructor() {
@@ -48,108 +254,39 @@ class uploadPOST extends Route {
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
 		if (!user && process.env.PUBLIC_MODE === 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
-
-		const albumId = req.body.albumid || req.headers.albumid;
+		const { finishedchunks } = req.headers;
+		const albumId = req.headers.albumid ? req.headers.albumid === 'null' ? null : req.headers.albumid : null;
 		if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
 		if (albumId && user) {
 			const album = await db.table('albums').where({ id: albumId, userId: user.id }).first();
 			if (!album) return res.status(401).json({ message: 'Album doesn\'t exist or it doesn\'t belong to the user' });
 		}
 
-		return upload(req, res, async err => {
-			if (err) console.error(err.message);
 
-			let uploadedFile = {};
-			let insertedId;
-
-			// eslint-disable-next-line no-underscore-dangle
-			const remappedKeys = this._remapKeys(req.body);
-			const file = req.files[0];
-
-			const ext = path.extname(file.originalname);
-			const hash = Util.generateFileHash(file.buffer);
-
-			const filename = Util.getUniqueFilename(file.originalname);
-
-			/*
-				First let's get the hash of the file. This will be useful to check if the file
-				has already been upload by either the user or an anonymous user.
-				In case this is true, instead of uploading it again we retrieve the url
-				of the file that is already saved and thus don't store extra copies of the same file.
-
-				For this we need to wait until we have a filename so that we can delete the uploaded file.
-			*/
-			const exists = await Util.checkIfFileExists(db, user, hash);
-			if (exists) return this.fileExists(res, exists, filename);
-
-			if (remappedKeys && remappedKeys.uuid) {
-				const chunkOutput = path.join(__dirname,
-					'../../../../',
-					process.env.UPLOAD_FOLDER,
-					'chunks',
-					remappedKeys.uuid,
-					`${remappedKeys.chunkindex.padStart(3, 0)}${ext || ''}`);
-				await jetpack.writeAsync(chunkOutput, file.buffer);
-			} else {
-				const output = path.join(__dirname,
-					'../../../../',
-					process.env.UPLOAD_FOLDER,
-					filename);
-				await jetpack.writeAsync(output, file.buffer);
-				uploadedFile = {
-					name: filename,
-					hash,
-					size: file.buffer.length,
-					url: filename
-				};
-			}
-
-			if (!remappedKeys || !remappedKeys.uuid) {
-				Util.generateThumbnails(uploadedFile.name);
-				insertedId = await Util.saveFileToDatabase(req, res, user, db, uploadedFile, file);
-				if (!insertedId) return res.status(500).json({ message: 'There was an error saving the file.' });
-				uploadedFile.deleteUrl = `${process.env.DOMAIN}/api/file/${insertedId[0]}`;
-
-				/*
-					If the upload had an album specified we make sure to create the relation
-					and update the according timestamps..
-				*/
-				Util.saveFileToAlbum(db, albumId, insertedId);
-			}
-
-			uploadedFile = Util.constructFilePublicLink(uploadedFile);
-			return res.status(201).send({
-				message: 'Sucessfully uploaded the file.',
-				...uploadedFile
-			});
-		});
-	}
-
-	fileExists(res, exists, filename) {
-		exists = Util.constructFilePublicLink(exists);
-		res.json({
-			message: 'Successfully uploaded the file.',
-			name: exists.name,
-			hash: exists.hash,
-			size: exists.size,
-			url: `${process.env.DOMAIN}/${exists.name}`,
-			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
-			repeated: true
-		});
-
-		return Util.deleteFile(filename);
-	}
-
-	_remapKeys(body) {
-		const keys = Object.keys(body);
-		if (keys.length) {
-			for (const key of keys) {
-				if (!/^dz/.test(key)) continue;
-				body[key.replace(/^dz/, '')] = body[key];
-				delete body[key];
-			}
-			return body;
+		let file;
+		if (finishedchunks) {
+			file = await finishChunks(req, res);
+		} else {
+			// If nothing is returned we assume it was a chunk ¯\_(ツ)_/¯
+			file = await uploadFile(req, res);
+			if (!file) return;
 		}
+
+		// If nothing is returned means the file was duplicated and we already sent the response
+		const result = await Util.storeFileToDb(req, res, user, file, db);
+		if (!result) return;
+
+		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
+		result.deleteUrl = `${process.env.DOMAIN}/api/file/${result.id[0]}`;
+
+		return res.status(201).send({
+			message: 'Sucessfully uploaded the file.',
+			url: result.url,
+			name: result.file.name,
+			hash: result.file.hash,
+			deleteUrl: result.deleteUrl,
+			size: result.file.size
+		});
 	}
 }
 

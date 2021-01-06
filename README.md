@@ -10,6 +10,9 @@
 ### Attention
 If you are upgrading from v3 to v4 (current release) and you want to keep your files and relations please read the [migration guide](docs/migrating.md).
 
+### Attention (2)
+v4.0.1 changed the hashing algorithm for a better, faster one. So if you are currently running v4.0.0 and decide to update to v4.0.1+ it's in your best interest to rehash all the files your instance is serving. To do this go to the chibisafe root folder and run `node src/api/utils/rehashDatabase.js`. Depending on how many files you have it can take a few minutes or hours, there's a progress bar that will give you an idea.
+
 ### What is this?
 Chibisafe is a file uploader service written in node that aims to to be easy to use and easy to set up. It's mainly intended for images and videos, but it accepts anything you throw at it.
 - You can run it in public or private mode, making it so only people with user accounts can upload files as well as controlling if user signup is enabled or not.

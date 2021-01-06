@@ -15,7 +15,6 @@ const db = require('knex')({
 	useNullAsDefault: process.env.DB_CLIENT === 'sqlite'
 });
 const moment = require('moment');
-const crypto = require('crypto');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
 
@@ -23,6 +22,7 @@ const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
 
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
+const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
 
 class Util {
 	static uploadPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER);
@@ -50,12 +50,12 @@ class Util {
 		return file;
 	}
 
-	static getUniqueFilename(name) {
+	static getUniqueFilename(extension) {
 		const retry = (i = 0) => {
 			const filename = randomstring.generate({
 				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
 				capitalization: 'lowercase'
-			}) + path.extname(name).toLowerCase();
+			}) + extension;
 
 			// TODO: Change this to look for the file in the db instead of in the filesystem
 			const exists = jetpack.exists(path.join(Util.uploadPath, filename));
@@ -86,37 +86,6 @@ class Util {
 			return null;
 		};
 		return retry();
-	}
-
-	static async getFileHash(filename) {
-		const file = await jetpack.readAsync(path.join(Util.uploadPath, filename), 'buffer');
-		if (!file) {
-			log.error(`There was an error reading the file < ${filename} > for hashing`);
-			return null;
-		}
-
-		const hash = crypto.createHash('md5');
-		hash.update(file, 'utf8');
-		return hash.digest('hex');
-	}
-
-	static generateFileHash(data) {
-		const hash = crypto
-			.createHash('md5')
-			.update(data)
-			.digest('hex');
-		return hash;
-	}
-
-	static async checkIfFileExists(db, user, hash) {
-		const exists = await db.table('files')
-			.where(function() { // eslint-disable-line func-names
-				if (user) this.where('userId', user.id);
-				else this.whereNull('userId');
-			})
-			.where({ hash })
-			.first();
-		return exists;
 	}
 
 	static getFilenameFromPath(fullPath) {
@@ -237,47 +206,67 @@ class Util {
 	}
 
 	static generateThumbnails = ThumbUtil.generateThumbnails;
-	static async saveFileToDatabase(req, res, user, db, file, originalFile) {
-		/*
-			Save the upload information to the database
-		*/
-		const now = moment.utc().toDate();
-		let insertedId = null;
-		try {
-			/*
-				This is so fucking dumb
-			*/
-			if (process.env.DB_CLIENT === 'sqlite3') {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				});
-			} else {
-				insertedId = await db.table('files').insert({
-					userId: user ? user.id : null,
-					name: file.name,
-					original: originalFile.originalname,
-					type: originalFile.mimetype || '',
-					size: file.size,
-					hash: file.hash,
-					ip: req.ip,
-					createdAt: now,
-					editedAt: now
-				}, 'id');
-			}
-			return insertedId;
-		} catch (error) {
-			console.error('There was an error saving the file to the database');
-			console.error(error);
-			return null;
+
+	static async fileExists(res, exists, filename) {
+		exists = Util.constructFilePublicLink(exists);
+		res.json({
+			message: 'Successfully uploaded the file.',
+			name: exists.name,
+			hash: exists.hash,
+			size: exists.size,
+			url: `${process.env.DOMAIN}/${exists.name}`,
+			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
+			repeated: true
+		});
+
+		return this.deleteFile(filename);
+	}
+
+	static async storeFileToDb(req, res, user, file, db) {
+		const dbFile = await db.table('files')
+			.where(function() {
+				if (user === undefined) {
+					this.whereNull('userid');
+				} else {
+					this.where('userid', user.id);
+				}
+			})
+			.where({
+				hash: file.data.hash,
+				size: file.data.size
+			})
+			.first();
+
+		if (dbFile) {
+			await this.fileExists(res, dbFile, file.data.filename);
+			return;
 		}
+
+		const now = moment.utc().toDate();
+		const data = {
+			userId: user ? user.id : null,
+			name: file.data.filename,
+			original: file.data.originalname,
+			type: file.data.mimetype,
+			size: file.data.size,
+			hash: file.data.hash,
+			ip: req.ip,
+			createdAt: now,
+			editedAt: now
+		};
+		Util.generateThumbnails(file.data.filename);
+
+		let fileId;
+		if (process.env.DB_CLIENT === 'sqlite3') {
+			fileId = await db.table('files').insert(data);
+		} else {
+			fileId = await db.table('files').insert(data, 'id');
+		}
+
+		return {
+			file: data,
+			id: fileId
+		};
 	}
 
 	static async saveFileToAlbum(db, albumId, insertedId) {
@@ -290,6 +279,36 @@ class Util {
 		} catch (error) {
 			console.error(error);
 		}
+	}
+
+	static getExtension(filename) {
+		// Always return blank string if the filename does not seem to have a valid extension
+		// Files such as .DS_Store (anything that starts with a dot, without any extension after) will still be accepted
+		if (!/\../.test(filename)) return '';
+
+		let lower = filename.toLowerCase(); // due to this, the returned extname will always be lower case
+		let multi = '';
+		let extname = '';
+
+		// check for multi-archive extensions (.001, .002, and so on)
+		if (/\.\d{3}$/.test(lower)) {
+			multi = lower.slice(lower.lastIndexOf('.') - lower.length);
+			lower = lower.slice(0, lower.lastIndexOf('.'));
+		}
+
+		// check against extensions that must be preserved
+		for (const extPreserve of preserveExtensions) {
+			if (lower.endsWith(extPreserve)) {
+				extname = extPreserve;
+				break;
+			}
+		}
+
+		if (!extname) {
+			extname = lower.slice(lower.lastIndexOf('.') - lower.length); // path.extname(lower)
+		}
+
+		return extname + multi;
 	}
 }
 
