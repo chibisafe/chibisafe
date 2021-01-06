@@ -272,9 +272,11 @@ class uploadPOST extends Route {
 			if (!file) return;
 		}
 
+		// If nothing is returned means the file was duplicated and we already sent the response
 		const result = await Util.storeFileToDb(req, res, user, file, db);
-		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
+		if (!result) return;
 
+		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
 		result.deleteUrl = `${process.env.DOMAIN}/api/file/${result.id[0]}`;
 
 		return res.status(201).send({
