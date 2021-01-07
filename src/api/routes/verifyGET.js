@@ -11,7 +11,8 @@ class verifyGET extends Route {
 			user: {
 				id:	user.id,
 				username: user.username,
-				isAdmin: user.isAdmin
+				isAdmin: user.isAdmin,
+				apiKey: user.apiKey
 			}
 		});
 	}
