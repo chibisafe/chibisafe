@@ -25,8 +25,8 @@ services:
             - "5000"
             - "5001"
         ports:
-            - "5000"
-            - "5001"
+            - "5000:5000"
+            - "5001:5001"
         restart: unless-stopped
         environment:
             CHUNK_SIZE: 90
