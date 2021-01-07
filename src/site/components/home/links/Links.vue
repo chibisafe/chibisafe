@@ -46,13 +46,15 @@
 	</div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { saveAs } from 'file-saver';
 
 export default {
 	computed: {
-		loggedIn() {
-			return this.$store.state.auth.loggedIn;
-		}
+		...mapGetters({
+			loggedIn: 'auth/isLoggedIn',
+			apiKey: 'auth/getApiKey'
+		})
 	},
 	methods: {
 		createShareXThing() {
@@ -63,12 +65,12 @@ export default {
 				"RequestURL": "${location.origin}/api/upload",
 				"FileFormName": "files[]",
 				"Headers": {
-					"authorization": "Bearer ${this.$store.state.token}",
+					"token": "${this.apiKey}",
 					"accept": "application/vnd.chibisafe.json"
 				},
 				"ResponseType": "Text",
 				"URL": "$json:url$",
-				"ThumbnailURL": "$json:url$"
+				"ThumbnailURL": "$json:thumb$"
 			}`;
 			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 			saveAs(sharexBlob, `${location.hostname}.sxcu`);

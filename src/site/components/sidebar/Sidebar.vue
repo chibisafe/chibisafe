@@ -29,6 +29,7 @@
 				</template>
 				<b-menu-item icon="account" label="Users" tag="nuxt-link" to="/dashboard/admin/users" exact />
 				<b-menu-item icon="cog-outline" label="Settings" tag="nuxt-link" to="/dashboard/admin/settings" exact />
+				<!--<b-menu-item icon="chart-line" label="Statistics" tag="nuxt-link" to="/dashboard/admin/statistics" exact />-->
 			</b-menu-item>
 			<b-menu-item
 				class="item"

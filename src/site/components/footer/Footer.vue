@@ -35,11 +35,12 @@ import { saveAs } from 'file-saver';
 
 export default {
 	computed: {
-		...mapGetters({ loggedIn: 'auth/isLoggedIn' }),
+		...mapGetters({
+			loggedIn: 'auth/isLoggedIn',
+			apiKey: 'auth/getApiKey'
+		}),
 		...mapState({
-			version: state => state.config.version,
-			serviceName: state => state.config.serviceName,
-			token: state => state.auth.token
+			version: state => state.config.version
 		}),
 		getYear() {
 			return new Date().getFullYear();
@@ -48,18 +49,18 @@ export default {
 	methods: {
 		createShareXThing() {
 			const sharexFile = `{
-				"Name": "${this.serviceName}",
+				"Name": "${this.$store.state.config.serviceName}",
 				"DestinationType": "ImageUploader, FileUploader",
 				"RequestType": "POST",
 				"RequestURL": "${location.origin}/api/upload",
 				"FileFormName": "files[]",
 				"Headers": {
-					"authorization": "Bearer ${this.token}",
+					"token": "${this.apiKey}",
 					"accept": "application/vnd.chibisafe.json"
 				},
 				"ResponseType": "Text",
 				"URL": "$json:url$",
-				"ThumbnailURL": "$json:url$"
+				"ThumbnailURL": "$json:thumb$"
 			}`;
 			const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 			saveAs(sharexBlob, `${location.hostname}.sxcu`);
