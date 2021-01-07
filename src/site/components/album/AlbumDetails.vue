@@ -101,7 +101,13 @@
 						<div class="level-item">
 							<b-switch
 								:value="nsfw"
-								@input="toggleNsfw()" />
+								:rounded="false"
+								type="is-warning"
+								class="has-text-light"
+								left-label
+								@input="toggleNsfw()">
+								NSFW
+							</b-switch>
 						</div>
 						<div class="level-item">
 							<button

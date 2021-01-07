@@ -72,6 +72,9 @@ export default {
 <style lang="scss" scoped>
 	@import '~/assets/styles/_colors.scss';
 	footer {
+		pointer-events: none;
+		touch-action: none;
+
 		@media screen and (min-width: 1025px) {
 			position: fixed;
 			bottom: 0;
@@ -84,6 +87,9 @@ export default {
 
 		.container {
 			.column {
+				pointer-events: auto;
+				touch-action: auto;
+
 				text-align: center;
 				@media screen and (min-width: 1025px) {
 					margin-right: 2rem;

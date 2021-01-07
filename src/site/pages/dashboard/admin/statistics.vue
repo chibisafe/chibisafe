@@ -14,8 +14,11 @@
 						<div :key="category"
 							class="stats-container">
 							<h2 class="title">
-								{{ category }}
+								{{ category }} <span v-if="stats[category].meta" class="is-size-7 is-pulled-right is-family-monospace has-text-grey-light">
+									generated on {{ stats[category].meta.generatedOn }}
+								</span>
 							</h2>
+
 							<template v-for="item in Object.keys(stats[category])">
 								<!-- If it's plain text or a number, just print it -->
 								<template v-if="typeof stats[category][item] === 'string' || typeof stats[category][item] === 'number'">
@@ -25,7 +28,7 @@
 								</template>
 
 								<!-- If it's an object then we need to do some magic -->
-								<template v-else-if="typeof stats[category][item] === 'object'">
+								<template v-else-if="typeof stats[category][item] === 'object' && stats[category][item].type !== 'hidden'">
 									<byteUsage v-if="stats[category][item].type === 'byteUsage'"
 										:key="item"
 										:title="item"

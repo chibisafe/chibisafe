@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="columns">
+		<div class="columns is-mobile">
 			<div class="column is-2">
 				{{ title }}
 			</div>

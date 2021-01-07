@@ -311,11 +311,18 @@ class Util {
 		return extname + multi;
 	}
 
-	static async saveStatsToDb() {
+	// TODO: Allow choosing what to save to db and what stats we care about in general
+	// TODO: if a stat is not saved to db but selected to be shows on the dashboard, it will be generated during the request
+	static async saveStatsToDb(force) {
+		// If there were no changes since the instance started, don't generate new stats
+		// OR
 		// if we alredy saved a stats to the db, and there were no new changes to the db since then
 		// skip generating and saving new stats.
-		// XXX: Should we save non-db related statistics to the database anyway? (like performance, disk usage)
-		if (statsLastSavedTime && statsLastSavedTime > db.userParams.lastMutationTime) {
+		if (!force &&
+			(!db.userParams.lastMutationTime ||
+				(statsLastSavedTime && statsLastSavedTime > db.userParams.lastMutationTime)
+			)
+		) {
 			return;
 		}
 

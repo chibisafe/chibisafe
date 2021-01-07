@@ -105,7 +105,7 @@ export default {
 
 	div.search-container {
 		padding: 1rem 2rem;
-		background-color: $base-2;
+		// background-color: $base-2;
 	}
 
 	div.column > h2.subtitle { padding-top: 1px; }

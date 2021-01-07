@@ -1,5 +1,6 @@
 const Route = require('../../structures/Route');
 const StatsGenerator = require('../../utils/StatsGenerator');
+const moment = require('moment');
 
 // Thank you Bobby for the stats code https://github.com/BobbyWibowo/lolisafe/blob/safe.fiery.me/controllers/utilsController.js
 class filesGET extends Route {
@@ -9,12 +10,23 @@ class filesGET extends Route {
 
 	async run(req, res, db) {
 		const cachedStats = await db('statistics')
-			.select('type', 'data', 'batchId')
+			.select('type', 'data', 'batchId', 'createdAt')
 			.where('batchId', '=', db('statistics').max('batchId'));
 
-		let stats = cachedStats.reduce((acc, { type, data }) => {
+		let stats = cachedStats.reduce((acc, { type, data, createdAt }) => {
 			try {
-				acc[type] = JSON.parse(data);
+				// pg returns json, sqlite retuns a string...
+				if (typeof data === 'string' || data instanceof String) {
+					acc[type] = JSON.parse(data);
+				} else {
+					acc[type] = data;
+				}
+
+				acc[type].meta = {
+					cached: true,
+					generatedOn: moment(createdAt).format('MMMM Do YYYY, h:mm:ss a z'), // pg returns this as a date, sqlite3 returns an unix timestamp :<
+					type: StatsGenerator.Type.HIDDEN
+				};
 			} catch (e) {
 				console.error(e);
 			}
@@ -24,10 +36,12 @@ class filesGET extends Route {
 
 		stats = { ...stats, ...(await StatsGenerator.getMissingStats(db, Object.keys(stats))) };
 
-		return res.json(StatsGenerator.keyOrder.reduce((acc, k) => {
+		const ordered = StatsGenerator.keyOrder.reduce((acc, k) => {
 			acc[k] = stats[k];
 			return acc;
-		}, {}));
+		}, {});
+
+		return res.json({ statistics: ordered });
 	}
 }
 

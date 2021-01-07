@@ -1,6 +1,22 @@
 const si = require('systeminformation');
 
 class StatsGenerator {
+	// symbols would be better because they're unique, but harder to serialize them
+	static Type = Object.freeze({
+		// should contain key value: number
+		TIME: 'time',
+		// should contain key value: number
+		BYTE: 'byte',
+		// should contain key value: { used: number, total: number }
+		BYTE_USAGE: 'byteUsage',
+		// should contain key data: Array<{ key: string, value: number | string }>
+		// and optionally a count/total
+		DETAILED: 'detailed',
+		// hidden type should be skipped during iteration, can contain anything
+		// these should be treated on a case by case basis on the frontend
+		HIDDEN: 'hidden'
+	});
+
 	static statGenerators = {
 		system: StatsGenerator.getSystemInfo,
 		fileSystems: StatsGenerator.getFileSystemsInfo,
@@ -30,20 +46,20 @@ class StatsGenerator {
 					used: mem.active,
 					total: mem.total
 				},
-				type: 'byteUsage'
+				type: StatsGenerator.Type.BYTE_USAGE
 			},
 			'Memory Usage': {
 				value: process.memoryUsage().rss,
-				type: 'byte'
+				type: StatsGenerator.Type.BYTE
 			},
 			'System Uptime': {
 				value: time.uptime,
-				type: 'time'
+				type: StatsGenerator.Type.TIME
 			},
 			'Node.js': `${process.versions.node}`,
 			'Service Uptime': {
 				value: Math.floor(nodeUptime),
-				type: 'time'
+				type: StatsGenerator.Type.TIME
 			}
 		};
 	}
@@ -58,7 +74,7 @@ class StatsGenerator {
 					total: fs.size,
 					used: fs.used
 				},
-				type: 'byteUsage'
+				type: StatsGenerator.Type.BYTE_USAGE
 			};
 		}
 
@@ -73,11 +89,11 @@ class StatsGenerator {
 			'Others': {
 				data: {},
 				count: 0,
-				type: 'detailed'
+				type: StatsGenerator.Type.DETAILED
 			},
 			'Size in DB': {
 				value: 0,
-				type: 'byte'
+				type: StatsGenerator.Type.BYTE
 			}
 		};
 
@@ -88,7 +104,7 @@ class StatsGenerator {
 				'Total': uploads.length,
 				'Size in DB': {
 					value: uploads.reduce((acc, upload) => acc + parseInt(upload.size, 10), 0),
-					type: 'byte'
+					type: StatsGenerator.Type.BYTE
 				}
 			};
 		};
@@ -127,7 +143,7 @@ class StatsGenerator {
 				Others: {
 					data,
 					count,
-					type: 'detailed'
+					type: StatsGenerator.Type.DETAILED
 				}
 			};
 		};
