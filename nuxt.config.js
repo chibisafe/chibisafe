@@ -16,8 +16,7 @@ const clientConfig = {
 };
 
 export default {
-	// mode: 'spa', // mode option is deprecated. Please use ssr: true for universal mode or ssr: false for spa mode and remove mode from nuxt.config
-	ssr: 'false',
+	mode: 'spa',
 	server: {
 		port: process.env.WEBSITE_PORT
 	},
