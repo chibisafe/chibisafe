@@ -96,8 +96,8 @@ h2.title {
 }
 div.stats-container {
 	padding: 1rem;
-    background: #1c1e23;
-    box-shadow: rgba(15, 17, 21, 0.35) 0px 6px 9px 0px;
+	background: #1c1e23;
+	box-shadow: rgba(15, 17, 21, 0.35) 0px 6px 9px 0px;
 	margin-bottom: 1rem;
 }
 </style>
