@@ -214,7 +214,8 @@ class Util {
 			name: exists.name,
 			hash: exists.hash,
 			size: exists.size,
-			url: `${process.env.DOMAIN}/${exists.name}`,
+			url: exists.url,
+			thumb: exists.thumb,
 			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
 			repeated: true
 		});

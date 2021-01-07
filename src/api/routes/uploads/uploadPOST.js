@@ -277,15 +277,18 @@ class uploadPOST extends Route {
 		if (!result) return;
 
 		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
+
+		result.file = Util.constructFilePublicLink(result.file);
 		result.deleteUrl = `${process.env.DOMAIN}/api/file/${result.id[0]}`;
 
 		return res.status(201).send({
 			message: 'Sucessfully uploaded the file.',
-			url: result.url,
+			url: result.file.url,
 			name: result.file.name,
 			hash: result.file.hash,
 			deleteUrl: result.deleteUrl,
-			size: result.file.size
+			size: result.file.size,
+			thumb: result.file.thumb
 		});
 	}
 }
