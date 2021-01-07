@@ -40,6 +40,12 @@ const db = Knex({
 		return result;
 	},
 	useNullAsDefault: process.env.DB_CLIENT === 'sqlite3',
+	log: {
+		warn: msg => {
+			if (typeof msg === 'string' && msg.startsWith('.returning()')) return;
+			console.warn(msg);
+		}
+	},
 	userParams: {
 		lastMutationTime: null
 	}

@@ -28,7 +28,11 @@ class albumPOST extends Route {
 			editedAt: now
 		};
 
-		const dbRes = await db.table('albums').insert(insertObj).wasMutated();
+		const dbRes = await db
+			.table('albums')
+			.insert(insertObj)
+			.returning('id')
+			.wasMutated();
 
 		insertObj.id = dbRes.pop();
 
