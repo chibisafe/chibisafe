@@ -226,9 +226,9 @@ class Util {
 		const dbFile = await db.table('files')
 			.where(function() {
 				if (user === undefined) {
-					this.whereNull('userid');
+					this.whereNull('userId');
 				} else {
-					this.where('userid', user.id);
+					this.where('userId', user.id);
 				}
 			})
 			.where({
