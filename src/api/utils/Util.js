@@ -99,7 +99,8 @@ class Util {
 				await db
 					.table('files')
 					.where('name', filename)
-					.delete();
+					.delete()
+					.wasMutated();
 			}
 		} catch (error) {
 			log.error(`There was an error removing the file < ${filename} >`);
@@ -257,9 +258,9 @@ class Util {
 
 		let fileId;
 		if (process.env.DB_CLIENT === 'sqlite3') {
-			fileId = await db.table('files').insert(data);
+			fileId = await db.table('files').insert(data).wasMutated();
 		} else {
-			fileId = await db.table('files').insert(data, 'id');
+			fileId = await db.table('files').insert(data, 'id').wasMutated();
 		}
 
 		return {
@@ -273,7 +274,7 @@ class Util {
 
 		const now = moment.utc().toDate();
 		try {
-			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] });
+			await db.table('albumsFiles').insert({ albumId, fileId: insertedId[0] }).wasMutated();
 			await db.table('albums').where('id', albumId).update('editedAt', now);
 		} catch (error) {
 			console.error(error);

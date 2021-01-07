@@ -1,5 +1,13 @@
 const nodePath = require('path');
-const db = require('knex')({
+const Knex = require('knex');
+
+// eslint-disable-next-line func-names
+Knex.QueryBuilder.extend('wasMutated', function() {
+	this.client.config.userParams.lastMutationTime = Date.now();
+	return this;
+});
+
+const db = Knex({
 	client: process.env.DB_CLIENT,
 	connection: {
 		host: process.env.DB_HOST,

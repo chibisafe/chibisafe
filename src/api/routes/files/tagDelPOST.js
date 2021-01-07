@@ -22,7 +22,8 @@ class tagDelPost extends Route {
 		try {
 			await db.table('fileTags')
 				.where({ fileId, tagId: tag.id })
-				.delete();
+				.delete()
+				.wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

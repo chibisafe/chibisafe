@@ -4,7 +4,7 @@ const StatsGenerator = require('../../utils/StatsGenerator');
 // Thank you Bobby for the stats code https://github.com/BobbyWibowo/lolisafe/blob/safe.fiery.me/controllers/utilsController.js
 class filesGET extends Route {
 	constructor() {
-		super('/admin/stats', 'get', { adminOnly: true });
+		super('/service/statistics', 'get', { adminOnly: true });
 	}
 
 	async run(req, res, db) {

@@ -14,7 +14,8 @@ class userEnable extends Route {
 		try {
 			await db.table('users')
 				.where({ id })
-				.update({ enabled: true });
+				.update({ enabled: true })
+				.wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

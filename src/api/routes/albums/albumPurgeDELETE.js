@@ -18,7 +18,8 @@ class albumDELETE extends Route {
 
 		try {
 			await Util.deleteAllFilesFromAlbum(id);
-			await db.table('albums').where({ id }).delete();
+			await db.table('albums').where({ id }).delete()
+				.wasMutated();
 			return res.json({ message: 'The album was deleted successfully' });
 		} catch (error) {
 			return super.error(res, error);
