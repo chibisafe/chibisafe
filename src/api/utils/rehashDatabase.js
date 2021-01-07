@@ -19,7 +19,7 @@ const start = async () => {
 	let done = 0;
 	const printProgress = () => {
 		console.log(`PROGRESS: ${done}/${uploads.length}`);
-		if (done >= uploads.length) clearInterval(progressInterval);
+		if (done >= uploads.length) clearInterval(progressInterval); // eslint-disable-line no-use-before-define
 	};
 	const progressInterval = setInterval(printProgress, 1000);
 	printProgress();
@@ -49,6 +49,7 @@ const start = async () => {
 
 	const hrend = process.hrtime(hrstart);
 	console.log(`Done in : ${(hrend[0] + (hrend[1] / 1e9)).toFixed(4)}s`);
+	process.exit(0);
 };
 
 start();
