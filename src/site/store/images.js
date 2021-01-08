@@ -109,15 +109,13 @@ export const actions = {
 
 		return response;
 	},
-	async search({ commit, dispatch }, { q, albumId, page }) {
-		const optionalAlbum = albumId ? `&albumId=${albumId}` : '';
-
+	async search({ commit, dispatch, state }, { q, albumId, page }) {
 		page = page || 1;
 
 		try {
-			const response = await this.$axios.$get(`search/?q=${encodeURI(q)}${optionalAlbum}`);
+			const response = await this.$axios.$get('search', { params: { q: encodeURI(q), limit: state.pagination.limit, page, albumId } });
 
-			commit('setFilesAndMeta', { ...response, page });
+			commit('setFilesAndMeta', { ...response, page, name: state.albumName });
 
 			return response;
 		} catch (e) {

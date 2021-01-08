@@ -20,13 +20,19 @@ class configGET extends Route {
 	async run(req, res, db, user) {
 		let count = 0;
 
-		const { q } = req.query;
+		const { q, albumId } = req.query;
 		const parsed = searchQuery.parse(q, options);
 
 		let files = db.table('files')
 			.select('*')
 			.where({ 'files.userId': user.id })
 			.orderBy('files.createdAt', 'desc');
+
+		if (albumId) {
+			files
+				.join('albumsFiles', 'albumsFiles.fileId', 'files.id')
+				.where({ albumId });
+		}
 
 		files = queryHelper.processQuery(db, files, parsed);
 
