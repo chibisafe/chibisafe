@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "4.0.1",
+	"version": "4.0.2",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
 	"author": {
@@ -11,7 +11,7 @@
 	"scripts": {
 		"setup": "node src/setup.js && npm run migrate && npm run seed && npm run build",
 		"build": "nuxt build",
-		"start": "cross-env NODE_ENV=production node src/api/structures/Server",
+		"start": "npm run migrate && cross-env NODE_ENV=production node src/api/structures/Server",
 		"dev": "nuxt",
 		"migrate": "knex migrate:latest",
 		"seed": "knex seed:run",
