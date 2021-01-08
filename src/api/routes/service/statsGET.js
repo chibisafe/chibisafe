@@ -5,10 +5,27 @@ const moment = require('moment');
 // Thank you Bobby for the stats code https://github.com/BobbyWibowo/lolisafe/blob/safe.fiery.me/controllers/utilsController.js
 class filesGET extends Route {
 	constructor() {
-		super('/service/statistics', 'get', { adminOnly: true });
+		super('/service/statistics/:category?', 'get', { adminOnly: true });
 	}
 
 	async run(req, res, db) {
+		const { category } = req.params;
+		if (category) {
+			const dbRes = await StatsGenerator.statGenerators[category](db);
+			return res.json({
+				statistics: {
+					[category]: {
+						...dbRes,
+						meta: {
+							cached: true,
+							generatedOn: moment().format('MMMM Do YYYY, h:mm:ss a z'), // pg returns this as a date, sqlite3 returns an unix timestamp :<
+							type: StatsGenerator.Type.HIDDEN
+						}
+					}
+				}
+			});
+		}
+
 		const cachedStats = await db('statistics')
 			.select('type', 'data', 'batchId', 'createdAt')
 			.where('batchId', '=', db('statistics').max('batchId'));

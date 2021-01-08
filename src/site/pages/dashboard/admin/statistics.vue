@@ -16,6 +16,10 @@
 							<h2 class="title">
 								{{ category }} <span v-if="stats[category].meta" class="is-size-7 is-pulled-right is-family-monospace has-text-grey-light">
 									generated on {{ stats[category].meta.generatedOn }}
+									<b-icon class="is-pulled-right ml1 is-clickable"
+										size="is-small"
+										icon="reload"
+										@click.native="refresh(category)" />
 								</span>
 							</h2>
 
@@ -84,7 +88,15 @@ export default {
 	computed: mapState({
 		stats: state => state.admin.statistics
 	}),
-	methods: {},
+	methods: {
+		refresh(category) {
+			try {
+				this.$store.dispatch('admin/fetchStatistics', category);
+			} catch (error) {
+				this.$notifier.error(error.message);
+			}
+		}
+	},
 	head() {
 		return {
 			title: 'Service statistics'

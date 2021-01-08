@@ -22,9 +22,10 @@ export const actions = {
 
 		return response;
 	},
-	async fetchStatistics({ commit }) {
-		const response = await this.$axios.$get('service/statistics');
-		commit('setStatistics', response);
+	async fetchStatistics({ commit }, category) {
+		const url = category ? `service/statistics/${category}` : 'service/statistics';
+		const response = await this.$axios.$get(url);
+		commit('setStatistics', { statistics: response.statistics, category: category });
 
 		return response;
 	},
@@ -96,8 +97,12 @@ export const mutations = {
 	setSettings(state, { config }) {
 		state.settings = config;
 	},
-	setStatistics(state, { statistics }) {
-		state.statistics = statistics;
+	setStatistics(state, { statistics, category }) {
+		if (category) {
+			state.statistics[category] = statistics[category];
+		} else {
+			state.statistics = statistics;
+		}
 	},
 	setUsers(state, { users }) {
 		state.users = users;
