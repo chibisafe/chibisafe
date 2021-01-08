@@ -11,13 +11,20 @@ export const state = () => ({
 		files: []
 	},
 	file: {},
-	settings: {}
+	settings: {},
+	statistics: {}
 });
 
 export const actions = {
 	async fetchSettings({ commit }) {
 		const response = await this.$axios.$get('service/config');
 		commit('setSettings', response);
+
+		return response;
+	},
+	async fetchStatistics({ commit }) {
+		const response = await this.$axios.$get('service/statistics');
+		commit('setStatistics', response);
 
 		return response;
 	},
@@ -88,6 +95,9 @@ export const actions = {
 export const mutations = {
 	setSettings(state, { config }) {
 		state.settings = config;
+	},
+	setStatistics(state, { statistics }) {
+		state.statistics = statistics;
 	},
 	setUsers(state, { users }) {
 		state.users = users;
