@@ -104,7 +104,7 @@ class QueryHelper {
 		const subQ = db.table('fileTags')
 			.select('fileTags.fileId')
 			.join('tags', 'fileTags.tagId', '=', 'tags.id')
-			.whereIn('tags.name', list)
+			.where(builder => list.map(l => builder.orWhere('tags.name', 'like', l)))
 			.groupBy('fileTags.fileId')
 			.havingRaw('count(distinct tags.name) = ?', [list.length]);
 
@@ -115,7 +115,7 @@ class QueryHelper {
 		const subQ = db.table('albumsFiles')
 			.select('albumsFiles.fileId')
 			.join('albums', 'albumsFiles.albumId', '=', 'albums.id')
-			.whereIn('albums.name', list)
+			.where(builder => list.map(l => builder.orWhere('albums.name', 'like', l)))
 			.groupBy('albumsFiles.fileId')
 			.havingRaw('count(distinct albums.name) = ?', [list.length]);
 
@@ -126,7 +126,7 @@ class QueryHelper {
 		const subQ = db.table('fileTags')
 			.select('fileTags.fileId')
 			.join('tags', 'fileTags.tagId', '=', 'tags.id')
-			.whereIn('tags.name', list);
+			.where(builder => list.map(l => builder.orWhere('tags.name', 'like', l)));
 
 		return knex.whereNotIn('files.id', subQ);
 	}
@@ -135,7 +135,7 @@ class QueryHelper {
 		const subQ = db.table('albumsFiles')
 			.select('albumsFiles.fileId')
 			.join('albums', 'albumsFiles.albumId', '=', 'albums.id')
-			.whereIn('albums.name', list);
+			.where(builder => list.map(l => builder.orWhere('albums.name', 'like', l)));
 
 		return knex.whereNotIn('files.id', subQ);
 	}
