@@ -19,13 +19,13 @@
 							</div>
 							<div class="level-item">
 								<h2 class="subtitle is-5">
-									({{ totalFiles }} files)
+									({{ totalFiles }} files)<span v-if="search.length" class="asterisk is-size-6">*</span>
 								</h2>
 							</div>
 						</div>
 						<div class="level-right">
 							<div class="level-item">
-								<Search :hidden-hints="['album']" />
+								<Search @search="onSearch" />
 							</div>
 						</div>
 					</nav>
@@ -80,7 +80,8 @@ export default {
 	}],
 	data() {
 		return {
-			current: 1
+			current: 1,
+			search: ''
 		};
 	},
 	computed: {
@@ -105,7 +106,36 @@ export default {
 			fetch: 'images/fetchByAlbumId'
 		}),
 		fetchPaginate() {
-			this.fetch({ id: this.id, page: this.current });
+			// eslint-disable-next-line no-negated-condition
+			if (!this.search.length) {
+				this.fetch({ id: this.id, page: this.current });
+			} else {
+				this.$handler.executeAction('images/search', {
+					q: this.search,
+					page: this.current,
+					albumId: this.id
+				});
+			}
+		},
+		sanitizeQuery(qry) {
+			// remove spaces between a search type selector `album:`
+			// and the value (ex `tag: 123` -> `tag:123`)
+			return (qry || '').replace(/(\w+):\s+/gi, '$1:');
+		},
+		async onSearch(query) {
+			this.search = this.sanitizeQuery(query);
+
+			// eslint-disable-next-line no-negated-condition
+			if (!this.search.length) {
+				this.current = 1;
+				await this.fetch({ id: this.id, page: this.current });
+			} else {
+				this.$handler.executeAction('images/search', {
+					q: this.search,
+					page: this.current,
+					albumId: this.id
+				});
+			}
 		}
 	}
 };
@@ -124,5 +154,9 @@ export default {
 <style lang="scss">
 	.pagination-slot > .pagination-previous, .pagination-slot > .pagination-next {
 		display: none !important;
+	}
+	.asterisk {
+		vertical-align: text-top;
+		color: red;
 	}
 </style>

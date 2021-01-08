@@ -97,7 +97,17 @@ export default {
 		}),
 		async fetchPaginate() {
 			this.isLoading = true;
-			await this.fetch(this.current);
+
+			// eslint-disable-next-line no-negated-condition
+			if (!this.search.length) {
+				await this.fetch(this.current);
+			} else {
+				this.$handler.executeAction('images/search', {
+					q: this.search,
+					page: this.current
+				});
+			}
+
 			this.isLoading = false;
 		},
 		sanitizeQuery(qry) {
@@ -106,16 +116,15 @@ export default {
 			return (qry || '').replace(/(\w+):\s+/gi, '$1:');
 		},
 		async onSearch(query) {
-			this.search = query;
+			this.search = this.sanitizeQuery(query);
 
-			const sanitizedQ = this.sanitizeQuery(query);
 			// eslint-disable-next-line no-negated-condition
-			if (!sanitizedQ.length) {
+			if (!this.search.length) {
 				this.current = 1;
 				await this.fetch(this.current);
 			} else {
 				this.$handler.executeAction('images/search', {
-					q: this.sanitizeQuery(query),
+					q: this.search,
 					page: this.current
 				});
 			}

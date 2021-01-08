@@ -17,8 +17,8 @@ class filesGET extends Route {
 					[category]: {
 						...dbRes,
 						meta: {
-							cached: true,
-							generatedOn: moment().format('MMMM Do YYYY, h:mm:ss a z'), // pg returns this as a date, sqlite3 returns an unix timestamp :<
+							cached: false,
+							generatedOn: moment().format('MMMM Do YYYY, h:mm:ss a z'),
 							type: StatsGenerator.Type.HIDDEN
 						}
 					}
