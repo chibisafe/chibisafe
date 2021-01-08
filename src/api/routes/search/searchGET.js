@@ -30,7 +30,7 @@ class configGET extends Route {
 
 		files = queryHelper.processQuery(db, files, parsed);
 
-		const query = files.toString();
+		// const query = files.toString();
 		const { page, limit = 100 } = req.query;
 
 		if (page && page >= 0) {
@@ -52,8 +52,8 @@ class configGET extends Route {
 
 		return res.json({
 			message: 'Successfully retrieved files',
-			query,
-			parsed,
+			// query,
+			// parsed,
 			files,
 			count
 		});
