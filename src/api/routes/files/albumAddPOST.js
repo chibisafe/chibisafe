@@ -18,7 +18,7 @@ class albumAddPOST extends Route {
 
 		try {
 			await db.table('albumsFiles')
-				.insert({ fileId, albumId });
+				.insert({ fileId, albumId }).wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

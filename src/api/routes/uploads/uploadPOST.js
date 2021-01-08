@@ -1,6 +1,7 @@
 const path = require('path');
 const jetpack = require('fs-jetpack');
 const multer = require('multer');
+
 const Util = require('../../utils/Util');
 const Route = require('../../structures/Route');
 const multerStorage = require('../../utils/multerStorage');
@@ -9,6 +10,22 @@ const chunksData = {};
 const chunkedUploadsTimeout = 1800000;
 const chunksDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'chunks');
 const uploadDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER);
+
+
+const cleanUpChunks = async (uuid, onTimeout) => {
+	// Remove tmp file
+	await jetpack.removeAsync(path.join(chunksData[uuid].root, chunksData[uuid].filename))
+		.catch(error => {
+			if (error.code !== 'ENOENT') console.error(error);
+		});
+
+	// Remove UUID dir
+	await jetpack.removeAsync(chunksData[uuid].root);
+
+	// Delete cached chunks data
+	if (!onTimeout) chunksData[uuid].clearTimeout();
+	delete chunksData[uuid];
+};
 
 class ChunksData {
 	constructor(uuid, root) {
@@ -134,7 +151,7 @@ const uploadFile = async (req, res) => {
 	// If the uploaded file is a chunk then just say that it was a success
 	const uuid = req.body.uuid;
 	if (chunksData[uuid] !== undefined) {
-		req.files.forEach(file => {
+		req.files.forEach(() => {
 			chunksData[uuid].chunks++;
 		});
 		res.json({ success: true });
@@ -143,13 +160,13 @@ const uploadFile = async (req, res) => {
 
 	const infoMap = req.files.map(file => ({
 		path: path.join(uploadDir, file.filename),
-		data: file
+		data: { ...file, mimetype: Util.getMimeFromType(file.fileType) || file.mimetype || '' }
 	}));
 
 	return infoMap[0];
 };
 
-const finishChunks = async (req, res) => {
+const finishChunks = async req => {
 	const check = file => typeof file.uuid !== 'string' ||
     !chunksData[file.uuid] ||
     chunksData[file.uuid].chunks < 2;
@@ -172,6 +189,8 @@ const finishChunks = async (req, res) => {
 			*/
 
 			file.extname = typeof file.original === 'string' ? Util.getExtension(file.original) : '';
+			file.fileType = chunksData[file.uuid].fileType;
+			file.mimetype = Util.getMimeFromType(chunksData[file.uuid].fileType) || file.mimetype || '';
 
 			if (Util.isExtensionBlocked(file.extname)) {
 				throw `${file.extname ? `${file.extname.substr(1).toUpperCase()} files` : 'Files with no extension'} are not permitted.`; // eslint-disable-line no-throw-literal
@@ -201,7 +220,7 @@ const finishChunks = async (req, res) => {
 				filename: name,
 				originalname: file.original || '',
 				extname: file.extname,
-				mimetype: file.type || '',
+				mimetype: file.mimetype,
 				size: file.size,
 				hash
 			};
@@ -226,21 +245,6 @@ const finishChunks = async (req, res) => {
 		// Re-throw error
 		throw error;
 	}
-};
-
-const cleanUpChunks = async (uuid, onTimeout) => {
-	// Remove tmp file
-	await jetpack.removeAsync(path.join(chunksData[uuid].root, chunksData[uuid].filename))
-		.catch(error => {
-			if (error.code !== 'ENOENT') console.error(error);
-		});
-
-	// Remove UUID dir
-	await jetpack.removeAsync(chunksData[uuid].root);
-
-	// Delete cached chunks data
-	if (!onTimeout) chunksData[uuid].clearTimeout();
-	delete chunksData[uuid];
 };
 
 class uploadPOST extends Route {

@@ -63,7 +63,7 @@ class linkPOST extends Route {
 				expiresAt: null,
 				views: 0
 			};
-			await db.table('links').insert(insertObj);
+			await db.table('links').insert(insertObj).wasMutated();
 
 			return res.json({
 				message: 'The link was created successfully',

@@ -26,7 +26,8 @@ class tagDELETE extends Route {
 			/*
 				Delete the tag
 			*/
-			await db.table('tags').where({ id }).delete();
+			await db.table('tags').where({ id }).delete()
+				.wasMutated();
 			return res.json({ message: 'The tag was deleted successfully', data: tag });
 		} catch (error) {
 			return super.error(res, error);

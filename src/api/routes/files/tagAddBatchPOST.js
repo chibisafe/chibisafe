@@ -20,7 +20,7 @@ class tagAddBatchPOST extends Route {
 			try {
 				const tag = await db.table('tags').where({ name: tagName, userId: user.id }).first();
 				if (!tag) throw new Error('Tag doesn\'t exist in the database');
-				await db.table('fileTags').insert({ fileId, tagId: tag.id });
+				await db.table('fileTags').insert({ fileId, tagId: tag.id }).wasMutated();
 
 				addedTags.push(tag);
 			} catch (e) {

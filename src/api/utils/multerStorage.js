@@ -2,13 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const blake3 = require('blake3');
 const jetpack = require('fs-jetpack');
+const FileType = require('file-type');
 
 function DiskStorage(opts) {
 	this.getFilename = opts.filename;
 
 	if (typeof opts.destination === 'string') {
 		jetpack.dir(opts.destination);
-		this.getDestination = function($0, $1, cb) { cb(null, opts.destination); };
+		this.getDestination = ($0, $1, cb) => { cb(null, opts.destination); };
 	} else {
 		this.getDestination = opts.destination;
 	}
@@ -52,25 +53,44 @@ DiskStorage.prototype._handleFile = function _handleFile(req, file, cb) {
 			file.stream.on('data', d => hash.update(d));
 
 			if (file._isChunk) {
-				file.stream.on('end', () => {
-					cb(null, {
-						destination,
-						filename,
-						path: finalPath
+				if (file._chunksData.chunks === 0) {
+					FileType.stream(file.stream).then(ftStream => {
+						file._chunksData.fileType = ftStream.fileType;
+						file.stream.on('end', () => {
+							cb(null, {
+								destination,
+								filename,
+								path: finalPath,
+								fileType: file._chunksData.fileType
+							});
+						});
+						ftStream.pipe(outStream, { end: false });
 					});
-				});
-				file.stream.pipe(outStream, { end: false });
+				} else {
+					file.stream.on('end', () => {
+						cb(null, {
+							destination,
+							filename,
+							path: finalPath,
+							fileType: file._chunksData.fileType
+						});
+					});
+					file.stream.pipe(outStream, { end: false });
+				}
 			} else {
-				outStream.on('finish', () => {
-					cb(null, {
-						destination,
-						filename,
-						path: finalPath,
-						size: outStream.bytesWritten,
-						hash: hash.digest('hex')
+				FileType.stream(file.stream).then(ftStream => {
+					outStream.on('finish', () => {
+						cb(null, {
+							destination,
+							filename,
+							path: finalPath,
+							size: outStream.bytesWritten,
+							hash: hash.digest('hex'),
+							fileType: ftStream.fileType
+						});
 					});
+					ftStream.pipe(outStream);
 				});
-				file.stream.pipe(outStream);
 			}
 		});
 	});
@@ -86,6 +106,4 @@ DiskStorage.prototype._removeFile = function _removeFile(req, file, cb) {
 	fs.unlink(path, cb);
 };
 
-module.exports = function(opts) {
-	return new DiskStorage(opts);
-};
+module.exports = opts => new DiskStorage(opts);

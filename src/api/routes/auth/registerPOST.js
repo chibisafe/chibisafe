@@ -55,7 +55,7 @@ class registerPOST extends Route {
 			editedAt: now,
 			enabled: true,
 			isAdmin: false
-		});
+		}).wasMutated();
 		return res.json({ message: 'The account was created successfully' });
 	}
 }

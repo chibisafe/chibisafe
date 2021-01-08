@@ -74,7 +74,8 @@ class albumGET extends Route {
 			Util.createZip(filesToZip, album);
 			await db.table('albums')
 				.where('id', link.albumId)
-				.update('zippedAt', db.fn.now());
+				.update('zippedAt', db.fn.now())
+				.wasMutated();
 
 			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
 			const fileName = `${process.env.SERVICE_NAME}-${identifier}.zip`;

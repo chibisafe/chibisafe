@@ -26,7 +26,8 @@ class albumDELETE extends Route {
 			await db.table('albumsLinks').where({ albumId: id }).delete();
 
 			// Delete any album links created for this album
-			await db.table('links').where({ albumId: id }).delete();
+			await db.table('links').where({ albumId: id }).delete()
+				.wasMutated();
 
 			return res.json({ message: 'The album was deleted successfully' });
 		} catch (error) {

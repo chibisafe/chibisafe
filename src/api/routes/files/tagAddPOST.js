@@ -20,7 +20,7 @@ class tagAddPOST extends Route {
 		if (!tag) return res.status(400).json({ message: 'Tag doesn\'t exist. ' });
 
 		try {
-			await db.table('fileTags').insert({ fileId, tagId: tag.id });
+			await db.table('fileTags').insert({ fileId, tagId: tag.id }).wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

@@ -19,7 +19,8 @@ class albumDelPOST extends Route {
 		try {
 			await db.table('albumsFiles')
 				.where({ fileId, albumId })
-				.delete();
+				.delete()
+				.wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

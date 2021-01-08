@@ -14,7 +14,8 @@ class userDemote extends Route {
 		try {
 			await db.table('users')
 				.where({ id })
-				.update({ isAdmin: false });
+				.update({ isAdmin: false })
+				.wasMutated();
 		} catch (error) {
 			return super.error(res, error);
 		}

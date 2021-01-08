@@ -25,7 +25,10 @@ class tagPOST extends Route {
 			editedAt: now
 		};
 
-		const dbRes = await db.table('tags').insert(insertObj);
+		const dbRes = await db.table('tags')
+			.insert(insertObj)
+			.returning('id')
+			.wasMutated();
 
 		insertObj.id = dbRes.pop();
 

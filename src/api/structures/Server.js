@@ -14,7 +14,10 @@ const jetpack = require('fs-jetpack');
 const path = require('path');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
+const CronJob = require('cron').CronJob;
 const log = require('../utils/Log');
+
+const Util = require('../utils/Util');
 
 // eslint-disable-next-line no-unused-vars
 const rateLimiter = new RateLimit({
@@ -55,6 +58,9 @@ class Server {
 		// Serve the uploads
 		this.server.use(express.static(path.join(__dirname, '../../../uploads')));
 		this.routesFolder = path.join(__dirname, '../routes');
+
+		// Save the cron job instances in case we want to stop them later
+		this.jobs = {};
 	}
 
 	registerAllTheRoutes() {
@@ -95,6 +101,11 @@ class Server {
 		});
 	}
 
+	createJobs() {
+		// TODO: move into the database config. (we can just show the crontab line for start, later on we can add dropdowns and stuff)
+		this.jobs.stats = new CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
+	}
+
 	start() {
 		jetpack.dir('uploads/chunks');
 		jetpack.dir('uploads/thumbs/square');
@@ -105,6 +116,8 @@ class Server {
 			log.success(`Backend ready and listening on port ${this.port}`);
 		});
 		server.setTimeout(600000);
+
+		this.createJobs();
 	}
 }
 
