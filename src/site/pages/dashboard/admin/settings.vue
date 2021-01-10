@@ -11,114 +11,7 @@
 					</h2>
 					<hr>
 
-					<b-field
-						label="Service name"
-						message="Please enter the name which this service is gonna be identified as"
-						horizontal>
-						<b-input
-							v-model="settings.serviceName"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Upload folder"
-						message="Where to store the files relative to the working directory"
-						horizontal>
-						<b-input
-							v-model="settings.uploadFolder"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Links per album"
-						message="Maximum links allowed per album"
-						horizontal>
-						<b-input
-							v-model="settings.linksPerAlbum"
-							class="chibisafe-input"
-							type="number"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Max upload size"
-						message="Maximum allowed file size in MB"
-						horizontal>
-						<b-input
-							v-model="settings.maxUploadSize"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Filename length"
-						message="How many characters long should the generated filenames be"
-						horizontal>
-						<b-input
-							v-model="settings.filenameLength"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Album link length"
-						message="How many characters a link for an album should have"
-						horizontal>
-						<b-input
-							v-model="settings.albumLinkLength"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Generate thumbnails"
-						message="Generate thumbnails when uploading a file if possible"
-						horizontal>
-						<b-switch
-							v-model="settings.generateThumbnails"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Generate zips"
-						message="Allow generating zips to download entire albums"
-						horizontal>
-						<b-switch
-							v-model="settings.generateZips"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Public mode"
-						message="Enable anonymous uploades"
-						horizontal>
-						<b-switch
-							v-model="settings.publicMode"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Enable creating account"
-						message="Enable creating new accounts in the platform"
-						horizontal>
-						<b-switch
-							v-model="settings.enableAccounts"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<div class="mb2 mt2 text-center">
-						<button
-							class="button is-primary"
-							@click="promptRestartService">
-							Save and restart service
-						</button>
-					</div>
+					<JoiObject :keys="settingsSchema.keys" :values="{}" />
 				</div>
 			</div>
 		</div>
@@ -128,21 +21,25 @@
 <script>
 import { mapState } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
+import JoiObject from '~/components/settings/JoiObject.vue';
 
 export default {
 	components: {
-		Sidebar
+		Sidebar,
+		JoiObject
 	},
 	middleware: ['auth', 'admin', ({ store }) => {
 		try {
 			store.dispatch('admin/fetchSettings');
+			store.dispatch('admin/getSettingsSchema');
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
 		}
 	}],
 	computed: mapState({
-		settings: state => state.admin.settings
+		settings: state => state.admin.settings,
+		settingsSchema: state => state.admin.settingsSchema
 	}),
 	methods: {
 		promptRestartService() {

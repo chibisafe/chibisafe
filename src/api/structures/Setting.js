@@ -9,15 +9,6 @@ const StatsGenerator = require('../utils/StatsGenerator');
 // use meta to set custom rendering (render as radio instead of dropdown for example) and custom order
 // use description to add comments which will show up as a note somewhere next to the option
 const schema = Joi.object({
-	// Server related settings
-	rateLimitWindow: Joi.number().integer().default(2)
-		.label('API rate limit window')
-		.description('Timeframe for which requests are checked/remembered'),
-
-	rateLimitMax: Joi.number().integer().default(5)
-		.label('API maximum limit')
-		.description('Max number of connections during windowMs milliseconds before sending a 429 response'),
-
 	// Service settings
 	serviceName: Joi.string().default('change-me')
 		.label('Service name')
@@ -118,9 +109,18 @@ const schema = Joi.object({
 	savedStatistics: Joi.array().items(Joi.string().valid(...Object.keys(StatsGenerator.statGenerators)).optional())
 		.meta({ displayType: 'checkbox' })
 		.label('Cached statistics')
-		.description('Which statistics should be saved to the database (refer to Statistics schedule for scheduling). If a statistics is enabled but not set to be saved, it will be generated every time the statistics page is opened')
+		.description('Which statistics should be saved to the database (refer to Statistics schedule for scheduling).')
+		.note('If a statistics is enabled but not set to be saved, it will be generated every time the statistics page is opened'),
+
+	// Server related settings
+	rateLimitWindow: Joi.number().integer().default(2)
+		.label('API rate limit window')
+		.description('Timeframe for which requests are checked/remembered'),
+
+	rateLimitMax: Joi.number().integer().default(5)
+		.label('API maximum limit')
+		.description('Max number of connections during windowMs milliseconds before sending a 429 response')
 });
 
-// schema._ids._byKey.keys()
-
 module.exports.schema = schema;
+module.exports.configSchema = schema.describe();

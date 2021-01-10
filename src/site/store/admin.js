@@ -12,7 +12,8 @@ export const state = () => ({
 	},
 	file: {},
 	settings: {},
-	statistics: {}
+	statistics: {},
+	settingsSchema: {}
 });
 
 export const actions = {
@@ -25,9 +26,15 @@ export const actions = {
 	async fetchStatistics({ commit }, category) {
 		const url = category ? `service/statistics/${category}` : 'service/statistics';
 		const response = await this.$axios.$get(url);
-		commit('setStatistics', { statistics: response.statistics, category: category });
+		commit('setStatistics', { statistics: response.statistics, category });
 
 		return response;
+	},
+	async getSettingsSchema({ commit }) {
+		// XXX: Maybe move to the config store?
+		const response = await this.$axios.$get('service/config/schema');
+
+		commit('setSettingsSchema', response);
 	},
 	async fetchUsers({ commit }) {
 		const response = await this.$axios.$get('admin/users');
@@ -103,6 +110,9 @@ export const mutations = {
 		} else {
 			state.statistics = statistics;
 		}
+	},
+	setSettingsSchema(state, { schema }) {
+		state.settingsSchema = schema;
 	},
 	setUsers(state, { users }) {
 		state.users = users;
