@@ -13,7 +13,10 @@ export const state = () => ({
 	file: {},
 	settings: {},
 	statistics: {},
-	settingsSchema: {}
+	settingsSchema: {
+		type: null,
+		keys: {}
+	}
 });
 
 export const actions = {

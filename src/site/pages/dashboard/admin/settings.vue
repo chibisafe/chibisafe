@@ -11,8 +11,20 @@
 					</h2>
 					<hr>
 
-					<!-- TODO: IMPLEMENT SECTIONS (v-for JoiObject for each section maybe?) -->
-					<JoiObject :keys="sectionedSettings" :values="{}" />
+					<div v-for="[sectionName, fields] in Object.entries(sectionedSettings)" :key="sectionName" class="block">
+						<h5 class="title is-5 has-text-grey-lighter">
+							{{ sectionName }}
+						</h5>
+						<JoiObject :keys="fields" :values="{}" />
+					</div>
+
+					<div class="mb2 mt2 text-center">
+						<button
+							class="button is-primary"
+							@click="promptRestartService">
+							Save settings
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -45,12 +57,12 @@ export default {
 			settingsSchema: state => state.admin.settingsSchema
 		}),
 		sectionedSettings() {
-			return Object.entries(this.settings).reduce((acc, { key, field }) => {
-				if (!field.meta) acc['Other'] = { ...acc['Other'], [key]: field };
+			return Object.entries(this.settingsSchema.keys).reduce((acc, [key, field]) => {
+				if (!field.metas) acc['Other'] = { ...acc['Other'], [key]: field };
 
-				const { sectionName } = field.metas.find(e => e.sectionName);
-				if (sectionName) {
-					acc[sectionName] = { ...acc[sectionName], [key]: field };
+				const sectionMeta = field.metas.find(e => e.section);
+				if (sectionMeta) {
+					acc[sectionMeta.section] = { ...acc[sectionMeta.section], [key]: field };
 				} else {
 					acc['Other'] = { ...acc['Other'], [key]: field };
 				}

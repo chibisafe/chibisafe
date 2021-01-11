@@ -65,7 +65,7 @@ export default {
 		},
 		errors: {
 			'type': Object,
-			'default': {}
+			'default': () => ({})
 		}
 	},
 	data() {
@@ -99,9 +99,9 @@ export default {
 		getDisplayType(field) {
 			if (!field.metas) return field.type;
 
-			const { displayType } = field.metas.find(e => e.displayType);
+			const foundMeta = field.metas.find(e => e.displayType);
 
-			if (displayType) return displayType;
+			if (foundMeta) return foundMeta.displayType;
 
 			return field.type;
 		},
