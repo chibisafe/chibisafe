@@ -25,6 +25,7 @@
 					:rounded="false"
 					:true-value="true"
 					:false-value="false" />
+				<!-- TODO: If array and has allowed items, limit input to those items only -->
 				<b-taginput
 					v-else-if="getDisplayType(field) === 'array' || getDisplayType(field) === 'tagInput'"
 					v-model="settings.arr"
@@ -76,7 +77,7 @@ export default {
 		};
 	},
 	mounted() {
-		// TODO: Implement merging fields with values from the db (no endpoint to fetch settings yet)
+
 	},
 	methods: {
 		getMin(field) {

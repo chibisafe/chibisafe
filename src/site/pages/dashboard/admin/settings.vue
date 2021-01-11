@@ -11,7 +11,8 @@
 					</h2>
 					<hr>
 
-					<JoiObject :keys="settingsSchema.keys" :values="{}" />
+					<!-- TODO: IMPLEMENT SECTIONS (v-for JoiObject for each section maybe?) -->
+					<JoiObject :keys="sectionedSettings" :values="{}" />
 				</div>
 			</div>
 		</div>
@@ -31,16 +32,33 @@ export default {
 	middleware: ['auth', 'admin', ({ store }) => {
 		try {
 			store.dispatch('admin/fetchSettings');
+			// TODO: Implement merging fields with values from the db (no endpoint to fetch settings yet)
 			store.dispatch('admin/getSettingsSchema');
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
 		}
 	}],
-	computed: mapState({
-		settings: state => state.admin.settings,
-		settingsSchema: state => state.admin.settingsSchema
-	}),
+	computed: {
+		...mapState({
+			settings: state => state.admin.settings,
+			settingsSchema: state => state.admin.settingsSchema
+		}),
+		sectionedSettings() {
+			return Object.entries(this.settings).reduce((acc, { key, field }) => {
+				if (!field.meta) acc['Other'] = { ...acc['Other'], [key]: field };
+
+				const { sectionName } = field.metas.find(e => e.sectionName);
+				if (sectionName) {
+					acc[sectionName] = { ...acc[sectionName], [key]: field };
+				} else {
+					acc['Other'] = { ...acc['Other'], [key]: field };
+				}
+
+				return acc;
+			}, {});
+		}
+	},
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
