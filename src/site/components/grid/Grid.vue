@@ -227,17 +227,14 @@ export default {
 		showList: 'displayTypeChange'
 	},
 	created() {
-		// TODO: Create a middleware for this
-		this.getAlbums();
-		this.getTags();
+		if (!this.isPublic) {
+			this.$handler.executeAction('albums/getTinyDetails', null, false);
+			this.$handler.executeAction('tags/fetch', null, false);
+		}
 
 		this.showList = this.images.showList;
 	},
 	methods: {
-		async search() {
-			const data = await this.$search.do(this.searchTerm, ['name', 'original', 'type', 'albums:name']);
-			console.log('> Search result data', data); // eslint-disable-line no-console
-		},
 		deleteFile(file) {
 			// this.$emit('delete', file);
 			this.$buefy.dialog.confirm({
@@ -246,13 +243,7 @@ export default {
 				confirmText: 'Delete File',
 				type: 'is-danger',
 				onConfirm: async () => {
-					try {
-						const response = await this.$store.dispatch('images/deleteFile', file.id);
-
-						this.$buefy.toast.open(response.message);
-					} catch (e) {
-						this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
-					}
+					await this.$handler.executeAction('images/deleteFile', file.id);
 				}
 			});
 		},
@@ -266,41 +257,17 @@ export default {
 			this.showingModalForFile = file;
 			this.showingModalForFile.albums = [];
 
-			try {
-				await this.$store.dispatch('images/getFileAlbums', id);
-			} catch (e) {
-				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
-			}
+			await this.$handler.executeAction('images/getFileAlbums', id, false);
+
 			this.showingModalForFile.albums = this.images.fileAlbumsMap[id];
 
 			this.isAlbumsModalActive = true;
 		},
 		async albumCheckboxClicked(add, id) {
-			try {
-				let response;
-				if (add) {
-					response = await this.$store.dispatch('images/addToAlbum', {
-						albumId: id,
-						fileId: this.showingModalForFile.id
-					});
-				} else {
-					response = await this.$store.dispatch('images/removeFromAlbum', {
-						albumId: id,
-						fileId: this.showingModalForFile.id
-					});
-				}
-
-				this.$buefy.toast.open(response.message);
-			} catch (e) {
-				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
-			}
-		},
-		async getAlbums() {
-			try {
-				await this.$store.dispatch('albums/getTinyDetails');
-			} catch (e) {
-				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
-			}
+			await this.$handler.executeAction(add ? 'images/addToAlbum' : 'images/removeFromAlbum', {
+				albumId: id,
+				fileId: this.showingModalForFile.id
+			});
 		},
 		async handleFileModal(file) {
 			const { id } = file;
@@ -315,13 +282,6 @@ export default {
 			}
 
 			this.isAlbumsModalActive = true;
-		},
-		async getTags() {
-			try {
-				await this.$store.dispatch('tags/fetch');
-			} catch (e) {
-				this.$store.dispatch('alert/set', { text: e.message, error: true }, { root: true });
-			}
 		},
 		mouseOver(id) {
 			const foundIndex = this.hoveredItems.indexOf(id);
