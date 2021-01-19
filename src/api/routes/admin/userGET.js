@@ -15,9 +15,26 @@ class usersGET extends Route {
 				.select('id', 'username', 'enabled', 'createdAt', 'editedAt', 'apiKeyEditedAt', 'isAdmin')
 				.where({ id })
 				.first();
-			const files = await db.table('files')
+
+			let count = 0;
+			let files = db.table('files')
 				.where({ userId: user.id })
 				.orderBy('id', 'desc');
+
+			const { page, limit = 100 } = req.query;
+			if (page && page >= 0) {
+				files = await files.offset((page - 1) * limit).limit(limit);
+
+				const dbRes = await db.table('files')
+					.count('* as count')
+					.where({ userId: user.id })
+					.first();
+
+				count = dbRes.count;
+			} else {
+				files = await files; // execute the query
+				count = files.length;
+			}
 
 			for (let file of files) {
 				file = Util.constructFilePublicLink(file);
@@ -26,7 +43,8 @@ class usersGET extends Route {
 			return res.json({
 				message: 'Successfully retrieved user',
 				user,
-				files
+				files,
+				count
 			});
 		} catch (error) {
 			return super.error(res, error);

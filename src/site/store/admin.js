@@ -35,9 +35,10 @@ export const actions = {
 
 		return response;
 	},
-	async fetchUser({ commit }, id) {
-		const response = await this.$axios.$get(`admin/users/${id}`);
-		commit('setUserInfo', response);
+	async fetchUser({ commit }, { id, page }) {
+		page = page || 1;
+		const response = await this.$axios.$get(`admin/users/${id}`, { params: { limit: 50, page } });
+		commit('setUserInfo', { ...response, page });
 
 		return response;
 	},
@@ -107,9 +108,10 @@ export const mutations = {
 	setUsers(state, { users }) {
 		state.users = users;
 	},
-	setUserInfo(state, { user, files }) {
+	setUserInfo(state, { user, files, count }) {
 		state.user = { ...state.user, ...user };
 		state.user.files = files || [];
+		state.user.totalFiles = count;
 	},
 	setFile(state, { file }) {
 		state.file = file || {};

@@ -61,7 +61,24 @@
 
 					<Grid
 						v-if="user.files.length"
-						:files="user.files" />
+						:files="user.files">
+						<template v-slot:pagination>
+							<b-pagination
+								:total="user.totalFiles"
+								:per-page="limit"
+								:current.sync="current"
+								range-before="2"
+								range-after="2"
+								class="pagination-slot"
+								icon-prev="icon-interface-arrow-left"
+								icon-next="icon-interface-arrow-right"
+								icon-pack="icon"
+								aria-next-label="Next page"
+								aria-previous-label="Previous page"
+								aria-page-label="Page"
+								aria-current-label="Current page" />
+						</template>
+					</Grid>
 				</div>
 			</div>
 		</div>
@@ -69,7 +86,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Grid from '~/components/grid/Grid.vue';
 
@@ -80,7 +97,7 @@ export default {
 	},
 	middleware: ['auth', 'admin', ({ route, store }) => {
 		try {
-			store.dispatch('admin/fetchUser', route.params.id);
+			store.dispatch('admin/fetchUser', { id: route.params.id });
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
@@ -88,13 +105,31 @@ export default {
 	}],
 	data() {
 		return {
-			options: {}
+			options: {},
+			current: 1,
+			isLoading: false
 		};
 	},
-	computed: mapState({
-		user: state => state.admin.user
-	}),
+	computed: {
+		...mapGetters({
+			limit: 'images/getLimit'
+		}),
+		...mapState({
+			user: state => state.admin.user
+		})
+	},
+	watch: {
+		current: 'fetchPaginate'
+	},
 	methods: {
+		...mapActions({
+			fetch: 'admin/fetchUser'
+		}),
+		async fetchPaginate() {
+			this.isLoading = true;
+			await this.fetch({ id: this.$route.params.id, page: this.current });
+			this.isLoading = false;
+		},
 		promptDisableUser() {
 			this.$buefy.dialog.confirm({
 				type: 'is-danger',
