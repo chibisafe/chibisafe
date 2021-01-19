@@ -120,9 +120,6 @@ export default {
 				this.downloadLink = downloadLink;
 				this.isNsfw = data.isNsfw;
 				this.totalFiles = data.count;
-
-				console.log('files', this.files);
-				console.log('totalFiles', this.totalFiles);
 			} catch (err) {
 				this.$notifier.error(err.message);
 			}
