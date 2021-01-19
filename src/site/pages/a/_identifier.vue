@@ -7,7 +7,7 @@
 						{{ name }}
 					</h1>
 					<h2 class="subtitle">
-						Serving {{ files ? files.length : 0 }} files
+						Serving {{ totalFiles }} files
 					</h2>
 					<a
 						v-if="downloadLink"
@@ -23,7 +23,24 @@
 						:is-public="true"
 						:width="200"
 						:enable-search="false"
-						:enable-toolbar="false" />
+						:enable-toolbar="false">
+						<template v-slot:pagination>
+							<b-pagination
+								:total="totalFiles"
+								:per-page="limit"
+								:current.sync="current"
+								range-before="2"
+								range-after="2"
+								class="pagination-slot"
+								icon-prev="icon-interface-arrow-left"
+								icon-next="icon-interface-arrow-right"
+								icon-pack="icon"
+								aria-next-label="Next page"
+								aria-previous-label="Previous page"
+								aria-page-label="Page"
+								aria-current-label="Current page" />
+						</template>
+					</Grid>
 				</template>
 				<template v-else>
 					<div class="nsfw">
@@ -56,6 +73,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import Grid from '~/components/grid/Grid.vue';
 
@@ -63,28 +81,56 @@ export default {
 	components: { Grid },
 	data() {
 		return {
-			nsfwConsent: false
+			nsfwConsent: false,
+			current: 1,
+			name: null,
+			downloadEnabled: false,
+			files: [],
+			downloadLink: null,
+			isNsfw: false,
+			totalFiles: 0
 		};
 	},
 	computed: {
+		...mapGetters({
+			limit: 'images/getLimit'
+		}),
 		config() {
 			return this.$store.state.config;
 		}
 	},
-	async asyncData({ app, params, error }) {
-		try {
-			const { data } = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`);
-			const downloadLink = data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
-			return {
-				name: data.name,
-				downloadEnabled: data.downloadEnabled,
-				files: data.files,
-				downloadLink,
-				isNsfw: data.isNsfw
-			};
-		} catch (err) {
-			console.log('Error when retrieving album', err);
-			error({ statusCode: 404, message: 'Album not found' });
+	watch: {
+		current: 'fetchPaginate'
+	},
+	created() {
+		this.fetch();
+	},
+	methods: {
+		async fetch(page = 1) {
+			try {
+				const { data } = await axios.get(
+					`${this.$store.state.config.baseURL}/album/${this.$route.params.identifier}`,
+					{ params: { limit: 50, page } }
+				);
+				const downloadLink = data.downloadEnabled ? `${this.$store.state.config.baseURL}/album/${this.$route.params.identifier}/zip` : null;
+
+				this.name = data.name;
+				this.downloadEnabled = data.downloadEnabled;
+				this.files = data.files;
+				this.downloadLink = downloadLink;
+				this.isNsfw = data.isNsfw;
+				this.totalFiles = data.count;
+
+				console.log('files', this.files);
+				console.log('totalFiles', this.totalFiles);
+			} catch (err) {
+				this.$notifier.error(err.message);
+			}
+		},
+		async fetchPaginate() {
+			this.isLoading = true;
+			await this.fetch(this.current);
+			this.isLoading = false;
 		}
 	},
 	metaInfo() {
@@ -149,5 +195,10 @@ export default {
 			margin-bottom: 2rem;
 			text-align: center;
 		}
+	}
+</style>
+<style lang="scss">
+	.pagination-slot > .pagination-previous, .pagination-slot > .pagination-next {
+		display: none !important;
 	}
 </style>

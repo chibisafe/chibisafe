@@ -18,14 +18,31 @@ class albumGET extends Route {
 		const album = await db.table('albums').where('id', link.albumId).first();
 		if (!album) return res.status(404).json({ message: 'Album not found' });
 
-		const files = await db.table('albumsFiles')
+		let count = 0;
+		let files = db.table('albumsFiles')
 			.where({ albumId: link.albumId })
 			.join('files', 'albumsFiles.fileId', 'files.id')
 			.select('files.name', 'files.id')
 			.orderBy('files.id', 'desc');
 
-		// Create the links for each file
-		// eslint-disable-next-line no-restricted-syntax
+		const { page, limit = 100 } = req.query;
+		if (page && page >= 0) {
+			files = await files.offset((page - 1) * limit).limit(limit);
+
+			const dbRes = await db.table('albumsFiles')
+				.where({ albumId: link.albumId })
+				.join('files', 'albumsFiles.fileId', 'files.id')
+				.select('files.name', 'files.id')
+				.orderBy('files.id', 'desc')
+				.count('* as count')
+				.first();
+
+			count = dbRes.count;
+		} else {
+			files = await files; // execute the query
+			count = files.length;
+		}
+
 		for (let file of files) {
 			file = Util.constructFilePublicLink(file);
 		}
@@ -38,7 +55,8 @@ class albumGET extends Route {
 			name: album.name,
 			downloadEnabled: link.enableDownload,
 			isNsfw: album.nsfw,
-			files
+			files,
+			count
 		});
 	}
 }
