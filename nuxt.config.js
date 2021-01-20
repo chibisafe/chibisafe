@@ -37,7 +37,7 @@ export default {
 				content: `${process.env.SERVICE_NAME}`
 			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
-			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
 			{ hid: 'twitter:site', name: 'twitter:site', content: `${process.env.META_TWITTER_HANDLE}` },
 			{ hid: 'twitter:creator', name: 'twitter:creator', content: `${process.env.META_TWITTER_HANDLE}` },
 			{ hid: 'twitter:title', name: 'twitter:title', content: `${process.env.SERVICE_NAME}` },
