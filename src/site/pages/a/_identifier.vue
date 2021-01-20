@@ -146,16 +146,18 @@ export default {
 	},
 	head() {
 		if (this.files) {
+			const image = this.isNsfw ? '/public/images/share.jpg' : this.files.length ? this.files[0].thumbSquare : '/public/images/share.jpg';
+			const title = this.name ? this.isNsfw ? `[NSFW] ${this.name}` : this.name : '';
 			return {
-				title: `${this.name ? this.name : ''}`,
+				title,
 				meta: [
-					{ vmid: 'twitter:title', name: 'twitter:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-					{ vmid: 'twitter:image', name: 'twitter:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
+					{ vmid: 'twitter:title', name: 'twitter:title', content: `${title} | Files: ${this.totalFiles}` },
+					{ vmid: 'twitter:image', name: 'twitter:image', content: image },
+					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: image },
 					{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
-					{ vmid: 'og:title', property: 'og:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-					{ vmid: 'og:image', property: 'og:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
+					{ vmid: 'og:title', property: 'og:title', content: `${title} | Files: ${this.totalFiles}` },
+					{ vmid: 'og:image', property: 'og:image', content: image },
+					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: image }
 				]
 			};
 		}
