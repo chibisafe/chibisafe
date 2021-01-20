@@ -129,15 +129,11 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: ['auth', 'admin', ({ route, store }) => {
-		try {
-			store.dispatch('admin/fetchFile', route.params.id);
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error(e);
-		}
-	}],
+	middleware: ['auth', 'admin'],
 	computed: mapState(['admin', 'auth']),
+	async asyncData({ app, params }) {
+		await app.store.dispatch('admin/fetchFile', params.id);
+	},
 	methods: {
 		promptDisableUser() {
 			this.$buefy.dialog.confirm({

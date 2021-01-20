@@ -55,13 +55,7 @@ export default {
 		Sidebar,
 		AlbumEntry
 	},
-	middleware: ['auth', ({ store }) => {
-		try {
-			store.dispatch('albums/fetch');
-		} catch (e) {
-			this.alert({ text: e.message, error: true });
-		}
-	}],
+	middleware: ['auth'],
 	data() {
 		return {
 			newAlbumName: null,
@@ -69,6 +63,9 @@ export default {
 		};
 	},
 	computed: mapState(['config', 'albums']),
+	async asyncData({ app }) {
+		await app.store.dispatch('albums/fetch');
+	},
 	methods: {
 		...mapActions({
 			alert: 'alert/set'

@@ -133,17 +133,13 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: ['auth', 'admin', ({ store }) => {
-		try {
-			store.dispatch('admin/fetchSettings');
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error(e);
-		}
-	}],
+	middleware: ['auth', 'admin'],
 	computed: mapState({
 		settings: state => state.admin.settings
 	}),
+	async asyncData({ app }) {
+		await app.store.dispatch('admin/fetchSettings');
+	},
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({

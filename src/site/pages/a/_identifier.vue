@@ -102,8 +102,22 @@ export default {
 	watch: {
 		current: 'fetchPaginate'
 	},
-	created() {
-		this.fetch();
+	async asyncData({ app, params, error }) {
+		try {
+			const { data } = await axios.get(`${app.store.state.config.baseURL}/album/${params.identifier}`, { params: { limit: 50, page: 1 } });
+			const downloadLink = data.downloadEnabled ? `${app.store.state.config.baseURL}/album/${params.identifier}/zip` : null;
+			return {
+				name: data.name,
+				downloadEnabled: data.downloadEnabled,
+				files: data.files,
+				downloadLink,
+				isNsfw: data.isNsfw,
+				totalFiles: data.count
+			};
+		} catch (err) {
+			console.log('Error when retrieving album', err);
+			error({ statusCode: 404, message: 'Album not found' });
+		}
 	},
 	methods: {
 		async fetch(page = 1) {
@@ -130,36 +144,27 @@ export default {
 			this.isLoading = false;
 		}
 	},
-	metaInfo() {
+	head() {
 		if (this.files) {
+			const image = this.isNsfw ? '/public/images/share.jpg' : this.files.length ? this.files[0].thumbSquare : '/public/images/share.jpg';
+			const title = this.name ? this.isNsfw ? `[NSFW] ${this.name}` : this.name : '';
 			return {
-				title: `${this.name ? this.name : ''}`,
+				title,
 				meta: [
-					{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
-					{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-					{ vmid: 'twitter:title', name: 'twitter:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-					{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-					{ vmid: 'twitter:image', name: 'twitter:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-
+					{ vmid: 'twitter:title', name: 'twitter:title', content: `${title} | Files: ${this.totalFiles}` },
+					{ vmid: 'twitter:image', name: 'twitter:image', content: image },
+					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: image },
 					{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
-					{ vmid: 'og:title', property: 'og:title', content: `Album: ${this.name} | Files: ${this.files.length}` },
-					{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-					{ vmid: 'og:image', property: 'og:image', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` },
-					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${this.files.length > 0 ? this.files[0].thumbSquare : '/public/images/share.jpg'}` }
+					{ vmid: 'og:title', property: 'og:title', content: `${title} | Files: ${this.totalFiles}` },
+					{ vmid: 'og:image', property: 'og:image', content: image },
+					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: image }
 				]
 			};
 		}
 		return {
 			title: `${this.name ? this.name : ''}`,
 			meta: [
-				{ vmid: 'theme-color', name: 'theme-color', content: '#30a9ed' },
-				{ vmid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-				{ vmid: 'twitter:title', name: 'twitter:title', content: 'chibisafe' },
-				{ vmid: 'twitter:description', name: 'twitter:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' },
-				{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
-				{ vmid: 'og:title', property: 'og:title', content: 'chibisafe' },
-				{ vmid: 'og:description', property: 'og:description', content: 'A modern and self-hosted file upload service that can handle anything you throw at it. Fast uploads, file manager and sharing capabilities all crafted with a beautiful user experience in mind.' }
+				{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` }
 			]
 		};
 	}

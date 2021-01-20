@@ -78,16 +78,13 @@ export default {
 		detailed,
 		generic
 	},
-	middleware: ['auth', 'admin', ({ store }) => {
-		try {
-			store.dispatch('admin/fetchStatistics');
-		} catch (e) {
-			console.error(e);
-		}
-	}],
+	middleware: ['auth', 'admin'],
 	computed: mapState({
 		stats: state => state.admin.statistics
 	}),
+	async asyncData({ app }) {
+		await app.store.dispatch('admin/fetchStatistics');
+	},
 	methods: {
 		refresh(category) {
 			try {
