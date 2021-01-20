@@ -146,8 +146,9 @@ export default {
 	},
 	head() {
 		if (this.files) {
-			const image = this.isNsfw ? logo : this.files.length ? this.files[0].thumbSquare : logo;
+			const image = this.isNsfw ? logo : this.files.length ? this.files[0].url : logo;
 			const title = this.name ? this.isNsfw ? `[NSFW] ${this.name}` : this.name : '';
+			const description = `Files: ${this.totalFiles}`;
 			return {
 				title,
 				meta: [
@@ -156,6 +157,8 @@ export default {
 					{ hid: 'twitter:image', name: 'twitter:image', content: image },
 					{ hid: 'twitter:label1', name: 'twitter:label1', value: 'Files' },
 					{ hid: 'twitter:data1', name: 'twitter:data1', value: this.totalFiles },
+					{ hid: 'twitter:description', name: 'twitter:description', content: description },
+					{ hid: 'og:description', property: 'og:description', content: description },
 					{ hid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
 					{ hid: 'og:title', property: 'og:title', content: title },
 					{ hid: 'og:image', property: 'og:image', content: image },

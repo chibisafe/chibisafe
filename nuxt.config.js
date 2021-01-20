@@ -37,19 +37,18 @@ export default {
 				content: `${process.env.SERVICE_NAME}`
 			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
-			// { hid: 'msapplication-config', name: 'msapplication-config', content: `${process.env.DOMAIN}/browserconfig.xml` },
 			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
 			{ hid: 'twitter:site', name: 'twitter:site', content: `${process.env.META_TWITTER_HANDLE}` },
 			{ hid: 'twitter:creator', name: 'twitter:creator', content: `${process.env.META_TWITTER_HANDLE}` },
 			{ hid: 'twitter:title', name: 'twitter:title', content: `${process.env.SERVICE_NAME}` },
 			{ hid: 'twitter:description', name: 'twitter:description', content: `${process.env.META_DESCRIPTION}` },
-			{ hid: 'twitter:image', name: 'twitter:image', content: `${process.env.DOMAIN}/share.jpg` },
+			{ hid: 'twitter:image', name: 'twitter:image', content: `${process.env.DOMAIN}/logo.png` },
 			{ hid: 'og:url', property: 'og:url', content: `${process.env.DOMAIN}` },
 			{ hid: 'og:type', property: 'og:type', content: 'website' },
 			{ hid: 'og:title', property: 'og:title', content: `${process.env.SERVICE_NAME}` },
 			{ hid: 'og:description', property: 'og:description', content: `${process.env.META_DESCRIPTION}` },
-			{ hid: 'og:image', property: 'og:image', content: `${process.env.DOMAIN}/share.jpg` },
-			{ hid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${process.env.DOMAIN}/share.jpg` },
+			{ hid: 'og:image', property: 'og:image', content: `${process.env.DOMAIN}/logo.png` },
+			{ hid: 'og:image:secure_url', property: 'og:image:secure_url', content: `${process.env.DOMAIN}/logo.png` },
 			{ hid: 'og:site_name', property: 'og:site_name', content: `${process.env.SERVICE_NAME}` }
 		],
 		link: [
