@@ -16,7 +16,7 @@ const clientConfig = {
 };
 
 export default {
-	mode: 'spa',
+	ssr: true,
 	server: {
 		port: process.env.WEBSITE_PORT
 	},
@@ -66,7 +66,6 @@ export default {
 		'~/plugins/vue-isyourpasswordsafe',
 		'~/plugins/vue-timeago',
 		'~/plugins/vuebar',
-		'~/plugins/nuxt-client-init',
 		'~/plugins/notifier',
 		'~/plugins/handler'
 	],

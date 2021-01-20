@@ -5,6 +5,7 @@ if (!process.env.SERVER_PORT) {
 	process.exit(0);
 }
 
+const { loadNuxt, build } = require('nuxt');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -80,25 +81,13 @@ class Server {
 		});
 	}
 
-	serveNuxt() {
-		// Serve the frontend if we are in production mode
-		if (process.env.NODE_ENV === 'production') {
-			this.server.use(express.static(path.join(__dirname, '../../../dist')));
+	async serveNuxt() {
+		const isProd = process.env.NODE_ENV === 'production';
+		const nuxt = await loadNuxt(isProd ? 'start' : 'dev');
+		this.server.use(nuxt.render);
+		if (!isProd) {
+			build(nuxt);
 		}
-
-		/*
-			For vue router to work with express we need this fallback.
-			After all the routes are loaded and the static files handled and if the
-			user is trying to access a non-mapped route we serve the website instead
-			since it has routes of it's own that don't work if accessed directly
-		*/
-		this.server.all('*', (_req, res) => {
-			try {
-				res.sendFile(path.join(__dirname, '../../../dist/index.html'));
-			} catch (error) {
-				res.json({ success: false, message: 'Something went wrong' });
-			}
-		});
 	}
 
 	createJobs() {
