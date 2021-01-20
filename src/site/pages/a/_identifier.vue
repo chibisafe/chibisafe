@@ -76,7 +76,7 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import Grid from '~/components/grid/Grid.vue';
-
+import logo from '~/assets/images/logo.png';
 export default {
 	components: { Grid },
 	data() {
@@ -146,25 +146,27 @@ export default {
 	},
 	head() {
 		if (this.files) {
-			const image = this.isNsfw ? '/public/images/share.jpg' : this.files.length ? this.files[0].thumbSquare : '/public/images/share.jpg';
+			const image = this.isNsfw ? logo : this.files.length ? this.files[0].thumbSquare : logo;
 			const title = this.name ? this.isNsfw ? `[NSFW] ${this.name}` : this.name : '';
 			return {
 				title,
 				meta: [
-					{ vmid: 'twitter:title', name: 'twitter:title', content: `${title} | Files: ${this.totalFiles}` },
-					{ vmid: 'twitter:image', name: 'twitter:image', content: image },
-					{ vmid: 'twitter:image:src', name: 'twitter:image:src', value: image },
-					{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
-					{ vmid: 'og:title', property: 'og:title', content: `${title} | Files: ${this.totalFiles}` },
-					{ vmid: 'og:image', property: 'og:image', content: image },
-					{ vmid: 'og:image:secure_url', property: 'og:image:secure_url', content: image }
+					{ hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+					{ hid: 'twitter:title', name: 'twitter:title', content: title },
+					{ hid: 'twitter:image', name: 'twitter:image', content: image },
+					{ hid: 'twitter:label1', name: 'twitter:label1', value: 'Files' },
+					{ hid: 'twitter:data1', name: 'twitter:data1', value: this.totalFiles },
+					{ hid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` },
+					{ hid: 'og:title', property: 'og:title', content: title },
+					{ hid: 'og:image', property: 'og:image', content: image },
+					{ hid: 'og:image:secure_url', property: 'og:image:secure_url', content: image }
 				]
 			};
 		}
 		return {
 			title: `${this.name ? this.name : ''}`,
 			meta: [
-				{ vmid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` }
+				{ hid: 'og:url', property: 'og:url', content: `${this.config.URL}/a/${this.$route.params.identifier}` }
 			]
 		};
 	}
