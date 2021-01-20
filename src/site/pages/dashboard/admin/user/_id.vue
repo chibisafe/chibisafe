@@ -95,14 +95,7 @@ export default {
 		Sidebar,
 		Grid
 	},
-	middleware: ['auth', 'admin', ({ route, store }) => {
-		try {
-			store.dispatch('admin/fetchUser', { id: route.params.id });
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error(e);
-		}
-	}],
+	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			options: {},
@@ -120,6 +113,9 @@ export default {
 	},
 	watch: {
 		current: 'fetchPaginate'
+	},
+	async asyncData({ app, params }) {
+		await app.store.dispatch('admin/fetchUser', { id: params.id });
 	},
 	methods: {
 		...mapActions({

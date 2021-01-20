@@ -68,7 +68,6 @@ export default {
 	},
 	middleware: ['auth', ({ store }) => {
 		store.commit('images/resetState');
-		store.dispatch('images/fetch');
 	}],
 	data() {
 		return {
@@ -88,7 +87,10 @@ export default {
 	watch: {
 		current: 'fetchPaginate'
 	},
-	created() {
+	async asyncData({ app }) {
+		await app.store.dispatch('images/fetch');
+	},
+	mounted() {
 		this.filteredHints = this.hints; // fixes the issue where on pageload, suggestions wont load
 	},
 	methods: {

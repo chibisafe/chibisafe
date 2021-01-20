@@ -104,9 +104,7 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: ['auth', ({ store }) => {
-		store.dispatch('auth/fetchCurrentUser');
-	}],
+	middleware: ['auth'],
 	data() {
 		return {
 			password: '',
@@ -119,6 +117,9 @@ export default {
 		...mapState({
 			user: state => state.auth.user
 		})
+	},
+	async asyncData({ app }) {
+		await app.store.dispatch('auth/fetchCurrentUser');
 	},
 	methods: {
 		...mapActions({

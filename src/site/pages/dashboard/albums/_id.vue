@@ -76,7 +76,6 @@ export default {
 	},
 	middleware: ['auth', ({ route, store }) => {
 		store.commit('images/resetState');
-		store.dispatch('images/fetchByAlbumId', { id: route.params.id });
 	}],
 	data() {
 		return {
@@ -100,6 +99,9 @@ export default {
 	},
 	watch: {
 		current: 'fetchPaginate'
+	},
+	async asyncData({ app, params }) {
+		await app.store.dispatch('images/fetchByAlbumId', { id: params.id });
 	},
 	methods: {
 		...mapActions({

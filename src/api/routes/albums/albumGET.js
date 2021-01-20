@@ -25,7 +25,7 @@ class albumGET extends Route {
 			.select('files.name', 'files.id')
 			.orderBy('files.id', 'desc');
 
-		const { page, limit = 100 } = req.query;
+		const { page, limit = 50 } = req.query;
 		if (page && page >= 0) {
 			files = await files.offset((page - 1) * limit).limit(limit);
 

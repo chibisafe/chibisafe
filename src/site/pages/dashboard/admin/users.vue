@@ -143,14 +143,7 @@ export default {
 	components: {
 		Sidebar
 	},
-	middleware: ['auth', 'admin', ({ route, store }) => {
-		try {
-			store.dispatch('admin/fetchUsers', route.params.id);
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error(e);
-		}
-	}],
+	middleware: ['auth', 'admin'],
 	data() {
 		return {
 			isCreateUserOpen: false,
@@ -163,6 +156,9 @@ export default {
 		users: state => state.admin.users,
 		config: state => state.config
 	}),
+	async asyncData({ app, params }) {
+		await app.store.dispatch('admin/fetchUsers', params.id);
+	},
 	methods: {
 		async changeEnabledStatus(row) {
 			if (row.enabled) {
