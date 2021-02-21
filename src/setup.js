@@ -112,7 +112,7 @@ async function start() {
 		_3: '# File related settings',
 		CHUNK_SIZE: 90,
 		MAX_SIZE: response.MAX_SIZE || 5000,
-		GENERATE_ZIPS: response.GENERATE_ZIPS || true,
+		GENERATE_ZIPS: response.GENERATE_ZIPS == undefined ? true : false,
 		GENERATED_FILENAME_LENGTH: 12,
 		GENERATED_ALBUM_LENGTH: 6,
 		MAX_LINKS_PER_ALBUM: 5,
@@ -120,8 +120,8 @@ async function start() {
 		BLOCKED_EXTENSIONS: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 
 		_4: '# User settings',
-		PUBLIC_MODE: response.PUBLIC_MODE || true,
-		USER_ACCOUNTS: response.USER_ACCOUNTS || true,
+		PUBLIC_MODE: response.PUBLIC_MODE == undefined ? true : false,
+		USER_ACCOUNTS: response.USER_ACCOUNTS == undefined ? true : false,
 		ADMIN_ACCOUNT: response.ADMIN_ACCOUNT || 'admin',
 		ADMIN_PASSWORD: randomstring.generate(16),
 
