@@ -58,7 +58,7 @@ const start = async () => {
 			id: user.id,
 			username: user.username,
 			password: user.password,
-			enabled: user.enabled == 1,
+			enabled: user.enabled,
 			isAdmin: false,
 			apiKey: user.token,
 			passwordEditedAt: now,
