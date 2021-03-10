@@ -2,17 +2,17 @@
 	<section class="section is-fullheight is-login">
 		<div class="container">
 			<h1 class="title">
-				Dashboard Access
+				Login
 			</h1>
 			<h2 class="subtitle mb5">
-				Login to access your files and folders
+				Login to upload and access your files
 			</h2>
 			<div class="columns">
 				<div class="column is-4 is-offset-4">
 					<b-field>
 						<b-input
 							v-model="username"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="text"
 							placeholder="Username"
 							@keyup.enter.native="login" />
@@ -20,7 +20,7 @@
 					<b-field>
 						<b-input
 							v-model="password"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							placeholder="Password"
 							password-reveal
@@ -36,9 +36,9 @@
 									v-if="config.userAccounts"
 									to="/register"
 									class="is-text">
-									Don't have an account?
+									Register
 								</router-link>
-								<span v-else>Registration is closed at the moment</span>
+								<span v-else>DM fourilent#1580 to register</span>
 							</div>
 						</div>
 
@@ -46,7 +46,7 @@
 							<p class="level-item">
 								<b-button
 									size="is-medium"
-									type="is-chibisafe"
+									type="is-toshokan"
 									@click="login">
 									Login
 								</b-button>

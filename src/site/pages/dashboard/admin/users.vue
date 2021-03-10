@@ -13,7 +13,7 @@
 
 					<div class="view-container">
 						<button v-if="!isCreateUserOpen"
-							class="button is-chibisafe"
+							class="button is-toshokan"
 							@click="isCreateUserOpen = true">
 							New user
 						</button>
@@ -24,14 +24,14 @@
 									<b-field>
 										<b-input
 											v-model="username"
-											class="chibisafe-input"
+											class="toshokan-input"
 											type="text"
 											placeholder="Username" />
 									</b-field>
 									<b-field>
 										<b-input
 											v-model="password"
-											class="chibisafe-input"
+											class="toshokan-input"
 											type="password"
 											placeholder="Password"
 											password-reveal
@@ -41,7 +41,7 @@
 										<!-- Left side -->
 										<div class="level-left">
 											<div class="level-item">
-												<button class="button is-chibisafe"
+												<button class="button is-toshokan"
 													@click="cleanUpRegister">
 													Cancel
 												</button>
@@ -51,7 +51,7 @@
 										<div class="level-right">
 											<p class="level-item">
 												<b-button
-													type="is-chibisafe"
+													type="is-toshokan"
 													:disabled="isLoading"
 													@click="register">
 													Register

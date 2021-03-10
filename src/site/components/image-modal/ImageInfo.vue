@@ -1,5 +1,5 @@
 <template>
-	<div class="container has-background-chibisafe">
+	<div class="container has-background-toshokan">
 		<div class="columns is-marginless">
 			<div class="column image-col has-centered-items">
 				<img v-if="!isVideo(file.type)" class="col-img" :src="file.url">
@@ -9,14 +9,14 @@
 			</div>
 			<div class="column data-col is-one-third">
 				<div class="sticky">
-					<div class="divider is-chibisafe has-text-light">
+					<div class="divider is-toshokan has-text-light">
 						File information
 					</div>
 					<b-field
 						label="ID"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ file.id }}</span>
 						</div>
@@ -24,8 +24,8 @@
 					<b-field
 						label="Name"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ file.name }}</span>
 						</div>
@@ -34,8 +34,8 @@
 					<b-field
 						label="Original Name"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ file.original }}</span>
 						</div>
@@ -44,8 +44,8 @@
 					<b-field
 						label="IP"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ file.ip }}</span>
 						</div>
@@ -54,8 +54,8 @@
 					<b-field
 						label="Link"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<a
 								class="fake-input"
@@ -67,8 +67,8 @@
 					<b-field
 						label="Size"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ formatBytes(file.size) }}</span>
 						</div>
@@ -77,8 +77,8 @@
 					<b-field
 						label="Hash"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input">{{ file.hash }}</span>
 						</div>
@@ -87,19 +87,19 @@
 					<b-field
 						label="Uploaded"
 						label-position="on-border"
-						type="is-chibisafe"
-						class="chibisafe-on-border">
+						type="is-toshokan"
+						class="toshokan-on-border">
 						<div class="control">
 							<span class="fake-input"><timeago :since="file.createdAt" /></span>
 						</div>
 					</b-field>
 
-					<div class="divider is-chibisafe has-text-light">
+					<div class="divider is-toshokan has-text-light">
 						Tags
 					</div>
 					<Taginfo :image-id="file.id" :image-tags="tags" />
 
-					<div class="divider is-chibisafe has-text-light">
+					<div class="divider is-toshokan has-text-light">
 						Albums
 					</div>
 					<Albuminfo :image-id="file.id" :image-albums="albums" :albums="tinyDetails" />
@@ -167,7 +167,7 @@ export default {
 .fake-input {
 	font-size: 1rem !important;
 	height: 2.5rem;
-	border-color: #323846; /* $chibisafe */
+	border-color: #323846; /* $toshokan */
 	max-width: 100%;
 	width: 100%;
     border-radius: 4px;

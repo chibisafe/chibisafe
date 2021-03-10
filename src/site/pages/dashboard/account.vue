@@ -16,7 +16,7 @@
 						message="Nothing to do here"
 						horizontal>
 						<b-input
-							class="chibisafe-input"
+							class="toshokan-input"
 							:value="user.username"
 							expanded
 							disabled />
@@ -28,7 +28,7 @@
 						horizontal>
 						<b-input
 							v-model="password"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							expanded />
 					</b-field>
@@ -39,7 +39,7 @@
 						horizontal>
 						<b-input
 							v-model="newPassword"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							expanded />
 					</b-field>
@@ -50,14 +50,14 @@
 						horizontal>
 						<b-input
 							v-model="reNewPassword"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							expanded />
 					</b-field>
 
 					<div class="mb2 mt2 text-center">
 						<b-button
-							type="is-chibisafe"
+							type="is-toshokan"
 							@click="changePassword">
 							Change password
 						</b-button>
@@ -69,13 +69,13 @@
 						horizontal>
 						<b-field expanded>
 							<b-input
-								class="chibisafe-input"
+								class="toshokan-input"
 								:value="apiKey"
 								expanded
 								disabled />
 							<p class="control">
 								<b-button
-									type="is-chibisafe"
+									type="is-toshokan"
 									@click="copyKey">
 									Copy
 								</b-button>
@@ -85,7 +85,7 @@
 
 					<div class="mb2 mt2 text-center">
 						<b-button
-							type="is-chibisafe"
+							type="is-toshokan"
 							@click="promptNewAPIKey">
 							Request new API key
 						</b-button>

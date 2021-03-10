@@ -23,26 +23,19 @@ export default {
 	srcDir: 'src/site/',
 	head: {
 		title: process.env.SERVICE_NAME,
-		titleTemplate: `%s | ${process.env.SERVICE_NAME}`,
+		titleTemplate: `%s - ${process.env.SERVICE_NAME}`,
 		// TODO: Add the directory with pictures for favicon and stuff
 		meta: [
 			{ charset: 'utf-8' },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{ hid: 'theme-color', name: 'theme-color', content: `${process.env.META_THEME_COLOR}` },
 			{ hid: 'description', name: 'description', content: `${process.env.META_DESCRIPTION}` },
-			{ hid: 'keywords', name: 'keywords', content: `${process.env.META_KEYWORDS}` },
 			{
 				hid: 'apple-mobile-web-app-title',
 				name: 'apple-mobile-web-app-title',
 				content: `${process.env.SERVICE_NAME}`
 			},
 			{ hid: 'application-name', name: 'application-name', content: `${process.env.SERVICE_NAME}` },
-			{ hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-			{ hid: 'twitter:site', name: 'twitter:site', content: `${process.env.META_TWITTER_HANDLE}` },
-			{ hid: 'twitter:creator', name: 'twitter:creator', content: `${process.env.META_TWITTER_HANDLE}` },
-			{ hid: 'twitter:title', name: 'twitter:title', content: `${process.env.SERVICE_NAME}` },
-			{ hid: 'twitter:description', name: 'twitter:description', content: `${process.env.META_DESCRIPTION}` },
-			{ hid: 'twitter:image', name: 'twitter:image', content: `${process.env.DOMAIN}/logo.png` },
 			{ hid: 'og:url', property: 'og:url', content: `${process.env.DOMAIN}` },
 			{ hid: 'og:type', property: 'og:type', content: 'website' },
 			{ hid: 'og:title', property: 'og:title', content: `${process.env.SERVICE_NAME}` },
@@ -52,10 +45,10 @@ export default {
 			{ hid: 'og:site_name', property: 'og:site_name', content: `${process.env.SERVICE_NAME}` }
 		],
 		link: [
-			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700' },
-
-			// This one is a pain in the ass to make it customizable, so you should edit it manually
-			{ type: 'application/json+oembed', href: `${process.env.DOMAIN}/oembed.json` }
+			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Code+Pro:300,400,600,700' },
+			{ rel:'icon', type:'image/ico', href:'favicon.ico', sizes:'16x16' },
+			// Duplicates in Discord embed
+			// { type: 'application/json+oembed', href: `${process.env.DOMAIN}/oembed.json` }
 		]
 	},
 	plugins: [

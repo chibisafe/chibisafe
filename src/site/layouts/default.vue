@@ -19,8 +19,7 @@ import Footer from '~/components/footer/Footer.vue';
 
 export default {
 	components: {
-		Navbar,
-		Footer
+		Navbar
 	},
 	computed: mapState(['config', 'alert']),
 	created() {
@@ -51,7 +50,7 @@ export default {
 	mounted() {
 		// eslint-disable-next-line no-console
 		console.log(
-			`%c chibisafe %c v${this.config.version} %c`,
+			`%c toshokan %c v${this.config.version} %c`,
 			'background:#35495e; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
 			'background:#ff015b; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
 			'background:transparent'
@@ -79,26 +78,6 @@ html {
 	align-items: baseline !important;
 	overflow: auto;
 	height: 100vh;
-	.background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		background: no-repeat scroll 50% 50%;
-		background-size: cover;
-		z-index: -1;
-		height: 100vh;
-		width: 100%;
-		pointer-events: none;
-		background-image: url('~assets/images/background.jpg');
-		// Uncomment the following to test different backgrounds
-		/*
-			top: -10%;
-			left: -10%;
-			height: 120vh;
-			width: 120%;
-			filter: blur(15px);
-		*/
-	}
 }
 .scroll-area {
 	height: 100vh;

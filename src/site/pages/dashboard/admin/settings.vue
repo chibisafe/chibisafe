@@ -17,7 +17,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.serviceName"
-							class="chibisafe-input"
+							class="toshokan-input"
 							expanded />
 					</b-field>
 
@@ -27,7 +27,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.uploadFolder"
-							class="chibisafe-input"
+							class="toshokan-input"
 							expanded />
 					</b-field>
 
@@ -37,7 +37,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.linksPerAlbum"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="number"
 							expanded />
 					</b-field>
@@ -48,7 +48,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.maxUploadSize"
-							class="chibisafe-input"
+							class="toshokan-input"
 							expanded />
 					</b-field>
 
@@ -58,7 +58,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.filenameLength"
-							class="chibisafe-input"
+							class="toshokan-input"
 							expanded />
 					</b-field>
 
@@ -68,7 +68,7 @@
 						horizontal>
 						<b-input
 							v-model="settings.albumLinkLength"
-							class="chibisafe-input"
+							class="toshokan-input"
 							expanded />
 					</b-field>
 

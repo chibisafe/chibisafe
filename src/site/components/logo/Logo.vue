@@ -3,25 +3,17 @@
 </template>
 <style lang="scss" scoped>
 	img {
-		height: 376px;
-		animation-delay: 0.5s;
-		animation-duration: 1.5s;
-		animation-fill-mode: both;
-		animation-name: floatUp;
-		animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
+		height: 384px;
+		animation: rotate 5s infinite linear;
+		//animation-timing-function: cubic-bezier(0, 0.71, 0.29, 1);
 	}
 
-	@keyframes floatUp {
+	@keyframes rotate {
 		0% {
-			opacity: 0;
-			transform: scale(0.86);
-		}
-		25% { opacity: 100; }
-		67% {
-			transform: scale(1);
+			transform: rotate(360deg);
 		}
 		100% {
-			transform: scale(1);
+			transform: rotate(0deg);
 		}
 	}
 </style>

@@ -17,10 +17,10 @@ services:
             interval: 60s
             timeout: 5s
 
-    chibisafe:
+    toshokan:
         build:
             context: ../
-            dockerfile: ./docker/chibisafe/Dockerfile
+            dockerfile: ./docker/toshokan/Dockerfile
         expose:
             - "5000"
             - "5001"
@@ -36,12 +36,12 @@ services:
             MAX_LINKS_PER_ALBUM: 5
             META_THEME_COLOR: "#20222b"
             META_DESCRIPTION: "Blazing fast file uploader and bunker written in node! 🚀"
-            META_KEYWORDS: "chibisafe,upload,uploader,file,vue,images,ssr,file uploader,free"
+            META_KEYWORDS: "toshokan,upload,uploader,file,vue,images,ssr,file uploader,free"
             META_TWITTER_HANDLE: ""
             SERVER_PORT: 5000
             WEBSITE_PORT: 5001
-            DOMAIN: "http://chibisafe.moe"
-            SERVICE_NAME: chibisafe
+            DOMAIN: "http://toshokan.moe"
+            SERVICE_NAME: toshokan
             MAX_SIZE: 5000
             GENERATE_THUMBNAILS: "true"
             GENERATE_ZIPS: "true"

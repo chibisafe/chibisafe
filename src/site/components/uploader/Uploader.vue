@@ -127,7 +127,7 @@ export default {
 			maxFilesize: this.config.maxFileSize,
 			previewTemplate: this.$refs.template.innerHTML,
 			dictDefaultMessage: 'Drag & Drop your files or click to browse',
-			headers: { Accept: 'application/vnd.chibisafe.json' }
+			headers: { Accept: 'application/vnd.toshokan.json' }
 		};
 		this.showDropzone = true;
 		if (this.loggedIn) this.getAlbums();
@@ -152,7 +152,7 @@ export default {
 		*/
 		updateDropzoneConfig() {
 			this.$refs.el.setOption('headers', {
-				Accept: 'application/vnd.chibisafe.json',
+				Accept: 'application/vnd.toshokan.json',
 				Authorization: this.token ? `Bearer ${this.token}` : '',
 				albumId: this.selectedAlbum ? this.selectedAlbum : null
 			});

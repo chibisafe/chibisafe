@@ -11,7 +11,7 @@ class albumsGET extends Route {
 		/*
 			Let's fetch the albums. This route will only return a small portion
 			of the album files for displaying on the dashboard. It's probably useless
-			for anyone consuming the API outside of the chibisafe frontend.
+			for anyone consuming the API outside of the toshokan frontend.
 		*/
 		const albums = await db
 			.table('albums')

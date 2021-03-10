@@ -1,14 +1,14 @@
 // $basePink: #EC1A55;
-$base-1: #292e39;
-$base-2: #2e3440;
-$base-3: #3b4252;
-$base-4: #434c5e;
-$base-5: #4c566a;
+$base-1: #1E235A;
+$base-2: #0A0AAF;
+$base-3: #8291EB;
+$base-4: #BEB4F0;
+$base-5: #F0D7F0;
 
-$background: #1e2430;
-$backgroundAccent: #20222b;
-$backgroundAccentLighter: #53555e;
-$backgroundLight1: #f5f6f8;
+$background: #1E1E1E;
+$backgroundAccent: #323232;
+$backgroundAccentLighter: #5F5A5A;
+$backgroundLight1: #FFFEEB;
 
 $scheme-main: $background;
 $scheme-main-bis: $backgroundAccent;
@@ -16,21 +16,21 @@ $scheme-main-ter: $backgroundAccentLighter;
 
 // customize navbar
 $navbar-background-color: $backgroundAccent;
-$navbar-item-color: #f5f6f8;
+$navbar-item-color: #FFFEEB;
 
 // $defaultTextColor: #4a4a4a;
-$defaultTextColor: rgb(236, 239, 244);
-$textColor: #c7ccd8;
+$defaultTextColor: rgb(255, 255, 235);
+$textColor: #FFFEEB;
 $textColorHighlight: white;
 
 $input-hover-color: $textColor;
 
-$basePink: #ff015b;
-$basePinkHover: rgb(196, 4, 71);
-$baseBlue: #30a9ed;
-$baseBlueHover: rgb(21, 135, 201);
+$basePink: #FFC8C8;
+$basePinkHover: #FFA096;
+$baseBlue: #8291EB;
+$baseBlueHover: #BEB4F0;
 
-$uploaderDropdownColor: #797979;
+$uploaderDropdownColor: #5F5A5A;
 
 $boxShadow: 0 10px 15px rgba(4, 39, 107, 0.2);
 $boxShadowLight: rgba(15, 17, 21, 0.35) 0px 6px 9px 0px;

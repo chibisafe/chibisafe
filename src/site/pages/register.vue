@@ -2,7 +2,7 @@
 	<section class="section is-fullheight is-register">
 		<div class="container">
 			<h1 class="title">
-				Dashboard Access
+				Registration
 			</h1>
 			<h2 class="subtitle mb5">
 				Register for a new account
@@ -12,14 +12,14 @@
 					<b-field>
 						<b-input
 							v-model="username"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="text"
 							placeholder="Username" />
 					</b-field>
 					<b-field>
 						<b-input
 							v-model="password"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							placeholder="Password"
 							password-reveal />
@@ -27,7 +27,7 @@
 					<b-field>
 						<b-input
 							v-model="rePassword"
-							class="chibisafe-input"
+							class="toshokan-input"
 							type="password"
 							placeholder="Re-type Password"
 							password-reveal
@@ -41,7 +41,7 @@
 								<router-link
 									to="/login"
 									class="is-text">
-									Already have an account?
+									Login
 								</router-link>
 							</div>
 						</div>
@@ -50,7 +50,7 @@
 							<p class="level-item">
 								<b-button
 									size="is-medium"
-									type="is-chibisafe"
+									type="is-toshokan"
 									:disabled="isLoading"
 									@click="register">
 									Register

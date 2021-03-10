@@ -10,6 +10,6 @@ uploads/
 !src/api/routes/uploads
 db
 database.sqlite-journal
-docker/nginx/chibisafe.moe.conf
+docker/nginx/toshokan.moe.conf
 docker-compose.config.yml
 /coverage

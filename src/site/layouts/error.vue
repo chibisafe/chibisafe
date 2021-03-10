@@ -13,7 +13,7 @@
 		<Navbar :is-white="true" />
 		<div class="hero-body">
 			<div class="container">
-				<h2>404エラ</h2>
+				<h2>Error 404</h2>
 			</div>
 		</div>
 	</section>

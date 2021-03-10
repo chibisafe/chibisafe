@@ -1,7 +1,7 @@
 {
 	"apps": [
 		{
-			"name": "chibisafe",
+			"name": "toshokan",
 			"script": "npm",
 			"args": "run start",
 			"env": {

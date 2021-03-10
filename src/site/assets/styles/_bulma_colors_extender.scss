@@ -3,14 +3,14 @@
 @import "../../../../node_modules/bulma/sass/utilities/functions";
 
 // Setup our custom colors
-$chibisafe: #323846;
-$chibisafe-invert: findColorInvert($chibisafe);
+$toshokan: #1E235A;
+$toshokan-invert: findColorInvert($toshokan);
 
 // XXX: EXPERIMENTAL, CHECK IF WE NEED ORIGINAL PRIMARY ANYWHERE
-// $primary: $chibisafe;
-// $primary-invert: $chibisafe-invert;
+// $primary: $toshokan;
+// $primary-invert: $toshokan-invert;
 
 // declare custom colors
 $custom-colors: (
-  "chibisafe":($chibisafe, $chibisafe-invert)
+  "toshokan":($toshokan, $toshokan-invert)
 );

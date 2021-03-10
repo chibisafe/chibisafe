@@ -1,14 +1,5 @@
 <template>
 	<div class="links">
-		<a
-			href="https://github.com/WeebDev/chibisafe"
-			target="_blank"
-			class="link">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">GitHub</h4>
-				<p class="bd-footer-subtitle">Deploy your own chibisafe</p>
-			</header>
-		</a>
 		<div
 			v-if="loggedIn"
 			class="link"
@@ -18,19 +9,10 @@
 					ShareX
 				</h4>
 				<p class="bd-footer-subtitle">
-					Upload from your Desktop
+					Download ShareX config
 				</p>
 			</header>
 		</div>
-		<a
-			href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj"
-			target="_blank"
-			class="link">
-			<header class="bd-footer-star-header">
-				<h4 class="bd-footer-title">Extension</h4>
-				<p class="bd-footer-subtitle">Upload from any website</p>
-			</header>
-		</a>
 		<router-link
 			to="/faq"
 			class="link">
@@ -39,7 +21,7 @@
 					FAQ
 				</h4>
 				<p class="bd-footer-subtitle">
-					We got you covered
+					Frequently Asked Questions
 				</p>
 			</header>
 		</router-link>
@@ -66,7 +48,7 @@ export default {
 				"FileFormName": "files[]",
 				"Headers": {
 					"token": "${this.apiKey}",
-					"accept": "application/vnd.chibisafe.json"
+					"accept": "application/vnd.toshokan.json"
 				},
 				"ResponseType": "Text",
 				"URL": "$json:url$",
@@ -91,24 +73,21 @@ export default {
 			background: #0000002e;
 			border: 1px solid #00000061;
 			display: block;
-			width: calc(25% - 2rem);
+			width: calc(40%);
 			border-radius: 6px;
-			box-shadow: 0 1.5rem 1.5rem -1.25rem rgba(10,10,10,.05);
-			transition-duration: 86ms;
-			transition-property: box-shadow,-webkit-transform;
-			transition-property: box-shadow,transform;
-			transition-property: box-shadow,transform,-webkit-transform;
-			will-change: box-shadow,transform;
 
 			header.bd-footer-star-header {
 				padding: 1.5rem;
 
-				&:hover .bd-footer-subtitle { color: $textColorHighlight; }
+				&:hover .bd-footer-subtitle {
+					color: $base-3;
+				}
 
 				h4.bd-footer-title {
-					color: $textColorHighlight;
+					color: $base-3;
 					font-size: 1.5rem;
 					line-height: 1.25;
+					text-decoration: none;
 					margin-bottom: .5rem;
 					transition-duration: 86ms;
 					transition-property: color;
@@ -117,6 +96,7 @@ export default {
 
 				p.bd-footer-subtitle {
 					color: $textColor;
+					text-decoration: none;
 					margin-top: -.5rem;
 					transition-duration: 86ms;
 					transition-property: color;
@@ -124,10 +104,6 @@ export default {
 				}
 			}
 
-			&:hover {
-				box-shadow: 0 3rem 3rem -1.25rem rgba(10,10,10,.1);
-				transform: translateY(-.5rem);
-			}
 		}
 	}
 

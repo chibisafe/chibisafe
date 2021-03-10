@@ -1,13 +1,11 @@
 // Let's first take care of having the customized colors ready.
-@import './_bulma_colors_extender.scss';
 @import './_colors.scss';
 
 // Bulma/Buefy customization
 @import '../../../../node_modules/bulma/sass/utilities/_all.sass';
 
 $body-size: 14px !default;
-$family-primary: 'Nunito', BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-	'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+$family-primary: 'Source Code Pro', monospace;
 $size-normal: 1rem;
 
 /* @import '../../../node_modules/bulma/bulma.sass';
@@ -27,13 +25,13 @@ html, body, #__nuxt, #__layout, .default-body, #app {
 html {
 	// font-size: 100%;
 	font-size: 14px;
-	background-color: $base-1;
+	background-color: $background;
 }
 
 a {
-	color: #5e81ac;
+	color: $baseBlue;
 	&:hover {
-		color: #81a1c1;
+		color: $baseBlueHover;
 		text-decoration: underline;
 	}
 }
@@ -51,6 +49,7 @@ label.label {
 }
 
 h4 {
+	color: $base-3;
 	font-size: 2em;
 	font-weight: 700;
 	line-height: 1.25em;
@@ -269,9 +268,9 @@ table.table {
 	}
 }
 
-.chibisafe-input input,
-.chibisafe-select select,
-.chibisafe-textarea textarea {
+.toshokan-input input,
+.toshokan-select select,
+.toshokan-textarea textarea {
 	border: 2px solid #21252d;
 	border-radius: 0.3em !important;
 	background: rgba(0, 0, 0, 0.15);
@@ -287,7 +286,7 @@ table.table {
 	}
 }
 
-.chibisafe-input .icon {
+.toshokan-input .icon {
 	color: #323846 !important;
 }
 
@@ -368,15 +367,15 @@ table.table {
     align-items: center;
 }
 
-.chibisafe-on-border.field.is-floating-label .label:before {
-	background-color: $chibisafe;
+.toshokan-on-border.field.is-floating-label .label:before {
+	background-color: $base-1;
 }
 
-.is-chibisafe.divider::after, .is-chibisafe.divider::before {
+.is-toshokan.divider::after, .is-toshokan.divider::before {
 	background-color: #21252d;
 }
 
-.chibisafe.taginput {
+.toshokan.taginput {
 	.taginput-container {
 		background-color: #21252d;
 		border: 2px solid #21252d;

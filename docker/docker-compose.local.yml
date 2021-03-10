@@ -1,15 +1,15 @@
 version: "3.7"
 
 services:
-    chibisafe:
+    toshokan:
         volumes:
-            - chibisafe-data:/usr/chibisafe/uploads
-            - chibisafe-database:/usr/chibisafe/database
+            - toshokan-data:/usr/toshokan/uploads
+            - toshokan-database:/usr/toshokan/database
 
 volumes:
     nginx-data:
         name: "nginx-data"
-    chibisafe-data:
-        name: "chibisafe-data"
-    chibisafe-database:
-        name: "chibisafe-database"
+    toshokan-data:
+        name: "toshokan-data"
+    toshokan-database:
+        name: "toshokan-database"

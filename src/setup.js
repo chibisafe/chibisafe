@@ -16,17 +16,17 @@ async function start() {
 	const wizard = [
 		{
 			type: 'input',
-			query: 'Port to run chibisafe in: (5000)',
+			query: 'Port to run toshokan in: (5000)',
 			handle: 'SERVER_PORT'
 		},
 		{
 			type: 'input',
-			query: 'Full domain this instance is gonna be running on (Ex: https://chibisafe.moe):',
+			query: 'Full domain this instance is gonna be running on (Ex: https://toshokan.moe):',
 			handle: 'DOMAIN'
 		},
 		{
 			type: 'input',
-			query: 'Name of the service? (Ex: chibisafe):',
+			query: 'Name of the service? (Ex: toshokan):',
 			handle: 'SERVICE_NAME'
 		},
 		{
@@ -135,7 +135,7 @@ async function start() {
 		_6: '# Social and sharing settings',
 		META_THEME_COLOR: '#20222b',
 		META_DESCRIPTION: 'Blazing fast file uploader and bunker written in node! 🚀',
-		META_KEYWORDS: 'chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
+		META_KEYWORDS: 'toshokan,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
 		META_TWITTER_HANDLE: '@its_pitu'
 	};
 

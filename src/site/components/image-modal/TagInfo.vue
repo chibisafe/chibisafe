@@ -3,7 +3,7 @@
 		<b-taginput
 			:value="selectedTags"
 			:data="filteredTags"
-			class="chibisafe taginp"
+			class="toshokan taginp"
 			ellipsis
 			icon="label"
 			placeholder="Add a tag"

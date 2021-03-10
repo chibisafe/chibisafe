@@ -4,6 +4,13 @@
 		transparent>
 		<template slot="end">
 			<b-navbar-item tag="div">
+				<a
+					href="https://frlt.one"
+					target="_blank"
+					class="navbar-item no-active">
+					frlt.one
+				</a>
+			<b-navbar-item tag="div">
 				<router-link
 					to="/"
 					class="navbar-item no-active"
@@ -17,23 +24,7 @@
 						to="/dashboard"
 						class="navbar-item no-active"
 						exact>
-						Uploads
-					</router-link>
-				</b-navbar-item>
-				<b-navbar-item tag="div">
-					<router-link
-						to="/dashboard/albums"
-						class="navbar-item no-active"
-						exact>
-						Albums
-					</router-link>
-				</b-navbar-item>
-				<b-navbar-item tag="div">
-					<router-link
-						to="/dashboard/account"
-						class="navbar-item no-active"
-						exact>
-						Account
+						Dashboard
 					</router-link>
 				</b-navbar-item>
 				<b-navbar-item tag="div">
