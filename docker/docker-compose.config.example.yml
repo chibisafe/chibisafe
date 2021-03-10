@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-    toshokan:
+    chibisafe:
         environment:
             CHUNK_SIZE: 90
             SECRET: "wowfcgMHqZHwOIMLadWrKu3liyqPOOILpDLSDvuxq3YGhJmiZXJCVpnF96l11WfR"
@@ -15,12 +15,12 @@ services:
             # MAX_LINKS_PER_ALBUM: 5
             # META_THEME_COLOR: '#20222b'
             # META_DESCRIPTION: 'Blazing fast file uploader and bunker written in node! 🚀'
-            # META_KEYWORDS: 'toshokan,upload,uploader,file,vue,images,ssr,file uploader,free'
+            # META_KEYWORDS: 'chibisafe,upload,uploader,file,vue,images,ssr,file uploader,free'
             # META_TWITTER_HANDLE: ''
             # SERVER_PORT: 5000
             # WEBSITE_PORT: 5001
-            # DOMAIN: 'http://toshokan.moe'
-            # SERVICE_NAME: toshokan
+            # DOMAIN: 'http://chibisafe.moe'
+            # SERVICE_NAME: chibisafe
             # MAX_SIZE: 5000
             # GENERATE_THUMBNAILS: 'true'
             # GENERATE_ZIPS: 'true'

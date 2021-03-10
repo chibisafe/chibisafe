@@ -1,5 +1,5 @@
 {
-	"name": "toshokan",
+	"name": "chibisafe",
 	"version": "4.0.2",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
@@ -25,10 +25,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/WeebDev/toshokan"
+		"url": "https://github.com/WeebDev/chibisafe"
 	},
 	"bugs": {
-		"url": "https://github.com/WeebDev/toshokan/issues"
+		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"engines": {
 		"node": ">=12.0.0"
@@ -132,7 +132,7 @@
 		}
 	},
 	"keywords": [
-		"toshokan",
+		"chibisafe",
 		"lolisafe",
 		"upload",
 		"uploader",

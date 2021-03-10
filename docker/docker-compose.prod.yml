@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-    toshokan:
+    chibisafe:
         volumes:
-            - ./toshokan-data:/usr/toshokan/uploads
-            - ./toshokan-database:/usr/toshokan/database
+            - ./chibisafe-data:/usr/chibisafe/uploads
+            - ./chibisafe-database:/usr/chibisafe/database
