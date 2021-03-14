@@ -47,7 +47,7 @@ server {
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
 
-    client_max_body_size 90M;
+    client_max_body_size 100M;
     client_body_timeout 600s;
 
     location / {
