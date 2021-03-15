@@ -44,12 +44,12 @@ This guide asumes a lot of things, including that you know your way around linux
 
 Chibisafe is now installed, configured and ready. Now you need to serve it to the public by using a domain name.
 
-6. Check the [nginx](docs/nginx.md) file for a sample configuration that has every step to run chibisafe securely on production.
+4. Check the [nginx](docs/nginx.md) file for a sample configuration that has every step to run chibisafe securely on production.
 
 After you finish setting up nginx, you need to start chibisafe by using pm2. If you want to use something else like forever, ensure that the process spawned from `npm run start` never dies.
 
-7. Run `pm2 start pm2.json`:
-8. Profit
+5. Run `pm2 start pm2.json`:
+6. Profit
 
 ## Author
 
