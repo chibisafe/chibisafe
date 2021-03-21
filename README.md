@@ -51,6 +51,13 @@ After you finish setting up nginx, you need to start chibisafe by using pm2. If 
 5. Run `pm2 start pm2.json`:
 6. Profit
 
+### Screenshots
+<p align="center">
+  <img src="https://lolisafe.moe/73up1d.png">
+  <img src="https://lolisafe.moe/q0uctp.png">
+  <img src="https://lolisafe.moe/8fi2x6.png">
+</p>
+
 ## Author
 
 **Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/chibisafe/blob/master/LICENSE) License.<br>
