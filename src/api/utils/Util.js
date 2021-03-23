@@ -15,10 +15,30 @@ const StatsGenerator = require('./StatsGenerator');
 const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
 
-let statsLastSavedTime = null;
-
 class Util {
 	static uploadPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER);
+	static statsLastSavedTime = null;
+	static _config = null;
+
+	static get config() {
+		return (async () => {
+			if (this._config === null) {
+				const conf = await db('config').select('key', 'value');
+				this._config = conf.reduce((acc, { key, value }) => {
+					if (typeof value === 'string' || value instanceof String) {
+						acc[key] = JSON.parse(value);
+					} else {
+						acc[key] = value;
+					}
+				}, {});
+			}
+			return this._config;
+		})();
+	}
+
+	static invalidateConfigCache() {
+		this._config = null;
+	}
 
 	static uuid() {
 		return uuidv4();
@@ -320,7 +340,7 @@ class Util {
 		// skip generating and saving new stats.
 		if (!force &&
 			(!db.userParams.lastMutationTime ||
-				(statsLastSavedTime && statsLastSavedTime > db.userParams.lastMutationTime)
+				(Util.statsLastSavedTime && Util.statsLastSavedTime > db.userParams.lastMutationTime)
 			)
 		) {
 			return;
@@ -341,7 +361,7 @@ class Util {
 				await db.table('statistics').insert({ type, data: JSON.stringify(data), createdAt: now, batchId });
 			}
 
-			statsLastSavedTime = now.getTime();
+			Util.statsLastSavedTime = now.getTime();
 		} catch (error) {
 			console.error(error);
 		}
