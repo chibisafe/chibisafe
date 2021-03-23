@@ -90,7 +90,7 @@ export default {
 				jetpack.write('dist/config.json', clientConfig);
 			}
 			if (isDev) {
-				config.devtool = isClient ? 'source-map' : 'inline-source-map';
+				config.devtool = 'source-map';
 			}
 		}
 	}
