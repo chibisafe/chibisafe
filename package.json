@@ -18,6 +18,7 @@
 		"api": "node src/api/structures/Server",
 		"update": "git pull && npm install && npm run migrate && npm run build && npm run restart",
 		"restart": "pm2 restart lolisafe",
+		"overwrite-config": "cross-env OVERWRITE_SETTINGS=true",
 		"test:vue": "jest --testPathPattern=src/site",
 		"test:api": "jest --testPathPattern=src/tests/api",
 		"test:e2e": "jest --testPathPattern=src/tests/e2e",

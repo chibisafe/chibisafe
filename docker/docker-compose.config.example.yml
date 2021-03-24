@@ -7,6 +7,7 @@ services:
             SECRET: "wowfcgMHqZHwOIMLadWrKu3liyqPOOILpDLSDvuxq3YGhJmiZXJCVpnF96l11WfR"
             ADMIN_ACCOUNT: "admin"
             ADMIN_PASSWORD: "admin"
+            # OVERWRITE_SETTINGS: 'false'
             # ROUTE_PREFIX: /api
             # RATE_LIMIT_WINDOW: 2
             # RATE_LIMIT_MAX: 5

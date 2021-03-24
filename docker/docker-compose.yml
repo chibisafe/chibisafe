@@ -26,6 +26,7 @@ services:
             - "5001"
         restart: unless-stopped
         environment:
+            OVERWRITE_SETTINGS: "false"
             CHUNK_SIZE: 90
             ROUTE_PREFIX: /api
             RATE_LIMIT_WINDOW: 2

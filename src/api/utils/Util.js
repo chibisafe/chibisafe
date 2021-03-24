@@ -40,6 +40,45 @@ class Util {
 		this._config = null;
 	}
 
+	static getEnvironmentDefaults() {
+		return {
+			routePrefix: process.env.ROUTE_PREFIX || '/api',
+			rateLimitWindow: process.env.RATE_LIMIT_WINDOW || 2,
+			rateLimitMax: process.env.RATE_LIMIT_MAX || 5,
+			secret: process.env.SECRET || randomstring.generate(64),
+			serviceName: process.env.SERVICE_NAME || 'change-me',
+			domain: process.env.DOMAIN || `http://localhost:${process.env.SERVER_PORT}`,
+			chunkSize: process.env.CHUNK_SIZE || 90,
+			maxSize: process.env.MAX_SIZE || 5000,
+			generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
+			generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH || 12,
+			generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH || 6,
+			maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM || 5,
+			uploadFolder: process.env.UPLOAD_FOLDER || 'uploads',
+			blockedExtensions: process.env.BLOCKED_EXTENSIONS || ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
+			publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
+			userAccounts: process.env.USER_ACCOUNTS == undefined ? true : false,
+			adminAccount: process.env.ADMIN_ACCOUNT || 'admin',
+			adminPassword: process.env.ADMIN_PASSWORD || 'admin',
+			metaThemeColor: process.env.META_THEME_COLOR || '#20222b',
+			metaDescription: process.env.META_DESCRIPTION || 'Blazing fast file uploader and bunker written in node! 🚀',
+			metaKeywords: process.env.META_KEYWORDS || 'chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
+			metaTwitterHandle: process.env.META_TWITTER_HANDLE || '@your-handle'
+		};
+	}
+
+	static async writeConfigToDb(config, overwrite = true) {
+		try {
+			if (overwrite) {
+				await db.table('settings').first().update(config);
+			} else {
+				await db.table('settings').insert(config);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	static uuid() {
 		return uuidv4();
 	}
