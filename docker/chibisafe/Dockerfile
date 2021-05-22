@@ -1,6 +1,6 @@
 FROM jrottenberg/ffmpeg:4.3-alpine312 as ffmpeg
 
-FROM node:alpine3.12
+FROM node:alpine
 
 WORKDIR /usr/chibisafe
 COPY package.json package-lock.json ./
