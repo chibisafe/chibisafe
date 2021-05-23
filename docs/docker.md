@@ -16,8 +16,9 @@ After that:
 Once you are done run the following commands:
 
 - `cd docker`
-- `./chibisafe prod pull`
-- `./chibisafe prod build`
-- `./chibisafe prod up -d`
+- `sudo chmod 775 ./chibisafe.sh`
+- `./chibisafe.sh prod pull`
+- `./chibisafe.sh prod build`
+- `./chibisafe.sh prod up -d`
 
 Congrats, your chibisafe instance is now running.
