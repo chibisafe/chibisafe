@@ -1,0 +1,2 @@
+Remove generate zips from .env as its not used anymore
+	> Or make it an admin setting to allow users to create zips for their album links or not.

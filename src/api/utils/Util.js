@@ -68,6 +68,7 @@ class Util {
 	}
 
 	static async writeConfigToDb(config, overwrite = true) {
+		// TODO: Check that the config passes the joi schema validation
 		try {
 			if (overwrite) {
 				await db.table('settings').first().update(config);

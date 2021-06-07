@@ -17,7 +17,7 @@
 		"seed": "knex seed:run",
 		"api": "node src/api/structures/Server",
 		"update": "git pull && npm install && npm run migrate && npm run build && npm run restart",
-		"restart": "pm2 restart lolisafe",
+		"restart": "pm2 restart chibisafe",
 		"overwrite-config": "cross-env OVERWRITE_SETTINGS=true",
 		"test:vue": "jest --testPathPattern=src/site",
 		"test:api": "jest --testPathPattern=src/tests/api",
