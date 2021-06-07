@@ -44,7 +44,7 @@ class albumGET extends Route {
 		}
 
 		for (let file of files) {
-			file = Util.constructFilePublicLink(file);
+			file = Util.constructFilePublicLink(req, file);
 		}
 
 		// Add 1 more view to the link

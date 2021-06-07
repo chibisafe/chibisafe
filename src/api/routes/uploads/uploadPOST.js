@@ -282,8 +282,8 @@ class uploadPOST extends Route {
 
 		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
 
-		result.file = Util.constructFilePublicLink(result.file);
-		result.deleteUrl = `${process.env.DOMAIN}/api/file/${result.id[0]}`;
+		result.file = Util.constructFilePublicLink(req, result.file);
+		result.deleteUrl = `${Util.getHost(req)}/api/file/${result.id[0]}`;
 
 		return res.status(201).send({
 			message: 'Sucessfully uploaded the file.',

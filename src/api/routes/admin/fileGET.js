@@ -15,7 +15,7 @@ class filesGET extends Route {
 			.select('id', 'username', 'enabled', 'createdAt', 'editedAt', 'apiKeyEditedAt', 'isAdmin')
 			.where({ id: file.userId })
 			.first();
-		file = Util.constructFilePublicLink(file);
+		file = Util.constructFilePublicLink(req, file);
 
 		// Additional relevant data
 		const filesFromUser = await db.table('files').where({ userId: user.id }).select('id');

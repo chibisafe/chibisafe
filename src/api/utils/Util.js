@@ -47,13 +47,11 @@ class Util {
 			rateLimitMax: process.env.RATE_LIMIT_MAX || 5,
 			secret: process.env.SECRET || randomstring.generate(64),
 			serviceName: process.env.SERVICE_NAME || 'change-me',
-			domain: process.env.DOMAIN || `http://localhost:${process.env.SERVER_PORT}`,
 			chunkSize: process.env.CHUNK_SIZE || 90,
 			maxSize: process.env.MAX_SIZE || 5000,
 			generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
 			generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH || 12,
 			generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH || 6,
-			maxLinksPerAlbum: process.env.MAX_LINKS_PER_ALBUM || 5,
 			uploadFolder: process.env.UPLOAD_FOLDER || 'uploads',
 			blockedExtensions: process.env.BLOCKED_EXTENSIONS || ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 			publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
@@ -92,17 +90,18 @@ class Util {
 		return fileTypeMimeObj ? fileTypeMimeObj.mime : undefined;
 	}
 
-	static constructFilePublicLink(file) {
+	static constructFilePublicLink(req, file) {
 		/*
 			TODO: This wont work without a reverse proxy serving both
 			the site and the API under the same domain. Pls fix.
 		*/
-		file.url = `${process.env.DOMAIN}/${file.name}`;
+		const host = this.getHost(req);
+		file.url = `${host}/${file.name}`;
 		const { thumb, preview } = ThumbUtil.getFileThumbnail(file.name) || {};
 		if (thumb) {
-			file.thumb = `${process.env.DOMAIN}/thumbs/${thumb}`;
-			file.thumbSquare = `${process.env.DOMAIN}/thumbs/square/${thumb}`;
-			file.preview = preview && `${process.env.DOMAIN}/thumbs/preview/${preview}`;
+			file.thumb = `${host}/thumbs/${thumb}`;
+			file.thumbSquare = `${host}/thumbs/square/${thumb}`;
+			file.preview = preview && `${host}/thumbs/preview/${preview}`;
 		}
 		return file;
 	}
@@ -265,8 +264,8 @@ class Util {
 
 	static generateThumbnails = ThumbUtil.generateThumbnails;
 
-	static async fileExists(res, exists, filename) {
-		exists = Util.constructFilePublicLink(exists);
+	static async fileExists(req, res, exists, filename) {
+		exists = Util.constructFilePublicLink(req, exists);
 		res.json({
 			message: 'Successfully uploaded the file.',
 			name: exists.name,
@@ -274,7 +273,7 @@ class Util {
 			size: exists.size,
 			url: exists.url,
 			thumb: exists.thumb,
-			deleteUrl: `${process.env.DOMAIN}/api/file/${exists.id}`,
+			deleteUrl: `${this.getHost(req)}/api/file/${exists.id}`,
 			repeated: true
 		});
 
@@ -298,7 +297,7 @@ class Util {
 			.first();
 
 		if (dbFile) {
-			await this.fileExists(res, dbFile, file.data.filename);
+			await this.fileExists(req, res, dbFile, file.data.filename);
 			return;
 		}
 
@@ -405,6 +404,10 @@ class Util {
 		} catch (error) {
 			console.error(error);
 		}
+	}
+
+	static getHost(req) {
+		return `${req.protocol}://${req.headers.host}`;
 	}
 }
 
