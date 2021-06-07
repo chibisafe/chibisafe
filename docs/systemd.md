@@ -1,5 +1,5 @@
 ### Service config for systemd
-The file chibisafe-example.service is to be moved to `/etc/systemd/system/chibisafe.service` 
+If you want to keep Chibisafe running by using systemd you can copy the example code shown below and create the file `/etc/systemd/system/chibisafe.service` with it.
 
 You will need to edit the parameters:
 - `User` to be the username/uid of your chibisafe instance
@@ -12,7 +12,8 @@ You will need to edit the parameters:
 
 Example below.
 
-```[Unit]
+```
+[Unit]
 Description=chibisafe, easy to use file uploader
 After=network.target
 
@@ -25,4 +26,5 @@ ExecStart=/usr/bin/npm run start
 Restart=always
 
 [Install]
-WantedBy=multi-user.target```
+WantedBy=multi-user.target
+```
