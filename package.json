@@ -9,7 +9,7 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"setup": "node src/setup.js && npm run migrate && npm run seed && npm run build",
+		"setup": "node src/setup.js && npm run migrate && npm run seed",
 		"start": "nuxt build && npm run migrate && cross-env NODE_ENV=production node src/api/structures/Server",
 		"dev": "nodemon src/api/structures/Server",
 		"migrate": "knex migrate:latest",
@@ -20,7 +20,8 @@
 		"test:vue": "jest --testPathPattern=src/site",
 		"test:api": "jest --testPathPattern=src/tests/api",
 		"test:e2e": "jest --testPathPattern=src/tests/e2e",
-		"tests": "npm run test:api && npm run test:vue && npm run test:e2e"
+		"tests": "npm run test:api && npm run test:vue && npm run test:e2e",
+		"sqlite": "sqlite_web -p 5001 database/database.sqlite"
 	},
 	"repository": {
 		"type": "git",
@@ -36,7 +37,7 @@
 		"@mdi/font": "^5.8.55",
 		"@nuxtjs/axios": "^5.12.5",
 		"adm-zip": "^0.4.13",
-		"bcrypt": "^5.0.0",
+		"bcrypt": "^5.0.1",
 		"blake3": "^2.1.4",
 		"body-parser": "^1.18.3",
 		"buefy": "^0.9.4",
@@ -132,7 +133,9 @@
 		}
 	},
 	"nodemonConfig": {
-		"watch": ["src/api/*"],
+		"watch": [
+			"src/api/*"
+		],
 		"delay": 2500
 	},
 	"keywords": [
@@ -145,5 +148,8 @@
 		"ssr",
 		"file uploader",
 		"images"
-	]
+	],
+	"volta": {
+		"node": "14.17.0"
+	}
 }
