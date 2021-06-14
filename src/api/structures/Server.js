@@ -19,11 +19,10 @@ const CronJob = require('cron').CronJob;
 const log = require('../utils/Log');
 
 const Util = require('../utils/Util');
-
 // eslint-disable-next-line no-unused-vars
 const rateLimiter = new RateLimit({
-	windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10),
-	max: parseInt(process.env.RATE_LIMIT_MAX, 10),
+	windowMs: parseInt(Util.config.rateLimitWindow, 10),
+	max: parseInt(Util.config.rateLimitMax, 10),
 	delayMs: 0
 });
 
@@ -65,6 +64,7 @@ class Server {
 	}
 
 	registerAllTheRoutes() {
+		console.log(Util.config);
 		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach(routeFile => {
 			const RouteClass = require(path.join('../../../', routeFile));
 			let routes = [RouteClass];
@@ -72,8 +72,8 @@ class Server {
 			for (const File of routes) {
 				try {
 					const route = new File();
-					this.server[route.method](process.env.ROUTE_PREFIX + route.path, route.authorize.bind(route));
-					log.info(`Found route ${route.method.toUpperCase()} ${process.env.ROUTE_PREFIX}${route.path}`);
+					this.server[route.method](Util.config.routePrefix + route.path, route.authorize.bind(route));
+					log.info(`Found route ${route.method.toUpperCase()} ${Util.config.routePrefix}${route.path}`);
 				} catch (e) {
 					log.error(`Failed loading route from file ${routeFile} with error: ${e.message}`);
 				}
@@ -110,4 +110,11 @@ class Server {
 	}
 }
 
-new Server().start();
+const start = async () => {
+	const conf = await Util.config;
+	console.log(conf);
+	new Server().start();
+};
+
+start();
+

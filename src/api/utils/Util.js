@@ -12,25 +12,22 @@ const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
 const StatsGenerator = require('./StatsGenerator');
 
-const blockedExtensions = process.env.BLOCKED_EXTENSIONS.split(',');
 const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
 
 class Util {
-	static uploadPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER);
+	static uploadPath = path.join(__dirname, '../../../', 'uploads');
 	static statsLastSavedTime = null;
 	static _config = null;
 
 	static get config() {
+		if (this._config) return this._config;
 		return (async () => {
 			if (this._config === null) {
-				const conf = await db('config').select('key', 'value');
-				this._config = conf.reduce((acc, { key, value }) => {
-					if (typeof value === 'string' || value instanceof String) {
-						acc[key] = JSON.parse(value);
-					} else {
-						acc[key] = value;
-					}
-				}, {});
+				const conf = await db('settings').select('key', 'value');
+				this._config = conf.reduce((obj, item) => (
+					// eslint-disable-next-line no-sequences
+					obj[item.key] = typeof item.value === 'string' || item.value instanceof String ? JSON.parse(item.value) : item.value, obj
+				), {});
 			}
 			return this._config;
 		})();
@@ -49,15 +46,15 @@ class Util {
 			serviceName: process.env.SERVICE_NAME || 'change-me',
 			chunkSize: process.env.CHUNK_SIZE || 90,
 			maxSize: process.env.MAX_SIZE || 5000,
+			// eslint-disable-next-line eqeqeq
 			generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
 			generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH || 12,
 			generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH || 6,
-			uploadFolder: process.env.UPLOAD_FOLDER || 'uploads',
 			blockedExtensions: process.env.BLOCKED_EXTENSIONS || ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
+			// eslint-disable-next-line eqeqeq
 			publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
+			// eslint-disable-next-line eqeqeq
 			userAccounts: process.env.USER_ACCOUNTS == undefined ? true : false,
-			adminAccount: process.env.ADMIN_ACCOUNT || 'admin',
-			adminPassword: process.env.ADMIN_PASSWORD || 'admin',
 			metaThemeColor: process.env.META_THEME_COLOR || '#20222b',
 			metaDescription: process.env.META_DESCRIPTION || 'Blazing fast file uploader and bunker written in node! 🚀',
 			metaKeywords: process.env.META_KEYWORDS || 'chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
@@ -65,16 +62,16 @@ class Util {
 		};
 	}
 
-	static async writeConfigToDb(config, overwrite = true) {
+	static async writeConfigToDb(config) {
 		// TODO: Check that the config passes the joi schema validation
+		if (!config || !config.key || !config.key) return;
 		try {
-			if (overwrite) {
-				await db.table('settings').first().update(config);
-			} else {
-				await db.table('settings').insert(config);
-			}
+			config.value = JSON.stringify(config.value);
+			await db.table('settings').insert(config);
 		} catch (error) {
 			console.error(error);
+		} finally {
+			this.invalidateConfigCache();
 		}
 	}
 
@@ -83,7 +80,7 @@ class Util {
 	}
 
 	static isExtensionBlocked(extension) {
-		return blockedExtensions.includes(extension);
+		return this.config.blockedExtensions.includes(extension);
 	}
 
 	static getMimeFromType(fileTypeMimeObj) {
@@ -109,7 +106,7 @@ class Util {
 	static getUniqueFilename(extension) {
 		const retry = (i = 0) => {
 			const filename = randomstring.generate({
-				length: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
+				length: this.config.generatedFilenameLength,
 				capitalization: 'lowercase'
 			}) + extension;
 
@@ -126,7 +123,7 @@ class Util {
 	static getUniqueAlbumIdentifier() {
 		const retry = async (i = 0) => {
 			const identifier = randomstring.generate({
-				length: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
+				length: this.config.generatedAlbumLength,
 				capitalization: 'lowercase'
 			});
 			const exists = await db
@@ -223,7 +220,7 @@ class Util {
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return false;
 
-		return JWT.verify(token, process.env.SECRET, async (error, decoded) => {
+		return JWT.verify(token, this.config.secret, async (error, decoded) => {
 			if (error) {
 				log.error(error);
 				return false;
@@ -249,13 +246,7 @@ class Util {
 				zip.addLocalFile(path.join(Util.uploadPath, file));
 			}
 			zip.writeZip(
-				path.join(
-					__dirname,
-					'../../../',
-					process.env.UPLOAD_FOLDER,
-					'zips',
-					`${album.userId}-${album.id}.zip`
-				)
+				path.join(__dirname, '../../../', 'uploads', 'zips', `${album.userId}-${album.id}.zip`)
 			);
 		} catch (error) {
 			log.error(error);

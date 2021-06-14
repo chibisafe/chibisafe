@@ -1,4 +1,5 @@
 const Route = require('../../structures/Route');
+const Util = require('../../utils/Util');
 
 class configGET extends Route {
 	constructor() {
@@ -9,15 +10,13 @@ class configGET extends Route {
 		return res.json({
 			message: 'Successfully retrieved config',
 			config: {
-				serviceName: process.env.SERVICE_NAME,
-				uploadFolder: process.env.UPLOAD_FOLDER,
-				maxUploadSize: parseInt(process.env.MAX_SIZE, 10),
-				filenameLength: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
-				albumLinkLength: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
-				generateThumbnails: process.env.GENERATE_THUMBNAILS === 'true',
-				generateZips: process.env.GENERATE_ZIPS === 'true',
-				publicMode: process.env.PUBLIC_MODE === 'true',
-				enableAccounts: process.env.USER_ACCOUNTS === 'true'
+				serviceName: Util.config.serviceName,
+				maxUploadSize: Util.config.maxSize,
+				filenameLength: Util.config.generatedFilenameLength,
+				albumLinkLength: Util.config.generatedAlbumLength,
+				generateZips: Util.config.generateZips,
+				publicMode: Util.config.publicMode,
+				enableAccounts: Util.config.userAccounts
 			}
 		});
 	}

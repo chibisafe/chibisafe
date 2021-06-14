@@ -10,16 +10,12 @@ const clientConfig = {
 	serviceName: process.env.SERVICE_NAME,
 	maxFileSize: parseInt(process.env.MAX_SIZE, 10),
 	chunkSize: parseInt(process.env.CHUNK_SIZE, 10),
-	maxLinksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
 	publicMode: process.env.PUBLIC_MODE === 'true',
 	userAccounts: process.env.USER_ACCOUNTS === 'true'
 };
 
 export default {
 	ssr: true,
-	server: {
-		port: process.env.WEBSITE_PORT
-	},
 	srcDir: 'src/site/',
 	head: {
 		title: process.env.SERVICE_NAME,
