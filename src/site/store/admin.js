@@ -11,7 +11,6 @@ export const state = () => ({
 		files: []
 	},
 	file: {},
-	settings: {},
 	statistics: {},
 	settingsSchema: {
 		type: null,
@@ -20,12 +19,6 @@ export const state = () => ({
 });
 
 export const actions = {
-	async fetchSettings({ commit }) {
-		const response = await this.$axios.$get('service/config');
-		commit('setSettings', response);
-
-		return response;
-	},
 	async fetchStatistics({ commit }, category) {
 		const url = category ? `service/statistics/${category}` : 'service/statistics';
 		const response = await this.$axios.$get(url);
@@ -105,9 +98,6 @@ export const actions = {
 };
 
 export const mutations = {
-	setSettings(state, { config }) {
-		state.settings = config;
-	},
 	setStatistics(state, { statistics, category }) {
 		if (category) {
 			state.statistics[category] = statistics[category];

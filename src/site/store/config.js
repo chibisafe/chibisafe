@@ -1,18 +1,11 @@
 export const state = () => ({
-	development: true,
-	version: '4.0.0',
-	URL: 'http://localhost:8080',
-	baseURL: 'http://localhost:8080/api',
-	serviceName: '',
-	maxFileSize: 100,
-	chunkSize: 90,
-	maxLinksPerAlbum: 5,
-	publicMode: false,
-	userAccounts: false
+	development: process.env.development,
+	version: process.env.version,
+	URL: process.env.development ? 'http://localhost:5000' : '/',
+	baseURL: `${process.env.development ? 'http://localhost:5000' : ''}/api`,
+	serviceName: process.env.serviceName,
+	maxFileSize: process.env.maxFilesize,
+	chunkSize: process.env.chunkSize,
+	publicMode: process.env.publicMode,
+	userAccounts: process.env.userAccounts
 });
-
-export const mutations = {
-	set(state, config) {
-		Object.assign(state, config);
-	}
-};
