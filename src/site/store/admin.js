@@ -26,6 +26,12 @@ export const actions = {
 
 		return response;
 	},
+	async saveSettings({ commit }, settings) {
+		const response = await this.$axios.$post('service/config', { settings });
+		commit('setSettings', response);
+
+		return response;
+	},
 	async fetchStatistics({ commit }, category) {
 		const url = category ? `service/statistics/${category}` : 'service/statistics';
 		const response = await this.$axios.$get(url);
@@ -146,6 +152,13 @@ export const mutations = {
 			}
 			if (isAdmin !== undefined) {
 				state.user.isAdmin = isAdmin;
+			}
+		}
+	},
+	populateSchemaWithValues({ settings, settingsSchema }) {
+		for (const [key, value] of Object.entries(settings)) {
+			if (settingsSchema.keys?.[key] !== undefined) {
+				settingsSchema.keys[key].value = value;
 			}
 		}
 	}

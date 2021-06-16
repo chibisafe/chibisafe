@@ -1,6 +1,6 @@
 <template>
-	<div v-if="keys">
-		<div v-for="[key, field] in Object.entries(keys)" :key="key">
+	<div v-if="settings">
+		<div v-for="[key, field] in Object.entries(settings)" :key="key">
 			<b-field
 				:label="field.flags.label"
 				:message="field.flags.description"
@@ -8,12 +8,12 @@
 				horizontal>
 				<b-input
 					v-if="getDisplayType(field) === 'string'"
-					v-model="settings.serviceName"
+					v-model="values[key]"
 					class="chibisafe-input"
 					expanded />
 				<b-input
 					v-else-if="getDisplayType(field) === 'number'"
-					v-model="settings.serviceName"
+					v-model="values[key]"
 					type="number"
 					class="chibisafe-input"
 					:min="getMin(field)"
@@ -21,22 +21,21 @@
 					expanded />
 				<b-switch
 					v-else-if="getDisplayType(field) === 'boolean'"
-					v-model="settings.publicMode"
+					v-model="values[key]"
 					:rounded="false"
 					:true-value="true"
 					:false-value="false" />
 				<!-- TODO: If array and has allowed items, limit input to those items only -->
 				<b-taginput
 					v-else-if="getDisplayType(field) === 'array' || getDisplayType(field) === 'tagInput'"
-					v-model="settings.arr"
+					v-model="values[key]"
 					ellipsis
 					icon="label"
 					:placeholder="field.flags.label"
-					aria-close-label="Delete this tag"
 					class="taginp" />
 				<div v-else-if="getDisplayType(field) === 'checkbox'">
 					<b-checkbox v-for="item in getAllowedItems(field)" :key="item"
-						v-model="settings.ech"
+						v-model="values[key]"
 						:native-value="item">
 						{{ item }}
 					</b-checkbox>
@@ -55,11 +54,7 @@
 export default {
 	name: 'JoiObject',
 	props: {
-		keys: {
-			type: Object,
-			required: true
-		},
-		values: {
+		settings: {
 			type: Object,
 			required: true
 		},
@@ -70,14 +65,13 @@ export default {
 	},
 	data() {
 		return {
-			fields: null, // keys + values combined
-			settings: {
-				ech: []
-			}
+			values: {}
 		};
 	},
-	mounted() {
-
+	created() {
+		for (const [k, v] of Object.entries(this.settings)) {
+			this.$set(this.values, k, v.value);
+		}
 	},
 	methods: {
 		getMin(field) {
@@ -113,6 +107,9 @@ export default {
 
 				return [...acc, ...item.allow];
 			}, []);
+		},
+		getValues() {
+			return this.values;
 		}
 	}
 };

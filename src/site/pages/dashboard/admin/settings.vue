@@ -15,7 +15,7 @@
 						<h5 class="title is-5 has-text-grey-lighter">
 							{{ sectionName }}
 						</h5>
-						<JoiObject :keys="fields" :values="{}" />
+						<JoiObject ref="jois" :settings="fields" />
 					</div>
 
 					<div class="mb2 mt2 text-center">
@@ -49,13 +49,13 @@ export default {
 		}),
 		sectionedSettings() {
 			return Object.entries(this.settingsSchema.keys).reduce((acc, [key, field]) => {
-				if (!field.metas) acc['Other'] = { ...acc['Other'], [key]: field };
+				if (!field.metas) acc.Other = { ...acc.Other, [key]: field };
 
 				const sectionMeta = field.metas.find(e => e.section);
 				if (sectionMeta) {
 					acc[sectionMeta.section] = { ...acc[sectionMeta.section], [key]: field };
 				} else {
-					acc['Other'] = { ...acc['Other'], [key]: field };
+					acc.Other = { ...acc.Other, [key]: field };
 				}
 
 				return acc;
@@ -64,18 +64,26 @@ export default {
 	},
 	async asyncData({ app }) {
 		await app.store.dispatch('admin/fetchSettings');
-		// TODO: Implement merging fields with values from the db (no endpoint to fetch settings yet)
 		await app.store.dispatch('admin/getSettingsSchema');
+		await app.store.commit('admin/populateSchemaWithValues');
 	},
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
 				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
-				onConfirm: () => this.restartService()
+				onConfirm: () => this.saveSettings()
 			});
 		},
-		restartService() {
-			this.$handler.executeAction('admin/restartService');
+		saveSettings() {
+			// handle refs
+			let settings = {};
+			for (const joiComponent of this.$refs.jois) {
+				settings = { ...settings, ...joiComponent.getValues() };
+			}
+
+			this.$handler.executeAction('admin/saveSettings', settings);
+			// restart service
+			// this.$handler.executeAction('admin/restartService');
 		}
 	},
 	head() {
