@@ -4,7 +4,7 @@ export const state = () => ({
 	URL: process.env.development ? 'http://localhost:5000' : '/',
 	baseURL: `${process.env.development ? 'http://localhost:5000' : ''}/api`,
 	serviceName: '',
-	maxFileSize: '',
+	maxUploadSize: 0,
 	chunkSize: 0,
 	publicMode: false,
 	userAccounts: false
