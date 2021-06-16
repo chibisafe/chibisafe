@@ -1,11 +1,33 @@
 export const state = () => ({
 	development: process.env.development,
-	version: process.env.version,
+	version: '',
 	URL: process.env.development ? 'http://localhost:5000' : '/',
 	baseURL: `${process.env.development ? 'http://localhost:5000' : ''}/api`,
-	serviceName: process.env.serviceName,
-	maxFileSize: process.env.maxFilesize,
-	chunkSize: process.env.chunkSize,
-	publicMode: process.env.publicMode,
-	userAccounts: process.env.userAccounts
+	serviceName: '',
+	maxFileSize: '',
+	chunkSize: 0,
+	publicMode: false,
+	userAccounts: false
 });
+
+export const mutations = {
+	setSettings(state, { config }) {
+		state.version = `v${config.version}`;
+		state.serviceName = config.serviceName;
+		state.maxUploadSize = config.maxUploadSize;
+		state.filenameLength = config.filenameLength;
+		state.albumLinkLength = config.albumLinkLength;
+		state.chunkSize = config.chunkSize;
+		state.publicMode = config.publicMode;
+		state.userAccounts = config.userAccounts;
+	}
+};
+
+export const actions = {
+	async fetchSettings({ commit }) {
+		const response = await this.$axios.$get('service/config');
+		commit('setSettings', response);
+
+		return response;
+	}
+};

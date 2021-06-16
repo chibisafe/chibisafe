@@ -60,13 +60,7 @@ export default {
 		linkExactActiveClass: 'is-active'
 	},
 	env: {
-		development: process.env.NODE_ENV !== 'production',
-		version: process.env.npm_package_version,
-		serviceName: Util.config.serviceName,
-		maxFileSize: Util.config.maxSize,
-		chunkSize: Util.config.chunkSize,
-		publicMode: Util.config.publicMode,
-		userAccounts: Util.config.userAccounts
+		development: process.env.NODE_ENV !== 'production'
 	},
 	axios: {
 		baseURL: `${process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000'}/api`
