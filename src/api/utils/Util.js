@@ -39,6 +39,7 @@ class Util {
 
 	static getEnvironmentDefaults() {
 		return {
+			domain: process.env.DOMAIN,
 			routePrefix: process.env.ROUTE_PREFIX || '/api',
 			rateLimitWindow: process.env.RATE_LIMIT_WINDOW || 2,
 			rateLimitMax: process.env.RATE_LIMIT_MAX || 5,

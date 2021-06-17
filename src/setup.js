@@ -15,6 +15,11 @@ async function start() {
 	const wizard = [
 		{
 			type: 'input',
+			query: 'Full domain this instance is gonna be running on (Ex: https://my-super-chibisafe.xyz):',
+			handle: 'DOMAIN'
+		},
+		{
+			type: 'input',
 			query: 'Port to run chibisafe in? (default: 5000)',
 			handle: 'SERVER_PORT'
 		},
@@ -55,6 +60,7 @@ async function start() {
 	let envfile = '';
 
 	const defaultSettings = {
+		DOMAIN: response.DOMAIN,
 		SERVER_PORT: response.SERVER_PORT || 5000,
 		DB_CLIENT: response.DB_CLIENT,
 		DB_HOST: response.DB_HOST || null,
