@@ -10,6 +10,15 @@ export const state = () => ({
 	userAccounts: false
 });
 
+export const actions = {
+	async fetchSettings({ commit }) {
+		const response = await this.$axios.$get('service/config');
+		commit('setSettings', response);
+
+		return response;
+	}
+};
+
 export const mutations = {
 	setSettings(state, { config }) {
 		state.version = `v${config.version}`;
@@ -20,14 +29,5 @@ export const mutations = {
 		state.chunkSize = config.chunkSize;
 		state.publicMode = config.publicMode;
 		state.userAccounts = config.userAccounts;
-	}
-};
-
-export const actions = {
-	async fetchSettings({ commit }) {
-		const response = await this.$axios.$get('service/config');
-		commit('setSettings', response);
-
-		return response;
 	}
 };

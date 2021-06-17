@@ -15,7 +15,7 @@
 						<h5 class="title is-5 has-text-grey-lighter">
 							{{ sectionName }}
 						</h5>
-						<JoiObject ref="jois" :settings="fields" />
+						<JoiObject ref="jois" :settings="fields" :errors="validationErrors" />
 					</div>
 
 					<div class="mb2 mt2 text-center">
@@ -42,6 +42,11 @@ export default {
 		JoiObject
 	},
 	middleware: ['auth', 'admin'],
+	data() {
+		return {
+			validationErrors: {}
+		};
+	},
 	computed: {
 		...mapState({
 			settings: state => state.admin.settings,
@@ -74,16 +79,24 @@ export default {
 				onConfirm: () => this.saveSettings()
 			});
 		},
-		saveSettings() {
+		async saveSettings() {
 			// handle refs
 			let settings = {};
 			for (const joiComponent of this.$refs.jois) {
 				settings = { ...settings, ...joiComponent.getValues() };
 			}
 
-			this.$handler.executeAction('admin/saveSettings', settings);
-			// restart service
-			// this.$handler.executeAction('admin/restartService');
+			try {
+				await this.$store.dispatch('admin/saveSettings', settings);
+				this.$set(this, 'validationErrors', {});
+
+				await this.$store.dispatch('config/fetchSettings');
+				this.$handler.executeAction('admin/restartService');
+			} catch (e) {
+				if (e.response?.data?.errors) {
+					this.$set(this, 'validationErrors', e.response.data.errors);
+				}
+			}
 		}
 	},
 	head() {

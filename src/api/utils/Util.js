@@ -64,7 +64,7 @@ class Util {
 
 	static async writeConfigToDb(config) {
 		// TODO: Check that the config passes the joi schema validation
-		if (!config || !config.key || !config.key) return;
+		if (!config || !config.key) return;
 		try {
 			config.value = JSON.stringify(config.value);
 			await db.table('settings').insert(config);

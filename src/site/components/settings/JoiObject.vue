@@ -3,7 +3,8 @@
 		<div v-for="[key, field] in Object.entries(settings)" :key="key">
 			<b-field
 				:label="field.flags.label"
-				:message="field.flags.description"
+				:message="getErrorMessage(key) || field.flags.description"
+				:type="getValidationType(key)"
 				class="field"
 				horizontal>
 				<b-input
@@ -43,7 +44,6 @@
 			</b-field>
 			<!--
 				TODO: Add asterisk to required fields
-				TODO: Implement showing errors returned by backend/joi
 			-->
 		</div>
 	</div>
@@ -108,6 +108,14 @@ export default {
 				return [...acc, ...item.allow];
 			}, []);
 		},
+		getValidationType(fieldName) {
+			if (Array.isArray(this.errors[fieldName])) return 'is-danger';
+			return null;
+		},
+		getErrorMessage(fieldName) {
+			if (Array.isArray(this.errors[fieldName])) return this.errors[fieldName].join('\n');
+			return null;
+		},
 		getValues() {
 			return this.values;
 		}
@@ -119,6 +127,10 @@ export default {
 
 	.field {
 		margin-bottom: 1em;
+
+		::v-deep .help.is-danger {
+			white-space: pre-line;
+		}
 	}
 
 	.taginp {

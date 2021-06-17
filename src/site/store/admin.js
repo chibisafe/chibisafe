@@ -28,7 +28,6 @@ export const actions = {
 	},
 	async saveSettings({ commit }, settings) {
 		const response = await this.$axios.$post('service/config', { settings });
-		commit('setSettings', response);
 
 		return response;
 	},

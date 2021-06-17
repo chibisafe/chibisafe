@@ -1,19 +1,36 @@
-const Joi = require('joi');
-
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
 
 const { schema } = require('../../structures/Setting');
+
+const joiOptions = {
+	abortEarly: false, // include all errors
+	allowUnknown: true, // ignore unknown props
+	stripUnknown: true // remove unknown props
+};
 
 class configGET extends Route {
 	constructor() {
 		super('/service/config', 'post', { adminOnly: true });
 	}
 
-	run(req, res) {
+	async run(req, res) {
 		const { settings } = req.body;
-		const validationRes = schema.validate(settings, { abortEarly: false });
-		console.log(JSON.stringify(validationRes));
+		const { error, value } = schema.validate(settings, joiOptions);
+		if (error) {
+			return res.status(400).json({
+				errors: error.details.reduce((acc, v) => {
+					for (const p of v.path) {
+						acc[p] = (acc[p] || []).concat(v.message);
+					}
+					return acc;
+				}, {})
+			});
+		}
+
+		await Util.writeConfigToDb(value);
+
+		return res.status(200).json({ value });
 	}
 }
 

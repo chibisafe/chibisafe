@@ -116,9 +116,9 @@ const schema = Joi.object({
 		.description('Allows people to create new accounts'),
 
 	// Social and sharing
-	metaThemeColor: Joi.string().hex().min(3)
-		.max(6)
-		.default('20222b')
+	metaThemeColor: Joi.string().pattern(/^#([0-9a-f]{6}|[0-9a-f]{3})$/i).min(4)
+		.max(7)
+		.default('#20222b')
 		.meta({
 			section: Sections.SOCIAL_AND_SHARING
 		})
