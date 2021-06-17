@@ -10,8 +10,8 @@ exports.seed = async db => {
 	try {
 		const defaults = Util.getEnvironmentDefaults();
 		const keys = Object.keys(defaults);
-		for await (const item of keys) {
-			Util.writeConfigToDb({
+		for (const item of keys) {
+			await Util.writeConfigToDb({
 				key: item,
 				value: defaults[item]
 			});
