@@ -28,7 +28,15 @@ class configGET extends Route {
 			});
 		}
 
-		await Util.writeConfigToDb(value);
+		await Util.wipeConfigDb();
+
+		const keys = Object.keys(value);
+		for await (const item of keys) {
+			Util.writeConfigToDb({
+				key: item,
+				value: value[item]
+			});
+		}
 
 		return res.status(200).json({ value });
 	}

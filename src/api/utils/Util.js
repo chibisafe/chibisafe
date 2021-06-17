@@ -62,7 +62,15 @@ class Util {
 		};
 	}
 
-	static async writeConfigToDb(config) {
+	static async wipeConfigDb() {
+		try {
+			await db.table('settings').del();
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	static async writeConfigToDb(config, wipe = false) {
 		// TODO: Check that the config passes the joi schema validation
 		if (!config || !config.key) return;
 		try {
