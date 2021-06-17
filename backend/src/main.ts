@@ -4,7 +4,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import rfs from 'rotating-file-stream';
-import ratelimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit';
+import jetpack from 'fs-jetpack';
+import cron from 'cron';
 // import { loadNuxt, build } from 'nuxt';
 
 import Routes from './structures/routes';
@@ -12,6 +14,12 @@ import Routes from './structures/routes';
 const server = express();
 
 const start = async () => {
+	// Create the folders needed for uploads
+	jetpack.dir('uploads/chunks');
+	jetpack.dir('uploads/thumbs/square');
+	jetpack.dir('uploads/thumbs/preview');
+
+	// Create the server and set it up
 	server.use('trust proxy');
 	server.use(helmet());
 	server.use(cors());
@@ -28,12 +36,6 @@ const start = async () => {
 		return res.status(405).json({ message: 'Incorrect `Accept` header provided' });
 	});
 
-	const rateLimiter = new RateLimit({
-		windowMs: parseInt(process.env.RATE_LIMIT_WINDOW ?? '2000', 10),
-		max: parseInt(process.env.RATE_LIMIT_MAX ?? '5', 10),
-		delayMs: 0
-	});
-
 	// Set up logs for production and dev environments
 	if (process.env.NODE_ENV === 'production') {
 		const accessLogStream = rfs.createStream('access.log', {
@@ -46,19 +48,28 @@ const start = async () => {
 	}
 
 	// Apply rate limiting to the api only
-	server.use('/api/', rateLimiter);
+	server.use('/api/', rateLimit({
+		windowMs: parseInt(process.env.RATE_LIMIT_WINDOW ?? '2000', 10),
+		max: parseInt(process.env.RATE_LIMIT_MAX ?? '5', 10),
+		message: 'Too many requests from this IP. Slow down dude.'
+	}));
 
 	// Scan and load routes into express
 	await Routes.load(server);
-	server.listen(process.env.port, () => {
+
+	// Listen for incoming connections
+	const listen = server.listen(process.env.port, () => {
 		console.log(`> Chibisafe Server started on port ${process.env.port ?? 5000}.`);
 	});
+	listen.setTimeout(600000);
 
-	if (process.env.nuxtStatic) {
-		server.use(express.static(path.join(__dirname, '..', '..', 'frontend', 'dist')));
-	} else {
-		// void serveNuxt();
-	}
+	// Serve the uploads
+	server.use(express.static(path.join(__dirname, '../../uploads')));
+
+	// void serveNuxt();
+
+	// TODO: move into the database config. (we can just show the crontab line for start, later on we can add dropdowns and stuff)
+	new cron.CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
 };
 
 /*

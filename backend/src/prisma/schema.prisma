@@ -1,0 +1,120 @@
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider          = "sqlite"
+	url               = "file:../../../database/database.sqlite"
+	shadowDatabaseUrl = "file:../../../database/shadow.sqlite"
+}
+
+model albums {
+	id        Int       @id @default(autoincrement())
+	userId    Int?
+	name      String?
+	zippedAt  DateTime?
+	createdAt DateTime?
+	editedAt  DateTime?
+	nsfw      Boolean?  @default(false)
+
+	@@unique([userId, name], name: "albums_userid_name_unique")
+}
+
+model albumsFiles {
+	id      Int  @id @default(autoincrement())
+	albumId Int?
+	fileId  Int?
+
+	@@unique([albumId, fileId], name: "albumsfiles_albumid_fileid_unique")
+}
+
+model albumsLinks {
+	id      Int  @id @default(autoincrement())
+	albumId Int?
+	linkId  Int? @unique
+}
+
+model bans {
+	id        Int       @id @default(autoincrement())
+	ip        String?
+	createdAt DateTime?
+}
+
+model fileTags {
+	id     Int  @id @default(autoincrement())
+	fileId Int?
+	tagId  Int?
+
+	@@unique([fileId, tagId], name: "filetags_fileid_tagid_unique")
+}
+
+model files {
+	id        Int       @id @default(autoincrement())
+	userId    Int?
+	name      String?
+	original  String?
+	type      String?
+	size      Int?
+	hash      String?
+	ip        String?
+	createdAt DateTime?
+	editedAt  DateTime?
+}
+
+model links {
+	id             Int       @id @default(autoincrement())
+	userId         Int?
+	albumId        Int?
+	identifier     String?
+	views          Int?
+	enabled        Boolean?
+	enableDownload Boolean?
+	expiresAt      DateTime?
+	createdAt      DateTime?
+	editedAt       DateTime?
+
+	@@unique([userId, albumId, identifier], name: "links_userid_albumid_identifier_unique")
+}
+
+model settings {
+	id        Int                  @id @default(autoincrement())
+	key   String?
+	value String?
+}
+
+model statistics {
+	id        Int                  @id @default(autoincrement())
+	batchId   Int?
+	type      String?
+	// TODO: This was JSON before so make sure to stringify and parse when saving stats
+	data      String?
+	createdAt DateTime?
+
+	@@unique([batchId, type], name: "statistics_batchid_type_unique")
+}
+
+model tags {
+	id        Int       @id @default(autoincrement())
+	uuid      String?
+	userId    Int?
+	name      String?
+	createdAt DateTime?
+	editedAt  DateTime?
+
+	@@unique([userId, name], name: "tags_userid_name_unique")
+}
+
+model users {
+	id               Int       @id @default(autoincrement())
+	username         String?
+	password         String?
+	enabled          Boolean?
+	isAdmin          Boolean?
+	apiKey           String?
+	passwordEditedAt DateTime?
+	apiKeyEditedAt   DateTime?
+	createdAt        DateTime?
+	editedAt         DateTime?
+
+	@@unique([username, apiKey], name: "users_username_apikey_unique")
+}
