@@ -1,0 +1,5 @@
+node_modules/
+/database/database.sqlite
+/database/database.sqlite-journal
+/dist/
+.env

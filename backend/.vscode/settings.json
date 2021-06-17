@@ -1,0 +1,23 @@
+{
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "files.insertFinalNewline": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "[javascript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "vetur.format.enable": true,
+    "files.eol": "\n",
+    "eslint.alwaysShowStatus": true,
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  }
+  

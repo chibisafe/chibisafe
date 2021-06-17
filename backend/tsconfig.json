@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "esnext",
+		"module": "commonjs",
+		"jsx": "preserve",
+		"lib": ["esnext", "dom"],
+		"rootDir": "./",
+		"outDir": "./dist",
+		"sourceRoot": "./"
+	},
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
+}
