@@ -75,7 +75,7 @@ export default {
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
-				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
+				message: 'Certain changes need for you to manually restart your chibisafe instance, please do so from the terminal. Continue?',
 				onConfirm: () => this.saveSettings()
 			});
 		},
