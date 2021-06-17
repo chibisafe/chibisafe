@@ -91,7 +91,7 @@ export default {
 				this.$set(this, 'validationErrors', {});
 
 				await this.$store.dispatch('config/fetchSettings');
-				this.$handler.executeAction('admin/restartService');
+				// this.$handler.executeAction('admin/restartService');
 			} catch (e) {
 				if (e.response?.data?.errors) {
 					this.$set(this, 'validationErrors', e.response.data.errors);
