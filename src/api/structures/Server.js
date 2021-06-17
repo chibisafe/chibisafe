@@ -64,7 +64,6 @@ class Server {
 	}
 
 	registerAllTheRoutes() {
-		console.log(Util.config);
 		jetpack.find(this.routesFolder, { matching: '*.js' }).forEach(routeFile => {
 			const RouteClass = require(path.join('../../../', routeFile));
 			let routes = [RouteClass];
@@ -112,7 +111,6 @@ class Server {
 
 const start = async () => {
 	const conf = await Util.config;
-	console.log(conf);
 	new Server().start();
 };
 
