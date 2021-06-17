@@ -5,6 +5,11 @@ if (!process.env.SERVER_PORT) {
 	process.exit(0);
 }
 
+if (!process.env.DOMAIN) {
+	console.log('You failed to provide a domain for your instance. Edit the .env file manually and fix it.');
+	process.exit(0);
+}
+
 const { loadNuxt, build } = require('nuxt');
 const express = require('express');
 const helmet = require('helmet');
