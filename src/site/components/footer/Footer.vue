@@ -21,7 +21,7 @@
 						v-if="loggedIn"
 						@click="createShareXThing">ShareX Config</a>
 					<a href="https://chrome.google.com/webstore/detail/lolisafe-uploader/enkkmplljfjppcdaancckgilmgoiofnj">Chrome Extension</a>
-					<a href="https://www.icloud.com/shortcuts/81f72d90163c43de803258d923d9a343">iOS Shortcut</a>
+					<a href="https://www.icloud.com/shortcuts/48ac849f13cc4b50b42bc1a478bddcb6">iOS Shortcut</a>
 				</div>
 			</div>
 		</div>
