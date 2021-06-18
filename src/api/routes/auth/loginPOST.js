@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 const JWT = require('jsonwebtoken');
 const Route = require('../../structures/Route');
+const Util = require('../../utils/Util');
 
 class loginPOST extends Route {
 	constructor() {
@@ -37,7 +38,7 @@ class loginPOST extends Route {
 			iss: 'chibisafe',
 			sub: user.id,
 			iat: moment.utc().valueOf()
-		}, process.env.SECRET, { expiresIn: '30d' });
+		}, Util.config.secret, { expiresIn: '30d' });
 
 		return res.json({
 			message: 'Successfully logged in.',

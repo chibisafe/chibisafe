@@ -12,7 +12,7 @@ class registerPOST extends Route {
 	async run(req, res, db) {
 		// Only allow admins to create new accounts if the sign up is deactivated
 		const user = await Util.isAuthorized(req);
-		if ((!user || !user.isAdmin) && process.env.USER_ACCOUNTS === 'false') return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
+		if ((!user || !user.isAdmin) && !Util.config.userAccounts) return res.status(401).json({ message: 'Creation of new accounts is currently disabled' });
 
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { username, password } = req.body;

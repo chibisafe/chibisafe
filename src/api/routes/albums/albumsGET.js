@@ -37,7 +37,7 @@ class albumsGET extends Route {
 
 			// Fetch thumbnails and stuff
 			for (let file of files) {
-				file = Util.constructFilePublicLink(file);
+				file = Util.constructFilePublicLink(req, file);
 			}
 
 			album.fileCount = fileCount[0].count;

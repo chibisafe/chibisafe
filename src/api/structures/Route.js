@@ -2,6 +2,7 @@ const JWT = require('jsonwebtoken');
 const db = require('./Database');
 const moment = require('moment');
 const log = require('../utils/Log');
+const Util = require('../utils/Util');
 
 class Route {
 	constructor(path, method, options) {
@@ -30,7 +31,7 @@ class Route {
 		const token = req.headers.authorization.split(' ')[1];
 		if (!token) return res.status(401).json({ message: 'No authorization header provided' });
 
-		return JWT.verify(token, process.env.SECRET, async (error, decoded) => {
+		return JWT.verify(token, Util.config.secret, async (error, decoded) => {
 			if (error) {
 				log.error(error);
 				return res.status(401).json({ message: 'Invalid token' });

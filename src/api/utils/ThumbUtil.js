@@ -10,11 +10,12 @@ class ThumbUtil {
 	static imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
 	static videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
-	static thumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs');
-	static squareThumbPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'square');
-	static videoPreviewPath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, 'thumbs', 'preview');
+	static thumbPath = path.join(__dirname, '../../../', 'uploads', 'thumbs');
+	static squareThumbPath = path.join(__dirname, '../../../', 'uploads', 'thumbs', 'square');
+	static videoPreviewPath = path.join(__dirname, '../../../', 'uploads', 'thumbs', 'preview');
 
 	static generateThumbnails(filename) {
+		if (!filename) return;
 		const ext = path.extname(filename).toLowerCase();
 		const output = `${filename.slice(0, -ext.length)}.webp`;
 		const previewOutput = `${filename.slice(0, -ext.length)}.webm`;
@@ -27,7 +28,7 @@ class ThumbUtil {
 	}
 
 	static async generateThumbnailForImage(filename, output) {
-		const filePath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, filename);
+		const filePath = path.join(__dirname, '../../../', 'uploads', filename);
 
 		const file = await jetpack.readAsync(filePath, 'buffer');
 		await sharp(file)
@@ -41,7 +42,7 @@ class ThumbUtil {
 	}
 
 	static async generateThumbnailForVideo(filename, output) {
-		const filePath = path.join(__dirname, '../../../', process.env.UPLOAD_FOLDER, filename);
+		const filePath = path.join(__dirname, '../../../', 'uploads', filename);
 
 		ffmpeg(filePath)
 			.thumbnail({

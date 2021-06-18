@@ -11,112 +11,18 @@
 					</h2>
 					<hr>
 
-					<b-field
-						label="Service name"
-						message="Please enter the name which this service is gonna be identified as"
-						horizontal>
-						<b-input
-							v-model="settings.serviceName"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Upload folder"
-						message="Where to store the files relative to the working directory"
-						horizontal>
-						<b-input
-							v-model="settings.uploadFolder"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Links per album"
-						message="Maximum links allowed per album"
-						horizontal>
-						<b-input
-							v-model="settings.linksPerAlbum"
-							class="chibisafe-input"
-							type="number"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Max upload size"
-						message="Maximum allowed file size in MB"
-						horizontal>
-						<b-input
-							v-model="settings.maxUploadSize"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Filename length"
-						message="How many characters long should the generated filenames be"
-						horizontal>
-						<b-input
-							v-model="settings.filenameLength"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Album link length"
-						message="How many characters a link for an album should have"
-						horizontal>
-						<b-input
-							v-model="settings.albumLinkLength"
-							class="chibisafe-input"
-							expanded />
-					</b-field>
-
-					<b-field
-						label="Generate thumbnails"
-						message="Generate thumbnails when uploading a file if possible"
-						horizontal>
-						<b-switch
-							v-model="settings.generateThumbnails"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Generate zips"
-						message="Allow generating zips to download entire albums"
-						horizontal>
-						<b-switch
-							v-model="settings.generateZips"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Public mode"
-						message="Enable anonymous uploades"
-						horizontal>
-						<b-switch
-							v-model="settings.publicMode"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
-
-					<b-field
-						label="Enable creating account"
-						message="Enable creating new accounts in the platform"
-						horizontal>
-						<b-switch
-							v-model="settings.enableAccounts"
-							:true-value="true"
-							:false-value="false" />
-					</b-field>
+					<div v-for="[sectionName, fields] in Object.entries(sectionedSettings)" :key="sectionName" class="block">
+						<h5 class="title is-5 has-text-grey-lighter">
+							{{ sectionName }}
+						</h5>
+						<JoiObject ref="jois" :settings="fields" :errors="validationErrors" />
+					</div>
 
 					<div class="mb2 mt2 text-center">
 						<button
 							class="button is-primary"
 							@click="promptRestartService">
-							Save and restart service
+							Save settings
 						</button>
 					</div>
 				</div>
@@ -128,27 +34,69 @@
 <script>
 import { mapState } from 'vuex';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
+import JoiObject from '~/components/settings/JoiObject.vue';
 
 export default {
 	components: {
-		Sidebar
+		Sidebar,
+		JoiObject
 	},
 	middleware: ['auth', 'admin'],
-	computed: mapState({
-		settings: state => state.admin.settings
-	}),
+	data() {
+		return {
+			validationErrors: {}
+		};
+	},
+	computed: {
+		...mapState({
+			settings: state => state.admin.settings,
+			settingsSchema: state => state.admin.settingsSchema
+		}),
+		sectionedSettings() {
+			return Object.entries(this.settingsSchema.keys).reduce((acc, [key, field]) => {
+				if (!field.metas) acc.Other = { ...acc.Other, [key]: field };
+
+				const sectionMeta = field.metas.find(e => e.section);
+				if (sectionMeta) {
+					acc[sectionMeta.section] = { ...acc[sectionMeta.section], [key]: field };
+				} else {
+					acc.Other = { ...acc.Other, [key]: field };
+				}
+
+				return acc;
+			}, {});
+		}
+	},
 	async asyncData({ app }) {
 		await app.store.dispatch('admin/fetchSettings');
+		await app.store.dispatch('admin/getSettingsSchema');
+		await app.store.commit('admin/populateSchemaWithValues');
 	},
 	methods: {
 		promptRestartService() {
 			this.$buefy.dialog.confirm({
-				message: 'Keep in mind that restarting only works if you have PM2 or something similar set up. Continue?',
-				onConfirm: () => this.restartService()
+				message: 'Certain changes need for you to manually restart your chibisafe instance, please do so from the terminal. Continue?',
+				onConfirm: () => this.saveSettings()
 			});
 		},
-		restartService() {
-			this.$handler.executeAction('admin/restartService');
+		async saveSettings() {
+			// handle refs
+			let settings = {};
+			for (const joiComponent of this.$refs.jois) {
+				settings = { ...settings, ...joiComponent.getValues() };
+			}
+
+			try {
+				await this.$store.dispatch('admin/saveSettings', settings);
+				this.$set(this, 'validationErrors', {});
+
+				await this.$store.dispatch('config/fetchSettings');
+				// this.$handler.executeAction('admin/restartService');
+			} catch (e) {
+				if (e.response?.data?.errors) {
+					this.$set(this, 'validationErrors', e.response.data.errors);
+				}
+			}
 		}
 	},
 	head() {

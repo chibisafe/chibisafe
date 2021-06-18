@@ -9,19 +9,19 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"setup": "node src/setup.js && npm run migrate && npm run seed && npm run build",
-		"build": "nuxt build",
-		"start": "npm run migrate && cross-env NODE_ENV=production node src/api/structures/Server",
-		"dev": "nuxt",
+		"setup": "node src/setup.js && npm run migrate && npm run seed",
+		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/structures/Server",
+		"dev": "nodemon src/api/structures/Server",
 		"migrate": "knex migrate:latest",
 		"seed": "knex seed:run",
-		"api": "node src/api/structures/Server",
 		"update": "git pull && npm install && npm run migrate && npm run build && npm run restart",
-		"restart": "pm2 restart lolisafe",
+		"restart": "pm2 restart chibisafe",
+		"overwrite-config": "cross-env OVERWRITE_SETTINGS=true",
 		"test:vue": "jest --testPathPattern=src/site",
 		"test:api": "jest --testPathPattern=src/tests/api",
 		"test:e2e": "jest --testPathPattern=src/tests/e2e",
-		"tests": "npm run test:api && npm run test:vue && npm run test:e2e"
+		"tests": "npm run test:api && npm run test:vue && npm run test:e2e",
+		"sqlite": "sqlite_web -p 5001 database/database.sqlite"
 	},
 	"repository": {
 		"type": "git",
@@ -59,6 +59,7 @@
 		"fs-jetpack": "^4.1.0",
 		"helmet": "^4.5.0",
 		"imagesloaded": "^4.1.4",
+		"joi": "^17.3.0",
 		"jsonwebtoken": "^8.5.1",
 		"masonry-layout": "^4.2.2",
 		"moment": "^2.29.1",
@@ -122,8 +123,11 @@
 	"prisma": {
 		"schema": "src/prisma/schema.prisma"
 	},
-	"volta": {
-		"node": "16.3.0"
+	"nodemonConfig": {
+		"watch": [
+			"src/api/*"
+		],
+		"delay": 2500
 	},
 	"keywords": [
 		"chibisafe",
@@ -135,5 +139,8 @@
 		"ssr",
 		"file uploader",
 		"images"
-	]
+	],
+	"volta": {
+		"node": "16.3.0"
+	}
 }

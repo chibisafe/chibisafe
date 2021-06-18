@@ -3,7 +3,7 @@ require('dotenv').config();
 const nodePath = require('path');
 const moment = require('moment');
 const jetpack = require('fs-jetpack');
-const ThumbUtil = require('./utils/ThumbUtil');
+const ThumbUtil = require('../utils/ThumbUtil');
 
 const oldDb = require('knex')({
 	client: 'sqlite3',
@@ -19,12 +19,7 @@ const newDb = require('knex')({
 		filename: nodePath.join(__dirname, '../../database/', 'database.sqlite')
 	},
 	postProcessResponse: result => {
-		const booleanFields = [
-			'enabled',
-			'enableDownload',
-			'isAdmin',
-			'nsfw'
-		];
+		const booleanFields = ['enabled', 'enableDownload', 'isAdmin', 'nsfw', 'generateZips', 'publicMode', 'userAccounts'];
 
 		const processResponse = row => {
 			Object.keys(row).forEach(key => {

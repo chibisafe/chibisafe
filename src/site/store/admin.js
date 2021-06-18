@@ -12,22 +12,37 @@ export const state = () => ({
 	},
 	file: {},
 	settings: {},
-	statistics: {}
+	statistics: {},
+	settingsSchema: {
+		type: null,
+		keys: {}
+	}
 });
 
 export const actions = {
 	async fetchSettings({ commit }) {
-		const response = await this.$axios.$get('service/config');
+		const response = await this.$axios.$get('service/config/all');
 		commit('setSettings', response);
+
+		return response;
+	},
+	async saveSettings({ commit }, settings) {
+		const response = await this.$axios.$post('service/config', { settings });
 
 		return response;
 	},
 	async fetchStatistics({ commit }, category) {
 		const url = category ? `service/statistics/${category}` : 'service/statistics';
 		const response = await this.$axios.$get(url);
-		commit('setStatistics', { statistics: response.statistics, category: category });
+		commit('setStatistics', { statistics: response.statistics, category });
 
 		return response;
+	},
+	async getSettingsSchema({ commit }) {
+		// XXX: Maybe move to the config store?
+		const response = await this.$axios.$get('service/config/schema');
+
+		commit('setSettingsSchema', response);
 	},
 	async fetchUsers({ commit }) {
 		const response = await this.$axios.$get('admin/users');
@@ -95,15 +110,18 @@ export const actions = {
 };
 
 export const mutations = {
-	setSettings(state, { config }) {
-		state.settings = config;
-	},
 	setStatistics(state, { statistics, category }) {
 		if (category) {
 			state.statistics[category] = statistics[category];
 		} else {
 			state.statistics = statistics;
 		}
+	},
+	setSettings(state, { config }) {
+		state.settings = config;
+	},
+	setSettingsSchema(state, { schema }) {
+		state.settingsSchema = schema;
 	},
 	setUsers(state, { users }) {
 		state.users = users;
@@ -133,6 +151,13 @@ export const mutations = {
 			}
 			if (isAdmin !== undefined) {
 				state.user.isAdmin = isAdmin;
+			}
+		}
+	},
+	populateSchemaWithValues({ settings, settingsSchema }) {
+		for (const [key, value] of Object.entries(settings)) {
+			if (settingsSchema.keys?.[key] !== undefined) {
+				settingsSchema.keys[key].value = value;
 			}
 		}
 	}

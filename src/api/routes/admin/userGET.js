@@ -37,7 +37,7 @@ class usersGET extends Route {
 			}
 
 			for (let file of files) {
-				file = Util.constructFilePublicLink(file);
+				file = Util.constructFilePublicLink(req, file);
 			}
 
 			return res.json({
