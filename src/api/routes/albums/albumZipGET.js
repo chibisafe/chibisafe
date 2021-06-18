@@ -38,13 +38,13 @@ class albumGET extends Route {
 			If the date when the album was zipped is greater than the album's last edit, we just send the zip to the user
 		*/
 		if (album.zippedAt > album.editedAt) {
-			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
+			const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.userId}-${album.id}.zip`);
 			const exists = await jetpack.existsAsync(filePath);
 			/*
 				Make sure the file exists just in case, and if not, continue to it's generation.
 			*/
 			if (exists) {
-				const fileName = `${process.env.SERVICE_NAME}-${identifier}.zip`;
+				const fileName = `${Util.config.serviceName}-${identifier}.zip`;
 				return res.download(filePath, fileName);
 			}
 		}
@@ -77,8 +77,8 @@ class albumGET extends Route {
 				.update('zippedAt', db.fn.now())
 				.wasMutated();
 
-			const filePath = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'zips', `${album.userId}-${album.id}.zip`);
-			const fileName = `${process.env.SERVICE_NAME}-${identifier}.zip`;
+			const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.userId}-${album.id}.zip`);
+			const fileName = `${Util.config.serviceName}-${identifier}.zip`;
 			return res.download(filePath, fileName);
 		} catch (error) {
 			log.error(error);

@@ -43,7 +43,7 @@ class albumGET extends Route {
 
 		// eslint-disable-next-line no-restricted-syntax
 		for (let file of files) {
-			file = Util.constructFilePublicLink(file);
+			file = Util.constructFilePublicLink(req, file);
 		}
 
 		return res.json({

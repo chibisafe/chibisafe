@@ -1,18 +1,33 @@
 export const state = () => ({
-	development: true,
-	version: '4.0.0',
-	URL: 'http://localhost:8080',
-	baseURL: 'http://localhost:8080/api',
+	development: process.env.development,
+	version: '',
+	URL: process.env.development ? 'http://localhost:5000' : '/',
+	baseURL: `${process.env.development ? 'http://localhost:5000' : ''}/api`,
 	serviceName: '',
-	maxFileSize: 100,
-	chunkSize: 90,
-	maxLinksPerAlbum: 5,
+	maxUploadSize: 0,
+	chunkSize: 0,
 	publicMode: false,
 	userAccounts: false
 });
 
+export const actions = {
+	async fetchSettings({ commit }) {
+		const response = await this.$axios.$get('service/config');
+		commit('setSettings', response);
+
+		return response;
+	}
+};
+
 export const mutations = {
-	set(state, config) {
-		Object.assign(state, config);
+	setSettings(state, { config }) {
+		state.version = `v${config.version}`;
+		state.serviceName = config.serviceName;
+		state.maxUploadSize = config.maxUploadSize;
+		state.filenameLength = config.filenameLength;
+		state.albumLinkLength = config.albumLinkLength;
+		state.chunkSize = config.chunkSize;
+		state.publicMode = config.publicMode;
+		state.userAccounts = config.userAccounts;
 	}
 };

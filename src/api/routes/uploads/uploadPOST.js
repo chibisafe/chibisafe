@@ -8,8 +8,8 @@ const multerStorage = require('../../utils/multerStorage');
 
 const chunksData = {};
 const chunkedUploadsTimeout = 1800000;
-const chunksDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER, 'chunks');
-const uploadDir = path.join(__dirname, '../../../../', process.env.UPLOAD_FOLDER);
+const chunksDir = path.join(__dirname, '../../../../uploads/chunks');
+const uploadDir = path.join(__dirname, '../../../../uploads');
 
 
 const cleanUpChunks = async (uuid, onTimeout) => {
@@ -72,7 +72,7 @@ const initChunks = async uuid => {
 const executeMulter = multer({
 	// Guide: https://github.com/expressjs/multer#limits
 	limits: {
-		fileSize: parseInt(process.env.MAX_SIZE, 10) * (1000 * 1000),
+		fileSize: Util.config.maxSize * (1000 * 1000),
 		// Maximum number of non-file fields.
 		// Dropzone.js will add 6 extra fields for chunked uploads.
 		// We don't use them for anything else.
@@ -257,7 +257,7 @@ class uploadPOST extends Route {
 
 	async run(req, res, db) {
 		const user = await Util.isAuthorized(req);
-		if (!user && process.env.PUBLIC_MODE === 'false') return res.status(401).json({ message: 'Not authorized to use this resource' });
+		if (!user && !Util.config.publicMode) return res.status(401).json({ message: 'Not authorized to use this resource' });
 		const { finishedchunks } = req.headers;
 		const albumId = req.headers.albumid ? req.headers.albumid === 'null' ? null : req.headers.albumid : null;
 		if (albumId && !user) return res.status(401).json({ message: 'Only registered users can upload files to an album' });
@@ -282,8 +282,8 @@ class uploadPOST extends Route {
 
 		if (albumId) await Util.saveFileToAlbum(db, albumId, result.id);
 
-		result.file = Util.constructFilePublicLink(result.file);
-		result.deleteUrl = `${process.env.DOMAIN}/api/file/${result.id[0]}`;
+		result.file = Util.constructFilePublicLink(req, result.file);
+		result.deleteUrl = `${Util.getHost(req)}/api/file/${result.id[0]}`;
 
 		return res.status(201).send({
 			message: 'Sucessfully uploaded the file.',

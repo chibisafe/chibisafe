@@ -1,8 +1,6 @@
-import config from '../../../dist/config.json';
-
 export const actions = {
 	async nuxtServerInit({ commit, dispatch }) {
-		commit('config/set', config);
+		await dispatch('config/fetchSettings');
 		const cookies = this.$cookies.getAll();
 		if (!cookies.token) return dispatch('auth/logout');
 

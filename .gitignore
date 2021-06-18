@@ -13,3 +13,4 @@ database.sqlite-journal
 docker/nginx/chibisafe.moe.conf
 docker-compose.config.yml
 /coverage
+local/

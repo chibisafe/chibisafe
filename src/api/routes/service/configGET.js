@@ -1,24 +1,23 @@
 const Route = require('../../structures/Route');
+const Util = require('../../utils/Util');
 
 class configGET extends Route {
 	constructor() {
-		super('/service/config', 'get', { adminOnly: true });
+		super('/service/config', 'get', { bypassAuth: true });
 	}
 
 	run(req, res) {
 		return res.json({
 			message: 'Successfully retrieved config',
 			config: {
-				serviceName: process.env.SERVICE_NAME,
-				uploadFolder: process.env.UPLOAD_FOLDER,
-				linksPerAlbum: parseInt(process.env.MAX_LINKS_PER_ALBUM, 10),
-				maxUploadSize: parseInt(process.env.MAX_SIZE, 10),
-				filenameLength: parseInt(process.env.GENERATED_FILENAME_LENGTH, 10),
-				albumLinkLength: parseInt(process.env.GENERATED_ALBUM_LENGTH, 10),
-				generateThumbnails: process.env.GENERATE_THUMBNAILS === 'true',
-				generateZips: process.env.GENERATE_ZIPS === 'true',
-				publicMode: process.env.PUBLIC_MODE === 'true',
-				enableAccounts: process.env.USER_ACCOUNTS === 'true'
+				version: process.env.npm_package_version,
+				serviceName: Util.config.serviceName,
+				maxUploadSize: Util.config.maxSize,
+				filenameLength: Util.config.generatedFilenameLength,
+				albumLinkLength: Util.config.generatedAlbumLength,
+				chunkSize: Util.config.chunkSize,
+				publicMode: Util.config.publicMode,
+				userAccounts: Util.config.userAccounts
 			}
 		});
 	}

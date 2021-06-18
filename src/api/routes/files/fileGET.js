@@ -16,7 +16,7 @@ class fileGET extends Route {
 		let file = await db.table('files').where({ id, userId: user.id }).first();
 		if (!file) return res.status(400).json({ message: 'The file doesn\'t exist or doesn\'t belong to the user' });
 
-		file = Util.constructFilePublicLink(file);
+		file = Util.constructFilePublicLink(req, file);
 
 		/*
 			Fetch the albums

@@ -53,7 +53,7 @@ class configGET extends Route {
 
 		// For each file, create the public link to be able to display the file
 		for (let file of files) {
-			file = Util.constructFilePublicLink(file);
+			file = Util.constructFilePublicLink(req, file);
 		}
 
 		return res.json({

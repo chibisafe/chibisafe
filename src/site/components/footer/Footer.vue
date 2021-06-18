@@ -9,7 +9,7 @@
 							href="https://github.com/pitu"
 							class="no-block">Pitu</a>
 					</span><br>
-					<span>v{{ version }}</span>
+					<span>{{ version }}</span>
 				</div>
 				<div class="column is-narrow bottom-up">
 					<a href="https://github.com/weebdev/chibisafe">GitHub</a>
