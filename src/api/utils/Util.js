@@ -51,7 +51,7 @@ class Util {
 			generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
 			generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH || 12,
 			generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH || 6,
-			blockedExtensions: process.env.BLOCKED_EXTENSIONS || ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
+			blockedExtensions: process.env.BLOCKED_EXTENSIONS ? process.env.BLOCKED_EXTENSIONS.split(',') : ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 			// eslint-disable-next-line eqeqeq
 			publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
 			// eslint-disable-next-line eqeqeq
