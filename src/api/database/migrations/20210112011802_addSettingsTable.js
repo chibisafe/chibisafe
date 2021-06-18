@@ -10,9 +10,9 @@ exports.up = async knex => {
 		const defaults = Util.getEnvironmentDefaults();
 		const keys = Object.keys(defaults);
 		for (const item of keys) {
-			await Util.writeConfigToDb({
+			await knex('settings').insert({
 				key: item,
-				value: defaults[item]
+				value: JSON.stringify(defaults[item])
 			});
 		}
 	} catch (error) {

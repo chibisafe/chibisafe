@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"setup": "node src/setup.js && npm run migrate && npm run seed",
-		"start": "nuxt build && npm run migrate && cross-env NODE_ENV=production node src/api/structures/Server",
+		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/structures/Server",
 		"dev": "nodemon src/api/structures/Server",
 		"migrate": "knex migrate:latest",
 		"seed": "knex seed:run",
