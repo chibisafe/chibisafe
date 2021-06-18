@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "ES2018",
+		"module": "ESNext",
+		"lib": [
+			"ESNext",
+			"ESNext.AsyncIterable",
+			"DOM"
+		],
+		"allowJs": true,
+		"noEmit": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": [
+				"./*"
+			],
+			"@/*": [
+				"./*"
+			]
+		},
+		"types": [
+			"@nuxt/types",
+			"@nuxtjs/axios",
+			"@nuxtjs/color-mode"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

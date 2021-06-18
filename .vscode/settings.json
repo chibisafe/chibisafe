@@ -2,8 +2,8 @@
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
 	"files.insertFinalNewline": true,
-	"editor.formatOnPaste": true,
-	"editor.formatOnSave": true,
+	"editor.formatOnPaste": false,
+	"editor.formatOnSave": false,
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},

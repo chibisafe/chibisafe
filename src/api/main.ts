@@ -40,7 +40,7 @@ const start = async () => {
 	if (process.env.NODE_ENV === 'production') {
 		const accessLogStream = rfs.createStream('access.log', {
 			interval: '1d', // rotate daily
-			path: path.join(__dirname, '../../logs', 'log')
+			path: path.join(__dirname, '../../../logs', 'log')
 		});
 		server.use(morgan('combined', { stream: accessLogStream }));
 	} else {
@@ -64,7 +64,7 @@ const start = async () => {
 	listen.setTimeout(600000);
 
 	// Serve the uploads
-	server.use(express.static(path.join(__dirname, '../../uploads')));
+	server.use(express.static(path.join(__dirname, '../../../uploads')));
 
 	// void serveNuxt();
 

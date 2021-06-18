@@ -12,5 +12,5 @@
 		"outDir": "./dist",
 		"sourceRoot": "./"
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"]
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "../api/main.ts", "../api/structures/routes.ts", "../api/structures/interfaces.ts"]
 }
