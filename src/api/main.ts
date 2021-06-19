@@ -7,7 +7,8 @@ import rfs from 'rotating-file-stream';
 import rateLimit from 'express-rate-limit';
 import jetpack from 'fs-jetpack';
 import cron from 'cron';
-// import { loadNuxt, build } from 'nuxt';
+// @ts-ignore - nuxt types can't be found - https://github.com/nuxt/nuxt.js/issues/7651
+import { loadNuxt, build } from 'nuxt';
 
 import Routes from './structures/routes';
 
@@ -66,19 +67,13 @@ const start = async () => {
 	// Serve the uploads
 	server.use(express.static(path.join(__dirname, '../../../uploads')));
 
-	// void serveNuxt();
-
-	// TODO: move into the database config. (we can just show the crontab line for start, later on we can add dropdowns and stuff)
-	new cron.CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
-};
-
-/*
-const serveNuxt = async () => {
 	const isProd = process.env.NODE_ENV === 'production';
 	const nuxt = await loadNuxt(isProd ? 'start' : 'dev');
 	server.use(nuxt.render);
 	if (!isProd) build(nuxt);
+
+	// TODO: move into the database config. (we can just show the crontab line for start, later on we can add dropdowns and stuff)
+	new cron.CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
 };
-*/
 
 void start();

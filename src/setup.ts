@@ -72,6 +72,7 @@ async function start() {
 	const keys = Object.keys(defaultSettings);
 
 	for (const item of keys) {
+		// @ts-ignore no idea
 		envfile += `${item}=${defaultSettings[item]}\n`;
 	}
 	jetpack.write('.env', envfile);

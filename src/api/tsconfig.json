@@ -10,7 +10,11 @@
 		"lib": ["esnext", "dom"],
 		"rootDir": "./",
 		"outDir": "./dist",
-		"sourceRoot": "./"
+		"sourceRoot": "./",
+		"types": [
+			"@types/node",
+			"@nuxt/types"
+		  ]
 	},
 	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "../api/main.ts", "../api/structures/routes.ts", "../api/structures/interfaces.ts"]
 }

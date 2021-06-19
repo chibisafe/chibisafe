@@ -84,6 +84,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
 		"@babel/preset-env": "^7.12.11",
+		"@nuxt/types": "2.15.7",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/cors": "^2.8.10",
 		"@types/cron": "^1.7.2",
@@ -95,10 +96,12 @@
 		"@types/sharp": "^0.27.1",
 		"@typescript-eslint/eslint-plugin": "^4.22.0",
 		"@typescript-eslint/parser": "^4.22.0",
+		"@vue/test-utils": "^1.2.1",
 		"autoprefixer": "^9.4.7",
 		"axios": "^0.21.1",
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-eslint": "^10.0.1",
+		"babel-jest": "^27.0.2",
 		"cpy-cli": "^3.1.1",
 		"cross-env": "^7.0.3",
 		"eslint": "^7.24.0",
@@ -106,6 +109,8 @@
 		"eslint-config-marine": "^9.0.6",
 		"eslint-import-resolver-nuxt": "^1.0.1",
 		"eslint-plugin-vue": "^5.2.1",
+		"jest": "^27.0.4",
+		"jest-serializer-vue": "^2.0.2",
 		"node-sass": "^6.0.0",
 		"nodemon": "^2.0.7",
 		"postcss-css-variables": "^0.11.0",
@@ -113,12 +118,29 @@
 		"prisma": "^2.21.2",
 		"sass-loader": "^12.1.0",
 		"ts-node": "^9.1.1",
-		"typescript": "^4.2.2"
+		"typescript": "^4.2.2",
+		"vue-jest": "^3.0.7"
 	},
 	"eslintConfig": {
 		"extends": [
-			"marine/node"
-		]
+			"marine/node",
+			"marine/vue"
+		],
+		"parserOptions": {
+			"parser": "babel-eslint",
+			"sourceType": "module"
+		},
+		"settings": {
+			"import/resolver": {
+				"nuxt": {
+					"nuxtSrcDir": "./src/site",
+					"extensions": [
+						".js",
+						".vue"
+					]
+				}
+			}
+		}
 	},
 	"prisma": {
 		"schema": "src/prisma/schema.prisma"
