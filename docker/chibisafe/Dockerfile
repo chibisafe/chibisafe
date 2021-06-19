@@ -17,4 +17,4 @@ COPY --from=ffmpeg /usr/local /usr/local
 COPY . .
 RUN mkdir uploads && mkdir database
 
-CMD ["sh", "-c", "npm run migrate && npm run seed && npm run build && npm start"]
+CMD ["sh", "-c", "npm run migrate && npm run seed && npm start"]
