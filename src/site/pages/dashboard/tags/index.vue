@@ -153,7 +153,7 @@
 							class="album">
 							<div
 								class="arrow-container"
-								@click="promptDeleteTag">
+								@click="promptDeleteTag(tag.id)">
 								<i class="icon-arrow" />
 							</div>
 							<!--
@@ -246,7 +246,7 @@ export default {
 			});
 		},
 		async deleteTag(id, purge) {
-			const response = await this.$axios.$delete(`tags/${id}/${purge ? 'purge' : ''}`);
+			const response = await this.$axios.$delete(`tag/${id}/${purge ? 'purge' : ''}`);
 			this.getTags();
 			return this.$buefy.toast.open(response.message);
 		},
