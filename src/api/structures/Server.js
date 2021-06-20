@@ -76,8 +76,8 @@ class Server {
 			for (const File of routes) {
 				try {
 					const route = new File();
-					this.server[route.method](Util.config.routePrefix + route.path, route.authorize.bind(route));
-					log.info(`Found route ${route.method.toUpperCase()} ${Util.config.routePrefix}${route.path}`);
+					this.server[route.method](`/api${route.path}`, route.authorize.bind(route));
+					log.info(`Found route ${route.method.toUpperCase()} /api${route.path}`);
 				} catch (e) {
 					log.error(`Failed loading route from file ${routeFile} with error: ${e.message}`);
 				}
