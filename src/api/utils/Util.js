@@ -59,7 +59,12 @@ class Util {
 			metaThemeColor: process.env.META_THEME_COLOR || '#20222b',
 			metaDescription: process.env.META_DESCRIPTION || 'Blazing fast file uploader and bunker written in node! 🚀',
 			metaKeywords: process.env.META_KEYWORDS || 'chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',
-			metaTwitterHandle: process.env.META_TWITTER_HANDLE || '@your-handle'
+			metaTwitterHandle: process.env.META_TWITTER_HANDLE || '@your-handle',
+			backgroundImageURL: process.env.BACKGROUND_IMAGE_URL || '',
+			logoURL: process.env.LOGO_URL || '',
+			statisticsCron: process.env.STATISTICS_CRON || '0 0 * * * *',
+			enabledStatistics: process.env.ENABLED_STATISTICS ? process.env.ENABLED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums'],
+			savedStatistics: process.env.SAVED_STATISTICS ? process.env.SAVED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums']
 		};
 	}
 
