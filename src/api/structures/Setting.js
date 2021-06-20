@@ -61,7 +61,7 @@ const schema = Joi.object({
 		.label('Generate zips')
 		.description('Allows users to download entire albums in ZIP format'),
 
-	generatedFileNameLength: Joi.number().integer().min(6)
+	generatedFilenameLength: Joi.number().integer().min(6)
 		.default(12)
 		.meta({
 			section: Sections.FILE
