@@ -3,7 +3,7 @@
 		<div v-for="[key, field] in Object.entries(settings)" :key="key">
 			<b-field
 				:label="field.flags.label"
-				:message="getErrorMessage(key) || field.flags.description"
+				:message="getErrorMessage(key) || field | getMessage"
 				:type="getValidationType(key)"
 				class="field"
 				horizontal>
@@ -53,6 +53,15 @@
 <script>
 export default {
 	name: 'JoiObject',
+	filters: {
+		getMessage: function(field) {
+			let msg = field.flags.description;
+			if (field.notes?.length) {
+				msg += field.notes.map(note => `\n${note}`);
+			}
+			return msg;
+		}
+	},
 	props: {
 		settings: {
 			type: Object,
@@ -128,7 +137,8 @@ export default {
 	.field {
 		margin-bottom: 1em;
 
-		::v-deep .help.is-danger {
+		::v-deep .help {
+			font-size: 12px;
 			white-space: pre-line;
 		}
 	}
