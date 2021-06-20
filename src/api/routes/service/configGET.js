@@ -17,7 +17,11 @@ class configGET extends Route {
 				albumLinkLength: Util.config.generatedAlbumLength,
 				chunkSize: Util.config.chunkSize,
 				publicMode: Util.config.publicMode,
-				userAccounts: Util.config.userAccounts
+				userAccounts: Util.config.userAccounts,
+				metaThemeColor: Util.config.metaThemeColor,
+				metaDescription: Util.config.metaDescription,
+				metaKeywords: Util.config.metaKeywords,
+				metaTwitterHandle: Util.metaTwitterHandle
 			}
 		});
 	}
