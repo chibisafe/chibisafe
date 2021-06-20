@@ -9,12 +9,12 @@
 		"jsx": "preserve",
 		"lib": ["esnext", "dom"],
 		"rootDir": "./",
-		"outDir": "./dist",
+		"outDir": "../../dist",
 		"sourceRoot": "./",
 		"types": [
 			"@types/node",
 			"@nuxt/types"
 		  ]
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "../api/main.ts", "../api/structures/routes.ts", "../api/structures/interfaces.ts"]
+	"include": ["**/*.ts", "**/*.d.ts", "../main.ts"]
 }

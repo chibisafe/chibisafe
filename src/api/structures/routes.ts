@@ -32,6 +32,8 @@ export default {
 				routePath = `${prefix}${routePath}`;
 
 				// Run middlewares if any
+				// TODO: This is loading all middlewares if any, wrong.
+				// TODO: Also the middlewares need to be run in the correct order, auth being the first one.
 				const middlewares: any[] = [];
 				if (route.middlewares?.length) {
 					// eslint-disable-next-line @typescript-eslint/no-misused-promises
