@@ -130,7 +130,7 @@ const schema = Joi.object({
 			section: Sections.SOCIAL_AND_SHARING
 		})
 		.label('Twitter handle')
-		.description('Your twitter handle'),
+		.description('Your twitter username'),
 
 	// Instance settings
 	backgroundImageURL: Joi.string().uri().default(p => `${p.domain}/assets/images/background.jpg`)

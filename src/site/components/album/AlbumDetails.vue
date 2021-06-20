@@ -151,9 +151,6 @@ export default {
 	computed: {
 		...mapState(['config', 'auth'])
 	},
-	mounted() {
-		console.log(this.isNsfw);
-	},
 	methods: {
 		...mapActions({
 			deleteAlbumAction: 'albums/deleteAlbum',
