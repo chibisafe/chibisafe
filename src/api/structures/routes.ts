@@ -1,14 +1,20 @@
-import { Application, Request, Response } from 'express';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import jetpack from 'fs-jetpack';
 import path from 'path';
 
 export default {
-	load: async (server: Application) => {
-		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		for (const routeFile of await jetpack.findAsync(path.join(__dirname, '..', 'routes'), { matching: '*.{ts,js}' })) {
+	load: async (server: FastifyInstance) => {
+		/*
+			While in development we only want to match routes written in TypeScript but for production
+			we need to change it to javascript files since they will be compiled.
+			TODO: Would running the TypeScript files directly with something like ts-node be a good move?
+		*/
+
+		const matching = `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
+		for (const routeFile of await jetpack.findAsync(path.join(__dirname, '..', 'routes'), { matching })) {
 			try {
 				const slash = process.platform === 'win32' ? '\\' : '/';
-				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
+				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}api${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const paths: Array<string> = routeFile.split(slash);
 				const method = paths[paths.length - 1].split('.')[0];
@@ -16,40 +22,45 @@ export default {
 				// Get rid of the filename
 				paths.pop();
 
-				// Get rid of the src/routes part
-				paths.splice(0, 2);
+				// Get rid of the src/api/routes part
+				paths.splice(0, 3);
 
-				let routePath: string = paths.join(slash);
+				let url: string = paths.join(slash);
 
 				// Transform path variables to express variables
-				routePath = routePath.replace('_', ':');
+				url = url.replace('_', ':');
 
 				// Append the missing /
-				routePath = `/${routePath}`;
+				url = `/${url}`;
 
 				// Build final route
-				const prefix = route.options?.ignoreRoutePrefix ? '' : process.env.routePrefix ?? '';
-				routePath = `${prefix}${routePath}`;
+				url = `${route.options?.ignoreRoutePrefix ? '' : '/api'}${url}`;
 
-				// Run middlewares if any
-				// TODO: This is loading all middlewares if any, wrong.
-				// TODO: Also the middlewares need to be run in the correct order, auth being the first one.
+				// Run middlewares if any, and in order of execution
 				const middlewares: any[] = [];
 				if (route.middlewares?.length) {
-					// eslint-disable-next-line @typescript-eslint/no-misused-promises
-					for (const middlewareFile of await jetpack.findAsync(path.join(__dirname, '..', 'middlewares'), { matching: '*.{ts,js}' })) {
-						const middleware = await import(middlewareFile.replace(replace, `..${slash}`));
-						middlewares.push(middleware.default);
+					// Set default middlewares that need to be included
+					route.middlewares.unshift('ban');
+					// Load the middlewares defined in the route file
+					for (const middleware of route.middlewares) {
+						const importedMiddleware = await import(path.join(__dirname, '..', 'middlewares', middleware));
+						middlewares.push(importedMiddleware.default);
 					}
 				}
 
-				// Register the route in Express
-				(server as any)[method](routePath, ...middlewares, (req: Request, res: Response) => route.run(req, res));
-				console.log(`Found route ${method.toUpperCase()} ${routePath}`);
+				// Register the route in Fastify
+				server.route({
+					method: method.toUpperCase() as any,
+					url,
+					preHandler: middlewares,
+					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res)
+				});
+
+				server.log.info(`Found route ${method.toUpperCase()} ${url}`);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-				console.log(`${routeFile} :: ERROR`);
-				console.log(error);
+				server.log.error(`${routeFile} :: ERROR`);
+				server.log.error(error);
 			}
 		}
 	}

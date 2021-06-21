@@ -10,8 +10,8 @@
 	},
 	"scripts": {
 		"setup": "node src/setup.js && npm run migrate && npm run seed",
-		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/structures/Server",
-		"dev": "nodemon src/api/structures/Server",
+		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/main.ts",
+		"dev": "nodemon src/api/main.ts",
 		"migrate": "knex migrate:latest",
 		"seed": "knex seed:run",
 		"restart": "pm2 restart chibisafe",
@@ -45,29 +45,31 @@
 		"busboy": "^0.3.1",
 		"chrono-node": "^2.3.0",
 		"cookie-universal-nuxt": "^2.0.14",
-		"cors": "^2.8.5",
 		"cron": "^1.8.2",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
-		"express-rate-limit": "^5.2.6",
 		"fastify": "^3.18.0",
+		"fastify-cors": "^6.0.1",
+		"fastify-formbody": "^5.0.0",
+		"fastify-helmet": "^5.3.1",
+		"fastify-nuxtjs": "^1.0.1",
+		"fastify-rate-limit": "^5.5.0",
+		"fastify-static": "^4.2.2",
 		"ffmpeg-probe": "^1.0.6",
 		"file-saver": "^2.0.1",
 		"file-type": "^16.5.0",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.1.0",
-		"helmet": "^4.5.0",
 		"imagesloaded": "^4.1.4",
 		"joi": "^17.3.0",
 		"jsonwebtoken": "^8.5.1",
 		"masonry-layout": "^4.2.2",
 		"moment": "^2.29.1",
-		"morgan": "^1.10.0",
 		"nuxt": "^2.14.12",
 		"nuxt-dropzone": "^0.2.8",
+		"pino-pretty": "^5.0.2",
 		"qoa": "^0.2.0",
 		"randomstring": "^1.2.1",
-		"rotating-file-stream": "^2.1.5",
 		"search-query-parser": "^1.6.0",
 		"sharp": "^0.28.3",
 		"systeminformation": "^5.7.7",
@@ -104,10 +106,9 @@
 		"cpy-cli": "^3.1.1",
 		"cross-env": "^7.0.3",
 		"eslint": "^7.24.0",
-		"eslint-config-aqua": "^9.0.2",
 		"eslint-config-marine": "^9.0.6",
 		"eslint-import-resolver-nuxt": "^1.0.1",
-		"eslint-plugin-vue": "^5.2.1",
+		"eslint-plugin-vue": "^7.11.1",
 		"jest": "^27.0.4",
 		"jest-serializer-vue": "^2.0.2",
 		"node-sass": "^6.0.0",
@@ -122,27 +123,17 @@
 	},
 	"eslintConfig": {
 		"extends": [
-			"marine/node",
-			"marine/vue"
+			"marine/node"
 		],
-		"parserOptions": {
-			"parser": "babel-eslint",
-			"sourceType": "module"
-		},
-		"settings": {
-			"import/resolver": {
-				"nuxt": {
-					"nuxtSrcDir": "./src/site",
-					"extensions": [
-						".js",
-						".vue"
-					]
-				}
-			}
+		"rules": {
+			"comma-dangle": [
+				"error",
+				"never"
+			]
 		}
 	},
 	"prisma": {
-		"schema": "src/prisma/schema.prisma"
+		"schema": "src/api/prisma/schema.prisma"
 	},
 	"nodemonConfig": {
 		"watch": [

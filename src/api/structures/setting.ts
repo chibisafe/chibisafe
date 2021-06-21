@@ -1,7 +1,4 @@
-require('dotenv').config();
-
-const Joi = require('joi');
-const { env } = process;
+import Joi from 'joi';
 
 const StatsGenerator = require('../utils/StatsGenerator');
 

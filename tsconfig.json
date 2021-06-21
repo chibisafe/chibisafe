@@ -4,31 +4,17 @@
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"strict": true,
-		"target": "ES2018",
-		"module": "ESNext",
-		"lib": [
-			"ESNext",
-			"ESNext.AsyncIterable",
-			"DOM"
-		],
-		"allowJs": true,
-		"noEmit": true,
-		"baseUrl": ".",
-		"paths": {
-			"~/*": [
-				"./*"
-			],
-			"@/*": [
-				"./*"
-			]
-		},
+		"target": "esnext",
+		"module": "commonjs",
+		"jsx": "preserve",
+		"lib": ["esnext", "dom"],
+		"rootDir": "./src/api",
+		"outDir": "./dist",
+		"sourceRoot": "./",
 		"types": [
-			"@nuxt/types",
-			"@nuxtjs/axios",
-			"@nuxtjs/color-mode"
-		]
+			"@types/node",
+			"@nuxt/types"
+		  ]
 	},
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["**/*.ts", "**/*.d.ts"]
 }
