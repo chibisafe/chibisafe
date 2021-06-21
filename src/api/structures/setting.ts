@@ -29,12 +29,13 @@ const schema = Joi.object({
 		.label('Service name')
 		.description('Name of the service'),
 
-	domain: Joi.string().default(`http://localhost:${env.SERVER_PORT}`)
+	secret: Joi.string().default(``)
 		.meta({
 			section: Sections.SERVICE
 		})
-		.label('Domain')
-		.description('Full domain this instance is gonna be running on'),
+		.label('Secret')
+		.description('64 char secret key to sign JWT sessions')
+		.note('If this setting is changed then every user session will be invalidates and every user will need to log in again.'),
 
 	// File related settings
 	chunkSize: Joi.number().integer().greater(0)
@@ -60,7 +61,7 @@ const schema = Joi.object({
 		.label('Generate zips')
 		.description('Allows users to download entire albums in ZIP format'),
 
-	generatedFileNameLength: Joi.number().integer().min(6)
+	generatedFilenameLength: Joi.number().integer().min(6)
 		.default(12)
 		.meta({
 			section: Sections.FILE
@@ -68,28 +69,13 @@ const schema = Joi.object({
 		.label('Generated file name length')
 		.description('How long should the automatically generated file name be'),
 
-	generatedAlbumLength: Joi.number().integer().min(6)
+	generatedAlbumLength: Joi.number().integer().min(4)
 		.default(6)
 		.meta({
 			section: Sections.FILE
 		})
 		.label('Generated album name length')
 		.description('How long should the automatically generated album identifier be'),
-
-	maxLinksPerAlbum: Joi.number().integer().greater(0)
-		.default(5)
-		.meta({
-			section: Sections.FILE
-		})
-		.label('Maximum album links')
-		.description('Maximum allowed number of a distinct links for an album'),
-
-	uploadsFolder: Joi.string().default('uploads')
-		.meta({
-			section: Sections.FILE
-		})
-		.label('Uploads folder')
-		.description('Name of the folder where the uploads will be stored'),
 
 	blockedExtensions: Joi.array()
 		.items(Joi.string().pattern(/^(\.\w+)+$/, { name: 'file extension' }))
@@ -108,7 +94,7 @@ const schema = Joi.object({
 		.label('Public mode')
 		.description('Allows people to upload files without an account'),
 
-	userAccount: Joi.boolean().default(true)
+	userAccounts: Joi.boolean().default(true)
 		.meta({
 			section: Sections.USERS
 		})
@@ -132,7 +118,7 @@ const schema = Joi.object({
 		.label('Meta description')
 		.description('Short and accurate summary of the content of the page'),
 
-	metaKeyword: Joi.string().default('chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free')
+	metaKeywords: Joi.string().default('chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free')
 		.meta({
 			section: Sections.SOCIAL_AND_SHARING
 		})
@@ -144,7 +130,7 @@ const schema = Joi.object({
 			section: Sections.SOCIAL_AND_SHARING
 		})
 		.label('Twitter handle')
-		.description('Your twitter handle'),
+		.description('Your twitter username'),
 
 	// Instance settings
 	backgroundImageURL: Joi.string().uri().default(p => `${p.domain}/assets/images/background.jpg`)

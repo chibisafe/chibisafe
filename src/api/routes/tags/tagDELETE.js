@@ -3,7 +3,7 @@ const Util = require('../../utils/Util');
 
 class tagDELETE extends Route {
 	constructor() {
-		super('/tag/:id/:purge*?', 'delete');
+		super('/tag/:id/:purge?', 'delete');
 	}
 
 	async run(req, res, db, user) {

@@ -12,7 +12,7 @@
 					<hr>
 
 					<div v-for="[sectionName, fields] in Object.entries(sectionedSettings)" :key="sectionName" class="block">
-						<h5 class="title is-5 has-text-grey-lighter">
+						<h5 class="title is-5 has-text-grey-lighter text-center mb4 mt4">
 							{{ sectionName }}
 						</h5>
 						<JoiObject ref="jois" :settings="fields" :errors="validationErrors" />
@@ -106,3 +106,8 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+h5.title {
+	text-decoration: underline;
+}
+</style>

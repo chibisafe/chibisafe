@@ -14,7 +14,6 @@
 		"dev": "nodemon src/api/structures/Server",
 		"migrate": "knex migrate:latest",
 		"seed": "knex seed:run",
-		"update": "git pull && npm install && npm run migrate && npm run build && npm run restart",
 		"restart": "pm2 restart chibisafe",
 		"overwrite-config": "cross-env OVERWRITE_SETTINGS=true",
 		"test:vue": "jest --testPathPattern=src/site",

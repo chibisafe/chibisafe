@@ -93,7 +93,7 @@
 							</button>
 						</div>
 						<div class="level-item">
-							<span class="has-text-default">{{ details.links.length }} / {{ config.maxLinksPerAlbum }} links created</span>
+							<span class="has-text-default">{{ details.links.length }} links created</span>
 						</div>
 					</div>
 
@@ -150,9 +150,6 @@ export default {
 	},
 	computed: {
 		...mapState(['config', 'auth'])
-	},
-	mounted() {
-		console.log(this.isNsfw);
 	},
 	methods: {
 		...mapActions({

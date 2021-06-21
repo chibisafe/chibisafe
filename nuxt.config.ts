@@ -71,10 +71,21 @@ export default {
 				autoprefixer,
 			},
 		},
-		extend(config, { isDev }) {
-			// Extend only webpack config for client-bundle
-			if (isDev) {
-				config.devtool = 'source-map';
+		axios: {
+			baseURL: `${process.env.NODE_ENV === 'production' ? process.env.DOMAIN : 'http://localhost:5000'}/api`
+		},
+		build: {
+			extractCSS: process.env.NODE_ENV === 'production',
+			postcss: {
+				preset: {
+					autoprefixer
+				}
+			},
+			extend(config, { isDev }) {
+				// Extend only webpack config for client-bundle
+				if (isDev) {
+					config.devtool = 'source-map';
+				}
 			}
 		},
 	},

@@ -3,7 +3,7 @@
 		<div v-for="[key, field] in Object.entries(settings)" :key="key">
 			<b-field
 				:label="field.flags.label"
-				:message="getErrorMessage(key) || field.flags.description"
+				:message="getErrorMessage(key) || getMessage(field)"
 				:type="getValidationType(key)"
 				class="field"
 				horizontal>
@@ -118,6 +118,13 @@ export default {
 		},
 		getValues() {
 			return this.values;
+		},
+		getMessage(field) {
+			let msg = field.flags.description;
+			if (field.notes?.length) {
+				msg += field.notes.map(note => `\n${note}`);
+			}
+			return msg;
 		}
 	}
 };
@@ -128,7 +135,8 @@ export default {
 	.field {
 		margin-bottom: 1em;
 
-		::v-deep .help.is-danger {
+		::v-deep .help {
+			font-size: 12px;
 			white-space: pre-line;
 		}
 	}
