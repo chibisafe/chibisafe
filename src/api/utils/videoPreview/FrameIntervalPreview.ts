@@ -1,10 +1,12 @@
 /* eslint-disable no-bitwise */
-const ffmpeg = require('fluent-ffmpeg');
-const probe = require('ffmpeg-probe');
+import ffmpeg from 'fluent-ffmpeg';
+// @ts-ignore - no typings for this package
+import probe from 'ffmpeg-probe';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-module.exports = async opts => {
+module.exports = async (opts: any) => {
 	const {
 		log = noop,
 
@@ -22,7 +24,7 @@ module.exports = async opts => {
 	const info = await probe(input);
 	// const numFramesTotal = parseInt(info.streams[0].nb_frames, 10);
 	const { avg_frame_rate: avgFrameRate, duration } = info.streams[0];
-	const [frames, time] = avgFrameRate.split('/').map(e => parseInt(e, 10));
+	const [frames, time] = avgFrameRate.split('/').map((e: string) => parseInt(e, 10));
 
 	const numFramesTotal = (frames / time) * duration;
 
@@ -30,26 +32,26 @@ module.exports = async opts => {
 	numFramesToCapture = Math.max(1, Math.min(numFramesTotal, numFramesToCapture)) | 0;
 	const nthFrame = (numFramesTotal / numFramesToCapture) | 0;
 
-	const result = {
+	const result: any = {
 		output,
 		numFrames: numFramesToCapture
 	};
 
-	await new Promise((resolve, reject) => {
+	await new Promise<void>((resolve, reject) => {
 		let scale = null;
 
 		if (width && height) {
 			result.width = width | 0;
 			result.height = height | 0;
-			scale = `scale=${width}:${height}`;
+			scale = `scale=${width as number}:${height as number}`;
 		} else if (width) {
 			result.width = width | 0;
 			result.height = ((info.height * width) / info.width) | 0;
-			scale = `scale=${width}:-1`;
+			scale = `scale=${width as number}:-1`;
 		} else if (height) {
 			result.height = height | 0;
 			result.width = ((info.width * height) / info.height) | 0;
-			scale = `scale=-1:${height}`;
+			scale = `scale=-1:${height as number}`;
 		} else {
 			result.width = info.width;
 			result.height = info.height;
@@ -63,7 +65,7 @@ module.exports = async opts => {
 			.noAudio()
 			.outputFormat('webm')
 			.output(output)
-			.on('start', cmd => log && log({ cmd }))
+			.on('start', cmd => log?.({ cmd }))
 			.on('end', () => resolve())
 			.on('error', err => reject(err))
 			.run();

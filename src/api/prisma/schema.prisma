@@ -1,5 +1,6 @@
 generator client {
 	provider = "prisma-client-js"
+	previewFeatures = ["selectRelationCount"]
 }
 
 datasource db {
@@ -13,7 +14,7 @@ model albums {
 	userId    Int?
 	name      String?
 	zippedAt  DateTime?
-	createdAt DateTime?
+	createdAt DateTime @default(now())
 	editedAt  DateTime?
 	nsfw      Boolean?  @default(false)
 
@@ -22,28 +23,28 @@ model albums {
 
 model albumsFiles {
 	id      Int  @id @default(autoincrement())
-	albumId Int?
-	fileId  Int?
+	albumId Int
+	fileId  Int
 
 	@@unique([albumId, fileId], name: "albumsfiles_albumid_fileid_unique")
 }
 
 model albumsLinks {
 	id      Int  @id @default(autoincrement())
-	albumId Int?
-	linkId  Int? @unique
+	albumId Int
+	linkId  Int @unique
 }
 
 model bans {
 	id        Int       @id @default(autoincrement())
-	ip        String?
-	createdAt DateTime?
+	ip        String
+	createdAt DateTime @default(now())
 }
 
 model fileTags {
 	id     Int  @id @default(autoincrement())
-	fileId Int?
-	tagId  Int?
+	fileId Int
+	tagId  Int
 
 	@@unique([fileId, tagId], name: "filetags_fileid_tagid_unique")
 }
@@ -51,26 +52,26 @@ model fileTags {
 model files {
 	id        Int       @id @default(autoincrement())
 	userId    Int?
-	name      String?
-	original  String?
-	type      String?
-	size      Int?
-	hash      String?
-	ip        String?
-	createdAt DateTime?
+	name      String
+	original  String
+	type      String
+	size      Int
+	hash      String
+	ip        String
+	createdAt DateTime @default(now())
 	editedAt  DateTime?
 }
 
 model links {
 	id             Int       @id @default(autoincrement())
-	userId         Int?
-	albumId        Int?
-	identifier     String?
-	views          Int?
-	enabled        Boolean?
-	enableDownload Boolean?
+	userId         Int
+	albumId        Int
+	identifier     String
+	views          Int @default(0)
+	enabled        Boolean @default(true)
+	enableDownload Boolean @default(false)
 	expiresAt      DateTime?
-	createdAt      DateTime?
+	createdAt      DateTime @default(now())
 	editedAt       DateTime?
 
 	@@unique([userId, albumId, identifier], name: "links_userid_albumid_identifier_unique")
@@ -78,8 +79,8 @@ model links {
 
 model settings {
 	id        Int                  @id @default(autoincrement())
-	key   String?
-	value String?
+	key   String
+	value String
 }
 
 model statistics {
@@ -88,17 +89,17 @@ model statistics {
 	type      String?
 	// TODO: This was JSON before so make sure to stringify and parse when saving stats
 	data      String?
-	createdAt DateTime?
+	createdAt DateTime @default(now())
 
 	@@unique([batchId, type], name: "statistics_batchid_type_unique")
 }
 
 model tags {
 	id        Int       @id @default(autoincrement())
-	uuid      String?
-	userId    Int?
-	name      String?
-	createdAt DateTime?
+	uuid      String
+	userId    Int
+	name      String
+	createdAt DateTime @default(now())
 	editedAt  DateTime?
 
 	@@unique([userId, name], name: "tags_userid_name_unique")
@@ -106,14 +107,14 @@ model tags {
 
 model users {
 	id               Int       @id @default(autoincrement())
-	username         String?
-	password         String?
-	enabled          Boolean?
-	isAdmin          Boolean?
+	username         String
+	password         String
+	enabled          Boolean @default(true)
+	isAdmin          Boolean @default(false)
 	apiKey           String?
 	passwordEditedAt DateTime?
 	apiKeyEditedAt   DateTime?
-	createdAt        DateTime?
+	createdAt        DateTime @default(now())
 	editedAt         DateTime?
 
 	@@unique([username, apiKey], name: "users_username_apikey_unique")

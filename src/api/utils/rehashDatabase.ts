@@ -1,18 +1,20 @@
-require('dotenv').config();
-const blake3 = require('blake3');
-const path = require('path');
-const fs = require('fs');
-const db = require('knex')({
-	client: 'sqlite3',
-	connection: {
-		filename: path.join(__dirname, '../../../database/', 'database.sqlite')
-	}
-});
+import dotenv from 'dotenv';
+dotenv.config();
+
+import blake3 from 'blake3';
+import path from 'path';
+import fs from 'fs';
+import prisma from '../structures/database';
 
 const start = async () => {
 	const hrstart = process.hrtime();
-	const uploads = await db.table('files')
-		.select('id', 'name', 'hash');
+	const uploads = await prisma.files.findMany({
+		select: {
+			id: true,
+			name: true,
+			hash: true
+		}
+	});
 	console.log(`Uploads : ${uploads.length}`);
 
 
@@ -26,21 +28,30 @@ const start = async () => {
 
 	for (const upload of uploads) {
 		await new Promise((resolve, reject) => {
+			// TODO: Check that this return works as a continue and doesnt break the loop
+			if (!upload.name) return;
 			fs.createReadStream(path.join(__dirname, '../../../uploads', upload.name))
 				.on('error', reject)
 				.pipe(blake3.createHash())
 				.on('error', reject)
+				// eslint-disable-next-line @typescript-eslint/no-misused-promises
 				.on('data', async source => {
-					const hash = source.toString('hex');
-					console.log(`${upload.name}: ${hash}`);
-					await db.table('files')
-						.update('hash', hash)
-						.where('id', upload.id);
+					const hash = source.toStrin('hex');
+					console.log(`${upload.name as string}: ${hash as string}`);
+					await prisma.files.update({
+						where: {
+							id: upload.id
+						},
+						data: {
+							hash
+						}
+					});
 					done++;
-					resolve();
+					// TODO: Removed parenthesis here, check if it still works as expected
+					resolve;
 				});
 		}).catch(error => {
-			console.log(`${upload.name}: ${error.toString()}`);
+			console.log(`${upload.name as string}: ${error.toString() as string}`);
 		});
 	}
 
@@ -52,4 +63,4 @@ const start = async () => {
 	process.exit(0);
 };
 
-start();
+void start();

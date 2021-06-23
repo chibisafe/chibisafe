@@ -7,9 +7,9 @@ import fstatic from 'fastify-static';
 import path from 'path';
 import rateLimit from 'fastify-rate-limit';
 import jetpack from 'fs-jetpack';
-import cron from 'cron';
+// import cron from 'cron';
 // @ts-ignore - nuxt types can't be found - https://github.com/nuxt/nuxt.js/issues/7651
-import { loadNuxt, build } from 'nuxt';
+// import { loadNuxt, build } from 'nuxt';
 
 import Routes from './structures/routes';
 
@@ -103,4 +103,5 @@ const start = async () => {
 	// new cron.CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
 };
 
+export const log = server.log;
 void start();
