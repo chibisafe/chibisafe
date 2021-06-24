@@ -1,5 +1,5 @@
 import type { FastifyReply } from 'fastify';
-import { RequestWithUser } from '../../middlewares/auth';
+import { RequestWithUser } from '../../structures/interfaces';
 
 export const middlewares = ['auth'];
 

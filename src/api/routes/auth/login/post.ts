@@ -22,7 +22,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	if (!user) return res.status(401).send({ message: 'User doesn\'t exist' });
 
-	const comparePassword = await bcrypt.compare(password, user.password ?? '');
+	const comparePassword = await bcrypt.compare(password, user.password);
 	if (!comparePassword) return res.status(401).send({ message: 'Invalid authorization.' });
 
 	const jwt = JWT.sign({

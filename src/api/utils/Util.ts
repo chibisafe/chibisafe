@@ -2,7 +2,7 @@ import jetpack from 'fs-jetpack';
 import randomstring from 'randomstring';
 import path from 'path';
 import prisma from '../structures/database';
-import moment from 'moment';
+import { utc } from 'moment';
 import Zip from 'adm-zip';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './ThumbUtil';
 import { getStats } from './StatsGenerator';
@@ -273,7 +273,7 @@ export const storeFileToDb = async (req: FastifyRequest, res: FastifyReply, user
 		return;
 	}
 
-	const now = moment.utc().toDate();
+	const now = utc().toDate();
 	const data = {
 		userId: user.id ? user.id : undefined,
 		name: file.data.filename,
@@ -300,7 +300,7 @@ export const storeFileToDb = async (req: FastifyRequest, res: FastifyReply, user
 export const saveFileToAlbum = async (albumId: number, insertedId: number) => {
 	if (!albumId) return;
 
-	const now = moment.utc().toDate();
+	const now = utc().toDate();
 	try {
 		await prisma.albumsFiles.create({
 			data: {
@@ -367,7 +367,7 @@ export const saveStatsToDb = async (force: boolean) => {
 		return;
 	}
 
-	const now = moment.utc().toDate();
+	const now = utc().toDate();
 	const stats = await getStats(db);
 
 	let batchId = 1;

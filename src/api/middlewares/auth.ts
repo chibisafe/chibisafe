@@ -1,16 +1,10 @@
-import type { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
+import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
+import type { RequestWithUser } from '../structures/interfaces';
 import JWT from 'jsonwebtoken';
 import prisma from '../structures/database';
 
 interface Decoded {
 	sub: number;
-}
-export interface RequestWithUser extends FastifyRequest {
-	user: {
-		id: number;
-		username: string | null;
-		isAdmin: boolean | null;
-	};
 }
 
 export default (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {

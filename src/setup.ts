@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-const jetpack = require('fs-jetpack');
-const qoa = require('qoa');
+import jetpack from 'fs-jetpack';
+// @ts-ignore no typings for qoa
+import qoa from 'qoa';
 
 qoa.config({
 	prefix: '>',
@@ -86,7 +87,8 @@ async function start() {
 	console.log('==  MAKE SURE TO CHANGE IT AFTER YOUR FIRST LOGIN  ==');
 	console.log('=====================================================');
 	console.log();
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setTimeout(() => {}, 1000);
 }
 
-start();
+void start();

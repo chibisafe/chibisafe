@@ -1,3 +1,14 @@
+import type { FastifyRequest } from 'fastify';
+
+export interface RequestWithUser extends FastifyRequest {
+	user: {
+		id: number;
+		username: string;
+		isAdmin: boolean;
+		apiKey?: string;
+	};
+}
+
 export interface User {
 	id: number;
 	username: string;
