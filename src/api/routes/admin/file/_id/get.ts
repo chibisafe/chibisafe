@@ -8,7 +8,9 @@ interface params {
 interface UserWithFileCount extends User {
 	fileCount?: number;
 }
+
 export const middlewares = ['auth', 'admin'];
+
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { id } = req.params as params;
 	if (!id) return res.status(400).send({ message: 'Invalid file ID supplied' });

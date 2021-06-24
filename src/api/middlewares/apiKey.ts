@@ -1,13 +1,7 @@
-import type { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
+import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
+import type { RequestWithUser } from '../structures/interfaces';
 import prisma from '../structures/database';
 
-export interface RequestWithUser extends FastifyRequest {
-	user: {
-		id: number;
-		username: string | null;
-		isAdmin: boolean | null;
-	};
-}
 
 export default async (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {
 	// TODO: Search for canApiKey in the codebase and add this file as middleware on those, before auth

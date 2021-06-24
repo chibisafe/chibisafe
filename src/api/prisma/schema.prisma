@@ -11,12 +11,12 @@ datasource db {
 
 model albums {
 	id        Int       @id @default(autoincrement())
-	userId    Int?
-	name      String?
+	userId    Int
+	name      String
 	zippedAt  DateTime?
 	createdAt DateTime @default(now())
 	editedAt  DateTime?
-	nsfw      Boolean?  @default(false)
+	nsfw      Boolean @default(false)
 
 	@@unique([userId, name], name: "albums_userid_name_unique")
 }

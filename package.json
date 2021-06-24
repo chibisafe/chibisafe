@@ -9,7 +9,8 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"setup": "node src/setup.js && npm run migrate && npm run seed",
+		"setup": "node src/api/scripts/setup.ts && npm run migrate && npm run seed",
+		"build": "tsc --noEmit",
 		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/main.ts",
 		"dev": "nodemon src/api/main.ts",
 		"migrate": "knex migrate:latest",

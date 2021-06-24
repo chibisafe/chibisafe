@@ -5,9 +5,9 @@ import prisma from '../structures/database';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './ThumbUtil';
-import { getStats } from './StatsGenerator';
+// import { getStats } from './StatsGenerator';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import type { File, ExtendedFile, ExtendedFileWithData, Album, User } from '../structures/interfaces';
+import type { File, ExtendedFile, ExtendedFileWithData, Album, User, Settings } from '../structures/interfaces';
 
 // TODO: Check that importing the log function works for routes and CLI (generateThumbs.ts)
 import { log } from '../main';
@@ -21,6 +21,11 @@ export const uploadPath = path.join(__dirname, '../../../', 'uploads');
 export const statsLastSavedTime = null;
 export const _config = null;
 
+/*
+	TODO: Ask crawl how to properly type this.
+	I want that if I call getConfig() to know the properties that will come back and their types
+	to use them in nuxt.ts for example
+*/
 export const getConfig = async () => {
 	const config = await prisma.settings.findMany();
 	return config.reduce((conf, item) => {
@@ -30,9 +35,10 @@ export const getConfig = async () => {
 			conf[item.key] = item.value;
 		}
 		return config;
-	}, {} as Record<string, any>);
+	}, {} as Record<string, any>) as Settings;
 };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const getEnvironmentDefaults = () => ({
 	domain: process.env.DOMAIN,
 	routePrefix: '/api',
@@ -60,7 +66,7 @@ export const getEnvironmentDefaults = () => ({
 	statisticsCron: process.env.STATISTICS_CRON ?? '0 0 * * * *',
 	enabledStatistics: process.env.ENABLED_STATISTICS ? process.env.ENABLED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums'],
 	savedStatistics: process.env.SAVED_STATISTICS ? process.env.SAVED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums']
-});
+} as Settings);
 
 export const wipeConfigDb = async () => {
 	try {
@@ -70,12 +76,15 @@ export const wipeConfigDb = async () => {
 	}
 };
 
-export const writeConfigToDb = async (config: { key: string; value: string }) => {
+export const writeConfigToDb = async (config: { key: string; value: string | number | string[] | boolean }) => {
 	if (!config.key) return;
 	try {
-		config.value = JSON.stringify(config.value);
+		const data = {
+			key: config.key,
+			value: JSON.stringify(config.value)
+		};
 		await prisma.settings.create({
-			data: config
+			data
 		});
 	} catch (error) {
 		console.error(error);
@@ -84,23 +93,6 @@ export const writeConfigToDb = async (config: { key: string; value: string }) =>
 
 export const isExtensionBlocked = async (extension: string) => (await getConfig()).blockedExtensions.includes(extension);
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
-
-export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
-	/*
-		TODO: This wont work without a reverse proxy serving both
-		the site and the API under the same domain. Pls fix.
-	*/
-	const extended = file as ExtendedFile;
-	const host = getHost(req);
-	extended.url = `${host}/${extended.name}`;
-	const { thumb, preview } = getFileThumbnail(extended.name) ?? {};
-	if (thumb) {
-		extended.thumb = `${host}/thumbs/${thumb}`;
-		extended.thumbSquare = `${host}/thumbs/square/${thumb}`;
-		extended.preview = preview && `${host}/thumbs/preview/${preview}`;
-	}
-	return extended;
-};
 
 export const getUniqueFilename = (extension: string) => {
 	const retry: any = async (i = 0) => {
@@ -241,6 +233,23 @@ export const createZip = (files: string[], album: Album) => {
 	} catch (error) {
 		log.error(error);
 	}
+};
+
+export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
+	/*
+		TODO: This wont work without a reverse proxy serving both
+		the site and the API under the same domain. Pls fix.
+	*/
+	const extended: ExtendedFile = { ...file };
+	const host = getHost(req);
+	extended.url = `${host}/${extended.name}`;
+	const { thumb, preview } = getFileThumbnail(extended.name) ?? {};
+	if (thumb) {
+		extended.thumb = `${host}/thumbs/${thumb}`;
+		extended.thumbSquare = `${host}/thumbs/square/${thumb}`;
+		extended.preview = preview && `${host}/thumbs/preview/${preview}`;
+	}
+	return extended;
 };
 
 export const fileExists = (req: FastifyRequest, res: FastifyReply, exists: File, filename: string) => {

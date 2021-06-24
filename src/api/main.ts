@@ -9,7 +9,8 @@ import rateLimit from 'fastify-rate-limit';
 import jetpack from 'fs-jetpack';
 // import cron from 'cron';
 // @ts-ignore - nuxt types can't be found - https://github.com/nuxt/nuxt.js/issues/7651
-// import { loadNuxt, build } from 'nuxt';
+import { Nuxt, Builder } from 'nuxt';
+import nuxtDefaults from './structures/nuxt';
 
 import Routes from './structures/routes';
 
@@ -91,7 +92,19 @@ const start = async () => {
 		root: path.join(__dirname, '../../uploads')
 	});
 
-	// TODO: Enable this after Utils is ported to TypeScript
+	const nuxtConfig = await nuxtDefaults();
+	nuxtConfig.dev = !(process.env.NODE_ENV === 'production');
+	const nuxt = new Nuxt(nuxtConfig);
+	if (nuxtConfig.dev) {
+		const builder = new Builder(nuxt);
+		await builder.build();
+	} else {
+		await nuxt.ready();
+	}
+
+	void server.register(nuxt.render);
+
+
 	/*
 	const isProd = process.env.NODE_ENV === 'production';
 	const nuxt = await loadNuxt(isProd ? 'start' : 'dev');

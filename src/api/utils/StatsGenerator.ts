@@ -54,7 +54,7 @@ export const getSystemInfo = async () => {
 };
 
 export const getFileSystemsInfo = async () => {
-	const stats = {};
+	const stats: Record<string, { value: { total: number; used: number }; type: string }> = {};
 
 	const fsSize = await si.fsSize();
 	for (const fs of fsSize) {
