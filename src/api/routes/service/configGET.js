@@ -21,7 +21,8 @@ class configGET extends Route {
 				metaThemeColor: Util.config.metaThemeColor,
 				metaDescription: Util.config.metaDescription,
 				metaKeywords: Util.config.metaKeywords,
-				metaTwitterHandle: Util.metaTwitterHandle
+				metaTwitterHandle: Util.metaTwitterHandle,
+				domain: process.env.domain
 			}
 		});
 	}

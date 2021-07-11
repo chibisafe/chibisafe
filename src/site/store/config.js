@@ -29,5 +29,12 @@ export const mutations = {
 		state.chunkSize = config.chunkSize;
 		state.publicMode = config.publicMode;
 		state.userAccounts = config.userAccounts;
+		state.URL = config.domain;
+		const lastChar = config.domain.substr(-1);
+		if (lastChar === '/') {
+			state.baseURL = `${config.domain}api`;
+		} else {
+			state.baseURL = `${config.domain}/api`;
+		}
 	}
 };
