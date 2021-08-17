@@ -36,7 +36,7 @@
 	"dependencies": {
 		"@mdi/font": "^5.8.55",
 		"@nuxtjs/axios": "^5.12.5",
-		"@prisma/client": "^2.21.2",
+		"@prisma/client": "^2.29.1",
 		"adm-zip": "^0.5.5",
 		"axios": "^0.21.1",
 		"bcryptjs": "^2.4.3",
@@ -121,7 +121,7 @@
 		"nodemon": "^2.0.7",
 		"postcss-css-variables": "^0.11.0",
 		"postcss-nested": "^5.0.5",
-		"prisma": "^2.21.2",
+		"prisma": "^2.29.1",
 		"sass-loader": "^12.1.0",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.2.2",
