@@ -66,7 +66,7 @@ model links {
 	id             Int       @id @default(autoincrement())
 	userId         Int
 	albumId        Int
-	identifier     String
+	identifier     String @unique
 	views          Int @default(0)
 	enabled        Boolean @default(true)
 	enableDownload Boolean @default(false)
@@ -74,7 +74,7 @@ model links {
 	createdAt      DateTime @default(now())
 	editedAt       DateTime?
 
-	@@unique([userId, albumId, identifier], name: "links_userid_albumid_identifier_unique")
+	@@unique([userId, identifier], name: "links_userid_identifier_unique")
 }
 
 model settings {
@@ -107,15 +107,13 @@ model tags {
 
 model users {
 	id               Int       @id @default(autoincrement())
-	username         String
+	username         String @unique
 	password         String
 	enabled          Boolean @default(true)
 	isAdmin          Boolean @default(false)
-	apiKey           String?
+	apiKey           String? @unique
 	passwordEditedAt DateTime?
 	apiKeyEditedAt   DateTime?
 	createdAt        DateTime @default(now())
 	editedAt         DateTime?
-
-	@@unique([username, apiKey], name: "users_username_apikey_unique")
 }

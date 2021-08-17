@@ -4,7 +4,9 @@ import prisma from '../../../../structures/database';
 interface body {
 	ip: string;
 }
+
 export const middlewares = ['auth', 'admin'];
+
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	if (!req.body) return res.status(400).send({ message: 'No body provided' });
 	// const { username, password }: { username: string; password: string } = req.body;

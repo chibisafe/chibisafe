@@ -1,16 +1,18 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '../../../../../structures/database';
-import { RequestWithUser } from '../../../../../structures/interfaces';
+import type { RequestWithUser } from '../../../../structures/interfaces';
+import prisma from '../../../../structures/database';
 
 interface body {
 	identifier: string;
+	enableDownload: boolean;
+	expiresAt: Date;
 }
 
 export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	if (!req.params) return res.status(400).send({ message: 'No body provided' });
-	const { identifier } = req.body as body;
+	const { identifier, enableDownload, expiresAt } = req.body as body;
 	if (!identifier) return res.status(400).send({ message: 'No identifier provided' });
 
 	const link = await prisma.links.findFirst({
@@ -22,22 +24,21 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	if (!link) return res.status(400).send({ message: 'No link found' });
 
-	await prisma.links.delete({
-		where: {
-			links_userid_identifier_unique: {
-				userId: req.user.id,
-				identifier
-			}
-		}
-	});
+	const updateObj = {
+		enableDownload: enableDownload || false,
+		expiresAt // This one should be null if not supplied
+	};
 
-	await prisma.albumsLinks.delete({
+	await prisma.links.update({
 		where: {
-			linkId: link.id
+			identifier
+		},
+		data: {
+			...updateObj
 		}
 	});
 
 	return res.send({
-		message: 'Successfully deleted the link'
+		message: 'Successfully edited link'
 	});
 };
