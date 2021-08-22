@@ -289,10 +289,10 @@ class Util {
 		const dbFile = await db.table('files')
 			// eslint-disable-next-line func-names
 			.where(function() {
-				if (user === undefined) {
-					this.whereNull('userId');
-				} else {
+				if (user) {
 					this.where('userId', user.id);
+				} else {
+					this.whereNull('userId');
 				}
 			})
 			.where({
