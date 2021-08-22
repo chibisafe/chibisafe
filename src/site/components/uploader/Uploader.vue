@@ -1,6 +1,6 @@
 <template>
 	<div
-		:class="{ 'has-files': alreadyAddedFiles }"
+		:class="{ 'has-files': alreadyAddedFiles, }"
 		class="uploader-wrapper">
 		<b-select
 			v-if="loggedIn"
@@ -176,7 +176,7 @@ export default {
 			console.error(file, message, xhr);
 		},
 		async dropzoneChunksUploaded(file, done) {
-			const { data } = await this.$axios.post(`${this.config.baseURL}/upload`, {
+			const { data } = await this.$axios.post('/upload', {
 				files: [{
 					uuid: file.upload.uuid,
 					original: file.name,
