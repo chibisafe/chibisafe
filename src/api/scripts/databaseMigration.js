@@ -8,7 +8,7 @@ const ThumbUtil = require('../utils/ThumbUtil');
 const oldDb = require('knex')({
 	client: 'sqlite3',
 	connection: {
-		filename: nodePath.join(__dirname, '../../', 'db')
+		filename: nodePath.join(__dirname, '../../../', 'db')
 	},
 	useNullAsDefault: true
 });
@@ -16,7 +16,7 @@ const oldDb = require('knex')({
 const newDb = require('knex')({
 	client: 'sqlite3',
 	connection: {
-		filename: nodePath.join(__dirname, '../../database/', 'database.sqlite')
+		filename: nodePath.join(__dirname, '../../../database/', 'database.sqlite')
 	},
 	postProcessResponse: result => {
 		const booleanFields = ['enabled', 'enableDownload', 'isAdmin', 'nsfw', 'generateZips', 'publicMode', 'userAccounts'];
