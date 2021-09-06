@@ -64,3 +64,13 @@ server {
     }
 }
 ```
+### Certbot/Letsencrypt
+
+Include the following under the second `server` block:
+
+```    root /var/www/chibisafe;
+
+    location /.well-known/ {
+        try_files $uri $uri/ =404;
+    }
+```
