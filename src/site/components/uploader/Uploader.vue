@@ -124,7 +124,7 @@ export default {
 			parallelChunkUploads: false,
 			chunkSize: this.config.chunkSize * 1000000,
 			chunksUploaded: this.dropzoneChunksUploaded,
-			maxFilesize: this.config.maxUploadSize,
+			maxFilesize: this.config.maxUploadSize > 0 ? this.config.maxUploadSize : Number.MAX_VALUE,
 			previewTemplate: this.$refs.template.innerHTML,
 			dictDefaultMessage: 'Drag & Drop your files or click to browse',
 			headers: { Accept: 'application/vnd.chibisafe.json' }
