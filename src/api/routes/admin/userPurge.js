@@ -9,7 +9,7 @@ class userDemote extends Route {
 	async run(req, res) {
 		if (!req.body) return res.status(400).json({ message: 'No body provided' });
 		const { id } = req.body;
-		if (!id) return res.status(400).json({ message: 'No id provided' });
+		// if (!id) return res.status(400).json({ message: 'No id provided' });
 
 		try {
 			await Util.deleteAllFilesFromUser(id);
@@ -18,7 +18,7 @@ class userDemote extends Route {
 		}
 
 		return res.json({
-			message: 'Successfully deleted the user\'s files'
+			message: 'Successfully deleted files'
 		});
 	}
 }

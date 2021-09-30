@@ -66,7 +66,7 @@
 								<span><timeago :since="admin.file.createdAt" /></span>
 							</b-field>
 						</div>
-						<div class="column is-6">
+						<div class="column is-6" v-if="admin.file.userId">
 							<b-field
 								label="User Id"
 								horizontal>
@@ -103,13 +103,12 @@
 
 					<div class="mb2 mt2 text-center">
 						<b-button
-							v-if="admin.user.id !== auth.user.id"
 							type="is-danger"
 							@click="promptBanIP">
 							Ban IP
 						</b-button>
 						<b-button
-							v-if="admin.user.id !== auth.user.id"
+							v-if="admin.user.id !== auth.user.id && admin.file.userId"
 							type="is-danger"
 							@click="promptDisableUser">
 							Disable user

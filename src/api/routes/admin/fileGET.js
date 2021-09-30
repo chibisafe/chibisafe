@@ -1,3 +1,4 @@
+const { response } = require('express');
 const Route = require('../../structures/Route');
 const Util = require('../../utils/Util');
 
@@ -18,14 +19,22 @@ class filesGET extends Route {
 		file = Util.constructFilePublicLink(req, file);
 
 		// Additional relevant data
-		const filesFromUser = await db.table('files').where({ userId: user.id }).select('id');
-		user.fileCount = filesFromUser.length;
+		if (file.userId) {
+			const filesFromUser = await db.table('files').where({ userId: user.id }).select('id');
+			user.fileCount = filesFromUser.length;
 
-		return res.json({
-			message: 'Successfully retrieved file',
-			file,
-			user
-		});
+			return res.json({
+				message: 'Successfully retrieved file',
+				file,
+				user
+			});
+		}
+		else {
+			return res.json({
+				message: 'Successfully retrieved file',
+				file
+			});
+		}
 	}
 }
 

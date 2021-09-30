@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const state = () => ({
 	users: [],
 	user: {
@@ -53,6 +55,13 @@ export const actions = {
 	async fetchUser({ commit }, { id, page }) {
 		page = page || 1;
 		const response = await this.$axios.$get(`admin/users/${id}`, { params: { limit: 50, page } });
+		commit('setUserInfo', { ...response, page });
+
+		return response;
+	},
+	async fetchFiles({ commit }, page) {
+		page = page || 1;
+		const response = await this.$axios.$get('admin/uploads', { params: {limit: 50, page} });
 		commit('setUserInfo', { ...response, page });
 
 		return response;

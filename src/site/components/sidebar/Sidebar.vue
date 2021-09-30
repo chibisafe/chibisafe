@@ -27,6 +27,7 @@
 					Administration
 					<b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
 				</template>
+				<b-menu-item icon="file-cog" label="Public uploads" tag="nuxt-link" to="/dashboard/admin/uploads" exact />
 				<b-menu-item icon="account" label="Users" tag="nuxt-link" to="/dashboard/admin/users" exact />
 				<b-menu-item icon="cog-outline" label="Settings" tag="nuxt-link" to="/dashboard/admin/settings" exact />
 				<b-menu-item icon="chart-line" label="Statistics" tag="nuxt-link" to="/dashboard/admin/statistics" exact />
