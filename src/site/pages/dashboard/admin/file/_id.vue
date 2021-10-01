@@ -103,6 +103,7 @@
 
 					<div class="mb2 mt2 text-center">
 						<b-button
+							v-if="admin.file.userId !== auth.user.id"
 							type="is-danger"
 							@click="promptBanIP">
 							Ban IP
