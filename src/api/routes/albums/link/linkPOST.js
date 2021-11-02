@@ -3,7 +3,7 @@ const Util = require('../../../utils/Util');
 
 class linkPOST extends Route {
 	constructor() {
-		super('/album/link/new', 'post');
+		super('/album/link/new', 'post', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {

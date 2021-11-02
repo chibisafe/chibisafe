@@ -4,7 +4,7 @@ const Util = require('../../utils/Util');
 
 class albumsGET extends Route {
 	constructor() {
-		super('/albums/mini', 'get');
+		super('/albums/mini', 'get', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {
