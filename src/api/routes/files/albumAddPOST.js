@@ -2,7 +2,7 @@ const Route = require('../../structures/Route');
 
 class albumAddPOST extends Route {
 	constructor() {
-		super('/file/album/add', 'post');
+		super('/file/album/add', 'post', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {
