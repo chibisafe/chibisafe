@@ -189,7 +189,7 @@ class Util {
 
 				if (!file) continue;
 
-				await this.deleteFile(file.name, false);
+				await this.deleteFile(file.name, true);
 			}
 		} catch (error) {
 			log.error(error);
@@ -203,7 +203,7 @@ class Util {
 			await db.table('files').whereIn('id', fileIds).delete(); // Delete file references
 			for (const file of files) {
 				// Delete file from storage
-				await this.deleteFile(file.name, true);
+				await this.deleteFile(file.name, false);
 			}
 		} catch (error) {
 			log.error(error);
