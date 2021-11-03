@@ -97,7 +97,7 @@ class Server {
 	createJobs() {
 		// TODO: move into the database config. (we can just show the crontab line for start, later on we can add dropdowns and stuff)
 		this.jobs.stats = new CronJob('0 0 * * * *', Util.saveStatsToDb, null, true);
-		this.jobs.fileExpiry = new CronJob('* * * * * *', Util.deleteExpiredFiles, null, true);
+		this.jobs.fileExpiry = new CronJob('*/5 * * * * *', Util.deleteExpiredFiles, null, true);
 	}
 
 	start() {
