@@ -2,7 +2,7 @@ const Route = require('../../structures/Route');
 
 class tagAddPOST extends Route {
 	constructor() {
-		super('/file/tag/add', 'post');
+		super('/file/tag/add', 'post', { canApiKey: true });
 	}
 
 	async run(req, res, db, user) {
