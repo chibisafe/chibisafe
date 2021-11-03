@@ -196,6 +196,20 @@ class Util {
 		}
 	}
 
+	static async deleteAllFilesFromFileArray(files) {
+		try {
+			const fileIds = files.map(file => file.id);
+			await db.table('albumsFiles').whereIn('fileId', fileIds).delete(); // Delete album mappings
+			await db.table('files').whereIn('id', fileIds).delete(); // Delete file references
+			for (const file of files) {
+				// Delete file from storage
+				await this.deleteFile(file.name, true);
+			}
+		} catch (error) {
+			log.error(error);
+		}
+	}
+
 	static async deleteAllFilesFromUser(id) {
 		try {
 			const files = await db.table('files').where({ userId: id });
@@ -373,6 +387,19 @@ class Util {
 		}
 
 		return extname + multi;
+	}
+
+	static async deleteExpiredFiles() {
+		if (!Util.config.deleteExpiredFilesEnabled) return;
+
+		const expiryBefore = moment.utc().subtract(Util.config.deleteExpiredFilesAfter ?? 30, 'minutes');
+
+		const dbExpiredFiles = await db.table('files').where('createdAt', '<', expiryBefore.toISOString());
+
+		if (!dbExpiredFiles.length) return;
+
+		await Util.deleteAllFilesFromFileArray(dbExpiredFiles);
+		log.info(`Deleted ${dbExpiredFiles.length} expired files`);
 	}
 
 	// TODO: Allow choosing what to save to db and what stats we care about in general

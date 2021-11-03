@@ -86,6 +86,16 @@ const schema = Joi.object({
 		.label('Blocked extensions')
 		.description('List of extensions which will be rejected by the server'),
 
+	deleteExpiredFilesEnabled: Joi.boolean().default(false)
+		.meta({ section: Sections.FILE })
+		.label('Automatic File Deletion')
+		.description('Enables automatic file deletion after the specified amount of days'),
+
+	deleteExpiredFilesAfter: Joi.number().integer().default(30)
+		.meta({ section: Sections.FILE })
+		.label('Automatic File Deletion After')
+		.description('The amount of days to delete files after, if Automatic File Deletion is enabled'),
+
 	// User settings
 	publicMode: Joi.boolean().default(true)
 		.meta({
