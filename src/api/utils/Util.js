@@ -392,7 +392,7 @@ class Util {
 	static async deleteExpiredFiles() {
 		if (!Util.config.deleteExpiredFilesEnabled) return;
 
-		const expiryBefore = moment.utc().subtract(Util.config.deleteExpiredFilesAfter ?? 30, 'minutes');
+		const expiryBefore = moment.utc().subtract(Util.config.deleteExpiredFilesAfter ?? 30, 'days');
 
 		const dbExpiredFiles = await db.table('files').where('createdAt', '<', expiryBefore.toDate());
 
