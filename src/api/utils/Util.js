@@ -394,7 +394,7 @@ class Util {
 
 		const expiryBefore = moment.utc().subtract(Util.config.deleteExpiredFilesAfter ?? 30, 'minutes');
 
-		const dbExpiredFiles = await db.table('files').where('createdAt', '<', expiryBefore.toISOString());
+		const dbExpiredFiles = await db.table('files').where('createdAt', '<', expiryBefore.toDate());
 
 		if (!dbExpiredFiles.length) return;
 
