@@ -189,7 +189,7 @@ class Util {
 
 				if (!file) continue;
 
-				await this.deleteFile(file.name, true);
+				await this.deleteFile(file.name, false);
 			}
 		} catch (error) {
 			log.error(error);

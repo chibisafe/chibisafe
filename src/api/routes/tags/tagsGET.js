@@ -2,7 +2,7 @@ const Route = require('../../structures/Route');
 
 class tagsGET extends Route {
 	constructor() {
-		super('/tags', 'get', { canApiKey: true });
+		super('/tags', 'get');
 	}
 
 	async run(req, res, db, user) {
