@@ -33,7 +33,7 @@ exports.seed = async db => {
 		return;
 	}
 	try {
-		const hash = await bcrypt.hash('admin', 10);
+		const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
 		await db.table('users').insert({
 			username: 'admin',
 			password: hash,
