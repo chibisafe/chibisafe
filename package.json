@@ -9,7 +9,7 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"setup": "node src/setup.js && npm run migrate && npm run seed",
+		"setup": "cross-env node src/setup.js && cross-env npm run migrate && cross-env npm run seed",
 		"start": "npm run migrate && nuxt build && cross-env NODE_ENV=production node src/api/structures/Server",
 		"dev": "nodemon src/api/structures/Server",
 		"migrate": "knex migrate:latest",
