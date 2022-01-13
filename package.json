@@ -96,7 +96,6 @@
 		"babel-eslint": "^10.0.1",
 		"babel-jest": "^26.6.3",
 		"cross-env": "^5.2.0",
-		"dart-sass": "^1.25.0",
 		"eslint": "^7.17.0",
 		"eslint-config-aqua": "^7.3.0",
 		"eslint-import-resolver-nuxt": "^1.0.1",
@@ -107,6 +106,7 @@
 		"postcss-css-variables": "^0.11.0",
 		"postcss-nested": "^3.0.0",
 		"puppeteer": "^5.5.0",
+		"sass": "^1.48.0",
 		"sass-loader": "^10.1.0",
 		"vue-jest": "^3.0.7"
 	},
