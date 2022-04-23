@@ -2,6 +2,7 @@
 	"apps": [
 		{
 			"name": "chibisafe",
+			"interpreter": "node@14.17.0",
 			"script": "npm",
 			"args": "run start",
 			"env": {
