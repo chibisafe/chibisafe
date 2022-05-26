@@ -199,9 +199,14 @@ class Util {
 	static async deleteAllFilesFromFileArray(files) {
 		try {
 			const fileIds = files.map(file => file.id);
-			await db.table('albumsFiles').whereIn('fileId', fileIds).delete(); // Delete album mappings
-			await db.table('fileTags').whereIn('id', fileIds).delete(); // Delete tag mappings
-			await db.table('files').whereIn('id', fileIds).delete(); // Delete file references
+			// Chunk fileIds into chunks to not hit SQL limits
+			const chunkSize = 250;
+			for (let i = 0; i < fileIds.length; i += chunkSize) {
+				const chunk = fileIds.slice(i, i + chunkSize);
+				await db.table('albumsFiles').whereIn('fileId', chunk).delete(); // Delete album mappings
+				await db.table('fileTags').whereIn('id', chunk).delete(); // Delete tag mappings
+				await db.table('files').whereIn('id', chunk).delete(); // Delete file references
+			}
 			for (const file of files) {
 				// Delete file from storage
 				await this.deleteFile(file.name, false);
