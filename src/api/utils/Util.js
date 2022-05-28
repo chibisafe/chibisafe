@@ -7,6 +7,7 @@ const db = require('../structures/Database');
 const moment = require('moment');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
+const Joi = require('joi');
 
 const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
@@ -76,8 +77,45 @@ class Util {
 		}
 	}
 
+	// Validate config object against joi schema
+	static validateConfig(config) {
+		const schema = {
+			domain: 'string',
+			routePrefix: 'string',
+			rateLimitWindow: 'number',
+			rateLimitMax: 'number',
+			secret: 'string',
+			serviceName: 'string',
+			chunkSize: 'number',
+			maxSize: 'number',
+			generateZips: 'boolean',
+			generatedFilenameLength: 'number',
+			generatedAlbumLength: 'number',
+			blockedExtensions: 'array',
+			publicMode: 'boolean',
+			userAccounts: 'boolean',
+			metaThemeColor: 'string',
+			metaDescription: 'string',
+			metaKeywords: 'string',
+			metaTwitterHandle: 'string',
+			backgroundImageURL: 'string',
+			logoURL: 'string',
+			statisticsCron: 'string',
+			enabledStatistics: 'array',
+			savedStatistics: 'array'
+		};
+		const { error } = Joi.validate(config, schema);
+		if (error) {
+			log.error(`Config validation error: ${error.message}`);
+			return false;
+		}
+		return true;
+	}
+
 	static async writeConfigToDb(config, wipe = false) {
-		// TODO: Check that the config passes the joi schema validation
+		// Check that the config passes the joi schema validation
+		if (!this.validateConfig(config)) return false;
+
 		if (!config || !config.key) return;
 		try {
 			config.value = JSON.stringify(config.value);
