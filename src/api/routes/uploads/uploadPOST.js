@@ -205,6 +205,12 @@ const finishChunks = async req => {
 				throw `File size mismatched (${lstat.size} vs. ${file.size}).`; // eslint-disable-line no-throw-literal
 			}
 
+			// Use scanFile method to get anti-virus scan results
+			const scan = await Util.scanFile(tmpfile);
+			if (scan.infected) {
+				throw 'File got flagged as malicious.'; // eslint-disable-line no-throw-literal
+			}
+
 			// Generate name
 			const name = Util.getUniqueFilename(file.extname);
 

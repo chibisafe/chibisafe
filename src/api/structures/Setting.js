@@ -176,7 +176,13 @@ const schema = Joi.object({
 	rateLimitMax: Joi.number().integer().default(5)
 		.meta({ section: Sections.SERVER })
 		.label('API maximum limit')
-		.description('Max number of connections during windowMs milliseconds before sending a 429 response')
+		.description('Max number of connections during windowMs milliseconds before sending a 429 response'),
+
+	// Enable clamav
+	clamAvEnabled: Joi.boolean().default(false)
+		.meta({ section: Sections.SERVER })
+		.label('Enable clamav')
+		.description('Enable virus scanning of uploaded files')
 });
 
 module.exports.schema = schema;

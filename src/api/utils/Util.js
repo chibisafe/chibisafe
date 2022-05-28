@@ -7,6 +7,8 @@ const db = require('../structures/Database');
 const moment = require('moment');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
+const NodeClam = require('clamscan');
+const ClamScan = new NodeClam().init();
 
 const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
@@ -64,7 +66,8 @@ class Util {
 			logoURL: process.env.LOGO_URL || '',
 			statisticsCron: process.env.STATISTICS_CRON || '0 0 * * * *',
 			enabledStatistics: process.env.ENABLED_STATISTICS ? process.env.ENABLED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums'],
-			savedStatistics: process.env.SAVED_STATISTICS ? process.env.SAVED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums']
+			savedStatistics: process.env.SAVED_STATISTICS ? process.env.SAVED_STATISTICS.split(',') : ['system', 'fileSystems', 'uploads', 'users', 'albums'],
+			clamAvEnabled: process.env.CLAMAV_ENABLED || false
 		};
 	}
 
@@ -157,6 +160,16 @@ class Util {
 
 	static getFilenameFromPath(fullPath) {
 		return fullPath.replace(/^.*[\\\/]/, ''); // eslint-disable-line no-useless-escape
+	}
+
+	// Use clamav to scan the file and return the result
+	static async scanFile(tempFile) {
+		if (!this.config.clamAvEnabled) return {};
+		const scan = await ClamScan.isInfected(tempFile);
+		return {
+			infected: scan.isInfected,
+			virusNames: scan.viruses,
+		};
 	}
 
 	static async deleteFile(filename, deleteFromDB = false) {
