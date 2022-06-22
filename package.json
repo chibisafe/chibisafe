@@ -75,7 +75,7 @@
 		"search-query-parser": "^1.5.5",
 		"serve-static": "^1.13.2",
 		"sharp": "^0.29.0",
-		"sqlite3": "^5.0.0",
+		"sqlite3": "^5.0.3",
 		"systeminformation": "^4.34.5",
 		"uuid": "^3.3.2",
 		"v-clipboard": "^2.2.1",
