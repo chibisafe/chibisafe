@@ -7,6 +7,7 @@ const db = require('../structures/Database');
 const moment = require('moment');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
+const Joi = require('joi');
 
 const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
@@ -76,8 +77,40 @@ class Util {
 		}
 	}
 
+	// Validate config object against joi schema
+	static validateConfig(config) {
+		const schema = Joi.object({
+			domain: Joi.string().uri().allow('').optional(),
+			routePrefix: Joi.string().optional(),
+			rateLimitWindow: Joi.number().optional(),
+			rateLimitMax: Joi.number().optional(),
+			secret: Joi.string().optional(),
+			serviceName: Joi.string().optional(),
+			chunkSize: Joi.number().optional(),
+			maxSize: Joi.number().optional(),
+			generateZips: Joi.boolean().optional(),
+			generatedFilenameLength: Joi.number().optional(),
+			generatedAlbumLength: Joi.number().optional(),
+			blockedExtensions: Joi.array().items(Joi.string()).optional(),
+			publicMode: Joi.boolean().optional(),
+			userAccounts: Joi.boolean().optional(),
+			metaThemeColor: Joi.string().optional(),
+			metaDescription: Joi.string().optional(),
+			metaKeywords: Joi.string().optional(),
+			metaTwitterHandle: Joi.string().optional(),
+			backgroundImageURL: Joi.string().uri().optional(),
+			logoURL: Joi.string().uri().optional(),
+			statisticsCron: Joi.string().optional(),
+			enabledStatistics: Joi.array().items(Joi.string()).optional(),
+			savedStatistics: Joi.array().items(Joi.string()).optional()
+		});
+		return schema.validate(config);
+	}
+
 	static async writeConfigToDb(config, wipe = false) {
-		// TODO: Check that the config passes the joi schema validation
+		// Check that the config passes the joi schema validation
+		if (!this.validateConfig(config)) return false;
+
 		if (!config || !config.key) return;
 		try {
 			config.value = JSON.stringify(config.value);
