@@ -8,7 +8,6 @@ const moment = require('moment');
 const Zip = require('adm-zip');
 const uuidv4 = require('uuid/v4');
 const NodeClam = require('clamscan');
-const ClamScan = new NodeClam().init();
 
 const log = require('./Log');
 const ThumbUtil = require('./ThumbUtil');
@@ -164,13 +163,21 @@ class Util {
 
 	// Use clamav to scan the file and return the result
 	static async scanFile(tempFile) {
-		if (!this.config.clamAvEnabled) return {};
-		const scan = await ClamScan.isInfected(tempFile);
-		return {
-			infected: scan.isInfected,
-			virusNames: scan.viruses,
-		};
+		// Check if clamav is enabled
+		if (this.config.clamAvEnabled) {
+			// Scan the file
+			const ClamScan = new NodeClam().init();
+			const scan = await ClamScan.isInfected(tempFile);;
+			if (scan.infected) {
+				return {
+					infected: scan.isInfected,
+					virusNames: scan.viruses
+				};
+			}
+		}
 	}
+
+		
 
 	static async deleteFile(filename, deleteFromDB = false) {
 		const thumbName = ThumbUtil.getFileThumbnail(filename);
