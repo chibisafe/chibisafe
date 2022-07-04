@@ -79,37 +79,32 @@ class Util {
 
 	// Validate config object against joi schema
 	static validateConfig(config) {
-		const schema = {
-			domain: 'string',
-			routePrefix: 'string',
-			rateLimitWindow: 'number',
-			rateLimitMax: 'number',
-			secret: 'string',
-			serviceName: 'string',
-			chunkSize: 'number',
-			maxSize: 'number',
-			generateZips: 'boolean',
-			generatedFilenameLength: 'number',
-			generatedAlbumLength: 'number',
-			blockedExtensions: 'array',
-			publicMode: 'boolean',
-			userAccounts: 'boolean',
-			metaThemeColor: 'string',
-			metaDescription: 'string',
-			metaKeywords: 'string',
-			metaTwitterHandle: 'string',
-			backgroundImageURL: 'string',
-			logoURL: 'string',
-			statisticsCron: 'string',
-			enabledStatistics: 'array',
-			savedStatistics: 'array'
-		};
-		const { error } = Joi.validate(config, schema);
-		if (error) {
-			log.error(`Config validation error: ${error.message}`);
-			return false;
-		}
-		return true;
+		const schema = Joi.object({
+			domain: Joi.string().uri().allow('').optional(),
+			routePrefix: Joi.string().optional(),
+			rateLimitWindow: Joi.number().optional(),
+			rateLimitMax: Joi.number().optional(),
+			secret: Joi.string().optional(),
+			serviceName: Joi.string().optional(),
+			chunkSize: Joi.number().optional(),
+			maxSize: Joi.number().optional(),
+			generateZips: Joi.boolean().optional(),
+			generatedFilenameLength: Joi.number().optional(),
+			generatedAlbumLength: Joi.number().optional(),
+			blockedExtensions: Joi.array().items(Joi.string()).optional(),
+			publicMode: Joi.boolean().optional(),
+			userAccounts: Joi.boolean().optional(),
+			metaThemeColor: Joi.string().optional(),
+			metaDescription: Joi.string().optional(),
+			metaKeywords: Joi.string().optional(),
+			metaTwitterHandle: Joi.string().optional(),
+			backgroundImageURL: Joi.string().uri().optional(),
+			logoURL: Joi.string().uri().optional(),
+			statisticsCron: Joi.string().optional(),
+			enabledStatistics: Joi.array().items(Joi.string()).optional(),
+			savedStatistics: Joi.array().items(Joi.string()).optional()
+		});
+		return schema.validate(config);
 	}
 
 	static async writeConfigToDb(config, wipe = false) {
