@@ -25,7 +25,7 @@ Chibisafe is a file uploader service written in node that aims to to be easy to 
 ### Docker
 If you want to deploy a docker instance instead of manually setting the service up, you can use `docker-composer` with our scripts. [Please refer to the docs here](docs/docker.md)
 
-## ClamAV
+### ClamAV
 If you have clamAvEnabled set to true then you will have to install the ClamAV binary and daemon to your system. [Please refer to the docs here](docs/clamav.md)
 
 ### Pre-requisites
