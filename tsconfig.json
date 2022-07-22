@@ -4,17 +4,25 @@
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"strict": true,
-		"target": "esnext",
-		"module": "commonjs",
+		"target": "ESNext",
+		"module": "ESNext",
 		"jsx": "preserve",
 		"lib": ["esnext", "dom"],
 		"rootDir": "./src/api",
 		"outDir": "./dist",
 		"sourceRoot": "./",
+		"resolveJsonModule": true,
 		"types": [
-			"@types/node",
-			"@nuxt/types"
-		  ]
+			"@types/node"
+		],
+		"typeRoots": ["node_modules/@types", "src"],
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["src/*"],
+			"@/*": ["src/*"]
+		},
 	},
-	"include": ["**/*.ts", "**/*.d.ts"]
+	"include": ["api/**/*.ts", "web/**/*.vue", "web/**/*.ts"]
+	
 }
