@@ -53,7 +53,7 @@
 		"express-rate-limit": "^3.4.0",
 		"ffmpeg-probe": "^1.0.6",
 		"file-saver": "^2.0.1",
-		"file-type": "^16.1.0",
+		"file-type": "^16.5.4",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^2.2.2",
 		"helmet": "^3.15.1",
