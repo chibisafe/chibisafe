@@ -4,19 +4,29 @@
 	"files.insertFinalNewline": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
-	"[javascript]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
-	},
-	"[vue]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
-	},
-	"prettier.disableLanguages": ["vue"],
-	"vetur.format.enable": true,
 	"files.eol": "\n",
 	"eslint.alwaysShowStatus": true,
 	"eslint.format.enable": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+
+
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"files.associations": {
+		"*.css": "postcss"
+	},
+	"[vue]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
 }

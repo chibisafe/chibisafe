@@ -5,7 +5,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"target": "ESNext",
-		"module": "ESNext",
+		"module": "CommonJS",
 		"jsx": "preserve",
 		"lib": ["esnext", "dom"],
 		"rootDir": "./src/api",
@@ -23,6 +23,6 @@
 			"@/*": ["src/*"]
 		},
 	},
-	"include": ["api/**/*.ts", "web/**/*.vue", "web/**/*.ts"]
+	"include": ["src/**/*.ts", "src/**/*.vue"]
 	
 }

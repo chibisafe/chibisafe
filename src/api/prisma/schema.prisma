@@ -1,0 +1,105 @@
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider          = "sqlite"
+	url               = "file:../../../database/database.sqlite"
+	shadowDatabaseUrl = "file:../../../database/shadow.sqlite"
+}
+
+model users {
+	id Int @id @default(autoincrement())
+	username String @unique
+	password String
+	enabled Boolean @default(true)
+	isAdmin Boolean @default(false)
+	apiKey String? @unique
+	passwordEditedAt DateTime?
+	apiKeyEditedAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
+
+model albums {
+	id Int @id @default(autoincrement())
+	userId Int
+	name String
+	zippedAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+	nsfw Boolean @default(false)
+}
+
+model albumsFiles {
+	id Int @id @default(autoincrement())
+	albumId Int
+	fileId Int
+}
+
+model albumsLinks {
+	id Int @id @default(autoincrement())
+	albumId Int
+	linkId Int @unique
+}
+
+model bans {
+	id Int @id @default(autoincrement())
+	ip String
+	createdAt DateTime @default(now())
+}
+
+model fileTags {
+	id Int @id @default(autoincrement())
+	fileId Int
+	tagId Int
+}
+
+model files {
+	id Int @id @default(autoincrement())
+	userId Int?
+	name String
+	original String
+	type String
+	size Int
+	hash String
+	ip String
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
+
+model links {
+	id Int @id @default(autoincrement())
+	userId Int
+	albumId Int
+	identifier String @unique
+	views Int @default(0)
+	enabled Boolean @default(true)
+	enableDownload Boolean @default(false)
+	expiresAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
+
+model settings {
+	id Int @id @default(autoincrement())
+	key String
+	value String
+}
+
+model statistics {
+	id Int @id @default(autoincrement())
+	batchId Int?
+	type String?
+	data String?
+	createdAt DateTime @default(now())
+}
+
+model tags {
+	id Int @id @default(autoincrement())
+	uuid String
+	userId Int
+	name String
+	createdAt DateTime @default(now())
+	editedAt  DateTime?
+}
