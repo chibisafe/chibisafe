@@ -43,7 +43,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodemon": "^2.0.19",
 		"prettier": "^2.7.1",
-		"prisma": "^4.1.0",
+		"prisma": "^4.3.1",
 		"ts-node": "^10.9.1",
 		"typescript": "^4.7.4"
 	},
@@ -71,7 +71,7 @@
 		"node": "16.16.0"
 	},
 	"dependencies": {
-		"@prisma/client": "^4.1.0",
+		"@prisma/client": "^4.3.1",
 		"adm-zip": "^0.5.9",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.1",
@@ -80,7 +80,7 @@
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
 		"helmet": "^5.1.0",
-		"hyper-express": "^6.4.1",
+		"hyper-express": "^6.4.7",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
 		"randomstring": "^1.2.2",
