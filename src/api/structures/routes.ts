@@ -41,13 +41,32 @@ export default {
 				}
 
 				// Register the route in hyper-express
-				server.any(
-					route.url,
-					{
-						middlewares
-					},
-					(req: Request, res: Response) => route.run(req, res)
-				);
+				// FIXME: server[route.method] doesn't seem to work so I'm doing server.get/post/put/delete for now
+
+				if (route.method === 'GET')
+					server.get(
+						route.url,
+						{
+							middlewares
+						},
+						(req: Request, res: Response) => route.run(req, res)
+					);
+				else if (route.method === 'POST')
+					server.post(
+						route.url,
+						{
+							middlewares
+						},
+						(req: Request, res: Response) => route.run(req, res)
+					);
+				else if (route.method === 'DELETE')
+					server.delete(
+						route.url,
+						{
+							middlewares
+						},
+						(req: Request, res: Response) => route.run(req, res)
+					);
 
 				log.info(`Found route ${route.method.toUpperCase() as string} ${route.url as string}`);
 			} catch (error) {
