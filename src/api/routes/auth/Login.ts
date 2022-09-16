@@ -3,8 +3,10 @@ import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 
-export const url = '/auth/register';
-export const method = 'POST';
+export const options = {
+	url: '/auth/login',
+	method: 'post'
+};
 
 export const run = async (req: Request, res: Response) => {
 	const { username, password } = await req.json();

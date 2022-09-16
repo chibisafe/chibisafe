@@ -1,9 +1,11 @@
 import prisma from '../../../structures/database';
 import type { Request, Response } from 'hyper-express';
 
-export const url = '/admin/user/:uuid/purge';
-export const method = 'POST';
-export const middlewares = ['auth', 'admin'];
+export const options = {
+	url: '/admin/user/:uuid/purge',
+	method: 'post',
+	middlewares: ['auth', 'admin']
+};
 
 export const run = async (req: Request, res: Response) => {
 	const { uuid } = req.path_parameters;

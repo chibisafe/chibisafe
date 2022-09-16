@@ -5,9 +5,11 @@ import bcrypt from 'bcryptjs';
 import { utc } from 'moment';
 import log from '../../utils/Log';
 
-export const url = '/auth/password/change';
-export const method = 'POST';
-export const middlewares = ['auth'];
+export const options = {
+	url: '/auth/password/change',
+	method: 'post',
+	middlewares: ['auth']
+};
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	const { password, newPassword } = await req.json();

@@ -3,14 +3,15 @@ import prisma from '../../structures/database';
 import { constructFilePublicLink } from '../../utils/File';
 import type { User } from '../../structures/interfaces';
 
-export const url = '/admin/file/:uuid';
-export const method = 'POST';
+export const options = {
+	url: '/admin/file/:uuid',
+	method: 'post',
+	middlewares: ['auth', 'admin']
+};
 
 interface UserWithFileCount extends User {
 	fileCount?: number;
 }
-
-export const middlewares = ['auth', 'admin'];
 
 export const run = async (req: Request, res: Response) => {
 	const { uuid } = req.path_parameters;

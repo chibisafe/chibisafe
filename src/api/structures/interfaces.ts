@@ -92,3 +92,9 @@ export interface Settings {
 	savedStatistics: string[];
 	[key: string]: string | number | string[] | boolean;
 }
+
+export interface RouteOptions {
+	url: string;
+	method: string;
+	middlewares?: string[];
+}

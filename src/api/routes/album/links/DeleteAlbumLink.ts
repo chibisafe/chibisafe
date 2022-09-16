@@ -2,9 +2,11 @@ import type { Response } from 'hyper-express';
 import prisma from '../../../structures/database';
 import { RequestWithUser } from '../../../structures/interfaces';
 
-export const url = '/album/:uuid/link/:identifier';
-export const method = 'DELETE';
-export const middlewares = ['auth'];
+export const options = {
+	url: '/album/:uuid/link/:identifier',
+	method: 'delete',
+	middlewares: ['auth']
+};
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	const { identifier } = req.path_parameters;

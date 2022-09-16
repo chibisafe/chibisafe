@@ -2,9 +2,11 @@ import type { Request, Response } from 'hyper-express';
 import prisma from '../../../structures/database';
 import log from '../../../utils/Log';
 
-export const url = '/admin/ip/ban';
-export const method = 'POST';
-export const middlewares = ['auth', 'admin'];
+export const options = {
+	url: '/admin/ip/ban',
+	method: 'post',
+	middlewares: ['auth', 'admin']
+};
 
 export const run = async (req: Request, res: Response) => {
 	if (!req.body) return res.status(400).json({ message: 'No body provided' });

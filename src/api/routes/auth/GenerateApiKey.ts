@@ -4,9 +4,11 @@ import prisma from '../../structures/database';
 import { utc } from 'moment';
 import randomstring from 'randomstring';
 
-export const url = '/auth/apikey/change';
-export const method = 'POST';
-export const middlewares = ['auth'];
+export const options = {
+	url: '/auth/apikey/change',
+	method: 'post',
+	middlewares: ['auth']
+};
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	const now = utc().toDate();

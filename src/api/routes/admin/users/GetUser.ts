@@ -2,9 +2,11 @@ import type { Request, Response } from 'hyper-express';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
 
-export const url = '/admin/user/:uuid';
-export const method = 'GET';
-export const middlewares = ['auth', 'admin'];
+export const options = {
+	url: '/admin/user/:uuid',
+	method: 'get',
+	middlewares: ['auth', 'admin']
+};
 
 export const run = async (req: Request, res: Response) => {
 	const { uuid } = req.path_parameters;

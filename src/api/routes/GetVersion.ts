@@ -1,9 +1,11 @@
-import type { Response } from 'hyper-express';
+import type { Request, Response } from 'hyper-express';
 
-export const url = '/version';
-export const method = 'GET';
+export const options = {
+	url: '/version',
+	method: 'get'
+};
 
-export const run = (res: Response) => {
+export const run = (req: Request, res: Response) => {
 	res.json({
 		version: process.env.npm_package_version
 	});

@@ -2,15 +2,17 @@ import type { Response } from 'hyper-express';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
+export const options = {
+	url: '/album/:uuid/link/:identifier/edit',
+	method: 'post',
+	middlewares: ['auth']
+};
+
 interface body {
 	identifier: string;
 	enableDownload: boolean;
 	expiresAt: Date;
 }
-
-export const url = '/album/:uuid/link/:identifier/edit';
-export const method = 'POST';
-export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	if (!req.body) return res.status(400).json({ message: 'No body provided' });

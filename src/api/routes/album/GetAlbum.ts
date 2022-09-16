@@ -3,9 +3,11 @@ import prisma from '../../structures/database';
 import { constructFilePublicLink } from '../../utils/File';
 import type { ExtendedFile, File } from '../../structures/interfaces';
 
-export const url = '/album/:uuid/';
-export const method = 'GET';
-export const middlewares = ['auth'];
+export const options = {
+	url: '/album/:uuid',
+	method: 'get',
+	middlewares: ['auth']
+};
 
 export const run = async (req: Request, res: Response) => {
 	const { identifier } = req.path_parameters;

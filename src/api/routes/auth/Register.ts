@@ -4,8 +4,10 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import log from '../../utils/Log';
 
-export const url = '/auth/login';
-export const method = 'POST';
+export const options = {
+	url: '/auth/register',
+	method: 'post'
+};
 
 export const run = async (req: Request, res: Response) => {
 	const { username, password } = await req.json();

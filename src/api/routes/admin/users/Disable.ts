@@ -2,9 +2,11 @@ import type { Response } from 'hyper-express';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
-export const url = '/admin/user/:uuid/disable';
-export const method = 'POST';
-export const middlewares = ['auth', 'admin'];
+export const options = {
+	url: '/admin/user/:uuid/disable',
+	method: 'post',
+	middlewares: ['auth', 'admin']
+};
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	const { uuid } = req.path_parameters;

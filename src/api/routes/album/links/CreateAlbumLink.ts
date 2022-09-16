@@ -4,14 +4,16 @@ import { RequestWithUser } from '../../../structures/interfaces';
 import { getUniqueAlbumIdentifier } from '../../../utils/Util';
 import { v4 as uuidv4 } from 'uuid';
 
+export const options = {
+	url: '/album/:uuid/link',
+	method: 'post',
+	middlewares: ['auth']
+};
+
 interface body {
 	uuid: string;
 	identifier?: string;
 }
-
-export const url = '/album/:uuid/link/';
-export const method = 'POST';
-export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	if (!req.body) return res.status(400).json({ message: 'No body provided' });
