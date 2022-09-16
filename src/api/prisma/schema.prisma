@@ -10,6 +10,7 @@ datasource db {
 
 model users {
 	id Int @id @default(autoincrement())
+	uuid String @unique
 	username String @unique
 	password String
 	enabled Boolean @default(true)
@@ -23,6 +24,7 @@ model users {
 
 model albums {
 	id Int @id @default(autoincrement())
+	uuid String @unique
 	userId Int
 	name String
 	zippedAt DateTime?
@@ -57,6 +59,7 @@ model fileTags {
 
 model files {
 	id Int @id @default(autoincrement())
+	uuid String @unique
 	userId Int?
 	name String
 	original String
@@ -70,6 +73,7 @@ model files {
 
 model links {
 	id Int @id @default(autoincrement())
+	uuid String @unique
 	userId Int
 	albumId Int
 	identifier String @unique
@@ -97,7 +101,7 @@ model statistics {
 
 model tags {
 	id Int @id @default(autoincrement())
-	uuid String
+	uuid String @unique
 	userId Int
 	name String
 	createdAt DateTime @default(now())
