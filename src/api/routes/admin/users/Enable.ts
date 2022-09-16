@@ -1,14 +1,14 @@
 import type { Response } from 'hyper-express';
-import type { RequestWithUser } from '../../../../structures/interfaces';
-import prisma from '../../../../structures/database';
+import type { RequestWithUser } from '../../../structures/interfaces';
+import prisma from '../../../structures/database';
 
+export const url = '/admin/user/:uuid/enable';
+export const method = 'POST';
 export const middlewares = ['auth', 'admin'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	if (!req.body) return res.status(400).json({ message: 'No body provided' });
-	const { uuid } = req.body;
-
-	if (!uuid) return res.status(400).json({ message: 'No id provided' });
+	const { uuid } = req.path_parameters;
+	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
 	if (uuid === req.user.uuid) return res.status(400).json({ message: "You can't apply this action to yourself" });
 
 	await prisma.users.update({
@@ -16,11 +16,11 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			uuid
 		},
 		data: {
-			isAdmin: false
+			enabled: true
 		}
 	});
 
 	return res.json({
-		message: 'Successfully demoted user'
+		message: 'Successfully enabled user'
 	});
 };

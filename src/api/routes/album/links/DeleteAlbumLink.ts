@@ -1,12 +1,13 @@
 import type { Response } from 'hyper-express';
-import prisma from '../../../../structures/database';
-import { RequestWithUser } from '../../../../structures/interfaces';
+import prisma from '../../../structures/database';
+import { RequestWithUser } from '../../../structures/interfaces';
 
+export const url = '/album/:uuid/link/:identifier';
+export const method = 'DELETE';
 export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	if (!req.body) return res.status(400).json({ message: 'No body provided' });
-	const { identifier } = req.body;
+	const { identifier } = req.path_parameters;
 	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
 
 	const link = await prisma.links.findFirst({

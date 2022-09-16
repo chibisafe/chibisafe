@@ -1,14 +1,16 @@
 import type { Request, Response } from 'hyper-express';
-import prisma from '../../../../structures/database';
+import prisma from '../../../structures/database';
+import log from '../../../utils/Log';
 
-interface body {
-	ip: string;
-}
+export const url = '/admin/ip/ban';
+export const method = 'POST';
 export const middlewares = ['auth', 'admin'];
+
 export const run = async (req: Request, res: Response) => {
 	if (!req.body) return res.status(400).json({ message: 'No body provided' });
 
-	const { ip } = req.body as body;
+	const { ip }: { ip: string } = await req.json();
+
 	if (!ip) return res.status(400).json({ message: 'No ip provided' });
 
 	await prisma.bans.create({
@@ -16,6 +18,8 @@ export const run = async (req: Request, res: Response) => {
 			ip
 		}
 	});
+
+	log.warn(`IP ${ip} has been banned`);
 
 	return res.json({
 		message: 'Successfully banned the ip'

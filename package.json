@@ -73,7 +73,9 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^4.3.1",
+		"@types/bcryptjs": "^2.4.2",
 		"adm-zip": "^0.5.9",
+		"bcryptjs": "^2.4.3",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.1",
 		"ffmpeg-probe": "^1.0.6",

@@ -8,12 +8,15 @@ interface body {
 	expiresAt: Date;
 }
 
+export const url = '/album/:uuid/link/:identifier/edit';
+export const method = 'POST';
 export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	if (!req.body) return res.status(400).json({ message: 'No body provided' });
-	const { identifier, enableDownload, expiresAt } = req.body as body;
+	const { identifier } = req.path_parameters;
 	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
+	const { enableDownload, expiresAt } = req.body as body;
 
 	const link = await prisma.links.findFirst({
 		where: {

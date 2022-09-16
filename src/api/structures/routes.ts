@@ -1,7 +1,7 @@
 import jetpack from 'fs-jetpack';
 import path from 'path';
 import type { Server, Request, Response } from 'hyper-express';
-import log from 'fancy-log';
+import log from '../utils/Log';
 
 const defaultMiddlewares = ['ban'];
 
@@ -18,25 +18,10 @@ export default {
 				const slash = process.platform === 'win32' ? '\\' : '/';
 				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}api${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
-				const paths: Array<string> = routeFile.split(slash);
-				const method = paths[paths.length - 1].split('.')[0];
-
-				// Get rid of the filename
-				paths.pop();
-
-				// Get rid of the src/api/routes part
-				paths.splice(0, 3);
-
-				let url: string = paths.join(slash);
-
-				// Transform path variables to express variables
-				url = url.replace('_', ':');
-
-				// Append the missing /
-				url = `/${url}`;
-
-				// Build final route
-				url = `${route.options?.ignoreRoutePrefix ? '' : '/api'}${url}`;
+				if (!route.url || !route.method) {
+					log.warn(`Found route without URL or METHOD - ${routeFile}`);
+					continue;
+				}
 
 				// Run middlewares if any, and in order of execution
 				const middlewares: any[] = [];
@@ -57,17 +42,17 @@ export default {
 
 				// Register the route in hyper-express
 				server.any(
-					url,
+					route.url,
 					{
 						middlewares
 					},
 					(req: Request, res: Response) => route.run(req, res)
 				);
 
-				log.info(`Found route ${method.toUpperCase()} ${url}`);
+				log.info(`Found route ${route.method.toUpperCase() as string} ${route.url as string}`);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-				log.error(`[ERROR] :: ${routeFile}`);
+				log.error(routeFile);
 				log.error(error);
 			}
 		}

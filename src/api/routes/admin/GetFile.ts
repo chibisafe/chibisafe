@@ -1,7 +1,10 @@
 import type { Request, Response } from 'hyper-express';
-import prisma from '../../../../structures/database';
-import { constructFilePublicLink } from '../../../../utils/File';
-import type { User } from '../../../../structures/interfaces';
+import prisma from '../../structures/database';
+import { constructFilePublicLink } from '../../utils/File';
+import type { User } from '../../structures/interfaces';
+
+export const url = '/admin/file/:uuid';
+export const method = 'POST';
 
 interface UserWithFileCount extends User {
 	fileCount?: number;

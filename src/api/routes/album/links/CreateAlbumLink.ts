@@ -9,6 +9,8 @@ interface body {
 	identifier?: string;
 }
 
+export const url = '/album/:uuid/link/';
+export const method = 'POST';
 export const middlewares = ['auth'];
 
 export const run = async (req: RequestWithUser, res: Response) => {
@@ -25,7 +27,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (!exists) return res.status(400).json({ message: 'Album doesn\t exist' });
 
-	let { identifier } = req.body as body;
+	let { identifier } = req.path_parameters;
 	if (identifier) {
 		if (!req.user.isAdmin) return res.status(401).json({ message: 'Only administrators can create custom links' });
 		if (!/^[a-zA-Z0-9-_]+$/.test(identifier))

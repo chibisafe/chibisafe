@@ -84,11 +84,11 @@ export const deleteAllFilesFromAlbum = async (id: number) => {
 	}
 };
 
-export const deleteAllFilesFromUser = async (id: number) => {
+export const deleteAllFilesFromUser = async (uuid: string) => {
 	try {
 		const files = await prisma.files.findMany({
 			where: {
-				userId: id
+				uuid
 			}
 		});
 

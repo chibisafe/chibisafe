@@ -25,6 +25,7 @@ export default (req: RequestWithUser, res: Response, next: MiddlewareNext) => {
 			},
 			select: {
 				id: true,
+				uuid: true,
 				username: true,
 				isAdmin: true
 			}
