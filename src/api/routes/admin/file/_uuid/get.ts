@@ -1,6 +1,6 @@
 import type { Request, Response } from 'hyper-express';
 import prisma from '../../../../structures/database';
-import { constructFilePublicLink } from '../../../../utils/file';
+import { constructFilePublicLink } from '../../../../utils/File';
 import type { User } from '../../../../structures/interfaces';
 
 interface UserWithFileCount extends User {
@@ -10,12 +10,12 @@ interface UserWithFileCount extends User {
 export const middlewares = ['auth', 'admin'];
 
 export const run = async (req: Request, res: Response) => {
-	const { id } = req.path_parameters;
-	if (!id) return res.status(400).json({ message: 'Invalid file ID supplied' });
+	const { uuid } = req.path_parameters;
+	if (!uuid) return res.status(400).json({ message: 'Invalid file ID supplied' });
 
 	const file = await prisma.files.findUnique({
 		where: {
-			id: Number(id)
+			uuid
 		}
 	});
 

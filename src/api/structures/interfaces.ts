@@ -3,6 +3,7 @@ import type { Request } from 'hyper-express';
 export interface RequestWithUser extends Request {
 	user: {
 		id: number;
+		uuid: string;
 		username: string;
 		isAdmin: boolean;
 		apiKey?: string | null | undefined;
@@ -11,6 +12,7 @@ export interface RequestWithUser extends Request {
 
 export interface User {
 	id: number;
+	uuid: string;
 	username: string;
 	password: string;
 	enabled: boolean;
@@ -24,6 +26,7 @@ export interface User {
 
 export interface File {
 	id: number;
+	uuid: string;
 	userId?: number | null;
 	name: string;
 	original: string;
@@ -54,6 +57,7 @@ export interface ExtendedFileWithData extends ExtendedFile {
 
 export interface Album {
 	id: number;
+	uuid: string;
 	userId: number;
 	name: string;
 	zippedAt: Date | null;

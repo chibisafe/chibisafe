@@ -3,7 +3,9 @@ import prisma from '../structures/database';
 import log from 'fancy-log';
 
 export default async (req: Request, res: Response, next: MiddlewareNext) => {
+	// TODO: Remove this in the future
 	log(`Incoming request from ip: ${req.ip}`);
+
 	const banned = await prisma.bans.findFirst({
 		where: {
 			ip: req.ip
