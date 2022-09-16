@@ -1,5 +1,5 @@
 import randomstring from 'randomstring';
-import log from 'fancy-log';
+import log from './Log';
 
 import prisma from '../structures/database';
 export { v4 as uuid } from 'uuid';

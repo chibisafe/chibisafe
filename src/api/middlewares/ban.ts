@@ -1,10 +1,10 @@
 import type { Request, Response, MiddlewareNext } from 'hyper-express';
 import prisma from '../structures/database';
-import log from 'fancy-log';
+import log from '../utils/Log';
 
 export default async (req: Request, res: Response, next: MiddlewareNext) => {
 	// TODO: Remove this in the future
-	log(`Incoming request from ip: ${req.ip}`);
+	log.debug(`Incoming request from ip: ${req.ip}`);
 
 	const banned = await prisma.bans.findFirst({
 		where: {

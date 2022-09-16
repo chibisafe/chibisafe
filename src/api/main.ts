@@ -1,6 +1,6 @@
 import HyperExpress from 'hyper-express';
 import jetpack from 'fs-jetpack';
-import log from 'fancy-log';
+import log from './utils/Log';
 // import helmet from 'helmet';
 import cors from 'cors';
 import Routes from './structures/routes';
@@ -47,7 +47,7 @@ const start = async () => {
 
 	// Start the server
 	await server.listen(8000);
-	log('Server started on port 8000');
+	log.info('Server started on port 8000');
 };
 
 void start();

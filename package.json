@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"build": "tsc --noEmit",
-		"dev": "nodemon -r dotenv/config src/api/main.ts",
+		"dev": "nodemon -r dotenv/config src/api/main.ts | pino-pretty",
 		"sqlite": "sqlite_web -p 5001 database/database.sqlite",
 		"migrate": "prisma migrate deploy && prisma generate && prisma seed"
 	},
@@ -42,6 +42,7 @@
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodemon": "^2.0.19",
+		"pino-pretty": "^9.1.0",
 		"prettier": "^2.7.1",
 		"prisma": "^4.3.1",
 		"ts-node": "^10.9.1",
@@ -75,7 +76,6 @@
 		"adm-zip": "^0.5.9",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.1",
-		"fancy-log": "^2.0.0",
 		"ffmpeg-probe": "^1.0.6",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
@@ -83,6 +83,7 @@
 		"hyper-express": "^6.4.7",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
+		"pino": "^8.5.0",
 		"randomstring": "^1.2.2",
 		"sharp": "^0.30.7",
 		"uuid": "^8.3.2"

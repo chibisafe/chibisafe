@@ -2,8 +2,9 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'path';
-import log from 'fancy-log';
+import log from '../utils/Log';
 import randomstring from 'randomstring';
+import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
@@ -187,6 +188,7 @@ export const storeFileToDb = async (req: Request, res: Response, user: User, fil
 	const now = utc().toDate();
 	const data = {
 		userId: user.id ? user.id : undefined,
+		uuid: uuidv4(),
 		name: file.data.filename,
 		original: file.data.originalName,
 		type: file.data.mimeType,
