@@ -32,7 +32,7 @@ export const run = async (req: Request, res: Response) => {
 			sub: user.id,
 			iat: new Date().getTime()
 		},
-		process.env.secret ?? '',
+		process.env.JWT_SECRET ?? '',
 		{ expiresIn: '30d' }
 	);
 

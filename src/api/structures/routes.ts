@@ -5,7 +5,7 @@ import type { RouteOptions } from './interfaces';
 import log from '../utils/Log';
 import { addSpaces } from '../utils/Util';
 
-const defaultMiddlewares = ['ban'];
+const defaultMiddlewares = ['log', 'ban'];
 
 export default {
 	load: async (server: Server) => {
