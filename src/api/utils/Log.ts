@@ -4,7 +4,8 @@ import pino from 'pino';
 // like saving logs to a folder and what not
 // TODO: level should be `info` for production
 const log = pino({
-	level: 'debug'
+	level: 'debug',
+	sync: false
 });
 
 export default log;
