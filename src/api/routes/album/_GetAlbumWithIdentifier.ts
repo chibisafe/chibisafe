@@ -1,26 +1,33 @@
-import type { Response } from 'hyper-express';
+import type { Request, Response } from 'hyper-express';
 import prisma from '../../structures/database';
 import { constructFilePublicLink } from '../../utils/File';
-import type { ExtendedFile, File, RequestWithUser } from '../../structures/interfaces';
+import type { ExtendedFile, File } from '../../structures/interfaces';
 
 export const options = {
-	url: '/album/:uuid',
+	// url: '/album/:uuid',
 	method: 'get',
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: Request, res: Response) => {
+	const { identifier } = req.path_parameters;
+	if (!identifier) return res.status(400).json({ message: 'Invalid identifier supplied' });
 
 	// Make sure the public link exists and it's enabled
-	const album = await prisma.albums.findFirst({
+	const link = await prisma.links.findFirst({
 		where: {
-			uuid,
-			userId: req.user.id
+			identifier,
+			enabled: true
 		}
 	});
+	if (!link) return res.status(404).json({ message: 'The album link could not be found' });
 
+	// Now check if the album exists
+	const album = await prisma.albums.findFirst({
+		where: {
+			id: link.albumId
+		}
+	});
 	if (!album) return res.status(404).json({ message: 'The album could not be found' });
 
 	// TODO: Figure out how to join with prisma, probably need to update the schema for it
@@ -72,11 +79,21 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		parsedFiles.push(constructFilePublicLink(req, file));
 	}
 
+	// Update the amount of views on the album
+	await prisma.links.update({
+		where: {
+			id: link.albumId
+		},
+		data: {
+			views: link.views + 1
+		}
+	});
+
 	return res.json({
 		message: 'Successfully retrieved album',
 		name: album.name,
 		files: parsedFiles,
 		isNsfw: album.nsfw,
-		filesCount: fileCount
+		count: fileCount
 	});
 };

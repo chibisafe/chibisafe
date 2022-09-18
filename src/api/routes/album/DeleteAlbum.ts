@@ -47,7 +47,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		});
 
 		return res.json({
-			message: 'Successfully deleted the link'
+			message: 'Successfully deleted the album'
 		});
 	} catch (e) {
 		return res.status(500).json({ message: 'An error occurred while deleting the album' });
