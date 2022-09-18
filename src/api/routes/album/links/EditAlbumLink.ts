@@ -8,17 +8,10 @@ export const options = {
 	middlewares: ['auth']
 };
 
-interface body {
-	identifier: string;
-	enableDownload: boolean;
-	expiresAt: Date;
-}
-
 export const run = async (req: RequestWithUser, res: Response) => {
-	if (!req.body) return res.status(400).json({ message: 'No body provided' });
 	const { identifier } = req.path_parameters;
 	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
-	const { enableDownload, expiresAt } = req.body as body;
+	const { enableDownload, expiresAt } = await req.json();
 
 	const link = await prisma.links.findFirst({
 		where: {

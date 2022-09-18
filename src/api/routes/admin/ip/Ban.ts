@@ -9,8 +9,6 @@ export const options = {
 };
 
 export const run = async (req: Request, res: Response) => {
-	if (!req.body) return res.status(400).json({ message: 'No body provided' });
-
 	const { ip }: { ip: string } = await req.json();
 
 	if (!ip) return res.status(400).json({ message: 'No ip provided' });

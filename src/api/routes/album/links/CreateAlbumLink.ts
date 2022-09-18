@@ -10,14 +10,8 @@ export const options = {
 	middlewares: ['auth']
 };
 
-interface body {
-	uuid: string;
-	identifier?: string;
-}
-
 export const run = async (req: RequestWithUser, res: Response) => {
-	if (!req.body) return res.status(400).json({ message: 'No body provided' });
-	const { uuid } = req.body as body;
+	const { uuid } = await req.json();
 	if (!uuid) return res.status(400).json({ message: 'No uuid provided' });
 
 	const exists = await prisma.albums.findFirst({
