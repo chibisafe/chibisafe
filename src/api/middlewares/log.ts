@@ -22,5 +22,5 @@ export default async (req: Request) => {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (req.path_parameters) debug.params = req.path_parameters;
 
-	log.debug(debug);
+	log.debug(JSON.stringify(debug));
 };
