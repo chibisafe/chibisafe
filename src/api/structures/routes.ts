@@ -1,5 +1,6 @@
 import jetpack from 'fs-jetpack';
 import path from 'path';
+import { inspect } from 'util';
 import type { Server, Request, Response } from 'hyper-express';
 import type { RouteOptions } from './interfaces';
 import log from '../utils/Log';
@@ -29,6 +30,10 @@ export default {
 
 				options.url = `${route.options?.ignoreRoutePrefix ? '' : '/api'}${options.url}`;
 
+				if (!options.options) {
+					options.options = {};
+				}
+
 				// Run middlewares if any, and in order of execution
 				const middlewares: any[] = [];
 
@@ -46,14 +51,17 @@ export default {
 					}
 				}
 
+				options.options.middlewares = middlewares;
+
+				// TODO
+				if (options.url === '/api/upload') {
+					log.debug(inspect(options));
+				}
+
 				// Register the route in hyper-express
 				// @ts-ignore
-				server[options.method](
-					options.url,
-					{
-						middlewares
-					},
-					(req: Request, res: Response) => route.run(req, res)
+				server[options.method](options.url, options.options, (req: Request, res: Response) =>
+					route.run(req, res)
 				);
 
 				log.info(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
