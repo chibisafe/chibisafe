@@ -22,21 +22,73 @@ export const isExtensionBlocked = async (extension: string) =>
 	(await getConfig()).blockedExtensions.includes(extension);
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
-export const getUniqueFilename = (extension: string) => {
-	const retry: any = async (i = 0) => {
-		const filename =
-			randomstring.generate({
-				length: (await getConfig()).generatedFilenameLength,
-				capitalization: 'lowercase'
-			}) + extension;
+/*
+	TODO: Where to put this?
+	This is necesary, because when we first allocate an identifier,
+	it will not immediately be pushed into db,
+	which means the rest of the service has no context as to whether
+	that identifier is currently being used by other upload in progress or not.
+	In-memory, thus only for single-thread, thoughts?
+*/
+export const heldFileIdentifiers = new Set();
 
-		// TODO: Change this to look for the file in the db instead of in the filesystem
-		const exists = jetpack.exists(path.join(uploadPath, filename));
-		if (!exists) return filename;
+export const unholdFileIdentifiers = (res: Response): void => {
+	if (!res.locals.identifiers) return;
+
+	for (const identifier of res.locals.identifiers) {
+		heldFileIdentifiers.delete(identifier);
+		log.debug(`Unheld identifier ${String(identifier)}.`);
+	}
+
+	delete res.locals.identifiers;
+};
+
+export const getUniqueFileIdentifier = (res?: Response): string | null => {
+	const retry: any = async (i = 0) => {
+		const identifier = randomstring.generate({
+			// TODO: Load from config
+			length: getEnvironmentDefaults().generatedFilenameLength,
+			capitalization: 'lowercase'
+		});
+
+		if (!heldFileIdentifiers.has(identifier)) {
+			heldFileIdentifiers.add(identifier);
+
+			/*
+				We use $queryRaw() because we need to ignore extension when finding existing matches,
+				and to do so we need to use SQL LIKE operator, which is still not available in Prisma
+				for SQLite as a shorthand function (supposedly already implemented PostgreSQL, however).
+				https://github.com/prisma/prisma/discussions/3159
+				https://github.com/prisma/prisma/issues/9414
+			*/
+			const exists = await prisma.$queryRaw<{ id: number }[]>`
+				SELECT id from files
+				WHERE name LIKE ${`${identifier}.%`}
+				LIMIT 1;
+			`;
+
+			if (exists.length) {
+				heldFileIdentifiers.delete(identifier);
+			} else {
+				// Unhold identifier once the Response has been sent
+				if (res) {
+					if (!res.locals.identifiers) {
+						res.locals.identifiers = [];
+						res.once('finish', () => {
+							unholdFileIdentifiers(res);
+						});
+					}
+					res.locals.identifiers.push(identifier);
+				}
+				return identifier;
+			}
+		}
+
 		if (i < 5) return retry(i + 1);
 		log.error('Couldnt allocate identifier for file');
 		return null;
 	};
+
 	return retry();
 };
 
@@ -205,6 +257,7 @@ export const storeFileToDb = async (req: Request, res: Response, user: User, fil
 	const fileId = await prisma.files.create({
 		data
 	});
+	heldFileIdentifiers.delete(fileData.identifier);
 
 	return {
 		file: data,
