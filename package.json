@@ -83,7 +83,7 @@
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
 		"helmet": "^5.1.0",
-		"hyper-express": "^6.4.8",
+		"hyper-express": "^6.4.9",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
 		"pino": "^8.5.0",
