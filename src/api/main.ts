@@ -16,8 +16,8 @@ process.on('unhandledRejection', error => {
 
 const start = async () => {
 	const server = new HyperExpress.Server({
-		trust_proxy: true,
-		fast_buffers: true
+		// trust_proxy: true,
+		// fast_buffers: true
 	});
 
 	// TODO: Figure this out

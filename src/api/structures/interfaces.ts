@@ -1,13 +1,20 @@
 import type { Request } from 'hyper-express';
 
+export interface RequestUser {
+	id: number;
+	uuid: string;
+	username: string;
+	isAdmin: boolean;
+	apiKey?: string | null | undefined;
+}
+
 export interface RequestWithUser extends Request {
-	user: {
-		id: number;
-		uuid: string;
-		username: string;
-		isAdmin: boolean;
-		apiKey?: string | null | undefined;
-	};
+	user: RequestUser;
+}
+
+// TODO
+export interface RequestWithOptionalUser extends Request {
+	user?: RequestUser;
 }
 
 export interface User {
@@ -22,6 +29,18 @@ export interface User {
 	apiKeyEditedAt: string;
 	createdAt: string;
 	editedAt: string;
+}
+
+export interface FileBasic {
+	name: string;
+	identifier: string | null;
+	extension: string;
+	original: string;
+	type: string;
+	size: number;
+	hash: string;
+	ip: string;
+	promised?: boolean;
 }
 
 export interface File {
@@ -96,5 +115,6 @@ export interface Settings {
 export interface RouteOptions {
 	url: string;
 	method: string;
+	options?: any;
 	middlewares?: string[];
 }

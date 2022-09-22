@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
-import { getHost, getConfig } from './Util';
+import { getConfig, getEnvironmentDefaults, getHost } from './Util';
 
-import type { File, ExtendedFile, ExtendedFileWithData, Album, User } from '../structures/interfaces';
+import type { Album, ExtendedFile, File, FileBasic, RequestUser, User } from '../structures/interfaces';
 import type { Request, Response } from 'hyper-express';
 
 const preserveExtensions = [
@@ -209,6 +209,7 @@ export const constructFilePublicLink = (req: Request, file: File) => {
 	return extended;
 };
 
+/*
 export const fileExists = (req: Request, res: Response, exists: File, filename: string) => {
 	const file = constructFilePublicLink(req, exists);
 	void res.json({
@@ -224,44 +225,54 @@ export const fileExists = (req: Request, res: Response, exists: File, filename: 
 
 	return deleteFile(filename);
 };
+*/
 
-export const storeFileToDb = async (req: Request, res: Response, user: User, file: ExtendedFileWithData) => {
+export const storeFileToDb = async (user: RequestUser | User | undefined, fileData: FileBasic) => {
 	const dbFile = await prisma.files.findFirst({
 		where: {
-			hash: file.data.hash,
-			size: file.data.size,
-			userId: user.id ? user.id : undefined
+			hash: fileData.hash,
+			size: fileData.size,
+			userId: user?.id ?? undefined
 		}
 	});
 
 	if (dbFile) {
-		await fileExists(req, res, dbFile, file.data.filename);
-		return;
+		// Delete temp file (do not wait)
+		void deleteFile(fileData.name);
+		heldFileIdentifiers.delete(fileData.identifier);
+
+		return {
+			file: dbFile,
+			repeated: true
+		};
 	}
 
 	const now = utc().toDate();
 	const data = {
-		userId: user.id ? user.id : undefined,
+		userId: user?.id ?? undefined,
 		uuid: uuidv4(),
-		name: file.data.filename,
-		original: file.data.originalName,
-		type: file.data.mimeType,
-		size: file.data.size,
-		hash: file.data.hash,
-		ip: req.ip,
+		name: fileData.name,
+		original: fileData.original,
+		type: fileData.type,
+		size: fileData.size,
+		hash: fileData.hash,
+		ip: fileData.ip,
 		createdAt: now,
 		editedAt: now
 	};
-	void generateThumbnails(file.data.filename);
+	void generateThumbnails(fileData.name);
 
 	const fileId = await prisma.files.create({
 		data
 	});
 	heldFileIdentifiers.delete(fileData.identifier);
 
+	const file: File = {
+		id: fileId.id,
+		...data
+	};
 	return {
-		file: data,
-		id: fileId.id
+		file
 	};
 };
 
