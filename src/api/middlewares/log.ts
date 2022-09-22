@@ -1,4 +1,4 @@
-import type { Request } from 'hyper-express';
+import type { MiddlewareNext, Request } from 'hyper-express';
 import log from '../utils/Log';
 
 interface DebugInformation {
@@ -10,17 +10,20 @@ interface DebugInformation {
 	query: object | undefined;
 }
 
-export default async (req: Request) => {
+export default (req: Request, res: Response, next: MiddlewareNext) => {
 	const debug = {
 		ip: req.ip,
 		url: req.url,
 		method: req.method
 	} as DebugInformation;
 
-	const body = await req.json();
-	if (body) debug.body = body;
+	// TODO: Do not use Request.json() except on routes that exclusively accept JSON payload
+	// const body = await req.json();
+	// if (body) debug.body = body;
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (req.path_parameters) debug.params = req.path_parameters;
 
 	log.debug(JSON.stringify(debug));
+
+	return next();
 };
