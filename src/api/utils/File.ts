@@ -234,32 +234,33 @@ export const saveFileToAlbum = async (albumId: number, insertedId: number) => {
 	}
 };
 
-export const getExtension = (filename: string) => {
+export const getExtension = (filename: string, lower = false): string => {
 	// Always return blank string if the filename does not seem to have a valid extension
 	// Files such as .DS_Store (anything that starts with a dot, without any extension after) will still be accepted
 	if (!/\../.test(filename)) return '';
 
-	let lower = filename.toLowerCase(); // due to this, the returned extname will always be lower case
 	let multi = '';
-	let extname = '';
+	let extension = '';
 
 	// check for multi-archive extensions (.001, .002, and so on)
-	if (/\.\d{3}$/.test(lower)) {
-		multi = lower.slice(lower.lastIndexOf('.') - lower.length);
-		lower = lower.slice(0, lower.lastIndexOf('.'));
+	if (/\.\d{3}$/.test(filename)) {
+		multi = filename.slice(filename.lastIndexOf('.') - filename.length);
+		filename = filename.slice(0, filename.lastIndexOf('.'));
 	}
 
 	// check against extensions that must be preserved
 	for (const extPreserve of preserveExtensions) {
-		if (lower.endsWith(extPreserve)) {
-			extname = extPreserve;
+		const match = filename.match(extPreserve);
+		if (match?.[0]) {
+			extension = match[0];
 			break;
 		}
 	}
 
-	if (!extname) {
-		extname = lower.slice(lower.lastIndexOf('.') - lower.length); // path.extname(lower)
+	if (!extension) {
+		extension = filename.slice(filename.lastIndexOf('.') - filename.length); // path.extname(filename)
 	}
 
-	return extname + multi;
+	const str = extension + multi;
+	return lower ? str.toLowerCase() : str;
 };
