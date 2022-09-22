@@ -13,7 +13,9 @@ import { getHost, getConfig } from './Util';
 import type { File, ExtendedFile, ExtendedFileWithData, Album, User } from '../structures/interfaces';
 import type { Request, Response } from 'hyper-express';
 
-const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
+const preserveExtensions = [
+	/\.tar\.\w+/i // tarballs
+];
 export const uploadPath = path.join(__dirname, '../../../', 'uploads');
 
 export const isExtensionBlocked = async (extension: string) =>
