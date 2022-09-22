@@ -7,11 +7,13 @@ import Routes from './structures/routes';
 
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
-	log.error('Uncaught Exception:', error);
+	log.error('Uncaught Exception:');
+	log.error(error);
 });
 
 process.on('unhandledRejection', error => {
-	log.error('Unhandled Rejection:', error);
+	log.error('Unhandled Rejection:');
+	log.error(error);
 });
 
 const start = async () => {
