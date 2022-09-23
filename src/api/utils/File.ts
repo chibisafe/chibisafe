@@ -237,7 +237,9 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, fileDa
 		where: {
 			hash: fileData.hash,
 			size: fileData.size,
-			userId: user?.id ?? undefined
+			// Must be null for guest uploads,
+			// to ensure guests uploads will only be matched against other guest uploads
+			userId: user?.id ?? null
 		}
 	});
 
