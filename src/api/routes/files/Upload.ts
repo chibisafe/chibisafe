@@ -21,7 +21,7 @@ import { getEnvironmentDefaults, getHost } from '../../utils/Util';
 
 import type { WriteStream } from 'fs';
 import type { NodeHash, NodeHashReader } from 'blake3';
-import type { RequestWithOptionalUser, FileBasic } from '../../structures/interfaces';
+import type { FileBasic, RequestWithOptionalUser, RouteOptions } from '../../structures/interfaces';
 
 interface UploadResult {
 	message: string;
@@ -34,13 +34,20 @@ interface UploadResult {
 	repeated?: boolean;
 }
 
-export const options = {
+export const options: RouteOptions = {
 	url: '/upload',
 	method: 'post',
-	middlewares: ['authOptional'],
+	middlewares: [
+		{
+			name: 'auth',
+			optional: true
+		}
+	],
 	options: {
+		// TODO Util.getConfig()
 		max_body_length: getEnvironmentDefaults().maxSize * 1e6 // in bytes
-	}
+	},
+	debug: true
 };
 
 export const run = async (req: RequestWithOptionalUser, res: Response) => {
@@ -49,8 +56,6 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 	if (!req.is('multipart/form-data')) {
 		return res.status(400).json({ message: 'Content-Type must be multipart/form-data.' });
 	}
-
-	log.debug(inspect(req.user?.username));
 
 	// Init empty Request.body and Request.files
 	const body: { [index: string]: any } = {};
@@ -74,6 +79,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 				// This would otherwise defaults to latin1
 				defParamCharset: 'utf8',
 				limits: {
+					// TODO Util.getConfig()
 					fileSize: getEnvironmentDefaults().maxSize * 1e6, // in bytes
 					// Maximum number of non-file fields.
 					fields: 1,

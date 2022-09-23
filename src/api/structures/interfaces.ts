@@ -31,6 +31,7 @@ export interface User {
 	editedAt: string;
 }
 
+// TODO ???
 export interface FileBasic {
 	name: string;
 	identifier: string | null;
@@ -115,6 +116,7 @@ export interface Settings {
 export interface RouteOptions {
 	url: string;
 	method: string;
-	options?: any;
-	middlewares?: string[];
+	options?: Record<string | number, unknown>;
+	middlewares?: (string | Record<string | number, unknown>)[];
+	debug?: boolean;
 }

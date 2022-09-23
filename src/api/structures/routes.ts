@@ -1,7 +1,7 @@
 import jetpack from 'fs-jetpack';
 import path from 'path';
 import { inspect } from 'util';
-import type { Server, Request, Response } from 'hyper-express';
+import type { MiddlewareNext, Request, Response, Server } from 'hyper-express';
 import type { RouteOptions } from './interfaces';
 import log from '../utils/Log';
 import { addSpaces } from '../utils/Util';
@@ -30,6 +30,7 @@ export default {
 
 				options.url = `${route.options?.ignoreRoutePrefix ? '' : '/api'}${options.url}`;
 
+				// Init empty route's options object, if applicable
 				if (!options.options) {
 					options.options = {};
 				}
@@ -46,15 +47,42 @@ export default {
 				// Now load the middlewares defined in the route file
 				if (options.middlewares?.length) {
 					for (const middleware of options.middlewares) {
-						const importedMiddleware = await import(path.join(__dirname, '..', 'middlewares', middleware));
-						middlewares.push(importedMiddleware.default);
+						let name: string | unknown | undefined;
+						let middlewareOptions: Record<string | number, unknown> | undefined;
+
+						if (typeof middleware === 'string') {
+							name = middleware;
+						} else if (typeof middleware === 'object') {
+							name = middleware.name;
+							// Create a shallow copy of the middleware object, containing all properties but "name"
+							middlewareOptions = Object.assign({}, middleware);
+							delete middlewareOptions.name;
+						}
+
+						// Assert that middleware name is a valid string
+						if (!name || typeof name !== 'string') {
+							log.error(`Invalid middleware options in route ${options.method} ${options.url}`);
+							continue;
+						}
+
+						const importedMiddleware = await import(path.join(__dirname, '..', 'middlewares', name));
+
+						// Init anonymous function, to pass middleware options to the middleware on run, if applicable
+						if (middlewareOptions) {
+							middlewares.push((req: Request, res: Response, next: MiddlewareNext) =>
+								importedMiddleware.default(req, res, next, middlewareOptions)
+							);
+						} else {
+							middlewares.push(importedMiddleware.default);
+						}
 					}
 				}
 
+				// Insert built middlewares array into route's options object
 				options.options.middlewares = middlewares;
 
-				// TODO
-				if (options.url === '/api/upload') {
+				// TODO May consider getting rid of this post-development
+				if (options.debug) {
 					log.debug(inspect(options));
 				}
 
