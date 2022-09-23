@@ -13,7 +13,6 @@ import {
 	getExtension,
 	getUniqueFileIdentifier,
 	storeFileToDb,
-	unholdFileIdentifiers,
 	uploadPath
 } from '../../utils/File';
 import log from '../../utils/Log';
@@ -61,15 +60,13 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 	const body: { [index: string]: any } = {};
 	const files: FileBasic[] = [];
 
-	const cleanUpFiles = async () => {
-		unholdFileIdentifiers(res);
-		return Promise.all(
+	const cleanUpFiles = async () =>
+		Promise.all(
 			files.map(async file => {
 				if (!file.name) return;
 				return deleteFile(file.name);
 			})
 		);
-	};
 
 	// TODO: Chunked uploads.
 	const multipart = await req
@@ -126,7 +123,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 					file.extension = getExtension(file.original);
 					// TODO: Check if extension is blocked
 
-					file.identifier = await getUniqueFileIdentifier();
+					file.identifier = await getUniqueFileIdentifier(res);
 					if (!file.identifier) {
 						throw new Error('Couldnt allocate identifier for file');
 					}

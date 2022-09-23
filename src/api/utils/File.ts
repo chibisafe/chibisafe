@@ -2,6 +2,7 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'path';
+import { inspect } from 'util';
 import log from '../utils/Log';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,10 +38,10 @@ export const unholdFileIdentifiers = (res: Response): void => {
 
 	for (const identifier of res.locals.identifiers) {
 		heldFileIdentifiers.delete(identifier);
-		log.debug(`Unheld identifier ${String(identifier)}.`);
 	}
 
 	delete res.locals.identifiers;
+	log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
 };
 
 export const getUniqueFileIdentifier = (res?: Response): string | null => {
@@ -70,7 +71,10 @@ export const getUniqueFileIdentifier = (res?: Response): string | null => {
 			if (exists.length) {
 				heldFileIdentifiers.delete(identifier);
 			} else {
-				// Unhold identifier once the Response has been sent
+				/*
+					If Response is specified, push identifier into its locals object,
+					allowing automatic removal once the Response ends.
+				*/
 				if (res) {
 					if (!res.locals.identifiers) {
 						res.locals.identifiers = [];
@@ -80,6 +84,7 @@ export const getUniqueFileIdentifier = (res?: Response): string | null => {
 					}
 					res.locals.identifiers.push(identifier);
 				}
+				log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
 				return identifier;
 			}
 		}
@@ -239,8 +244,6 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, fileDa
 	if (dbFile) {
 		// Delete temp file (do not wait)
 		void deleteFile(fileData.name);
-		heldFileIdentifiers.delete(fileData.identifier);
-
 		return {
 			file: dbFile,
 			repeated: true
@@ -265,7 +268,6 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, fileDa
 	const fileId = await prisma.files.create({
 		data
 	});
-	heldFileIdentifiers.delete(fileData.identifier);
 
 	const file: File = {
 		id: fileId.id,
