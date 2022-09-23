@@ -41,7 +41,9 @@ export const getEnvironmentDefaults = () =>
 		maxSize: process.env.MAX_SIZE ? parseInt(process.env.MAX_SIZE, 10) : 5000,
 		// eslint-disable-next-line eqeqeq
 		generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
-		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH ?? 12,
+		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH
+			? parseInt(process.env.GENERATED_FILENAME_LENGTH, 10)
+			: 12,
 		generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH ?? 6,
 		blockedExtensions: process.env.BLOCKED_EXTENSIONS
 			? process.env.BLOCKED_EXTENSIONS.split(',')
