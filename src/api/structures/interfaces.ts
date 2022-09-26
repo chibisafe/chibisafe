@@ -116,7 +116,7 @@ export interface Settings {
 export interface RouteOptions {
 	url: string;
 	method: string;
-	options?: Record<string | number, unknown>;
-	middlewares?: (string | Record<string | number, unknown>)[];
+	options?: { [index: string | number]: any };
+	middlewares?: (string | { [index: string | number]: any })[];
 	debug?: boolean;
 }

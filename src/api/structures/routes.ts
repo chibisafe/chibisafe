@@ -48,7 +48,7 @@ export default {
 				if (options.middlewares?.length) {
 					for (const middleware of options.middlewares) {
 						let name: string | unknown | undefined;
-						let middlewareOptions: Record<string | number, unknown> | undefined;
+						let middlewareOptions: { [index: string | number]: any } | undefined;
 
 						if (typeof middleware === 'string') {
 							name = middleware;

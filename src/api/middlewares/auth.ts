@@ -1,5 +1,5 @@
 import type { Response, MiddlewareNext } from 'hyper-express';
-import type { RequestWithUser } from '../structures/interfaces';
+import type { RequestWithOptionalUser } from '../structures/interfaces';
 import JWT from 'jsonwebtoken';
 import log from '../utils/Log';
 import prisma from '../structures/database';
@@ -9,10 +9,10 @@ interface Decoded {
 }
 
 export default (
-	req: RequestWithUser,
+	req: RequestWithOptionalUser,
 	res: Response,
 	next: MiddlewareNext,
-	options?: Record<string | number, unknown>
+	options?: { [index: string | number]: any }
 ) => {
 	if (!req.headers.authorization) {
 		if (options?.optional) return next();
