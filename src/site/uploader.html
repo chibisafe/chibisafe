@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+	As we wait for Kana to init a framework to write tests, or frontend,
+	this is a simple HTML page to manually test uploads.
+-->
+<html>
+	<head>
+		<title>chibisafe</title>
+
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+	</head>
+	<body>
+		<form class="dropzone" id="chibisafe"></form>
+
+		<!-- Scripts -->
+		<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script>
+			Dropzone.options.chibisafe = {
+				url: 'http://localhost:8000/api/upload',
+				paramName: 'files[]',
+				autoProcessQueue: true,
+				chunking: true,
+				chunkSize: 5 * 1e6, // MB
+				chunksUploaded: (file, done) => {
+					const response = axios.post('api/upload', {
+						// This API supports an array of multiple files
+						files: [{
+							uuid: file.upload.uuid,
+							original: file.name,
+							type: file.type,
+							size: file.size
+						}]
+					});
+					return done();
+				}
+			};
+		</script>
+	</body>
+</html>

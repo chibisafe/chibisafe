@@ -47,6 +47,12 @@ const start = async () => {
 	// Scan and load routes into express
 	await Routes.load(server);
 
+	// TODO: Uploader page
+	server.get('/uploader.html', (req, res) => {
+		const readStream = jetpack.createReadStream('src/site/uploader.html');
+		return res.stream(readStream);
+	});
+
 	// Start the server
 	await server.listen(8000);
 	log.info('Server started on port 8000');
