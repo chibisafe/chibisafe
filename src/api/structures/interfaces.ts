@@ -1,5 +1,7 @@
 import type { Request } from 'hyper-express';
 
+import type { ChunksData } from '../utils/File';
+
 export interface RequestUser {
 	id: number;
 	uuid: string;
@@ -31,16 +33,16 @@ export interface User {
 	editedAt: string;
 }
 
-// TODO ???
-export interface FileBasic {
+export interface FileInProgress {
 	name: string;
-	identifier: string | null;
 	extension: string;
+	path: string;
 	original: string;
 	type: string;
 	size: number;
 	hash: string;
 	ip: string;
+	chunksData?: ChunksData;
 	promised?: boolean;
 }
 

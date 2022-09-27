@@ -1,3 +1,4 @@
+import * as blake3 from 'blake3';
 import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
@@ -11,13 +12,105 @@ import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
 import { getConfig, getEnvironmentDefaults, getHost } from './Util';
 
-import type { Album, ExtendedFile, File, FileBasic, RequestUser, User } from '../structures/interfaces';
+import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
+import type { NodeHash, NodeHashReader } from 'blake3';
+import type { WriteStream } from 'fs';
 import type { Request, Response } from 'hyper-express';
 
 const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
 export const uploadPath = path.join(__dirname, '../../../', 'uploads');
+// TODO: Consider allowing this being configurable separately from "uploads" dir,
+// since network drives typically don't support "append" operation used in our chunking method.
+export const chunksPath = path.join(uploadPath, 'chunks');
+
+// TODO: Configurable?
+const chunkedUploadsTimeout = 30 * 60 * 1000; // 30 minutes
+
+export const chunksData: Map<string, ChunksData> = new Map();
+
+export class ChunksData {
+	public readonly uuid: string;
+	public readonly root: string;
+	public readonly name: string = 'tmp';
+	public readonly path: string;
+	public chunks = 0;
+	public writeStream?: WriteStream;
+	public hashStream?: NodeHash<NodeHashReader>;
+	// Immediately mark this chunked upload as currently processing
+	public processing = true;
+	private _timeout?: NodeJS.Timeout;
+
+	public constructor(uuid: string) {
+		this.uuid = uuid;
+		this.root = path.join(chunksPath, this.uuid);
+		this.path = path.join(this.root, this.name);
+	}
+
+	private onTimeout() {
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		void cleanUpChunks(this.uuid);
+	}
+
+	public setTimeout(delay: number) {
+		this.clearTimeout();
+		this._timeout = setTimeout(this.onTimeout.bind(this), delay);
+	}
+
+	public clearTimeout() {
+		if (this._timeout) {
+			clearTimeout(this._timeout);
+		}
+	}
+}
+
+export const initChunks = async (uuid: string): Promise<ChunksData> => {
+	// This returns reference to the ChunksData instance, if already exists
+	let data = chunksData.get(uuid);
+
+	// Wait for the first spawned init tasks
+	if (data?.processing) {
+		throw new Error('Previous chunk upload is still being processed. Parallel chunked uploads is not supported.');
+	}
+
+	// Otherwise let's init a new one
+	if (!data) {
+		data = new ChunksData(uuid);
+		chunksData.set(uuid, data);
+		await jetpack.dirAsync(data.root);
+		// Init write & hasher streams
+		data.writeStream = jetpack.createWriteStream(data.path, { flags: 'a' });
+		data.hashStream = blake3.createHash();
+	}
+
+	// Reset its timeout
+	data.setTimeout(chunkedUploadsTimeout);
+	return data;
+};
+
+export const cleanUpChunks = async (uuid: string): Promise<void> => {
+	const data = chunksData.get(uuid);
+	if (!data) return;
+
+	// Dispose of unfinished write & hasher streams
+	if (data.writeStream && !data.writeStream.destroyed) {
+		data.writeStream.destroy();
+	}
+	// @ts-ignore
+	if (data.hashStream?.hash?.hash) {
+		data.hashStream.dispose();
+	}
+
+	// Remove UUID dir
+	await jetpack.removeAsync(data.root).catch(error => {
+		// Re-throw non-ENOENT error
+		if (error.code !== 'ENOENT') log.error(error);
+	});
+
+	// Delete cached chunks data
+	chunksData.delete(uuid);
+};
 
 export const isExtensionBlocked = async (extension: string) =>
 	(await getConfig()).blockedExtensions.includes(extension);
@@ -232,20 +325,21 @@ export const fileExists = (req: Request, res: Response, exists: File, filename: 
 };
 */
 
-export const storeFileToDb = async (user: RequestUser | User | undefined, fileData: FileBasic) => {
+export const storeFileToDb = async (user: RequestUser | User | undefined, file: FileInProgress) => {
+	// TODO: Check file size
 	const dbFile = await prisma.files.findFirst({
 		where: {
-			hash: fileData.hash,
-			size: fileData.size,
+			hash: file.hash,
+			size: file.size,
 			// Must be null for guest uploads,
 			// to ensure guests uploads will only be matched against other guest uploads
-			userId: user?.id ?? null
+			userId: user ? user.id : null
 		}
 	});
 
 	if (dbFile) {
 		// Delete temp file (do not wait)
-		void deleteFile(fileData.name);
+		void deleteFile(file.name);
 		return {
 			file: dbFile,
 			repeated: true
@@ -256,27 +350,26 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, fileDa
 	const data = {
 		userId: user?.id ?? undefined,
 		uuid: uuidv4(),
-		name: fileData.name,
-		original: fileData.original,
-		type: fileData.type,
-		size: fileData.size,
-		hash: fileData.hash,
-		ip: fileData.ip,
+		name: file.name,
+		original: file.original,
+		type: file.type,
+		size: file.size,
+		hash: file.hash,
+		ip: file.ip,
 		createdAt: now,
 		editedAt: now
 	};
-	void generateThumbnails(fileData.name);
+	void generateThumbnails(file.name);
 
 	const fileId = await prisma.files.create({
 		data
 	});
 
-	const file: File = {
-		id: fileId.id,
-		...data
-	};
 	return {
-		file
+		file: {
+			id: fileId.id,
+			...data
+		}
 	};
 };
 

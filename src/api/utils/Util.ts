@@ -125,3 +125,11 @@ export const addSpaces = (str: string) => {
 	newStr += str;
 	return newStr;
 };
+
+export const unlistenEmitters = (emitters: any[], eventName: string, listener?: (reason?: any) => void) => {
+	if (!listener) return;
+	emitters.forEach(emitter => {
+		if (!emitter) return;
+		emitter.off(eventName, listener);
+	});
+};
