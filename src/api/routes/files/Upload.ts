@@ -189,9 +189,10 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						hashStream.once('error', _reject);
 
 						// Ensure readStream will only be resumed later down the line by readStream.pipe()
+						log.debug('readStream.pause()');
 						readStream.pause();
 						readStream.on('data', data => {
-							// log.debug('readStream:data');
+							// log.debug('readStream -> data');
 							// .dispose() will destroy this internal component,
 							// so use it as an indicator of whether the hashStream has been .dispose()'d
 							// @ts-ignore -- required because typings for "hash" property is set to private
@@ -202,14 +203,14 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 
 						if (isChunk) {
 							// We listen for readStream's end event
-							readStream.once('end', () =>
-								// log.debug('readStream:end');
-								_resolve()
-							);
+							readStream.once('end', () => {
+								log.debug('readStream -> end');
+								_resolve();
+							});
 						} else {
 							// We immediately listen for writeStream's finish event
 							writeStream.once('finish', () => {
-								// log.debug('writeStream:finish');
+								log.debug('writeStream -> finish');
 								if (writeStream?.bytesWritten !== undefined) {
 									file.size = writeStream.bytesWritten;
 								}
@@ -224,7 +225,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 
 						// Pipe readStream to writeStream
 						// Do not end writeStream when readStream finishes if it's a chunk upload
-						// log.debug(`readStream.pipe(writeStream, { end: ${inspect(!isChunk)} })`);
+						log.debug(`readStream.pipe(writeStream, { end: ${inspect(!isChunk)} })`);
 						readStream.pipe(writeStream, { end: !isChunk });
 					})
 						.catch(error => {
@@ -236,7 +237,6 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 							if (hashStream?.hash?.hash) {
 								hashStream.dispose();
 							}
-
 							// Re-throw error
 							throw error;
 						})
@@ -253,20 +253,17 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 				}
 			}
 		)
-		.then(() => true)
 		.catch(error => {
 			// Clean up temp files and held identifiers (do not wait)
 			void cleanUpFiles();
 			unfreezeChunksData();
 
 			// Response.multipart() itself may throw string errors
-			let errorString;
-			if (error instanceof Error) {
-				errorString = error.message;
-			}
-			res.status(500).json({ message: errorString });
+			res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
+			return false;
 		});
-	if (!multipart) return;
+	log.debug(`req.multipart() awaited: ${inspect(multipart)}`);
+	if (multipart === false) return;
 
 	if (!files.length) {
 		return res.status(400).json({ message: 'No files' });
@@ -279,7 +276,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 		// Clean up temp files and held identifiers (do not wait)
 		void cleanUpFiles();
 		unfreezeChunksData();
-
+		log.debug("Request.multipart() resolved before a file's Promise");
 		return;
 	}
 
@@ -455,6 +452,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 		repeated?: boolean;
 	}[] = [];
 	for (const file of files) {
+		log.debug('await storeFileToDb()');
 		stored.push(await storeFileToDb(req.user, file));
 	}
 
