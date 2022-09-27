@@ -18,8 +18,10 @@ process.on('unhandledRejection', error => {
 
 const start = async () => {
 	const server = new HyperExpress.Server({
-		// trust_proxy: true,
-		// fast_buffers: true
+		// TODO: Configurable? Should not trust proxy if directly running on an exposed port,
+		// instead of behind a reverse proxy like Nginx, and/or CDNs like Cloudflare
+		trust_proxy: true,
+		fast_buffers: true
 	});
 
 	// TODO: Figure this out
