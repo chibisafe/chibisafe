@@ -31,17 +31,17 @@ export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTy
 	that identifier is currently being used by other upload in progress or not.
 	In-memory, thus only for single-thread, thoughts?
 */
-export const heldFileIdentifiers = new Set();
+const heldFileIdentifiers = new Set();
 
 export const unholdFileIdentifiers = (res: Response): void => {
 	if (!res.locals.identifiers) return;
 
 	for (const identifier of res.locals.identifiers) {
 		heldFileIdentifiers.delete(identifier);
+		log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
 	}
 
 	delete res.locals.identifiers;
-	log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
 };
 
 export const getUniqueFileIdentifier = (res?: Response): string | null => {
