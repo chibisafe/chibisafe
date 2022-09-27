@@ -49,8 +49,8 @@ export const options: RouteOptions = {
 	options: {
 		// TODO Util.getConfig()
 		max_body_length: getEnvironmentDefaults().maxSize * 1e6 // in bytes
-	},
-	debug: true
+	}
+	// debug: true
 };
 
 const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
