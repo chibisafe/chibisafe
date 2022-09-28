@@ -3,7 +3,7 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'path';
-import { inspect } from 'util';
+// import { inspect } from 'util';
 import log from '../utils/Log';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
@@ -131,7 +131,7 @@ export const unholdFileIdentifiers = (res: Response): void => {
 
 	for (const identifier of res.locals.identifiers) {
 		heldFileIdentifiers.delete(identifier);
-		log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
+		// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
 	}
 
 	delete res.locals.identifiers;
@@ -177,7 +177,7 @@ export const getUniqueFileIdentifier = (res?: Response): string | null => {
 					}
 					res.locals.identifiers.push(identifier);
 				}
-				log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
+				// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
 				return identifier;
 			}
 		}
