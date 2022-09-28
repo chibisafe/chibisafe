@@ -161,15 +161,9 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 					let _reject: ((reason?: any) => void) | undefined;
 
 					// Write the file into disk, and supply required props into file object
-					await new Promise<void>((resolve, reject) => {
+					file.promise = new Promise<void>((resolve, reject) => {
 						// Keep reference to Promise's reject function to allow unlistening events
 						_reject = reject;
-
-						// Ensure this Promise's status can be asserted later
-						const _resolve = () => {
-							file.promised = true;
-							return resolve();
-						};
 
 						if (file.chunksData) {
 							writeStream = file.chunksData.writeStream;
@@ -180,13 +174,15 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						}
 
 						// This should technically never happen, but typings
-						if (!writeStream || !hashStream) return _reject(new Error('Missing destination streams'));
+						if (!writeStream || !hashStream) {
+							return reject(new Error('Missing destination streams'));
+						}
 
-						readStream.once('error', _reject);
+						readStream.once('error', reject);
 
 						// Re-init stream errors listeners for this Request
-						writeStream.once('error', _reject);
-						hashStream.once('error', _reject);
+						writeStream.once('error', reject);
+						hashStream.once('error', reject);
 
 						// Ensure readStream will only be resumed later down the line by readStream.pipe()
 						log.debug('readStream.pause()');
@@ -201,11 +197,11 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 							}
 						});
 
-						if (isChunk) {
+						if (file.chunksData) {
 							// We listen for readStream's end event
 							readStream.once('end', () => {
 								log.debug('readStream -> end');
-								_resolve();
+								resolve();
 							});
 						} else {
 							// We immediately listen for writeStream's finish event
@@ -219,14 +215,17 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 									const hash = hashStream.digest('hex');
 									file.hash = file.size === 0 ? '' : hash;
 								}
-								return _resolve();
+								if (file.size === 0) {
+									return reject(new Error('Zero-bytes files are not allowed'));
+								}
+								return resolve();
 							});
 						}
 
 						// Pipe readStream to writeStream
 						// Do not end writeStream when readStream finishes if it's a chunk upload
-						log.debug(`readStream.pipe(writeStream, { end: ${inspect(!isChunk)} })`);
-						readStream.pipe(writeStream, { end: !isChunk });
+						log.debug(`readStream.pipe(writeStream, { end: ${inspect(!file.chunksData)} })`);
+						readStream.pipe(writeStream, { end: !file.chunksData });
 					})
 						.catch(error => {
 							// Dispose of unfinished write & hasher streams
@@ -241,15 +240,10 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 							throw error;
 						})
 						.finally(() => {
-							if (isChunk) {
-								// Unlisten streams' error event for this Request if it's a chunk upload
-								unlistenEmitters([writeStream, hashStream], 'error', _reject);
-							}
+							if (!file.chunksData) return;
+							// Unlisten streams' error event for this Request if it's a chunk upload
+							unlistenEmitters([writeStream, hashStream], 'error', _reject);
 						});
-
-					if (file.size === 0) {
-						throw new Error('Zero-bytes files are not allowed');
-					}
 				}
 			}
 		)
@@ -269,16 +263,19 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 		return res.status(400).json({ message: 'No files' });
 	}
 
-	// If for some reason Request.multipart() resolves before a file's Promise.
-	// Typically caused by something hanging up longer than
-	// uWebSockets.js' internal security timeout (10 seconds).
-	if (files.some(file => !file.promised)) {
+	// Await all file's Promise
+	log.debug(`await Promise.all()`);
+	const promised = await Promise.all(files.map(file => file.promise)).catch(error => {
 		// Clean up temp files and held identifiers (do not wait)
 		void cleanUpFiles();
 		unfreezeChunksData();
-		log.debug("Request.multipart() resolved before a file's Promise");
-		return;
-	}
+
+		// Response.multipart() itself may throw string errors
+		res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
+		return false;
+	});
+	log.debug(`Promise.all() awaited: ${inspect(promised)}`);
+	if (promised === false) return;
 
 	// If the uploaded file is a chunk, then just say that it was a success.
 	// NOTE: We loop through Request.files for clarity,

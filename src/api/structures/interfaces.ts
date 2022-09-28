@@ -43,7 +43,7 @@ export interface FileInProgress {
 	hash: string;
 	ip: string;
 	chunksData?: ChunksData;
-	promised?: boolean;
+	promise?: Promise<void>;
 }
 
 export interface File {
