@@ -77,6 +77,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 		);
 	};
 
+	log.debug(`await req.multipart()`);
 	const multipart = await req
 		.multipart(
 			{
@@ -130,6 +131,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						ip: req.ip
 					};
 					files.push(file);
+					const _index = files.length; // TODO -- for debug logging, 1-based index
 
 					const isChunk = typeof body.uuid === 'string' && Boolean(body.uuid);
 					if (isChunk && files.length > 1) {
@@ -185,10 +187,9 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						hashStream.once('error', reject);
 
 						// Ensure readStream will only be resumed later down the line by readStream.pipe()
-						log.debug('readStream.pause()');
 						readStream.pause();
 						readStream.on('data', data => {
-							// log.debug('readStream -> data');
+							// log.debug(`${_index}: readStream -> data`);
 							// .dispose() will destroy this internal component,
 							// so use it as an indicator of whether the hashStream has been .dispose()'d
 							// @ts-ignore -- required because typings for "hash" property is set to private
@@ -200,13 +201,13 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						if (file.chunksData) {
 							// We listen for readStream's end event
 							readStream.once('end', () => {
-								log.debug('readStream -> end');
+								log.debug(`${_index}: readStream -> end`);
 								resolve();
 							});
 						} else {
 							// We immediately listen for writeStream's finish event
 							writeStream.once('finish', () => {
-								log.debug('writeStream -> finish');
+								log.debug(`${_index}: writeStream -> finish`);
 								if (writeStream?.bytesWritten !== undefined) {
 									file.size = writeStream.bytesWritten;
 								}
@@ -224,7 +225,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 
 						// Pipe readStream to writeStream
 						// Do not end writeStream when readStream finishes if it's a chunk upload
-						log.debug(`readStream.pipe(writeStream, { end: ${inspect(!file.chunksData)} })`);
+						log.debug(`${_index}: readStream.pipe(writeStream, { end: ${inspect(!file.chunksData)} })`);
 						readStream.pipe(writeStream, { end: !file.chunksData });
 					})
 						.catch(error => {
@@ -274,7 +275,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 		res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
 		return false;
 	});
-	log.debug(`Promise.all() awaited: ${inspect(promised)}`);
+	log.debug(`Promise.all() awaited: ${Array.isArray(promised) ? promised.length : inspect(promised)}`);
 	if (promised === false) return;
 
 	// If the uploaded file is a chunk, then just say that it was a success.
@@ -410,7 +411,6 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 			})
 		);
 
-		log.debug(inspect(files));
 		return files;
 	} catch (error) {
 		// Unhold file identifiers generated via File.getUniqueFileIdentifier()
@@ -448,10 +448,13 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 		file: File;
 		repeated?: boolean;
 	}[] = [];
+	// TODO: Prisma does not have .createMany() support for SQLite,
+	// so can not aggregrate multiple INSERTs into one query (?).
+	log.debug(`await storeFileToDb(): ${files.length}`);
 	for (const file of files) {
-		log.debug('await storeFileToDb()');
 		stored.push(await storeFileToDb(req.user, file));
 	}
+	log.debug(`storeFileToDb() awaited: ${stored.length}`);
 
 	return res.json({
 		message: 'Successfully uploaded the file(s).',
