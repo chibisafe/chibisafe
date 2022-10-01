@@ -344,8 +344,9 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 	try {
 		await Promise.all(
 			body.files.map(async file => {
-				// TODO
-				if (!file.chunksData?.writeStream || !file.chunksData.hashStream) return;
+				if (!file.chunksData?.writeStream || !file.chunksData.hashStream) {
+					throw new Error('Invalid chunks data.');
+				}
 
 				// Suspend timeout
 				// If the chunk errors out there, it will be immediately cleaned up anyway
