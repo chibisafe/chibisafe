@@ -49,6 +49,8 @@ export const getEnvironmentDefaults = () =>
 			? process.env.BLOCKED_EXTENSIONS.split(',')
 			: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 		// eslint-disable-next-line eqeqeq
+		blockNoExtension: process.env.BLOCK_NO_EXTENSION == undefined ? false : true,
+		// eslint-disable-next-line eqeqeq
 		publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
 		// eslint-disable-next-line eqeqeq
 		userAccounts: process.env.USER_ACCOUNTS == undefined ? true : false,

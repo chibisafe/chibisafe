@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
-import { getConfig, getEnvironmentDefaults, getHost } from './Util';
+import { /* getConfig, */ getEnvironmentDefaults, getHost } from './Util';
 
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
@@ -112,8 +112,11 @@ export const cleanUpChunks = async (uuid: string): Promise<void> => {
 	chunksData.delete(uuid);
 };
 
-export const isExtensionBlocked = async (extension: string) =>
-	(await getConfig()).blockedExtensions.includes(extension);
+// TODO: getConfig()
+export const isExtensionBlocked = (extension: string) => {
+	if (!extension && getEnvironmentDefaults().blockNoExtension) return true;
+	return getEnvironmentDefaults().blockedExtensions.includes(extension);
+};
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
 /*

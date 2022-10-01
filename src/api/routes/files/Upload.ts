@@ -15,12 +15,13 @@ import {
 	getExtension,
 	getUniqueFileIdentifier,
 	initChunks,
+	isExtensionBlocked,
 	storeFileToDb,
 	unholdFileIdentifiers,
 	uploadPath
 } from '../../utils/File';
 import log from '../../utils/Log';
-import { getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
+import { /* getConfig, */ getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
 
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'fs';
@@ -139,7 +140,13 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 					}
 
 					file.extension = getExtension(file.original);
-					// TODO: Check if extension is blocked
+					if (isExtensionBlocked(file.extension)) {
+						throw new Error(
+							file.extension
+								? `${file.extension.substr(1).toUpperCase()} files are not permitted.`
+								: 'Files with no extension are not permitted.'
+						);
+					}
 
 					if (isChunk) {
 						// Re-map UUID property to IP-specific UUID
@@ -254,6 +261,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 			unfreezeChunksData();
 
 			// Response.multipart() itself may throw string errors
+			// TODO: Trying to end Response after Req.multipart() throws does not seem to work as intended.
 			res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
 			return false;
 		});
@@ -354,7 +362,13 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 				}
 
 				const extension = typeof file.original === 'string' ? getExtension(file.original) : '';
-				// TODO: Check if extension is blocked
+				if (isExtensionBlocked(extension)) {
+					throw new Error(
+						extension
+							? `${extension.substr(1).toUpperCase()} files are not permitted.`
+							: 'Files with no extension are not permitted.'
+					);
+				}
 
 				let size: number | undefined = typeof file.size === 'number' ? file.size : undefined;
 				if (size === undefined) {
