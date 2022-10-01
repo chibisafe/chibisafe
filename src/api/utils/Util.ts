@@ -37,8 +37,8 @@ export const getEnvironmentDefaults = () =>
 		secret: process.env.SECRET ?? randomstring.generate(64),
 		serviceName: process.env.SERVICE_NAME ?? 'change-me',
 		// TODO: Pretty sure all env variables will always be string if fetched as-is from process.env
-		chunkSize: process.env.CHUNK_SIZE ? parseInt(process.env.CHUNK_SIZE, 10) : 90,
-		maxSize: process.env.MAX_SIZE ? parseInt(process.env.MAX_SIZE, 10) : 5000,
+		chunkSize: process.env.CHUNK_SIZE ? parseFloat(process.env.CHUNK_SIZE) : 90,
+		maxSize: process.env.MAX_SIZE ? parseFloat(process.env.MAX_SIZE) : 5000,
 		// eslint-disable-next-line eqeqeq
 		generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
 		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH
