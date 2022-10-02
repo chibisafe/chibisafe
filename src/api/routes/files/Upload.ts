@@ -385,8 +385,9 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 
 				if (size === 0) {
 					throw new Error('Empty files are not allowed.');
+				} else if (size > getEnvironmentDefaults().maxSize * 1e6) {
+					throw new Error('File too large.');
 				}
-				// TODO: Check file size early
 
 				const tmpfile = path.join(file.chunksData.root, file.chunksData.name);
 
