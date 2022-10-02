@@ -96,6 +96,7 @@ export interface Settings {
 	secret: string;
 	serviceName: string;
 	chunkSize: number;
+	chunkedUploadsTimeout: number;
 	maxSize: number;
 	generateZips: boolean;
 	generatedFilenameLength: number;

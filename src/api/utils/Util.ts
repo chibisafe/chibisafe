@@ -36,8 +36,10 @@ export const getEnvironmentDefaults = () =>
 		rateLimitMax: process.env.RATE_LIMIT_MAX ?? 5,
 		secret: process.env.SECRET ?? randomstring.generate(64),
 		serviceName: process.env.SERVICE_NAME ?? 'change-me',
-		// TODO: Pretty sure all env variables will always be string if fetched as-is from process.env
 		chunkSize: process.env.CHUNK_SIZE ? parseFloat(process.env.CHUNK_SIZE) : 90,
+		chunkedUploadsTimeout: process.env.CHUNKED_UPLOADS_TIMEOUT
+			? parseInt(process.env.CHUNKED_UPLOADS_TIMEOUT, 10)
+			: 30 * 60 * 1000, // 30 minutes
 		maxSize: process.env.MAX_SIZE ? parseFloat(process.env.MAX_SIZE) : 5000,
 		// eslint-disable-next-line eqeqeq
 		generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,

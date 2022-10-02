@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
-import { /* getConfig, */ getEnvironmentDefaults, getHost } from './Util';
+import { getEnvironmentDefaults, getHost } from './Util';
 
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
@@ -21,12 +21,11 @@ const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
 export const uploadPath = path.join(__dirname, '../../../', 'uploads');
-// TODO: Consider allowing this being configurable separately from "uploads" dir,
-// since network drives typically don't support "append" operation used in our chunking method.
+// Note: network drives typically don't support "append" operation used in our chunking method.
+// so if you really want to use network drives, you should symlink the chunks folder and try.
 export const chunksPath = path.join(uploadPath, 'chunks');
 
-// TODO: Configurable?
-const chunkedUploadsTimeout = 30 * 60 * 1000; // 30 minutes
+const chunkedUploadsTimeout = getEnvironmentDefaults().chunkedUploadsTimeout;
 
 export const chunksData: Map<string, ChunksData> = new Map();
 
@@ -112,7 +111,6 @@ export const cleanUpChunks = async (uuid: string): Promise<void> => {
 	chunksData.delete(uuid);
 };
 
-// TODO: getConfig()
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && getEnvironmentDefaults().blockNoExtension) return true;
 	return getEnvironmentDefaults().blockedExtensions.includes(extension);
