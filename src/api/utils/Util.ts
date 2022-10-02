@@ -36,15 +36,20 @@ export const getEnvironmentDefaults = () =>
 		rateLimitMax: process.env.RATE_LIMIT_MAX ?? 5,
 		secret: process.env.SECRET ?? randomstring.generate(64),
 		serviceName: process.env.SERVICE_NAME ?? 'change-me',
-		chunkSize: process.env.CHUNK_SIZE ?? 90,
-		maxSize: process.env.MAX_SIZE ?? 5000,
+		// TODO: Pretty sure all env variables will always be string if fetched as-is from process.env
+		chunkSize: process.env.CHUNK_SIZE ? parseFloat(process.env.CHUNK_SIZE) : 90,
+		maxSize: process.env.MAX_SIZE ? parseFloat(process.env.MAX_SIZE) : 5000,
 		// eslint-disable-next-line eqeqeq
 		generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
-		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH ?? 12,
+		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH
+			? parseInt(process.env.GENERATED_FILENAME_LENGTH, 10)
+			: 12,
 		generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH ?? 6,
 		blockedExtensions: process.env.BLOCKED_EXTENSIONS
 			? process.env.BLOCKED_EXTENSIONS.split(',')
 			: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
+		// eslint-disable-next-line eqeqeq
+		blockNoExtension: process.env.BLOCK_NO_EXTENSION == undefined ? false : true,
 		// eslint-disable-next-line eqeqeq
 		publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
 		// eslint-disable-next-line eqeqeq
@@ -121,4 +126,12 @@ export const addSpaces = (str: string) => {
 	}
 	newStr += str;
 	return newStr;
+};
+
+export const unlistenEmitters = (emitters: any[], eventName: string, listener?: (reason?: any) => void) => {
+	if (!listener) return;
+	emitters.forEach(emitter => {
+		if (!emitter) return;
+		emitter.off(eventName, listener);
+	});
 };

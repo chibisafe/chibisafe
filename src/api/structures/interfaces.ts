@@ -1,13 +1,22 @@
 import type { Request } from 'hyper-express';
 
+import type { ChunksData } from '../utils/File';
+
+export interface RequestUser {
+	id: number;
+	uuid: string;
+	username: string;
+	isAdmin: boolean;
+	apiKey?: string | null | undefined;
+}
+
 export interface RequestWithUser extends Request {
-	user: {
-		id: number;
-		uuid: string;
-		username: string;
-		isAdmin: boolean;
-		apiKey?: string | null | undefined;
-	};
+	user: RequestUser;
+}
+
+// TODO
+export interface RequestWithOptionalUser extends Request {
+	user?: RequestUser;
 }
 
 export interface User {
@@ -22,6 +31,19 @@ export interface User {
 	apiKeyEditedAt: string;
 	createdAt: string;
 	editedAt: string;
+}
+
+export interface FileInProgress {
+	name: string;
+	extension: string;
+	path: string;
+	original: string;
+	type: string;
+	size: number;
+	hash: string;
+	ip: string;
+	chunksData?: ChunksData;
+	promise?: Promise<void>;
 }
 
 export interface File {
@@ -96,5 +118,7 @@ export interface Settings {
 export interface RouteOptions {
 	url: string;
 	method: string;
-	middlewares?: string[];
+	options?: { [index: string | number]: any };
+	middlewares?: (string | { [index: string | number]: any })[];
+	debug?: boolean;
 }

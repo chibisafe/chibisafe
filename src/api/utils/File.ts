@@ -1,40 +1,195 @@
+import * as blake3 from 'blake3';
 import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'path';
+// import { inspect } from 'util';
 import log from '../utils/Log';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
-import { getHost, getConfig } from './Util';
+import { /* getConfig, */ getEnvironmentDefaults, getHost } from './Util';
 
-import type { File, ExtendedFile, ExtendedFileWithData, Album, User } from '../structures/interfaces';
+import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
+import type { NodeHash, NodeHashReader } from 'blake3';
+import type { WriteStream } from 'fs';
 import type { Request, Response } from 'hyper-express';
 
-const preserveExtensions = ['.tar.gz', '.tar.z', '.tar.bz2', '.tar.lzma', '.tar.lzo', '.tar.xz'];
+const preserveExtensions = [
+	/\.tar\.\w+/i // tarballs
+];
 export const uploadPath = path.join(__dirname, '../../../', 'uploads');
+// TODO: Consider allowing this being configurable separately from "uploads" dir,
+// since network drives typically don't support "append" operation used in our chunking method.
+export const chunksPath = path.join(uploadPath, 'chunks');
 
-export const isExtensionBlocked = async (extension: string) =>
-	(await getConfig()).blockedExtensions.includes(extension);
+// TODO: Configurable?
+const chunkedUploadsTimeout = 30 * 60 * 1000; // 30 minutes
+
+export const chunksData: Map<string, ChunksData> = new Map();
+
+export class ChunksData {
+	public readonly uuid: string;
+	public readonly root: string;
+	public readonly name: string = 'tmp';
+	public readonly path: string;
+	public chunks = 0;
+	public writeStream?: WriteStream;
+	public hashStream?: NodeHash<NodeHashReader>;
+	// Immediately mark this chunked upload as currently processing
+	public processing = true;
+	private _timeout?: NodeJS.Timeout;
+
+	public constructor(uuid: string) {
+		this.uuid = uuid;
+		this.root = path.join(chunksPath, this.uuid);
+		this.path = path.join(this.root, this.name);
+	}
+
+	private onTimeout() {
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		void cleanUpChunks(this.uuid);
+	}
+
+	public setTimeout(delay: number) {
+		this.clearTimeout();
+		this._timeout = setTimeout(this.onTimeout.bind(this), delay);
+	}
+
+	public clearTimeout() {
+		if (this._timeout) {
+			clearTimeout(this._timeout);
+		}
+	}
+}
+
+export const initChunks = async (uuid: string): Promise<ChunksData> => {
+	// This returns reference to the ChunksData instance, if already exists
+	let data = chunksData.get(uuid);
+
+	// Wait for the first spawned init tasks
+	if (data?.processing) {
+		throw new Error('Previous chunk upload is still being processed. Parallel chunked uploads is not supported.');
+	}
+
+	// Otherwise let's init a new one
+	if (!data) {
+		data = new ChunksData(uuid);
+		chunksData.set(uuid, data);
+		await jetpack.dirAsync(data.root);
+		// Init write & hasher streams
+		data.writeStream = jetpack.createWriteStream(data.path, { flags: 'a' });
+		data.hashStream = blake3.createHash();
+	}
+
+	// Reset its timeout
+	data.setTimeout(chunkedUploadsTimeout);
+	return data;
+};
+
+export const cleanUpChunks = async (uuid: string): Promise<void> => {
+	const data = chunksData.get(uuid);
+	if (!data) return;
+
+	// Dispose of unfinished write & hasher streams
+	if (data.writeStream && !data.writeStream.destroyed) {
+		data.writeStream.destroy();
+	}
+	// @ts-ignore
+	if (data.hashStream?.hash?.hash) {
+		data.hashStream.dispose();
+	}
+
+	// Remove UUID dir
+	await jetpack.removeAsync(data.root).catch(error => {
+		// Re-throw non-ENOENT error
+		if (error.code !== 'ENOENT') log.error(error);
+	});
+
+	// Delete cached chunks data
+	chunksData.delete(uuid);
+};
+
+// TODO: getConfig()
+export const isExtensionBlocked = (extension: string) => {
+	if (!extension && getEnvironmentDefaults().blockNoExtension) return true;
+	return getEnvironmentDefaults().blockedExtensions.includes(extension);
+};
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
-export const getUniqueFilename = (extension: string) => {
-	const retry: any = async (i = 0) => {
-		const filename =
-			randomstring.generate({
-				length: (await getConfig()).generatedFilenameLength,
-				capitalization: 'lowercase'
-			}) + extension;
+/*
+	TODO: Where to put this?
+	This is necesary, because when we first allocate an identifier,
+	it will not immediately be pushed into db,
+	which means the rest of the service has no context as to whether
+	that identifier is currently being used by other upload in progress or not.
+	In-memory, thus only for single-thread, thoughts?
+*/
+const heldFileIdentifiers = new Set();
 
-		// TODO: Change this to look for the file in the db instead of in the filesystem
-		const exists = jetpack.exists(path.join(uploadPath, filename));
-		if (!exists) return filename;
+export const unholdFileIdentifiers = (res: Response): void => {
+	if (!res.locals.identifiers) return;
+
+	for (const identifier of res.locals.identifiers) {
+		heldFileIdentifiers.delete(identifier);
+		// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
+	}
+
+	delete res.locals.identifiers;
+};
+
+export const getUniqueFileIdentifier = (res?: Response): string | null => {
+	const retry: any = async (i = 0) => {
+		const identifier = randomstring.generate({
+			// TODO: Load from config
+			length: getEnvironmentDefaults().generatedFilenameLength,
+			capitalization: 'lowercase'
+		});
+
+		if (!heldFileIdentifiers.has(identifier)) {
+			heldFileIdentifiers.add(identifier);
+
+			/*
+				We use $queryRaw() because we need to ignore extension when finding existing matches,
+				and to do so we need to use SQL LIKE operator, which is still not available in Prisma
+				for SQLite as a shorthand function (supposedly already implemented PostgreSQL, however).
+				https://github.com/prisma/prisma/discussions/3159
+				https://github.com/prisma/prisma/issues/9414
+			*/
+			const exists = await prisma.$queryRaw<{ id: number }[]>`
+				SELECT id from files
+				WHERE name LIKE ${`${identifier}.%`}
+				LIMIT 1;
+			`;
+
+			if (exists.length) {
+				heldFileIdentifiers.delete(identifier);
+			} else {
+				/*
+					If Response is specified, push identifier into its locals object,
+					allowing automatic removal once the Response ends.
+				*/
+				if (res) {
+					if (!res.locals.identifiers) {
+						res.locals.identifiers = [];
+						res.once('finish', () => {
+							unholdFileIdentifiers(res);
+						});
+					}
+					res.locals.identifiers.push(identifier);
+				}
+				// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
+				return identifier;
+			}
+		}
+
 		if (i < 5) return retry(i + 1);
 		log.error('Couldnt allocate identifier for file');
 		return null;
 	};
+
 	return retry();
 };
 
@@ -155,6 +310,7 @@ export const constructFilePublicLink = (req: Request, file: File) => {
 	return extended;
 };
 
+/*
 export const fileExists = (req: Request, res: Response, exists: File, filename: string) => {
 	const file = constructFilePublicLink(req, exists);
 	void res.json({
@@ -170,43 +326,52 @@ export const fileExists = (req: Request, res: Response, exists: File, filename: 
 
 	return deleteFile(filename);
 };
+*/
 
-export const storeFileToDb = async (req: Request, res: Response, user: User, file: ExtendedFileWithData) => {
+export const storeFileToDb = async (user: RequestUser | User | undefined, file: FileInProgress) => {
 	const dbFile = await prisma.files.findFirst({
 		where: {
-			hash: file.data.hash,
-			size: file.data.size,
-			userId: user.id ? user.id : undefined
+			hash: file.hash,
+			size: file.size,
+			// Must be null for guest uploads,
+			// to ensure guests uploads will only be matched against other guest uploads
+			userId: user ? user.id : null
 		}
 	});
 
 	if (dbFile) {
-		await fileExists(req, res, dbFile, file.data.filename);
-		return;
+		// Delete temp file (do not wait)
+		void deleteFile(file.name);
+		return {
+			file: dbFile,
+			repeated: true
+		};
 	}
 
 	const now = utc().toDate();
 	const data = {
-		userId: user.id ? user.id : undefined,
+		userId: user?.id ?? undefined,
 		uuid: uuidv4(),
-		name: file.data.filename,
-		original: file.data.originalName,
-		type: file.data.mimeType,
-		size: file.data.size,
-		hash: file.data.hash,
-		ip: req.ip,
+		name: file.name,
+		original: file.original,
+		type: file.type,
+		size: file.size,
+		hash: file.hash,
+		ip: file.ip,
 		createdAt: now,
 		editedAt: now
 	};
-	void generateThumbnails(file.data.filename);
+	void generateThumbnails(file.name);
 
 	const fileId = await prisma.files.create({
 		data
 	});
 
 	return {
-		file: data,
-		id: fileId.id
+		file: {
+			id: fileId.id,
+			...data
+		}
 	};
 };
 
@@ -234,32 +399,33 @@ export const saveFileToAlbum = async (albumId: number, insertedId: number) => {
 	}
 };
 
-export const getExtension = (filename: string) => {
+export const getExtension = (filename: string, lower = false): string => {
 	// Always return blank string if the filename does not seem to have a valid extension
 	// Files such as .DS_Store (anything that starts with a dot, without any extension after) will still be accepted
 	if (!/\../.test(filename)) return '';
 
-	let lower = filename.toLowerCase(); // due to this, the returned extname will always be lower case
 	let multi = '';
-	let extname = '';
+	let extension = '';
 
 	// check for multi-archive extensions (.001, .002, and so on)
-	if (/\.\d{3}$/.test(lower)) {
-		multi = lower.slice(lower.lastIndexOf('.') - lower.length);
-		lower = lower.slice(0, lower.lastIndexOf('.'));
+	if (/\.\d{3}$/.test(filename)) {
+		multi = filename.slice(filename.lastIndexOf('.') - filename.length);
+		filename = filename.slice(0, filename.lastIndexOf('.'));
 	}
 
 	// check against extensions that must be preserved
 	for (const extPreserve of preserveExtensions) {
-		if (lower.endsWith(extPreserve)) {
-			extname = extPreserve;
+		const match = filename.match(extPreserve);
+		if (match?.[0]) {
+			extension = match[0];
 			break;
 		}
 	}
 
-	if (!extname) {
-		extname = lower.slice(lower.lastIndexOf('.') - lower.length); // path.extname(lower)
+	if (!extension) {
+		extension = filename.slice(filename.lastIndexOf('.') - filename.length); // path.extname(filename)
 	}
 
-	return extname + multi;
+	const str = extension + multi;
+	return lower ? str.toLowerCase() : str;
 };

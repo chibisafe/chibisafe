@@ -77,18 +77,24 @@
 		"@types/bcryptjs": "^2.4.2",
 		"adm-zip": "^0.5.9",
 		"bcryptjs": "^2.4.3",
+		"blake3": "^2.1.7",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.1",
 		"ffmpeg-probe": "^1.0.6",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
 		"helmet": "^5.1.0",
-		"hyper-express": "^6.4.8",
+		"hyper-express": "^6.4.2",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
 		"pino": "^8.5.0",
 		"randomstring": "^1.2.2",
 		"sharp": "^0.30.7",
 		"uuid": "^8.3.2"
+	},
+	"overrides": {
+		"hyper-express": {
+			"@types/busboy": "^1.5.0"
+		}
 	}
 }

@@ -1,17 +1,29 @@
 import type { Response, MiddlewareNext } from 'hyper-express';
-import type { RequestWithUser } from '../structures/interfaces';
+import type { RequestWithOptionalUser } from '../structures/interfaces';
 import JWT from 'jsonwebtoken';
+import log from '../utils/Log';
 import prisma from '../structures/database';
 
 interface Decoded {
 	sub: number;
 }
 
-export default (req: RequestWithUser, res: Response, next: MiddlewareNext) => {
-	if (!req.headers.authorization) return res.status(401).json({ message: 'No authorization header provided' });
+export default (
+	req: RequestWithOptionalUser,
+	res: Response,
+	next: MiddlewareNext,
+	options?: { [index: string | number]: any }
+) => {
+	if (!req.headers.authorization) {
+		if (options?.optional) return next();
+		return res.status(401).json({ message: 'No authorization header provided' });
+	}
 
 	const token = req.headers.authorization.split(' ')[1];
-	if (!token) return res.status(401).json({ message: 'No authorization header provided' });
+	if (!token) {
+		if (options?.optional) return next();
+		return res.status(401).json({ message: 'No authorization header provided' });
+	}
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises
 	JWT.verify(token, process.env.JWT_SECRET ?? '', async (error, decoded) => {
@@ -33,6 +45,8 @@ export default (req: RequestWithUser, res: Response, next: MiddlewareNext) => {
 
 		if (!user) return res.status(401).json({ message: "User doesn't exist" });
 		req.user = user;
+		// TODO
+		log.debug(`Username: ${user.username}`);
 		next();
 	});
 };

@@ -7,15 +7,19 @@ import Routes from './structures/routes';
 
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
-	log.error('Uncaught Exception:', error);
+	log.error('Uncaught Exception:');
+	log.error(error);
 });
 
 process.on('unhandledRejection', error => {
-	log.error('Unhandled Rejection:', error);
+	log.error('Unhandled Rejection:');
+	log.error(error);
 });
 
 const start = async () => {
 	const server = new HyperExpress.Server({
+		// TODO: Configurable? Should not trust proxy if directly running on an exposed port,
+		// instead of behind a reverse proxy like Nginx, and/or CDNs like Cloudflare
 		trust_proxy: true,
 		fast_buffers: true
 	});
@@ -38,12 +42,18 @@ const start = async () => {
 	);
 
 	// Create the neccessary folders
-	jetpack.dir('uploads/chunks');
+	jetpack.dir('uploads/chunks', { empty: true });
 	jetpack.dir('uploads/thumbs/square');
 	jetpack.dir('uploads/thumbs/preview');
 
 	// Scan and load routes into express
 	await Routes.load(server);
+
+	// TODO: Uploader page
+	server.get('/uploader.html', (req, res) => {
+		const readStream = jetpack.createReadStream('src/site/uploader.html');
+		return res.stream(readStream);
+	});
 
 	// Start the server
 	await server.listen(8000);
