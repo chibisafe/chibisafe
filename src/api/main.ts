@@ -57,7 +57,6 @@ const start = async () => {
 	});
 
 	log.info('');
-	log.info('');
 	log.info('Chibisafe is starting with the following configuration:');
 	log.info('');
 
