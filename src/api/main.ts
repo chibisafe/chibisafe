@@ -47,16 +47,6 @@ const start = async () => {
 	jetpack.dir('uploads/thumbs/square');
 	jetpack.dir('uploads/thumbs/preview');
 
-	// Scan and load routes into express
-	await Routes.load(server);
-
-	// TODO: Uploader page
-	server.get('/uploader.html', (req, res) => {
-		const readStream = jetpack.createReadStream('src/site/uploader.html');
-		return res.stream(readStream);
-	});
-
-	log.info('');
 	log.info('Chibisafe is starting with the following configuration:');
 	log.info('');
 
@@ -66,9 +56,21 @@ const start = async () => {
 	}
 	log.info('');
 
+	log.info('Loading routes...');
+	log.info('');
+	// Scan and load routes into express
+	await Routes.load(server);
+
+	// TODO: Uploader page
+	server.get('/uploader.html', (req, res) => {
+		const readStream = jetpack.createReadStream('src/site/uploader.html');
+		return res.stream(readStream);
+	});
+
 	// Start the server
 	await server.listen(8000);
-	log.info('Server started on port 8000');
+	log.info('');
+	log.info('Server ready on port 8000');
 };
 
 void start();
