@@ -4,6 +4,7 @@ import log from './utils/Log';
 // import helmet from 'helmet';
 import cors from 'cors';
 import Routes from './structures/routes';
+import { getEnvironmentDefaults } from './utils/Util';
 
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
@@ -54,6 +55,17 @@ const start = async () => {
 		const readStream = jetpack.createReadStream('src/site/uploader.html');
 		return res.stream(readStream);
 	});
+
+	log.info('');
+	log.info('');
+	log.info('Chibisafe is starting with the following configuration:');
+	log.info('');
+
+	const defaults = getEnvironmentDefaults();
+	for (const [key, value] of Object.entries(defaults)) {
+		log.info(`${key}: ${JSON.stringify(value)}`);
+	}
+	log.info('');
 
 	// Start the server
 	await server.listen(8000);

@@ -30,7 +30,7 @@ export const getConfig = async () => {
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const getEnvironmentDefaults = () =>
 	({
-		domain: process.env.DOMAIN,
+		domain: process.env.DOMAIN ?? 'localhost:8000',
 		routePrefix: '/api',
 		rateLimitWindow: process.env.RATE_LIMIT_WINDOW ?? 2,
 		rateLimitMax: process.env.RATE_LIMIT_MAX ?? 5,
