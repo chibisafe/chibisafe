@@ -329,7 +329,6 @@ export const fileExists = (req: Request, res: Response, exists: File, filename: 
 */
 
 export const storeFileToDb = async (user: RequestUser | User | undefined, file: FileInProgress) => {
-	// TODO: Check file size
 	const dbFile = await prisma.files.findFirst({
 		where: {
 			hash: file.hash,
