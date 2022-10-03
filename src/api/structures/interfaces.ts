@@ -123,3 +123,14 @@ export interface RouteOptions {
 	middlewares?: (string | { [index: string | number]: any })[];
 	debug?: boolean;
 }
+
+export interface UploadResult {
+	uuid: string;
+	name?: string;
+	hash?: string;
+	size?: number;
+	url?: string;
+	thumb?: string;
+	deleteUrl?: string;
+	repeated?: boolean;
+}
