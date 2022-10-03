@@ -9,12 +9,22 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	const { identifier } = req.path_parameters;
-	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
+	const { uuid, identifier } = req.path_parameters;
+	if (!uuid || !identifier) return res.status(400).json({ message: 'No uuid or identifier provided' });
+
+	const album = await prisma.albums.findFirst({
+		where: {
+			uuid,
+			userId: req.user.id
+		}
+	});
+
+	if (!album) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
 
 	const link = await prisma.links.findFirst({
 		where: {
 			userId: req.user.id,
+			albumId: album.id,
 			identifier
 		}
 	});
@@ -24,12 +34,6 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	await prisma.links.delete({
 		where: {
 			identifier
-		}
-	});
-
-	await prisma.albumsLinks.delete({
-		where: {
-			linkId: link.id
 		}
 	});
 

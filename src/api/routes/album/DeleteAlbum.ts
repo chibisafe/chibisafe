@@ -34,12 +34,6 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			}
 		});
 
-		await prisma.albumsLinks.deleteMany({
-			where: {
-				albumId: album.id
-			}
-		});
-
 		await prisma.links.deleteMany({
 			where: {
 				albumId: album.id

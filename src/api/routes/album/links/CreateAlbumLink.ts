@@ -11,7 +11,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = await req.json();
+	const { uuid } = req.path_parameters;
 	if (!uuid) return res.status(400).json({ message: 'No uuid provided' });
 
 	const exists = await prisma.albums.findFirst({
@@ -21,9 +21,9 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!exists) return res.status(400).json({ message: 'Album doesn\t exist' });
+	if (!exists) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
 
-	let { identifier } = req.path_parameters;
+	let { identifier } = await req.json();
 	if (identifier) {
 		if (!req.user.isAdmin) return res.status(401).json({ message: 'Only administrators can create custom links' });
 		if (!/^[a-zA-Z0-9-_]+$/.test(identifier))
@@ -60,6 +60,14 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	return res.json({
 		message: 'Successfully created link',
-		data: insertObj
+		data: {
+			identifier,
+			uuid: insertObj.uuid,
+			albumId: exists.uuid,
+			enabled: insertObj.enabled,
+			enableDownload: insertObj.enableDownload,
+			expiresAt: insertObj.expiresAt,
+			views: insertObj.views
+		}
 	});
 };

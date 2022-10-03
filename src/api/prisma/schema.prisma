@@ -39,12 +39,6 @@ model albumsFiles {
 	fileId Int
 }
 
-model albumsLinks {
-	id Int @id @default(autoincrement())
-	albumId Int
-	linkId Int @unique
-}
-
 model bans {
 	id Int @id @default(autoincrement())
 	ip String
