@@ -285,7 +285,7 @@ export const createZip = (files: string[], album: Album) => {
 		for (const file of files) {
 			zip.addLocalFile(path.join(uploadPath, file));
 		}
-		zip.writeZip(path.join(__dirname, '../../../', 'uploads', 'zips', `${album.userId}-${album.id}.zip`));
+		zip.writeZip(path.join(__dirname, '../../../', 'uploads', 'zips', `${album.uuid}.zip`));
 	} catch (error) {
 		log.error(error);
 	}
