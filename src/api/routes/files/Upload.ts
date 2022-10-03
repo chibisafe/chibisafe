@@ -26,17 +26,13 @@ import { /* getConfig, */ getEnvironmentDefaults, getHost, unlistenEmitters } fr
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'fs';
 import type { ChunksData } from '../../utils/File';
-import type { File, FileInProgress, RequestWithOptionalUser, RouteOptions } from '../../structures/interfaces';
-
-interface UploadResult {
-	name?: string;
-	hash?: string;
-	size?: number;
-	url?: string;
-	thumb?: string;
-	deleteUrl?: string;
-	repeated?: boolean;
-}
+import type {
+	File,
+	FileInProgress,
+	RequestWithOptionalUser,
+	RouteOptions,
+	UploadResult
+} from '../../structures/interfaces';
 
 export const options: RouteOptions = {
 	url: '/upload',
@@ -477,12 +473,13 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 		files: stored.map(entry => {
 			const extended = constructFilePublicLink(req, entry.file);
 			const result: UploadResult = {
+				uuid: extended.uuid,
 				name: extended.name,
 				hash: extended.hash,
 				size: extended.size,
 				url: extended.url,
 				thumb: extended.thumb,
-				deleteUrl: `${getHost(req)}/api/file/${extended.id}`
+				deleteUrl: req.user ? `${getHost(req)}/api/file/${extended.uuid}` : undefined
 			};
 			if (entry.repeated) {
 				result.repeated = true;
