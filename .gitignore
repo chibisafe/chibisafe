@@ -1,0 +1,5 @@
+uploads/
+
+database.sqlite
+./database.sqlite
+/database.sqlite
