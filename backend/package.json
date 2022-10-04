@@ -12,7 +12,7 @@
 		"build": "tsc --noEmit",
 		"dev": "ts-node -r dotenv/config src/main.ts | pino-pretty",
 		"dev:reload": "nodemon -r dotenv/config src/main.ts | pino-pretty",
-		"sqlite": "sqlite_web -p 5001 ../database/database.sqlite",
+		"sqlite": "sqlite_web -p 5001 ../database.sqlite",
 		"migrate": "prisma migrate deploy && prisma generate",
 		"setup": "npm i && npm run migrate"
 	},
