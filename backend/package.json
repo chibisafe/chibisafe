@@ -1,5 +1,5 @@
 {
-	"name": "chibisafe",
+	"name": "@chibisafe/backend",
 	"version": "6.0.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
@@ -10,10 +10,11 @@
 	},
 	"scripts": {
 		"build": "tsc --noEmit",
-		"dev": "ts-node -r dotenv/config src/api/main.ts | pino-pretty",
-		"dev:reload": "nodemon -r dotenv/config src/api/main.ts | pino-pretty",
-		"sqlite": "sqlite_web -p 5001 database/database.sqlite",
-		"migrate": "prisma migrate deploy && prisma generate && prisma seed"
+		"dev": "ts-node -r dotenv/config src/main.ts | pino-pretty",
+		"dev:reload": "nodemon -r dotenv/config src/main.ts | pino-pretty",
+		"sqlite": "sqlite_web -p 5001 ../database/database.sqlite",
+		"migrate": "prisma migrate deploy && prisma generate",
+		"setup": "npm i && npm run migrate"
 	},
 	"repository": {
 		"type": "git",
@@ -24,6 +25,26 @@
 	},
 	"engines": {
 		"node": ">=16.0.0"
+	},
+	"dependencies": {
+		"@prisma/client": "^4.3.1",
+		"@types/bcryptjs": "^2.4.2",
+		"adm-zip": "^0.5.9",
+		"bcryptjs": "^2.4.3",
+		"blake3": "^2.1.7",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.1",
+		"ffmpeg-probe": "^1.0.6",
+		"fluent-ffmpeg": "^2.1.2",
+		"fs-jetpack": "^4.3.1",
+		"helmet": "^5.1.0",
+		"hyper-express": "^6.4.2",
+		"jsonwebtoken": "^8.5.1",
+		"moment": "^2.29.4",
+		"pino": "^8.5.0",
+		"randomstring": "^1.2.2",
+		"sharp": "^0.30.7",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"@types/adm-zip": "^0.5.0",
@@ -49,12 +70,17 @@
 		"ts-node": "^10.9.1",
 		"typescript": "^4.7.4"
 	},
+	"overrides": {
+		"hyper-express": {
+			"@types/busboy": "^1.5.0"
+		}
+	},
 	"prisma": {
-		"schema": "src/api/prisma/schema.prisma"
+		"schema": "src/prisma/schema.prisma"
 	},
 	"nodemonConfig": {
 		"watch": [
-			"src/api/*"
+			"src/*"
 		],
 		"delay": 2500
 	},
@@ -71,30 +97,5 @@
 	],
 	"volta": {
 		"node": "16.16.0"
-	},
-	"dependencies": {
-		"@prisma/client": "^4.3.1",
-		"@types/bcryptjs": "^2.4.2",
-		"adm-zip": "^0.5.9",
-		"bcryptjs": "^2.4.3",
-		"blake3": "^2.1.7",
-		"cors": "^2.8.5",
-		"dotenv": "^16.0.1",
-		"ffmpeg-probe": "^1.0.6",
-		"fluent-ffmpeg": "^2.1.2",
-		"fs-jetpack": "^4.3.1",
-		"helmet": "^5.1.0",
-		"hyper-express": "^6.4.2",
-		"jsonwebtoken": "^8.5.1",
-		"moment": "^2.29.4",
-		"pino": "^8.5.0",
-		"randomstring": "^1.2.2",
-		"sharp": "^0.30.7",
-		"uuid": "^8.3.2"
-	},
-	"overrides": {
-		"hyper-express": {
-			"@types/busboy": "^1.5.0"
-		}
 	}
 }

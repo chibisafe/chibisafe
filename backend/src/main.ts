@@ -43,10 +43,10 @@ const start = async () => {
 	);
 
 	// Create the neccessary folders
-	jetpack.dir('uploads/zips');
-	jetpack.dir('uploads/chunks', { empty: true });
-	jetpack.dir('uploads/thumbs/square');
-	jetpack.dir('uploads/thumbs/preview');
+	jetpack.dir('../uploads/zips');
+	jetpack.dir('../uploads/chunks', { empty: true });
+	jetpack.dir('../uploads/thumbs/square');
+	jetpack.dir('../uploads/thumbs/preview');
 
 	log.info('Chibisafe is starting with the following configuration:');
 	log.info('');

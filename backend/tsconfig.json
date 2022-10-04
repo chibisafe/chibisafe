@@ -8,7 +8,7 @@
 		"module": "CommonJS",
 		"jsx": "preserve",
 		"lib": ["esnext", "dom"],
-		"rootDir": "./src/api",
+		"rootDir": "./src",
 		"outDir": "./dist",
 		"sourceRoot": "./",
 		"resolveJsonModule": true,

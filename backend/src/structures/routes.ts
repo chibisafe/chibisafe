@@ -19,7 +19,7 @@ export default {
 		for (const routeFile of await jetpack.findAsync(path.join(__dirname, '..', 'routes'), { matching })) {
 			try {
 				const slash = process.platform === 'win32' ? '\\' : '/';
-				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}api${slash}`;
+				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const options: RouteOptions = route.options;
 
