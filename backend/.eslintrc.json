@@ -9,7 +9,7 @@
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"project": "./tsconfig.eslint.json"
+		"project": "./backend/tsconfig.eslint.json"
 	},
 	"rules": {
 		"comma-dangle": [

@@ -4,11 +4,12 @@ import { createMetaManager } from 'vue-meta';
 
 // @ts-ignore
 import App from './App.vue';
-import router from './router';
+import router from './router.ts';
 
 const mount = async () => {
 	const app = createApp(App).use(createPinia()).use(router).use(createMetaManager());
 	await router.isReady();
 	app.mount('#app');
 };
+
 void mount();

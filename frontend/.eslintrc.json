@@ -10,7 +10,7 @@
 		"neon/prettier"
 	],
 	"parserOptions": {
-		"project": "./tsconfig.eslint.json"
+		"project": "./frontend/tsconfig.eslint.json"
 	},
 	"globals": {
 		"defineProps": "readonly",
