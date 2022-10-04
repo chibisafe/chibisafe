@@ -1,18 +1,16 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "allowJs": true
-    },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.js",
-        "**/*.jsx",
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.js",
 		"**/*.vue",
-        "**/*.test.ts",
-        "**/*.test.js",
-        "**/*.spec.ts",
-        "**/*.spec.js"
-    ],
-    "exclude": []
+		"**/*.test.ts",
+		"**/*.test.js",
+		"**/*.spec.ts",
+		"**/*.spec.js"
+	],
+	"exclude": []
 }

@@ -1,4 +1,0 @@
-# Ignore artifacts:
-node_modules
-dist
-web/src/components.d.ts

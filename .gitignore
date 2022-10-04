@@ -1,4 +1,21 @@
-uploads/
+# Packages
+node_modules/
+backend/node_modules/
+frontend/node_modules/
 
+# Build artifacts
+backend/dist/
+frontend/dist/
+
+# Env files
+/backend/.env
+
+# Database
 database.sqlite
 database.sqlite-journal
+
+# Log files
+npm-debug.log*
+
+# Uploads
+uploads/

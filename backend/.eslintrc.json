@@ -5,34 +5,11 @@
 		"neon/browser",
 		"neon/node",
 		"neon/typescript",
-		"neon/prettier"
+		"neon/prettier",
+		"../.eslint.rules.json"
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": "./backend/tsconfig.eslint.json"
-	},
-	"rules": {
-		"comma-dangle": [
-			"error",
-			"never"
-		],
-		"id-length": "off",
-		"import/newline-after-import": "off",
-		"n/prefer-global/process": "off",
-		"unicorn/prefer-math-trunc": "off",
-		"unicorn/numeric-separators-style": "off",
-		"import/extensions": "off",
-		"no-warning-comments": "off",
-		"import/order": "off",
-		"typescript-sort-keys/interface": "off",
-		"@typescript-eslint/consistent-type-definitions": "off",
-		"@typescript-eslint/lines-between-class-members": "off",
-		"@typescript-eslint/no-unsafe-assignment": "off",
-		"@typescript-eslint/no-unsafe-argument": "off",
-		"@typescript-eslint/prefer-ts-expect-error": "off",
-		"@typescript-eslint/no-unsafe-member-access": "off",
-		"@typescript-eslint/no-unsafe-call": "off",
-		"@typescript-eslint/no-unsafe-return": "off",
-		"@typescript-eslint/consistent-type-assertions": "off"
 	}
 }

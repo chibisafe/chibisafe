@@ -7,7 +7,8 @@
 		"neon/typescript",
 		"neon/vue",
 		"neon/vue-typescript",
-		"neon/prettier"
+		"neon/prettier",
+		"../.eslint.rules.json"
 	],
 	"parserOptions": {
 		"project": "./frontend/tsconfig.eslint.json"
@@ -16,24 +17,5 @@
 		"defineProps": "readonly",
 		"defineEmits": "readonly",
 		"defineExpose": "readonly"
-	},
-	"rules": {
-		"no-warning-comments": "off",
-		"comma-dangle": [
-			"error",
-			"never"
-		],
-		"import/order": "off",
-		"vue/multi-word-component-names": "off",
-		"vue/v-on-event-hyphenation": "off",
-		"vue/sort-keys": "off",
-		"vue/no-multiple-template-root": "off",
-		"@typescript-eslint/no-unsafe-assignment": "off",
-		"@typescript-eslint/no-unsafe-argument": "off",
-		"@typescript-eslint/prefer-ts-expect-error": "off",
-		"@typescript-eslint/no-unsafe-member-access": "off",
-		"@typescript-eslint/no-unsafe-call": "off",
-		"@typescript-eslint/no-unsafe-return": "off",
-		"@typescript-eslint/consistent-type-assertions": "off"
 	}
 }
