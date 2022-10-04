@@ -19,6 +19,7 @@ export const run = async (req: Request, res: Response) => {
 	if (username.length < 4 || username.length > 32) {
 		return res.status(400).json({ message: 'Username must have 4-32 characters' });
 	}
+
 	if (password.length < 6 || password.length > 64) {
 		return res.status(400).json({ message: 'Password must have 6-64 characters' });
 	}
@@ -34,8 +35,8 @@ export const run = async (req: Request, res: Response) => {
 	let hash;
 	try {
 		hash = await bcrypt.hash(password, 10);
-	} catch (err) {
-		log.error(err);
+	} catch (error) {
+		log.error(error);
 		return res.status(401).json({ message: 'There was a problem processing your account' });
 	}
 

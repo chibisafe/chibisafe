@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/await-thenable */
 // NOTE: Should this file be named as such?
 
 import type { MultipartField, Response } from 'hyper-express';
 
 import * as blake3 from 'blake3';
 import jetpack from 'fs-jetpack';
-import path from 'path';
-import { inspect } from 'util';
+import path from 'node:path';
+import { inspect } from 'node:util';
 
 import {
 	chunksData,
@@ -24,7 +25,7 @@ import log from '../../utils/Log';
 import { /* getConfig, */ getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
 
 import type { NodeHash, NodeHashReader } from 'blake3';
-import type { WriteStream } from 'fs';
+import type { WriteStream } from 'node:fs';
 import type { ChunksData } from '../../utils/File';
 import type {
 	File,
@@ -56,10 +57,10 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 	const files: FileInProgress[] = [];
 
 	const unfreezeChunksData = () => {
-		files.forEach(file => {
-			if (!file.chunksData) return;
+		for (const file of files) {
+			if (!file.chunksData) continue;
 			file.chunksData.processing = false;
-		});
+		}
 	};
 
 	const cleanUpFiles = async () => {
@@ -139,7 +140,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 					if (isExtensionBlocked(file.extension)) {
 						throw new Error(
 							file.extension
-								? `${file.extension.substr(1).toUpperCase()} files are not permitted.`
+								? `${file.extension.slice(1).toUpperCase()} files are not permitted.`
 								: 'Files with no extension are not permitted.'
 						);
 					}
@@ -148,6 +149,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						// Re-map UUID property to IP-specific UUID
 						const uuid = `${file.ip}_${body.uuid}`;
 						// Calling initChunks() will also reset the chunked uploads' timeout
+						// eslint-disable-next-line require-atomic-updates
 						file.chunksData = await initChunks(uuid);
 						file.name = file.chunksData.name;
 						file.path = file.chunksData.path;
@@ -156,6 +158,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 						if (!identifier) {
 							throw new Error('Couldnt allocate identifier for file');
 						}
+
 						file.name = `${identifier}${file.extension}`;
 						file.path = path.join(uploadPath, file.name);
 					}
@@ -180,7 +183,8 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 
 						// This should technically never happen, but typings
 						if (!writeStream || !hashStream) {
-							return reject(new Error('Missing destination streams'));
+							reject(new Error('Missing destination streams'));
+							return;
 						}
 
 						readStream.once('error', reject);
@@ -214,15 +218,19 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 								if (writeStream?.bytesWritten !== undefined) {
 									file.size = writeStream.bytesWritten;
 								}
+
 								// @ts-ignore
 								if (hashStream?.hash?.hash) {
 									const hash = hashStream.digest('hex');
 									file.hash = file.size === 0 ? '' : hash;
 								}
+
 								if (file.size === 0) {
-									return reject(new Error('Zero-bytes files are not allowed'));
+									reject(new Error('Zero-bytes files are not allowed'));
+									return;
 								}
-								return resolve();
+
+								resolve();
 							});
 						}
 
@@ -236,10 +244,12 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 							if (writeStream && !writeStream.destroyed) {
 								writeStream.destroy();
 							}
+
 							// @ts-ignore
 							if (hashStream?.hash?.hash) {
 								hashStream.dispose();
 							}
+
 							// Re-throw error
 							throw error;
 						})
@@ -287,12 +297,13 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 	// but we will actually have already rejected the Request
 	// if it has more than 1 file while being a chunk upload.
 	if (files.some(file => file.chunksData)) {
-		files.forEach(file => {
-			if (!file.chunksData) return;
+		for (const file of files) {
+			if (!file.chunksData) continue;
 			file.chunksData.chunks++;
 			// Mark as ready to accept more chunk uploads or to finalize
 			file.chunksData.processing = false;
-		});
+		}
+
 		return res.json({ success: true });
 	}
 
@@ -324,10 +335,10 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 	} = _body;
 
 	// Re-map UUID property to IP-specific UUID
-	body.files.forEach(file => {
+	for (const file of body.files) {
 		file.uuid = `${req.ip}_${String(file.uuid)}`;
 		file.chunksData = chunksData.get(file.uuid);
-	});
+	}
 
 	if (body.files.some(file => !file.chunksData || file.chunksData.processing)) {
 		return res.status(400).json({
@@ -362,7 +373,7 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 				if (isExtensionBlocked(extension)) {
 					throw new Error(
 						extension
-							? `${extension.substr(1).toUpperCase()} files are not permitted.`
+							? `${extension.slice(1).toUpperCase()} files are not permitted.`
 							: 'Files with no extension are not permitted.'
 					);
 				}
@@ -400,6 +411,7 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 				if (!identifier) {
 					throw new Error('Couldnt allocate identifier for file');
 				}
+
 				const name = `${identifier}${extension}`;
 
 				// Move tmp file to final destination
@@ -429,7 +441,8 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 		unholdFileIdentifiers(res);
 
 		// Unlink temp files (do not wait)
-		void Promise.all(body.files.map(file => cleanUpChunks(file.uuid).catch(log.error)));
+		// eslint-disable-next-line promise/prefer-await-to-then
+		void Promise.all(body.files.map(async file => cleanUpChunks(file.uuid).catch(log.error)));
 
 		return res
 			.status(500)
@@ -466,6 +479,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 	for (const file of files) {
 		stored.push(await storeFileToDb(req.user, file));
 	}
+
 	log.debug(`storeFileToDb() awaited: ${stored.length}`);
 
 	return res.json({
@@ -484,6 +498,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 			if (entry.repeated) {
 				result.repeated = true;
 			}
+
 			return result;
 		})
 	});

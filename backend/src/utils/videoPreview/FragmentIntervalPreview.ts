@@ -24,7 +24,7 @@ module.exports = async (opts: any) => {
 	const info = await probe(input);
 	// const numFramesTotal = parseInt(info.streams[0].nb_frames, 10);
 	const { avg_frame_rate: avgFrameRate, duration } = info.streams[0];
-	const [frames, time] = avgFrameRate.split('/').map((e: string) => parseInt(e, 10));
+	const [frames, time] = avgFrameRate.split('/').map((e: string) => Number.parseInt(e, 10));
 
 	const numFramesTotal = (frames / time) * duration;
 

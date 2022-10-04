@@ -113,14 +113,14 @@ export interface Settings {
 	statisticsCron: string;
 	enabledStatistics: string[];
 	savedStatistics: string[];
-	[key: string]: string | number | string[] | boolean;
+	[key: string]: string[] | boolean | number | string;
 }
 
 export interface RouteOptions {
 	url: string;
 	method: string;
-	options?: { [index: string | number]: any };
-	middlewares?: (string | { [index: string | number]: any })[];
+	options?: { [index: number | string]: any };
+	middlewares?: (string | { [index: number | string]: any })[];
 	debug?: boolean;
 }
 

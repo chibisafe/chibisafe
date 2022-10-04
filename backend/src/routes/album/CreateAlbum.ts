@@ -1,6 +1,6 @@
 import type { Response } from 'hyper-express';
 import prisma from '../../structures/database';
-import { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '../../structures/interfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { utc } from 'moment';
 

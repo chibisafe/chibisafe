@@ -1,5 +1,5 @@
 import jetpack from 'fs-jetpack';
-import path from 'path';
+import path from 'node:path';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
 import previewUtil from './videoPreview/FragmentPreview';
@@ -47,8 +47,8 @@ const generateThumbnailForVideo = async (filename: string, output: string) => {
 			width: 150,
 			output: path.join(videoPreviewPath, output)
 		});
-	} catch (e) {
-		log.error(e);
+	} catch (error) {
+		log.error(error);
 	}
 };
 
@@ -88,6 +88,7 @@ export const removeThumbs = async ({ thumb, preview }: { thumb?: string; preview
 		await jetpack.removeAsync(path.join(thumbPath, thumb));
 		await jetpack.removeAsync(path.join(squareThumbPath, thumb));
 	}
+
 	if (preview) {
 		await jetpack.removeAsync(path.join(videoPreviewPath, preview));
 	}

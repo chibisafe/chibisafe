@@ -2,7 +2,8 @@ import * as blake3 from 'blake3';
 import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
-import path from 'path';
+import path from 'node:path';
+import { setTimeout, clearTimeout } from 'node:timers';
 // import { inspect } from 'util';
 import log from '../utils/Log';
 import randomstring from 'randomstring';
@@ -14,7 +15,7 @@ import { getEnvironmentDefaults, getHost } from './Util';
 
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
-import type { WriteStream } from 'fs';
+import type { WriteStream } from 'node:fs';
 import type { Request, Response } from 'hyper-express';
 
 const preserveExtensions = [
@@ -96,6 +97,7 @@ export const cleanUpChunks = async (uuid: string): Promise<void> => {
 	if (data.writeStream && !data.writeStream.destroyed) {
 		data.writeStream.destroy();
 	}
+
 	// @ts-ignore
 	if (data.hashStream?.hash?.hash) {
 		data.hashStream.dispose();
@@ -115,6 +117,7 @@ export const isExtensionBlocked = (extension: string) => {
 	if (!extension && getEnvironmentDefaults().blockNoExtension) return true;
 	return getEnvironmentDefaults().blockedExtensions.includes(extension);
 };
+
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
 /*
@@ -176,8 +179,10 @@ export const getUniqueFileIdentifier = (res?: Response): string | null => {
 							unholdFileIdentifiers(res);
 						});
 					}
+
 					res.locals.identifiers.push(identifier);
 				}
+
 				// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
 				return identifier;
 			}
@@ -277,7 +282,7 @@ export const deleteAllFilesFromTag = async (id: number) => {
 	}
 };
 
-export const getFilenameFromPath = (fullPath: string) => fullPath.replace(/^.*[\\\/]/, ''); // eslint-disable-line no-useless-escape
+export const getFilenameFromPath = (fullPath: string) => fullPath.replace(/^.*[/\\]/, ''); // eslint-disable-line no-useless-escape
 
 export const createZip = (files: string[], album: Album) => {
 	try {
@@ -285,6 +290,7 @@ export const createZip = (files: string[], album: Album) => {
 		for (const file of files) {
 			zip.addLocalFile(path.join(uploadPath, file));
 		}
+
 		zip.writeZip(path.join(__dirname, '../../../', 'uploads', 'zips', `${album.uuid}.zip`));
 	} catch (error) {
 		log.error(error);
@@ -305,6 +311,7 @@ export const constructFilePublicLink = (req: Request, file: File) => {
 		extended.thumbSquare = `${host}/thumbs/square/${thumb}`;
 		extended.preview = preview && `${host}/thumbs/preview/${preview}`;
 	}
+
 	return extended;
 };
 
@@ -408,6 +415,7 @@ export const getExtension = (filename: string, lower = false): string => {
 	// check for multi-archive extensions (.001, .002, and so on)
 	if (/\.\d{3}$/.test(filename)) {
 		multi = filename.slice(filename.lastIndexOf('.') - filename.length);
+		// eslint-disable-next-line no-param-reassign
 		filename = filename.slice(0, filename.lastIndexOf('.'));
 	}
 

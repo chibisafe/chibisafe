@@ -1,7 +1,7 @@
 import type { Request, Response } from 'hyper-express';
 import prisma from '../../structures/database';
 import jetpack from 'fs-jetpack';
-import path from 'path';
+import path from 'node:path';
 import { getEnvironmentDefaults } from '../../utils/Util';
 import { createZip } from '../../utils/File';
 import { utc } from 'moment';
@@ -45,7 +45,8 @@ export const run = async (req: Request, res: Response) => {
 
 		if (exists) {
 			const fileName = `${getEnvironmentDefaults().serviceName}-${identifier}.zip`;
-			return res.download(filePath, fileName);
+			res.download(filePath, fileName);
+			return;
 		}
 
 		// TODO: If the conditional above is false, generate the file again?
@@ -88,7 +89,8 @@ export const run = async (req: Request, res: Response) => {
 
 		const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.uuid}.zip`);
 		const fileName = `${getEnvironmentDefaults().serviceName}-${identifier}.zip`;
-		return res.download(filePath, fileName);
+		res.download(filePath, fileName);
+		return;
 	} catch (error) {
 		log.error(error);
 		return res.status(500).json({ message: 'There was a problem downloading the album' });

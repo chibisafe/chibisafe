@@ -1,12 +1,10 @@
-import randomstring from 'randomstring';
-import log from './Log';
-
-import prisma from '../structures/database';
-export { v4 as uuid } from 'uuid';
-
 import type { Request } from 'hyper-express';
 import type { Settings } from '../structures/interfaces';
-
+import process from 'node:process';
+import randomstring from 'randomstring';
+import log from './Log';
+import prisma from '../structures/database';
+export { v4 as uuid } from 'uuid';
 export const statsLastSavedTime = null;
 export const _config = null;
 
@@ -23,6 +21,7 @@ export const getConfig = async () => {
 		} else {
 			conf[item.key] = item.value;
 		}
+
 		return config;
 	}, {}) as Settings;
 };
@@ -36,26 +35,26 @@ export const getEnvironmentDefaults = () =>
 		rateLimitMax: process.env.RATE_LIMIT_MAX ?? 5,
 		secret: process.env.SECRET ?? randomstring.generate(64),
 		serviceName: process.env.SERVICE_NAME ?? 'change-me',
-		chunkSize: process.env.CHUNK_SIZE ? parseFloat(process.env.CHUNK_SIZE) : 90,
+		chunkSize: process.env.CHUNK_SIZE ? Number.parseFloat(process.env.CHUNK_SIZE) : 90,
 		chunkedUploadsTimeout: process.env.CHUNKED_UPLOADS_TIMEOUT
-			? parseInt(process.env.CHUNKED_UPLOADS_TIMEOUT, 10)
+			? Number.parseInt(process.env.CHUNKED_UPLOADS_TIMEOUT, 10)
 			: 30 * 60 * 1000, // 30 minutes
-		maxSize: process.env.MAX_SIZE ? parseFloat(process.env.MAX_SIZE) : 5000,
+		maxSize: process.env.MAX_SIZE ? Number.parseFloat(process.env.MAX_SIZE) : 5000,
 		// eslint-disable-next-line eqeqeq
-		generateZips: process.env.GENERATE_ZIPS == undefined ? true : false,
+		generateZips: process.env.GENERATE_ZIPS == undefined,
 		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH
-			? parseInt(process.env.GENERATED_FILENAME_LENGTH, 10)
+			? Number.parseInt(process.env.GENERATED_FILENAME_LENGTH, 10)
 			: 12,
 		generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH ?? 6,
 		blockedExtensions: process.env.BLOCKED_EXTENSIONS
 			? process.env.BLOCKED_EXTENSIONS.split(',')
 			: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
 		// eslint-disable-next-line eqeqeq
-		blockNoExtension: process.env.BLOCK_NO_EXTENSION == undefined ? false : true,
+		blockNoExtension: process.env.BLOCK_NO_EXTENSION != undefined,
 		// eslint-disable-next-line eqeqeq
-		publicMode: process.env.PUBLIC_MODE == undefined ? true : false,
+		publicMode: process.env.PUBLIC_MODE == undefined,
 		// eslint-disable-next-line eqeqeq
-		userAccounts: process.env.USER_ACCOUNTS == undefined ? true : false,
+		userAccounts: process.env.USER_ACCOUNTS == undefined,
 		metaThemeColor: process.env.META_THEME_COLOR ?? '#20222b',
 		metaDescription: process.env.META_DESCRIPTION ?? 'Blazing fast file uploader and bunker written in node! 🚀',
 		metaKeywords:
@@ -80,7 +79,7 @@ export const wipeConfigDb = async () => {
 	}
 };
 
-export const writeConfigToDb = async (config: { key: string; value: string | number | string[] | boolean }) => {
+export const writeConfigToDb = async (config: { key: string; value: string[] | boolean | number | string }) => {
 	if (!config.key) return;
 	try {
 		const data = {
@@ -116,6 +115,7 @@ export const getUniqueAlbumIdentifier = () => {
 		log.error('Couldnt allocate identifier for album');
 		return null;
 	};
+
 	return retry();
 };
 
@@ -126,14 +126,15 @@ export const addSpaces = (str: string) => {
 	for (let i = 0; i < spaces; i++) {
 		newStr += ' ';
 	}
+
 	newStr += str;
 	return newStr;
 };
 
 export const unlistenEmitters = (emitters: any[], eventName: string, listener?: (reason?: any) => void) => {
 	if (!listener) return;
-	emitters.forEach(emitter => {
-		if (!emitter) return;
+	for (const emitter of emitters) {
+		if (!emitter) continue;
 		emitter.off(eventName, listener);
-	});
+	}
 };

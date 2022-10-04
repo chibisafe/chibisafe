@@ -1,6 +1,6 @@
 import type { Response } from 'hyper-express';
 import prisma from '../../../structures/database';
-import { RequestWithUser } from '../../../structures/interfaces';
+import type { RequestWithUser } from '../../../structures/interfaces';
 import { getUniqueAlbumIdentifier } from '../../../utils/Util';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -26,7 +26,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	let { identifier } = await req.json();
 	if (identifier) {
 		if (!req.user.isAdmin) return res.status(401).json({ message: 'Only administrators can create custom links' });
-		if (!/^[a-zA-Z0-9-_]+$/.test(identifier))
+		if (!/^[\w-]+$/.test(identifier))
 			return res
 				.status(400)
 				.json({ message: 'Only alphanumeric, dashes, and underscore characters are allowed' });

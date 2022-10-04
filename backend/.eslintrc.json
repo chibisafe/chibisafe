@@ -5,29 +5,28 @@
 		"neon/browser",
 		"neon/node",
 		"neon/typescript",
-		"neon/vue",
-		"neon/vue-typescript",
 		"neon/prettier"
 	],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
 	},
-	"globals": {
-		"defineProps": "readonly",
-		"defineEmits": "readonly",
-		"defineExpose": "readonly"
-	},
 	"rules": {
-		"no-warning-comments": "off",
 		"comma-dangle": [
 			"error",
 			"never"
 		],
+		"id-length": "off",
+		"import/newline-after-import": "off",
+		"n/prefer-global/process": "off",
+		"unicorn/prefer-math-trunc": "off",
+		"unicorn/numeric-separators-style": "off",
+		"import/extensions": "off",
+		"no-warning-comments": "off",
 		"import/order": "off",
-		"vue/multi-word-component-names": "off",
-		"vue/v-on-event-hyphenation": "off",
-		"vue/sort-keys": "off",
-		"vue/no-multiple-template-root": "off",
+		"typescript-sort-keys/interface": "off",
+		"@typescript-eslint/consistent-type-definitions": "off",
+		"@typescript-eslint/lines-between-class-members": "off",
 		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
 		"@typescript-eslint/prefer-ts-expect-error": "off",

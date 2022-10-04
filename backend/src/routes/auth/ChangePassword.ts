@@ -35,8 +35,8 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	let hash;
 	try {
 		hash = await bcrypt.hash(newPassword, 10);
-	} catch (err) {
-		log.error(err);
+	} catch (error) {
+		log.error(error);
 		return res.status(401).json({ message: 'There was a problem processing your account' });
 	}
 

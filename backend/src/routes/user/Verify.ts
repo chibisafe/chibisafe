@@ -1,5 +1,5 @@
 import type { Response } from 'hyper-express';
-import { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '../../structures/interfaces';
 
 export const options = {
 	url: '/verify',

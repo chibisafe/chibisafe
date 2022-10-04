@@ -50,6 +50,7 @@ export const run = async (req: Request, res: Response) => {
 			});
 		}
 	}
+
 	const extendedFile = constructFilePublicLink(req, file);
 
 	return res.json({

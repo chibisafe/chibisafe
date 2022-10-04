@@ -2,6 +2,7 @@ import type { Request, Response } from 'hyper-express';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
+import process from 'node:process';
 
 export const options = {
 	url: '/auth/login',
@@ -30,7 +31,7 @@ export const run = async (req: Request, res: Response) => {
 		{
 			iss: 'chibisafe',
 			sub: user.id,
-			iat: new Date().getTime()
+			iat: Date.now()
 		},
 		process.env.JWT_SECRET ?? '',
 		{ expiresIn: '30d' }

@@ -1,4 +1,5 @@
 import type { Request, Response } from 'hyper-express';
+import process from 'node:process';
 
 export const options = {
 	url: '/version',

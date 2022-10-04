@@ -25,5 +25,5 @@ export default (req: Request, res: Response, next: MiddlewareNext) => {
 
 	log.debug(JSON.stringify(debug));
 
-	return next();
+	next();
 };

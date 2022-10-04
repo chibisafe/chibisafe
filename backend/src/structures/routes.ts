@@ -1,6 +1,7 @@
 import jetpack from 'fs-jetpack';
-import path from 'path';
-import { inspect } from 'util';
+import path from 'node:path';
+import { inspect } from 'node:util';
+import process from 'node:process';
 import type { MiddlewareNext, Request, Response, Server } from 'hyper-express';
 import type { RouteOptions } from './interfaces';
 import log from '../utils/Log';
@@ -48,14 +49,14 @@ export default {
 				if (options.middlewares?.length) {
 					for (const middleware of options.middlewares) {
 						let name: string | unknown | undefined;
-						let middlewareOptions: { [index: string | number]: any } | undefined;
+						let middlewareOptions: { [index: number | string]: any } | undefined;
 
 						if (typeof middleware === 'string') {
 							name = middleware;
 						} else if (typeof middleware === 'object') {
 							name = middleware.name;
 							// Create a shallow copy of the middleware object, containing all properties but "name"
-							middlewareOptions = Object.assign({}, middleware);
+							middlewareOptions = { ...middleware };
 							delete middlewareOptions.name;
 						}
 

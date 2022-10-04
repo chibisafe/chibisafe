@@ -1,6 +1,7 @@
 import HyperExpress from 'hyper-express';
 import jetpack from 'fs-jetpack';
 import log from './utils/Log';
+import process from 'node:process';
 // import helmet from 'helmet';
 import cors from 'cors';
 import Routes from './structures/routes';
@@ -55,6 +56,7 @@ const start = async () => {
 	for (const [key, value] of Object.entries(defaults)) {
 		log.info(`${key}: ${JSON.stringify(value)}`);
 	}
+
 	log.info('');
 
 	log.info('Loading routes...');
@@ -65,7 +67,7 @@ const start = async () => {
 	// TODO: Uploader page
 	server.get('/uploader.html', (req, res) => {
 		const readStream = jetpack.createReadStream('src/site/uploader.html');
-		return res.stream(readStream);
+		res.stream(readStream);
 	});
 
 	// Start the server

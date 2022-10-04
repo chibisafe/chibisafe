@@ -50,7 +50,7 @@ export default async (opts: any) => {
 	const info = await probe(input);
 
 	let { duration } = info.format;
-	duration = parseInt(duration, 10);
+	duration = Number.parseInt(duration, 10);
 
 	const startTime = getStartTime(duration, fragmentDurationSecond, ignoreBeforePercent, ignoreAfterPercent);
 
@@ -76,7 +76,7 @@ export default async (opts: any) => {
 			result.height = info.height;
 		}
 
-		return ffmpeg()
+		ffmpeg()
 			.input(input)
 			.inputOptions([`-ss ${startTime}`])
 			.outputOptions(['-vsync', 'vfr'])
