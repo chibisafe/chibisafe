@@ -50,11 +50,14 @@ export const getSystemInfo = async () => {
 		CPU: `${cpu.cores} \u00D7 ${cpu.manufacturer} ${cpu.brand} @ ${cpu.speed.toFixed(2)}GHz`,
 		'CPU Load': `${currentLoad.currentLoad.toFixed(1)}%`,
 		'CPUs Load': currentLoad.cpus.map(cpu => `${cpu.load.toFixed(1)}%`).join(', '),
-		'CPU Temperature': {
-			value: cpuTemperature && typeof cpuTemperature.main === 'number' ? cpuTemperature.main : 'N/A',
-			// Temperature value from this library is hard-coded to Celsius
-			type: Type.TEMP_CELSIUS
-		},
+		'CPU Temperature':
+			cpuTemperature && typeof cpuTemperature.main === 'number'
+				? {
+						value: cpuTemperature.main,
+						// Temperature value from this library is hard-coded to Celsius
+						type: Type.TEMP_CELSIUS
+				  }
+				: { value: null, type: Type.HIDDEN },
 		Memory: {
 			value: {
 				used: mem.active,
@@ -66,13 +69,16 @@ export const getSystemInfo = async () => {
 			value: process.memoryUsage().rss,
 			type: Type.BYTE
 		},
-		Swap: {
-			value: {
-				used: mem.swapused,
-				total: mem.swaptotal
-			},
-			type: Type.BYTE_USAGE
-		},
+		Swap:
+			mem && typeof mem.swaptotal === 'number' && mem.swaptotal > 0
+				? {
+						value: {
+							used: mem.swapused,
+							total: mem.swaptotal
+						},
+						type: Type.BYTE_USAGE
+				  }
+				: { value: null, type: Type.HIDDEN },
 		Uptime: {
 			value: time.uptime,
 			type: Type.TIME
