@@ -1,0 +1,15 @@
+# Packages
+node_modules
+**/node_modules
+
+dist/
+.netlify/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+logs
+*.log
+npm-debug.log*

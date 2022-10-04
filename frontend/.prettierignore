@@ -1,0 +1,4 @@
+# Ignore artifacts:
+node_modules
+dist
+components.d.ts
