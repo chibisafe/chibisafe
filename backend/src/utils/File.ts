@@ -4,7 +4,7 @@ import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'node:path';
 import { setTimeout, clearTimeout } from 'node:timers';
-// import { inspect } from 'util';
+// import { inspect } from 'node:util';
 import log from '../utils/Log';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +17,8 @@ import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } fro
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'node:fs';
 import type { Request, Response } from 'hyper-express';
+
+const fileIdentifierMaxTries = 5;
 
 const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
@@ -141,8 +143,8 @@ export const unholdFileIdentifiers = (res: Response): void => {
 	delete res.locals.identifiers;
 };
 
-export const getUniqueFileIdentifier = (res?: Response): string | null => {
-	const retry: any = async (i = 0) => {
+export const getUniqueFileIdentifier = async (res?: Response): Promise<string | null> => {
+	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
 			// TODO: Load from config
 			length: getEnvironmentDefaults().generatedFilenameLength,
@@ -187,13 +189,10 @@ export const getUniqueFileIdentifier = (res?: Response): string | null => {
 				return identifier;
 			}
 		}
+	}
 
-		if (i < 5) return retry(i + 1);
-		log.error('Couldnt allocate identifier for file');
-		return null;
-	};
-
-	return retry();
+	log.error('Couldnt allocate identifier for file');
+	return null;
 };
 
 export const deleteFile = async (filename: string, deleteFromDB = false) => {

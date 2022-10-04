@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/await-thenable */
-// NOTE: Should this file be named as such?
-
 import type { MultipartField, Response } from 'hyper-express';
 
 import * as blake3 from 'blake3';
@@ -399,7 +396,7 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 				const tmpfile = path.join(file.chunksData.root, file.chunksData.name);
 
 				// Double-check file size
-				const stat = await jetpack.inspect(tmpfile);
+				const stat = await jetpack.inspectAsync(tmpfile);
 				if (stat && stat.size !== size) {
 					throw new Error(
 						`Resulting physical file size (${stat.size}) does not match expected size (${String(size)})`
