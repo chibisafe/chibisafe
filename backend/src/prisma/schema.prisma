@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
 	provider          = "sqlite"
-	url               = "file:../../../database.sqlite"
-	shadowDatabaseUrl = "file:../../../shadow.sqlite"
+	url               = "file:../../../database/database.sqlite"
+	shadowDatabaseUrl = "file:../../../database/shadow.sqlite"
 }
 
 model users {

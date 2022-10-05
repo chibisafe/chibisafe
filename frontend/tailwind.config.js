@@ -8,7 +8,7 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Noto Sans', ...defaultTheme.fontFamily.sans]
+				sans: ['Inter', ...defaultTheme.fontFamily.sans]
 			},
 			colors: {
 				chibisafe: {
@@ -16,7 +16,7 @@ module.exports = {
 						light: '#e8e6e3'
 					},
 					background: {
-						dark: '#131516'
+						dark: '#1e2122'
 					}
 				}
 			}

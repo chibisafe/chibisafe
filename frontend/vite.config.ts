@@ -1,3 +1,6 @@
+// eslint-disable-next-line spaced-comment, @typescript-eslint/triple-slash-reference
+/// <reference types="unplugin-icons/types/vue3" />
+
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import vue from '@vitejs/plugin-vue';
@@ -38,6 +41,7 @@ export default defineConfig({
 			]
 		}),
 		Icons({
+			autoInstall: true,
 			compiler: 'vue3'
 		})
 	],
@@ -45,9 +49,8 @@ export default defineConfig({
 		include: ['vue', 'vue-router', '@vueuse/core'],
 		exclude: ['vue-demi']
 	},
-
 	server: {
-		port: 8_001,
+		port: 8001,
 		proxy: {
 			'/api': {
 				target: backendUrl,
