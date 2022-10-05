@@ -17,5 +17,6 @@ database.sqlite-journal
 # Log files
 npm-debug.log*
 
-# Uploads
+# chibisafe generated files
 uploads/
+database/
