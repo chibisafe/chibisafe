@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  chibisafe:
+    container_name: chibisafe
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./uploads:/uploads:rw
+      - ./database.sqlite:/database.sqlite:rw
+    ports:
+      - 8000:8000

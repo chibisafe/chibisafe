@@ -74,7 +74,7 @@ const start = async () => {
 		}
 
 		const LiveAssets = new LiveDirectory({
-			path: path.join(__dirname, '..', '..', 'frontend', 'dist')
+			path: path.join(__dirname, '..', 'dist', 'site')
 		});
 
 		server.get('/', (req, res) => {

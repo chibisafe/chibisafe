@@ -11,7 +11,7 @@
 	"scripts": {
 		"lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore --fix src && prettier . --write",
 		"dev": "vite --host",
-		"build": "vue-tsc --noEmit && vite build",
+		"build": "vue-tsc --noEmit && vite build && cpy ./ ../../backend/dist/site --parents --cwd=dist",
 		"serve": "vite preview"
 	},
 	"repository": {
@@ -41,6 +41,7 @@
 		"@types/node": "^18.8.1",
 		"@vitejs/plugin-vue": "^3.1.2",
 		"autoprefixer": "^10.4.2",
+		"cpy-cli": "^4.2.0",
 		"eslint": "^8.8.0",
 		"eslint-config-neon": "^0.1.33",
 		"postcss": "^8.4.6",
@@ -68,6 +69,6 @@
 		"images"
 	],
 	"volta": {
-		"node": "16.16.0"
+		"node": "18.9.0"
 	}
 }
