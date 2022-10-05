@@ -33,6 +33,10 @@ export const Type = Object.freeze({
 	// Should contain key data: Array<{ key: string, value: number | string }>
 	// and optionally a count/total
 	DETAILED: 'detailed',
+	// Should contain key value: null
+	// May consider still displaying entries with this type in the frontend,
+	// but mark as unavailable explicitly due to backend lacking the capabilities
+	UNAVAILABLE: 'unavailable',
 	// Hidden type should be skipped during iteration, can contain anything
 	// These should be treated on a case by case basis on the frontend
 	HIDDEN: 'hidden'
@@ -61,7 +65,7 @@ export const getSystemInfo = async () => {
 						// Temperature value from this library is hard-coded to Celsius
 						type: Type.TEMP_CELSIUS
 				  }
-				: { value: null, type: Type.HIDDEN },
+				: { value: null, type: Type.UNAVAILABLE },
 		Memory: {
 			value: {
 				used: mem.active,
@@ -82,7 +86,7 @@ export const getSystemInfo = async () => {
 						},
 						type: Type.BYTE_USAGE
 				  }
-				: { value: null, type: Type.HIDDEN },
+				: { value: null, type: Type.UNAVAILABLE },
 		Uptime: {
 			value: time.uptime,
 			type: Type.TIME
@@ -97,11 +101,11 @@ export const getServiceInfo = async () => {
 		'Node.js': `${process.versions.node}`,
 		'Memory Usage': {
 			value: process.memoryUsage().rss,
-			type: 'byte'
+			type: Type.BYTE
 		},
 		Uptime: {
 			value: Math.floor(nodeUptime),
-			type: 'uptime'
+			type: Type.TIME
 		}
 	};
 };
