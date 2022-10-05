@@ -7,7 +7,7 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./uploads:/uploads:rw
-      - ./database.sqlite:/database.sqlite:rw
+      - ./database:/home/node/chibisafe/database:rw
+      - ./uploads:/home/node/chibisafe/uploads:rw
     ports:
       - 8000:8000

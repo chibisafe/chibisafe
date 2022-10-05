@@ -2,7 +2,7 @@ FROM node:18
 USER root
 
 # Create app directory
-WORKDIR /usr/src/chibisafe
+WORKDIR /home/node/chibisafe
 
 # Install app dependencies
 COPY backend/package.json ./backend/
@@ -14,11 +14,23 @@ COPY frontend/package-lock.json ./frontend/
 RUN cd frontend && npm i
 
 # Bundle app source
-COPY . .
+COPY backend ./backend
+COPY frontend ./frontend
 
-RUN cd backend && npm run build
-RUN cd frontend && npm run build
+# Build backend
+WORKDIR /home/node/chibisafe/backend
 
-CMD ["sh", "-c", "cd backend && npm run setup && npm run start"];
+# Generate prisma typings to be able to build
+RUN npx prisma generate
+RUN npm run build
+
+# Build frontend
+WORKDIR /home/node/chibisafe/frontend
+RUN npm run build
+
+# Workdir for running
+WORKDIR /home/node/chibisafe/backend
+
+CMD ["sh", "-c", "npm run setup && npm run start"];
 
 # HEALTHCHECK --interval=3s --timeout=2s --start-period=15s CMD node ./healthcheck.js
