@@ -2,22 +2,26 @@ import jetpack from 'fs-jetpack';
 import path from 'node:path';
 import process from 'node:process';
 import { inspect } from 'node:util';
+import schedule from 'node-schedule';
 import * as si from 'systeminformation';
 import log from '../utils/Log';
 
 import prisma from '../structures/database';
 
+import { getEnvironmentDefaults } from './Util';
+
 interface CachedStatsEntry {
-	name: string;
-	cache: any;
+	cache?: any;
 	generating: boolean;
-	generatedAt: number;
+	generatedOn: number;
 }
 
+// NOTE: Currently uses in-memory caching because storing to database is a tad too elaborate for me
+// Maybe in the future...
 export const cachedStats: { [index: string]: CachedStatsEntry } = {};
 
 // Symbols would be better because they're unique, but harder to serialize them
-const Type = Object.freeze({
+export const Type = Object.freeze({
 	// Should contain key value: number
 	TIME: 'time',
 	// Should contain key value: number
@@ -284,39 +288,42 @@ export const getAlbumStats = async () => {
 };
 
 const statGenerators = {
-	system: { funct: getSystemInfo, maxAge: 1000 },
-	service: { funct: getServiceInfo, maxAge: 500 },
-	fileSystems: { funct: getFileSystemsInfo, maxAge: 60000 },
-	uploads: { funct: getUploadsInfo, maxAge: 0 },
-	users: { funct: getUsersInfo, maxAge: 0 },
-	albums: { funct: getAlbumStats, maxAge: 0 }
+	system: getSystemInfo,
+	service: getServiceInfo,
+	fileSystems: getFileSystemsInfo,
+	uploads: getUploadsInfo,
+	users: getUsersInfo,
+	albums: getAlbumStats
 };
 
 export const keyOrder = Object.keys(statGenerators);
 
 export const getStats = async () => {
 	await Promise.all(
-		Object.entries(statGenerators).map(async ([name, opts]) => {
+		Object.entries(statGenerators).map(async ([name, funct]) => {
 			if (!cachedStats[name]) {
-				cachedStats[name] = {} as CachedStatsEntry;
+				cachedStats[name] = {
+					generating: false,
+					generatedOn: 0
+				} as CachedStatsEntry;
 			}
 
-			if (cachedStats[name].generating) {
-				log.debug(`${name}: Skipped, still generating`);
-			} else if (opts.maxAge && Date.now() - cachedStats[name].generatedAt <= opts.maxAge) {
-				log.debug(`${name}: Cache is still valid (maxAge: ${opts.maxAge})`);
-			} else {
-				log.debug(`${name}: Generating...`);
-				cachedStats[name].generating = true;
+			if (cachedStats[name].generating) return;
 
-				await opts.funct().then(result => {
-					cachedStats[name].cache = result;
+			cachedStats[name].generating = true;
 
-					cachedStats[name].generatedAt = Date.now();
-					cachedStats[name].generating = false;
-					log.debug(`${name}: OK`);
-				});
-			}
+			await funct().then(result => {
+				cachedStats[name].cache = result;
+
+				cachedStats[name].generatedOn = Date.now();
+				cachedStats[name].generating = false;
+			});
 		})
 	);
+	log.debug('StatsGenerator.getStats(): OK');
+};
+
+export const jumpstartStatistics = async () => {
+	await getStats();
+	schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, getStats);
 };
