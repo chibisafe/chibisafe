@@ -2,6 +2,7 @@ import HyperExpress from 'hyper-express';
 // @ts-ignore
 import LiveDirectory from 'live-directory';
 import jetpack from 'fs-jetpack';
+import schedule from 'node-schedule';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
@@ -12,6 +13,28 @@ import Routes from './structures/routes';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { getEnvironmentDefaults } from './utils/Util';
+
+// Process exit handler
+// NOTE: Scheduler continues in subsequent nodemon restarts otherwise
+const exitHandler = async (options: { [index: string]: any }, exitCode?: any) => {
+	if (options.cleanup) {
+		await schedule.gracefulShutdown();
+	}
+
+	if (typeof exitCode === 'number' || options.exit) {
+		process.exit(exitCode ?? 0);
+	}
+};
+
+// Catches process is closing
+process.on('exit', exitHandler.bind(null, { cleanup: true }));
+
+// Catches Ctrl+C event
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+
+// Catches "kill pid" (e.g. nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
 
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
