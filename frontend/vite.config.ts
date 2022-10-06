@@ -15,7 +15,7 @@ import Pages from 'vite-plugin-pages';
 // TODO: Revisit when implementing docker
 
 // eslint-disable-next-line no-restricted-globals, n/prefer-global/process
-const backendUrl = process.env.ENV === 'docker' ? 'http://backend:8080/' : 'http://localhost:8000/';
+const backendUrl = process.env.ENV === 'docker' ? '/api/' : 'http://127.0.0.1:8000';
 
 export default defineConfig({
 	resolve: {
@@ -52,9 +52,11 @@ export default defineConfig({
 	server: {
 		port: 8001,
 		proxy: {
+			// TODO: Disable if running through docker or in production
 			'/api': {
 				target: backendUrl,
-				changeOrigin: true
+				changeOrigin: true,
+				secure: false
 			}
 		},
 		watch: {
