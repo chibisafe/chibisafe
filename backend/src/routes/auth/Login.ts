@@ -39,13 +39,11 @@ export const run = async (req: Request, res: Response) => {
 
 	return res.json({
 		message: 'Successfully logged in.',
-		user: {
-			id: user.id,
-			uuid: user.uuid,
-			username: user.username,
-			apiKey: user.apiKey,
-			isAdmin: user.isAdmin
-		},
+		id: user.id,
+		uuid: user.uuid,
+		username: user.username,
+		apiKey: user.apiKey,
+		isAdmin: user.isAdmin,
 		token: jwt
 	});
 };
