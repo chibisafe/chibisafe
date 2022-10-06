@@ -4,7 +4,7 @@
 			<img src="../../assets/images/logo.png" alt="chibisafe logo" class="w-12 mr-2" />
 		</router-link>
 		<router-link to="/">
-			<span class="font-bold text-3xl">Chibisafe</span>
+			<span class="font-bold text-3xl">chibisafe</span>
 		</router-link>
 		<span class="flex-1" />
 		<span>
