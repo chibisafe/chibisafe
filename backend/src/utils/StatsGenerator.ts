@@ -135,97 +135,65 @@ export const getFileSystemsInfo = async () => {
 	return stats;
 };
 
-const getFilesCountAndSize = async () => {
+export const getUploadsInfo = async () => {
 	const uploads = await prisma.files.findMany({
 		select: {
+			name: true,
+			type: true,
 			size: true
 		}
 	});
 
-	return {
-		Total: uploads.length,
-		'Size in DB': {
-			value: uploads.reduce((acc, upload) => acc + upload.size, 0),
-			type: Type.BYTE
-		}
-	};
-};
+	// Mime types ordered container
+	const typesOrdered: { [index: string]: number } = {};
 
-const getImagesCount = async () => {
-	const rows = await prisma.$queryRaw<{ [index: string]: bigint }[]>`
-		SELECT COUNT(id)
-		FROM files
-		WHERE type LIKE ${`image/%`}
-	`;
-
-	// Number-ify bigint
-	const count = Number(rows[0]['COUNT(id)']);
-
-	return { Images: count };
-};
-
-const getVideosCount = async () => {
-	const rows = await prisma.$queryRaw<{ [index: string]: bigint }[]>`
-		SELECT COUNT(id)
-		FROM files
-		WHERE type LIKE ${`video/%`}
-	`;
-
-	// Number-ify bigint
-	const count = Number(rows[0]['COUNT(id)']);
-
-	return { Videos: count };
-};
-
-const getOthersCount = async () => {
-	// Rename to key, value from type, count
-	const rows = await prisma.$queryRaw<{ key: string; value: bigint }[]>`
-		SELECT type AS key, COUNT(id) AS value
-		FROM files
-		WHERE type NOT LIKE ${`image/%`}
-		AND type NOT LIKE ${`video/%`}
-		GROUP BY key
-		ORDER BY value DESC
-	`;
-
-	const data = rows.map(val => {
-		return {
-			key: val.key,
-			value: Number(val.value)
-		};
-	});
-
-	// Number-ify bigint
-	const count = data.reduce((acc, val) => acc + val.value, 0);
-
-	return {
-		Others: {
-			data,
-			count,
-			type: Type.DETAILED
-		}
-	};
-};
-
-export const getUploadsInfo = async () => {
 	const stats = {
-		Total: 0,
+		Total: uploads.length,
 		Images: 0,
 		Videos: 0,
-		Others: {
-			data: {},
-			count: 0,
-			type: Type.DETAILED
-		},
+		Others: 0,
 		'Size in DB': {
 			value: 0,
 			type: Type.BYTE
+		},
+		'Mime Types': {
+			value: typesOrdered,
+			type: Type.DETAILED
 		}
 	};
 
-	const result = await Promise.all([getFilesCountAndSize(), getImagesCount(), getVideosCount(), getOthersCount()]);
+	// Temporary mime types container
+	const types: { [index: string]: number } = {};
 
-	return { ...stats, ...Object.assign({}, ...result) };
+	for (const upload of uploads) {
+		if (upload.type.startsWith('image/')) {
+			stats.Images++;
+		} else if (upload.type.startsWith('video/')) {
+			stats.Videos++;
+		} else {
+			stats.Others++;
+		}
+
+		stats['Size in DB'].value += upload.size;
+
+		if (types[upload.type] === undefined) {
+			types[upload.type] = 0;
+		}
+
+		types[upload.type]++;
+	}
+
+	// Sort mime types by count, and alphabetical ordering of the types
+	stats['Mime Types'].value = Object.keys(types)
+		.sort((a, b) => {
+			return types[b] - types[a] || a.localeCompare(b);
+		})
+		.reduce((acc, type) => {
+			acc[type] = types[type];
+			return acc;
+		}, stats['Mime Types'].value);
+
+	return stats;
 };
 
 export const getUsersInfo = async () => {
@@ -265,11 +233,7 @@ export const getAlbumStats = async () => {
 
 	for (const album of albums) {
 		if (album.nsfw) stats.NSFW++;
-	}
-
-	const files = await jetpack.listAsync(path.join(__dirname, '../../../uploads', 'zips'));
-	if (Array.isArray(files)) {
-		stats['Generated archives'] = files.length;
+		if (album.zippedAt) stats['Generated archives']++;
 	}
 
 	stats['Generated identifiers'] = await prisma.links
@@ -328,6 +292,9 @@ export const getStats = async () => {
 };
 
 export const jumpstartStatistics = async () => {
+	// Immediately generate stats for the first time
 	await getStats();
+
+	// Start scheduler
 	schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, getStats);
 };
