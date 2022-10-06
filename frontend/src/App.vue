@@ -12,7 +12,12 @@
 
 <script setup lang="ts">
 import { useMeta } from 'vue-meta';
+import { useUserStore } from './store/user';
 import About from '~/components/about/About.vue';
+
+// Check for a valid token and try logging in
+const userStore = useUserStore();
+userStore.checkToken();
 
 // Override meta data
 useMeta({
