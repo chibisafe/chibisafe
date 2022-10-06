@@ -48,7 +48,8 @@ export default (
 				id: true,
 				uuid: true,
 				username: true,
-				isAdmin: true
+				isAdmin: true,
+				apiKey: true
 			}
 		});
 
