@@ -23,6 +23,7 @@
 		"vue/v-on-event-hyphenation": "off",
 		"vue/sort-keys": "off",
 		"vue/no-multiple-template-root": "off",
-		"vue/first-attribute-linebreak": "off"
+		"vue/first-attribute-linebreak": "off",
+		"vue/require-emit-validator": "off"
 	}
 }
