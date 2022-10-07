@@ -25,7 +25,7 @@ export const run = async (req: Request, res: Response) => {
 	if (!user) return res.status(401).json({ message: "User doesn't exist" });
 
 	const comparePassword = await bcrypt.compare(password, user.password);
-	if (!comparePassword) return res.status(401).json({ message: 'Invalid authorization.' });
+	if (!comparePassword) return res.status(401).json({ message: 'Wrong password' });
 
 	const jwt = JWT.sign(
 		{

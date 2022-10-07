@@ -15,7 +15,7 @@ interface UserWithFileCount extends User {
 
 export const run = async (req: Request, res: Response) => {
 	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid file ID supplied' });
+	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
 
 	const file = await prisma.files.findUnique({
 		where: {
