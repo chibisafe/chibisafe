@@ -6,3 +6,9 @@ export interface User {
 	apiKey: string;
 	token: string;
 }
+
+export interface Toast {
+	type: 'error' | 'success' | 'warning';
+	message: string;
+	id: number;
+}

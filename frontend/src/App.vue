@@ -7,6 +7,7 @@
 	<div class="flex flex-col flex-1 h-full relative">
 		<router-view />
 		<About />
+		<Toast />
 	</div>
 </template>
 
@@ -14,6 +15,7 @@
 import { useMeta } from 'vue-meta';
 import { useUserStore } from './store/user';
 import About from '~/components/about/About.vue';
+import Toast from './components/toast/Toast.vue';
 
 // Check for a valid token and try logging in
 const userStore = useUserStore();

@@ -11,6 +11,15 @@ const checkForToken = () => {
 	return authorizationToken;
 };
 
+const parseResponse = async (response: Response) => {
+	if (response.status !== 200) {
+		const error = await response.json();
+		throw new Error(error.message);
+	}
+
+	return response.json();
+};
+
 export const request = {
 	get: async (url = '', data = {}) => {
 		try {
@@ -31,9 +40,9 @@ export const request = {
 					// 'Content-Type': 'application/x-www-form-urlencoded',
 				}
 			});
-			return await response.json();
-		} catch (error) {
-			console.log(error);
+			return await parseResponse(response);
+		} catch (error: any) {
+			throw new Error(error.message);
 		}
 	},
 
@@ -47,9 +56,9 @@ export const request = {
 				},
 				body: JSON.stringify(data)
 			});
-			return await response.json();
-		} catch (error) {
-			console.log(error);
+			return await parseResponse(response);
+		} catch (error: any) {
+			throw new Error(error.message);
 		}
 	}
 };
