@@ -344,10 +344,12 @@ export const jumpstartStatistics = async () => {
 	log.debug('Generate scheduled stats categories for the first time\u2026');
 	await getStats(scheduledStatsCategories);
 
-	// Start scheduler
-	schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, async () => {
-		// Get scheduled stats categories, forced
-		log.debug('Generating scheduled stats categories\u2026');
-		return getStats(scheduledStatsCategories, true);
-	});
+	if (!getEnvironmentDefaults().disableStatisticsCron) {
+		// Start scheduler
+		schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, async () => {
+			// Get scheduled stats categories, forced
+			log.debug('Generating scheduled stats categories\u2026');
+			return getStats(scheduledStatsCategories, true);
+		});
+	}
 };

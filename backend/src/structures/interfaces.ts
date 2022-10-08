@@ -111,6 +111,7 @@ export interface Settings {
 	backgroundImageURL: string;
 	logoURL: string;
 	statisticsCron: string;
+	disableStatisticsCron: boolean;
 	enabledStatistics: string[];
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;

@@ -63,6 +63,8 @@ export const getEnvironmentDefaults = () =>
 		backgroundImageURL: process.env.BACKGROUND_IMAGE_URL ?? '',
 		logoURL: process.env.LOGO_URL ?? '',
 		statisticsCron: process.env.STATISTICS_CRON ?? '0 0 * * * *',
+		// eslint-disable-next-line eqeqeq
+		disableStatisticsCron: process.env.DISABLE_STATISTICS_CRON != undefined,
 		enabledStatistics: process.env.ENABLED_STATISTICS
 			? process.env.ENABLED_STATISTICS.split(',')
 			: ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums']
