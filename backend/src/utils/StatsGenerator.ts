@@ -1,7 +1,6 @@
 import jetpack from 'fs-jetpack';
 import path from 'node:path';
 import process from 'node:process';
-import { inspect } from 'node:util';
 import schedule from 'node-schedule';
 import * as si from 'systeminformation';
 import log from '../utils/Log';
@@ -9,6 +8,13 @@ import log from '../utils/Log';
 import prisma from '../structures/database';
 
 import { getEnvironmentDefaults } from './Util';
+
+interface StatGeneratorOptions {
+	funct(): Promise<{ [index: string]: any }>;
+	// If set, getStats() will only re-generate if cache no longer satisfies maxAge option,
+	// otherwise must specify "force" bool option in getStats() to re-generate
+	maxAge?: number;
+}
 
 interface CachedStatsEntry {
 	cache?: any;
@@ -44,7 +50,6 @@ export const Type = Object.freeze({
 
 export const getSystemInfo = async () => {
 	const os = await si.osInfo();
-
 	const cpu = await si.cpu();
 	const cpuTemperature = await si.cpuTemperature();
 	const currentLoad = await si.currentLoad();
@@ -255,20 +260,44 @@ export const getAlbumStats = async () => {
 	return stats;
 };
 
-const statGenerators = {
-	system: getSystemInfo,
-	service: getServiceInfo,
-	fileSystems: getFileSystemsInfo,
-	uploads: getUploadsInfo,
-	users: getUsersInfo,
-	albums: getAlbumStats
+const statGenerators: { [index: string]: StatGeneratorOptions } = {
+	system: {
+		funct: getSystemInfo,
+		maxAge: 1000
+	},
+	service: {
+		funct: getServiceInfo,
+		maxAge: 1000
+	},
+	fileSystems: {
+		funct: getFileSystemsInfo,
+		maxAge: 60000
+	},
+	uploads: {
+		funct: getUploadsInfo
+	},
+	users: {
+		funct: getUsersInfo
+	},
+	albums: {
+		funct: getAlbumStats
+	}
 };
 
 export const keyOrder = Object.keys(statGenerators);
 
-export const getStats = async () => {
+export const getStats = async (categories?: string[], force = false) => {
+	let generators: [string, StatGeneratorOptions][];
+	if (categories) {
+		generators = categories.map(category => {
+			return [category, statGenerators[category]];
+		});
+	} else {
+		generators = Object.entries(statGenerators);
+	}
+
 	await Promise.all(
-		Object.entries(statGenerators).map(async ([name, funct]) => {
+		generators.map(async ([name, opts]) => {
 			if (!cachedStats[name]) {
 				cachedStats[name] = {
 					generating: false,
@@ -276,25 +305,47 @@ export const getStats = async () => {
 				} as CachedStatsEntry;
 			}
 
+			// Skip if somehow still generating (e.g. by scheduler, or other requests)
 			if (cachedStats[name].generating) return;
+
+			// Skip if cache already exists, and satisfies the following...
+			if (cachedStats[name].cache) {
+				if (typeof opts.maxAge === 'number') {
+					// maxAge is configured, is not forced to re-generated, and cache still satisfies it
+					if (!force && Date.now() - cachedStats[name].generatedOn <= opts.maxAge) {
+						return;
+					}
+				} else if (!force) {
+					// Otherwise, maxAge is not configured, and is not forced to re-generate
+					return;
+				}
+			}
 
 			cachedStats[name].generating = true;
 
-			await funct().then(result => {
+			return opts.funct().then(result => {
 				cachedStats[name].cache = result;
 
 				cachedStats[name].generatedOn = Date.now();
 				cachedStats[name].generating = false;
+				log.debug(`StatsGenerator.getStats(): ${name}: OK`);
 			});
 		})
 	);
-	log.debug('StatsGenerator.getStats(): OK');
 };
 
 export const jumpstartStatistics = async () => {
+	// Only use scheduler to generate the following categories
+	const scheduledStatsCategories = ['uploads', 'users', 'albums'];
+
 	// Immediately generate stats for the first time
-	await getStats();
+	log.debug('Generate scheduled stats categories for the first time\u2026');
+	await getStats(scheduledStatsCategories);
 
 	// Start scheduler
-	schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, getStats);
+	schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, async () => {
+		// Get scheduled stats categories, forced
+		log.debug('Generating scheduled stats categories\u2026');
+		return getStats(scheduledStatsCategories, true);
+	});
 };

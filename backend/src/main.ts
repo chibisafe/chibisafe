@@ -18,6 +18,7 @@ import { getEnvironmentDefaults } from './utils/Util';
 // NOTE: Scheduler continues in subsequent nodemon restarts otherwise
 const exitHandler = async (options: { [index: string]: any }, exitCode?: any) => {
 	if (options.cleanup) {
+		log.debug('Gracefully shutting down scheduler\u2026');
 		await schedule.gracefulShutdown();
 	}
 
