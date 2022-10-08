@@ -284,20 +284,20 @@ const statGenerators: { [index: string]: StatGeneratorOptions } = {
 	}
 };
 
-export const keyOrder = Object.keys(statGenerators);
+export const keyOrder = Object.keys(statGenerators).filter(category =>
+	getEnvironmentDefaults().enabledStatistics.includes(category)
+);
 
 export const getStats = async (categories?: string[], force = false) => {
-	let generators: [string, StatGeneratorOptions][];
-	if (categories) {
-		generators = categories.map(category => {
-			return [category, statGenerators[category]];
-		});
-	} else {
-		generators = Object.entries(statGenerators);
+	let keys: string[] = keyOrder;
+	if (Array.isArray(categories) && categories.length) {
+		keys = categories;
 	}
 
 	await Promise.all(
-		generators.map(async ([name, opts]) => {
+		keys.map(async name => {
+			const opts = statGenerators[name];
+
 			if (!cachedStats[name]) {
 				cachedStats[name] = {
 					generating: false,
@@ -336,7 +336,9 @@ export const getStats = async (categories?: string[], force = false) => {
 
 export const jumpstartStatistics = async () => {
 	// Only use scheduler to generate the following categories
-	const scheduledStatsCategories = ['uploads', 'users', 'albums'];
+	const scheduledStatsCategories = ['uploads', 'users', 'albums'].filter(category =>
+		getEnvironmentDefaults().enabledStatistics.includes(category)
+	);
 
 	// Immediately generate stats for the first time
 	log.debug('Generate scheduled stats categories for the first time\u2026');

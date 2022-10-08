@@ -65,10 +65,12 @@ export const getEnvironmentDefaults = () =>
 		statisticsCron: process.env.STATISTICS_CRON ?? '0 0 * * * *',
 		enabledStatistics: process.env.ENABLED_STATISTICS
 			? process.env.ENABLED_STATISTICS.split(',')
-			: ['system', 'fileSystems', 'uploads', 'users', 'albums'],
+			: ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums']
+		/* // NOTE: Unused as we currently are not storing statistics to database
 		savedStatistics: process.env.SAVED_STATISTICS
 			? process.env.SAVED_STATISTICS.split(',')
-			: ['system', 'fileSystems', 'uploads', 'users', 'albums']
+			: ['uploads', 'users', 'albums']
+		*/
 	} as Settings);
 
 export const wipeConfigDb = async () => {

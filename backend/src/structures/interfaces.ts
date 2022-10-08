@@ -112,7 +112,7 @@ export interface Settings {
 	logoURL: string;
 	statisticsCron: string;
 	enabledStatistics: string[];
-	savedStatistics: string[];
+	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
 }
 
