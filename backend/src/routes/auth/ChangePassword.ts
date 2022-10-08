@@ -13,7 +13,7 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: Response) => {
 	const { password, newPassword } = await req.json();
-	if (!password || !newPassword) return res.status(400).json({ message: 'Invalid body provided' });
+	if (!password || !newPassword) return res.status(400).json({ message: 'Invalid password or newPassword supplied' });
 	if (password === newPassword) return res.status(400).json({ message: 'Passwords have to be different' });
 
 	const user = await prisma.users.findUnique({

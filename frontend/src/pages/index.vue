@@ -1,6 +1,10 @@
 <template>
-	<div class="flex flex-col items-center h-full max-w-4xl w-full self-center dark:text-chibisafe-text-light">
+	<div class="flex flex-col items-center max-w-4xl w-full self-center dark:text-chibisafe-text-light absolute z-10">
 		<Header />
+	</div>
+	<div
+		class="flex flex-col items-center h-full max-w-4xl min-h-[900px] w-full self-center dark:text-chibisafe-text-light justify-center"
+	>
 		<div class="flex w-full mt-16 items-center">
 			<div class="flex flex-1 justify-center flex-col">
 				<h4 class="font-bold text-7xl">Seriously fast <br />file uploader</h4>
@@ -60,7 +64,7 @@ const dropzone = ref<HTMLDivElement>();
 const features = ref([
 	'Chunked uploads',
 	'Sharing links',
-	'Creating albums',
+	'Albums/Folders',
 	'File management',
 	'File tagging',
 	'User management',

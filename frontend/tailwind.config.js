@@ -13,7 +13,8 @@ module.exports = {
 			colors: {
 				chibisafe: {
 					text: {
-						light: '#e8e6e3'
+						light: '#e8e6e3',
+						dark: '#1a202c'
 					},
 					background: {
 						dark: '#1e2122'
