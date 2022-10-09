@@ -2,7 +2,7 @@ import HyperExpress from 'hyper-express';
 // @ts-ignore
 import LiveDirectory from 'live-directory';
 import jetpack from 'fs-jetpack';
-import schedule from 'node-schedule';
+// import schedule from 'node-schedule';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
@@ -10,6 +10,7 @@ import path from 'node:path';
 import cors from 'cors';
 
 import Routes from './structures/routes';
+import Serve from './structures/serve';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { getEnvironmentDefaults } from './utils/Util';
@@ -92,6 +93,10 @@ const start = async () => {
 			return res.type(file.extension).send(file.buffer);
 		});
 	}
+
+	// Serve uploads
+	server.get('/*', Serve);
+	server.head('/*', Serve);
 
 	// Start the server
 	await server.listen(8000);
