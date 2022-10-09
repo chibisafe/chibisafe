@@ -66,9 +66,9 @@ const start = async () => {
 	}
 
 	log.info('');
-
 	log.info('Loading routes...');
 	log.info('');
+
 	// Scan and load routes into express
 	await Routes.load(server);
 
