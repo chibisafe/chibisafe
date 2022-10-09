@@ -90,6 +90,10 @@ onMounted(() => {
 			chunksUploaded: (file, done) => {
 				void fetch('/api/upload', {
 					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json;charset=utf-8'
+					},
 					body: JSON.stringify({
 						files: [
 							{

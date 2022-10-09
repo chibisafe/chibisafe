@@ -63,12 +63,16 @@ export const getEnvironmentDefaults = () =>
 		backgroundImageURL: process.env.BACKGROUND_IMAGE_URL ?? '',
 		logoURL: process.env.LOGO_URL ?? '',
 		statisticsCron: process.env.STATISTICS_CRON ?? '0 0 * * * *',
+		// eslint-disable-next-line eqeqeq
+		disableStatisticsCron: process.env.DISABLE_STATISTICS_CRON != undefined,
 		enabledStatistics: process.env.ENABLED_STATISTICS
 			? process.env.ENABLED_STATISTICS.split(',')
-			: ['system', 'fileSystems', 'uploads', 'users', 'albums'],
+			: ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums']
+		/* // NOTE: Unused as we currently are not storing statistics to database
 		savedStatistics: process.env.SAVED_STATISTICS
 			? process.env.SAVED_STATISTICS.split(',')
-			: ['system', 'fileSystems', 'uploads', 'users', 'albums']
+			: ['uploads', 'users', 'albums']
+		*/
 	} as Settings);
 
 export const wipeConfigDb = async () => {

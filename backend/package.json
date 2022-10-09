@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@prisma/client": "^4.3.1",
 		"@types/bcryptjs": "^2.4.2",
+		"@types/node-schedule": "^2.1.0",
 		"adm-zip": "^0.5.9",
 		"bcryptjs": "^2.4.3",
 		"blake3": "^2.1.7",
@@ -43,9 +44,11 @@
 		"jsonwebtoken": "^8.5.1",
 		"live-directory": "^2.3.2",
 		"moment": "^2.29.4",
+		"node-schedule": "^2.1.0",
 		"pino": "^8.5.0",
 		"randomstring": "^1.2.2",
 		"sharp": "^0.30.7",
+		"systeminformation": "^5.12.6",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {

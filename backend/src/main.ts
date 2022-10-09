@@ -2,12 +2,16 @@ import HyperExpress from 'hyper-express';
 // @ts-ignore
 import LiveDirectory from 'live-directory';
 import jetpack from 'fs-jetpack';
+import schedule from 'node-schedule';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
 // import helmet from 'helmet';
 import cors from 'cors';
+
 import Routes from './structures/routes';
+
+import { jumpstartStatistics } from './utils/StatsGenerator';
 import { getEnvironmentDefaults } from './utils/Util';
 
 // Stray errors and exceptions capturers
@@ -93,6 +97,9 @@ const start = async () => {
 	await server.listen(8000);
 	log.info('');
 	log.info('Server ready on port 8000');
+
+	// Jumpstart statistics scheduler
+	await jumpstartStatistics();
 };
 
 void start();
