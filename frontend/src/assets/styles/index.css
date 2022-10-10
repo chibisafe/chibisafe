@@ -29,4 +29,30 @@
 		background-size:20px 20px, 20px 20px, 20px 20px, 20px 20px;
 		background-position:50% 50%;
 	}
+
+	/* Scroll thumb styles */
+	::-webkit-scrollbar {
+		width: 0.5rem;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #27272e;
+		border-radius: 1rem;
+	}
+	::-webkit-scrollbar-thumb:active {
+		background-color: #131314;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #3b3b46;
+		box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Scroll track styles (Background) */
+	::-webkit-scrollbar-track {
+		background: #131314;
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-track:hover,
+	::-webkit-scrollbar-track:active {
+		background: #131314;
+	}
 }

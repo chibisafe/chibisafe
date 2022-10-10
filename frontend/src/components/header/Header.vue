@@ -1,5 +1,5 @@
 <template>
-	<div class="flex w-full h-12 items-center mt-8">
+	<div class="flex w-full h-12 items-center mt-8 max-w-4xl">
 		<router-link to="/">
 			<img src="../../assets/images/logo.png" alt="chibisafe logo" class="w-12 mr-2" />
 		</router-link>
