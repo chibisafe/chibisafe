@@ -12,3 +12,20 @@ export interface Toast {
 	message: string;
 	id: number;
 }
+
+export interface File {
+	uuid: string;
+	name: string;
+	type: string;
+	processing: boolean;
+	status: string;
+	bytesSent: number;
+	bytesTotal: number;
+	progress: number;
+	url: string | undefined;
+	error?: string;
+}
+
+export interface ApiError {
+	message: string;
+}

@@ -5,7 +5,7 @@
 	<div
 		class="flex flex-col items-center h-full max-w-4xl min-h-[900px] w-full self-center dark:text-chibisafe-text-light justify-center"
 	>
-		<div class="flex w-full mt-16 items-center">
+		<div class="flex w-full mt-16 items-center relative">
 			<div class="flex flex-1 justify-center flex-col">
 				<h4 class="font-bold text-7xl">Seriously fast <br />file uploader</h4>
 				<p class="mt-10 text-lg pr-16">
@@ -16,19 +16,64 @@
 				<p class="mt-4 text-lg pr-16">It's easily customizable and deploying your own instance is a breeze.</p>
 			</div>
 
-			<div
-				ref="dropzone"
-				class="w-80 h-80 max-w-[320px] bg-[#181a1b] rounded-3xl border-4 shadow-lg border-[#303436] flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40]"
-			>
-				<IconUpload class="h-12 w-12 pointer-events-none" />
-				<h3 class="font-bold text-center mt-4 pointer-events-none">
-					DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
-				</h3>
-				<p class="text-center mt-4 w-3/4 pointer-events-none">
-					Drag and drop your files here. Max 10 files. No filesize limit.
-				</p>
-			</div>
+			<!-- Dummy to keep the flexbox layout -->
+			<div class="w-80 h-80 max-w-[320px]" />
+
+			<Upload />
 		</div>
+
+		<TransitionRoot
+			appear
+			:show="files.length > 0"
+			as="template"
+			enter="transform transition duration-[400ms]"
+			enter-from="opacity-0"
+			enter-to="opacity-100"
+			leave="transform duration-200 transition ease-in-out"
+			leave-from="opacity-100"
+			leave-to="opacity-0"
+		>
+			<div
+				class="flex w-full mt-16 flex-col rounded-md bg-[#181a1b] border-4 shadow-lg border-[#303436] items-center justify-center p-4"
+			>
+				<div
+					v-for="file in files"
+					:key="file.uuid"
+					class="w-[calc(100%-2rem)] h-8 rounded-sm pl-2 py-1 relative"
+					:class="[
+						{
+							'mb-2': files.length > 1
+						}
+					]"
+				>
+					<!-- TODO: Add transition to the background so it's smooth -->
+					<div
+						class="w-full h-full absolute top-0 left-0 pointer-events-none"
+						:class="[file.status !== 'error' ? 'bg-[#22a061]' : 'bg-[#832c2c]']"
+						:style="[
+							{
+								width: file.status === 'error' ? '100%' : `${file.progress}%`
+							}
+						]"
+					/>
+					<div class="absolute top-0 left-0 flex items-center w-full h-full">
+						<div>
+							<span class="text-[10px] pl-2">
+								{{ formatBytes(file.bytesTotal) }}
+							</span>
+							<span class="text-xs"> - {{ file.name }} {{ file.error ? ` - ${file.error}` : '' }}</span>
+						</div>
+
+						<div class="flex-1" />
+						<div v-if="file.url" class="text-sm pr-2 flex items-center">
+							<a :href="file.url" class="link cursor-pointer" rel="noopener noreferrer" target="_blank"
+								>Link</a
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</TransitionRoot>
 
 		<div class="flex w-full mt-32 flex-col">
 			<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
@@ -51,16 +96,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import Dropzone from 'dropzone';
-import Header from '~/components/header/Header.vue';
+import { ref, computed } from 'vue';
+import { TransitionRoot } from '@headlessui/vue';
+import { useUploadsStore } from '~/store/uploads';
+import { formatBytes } from '~/use/file';
 
-// @ts-ignore
-import IconUpload from '~icons/carbon/cloud-upload';
+import Header from '~/components/header/Header.vue';
+import Upload from '~/components/upload/Upload.vue';
+
 // @ts-ignore
 import IconCheck from '~icons/carbon/checkmark';
 
-const dropzone = ref<HTMLDivElement>();
+const uploadsStore = useUploadsStore();
+const files = computed(() => uploadsStore.files);
+
 const features = ref([
 	'Chunked uploads',
 	'Sharing links',
@@ -78,38 +127,4 @@ const features = ref([
 	'No ads',
 	'No tracking'
 ]);
-
-onMounted(() => {
-	if (dropzone.value) {
-		const drop = new Dropzone(dropzone.value, {
-			url: '/api/upload',
-			paramName: 'files[]',
-			autoProcessQueue: true,
-			chunking: true,
-			chunkSize: 5 * 1e6, // MB
-			chunksUploaded: (file, done) => {
-				void fetch('/api/upload', {
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json;charset=utf-8'
-					},
-					body: JSON.stringify({
-						files: [
-							{
-								uuid: file.upload?.uuid,
-								original: file.name,
-								type: file.type,
-								size: file.size
-							}
-						]
-					})
-
-					// This API supports an array of multiple files
-				});
-				done();
-			}
-		});
-	}
-});
 </script>

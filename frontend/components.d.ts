@@ -15,5 +15,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Toast: typeof import('./src/components/toast/Toast.vue')['default']
+    Upload: typeof import('./src/components/upload/Upload.vue')['default']
   }
 }
