@@ -1,3 +1,4 @@
+import type { Request, Response, MiddlewareNext } from 'hyper-express';
 import HyperExpress from 'hyper-express';
 // @ts-ignore
 import LiveDirectory from 'live-directory';
@@ -82,15 +83,17 @@ const start = async () => {
 			path: path.join(__dirname, '..', 'dist', 'site')
 		});
 
-		server.get('/', (req, res) => {
-			const file = LiveAssets.get('index.html');
-			return res.type(file.extension).send(file.buffer);
-		});
+		// @ts-ignore -- Hyper's typings for this overload seem to be missing
+		server.use((req: Request, res: Response, next: MiddlewareNext) => {
+			if (req.method === 'GET' || req.method === 'HEAD') {
+				const page = req.path === '/' ? 'index.html' : req.path.slice(1);
+				const file = LiveAssets.get(page);
+				if (file) {
+					return res.type(file.extension).send(file.buffer);
+				}
+			}
 
-		server.get('/*', (req, res) => {
-			const file = LiveAssets.get(req.path);
-			if (!file) return res.status(404).send('Not found');
-			return res.type(file.extension).send(file.buffer);
+			next();
 		});
 	}
 
