@@ -42,8 +42,8 @@ export interface FileInProgress {
 	size: number;
 	hash: string;
 	ip: string;
+	field?: string;
 	chunksData?: ChunksData;
-	promise?: Promise<void>;
 }
 
 export interface File {

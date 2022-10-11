@@ -1,3 +1,4 @@
+import type { Request, Response, MiddlewareNext } from 'hyper-express';
 import HyperExpress from 'hyper-express';
 // @ts-ignore
 import LiveDirectory from 'live-directory';
@@ -82,21 +83,33 @@ const start = async () => {
 			path: path.join(__dirname, '..', 'dist', 'site')
 		});
 
-		server.get('/', (req, res) => {
-			const file = LiveAssets.get('index.html');
-			return res.type(file.extension).send(file.buffer);
-		});
+		// @ts-ignore -- Hyper's typings for this overload seem to be missing
+		server.use((req: Request, res: Response, next: MiddlewareNext) => {
+			if (req.method === 'GET' || req.method === 'HEAD') {
+				const page = req.path === '/' ? 'index.html' : req.path.slice(1);
+				const file = LiveAssets.get(page);
+				if (file) {
+					return res.type(file.extension).send(file.buffer);
+				}
+			}
 
-		server.get('/*', (req, res) => {
-			const file = LiveAssets.get(req.path);
-			if (!file) return res.status(404).send('Not found');
-			return res.type(file.extension).send(file.buffer);
+			next();
 		});
 	}
 
 	// Serve uploads
 	server.get('/*', Serve);
 	server.head('/*', Serve);
+
+	// Essentially unused for GET and HEAD due to Serve's handlers
+	server.set_not_found_handler((req: Request, res: Response) => {
+		res.status(404).send('Not found');
+	});
+
+	server.set_error_handler((req: Request, res: Response, error: Error) => {
+		log.error(error);
+		res.status(500).send('Internal server error');
+	});
 
 	// Start the server
 	await server.listen(8000);
