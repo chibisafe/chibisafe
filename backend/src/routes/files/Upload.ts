@@ -48,259 +48,245 @@ export const options: RouteOptions = {
 	// debug: true
 };
 
+const busboyOptions = {
+	// https://github.com/mscdex/busboy/tree/v1.6.0#exports
+	// This would otherwise defaults to latin1
+	defParamCharset: 'utf8',
+	limits: {
+		// TODO Util.getConfig()
+		fileSize: getEnvironmentDefaults().maxSize * 1e6, // in bytes
+		// Maximum number of non-file fields.
+		// Dropzone.js will add 6 extra fields for chunked uploads.
+		// We don't use them for anything else.
+		fields: 6,
+		// Maximum number of file fields.
+		// TODO: Setting for max files per request
+		files: 10
+	}
+};
+
+const unfreezeChunksData = (files: FileInProgress[], increase = false) => {
+	for (const file of files) {
+		if (!file.chunksData) continue;
+		if (increase) file.chunksData.chunks++;
+		file.chunksData.processing = false;
+	}
+};
+
+const cleanUpFiles = async (files: FileInProgress[]) => {
+	log.debug(`cleanUpFiles(${inspect(files.map(file => String(file.name)))})`);
+	// Delete temp files
+	await Promise.all(
+		files.map(async file => {
+			if (!file.name) return;
+			return deleteFile(file.name);
+		})
+	);
+};
+
 const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
-	// Init empty Request.body and Request.files
+	// Init empty body and files
 	const body: { [index: string]: string } = {};
 	const files: FileInProgress[] = [];
 
-	const unfreezeChunksData = () => {
-		for (const file of files) {
-			if (!file.chunksData) continue;
-			file.chunksData.processing = false;
-		}
-	};
-
-	const cleanUpFiles = async () => {
-		// Unhold file identifiers generated via File.getUniqueFileIdentifier()
-		unholdFileIdentifiers(res);
-		// Delete temp files
-		await Promise.all(
-			files.map(async file => {
-				if (!file.name) return;
-				return deleteFile(file.name);
-			})
-		);
-	};
-
 	log.debug(`await req.multipart()`);
-	const multipart = await req
-		.multipart(
-			{
-				// https://github.com/mscdex/busboy/tree/v1.6.0#exports
-				// This would otherwise defaults to latin1
-				defParamCharset: 'utf8',
-				limits: {
-					// TODO Util.getConfig()
-					fileSize: getEnvironmentDefaults().maxSize * 1e6, // in bytes
-					// Maximum number of non-file fields.
-					// Dropzone.js will add 6 extra fields for chunked uploads.
-					// We don't use them for anything else.
-					fields: 6,
-					// Maximum number of file fields.
-					// TODO: Setting for max files per request
-					files: 10
-				}
-			},
-			async (field: MultipartField) => {
-				/*
-					Keep non-files fields in Request.body.
-					Since fields get processed in sequence, depending on the order at which they were defined,
-					chunked uploads data must be set before the files[] field which contain the actual file.
-				*/
-				if (field.truncated) {
-					// Re-map Dropzone chunked uploads keys so people can manually use the API without prepending 'dz'
-					let name = field.name;
-					if (name.startsWith('dz')) {
-						name = name.replace(/^dz/, '');
-					}
-
-					body[name] = field.value || '';
-					return;
-				}
-
-				// Process files immediately and push into Request.files array
-				if (field.file) {
-					if (field.name !== 'files[]') {
-						throw new Error(`Unexpected file-type field: ${field.name}`);
-					}
-
-					// Push immediately as we will only be adding props into the file object down the line
-					const file: FileInProgress = {
-						name: '',
-						extension: '',
-						path: '',
-						original: field.file.name ?? '',
-						type: field.mime_type || 'application/octet-stream',
-						size: 0,
-						hash: '',
-						ip: req.ip
-					};
-					files.push(file);
-					const _index = files.length; // TODO -- for debug logging, 1-based index
-
-					const isChunk = typeof body.uuid === 'string' && Boolean(body.uuid);
-					if (isChunk && files.length > 1) {
-						throw new Error('Chunked uploads may only be uploaded 1 chunk at a time');
-					}
-
-					file.extension = getExtension(file.original);
-					if (isExtensionBlocked(file.extension)) {
-						throw new Error(
-							file.extension
-								? `${file.extension.slice(1).toUpperCase()} files are not permitted.`
-								: 'Files with no extension are not permitted.'
-						);
-					}
-
-					if (isChunk) {
-						// Re-map UUID property to IP-specific UUID
-						const uuid = `${file.ip}_${body.uuid}`;
-						// Calling initChunks() will also reset the chunked uploads' timeout
-						// eslint-disable-next-line require-atomic-updates
-						file.chunksData = await initChunks(uuid);
-						file.name = file.chunksData.name;
-						file.path = file.chunksData.path;
-					} else {
-						const identifier = await getUniqueFileIdentifier(res);
-						if (!identifier) {
-							throw new Error('Couldnt allocate identifier for file');
-						}
-
-						file.name = `${identifier}${file.extension}`;
-						file.path = path.join(uploadPath, file.name);
-					}
-
-					const readStream = field.file.stream;
-					let writeStream: WriteStream | undefined;
-					let hashStream: NodeHash<NodeHashReader> | undefined;
-					let _reject: ((reason?: any) => void) | undefined;
-
-					// Write the file into disk, and supply required props into file object
-					file.promise = new Promise<void>((resolve, reject) => {
-						// Keep reference to Promise's reject function to allow unlistening events
-						_reject = reject;
-
-						if (file.chunksData) {
-							writeStream = file.chunksData.writeStream;
-							hashStream = file.chunksData.hashStream;
-						} else {
-							writeStream = jetpack.createWriteStream(file.path);
-							hashStream = blake3.createHash();
-						}
-
-						// This should technically never happen, but typings
-						if (!writeStream || !hashStream) {
-							reject(new Error('Missing destination streams'));
-							return;
-						}
-
-						readStream.once('error', reject);
-
-						// Re-init stream errors listeners for this Request
-						writeStream.once('error', reject);
-						hashStream.once('error', reject);
-
-						// Ensure readStream will only be resumed later down the line by readStream.pipe()
-						readStream.pause();
-						readStream.on('data', data => {
-							// log.debug(`${_index}: readStream -> data`);
-							// .dispose() will destroy this internal component,
-							// so use it as an indicator of whether the hashStream has been .dispose()'d
-							// @ts-ignore -- required because typings for "hash" property is set to private
-							if (hashStream?.hash?.hash) {
-								hashStream.update(data);
-							}
-						});
-
-						if (file.chunksData) {
-							// We listen for readStream's end event
-							readStream.once('end', () => {
-								log.debug(`${_index}: readStream -> end`);
-								resolve();
-							});
-						} else {
-							// We immediately listen for writeStream's finish event
-							writeStream.once('finish', () => {
-								log.debug(`${_index}: writeStream -> finish`);
-								if (writeStream?.bytesWritten !== undefined) {
-									file.size = writeStream.bytesWritten;
-								}
-
-								// @ts-ignore
-								if (hashStream?.hash?.hash) {
-									const hash = hashStream.digest('hex');
-									file.hash = file.size === 0 ? '' : hash;
-								}
-
-								if (file.size === 0) {
-									reject(new Error('Zero-bytes files are not allowed'));
-									return;
-								}
-
-								resolve();
-							});
-						}
-
-						// Pipe readStream to writeStream
-						// Do not end writeStream when readStream finishes if it's a chunk upload
-						log.debug(`${_index}: readStream.pipe(writeStream, { end: ${inspect(!file.chunksData)} })`);
-						readStream.pipe(writeStream, { end: !file.chunksData });
-					})
-						.catch(error => {
-							// Dispose of unfinished write & hasher streams
-							if (writeStream && !writeStream.destroyed) {
-								writeStream.destroy();
-							}
-
-							// @ts-ignore
-							if (hashStream?.hash?.hash) {
-								hashStream.dispose();
-							}
-
-							// Re-throw error
-							throw error;
-						})
-						.finally(() => {
-							if (!file.chunksData) return;
-							// Unlisten streams' error event for this Request if it's a chunk upload
-							unlistenEmitters([writeStream, hashStream], 'error', _reject);
-						});
-				}
+	await req.multipart(busboyOptions, async (field: MultipartField) => {
+		/*
+			Keep non-files fields in body.
+			Since fields get processed in sequence, depending on the order at which they were defined,
+			chunked uploads data must be set before the "files[]"" field which contain the actual file.
+		*/
+		if (field.truncated) {
+			// Re-map Dropzone chunked uploads keys so people can manually use the API without prepending 'dz'
+			let name = field.name;
+			if (name.startsWith('dz')) {
+				name = name.replace(/^dz/, '');
 			}
-		)
-		.catch(error => {
-			// Clean up temp files and held identifiers (do not wait)
-			void cleanUpFiles();
-			unfreezeChunksData();
 
-			// Response.multipart() itself may throw string errors
-			// TODO: Trying to end Response after Req.multipart() throws does not seem to work as intended.
-			res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
-			return false;
-		});
-	log.debug(`req.multipart() awaited: ${inspect(multipart)}`);
-	if (multipart === false) return;
+			body[name] = field.value || '';
+			return;
+		}
 
+		if (!field.file) return;
+
+		// Push files immediately, as we will only be adding props into the file object down the line
+		const file: FileInProgress = {
+			field: field.name,
+			name: '',
+			extension: '',
+			path: '',
+			original: field.file.name ?? '',
+			type: field.mime_type || 'application/octet-stream',
+			size: -1,
+			hash: '',
+			ip: req.ip
+		};
+		files.push(file);
+
+		// TODO -- for debug logging, 1-based index
+		const _index = files.length;
+
+		file.extension = getExtension(file.original);
+
+		const isChunk = typeof body.uuid === 'string' && Boolean(body.uuid);
+		if (isChunk) {
+			// Re-map UUID property to IP-specific UUID
+			const uuid = `${file.ip}_${body.uuid}`;
+			// Calling initChunks() will also reset the chunked uploads' timeout
+			// eslint-disable-next-line require-atomic-updates
+			file.chunksData = await initChunks(uuid);
+			file.name = file.chunksData.name;
+			file.path = file.chunksData.path;
+		} else {
+			const identifier = await getUniqueFileIdentifier(res);
+			// TODO Preferably we always have an identifier, to ensure incoming stream is always consumed
+			if (!identifier) return;
+			file.name = `${identifier}${file.extension}`;
+			file.path = path.join(uploadPath, file.name);
+		}
+
+		const readStream = field.file.stream;
+		let writeStream: WriteStream | undefined;
+		let hashStream: NodeHash<NodeHashReader> | undefined;
+		let _reject: ((reason?: any) => void) | undefined;
+
+		// Write the file into disk, and supply required props into file object
+		await new Promise<void>((resolve, reject) => {
+			if (!field.file) {
+				resolve();
+				return;
+			}
+
+			// Keep reference to Promise's reject function to allow unlistening events
+			_reject = reject;
+
+			if (file.chunksData) {
+				writeStream = file.chunksData.writeStream;
+				hashStream = file.chunksData.hashStream;
+			} else {
+				writeStream = jetpack.createWriteStream(file.path);
+				hashStream = blake3.createHash();
+			}
+
+			// This should technically never happen, but typings
+			if (!writeStream || !hashStream) {
+				reject(new Error('Missing destination streams'));
+				return;
+			}
+
+			// Re-init stream errors listeners for this Request
+			writeStream.once('error', reject);
+			hashStream.once('error', reject);
+
+			// Ensure readStream will only be resumed later down the line by readStream.pipe()
+			readStream.pause();
+			readStream.on('data', data => {
+				// log.debug(`${_index}: readStream -> data`);
+				// NodeHash.dispose() will destroy its internal component ".hash.hash",
+				// so use it as an indicator of whether it has been disposed, before attempting to update.
+				// @ts-ignore -- required because typings for "hash" property is set to private
+				if (hashStream?.hash?.hash) {
+					hashStream.update(data);
+				}
+			});
+
+			if (file.chunksData) {
+				// We listen for readStream's close event
+				readStream.once('close', () => {
+					log.debug(`${_index}: readStream -> close`);
+					resolve();
+				});
+			} else {
+				// We immediately listen for writeStream's finish event
+				writeStream.once('finish', () => {
+					log.debug(`${_index}: writeStream -> finish`);
+					if (writeStream?.bytesWritten !== undefined) {
+						file.size = writeStream.bytesWritten;
+					}
+
+					// @ts-ignore
+					if (hashStream?.hash?.hash) {
+						const hash = hashStream.digest('hex');
+						file.hash = file.size === 0 ? '' : hash;
+					}
+
+					resolve();
+				});
+			}
+
+			// Pipe readStream to writeStream
+			// Do not end writeStream when readStream finishes if it's a chunk upload
+			log.debug(`${_index}: readStream.pipe(writeStream, { end: ${inspect(!file.chunksData)} })`);
+			readStream.pipe(writeStream, { end: !file.chunksData });
+
+			// This is not supposed to be necessary,
+			// but somehow the only way to get Hyper +6.4.4 to work here
+			log.debug(`req.resume()`);
+			// @ts-ignore
+			req.resume();
+		})
+			.catch(error => {
+				// Dispose of unfinished write & hasher streams
+				if (writeStream && !writeStream.destroyed) {
+					writeStream.destroy();
+				}
+
+				// @ts-ignore
+				if (hashStream?.hash?.hash) {
+					hashStream.dispose();
+				}
+
+				// Re-throw error
+				log.debug(inspect(error));
+				throw error;
+			})
+			.finally(() => {
+				if (!_reject || !file.chunksData) return;
+				// Unlisten streams' error event for this Request if it's a chunk upload
+				unlistenEmitters([writeStream, hashStream], 'error', _reject);
+			});
+	});
+
+	log.debug(`req.multipart() awaited`);
+
+	log.debug(`files.length: ${files.length}`);
 	if (!files.length) {
-		return res.status(400).json({ message: 'No files' });
+		return res.status(400).json({ message: 'No files.' });
 	}
 
-	// Await all file's Promise
-	log.debug(`await Promise.all()`);
-	const promised = await Promise.all(files.map(file => file.promise)).catch(error => {
-		// Clean up temp files and held identifiers (do not wait)
-		void cleanUpFiles();
-		unfreezeChunksData();
+	// Validate files
+	try {
+		for (const file of files) {
+			if (file.field !== 'files[]') {
+				throw new Error(`Unexpected file-type field: ${file.field}`);
+			}
 
-		// Response.multipart() itself may throw string errors
-		res.status(500).json({ message: error instanceof Error ? error.message : String(error) });
-		return false;
-	});
-	log.debug(`Promise.all() awaited: ${Array.isArray(promised) ? promised.length : inspect(promised)}`);
-	if (promised === false) return;
+			if (isExtensionBlocked(file.extension)) {
+				throw new Error(
+					file.extension
+						? `${file.extension.slice(1).toUpperCase()} files are not permitted.`
+						: 'Files with no extension are not permitted.'
+				);
+			}
+
+			if (file.size === 0) {
+				throw new Error('Zero-bytes file is not allowed.');
+			}
+		}
+	} catch (error: any) {
+		// Unhold file identifiers generated via File.getUniqueFileIdentifier()
+		unholdFileIdentifiers(res);
+
+		// Clean up temp files and held identifiers (do not wait)
+		void cleanUpFiles(files);
+		unfreezeChunksData(files);
+
+		return res.status(400).json({ message: error instanceof Error ? error.message : 'Bad request.' });
+	}
 
 	// If the uploaded file is a chunk, then just say that it was a success.
-	// NOTE: We loop through Request.files for clarity,
-	// but we will actually have already rejected the Request
-	// if it has more than 1 file while being a chunk upload.
 	if (files.some(file => file.chunksData)) {
-		for (const file of files) {
-			if (!file.chunksData) continue;
-			file.chunksData.chunks++;
-			// Mark as ready to accept more chunk uploads or to finalize
-			file.chunksData.processing = false;
-		}
-
+		unfreezeChunksData(files, true);
 		return res.json({ success: true });
 	}
 
