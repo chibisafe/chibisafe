@@ -74,12 +74,15 @@ const unfreezeChunksData = (files: FileInProgress[], increase = false) => {
 };
 
 const cleanUpFiles = async (files: FileInProgress[]) => {
-	log.debug(`cleanUpFiles(${inspect(files.map(file => String(file.name)))})`);
+	log.debug(`cleanUpFiles(${inspect(files.map(file => String(file.chunksData?.uuid ?? file.name)))})`);
 	// Delete temp files
 	await Promise.all(
 		files.map(async file => {
-			if (!file.name) return;
-			return deleteFile(file.name);
+			if (file.chunksData) {
+				return cleanUpChunks(file.chunksData.uuid).catch(log.error);
+			} else if (file.name) {
+				return deleteFile(file.name);
+			}
 		})
 	);
 };
