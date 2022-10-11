@@ -101,6 +101,16 @@ const start = async () => {
 	server.get('/*', Serve);
 	server.head('/*', Serve);
 
+	// Essentially unused for GET and HEAD due to Serve's handlers
+	server.set_not_found_handler((req: Request, res: Response) => {
+		res.status(404).send('Not found');
+	});
+
+	server.set_error_handler((req: Request, res: Response, error: Error) => {
+		log.error(error);
+		res.status(500).send('Internal server error');
+	});
+
 	// Start the server
 	await server.listen(8000);
 	log.info('');
