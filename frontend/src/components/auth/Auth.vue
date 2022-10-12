@@ -15,14 +15,14 @@
 			leave-to-class="transform scale-95 opacity-0"
 		>
 			<MenuItems
-				class="absolute right-0 w-48 mt-2 origin-top-right bg-white dark:bg-white divide-y divide-chibisafe rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute right-0 w-48 mt-2 origin-top-right bg-white dark:bg-white divide-y divide-chibisafe rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
 			>
 				<div class="px-1 py-1">
 					<MenuItem v-slot="{ active }">
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-background-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="router.push('/dashboard')"
 						>
@@ -33,7 +33,7 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-background-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="router.push('/dashboard/albums')"
 						>
@@ -44,22 +44,11 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-background-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="router.push('/dashboard/account')"
 						>
 							Account
-						</Button>
-					</MenuItem>
-					<MenuItem v-if="isAdmin" v-slot="{ active }">
-						<Button
-							variant="none"
-							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-background-dark"
-							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
-							@click="router.push('/dashboard/admin')"
-						>
-							Administration
 						</Button>
 					</MenuItem>
 				</div>
@@ -68,7 +57,7 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-background-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="userStore.logout()"
 						>
@@ -115,15 +104,13 @@
 						>
 							<DialogTitle
 								as="h3"
-								class="text-2xl text-center font-extrabold leading-6 dark:text-chibisafe-text-dark text-chibisafe-background-dark"
+								class="text-2xl text-center font-extrabold leading-6 dark:text-chibisafe-text-dark text-chibisafe-dark"
 							>
 								Authentication
 							</DialogTitle>
 							<template v-if="isLogin">
 								<div class="mt-2">
-									<p
-										class="text-md dark:text-chibisafe-text-dark text-chibisafe-background-dark text-center"
-									>
+									<p class="text-md dark:text-chibisafe-text-dark text-chibisafe-dark text-center">
 										If you don't have an account yet please
 										<Button variant="none" class="text-blue-500" @click="isLogin = !isLogin"
 											>click here</Button
@@ -150,9 +137,7 @@
 							</template>
 							<template v-else>
 								<div class="mt-2">
-									<p
-										class="text-md dark:text-chibisafe-text-dark text-chibisafe-background-dark text-center"
-									>
+									<p class="text-md dark:text-chibisafe-text-dark text-chibisafe-dark text-center">
 										If you have an account and want to log in instead then
 										<Button variant="none" class="text-blue-500" @click="isLogin = !isLogin"
 											>click here</Button

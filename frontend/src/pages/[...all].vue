@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="min-h-full bg-white dark:bg-chibisafe-background-dark px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8"
+		class="min-h-full bg-white dark:bg-chibisafe-dark px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8"
 	>
 		<div class="mx-auto max-w-max">
 			<main class="sm:flex">
