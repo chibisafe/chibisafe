@@ -1,5 +1,6 @@
 import type { Response } from 'hyper-express';
 import prisma from '../../structures/database';
+import { saveFileToAlbum } from '../../utils/File';
 import type { RequestWithUser } from '../../structures/interfaces';
 
 export const options = {
@@ -39,12 +40,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (relationExists) return res.status(400).json({ message: 'The file is already in the album' });
 
-	await prisma.albumsFiles.create({
-		data: {
-			fileId: fileExists.id,
-			albumId: albumExists.id
-		}
-	});
+	await saveFileToAlbum(albumExists.id, fileExists.id);
 
 	return res.json({
 		message: 'Successfully added file to album'

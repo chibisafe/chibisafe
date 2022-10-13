@@ -45,8 +45,8 @@ const start = async () => {
 				'Cache-Control',
 				'X-Requested-With',
 				'Content-Type',
-				'albumId',
-				'finishedChunks',
+				'albumUuid',
+				// 'finishedChunks', // Not used, we simply check if Content-Type is 'application/json'
 				'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
 			]
 		})
