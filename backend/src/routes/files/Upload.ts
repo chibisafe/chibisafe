@@ -14,12 +14,14 @@ import {
 	getUniqueFileIdentifier,
 	initChunks,
 	isExtensionBlocked,
+	saveFileToAlbum,
 	storeFileToDb,
 	unholdFileIdentifiers,
 	uploadPath
 } from '../../utils/File';
 import log from '../../utils/Log';
 import { /* getConfig, */ getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
+import prisma from '../../structures/database';
 
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'node:fs';
@@ -445,6 +447,29 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 			.json({ message: 'Request Content-Type must be either multipart/form-data or application/json.' });
 	}
 
+	// Not sure if checking against "null" string is necessary, but master branch has it
+	let albumUuid: string | null = req.headers.albumuuid ?? null;
+	if (albumUuid === 'null') albumUuid = null;
+
+	let albumId: number | null = null;
+	if (albumUuid) {
+		if (req.user) {
+			const album = await prisma.albums.findFirst({
+				where: {
+					uuid: albumUuid,
+					userId: req.user.id
+				}
+			});
+			if (album) {
+				albumId = album.id;
+			} else {
+				res.status(401).json({ message: "Album doesn't exist or it doesn't belong to the user." });
+			}
+		} else {
+			return res.status(400).json({ message: 'Only registered users can upload files to an album.' });
+		}
+	}
+
 	let files;
 	if (multipart) {
 		files = await uploadFile(req, res);
@@ -459,14 +484,17 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 		file: File;
 		repeated?: boolean;
 	}[] = [];
+
 	// TODO: Prisma does not have .createMany() support for SQLite,
 	// so can not aggregrate multiple INSERTs into one query (?).
-	log.debug(`await storeFileToDb(): ${files.length}`);
+	log.debug(`await db insert: ${files.length}`);
 	for (const file of files) {
-		stored.push(await storeFileToDb(req.user, file));
+		const entry = await storeFileToDb(req.user, file);
+		stored.push(entry);
+		if (!entry.repeated && albumId !== null) {
+			await saveFileToAlbum(albumId, entry.file.id);
+		}
 	}
-
-	log.debug(`storeFileToDb() awaited: ${stored.length}`);
 
 	return res.json({
 		message: 'Successfully uploaded the file(s).',

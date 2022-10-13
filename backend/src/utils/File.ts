@@ -379,28 +379,22 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, file: 
 	};
 };
 
-export const saveFileToAlbum = async (albumId: number, insertedId: number) => {
-	if (!albumId) return;
-
+export const saveFileToAlbum = async (albumId: number, fileId: number) => {
 	const now = utc().toDate();
-	try {
-		await prisma.albumsFiles.create({
-			data: {
-				albumId,
-				fileId: insertedId
-			}
-		});
-		await prisma.albums.update({
-			where: {
-				id: albumId
-			},
-			data: {
-				editedAt: now
-			}
-		});
-	} catch (error) {
-		console.error(error);
-	}
+	await prisma.albumsFiles.create({
+		data: {
+			albumId,
+			fileId
+		}
+	});
+	await prisma.albums.update({
+		where: {
+			id: albumId
+		},
+		data: {
+			editedAt: now
+		}
+	});
 };
 
 export const getExtension = (filename: string, lower = false): string => {
