@@ -447,9 +447,7 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 			.json({ message: 'Request Content-Type must be either multipart/form-data or application/json.' });
 	}
 
-	// Not sure if checking against "null" string is necessary, but master branch has it
-	let albumUuid: string | null = req.headers.albumuuid ?? null;
-	if (albumUuid === 'null') albumUuid = null;
+	const albumUuid: string | null = req.headers.albumuuid ?? null;
 
 	let albumId: number | null = null;
 	if (albumUuid) {
