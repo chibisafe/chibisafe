@@ -30,7 +30,14 @@ export default defineConfig({
 		vue(),
 		Pages({
 			dirs: [{ dir: 'src/pages', baseRoute: '' }],
-			exclude: ['**/*.test.ts'] // Be careful 'src/**/*.test.ts' does not work expectedly
+			exclude: ['**/*.test.ts'],
+			extendRoute: route => {
+				if (route.path === '/dashboard') {
+					return { ...route, redirect: '/dashboard/uploads' };
+				}
+
+				return route;
+			}
 		}),
 		Components({
 			dts: true,
