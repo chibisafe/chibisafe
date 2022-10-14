@@ -17,9 +17,6 @@ export default (req: Request, res: Response, next: MiddlewareNext) => {
 		method: req.method
 	} as DebugInformation;
 
-	// TODO: Do not use Request.json() except on routes that exclusively accept JSON payload
-	// const body = await req.json();
-	// if (body) debug.body = body;
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (req.path_parameters) debug.params = req.path_parameters;
 
