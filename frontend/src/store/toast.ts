@@ -8,9 +8,9 @@ export const useToastStore = defineStore('toast', {
 		toasts: [] as Toast[]
 	}),
 	actions: {
-		error(message: string) {
+		create(type: Toast['type'], message: string) {
 			this.toasts.push({
-				type: 'error',
+				type,
 				message,
 				id: toastId++
 			});

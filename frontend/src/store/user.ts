@@ -36,7 +36,6 @@ export const useUserStore = defineStore('user', {
 			if (!username || !password) return;
 			const response = await login(username, password);
 
-			// TODO: Error handling
 			if (!response) return;
 			if (!response.token) return;
 
@@ -57,16 +56,6 @@ export const useUserStore = defineStore('user', {
 					token: this.token
 				})
 			);
-		},
-		async register(username: string, password: string) {
-			if (!username || !password) return;
-			const response = await register(username, password);
-
-			// TODO: Error handling
-			if (!response) return;
-
-			// eslint-disable-next-line no-alert
-			alert('Successfully registered! You can now login.');
 		},
 		logout() {
 			localStorage.removeItem('chibisafe-user');

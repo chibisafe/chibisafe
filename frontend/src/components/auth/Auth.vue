@@ -174,6 +174,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToastStore } from '~/store/toast';
+import { register as Register } from '~/use/api';
 import {
 	TransitionRoot,
 	TransitionChild,
@@ -192,6 +194,7 @@ import Input from '~/components/forms/Input.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
+const toastStore = useToastStore();
 
 // Form models
 const isLogin = ref(true);
@@ -218,18 +221,30 @@ const openLoginModal = () => {
 };
 
 const login = async () => {
-	// TODO: Handle errors and empty inputs
-	if (!username.value || !password.value) return;
+	if (!username.value || !password.value) {
+		toastStore.create('error', 'Username or password are missing');
+		return;
+	}
+
 	await userStore.login(username.value, password.value);
 	if (loggedIn.value) closeLoginModal();
 };
 
 const register = async () => {
-	// TODO: Handle errors and empty inputs
-	if (!username.value || !password.value || !repassword.value) return;
-	if (password.value !== repassword.value) return;
+	if (!username.value || !password.value || !repassword.value) {
+		toastStore.create('error', 'Username or any of the two passwords are missing');
+		return;
+	}
 
-	await userStore.register(username.value, password.value);
+	if (password.value !== repassword.value) {
+		toastStore.create('error', 'The passwords need to be the same on both fields');
+		return;
+	}
+
+	const response = await Register(username.value, password.value);
+	if (!response) return;
+
+	toastStore.create('success', 'Successfully registered! You can now login.');
 	// eslint-disable-next-line require-atomic-updates
 	password.value = '';
 	// eslint-disable-next-line require-atomic-updates

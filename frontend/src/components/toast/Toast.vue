@@ -34,8 +34,8 @@
 									]"
 								/>
 							</div>
-							<div class="ml-3 w-0 flex-1 pt-0.5">
-								<p class="text-sm font-medium text-gray-900">{{ toast.message }} - {{ toast.id }}</p>
+							<div class="ml-3 w-0 flex-1">
+								<p class="text-base font-medium text-gray-900">{{ toast.message }}</p>
 							</div>
 							<div class="ml-4 flex flex-shrink-0">
 								<button

@@ -4,7 +4,7 @@ let toastStore: ReturnType<typeof useToastStore>;
 
 const sendErrorToast = (message: string) => {
 	if (!toastStore) toastStore = useToastStore();
-	toastStore.error(message);
+	toastStore.create('error', message);
 };
 
 export const login = async (username: string, password: string) => {
@@ -39,6 +39,16 @@ export const getMe = async () => {
 	try {
 		const data = await request.get('verify');
 		console.log('getMe', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getFiles = async () => {
+	try {
+		const data = await request.get('files');
+		console.log('getFiles', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
