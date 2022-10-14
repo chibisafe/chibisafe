@@ -31,8 +31,6 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	// TODO: Delete albumLinks, albumFiles, fileTags, links, tags
-
 	return res.json({
 		message: 'Successfully purged user'
 	});

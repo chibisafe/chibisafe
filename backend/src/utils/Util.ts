@@ -8,24 +8,6 @@ export { v4 as uuid } from 'uuid';
 export const statsLastSavedTime = null;
 export const _config = null;
 
-/*
-	TODO: Ask crawl how to properly type this.
-	I want that if I call getConfig() to know the properties that will come back and their types
-	to use them in nuxt.ts for example
-*/
-export const getConfig = async () => {
-	const config = await prisma.settings.findMany();
-	return config.reduce<Record<string, any>>((conf, item) => {
-		if (typeof item.value === 'string') {
-			conf[item.key] = JSON.parse(item.value);
-		} else {
-			conf[item.key] = item.value;
-		}
-
-		return config;
-	}, {}) as Settings;
-};
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const getEnvironmentDefaults = () =>
 	({
@@ -103,7 +85,7 @@ export const getHost = (req: Request) => `${req.protocol}://${req.headers.host}`
 export const getUniqueAlbumIdentifier = () => {
 	const retry: any = async (i = 0) => {
 		const identifier = randomstring.generate({
-			length: (await getConfig()).generatedAlbumLength,
+			length: getEnvironmentDefaults().generatedAlbumLength,
 			capitalization: 'lowercase'
 		});
 		const exists = await prisma.links.findFirst({

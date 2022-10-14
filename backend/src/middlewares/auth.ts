@@ -55,7 +55,6 @@ export default (
 
 		if (!user) return res.status(401).json({ message: "User doesn't exist" });
 		req.user = user;
-		// TODO
 		log.debug(`Username: ${user.username}`);
 		next();
 	});

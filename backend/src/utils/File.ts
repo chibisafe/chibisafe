@@ -146,7 +146,6 @@ export const unholdFileIdentifiers = (res: Response): void => {
 export const getUniqueFileIdentifier = async (res?: Response): Promise<string | null> => {
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
-			// TODO: Load from config
 			length: getEnvironmentDefaults().generatedFilenameLength,
 			capitalization: 'lowercase'
 		});
@@ -297,10 +296,6 @@ export const createZip = (files: string[], album: Album) => {
 };
 
 export const constructFilePublicLink = (req: Request, file: File) => {
-	/*
-		TODO: This wont work without a reverse proxy serving both
-		the site and the API under the same domain. Pls fix.
-	*/
 	const extended: ExtendedFile = { ...file };
 	const host = getHost(req);
 	extended.url = `${host}/${extended.name}`;

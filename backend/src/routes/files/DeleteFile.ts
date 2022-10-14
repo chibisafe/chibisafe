@@ -32,8 +32,6 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	// Remove the file from disk
 	await deleteFile(file.name);
 
-	// TODO: Remove all relations from fileTags and albumsFiles
-
 	return res.json({
 		message: 'Successfully deleted the file'
 	});

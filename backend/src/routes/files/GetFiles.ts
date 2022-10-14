@@ -26,8 +26,6 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	// TODO: Bring back albums and tags the file is part of
-
 	const readyFiles = [];
 	for (const file of files) {
 		readyFiles.push(constructFilePublicLink(req, file));

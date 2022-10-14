@@ -42,7 +42,6 @@ export const run = async (req: Request, res: Response) => {
 		});
 
 		if (user) {
-			// TODO: ???
 			(user as unknown as UserWithFileCount).fileCount = await prisma.files.count({
 				where: {
 					userId: user.id

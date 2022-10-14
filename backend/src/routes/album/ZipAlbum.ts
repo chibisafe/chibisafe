@@ -16,8 +16,6 @@ export const run = async (req: Request, res: Response) => {
 	const { identifier } = req.path_parameters;
 	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
 
-	// TODO: Do we let anyone create a zip?
-
 	// Make sure the album identifier exists and is enabled
 	const link = await prisma.links.findFirst({
 		where: {
@@ -48,8 +46,6 @@ export const run = async (req: Request, res: Response) => {
 			res.download(filePath, fileName);
 			return;
 		}
-
-		// TODO: If the conditional above is false, generate the file again?
 	}
 
 	const fileList = await prisma.albumsFiles.findMany({

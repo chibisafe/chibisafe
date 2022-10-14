@@ -20,7 +20,7 @@ import {
 	uploadPath
 } from '../../utils/File';
 import log from '../../utils/Log';
-import { /* getConfig, */ getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
+import { getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
 import prisma from '../../structures/database';
 
 import type { NodeHash, NodeHashReader } from 'blake3';
@@ -44,7 +44,6 @@ export const options: RouteOptions = {
 		}
 	],
 	options: {
-		// TODO Util.getConfig()
 		max_body_length: getEnvironmentDefaults().maxSize * 1e6 // in bytes
 	}
 	// debug: true
@@ -55,7 +54,6 @@ const busboyOptions = {
 	// This would otherwise defaults to latin1
 	defParamCharset: 'utf8',
 	limits: {
-		// TODO Util.getConfig()
 		fileSize: getEnvironmentDefaults().maxSize * 1e6, // in bytes
 		// Maximum number of non-file fields.
 		// Dropzone.js will add 6 extra fields for chunked uploads.

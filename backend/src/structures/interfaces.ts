@@ -14,7 +14,6 @@ export interface RequestWithUser extends Request {
 	user: RequestUser;
 }
 
-// TODO
 export interface RequestWithOptionalUser extends Request {
 	user?: RequestUser;
 }

@@ -1,10 +1,8 @@
 import pino from 'pino';
+import process from 'node:process';
 
-// Futher customize this logger as needed
-// like saving logs to a folder and what not
-// TODO: level should be `info` for production
 const log = pino({
-	level: 'debug',
+	level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
 	sync: false
 });
 
