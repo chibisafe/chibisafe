@@ -40,7 +40,7 @@
 		"@tailwindcss/forms": "^0.5.3",
 		"@tailwindcss/typography": "^0.5.7",
 		"@types/dropzone": "^5.7.4",
-		"@types/node": "^18.8.4",
+		"@types/node": "^18.11.1",
 		"@vitejs/plugin-vue": "^3.1.2",
 		"@vue/compiler-sfc": "^3.2.40",
 		"autoprefixer": "^10.4.2",
@@ -58,7 +58,7 @@
 		"vite": "^3.1.4",
 		"vite-plugin-pages": "^0.26.0",
 		"vue-demi": "^0.13.11",
-		"vue-tsc": "^1.0.6"
+		"vue-tsc": "^1.0.9"
 	},
 	"keywords": [
 		"chibisafe",
