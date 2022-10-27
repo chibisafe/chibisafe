@@ -1,5 +1,5 @@
 <template>
-	<TransitionRoot appear :show="isModalOpen" as="template">
+	<TransitionRoot appear :show="isModalOpen" as="template" @afterLeave="clearStore">
 		<Dialog as="div" @close="closeModal">
 			<DialogOverlay class="fixed inset-0 bg-black opacity-50" />
 			<div class="fixed inset-0 z-10 overflow-y-auto">
@@ -92,11 +92,12 @@ const modalsStore = useModalstore();
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
 
+// Clear the store only after the transition is done to prevent artifacting
+const clearStore = () => {
+	modalsStore.fileInformation.file = null;
+};
+
 const closeModal = () => {
 	modalsStore.fileInformation.show = false;
-	// eslint-disable-next-line no-restricted-globals
-	setTimeout(() => {
-		modalsStore.fileInformation.file = null;
-	}, 200);
 };
 </script>
