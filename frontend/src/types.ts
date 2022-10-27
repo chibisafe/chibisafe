@@ -22,8 +22,18 @@ export interface File {
 	bytesSent: number;
 	bytesTotal: number;
 	progress: number;
-	url: string | undefined;
 	error?: string;
+	url: string | undefined;
+}
+
+export interface FileWithAdditionalData extends File {
+	original: string;
+	thumb: string;
+	ip: string;
+	size: number;
+	hash: string;
+	createdAt: string;
+	preview?: string;
 }
 
 export interface ApiError {

@@ -26,6 +26,7 @@
 	},
 	"dependencies": {
 		"@headlessui/vue": "^1.6.5",
+		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",
 		"dayjs": "^1.11.5",
 		"dropzone": "^6.0.0-beta.2",
