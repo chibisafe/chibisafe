@@ -1,3 +1,5 @@
+import type { FileWithAdditionalData } from '~/types';
+
 export function formatBytes(bytes: number, decimals = 2) {
 	if (bytes === 0) return '0 Bytes';
 
@@ -9,3 +11,8 @@ export function formatBytes(bytes: number, decimals = 2) {
 
 	return `${Number.parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
+
+export const isFileVideo = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('video/');
+};

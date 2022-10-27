@@ -30,6 +30,46 @@
 		background-position:50% 50%;
 	}
 
+	.masonry {
+		list-style: none;
+		column-gap: 0;
+		padding: 0;
+		column-count: 1;
+	}
+
+	.masonry > div {
+		width: auto;
+		height: auto;
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+		break-inside: avoid;
+		margin-bottom: .75rem;
+		margin-right: .75rem;
+		position: relative;
+	}
+
+	@media (min-width: 320px) and (max-width: 759.5px) {
+		.masonry {
+			column-count: 2;
+		}
+	}
+		@media (min-width: 760px) and (max-width: 979.5px) {
+		.masonry {
+			column-count: 3;
+		}
+	}
+		@media (min-width: 980px) and (max-width: 1023.5px) {
+		.masonry {
+			column-count: 4;
+		}
+	}
+	@media (min-width: 1024px) {
+		.masonry {
+			column-count: 5;
+		}
+	}
+
 	/* Scroll thumb styles */
 	::-webkit-scrollbar {
 		width: 0.5rem;

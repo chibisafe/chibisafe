@@ -45,11 +45,11 @@ export const getMe = async () => {
 	}
 };
 
-export const getFiles = async () => {
+export const getFiles = async (page: number) => {
 	try {
 		const data = await request.get('files');
 		console.log('getFiles', data);
-		return data;
+		return { files: data.files, count: data.count };
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
