@@ -1,10 +1,10 @@
 <template>
 	<div class="h-screen w-full overflow-auto">
-		<div class="flex flex-col items-center w-full self-center dark:text-chibisafe-text-light">
+		<div class="flex flex-col items-center w-full self-center dark:text-light-100">
 			<Header />
 		</div>
 		<div
-			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-chibisafe-text-light justify-center self-center"
+			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
 		>
 			<div class="flex w-full mt-16 items-center relative max-w-4xl">
 				<div class="flex flex-1 justify-center flex-col">
@@ -94,7 +94,7 @@
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
 							<IconCheck class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
-							<p class="ml-9 text-lg font-medium leading-6 text-gray-900 dark:text-chibisafe-text-light">
+							<p class="ml-9 text-lg font-medium leading-6 text-gray-900 dark:text-light-100">
 								{{ feature }}
 							</p>
 						</dt>

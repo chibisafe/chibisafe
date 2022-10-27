@@ -28,7 +28,7 @@ const props = defineProps({
 
 const getVariant = computed(() => {
 	if (props.variant === 'link') {
-		return 'bg-transparent hover:bg-transparent text-chibisafe-text-light hover:text-white border-transparent p-0';
+		return 'bg-transparent hover:bg-transparent text-light-100 hover:text-white border-transparent p-0';
 	} else if (props.variant === 'none') {
 		return '';
 	}

@@ -24,7 +24,7 @@
 						leave-from="translate-x-0"
 						leave-to="-translate-x-full"
 					>
-						<DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-chibisafe-dark-110">
+						<DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-dark-110">
 							<TransitionChild
 								as="template"
 								enter="ease-in-out duration-300"
@@ -59,8 +59,8 @@
 										class="group flex items-center px-2 py-2 text-base font-medium rounded-md"
 										:class="[
 											item.current
-												? 'bg-chibisafe-dark text-white'
-												: 'text-gray-300 hover:bg-chibisafe-dark hover:text-white'
+												? 'bg-dark-100 text-white'
+												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
 										<component
@@ -87,8 +87,8 @@
 										class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 										:class="[
 											item.current
-												? 'bg-chibisafe-dark text-white'
-												: 'text-gray-300 hover:bg-chibisafe-dark hover:text-white'
+												? 'bg-dark-100 text-white'
+												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
 										<component
@@ -111,7 +111,7 @@
 											:key="item.name"
 											:href="item.href"
 											rel="noopener noreferrer"
-											class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-chibisafe-text-light hover:text-white"
+											class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-light-100 hover:text-white"
 										>
 											<span class="truncate">{{ item.name }}</span>
 										</a>
@@ -130,7 +130,7 @@
 		<!-- Static sidebar for desktop -->
 		<div class="hidden md:fixed md:inset-y-0 md:flex md:w-48 md:flex-col">
 			<!-- Sidebar component, swap this element with another sidebar if you like -->
-			<div class="flex min-h-0 flex-1 flex-col bg-chibisafe-dark-110">
+			<div class="flex min-h-0 flex-1 flex-col bg-dark-110">
 				<div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
 					<div class="flex flex-shrink-0 items-center px-4 justify-center">
 						<router-link to="/">
@@ -145,8 +145,8 @@
 							class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 							:class="[
 								item.current
-									? 'bg-chibisafe-dark text-white'
-									: 'text-gray-300 hover:bg-chibisafe-dark hover:text-white'
+									? 'bg-dark-100 text-white'
+									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 							]"
 						>
 							<component
@@ -167,8 +167,8 @@
 							class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
 							:class="[
 								item.current
-									? 'bg-chibisafe-dark text-white'
-									: 'text-gray-300 hover:bg-chibisafe-dark hover:text-white'
+									? 'bg-dark-100 text-white'
+									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 							]"
 						>
 							<component
@@ -180,14 +180,14 @@
 							{{ item.name }}
 						</router-link>
 					</nav>
-					<nav class="mt-8 mb-12 pl-2">
+					<nav class="mt-8 mb-12">
 						<div class="mt-1 space-y-1">
 							<a
 								v-for="item in secondaryNavigation"
 								:key="item.name"
 								:href="item.href"
 								rel="noopener noreferrer"
-								class="group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-chibisafe-text-light hover:text-white"
+								class="group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-light-100 hover:text-white"
 							>
 								<span class="truncate">{{ item.name }}</span>
 							</a>
@@ -197,10 +197,10 @@
 			</div>
 		</div>
 		<div class="flex flex-1 flex-col md:pl-48">
-			<div class="sticky top-0 z-10 bg-chibisafe-dark-110 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
+			<div class="sticky top-0 z-10 bg-dark-110 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
 				<button
 					type="button"
-					class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-chibisafe-text-light hover:text-whitefocus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+					class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-light-100 hover:text-whitefocus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
 					@click="sidebarOpen = true"
 				>
 					<span class="sr-only">Open sidebar</span>
@@ -208,7 +208,7 @@
 				</button>
 			</div>
 			<main class="flex-1">
-				<div id="dashboard-container" class="py-6">
+				<div id="dashboard-container">
 					<slot />
 				</div>
 			</main>

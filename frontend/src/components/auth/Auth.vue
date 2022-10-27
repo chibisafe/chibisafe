@@ -1,7 +1,7 @@
 <template>
 	<Menu v-if="loggedIn" as="div" class="relative">
 		<MenuButton
-			class="h-12 flex justify-center items-center text-right bg-transparent hover:bg-transparent text-chibisafe-text-light hover:text-white border-transparent p-0"
+			class="h-12 flex justify-center items-center text-right bg-transparent hover:bg-transparent text-light-100 hover:text-white border-transparent p-0"
 		>
 			<span class="mx-0 text-md text-right">Welcome back, {{ loggedInUsername }}</span>
 		</MenuButton>
@@ -22,9 +22,9 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-dark-100 text-dark-100"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
-							@click="router.push('/dashboard')"
+							@click="router.push('/dashboard/uploads')"
 						>
 							Uploads
 						</Button>
@@ -33,7 +33,7 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-dark-100 text-dark-100"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="router.push('/dashboard/albums')"
 						>
@@ -44,7 +44,7 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-dark-100 text-dark-100"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="router.push('/dashboard/account')"
 						>
@@ -57,7 +57,7 @@
 						<Button
 							variant="none"
 							align="left"
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-chibisafe-text-dark text-chibisafe-dark"
+							class="group flex rounded-md items-center w-full px-2 py-2 text-sm dark:text-dark-100 text-dark-100"
 							:class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
 							@click="userStore.logout()"
 						>
@@ -104,13 +104,13 @@
 						>
 							<DialogTitle
 								as="h3"
-								class="text-2xl text-center font-extrabold leading-6 dark:text-chibisafe-text-dark text-chibisafe-dark"
+								class="text-2xl text-center font-extrabold leading-6 dark:text-dark-100 text-dark-100"
 							>
 								Authentication
 							</DialogTitle>
 							<template v-if="isLogin">
 								<div class="mt-2">
-									<p class="text-md dark:text-chibisafe-text-dark text-chibisafe-dark text-center">
+									<p class="text-md dark:text-dark-100 text-dark-100 text-center">
 										If you don't have an account yet please
 										<Button variant="none" class="text-blue-500" @click="isLogin = !isLogin"
 											>click here</Button
@@ -137,7 +137,7 @@
 							</template>
 							<template v-else>
 								<div class="mt-2">
-									<p class="text-md dark:text-chibisafe-text-dark text-chibisafe-dark text-center">
+									<p class="text-md dark:text-dark-100 text-dark-100 text-center">
 										If you have an account and want to log in instead then
 										<Button variant="none" class="text-blue-500" @click="isLogin = !isLogin"
 											>click here</Button
