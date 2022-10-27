@@ -21,12 +21,20 @@ export const login = async (username: string, password: string) => {
 	}
 };
 
-export const register = async (username: string, password: string) => {
+export const register = async (username: string, password: string, invite?: string) => {
 	try {
-		const data = await request.post('auth/register', {
-			username,
-			password
-		});
+		const data = await request.post(
+			'auth/register',
+			{
+				username,
+				password
+			},
+			invite
+				? {
+						invite
+				  }
+				: undefined
+		);
 
 		console.log('register', data);
 		return data;

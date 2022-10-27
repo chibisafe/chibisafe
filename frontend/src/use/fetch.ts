@@ -46,12 +46,14 @@ export const request = {
 		}
 	},
 
-	post: async (url = '', data = {}) => {
+	// eslint-disable-next-line @typescript-eslint/default-param-last
+	post: async (url = '', data = {}, headers?: {}) => {
 		try {
 			const response = await fetch(`/api/${url}`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					...headers
 					// Authorization: checkForToken()
 				},
 				body: JSON.stringify(data)

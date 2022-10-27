@@ -3,6 +3,8 @@ import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import log from '../../utils/Log';
+import { getEnvironmentDefaults } from '../../utils/Util';
+import { utc } from 'moment';
 
 export const options = {
 	url: '/auth/register',
@@ -10,6 +12,27 @@ export const options = {
 };
 
 export const run = async (req: Request, res: Response) => {
+	if (!req.headers.invite && !getEnvironmentDefaults().userAccounts) {
+		return res.status(401).json({
+			message: 'Creation of new accounts is currently disabled'
+		});
+	}
+
+	// Check if the invite is valid has not been used yet
+	const foundInvite = await prisma.invites.findFirst({
+		where: {
+			code: req.headers.invite,
+			used: false
+		}
+	});
+
+	// If no invite was found then reject the call
+	if (!foundInvite) {
+		return res.status(401).json({
+			message: 'Invalid invite code'
+		});
+	}
+
 	const { username, password } = await req.json();
 	if (!username || !password)
 		return res.status(400).json({
@@ -40,12 +63,29 @@ export const run = async (req: Request, res: Response) => {
 		return res.status(401).json({ message: 'There was a problem processing your account' });
 	}
 
+	// Create the user in the database
+	const userUuid = uuidv4();
 	await prisma.users.create({
 		data: {
-			uuid: uuidv4(),
+			uuid: userUuid,
 			username,
 			password: hash
 		}
 	});
+
+	// Update the invite to mark it as used
+	if (foundInvite) {
+		await prisma.invites.update({
+			where: {
+				code: req.headers.invite
+			},
+			data: {
+				used: true,
+				usedBy: userUuid,
+				editedAt: utc().toDate()
+			}
+		});
+	}
+
 	return res.json({ message: 'The account was created successfully' });
 };
