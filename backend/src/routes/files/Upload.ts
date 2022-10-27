@@ -301,13 +301,10 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 	// can probably be streamlined using runtime type checking library? io-ts? Thoughts?
 	const _body = await req.json();
 
-	if (
-		!Array.isArray(_body?.files) ||
-		!_body.files.length ||
-		_body.files.some((file: any) => typeof file !== 'object' || !file.uuid)
-	) {
-		return res.status(400).json({ message: 'Bad request.' });
-	}
+	if (!Array.isArray(_body?.files)) return res.status(400).json({ message: 'files[] needs to be an array' });
+	if (!_body.files.length) return res.status(400).json({ message: 'files[] is empty' });
+	if (_body.files.some((file: any) => typeof file !== 'object' || !file.uuid))
+		return res.status(400).json({ message: "One of the files is not an object or doesn't have an uuid" });
 
 	// Re-init as a new variable with TS typing
 	const body: {
