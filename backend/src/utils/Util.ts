@@ -5,38 +5,38 @@ import randomstring from 'randomstring';
 import log from './Log';
 import prisma from '../structures/database';
 export { v4 as uuid } from 'uuid';
-export const statsLastSavedTime = null;
-export const _config = null;
+
+const parseEnvVariable = (value: boolean | number | string | undefined): boolean | number | string | undefined => {
+	if (!value) return undefined;
+	if (typeof value === 'boolean') return value;
+	if (typeof value === 'number') return value;
+	if (typeof value === 'string' && value.toLowerCase() === 'true') return true;
+	if (typeof value === 'string' && value.toLowerCase() === 'false') return false;
+	if (typeof value === 'string' && !Number.isNaN(Number(value))) return Number.parseInt(value, 10);
+	return value;
+};
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const getEnvironmentDefaults = () =>
 	({
 		domain: process.env.DOMAIN ?? 'localhost:8000',
 		routePrefix: '/api',
-		rateLimitWindow: process.env.RATE_LIMIT_WINDOW ?? 2,
-		rateLimitMax: process.env.RATE_LIMIT_MAX ?? 5,
+		rateLimitWindow: parseEnvVariable(process.env.RATE_LIMIT_WINDOW) ?? 2,
+		rateLimitMax: parseEnvVariable(process.env.RATE_LIMIT_MAX) ?? 5,
 		secret: process.env.SECRET ?? randomstring.generate(64),
 		serviceName: process.env.SERVICE_NAME ?? 'change-me',
-		chunkSize: process.env.CHUNK_SIZE ? Number.parseFloat(process.env.CHUNK_SIZE) : 90,
-		chunkedUploadsTimeout: process.env.CHUNKED_UPLOADS_TIMEOUT
-			? Number.parseInt(process.env.CHUNKED_UPLOADS_TIMEOUT, 10)
-			: 30 * 60 * 1000, // 30 minutes
-		maxSize: process.env.MAX_SIZE ? Number.parseFloat(process.env.MAX_SIZE) : 5000,
-		// eslint-disable-next-line eqeqeq
-		generateZips: process.env.GENERATE_ZIPS == undefined,
-		generatedFilenameLength: process.env.GENERATED_FILENAME_LENGTH
-			? Number.parseInt(process.env.GENERATED_FILENAME_LENGTH, 10)
-			: 12,
-		generatedAlbumLength: process.env.GENERATED_ALBUM_LENGTH ?? 6,
+		chunkSize: parseEnvVariable(process.env.CHUNK_SIZE) ?? 90,
+		chunkedUploadsTimeout: parseEnvVariable(process.env.CHUNKED_UPLOADS_TIMEOUT) ?? 30 * 60 * 1000, // 30 minutes
+		maxSize: parseEnvVariable(process.env.MAX_SIZE) ?? 5000,
+		generateZips: parseEnvVariable(process.env.GENERATE_ZIPS) ?? true,
+		generatedFilenameLength: parseEnvVariable(process.env.GENERATED_FILENAME_LENGTH) ?? 12,
+		generatedAlbumLength: parseEnvVariable(process.env.GENERATED_ALBUM_LENGTH) ?? 6,
 		blockedExtensions: process.env.BLOCKED_EXTENSIONS
 			? process.env.BLOCKED_EXTENSIONS.split(',')
 			: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'],
-		// eslint-disable-next-line eqeqeq
-		blockNoExtension: process.env.BLOCK_NO_EXTENSION != undefined,
-		// eslint-disable-next-line eqeqeq
-		publicMode: process.env.PUBLIC_MODE == undefined,
-		// eslint-disable-next-line eqeqeq
-		userAccounts: process.env.USER_ACCOUNTS == undefined,
+		blockNoExtension: parseEnvVariable(process.env.BLOCK_NO_EXTENSION) ?? true,
+		publicMode: parseEnvVariable(process.env.PUBLIC_MODE) ?? true,
+		userAccounts: parseEnvVariable(process.env.USER_ACCOUNTS) ?? true,
 		metaThemeColor: process.env.META_THEME_COLOR ?? '#20222b',
 		metaDescription: process.env.META_DESCRIPTION ?? 'Blazing fast file uploader and bunker written in node! 🚀',
 		metaKeywords:
@@ -46,7 +46,7 @@ export const getEnvironmentDefaults = () =>
 		logoURL: process.env.LOGO_URL ?? '',
 		statisticsCron: process.env.STATISTICS_CRON ?? '0 0 * * * *',
 		// eslint-disable-next-line eqeqeq
-		disableStatisticsCron: process.env.DISABLE_STATISTICS_CRON != undefined,
+		disableStatisticsCron: parseEnvVariable(process.env.DISABLE_STATISTICS_CRON) ?? false,
 		enabledStatistics: process.env.ENABLED_STATISTICS
 			? process.env.ENABLED_STATISTICS.split(',')
 			: ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums']
