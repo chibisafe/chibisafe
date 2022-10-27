@@ -7,24 +7,58 @@
 			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
 		>
 			<div class="flex w-full mt-16 items-center relative max-w-4xl flex-col">
-				<h3 class="font-bold text-2xl dark:text-light-100 text-dark-100">You've received an invite!</h3>
-				<p class="mt-4 text-center">
-					Someone sent you an invite to create an account on this chibisafe instance. In order to continue
-					please create a username and password below.
-				</p>
+				<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 w-full">
+					<div class="sm:mx-auto sm:w-full sm:max-w-md">
+						<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-light-100">
+							You've received an invite!
+						</h2>
+						<p class="mt-4 text-center">
+							Someone sent you an invite to create an account on this chibisafe instance. In order to
+							continue please create a username and password below.
+						</p>
+					</div>
 
-				<div class="mt-4">
-					<Input v-model="username" label="Username" />
-					<Input v-model="password" label="Password" type="password" class="mt-4" />
-					<Input
-						v-model="repassword"
-						label="Password again"
-						type="password"
-						class="mt-4"
-						@keyup.prevent.enter="register"
-					/>
-					<div class="mt-4 justify-end flex gap-1">
-						<Button @click="register">Register</Button>
+					<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+							<form class="space-y-6" action="#" method="POST">
+								<div>
+									<label
+										for="email"
+										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+										>Username</label
+									>
+									<div class="mt-1">
+										<Input v-model="username" type="email" autocomplete="username" />
+									</div>
+								</div>
+
+								<div>
+									<label
+										for="password"
+										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+										>Password</label
+									>
+									<div class="mt-1">
+										<Input v-model="password" type="password" autocomplete="current-password" />
+									</div>
+								</div>
+
+								<div>
+									<label
+										for="password"
+										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+										>Re-type password</label
+									>
+									<div class="mt-1">
+										<Input v-model="repassword" type="password" autocomplete="current-password" />
+									</div>
+								</div>
+
+								<div class="mt-4 justify-end flex gap-1">
+									<Button variant="link" @click="register"> Create account </Button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
