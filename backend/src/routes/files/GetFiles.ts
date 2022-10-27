@@ -23,6 +23,20 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		skip: (page - 1) * limit,
 		where: {
 			userId: req.user.id
+		},
+		select: {
+			createdAt: true,
+			editedAt: true,
+			hash: true,
+			ip: true,
+			name: true,
+			original: true,
+			size: true,
+			type: true,
+			uuid: true
+		},
+		orderBy: {
+			id: 'desc'
 		}
 	});
 
