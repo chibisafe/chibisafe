@@ -46,7 +46,7 @@ export interface FileInProgress {
 }
 
 export interface File {
-	id: number;
+	// id: number;
 	uuid: string;
 	userId?: number | null;
 	name: string;
@@ -57,6 +57,10 @@ export interface File {
 	ip: string;
 	createdAt: Date;
 	editedAt: Date | null;
+}
+
+export interface FileWithId extends File {
+	id: number;
 }
 
 export interface ExtendedFile extends File {
