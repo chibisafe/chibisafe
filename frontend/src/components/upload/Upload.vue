@@ -14,16 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import Dropzone from 'dropzone';
 import { useUploadsStore } from '~/store/uploads';
+import { useUserStore } from '~/store/user';
 import type { ApiError } from '~/types';
 
 // @ts-ignore
 import IconUpload from '~icons/carbon/cloud-upload';
 
+const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
 const dropzone = ref<HTMLDivElement>();
+
+const isLoggedIn = computed(() => userStore.loggedIn);
+const token = computed(() => userStore.token);
 
 onMounted(() => {
 	if (dropzone.value) {
@@ -38,13 +43,17 @@ onMounted(() => {
 			maxFilesize: 100 * 1e6, // 100MB
 			createImageThumbnails: false,
 			previewTemplate: '',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json;charset=utf-8'
+			},
 			chunksUploaded: async (file, done) => {
 				if (!file.upload?.uuid) return;
 				const response = await fetch('/api/upload', {
 					method: 'POST',
 					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json;charset=utf-8'
+						'Content-Type': 'application/json;charset=utf-8',
+						Authorization: token.value ? `Bearer ${token.value}` : ''
 					},
 					body: JSON.stringify({
 						files: [
@@ -102,6 +111,10 @@ onMounted(() => {
 				console.log(file, message);
 			}
 		});
+
+		drop.options.headers = {
+			Authorization: token.value ? `Bearer ${token.value}` : ''
+		};
 	}
 });
 </script>
