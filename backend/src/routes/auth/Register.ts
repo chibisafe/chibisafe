@@ -12,25 +12,30 @@ export const options = {
 };
 
 export const run = async (req: Request, res: Response) => {
-	if (!req.headers.invite && !getEnvironmentDefaults().userAccounts) {
-		return res.status(401).json({
-			message: 'Creation of new accounts is currently disabled'
-		});
-	}
+	let foundInvite = null;
 
-	// Check if the invite is valid has not been used yet
-	const foundInvite = await prisma.invites.findFirst({
-		where: {
-			code: req.headers.invite,
-			used: false
+	// If new account creation is deactivated then check for an invite
+	if (!getEnvironmentDefaults().userAccounts) {
+		if (!req.headers.invite) {
+			return res.status(401).json({
+				message: 'Creation of new accounts is currently disabled'
+			});
 		}
-	});
 
-	// If no invite was found then reject the call
-	if (!foundInvite) {
-		return res.status(401).json({
-			message: 'Invalid invite code'
+		// Check if the invite is valid has not been used yet
+		foundInvite = await prisma.invites.findFirst({
+			where: {
+				code: req.headers.invite,
+				used: false
+			}
 		});
+
+		// If no invite was found then reject the call
+		if (!foundInvite) {
+			return res.status(401).json({
+				message: 'Invalid invite code'
+			});
+		}
 	}
 
 	const { username, password } = await req.json();
