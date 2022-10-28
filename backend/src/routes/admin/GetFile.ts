@@ -5,7 +5,7 @@ import type { User } from '../../structures/interfaces';
 
 export const options = {
 	url: '/admin/file/:uuid',
-	method: 'post',
+	method: 'get',
 	middlewares: ['auth', 'admin']
 };
 
@@ -33,6 +33,7 @@ export const run = async (req: Request, res: Response) => {
 			},
 			select: {
 				id: true,
+				uuid: true,
 				username: true,
 				enabled: true,
 				createdAt: true,

@@ -3,7 +3,7 @@ import prisma from '../../../structures/database';
 import log from '../../../utils/Log';
 
 export const options = {
-	url: '/login/ip/unban',
+	url: '/admin/ip/unban',
 	method: 'post',
 	middlewares: ['auth', 'admin']
 };
@@ -18,6 +18,8 @@ export const run = async (req: Request, res: Response) => {
 			ip
 		}
 	});
+
+	if (!record) return res.status(400).json({ message: 'IP is not banned' });
 
 	if (record) {
 		await prisma.bans.delete({

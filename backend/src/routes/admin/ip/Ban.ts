@@ -13,6 +13,14 @@ export const run = async (req: Request, res: Response) => {
 
 	if (!ip) return res.status(400).json({ message: 'No ip provided' });
 
+	const found = await prisma.bans.findFirst({
+		where: {
+			ip
+		}
+	});
+
+	if (found) return res.status(400).json({ message: 'IP is already banned' });
+
 	await prisma.bans.create({
 		data: {
 			ip

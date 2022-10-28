@@ -14,6 +14,14 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (uuid === req.user.uuid) return res.status(400).json({ message: "You can't apply this action to yourself" });
 
+	const user = await prisma.users.findUnique({
+		where: {
+			uuid
+		}
+	});
+
+	if (user?.isAdmin) return res.status(400).json({ message: 'User is already an admin' });
+
 	await prisma.users.update({
 		where: {
 			uuid

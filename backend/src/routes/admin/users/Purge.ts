@@ -32,6 +32,6 @@ export const run = async (req: Request, res: Response) => {
 	});
 
 	return res.json({
-		message: 'Successfully purged user'
+		message: "Successfully purged user's files and albums"
 	});
 };

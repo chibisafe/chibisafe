@@ -13,6 +13,14 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
 	if (uuid === req.user.uuid) return res.status(400).json({ message: "You can't apply this action to yourself" });
 
+	const user = await prisma.users.findUnique({
+		where: {
+			uuid
+		}
+	});
+
+	if (!user?.enabled) return res.status(400).json({ message: 'User is already disabled' });
+
 	await prisma.users.update({
 		where: {
 			uuid
