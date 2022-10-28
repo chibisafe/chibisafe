@@ -187,7 +187,9 @@
 								:key="item.name"
 								:href="item.href"
 								rel="noopener noreferrer"
+								target="_blank"
 								class="group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-light-100 hover:text-white"
+								@click="item.onClick ? item.onClick() : null"
 							>
 								<span class="truncate">{{ item.name }}</span>
 							</a>
@@ -217,9 +219,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
+import { useUserStore } from '~/store/user';
 
 // @ts-ignore
 import IconHome from '~icons/carbon/home';
@@ -231,6 +234,13 @@ import IconMenu from '~icons/carbon/menu';
 import IconClose from '~icons/carbon/close';
 
 const route = useRoute();
+const router = useRouter();
+const userStore = useUserStore();
+
+const logout = async () => {
+	await router.push('/');
+	userStore.logout();
+};
 
 const navigationItems = [
 	{ type: 'main', name: 'Home', href: '/', icon: IconHome, current: false },
@@ -244,6 +254,7 @@ const navigationItems = [
 	{ type: 'secondary', name: 'Patreon', href: 'https://www.patreon.com/pitu' },
 	{ type: 'secondary', name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
 	{ type: 'secondary', name: 'Get ShareX config', href: '#' },
+	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
 
 	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: IconTags, current: false },
 	{ type: 'admin', name: 'Users', href: '/dashboard/admin/users', icon: IconHome, current: false },

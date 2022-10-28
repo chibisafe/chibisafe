@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     FileInformation: typeof import('./src/components/modals/FileInformation.vue')['default']
     FileInformationModal: typeof import('./src/components/modals/FileInformationModal.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
+    IconCheck: typeof import('~icons/ic/on-check')['default']
     Input: typeof import('./src/components/forms/Input.vue')['default']
     InputWithOverlappingLabel: typeof import('./src/components/forms/InputWithOverlappingLabel.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

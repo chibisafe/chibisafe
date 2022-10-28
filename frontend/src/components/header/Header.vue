@@ -7,7 +7,20 @@
 			<span class="font-bold text-3xl">chibisafe</span>
 		</router-link>
 		<span class="flex-1" />
-		<Auth />
+
+		<router-link
+			v-if="!loggedIn"
+			to="/login"
+			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg"
+			>Login / Register</router-link
+		>
+
+		<router-link
+			v-else
+			to="/dashboard/uploads"
+			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg"
+			>Dashboard</router-link
+		>
 
 		<span class="ml-4">
 			<a href="https://discord.gg/5g6vgwn" rel="noopener noreferrer" target="_blank" class="hover:text-blue-400"
@@ -44,9 +57,11 @@
 </template>
 
 <script setup lang="ts">
-import Auth from '../auth/Auth.vue';
-// @ts-ignore
+import { computed } from 'vue';
 import IconGitHub from '~icons/carbon/logo-github';
-// @ts-ignore
 import IconDiscord from '~icons/carbon/logo-discord';
+
+import { useUserStore } from '~/store/user';
+const userStore = useUserStore();
+const loggedIn = computed(() => userStore.loggedIn);
 </script>
