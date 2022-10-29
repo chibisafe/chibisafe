@@ -1,9 +1,5 @@
 <template>
-	<button
-		type="button"
-		class="inline-flex font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-		:class="[getVariant, getAlign, `text-${props.size}`]"
-	>
+	<button type="button" class="" :class="[getVariant, getAlign, getSize]">
 		<slot />
 	</button>
 </template>
@@ -28,12 +24,14 @@ const props = defineProps({
 
 const getVariant = computed(() => {
 	if (props.variant === 'link') {
-		return 'bg-transparent hover:bg-transparent text-light-100 hover:text-white border-transparent p-0';
-	} else if (props.variant === 'none') {
-		return '';
+		return 'inline-flex font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 bg-transparent hover:bg-transparent text-light-100 hover:text-white border-transparent p-0';
 	}
 
-	return 'h-[42px] px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded hover:bg-[#14151d]';
+	return 'text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2';
+});
+
+const getSize = computed(() => {
+	return `text-${props.size}`;
 });
 
 const getAlign = computed(() => {

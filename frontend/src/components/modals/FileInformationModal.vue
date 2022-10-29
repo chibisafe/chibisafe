@@ -40,6 +40,21 @@
 								</div>
 								<!-- File information panel -->
 								<div class="flex flex-col w-1/3 pl-4">
+									<div class="flex justify-between">
+										<Button class="flex-auto" @click="copyLink">{{
+											isCopying ? 'Copied!' : 'Copy link'
+										}}</Button>
+										<a
+											:href="file.url"
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
+											>Open</a
+										>
+										<!-- <Button class="flex-auto">Open</Button> -->
+										<Button class="flex-auto mr-0">Delete</Button>
+									</div>
+
 									<h2 class="text-dark-100 dark:text-light-100">File info</h2>
 
 									<InputWithOverlappingLabel class="mt-8" label="UUID" :value="file.uuid" readOnly />
@@ -82,15 +97,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay, DialogTitle } from '@headlessui/vue';
+import { useClipboard } from '@vueuse/core';
 import { useModalstore } from '~/store/modals';
 import { formatBytes, isFileVideo } from '~/use/file';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
+import Button from '~/components/buttons/Button.vue';
 
 const modalsStore = useModalstore();
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
+
+const { copy } = useClipboard();
+const isCopying = ref(false);
+
+const copyLink = () => {
+	if (isCopying.value) return;
+	isCopying.value = true;
+
+	if (file.value?.url) void copy(file.value?.url);
+	// eslint-disable-next-line no-restricted-globals
+	setTimeout(() => (isCopying.value = false), 1000);
+};
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
