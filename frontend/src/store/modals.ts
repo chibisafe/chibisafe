@@ -1,21 +1,22 @@
 import { defineStore } from 'pinia';
-import type { FileWithAdditionalData } from '~/types';
+import type { FileWithAdditionalData, Album } from '~/types';
+import { getFile } from '~/use/api';
 
 export const useModalstore = defineStore('modals', {
 	state: () => ({
 		login: false,
 		fileInformation: {
 			show: false,
-			file: {} as FileWithAdditionalData | null
+			file: {} as FileWithAdditionalData | null,
+			albums: [] as string[]
 		}
 	}),
 	actions: {
-		// async get(page = 0) {
-		// 	const response = await getFiles(page);
-		// 	// TODO: Error handling
-		// 	if (!response) return;
-		// 	this.files = response.files;
-		// 	this.count = response.count;
-		// }
+		async getFileAlbums() {
+			if (!this.fileInformation.file?.uuid) return;
+			const file = await getFile(this.fileInformation.file.uuid);
+			if (!file) return;
+			this.fileInformation.albums = file.albums.map((album: Album) => album.uuid);
+		}
 	}
 });

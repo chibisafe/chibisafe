@@ -62,3 +62,41 @@ export const getFiles = async (page: number) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getFile = async (uuid: string) => {
+	try {
+		const data = await request.get(`file/${uuid}`);
+		console.log('getFile', data);
+		return { file: data.file, albums: data.albums, tags: data.tags };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getAlbums = async () => {
+	try {
+		const data = await request.get('albums');
+		console.log('getAlbums', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const addFileToAlbum = async (fileUuid: string, albumUuid: string) => {
+	try {
+		const data = await request.post(`file/${fileUuid}/album/${albumUuid}`);
+		console.log('addFileToAlbum', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const removeFileFromAlbum = async (fileUuid: string, albumUuid: string) => {
+	try {
+		const data = await request.delete(`file/${fileUuid}/album/${albumUuid}`);
+		console.log('removeFileFromAlbum', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

@@ -32,8 +32,8 @@
 						>
 							<div v-if="file" class="flex">
 								<!-- File preview -->
-								<div class="flex flex-1">
-									<img v-if="!isFileVideo(file)" :src="file.url" class="max-w-full h-auto" />
+								<div class="flex flex-1 justify-center items-center">
+									<img v-if="!isFileVideo(file)" :src="file.url" class="max-w-full h-fit" />
 									<video v-else controls>
 										<source :src="file.url" :type="file.type" />
 									</video>
@@ -48,16 +48,16 @@
 											:href="file.url"
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
+											class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-dark-110 dark:border-gray-700 dark:text-white dark:hover:bg-dark-100 mr-2 mb-2"
 											>Open</a
 										>
 										<!-- <Button class="flex-auto">Open</Button> -->
 										<Button class="flex-auto mr-0">Delete</Button>
 									</div>
 
-									<h2 class="text-dark-100 dark:text-light-100">File info</h2>
+									<h2 class="text-dark-100 dark:text-light-100 mt-1">File info</h2>
 
-									<InputWithOverlappingLabel class="mt-8" label="UUID" :value="file.uuid" readOnly />
+									<InputWithOverlappingLabel class="mt-4" label="UUID" :value="file.uuid" readOnly />
 									<InputWithOverlappingLabel class="mt-4" label="Name" :value="file.name" readOnly />
 									<InputWithOverlappingLabel
 										class="mt-4"
@@ -86,6 +86,34 @@
 										:value="file.createdAt"
 										readOnly
 									/>
+
+									<h2 class="text-dark-100 dark:text-light-100 mt-4 mb-4">Albums</h2>
+
+									<ul
+										class="w-full max-h-[540px] text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-dark-110 dark:border-dark-90 dark:text-white overflow-y-auto"
+									>
+										<li
+											v-for="album in albums"
+											:key="album.uuid"
+											class="w-full rounded-t-lg border-b border-gray-200 dark:border-dark-90"
+										>
+											<div class="flex items-center pl-3">
+												<input
+													:id="album.uuid"
+													type="checkbox"
+													value=""
+													:checked="album.selected"
+													class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-0 checked:bg-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-dark-90 dark:border-gray-500"
+													@change="clickedAlbum(!album.selected, album.uuid)"
+												/>
+												<label
+													:for="album.uuid"
+													class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+													>{{ album.name }}</label
+												>
+											</div>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -97,20 +125,57 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { TransitionRoot, TransitionChild, Dialog, DialogOverlay, DialogTitle } from '@headlessui/vue';
+import type { AlbumWithSelected } from '~/types';
+import { ref, computed, watch } from 'vue';
+import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
 import { useClipboard } from '@vueuse/core';
 import { useModalstore } from '~/store/modals';
+import { useAlbumsStore } from '~/store/albums';
 import { formatBytes, isFileVideo } from '~/use/file';
+import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
 
 const modalsStore = useModalstore();
+const albumsStore = useAlbumsStore();
+void albumsStore.get();
+
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
+const fileAlbums = computed(() => modalsStore.fileInformation.albums);
+
+const albums = computed(() => {
+	if (!fileAlbums.value) return albumsStore.albums as AlbumWithSelected[];
+	return albumsStore.albums.map(album => {
+		return {
+			...album,
+			selected: fileAlbums.value.includes(album.uuid)
+		};
+	}) as AlbumWithSelected[];
+});
+
+const clickedAlbum = async (newValue: boolean, uuid: string) => {
+	if (!file.value) return;
+	if (newValue) {
+		modalsStore.fileInformation.albums.push(uuid);
+		await addFileToAlbum(file.value.uuid, uuid);
+	} else {
+		const index = modalsStore.fileInformation.albums.indexOf(uuid);
+		if (index > -1) {
+			modalsStore.fileInformation.albums.splice(index, 1);
+			await removeFileFromAlbum(file.value.uuid, uuid);
+		}
+	}
+};
 
 const { copy } = useClipboard();
 const isCopying = ref(false);
+
+watch(file, async () => {
+	if (file.value?.uuid) {
+		void modalsStore.getFileAlbums();
+	}
+});
 
 const copyLink = () => {
 	if (isCopying.value) return;

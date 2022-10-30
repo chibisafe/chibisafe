@@ -53,8 +53,26 @@ export const request = {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: checkForToken(),
 					...headers
-					// Authorization: checkForToken()
+				},
+				body: JSON.stringify(data)
+			});
+			return await parseResponse(response);
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	},
+
+	// eslint-disable-next-line @typescript-eslint/default-param-last
+	delete: async (url = '', data = {}, headers?: {}) => {
+		try {
+			const response = await fetch(`/api/${url}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: checkForToken(),
+					...headers
 				},
 				body: JSON.stringify(data)
 			});

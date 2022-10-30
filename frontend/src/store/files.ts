@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getFiles } from '~/use/api';
+import { getFile, getFiles } from '~/use/api';
 import type { FileWithAdditionalData } from '../types';
 
 export const useFilesStore = defineStore('files', {

@@ -39,3 +39,16 @@ export interface FileWithAdditionalData extends File {
 export interface ApiError {
 	message: string;
 }
+
+export interface Album {
+	uuid: string;
+	name: string;
+	nsfw: boolean;
+	zippedAt: string;
+	createdAt: string;
+	editedAt: string;
+}
+
+export interface AlbumWithSelected extends Album {
+	selected: boolean;
+}
