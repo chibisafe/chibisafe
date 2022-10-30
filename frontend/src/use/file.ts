@@ -16,3 +16,18 @@ export const isFileVideo = (file: FileWithAdditionalData) => {
 	const { type } = file;
 	return type.startsWith('video/');
 };
+
+export const isFileImage = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('image/');
+};
+
+export const isFileAudio = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('audio/');
+};
+
+export const isFilePDF = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type === 'application/pdf';
+};

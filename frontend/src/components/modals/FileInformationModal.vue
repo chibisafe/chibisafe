@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
 	<TransitionRoot appear :show="isModalOpen" as="template" @afterLeave="clearStore">
 		<Dialog as="div" @close="closeModal">
@@ -33,11 +34,37 @@
 							<div v-if="file" class="flex">
 								<!-- File preview -->
 								<div class="flex flex-1 justify-center items-center">
-									<img v-if="!isFileVideo(file)" :src="file.url" class="max-w-full h-fit" />
-									<video v-else controls>
-										<source :src="file.url" :type="file.type" />
-									</video>
+									<img v-if="isFileImage(file)" :src="file.url" class="max-w-full h-fit" />
+
+									<media-controller v-else-if="isFileVideo(file)">
+										<video slot="media" :src="file.url" crossorigin=""></video>
+										<media-control-bar>
+											<media-play-button></media-play-button>
+											<media-mute-button></media-mute-button>
+											<media-volume-range></media-volume-range>
+											<media-time-range></media-time-range>
+											<media-pip-button></media-pip-button>
+											<media-fullscreen-button></media-fullscreen-button>
+										</media-control-bar>
+									</media-controller>
+
+									<media-controller v-else-if="isFileAudio(file)" audio>
+										<audio slot="media" :src="file.url"></audio>
+										<media-control-bar>
+											<media-play-button></media-play-button>
+											<media-time-display show-duration></media-time-display>
+											<media-time-range></media-time-range>
+											<media-playback-rate-button></media-playback-rate-button>
+											<media-mute-button></media-mute-button>
+											<media-volume-range></media-volume-range>
+										</media-control-bar>
+									</media-controller>
+
+									<span v-else class="text-light-100"
+										>Sorry but this file can't be previewd at this time.</span
+									>
 								</div>
+
 								<!-- File information panel -->
 								<div class="flex flex-col w-1/3 pl-4">
 									<div class="flex justify-between">
@@ -51,8 +78,9 @@
 											class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-dark-110 dark:border-gray-700 dark:text-white dark:hover:bg-dark-100 mr-2 mb-2"
 											>Open</a
 										>
-										<!-- <Button class="flex-auto">Open</Button> -->
-										<Button class="flex-auto mr-0">Delete</Button>
+										<Button class="flex-auto mr-0" @click="showDeleteFileModal(file)"
+											>Delete</Button
+										>
 									</div>
 
 									<h2 class="text-dark-100 dark:text-light-100 mt-1">File info</h2>
@@ -122,19 +150,21 @@
 			</div>
 		</Dialog>
 	</TransitionRoot>
+	<DeleteFileModal />
 </template>
 
 <script setup lang="ts">
-import type { AlbumWithSelected } from '~/types';
+import type { AlbumWithSelected, FileWithAdditionalData } from '~/types';
 import { ref, computed, watch } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
 import { useClipboard } from '@vueuse/core';
 import { useModalstore } from '~/store/modals';
 import { useAlbumsStore } from '~/store/albums';
-import { formatBytes, isFileVideo } from '~/use/file';
+import { formatBytes, isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
+import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
 
 const modalsStore = useModalstore();
 const albumsStore = useAlbumsStore();
@@ -184,6 +214,11 @@ const copyLink = () => {
 	if (file.value?.url) void copy(file.value?.url);
 	// eslint-disable-next-line no-restricted-globals
 	setTimeout(() => (isCopying.value = false), 1000);
+};
+
+const showDeleteFileModal = (file: FileWithAdditionalData) => {
+	modalsStore.deleteFile.file = file;
+	modalsStore.deleteFile.show = true;
 };
 
 // Clear the store only after the transition is done to prevent artifacting
