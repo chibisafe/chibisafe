@@ -27,7 +27,13 @@ export default defineConfig({
 		PACKAGE_VERSION: JSON.stringify(JSON.parse(readFileSync('package.json', 'utf8')).version)
 	},
 	plugins: [
-		vue(),
+		vue({
+			template: {
+				compilerOptions: {
+					isCustomElement: tag => tag.startsWith('media-')
+				}
+			}
+		}),
 		Pages({
 			dirs: [{ dir: 'src/pages', baseRoute: '' }],
 			exclude: ['**/*.test.ts'],

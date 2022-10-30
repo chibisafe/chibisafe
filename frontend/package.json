@@ -30,6 +30,7 @@
 		"@vueuse/core": "^8.7.5",
 		"dayjs": "^1.11.5",
 		"dropzone": "^6.0.0-beta.2",
+		"media-chrome": "^0.16.0",
 		"pinia": "^2.0.22",
 		"vue": "^3.2.40",
 		"vue-meta": "^3.0.0-alpha.10",

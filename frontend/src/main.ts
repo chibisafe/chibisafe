@@ -2,6 +2,8 @@ import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import { createMetaManager } from 'vue-meta';
 
+import 'media-chrome';
+
 // @ts-ignore
 import App from './App.vue';
 import router from './router';
