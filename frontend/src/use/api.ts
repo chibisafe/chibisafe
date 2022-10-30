@@ -73,6 +73,15 @@ export const getFile = async (uuid: string) => {
 	}
 };
 
+export const deleteFile = async (uuid: string) => {
+	try {
+		const data = await request.delete(`file/${uuid}`);
+		console.log('deleteFile', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getAlbums = async () => {
 	try {
 		const data = await request.get('albums');

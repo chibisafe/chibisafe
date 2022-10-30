@@ -9,6 +9,10 @@ export const useModalstore = defineStore('modals', {
 			show: false,
 			file: {} as FileWithAdditionalData | null,
 			albums: [] as string[]
+		},
+		deleteFile: {
+			show: false,
+			file: {} as FileWithAdditionalData | null
 		}
 	}),
 	actions: {
