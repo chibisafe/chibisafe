@@ -51,5 +51,5 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({ message: 'TThe password was changed successfully' });
+	return res.json({ message: 'The password was changed successfully' });
 };
