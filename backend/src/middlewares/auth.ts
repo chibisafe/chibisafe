@@ -7,6 +7,7 @@ import process from 'node:process';
 
 interface Decoded {
 	sub: number;
+	iat: number;
 }
 
 export default (
@@ -38,6 +39,7 @@ export default (
 	JWT.verify(token, process.env.JWT_SECRET ?? '', async (error, decoded) => {
 		if (error) return res.status(401).json({ message: 'Invalid token' });
 		const id = (decoded as Decoded | undefined)?.sub ?? null;
+		const dateSigned = (decoded as Decoded | undefined)?.iat ?? null;
 		if (!id) return res.status(401).json({ message: 'Invalid authorization' });
 
 		const user = await prisma.users.findFirst({
@@ -49,12 +51,23 @@ export default (
 				uuid: true,
 				username: true,
 				isAdmin: true,
-				apiKey: true
+				apiKey: true,
+				passwordEditedAt: true
 			}
 		});
 
+		if (dateSigned && Number(user?.passwordEditedAt) > dateSigned) {
+			return res.status(401).json({ message: 'Token expired' });
+		}
+
 		if (!user) return res.status(401).json({ message: "User doesn't exist" });
-		req.user = user;
+		req.user = {
+			id: user.id,
+			uuid: user.uuid,
+			username: user.username,
+			isAdmin: user.isAdmin,
+			apiKey: user.apiKey
+		};
 		log.debug(`Username: ${user.username}`);
 		next();
 	});
