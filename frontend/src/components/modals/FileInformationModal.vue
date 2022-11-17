@@ -216,7 +216,8 @@ const copyLink = () => {
 	setTimeout(() => (isCopying.value = false), 1000);
 };
 
-const showDeleteFileModal = (file: FileWithAdditionalData) => {
+const showDeleteFileModal = (file: FileWithAdditionalData | null) => {
+	if (!file) return;
 	modalsStore.deleteFile.file = file;
 	modalsStore.deleteFile.show = true;
 };

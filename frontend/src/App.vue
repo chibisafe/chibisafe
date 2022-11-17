@@ -31,6 +31,7 @@ useMeta({
 });
 
 console.log(
+	// @ts-ignore
 	`%c chibisafe %c v${PACKAGE_VERSION} %c`,
 	'background:#35495e; padding: 1px; color: #fff',
 	'background:#ff015b; padding: 1px; color: #fff',
