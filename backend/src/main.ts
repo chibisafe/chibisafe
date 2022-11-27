@@ -13,6 +13,8 @@ import cors from 'cors';
 import Routes from './structures/routes';
 import Serve from './structures/serve';
 
+import Requirements from './utils/Requirements';
+
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { getEnvironmentDefaults } from './utils/Util';
 
@@ -28,6 +30,10 @@ process.on('unhandledRejection', error => {
 });
 
 const start = async () => {
+	// Check the environment has all the requirements before running chibisafe
+	await Requirements();
+
+	// Create the HyperExpress server
 	const server = new HyperExpress.Server({
 		trust_proxy: true,
 		fast_buffers: true

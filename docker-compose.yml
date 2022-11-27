@@ -11,3 +11,4 @@ services:
       - ./uploads:/home/node/chibisafe/uploads:rw
     ports:
       - 8000:8000
+    restart: always

@@ -43,6 +43,7 @@
 		"hyper-express": "^6.4.10",
 		"jsonwebtoken": "^8.5.1",
 		"live-directory": "^2.3.2",
+		"lookpath": "^1.2.2",
 		"moment": "^2.29.4",
 		"node-schedule": "^2.1.0",
 		"pino": "^8.5.0",
