@@ -1,6 +1,12 @@
 FROM node:18
 USER root
 
+# Update apt
+RUN apt -y update
+
+# Install ffmpeg
+RUN apt -y install ffmpeg
+
 # Create app directory
 WORKDIR /home/node/chibisafe
 

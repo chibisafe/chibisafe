@@ -9,10 +9,14 @@ export default async () => {
 		process.exit(1);
 	}
 
+	log.info('Node version: OK');
+
 	if (!process.env.JWT_SECRET) {
 		log.error('It seems there are no environment variables configured. To fix this please run `npm run setup`');
 		process.exit(1);
 	}
+
+	log.info('Env variables: OK');
 
 	const ffmpegExists = await lookpath('ffmpeg');
 	if (!ffmpegExists) {
@@ -21,4 +25,6 @@ export default async () => {
 		);
 		process.exit(1);
 	}
+
+	log.info('ffmpeg: OK');
 };
