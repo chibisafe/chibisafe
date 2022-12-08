@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     About: typeof import('./src/components/about/About.vue')['default']
+    AlbumSettingsModal: typeof import('./src/components/modals/AlbumSettingsModal.vue')['default']
     Button: typeof import('./src/components/buttons/Button.vue')['default']
     DeleteFileModal: typeof import('./src/components/modals/DeleteFileModal.vue')['default']
     FileInformationModal: typeof import('./src/components/modals/FileInformationModal.vue')['default']

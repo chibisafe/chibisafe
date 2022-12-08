@@ -16,6 +16,10 @@ export const useModalstore = defineStore('modals', {
 		},
 		newAlbum: {
 			show: false
+		},
+		albumSettings: {
+			show: false,
+			album: {} as Album | null
 		}
 	}),
 	actions: {

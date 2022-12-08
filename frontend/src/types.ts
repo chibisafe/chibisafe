@@ -60,6 +60,14 @@ export interface AlbumForMasonry {
 	files: FileWithAdditionalData[];
 }
 
+export interface AlbumLinks {
+	uuid: string;
+	identifier: string;
+	views: number;
+	enabled: boolean;
+	enableDownload: boolean;
+}
+
 export interface AlbumWithSelected extends Album {
 	selected: boolean;
 }

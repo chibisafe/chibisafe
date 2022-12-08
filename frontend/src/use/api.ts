@@ -128,3 +128,13 @@ export const getAlbum = async (uuid: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getAlbumLinks = async (uuid: string) => {
+	try {
+		const data = await request.get(`album/${uuid}/links`);
+		console.log('getAlbumLinks', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

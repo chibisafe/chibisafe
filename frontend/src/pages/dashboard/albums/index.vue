@@ -32,6 +32,7 @@
 						</router-link>
 						<div
 							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 dark:border-dark-90"
+							@click="showEditAlbumModal(album)"
 						>
 							<IconSettings />
 						</div>
@@ -41,16 +42,21 @@
 		</div>
 	</Sidebar>
 	<NewAlbumModal />
+	<AlbumSettingsModal />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAlbumsStore } from '~/store/albums';
 import { useModalstore } from '~/store/modals';
+import type { Album } from '~/types';
+
 import Sidebar from '~/components/sidebar/Sidebar.vue';
-import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import Button from '~/components/buttons/Button.vue';
 import IconSettings from '~icons/carbon/settings';
+
+import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
+import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
 
 const albumsStore = useAlbumsStore();
 const modalsStore = useModalstore();
@@ -58,6 +64,12 @@ const albums = computed(() => albumsStore.albums);
 
 const showNewAlbumModal = () => {
 	modalsStore.newAlbum.show = true;
+};
+
+const showEditAlbumModal = (album: Album) => {
+	void albumsStore.getAlbumLinks(album.uuid);
+	modalsStore.albumSettings.album = album;
+	modalsStore.albumSettings.show = true;
 };
 
 void albumsStore.get();

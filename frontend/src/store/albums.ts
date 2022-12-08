@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { getAlbums, getAlbum } from '~/use/api';
-import type { Album, AlbumForMasonry } from '../types';
+import { getAlbums, getAlbum, getAlbumLinks } from '~/use/api';
+import type { Album, AlbumForMasonry, AlbumLinks } from '../types';
 
 export const useAlbumsStore = defineStore('albums', {
 	state: () => ({
 		albums: [] as Album[],
-		album: {} as AlbumForMasonry | null
+		album: {} as AlbumForMasonry | null,
+		currentAlbumLinks: [] as AlbumLinks[]
 	}),
 	actions: {
 		async get(force = false) {
@@ -26,6 +27,11 @@ export const useAlbumsStore = defineStore('albums', {
 				isNsfw: response.isNsfw,
 				count: response.filesCount
 			};
+		},
+		async getAlbumLinks(uuid: string) {
+			const response = await getAlbumLinks(uuid);
+			if (!response) return;
+			this.currentAlbumLinks = response.links;
 		}
 	}
 });
