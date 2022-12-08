@@ -10,29 +10,31 @@
 					<li
 						v-for="album in albums"
 						:key="album.uuid"
-						class="col-span-1 flex rounded-md shadow-sm hover:shadow-lg cursor-pointer h-16"
+						class="col-span-1 flex rounded-md shadow-sm hover:shadow-lg cursor-pointer h-16 w-72"
 					>
-						<div
-							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md border-t border-l border-b bg-dark-90 dark:border-dark-90"
-							:style="album.cover ? `background: url(${album.cover})` : ''"
-						/>
-						<div
-							class="flex flex-1 items-center justify-between truncate border-t border-r border-b border-gray-200 bg-white dark:bg-dark-110 dark:border-dark-90"
-						>
-							<div class="flex-1 truncate px-4 py-2 text-sm">
-								<p class="font-medium text-gray-900 hover:text-gray-600 dark:text-light-100">
-									{{ album.name }}
-								</p>
-								<p v-if="album.count" class="text-gray-400">
-									{{ album.count }} file{{ album.count > 1 ? 's' : '' }}
-								</p>
+						<router-link :to="`/dashboard/albums/${album.uuid}`" class="flex w-full">
+							<div
+								class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md border-t border-l border-b bg-dark-90 dark:border-dark-90"
+								:style="album.cover ? `background: url(${album.cover})` : ''"
+							/>
+							<div
+								class="flex flex-1 items-center justify-between truncate border-t border-r border-b border-gray-200 bg-white dark:bg-dark-110 dark:border-dark-90"
+							>
+								<div class="flex-1 truncate px-4 py-2 text-sm">
+									<p class="font-medium text-gray-900 hover:text-gray-600 dark:text-light-100">
+										{{ album.name }}
+									</p>
+									<p v-if="album.count" class="text-gray-400">
+										{{ album.count }} file{{ album.count > 1 ? 's' : '' }}
+									</p>
+								</div>
 							</div>
-						</div>
-						<router-link
-							:to="`/dashboard/albums/${album.uuid}`"
+						</router-link>
+						<div
 							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 dark:border-dark-90"
-							>Files</router-link
 						>
+							<IconSettings />
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -48,6 +50,7 @@ import { useModalstore } from '~/store/modals';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import Button from '~/components/buttons/Button.vue';
+import IconSettings from '~icons/carbon/settings';
 
 const albumsStore = useAlbumsStore();
 const modalsStore = useModalstore();
@@ -57,10 +60,6 @@ const showNewAlbumModal = () => {
 	modalsStore.newAlbum.show = true;
 };
 
-// const showModal = (file: FileWithAdditionalData) => {
-// 	modalsStore.fileInformation.file = file;
-// 	modalsStore.fileInformation.show = true;
-// };
-
 void albumsStore.get();
+albumsStore.album = null;
 </script>

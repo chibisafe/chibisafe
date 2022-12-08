@@ -118,3 +118,13 @@ export const createAlbum = async (name: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getAlbum = async (uuid: string) => {
+	try {
+		const data = await request.get(`album/${uuid}`);
+		console.log('getAlbum', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

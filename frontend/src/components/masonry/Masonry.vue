@@ -60,7 +60,7 @@ const modalsStore = useModalstore();
 
 const files = computed(() => {
 	if (props.type === 'uploads') return filesStore.files;
-	else if (props.type === 'album') return albumsStore.album.files;
+	else if (props.type === 'album') return albumsStore.album?.files;
 	else return [];
 });
 

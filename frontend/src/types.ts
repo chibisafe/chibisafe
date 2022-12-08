@@ -43,12 +43,21 @@ export interface ApiError {
 export interface Album {
 	uuid: string;
 	name: string;
-	nsfw: boolean;
+	isNsfw: boolean;
 	zippedAt: string;
 	createdAt: string;
 	editedAt: string;
 	cover?: string;
 	count?: number;
+	files?: FileWithAdditionalData[];
+}
+
+export interface AlbumForMasonry {
+	uuid: string;
+	name: string;
+	isNsfw: boolean;
+	count: number;
+	files: FileWithAdditionalData[];
 }
 
 export interface AlbumWithSelected extends Album {

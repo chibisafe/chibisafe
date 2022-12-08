@@ -49,7 +49,8 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		},
 		select: {
 			uuid: true,
-			name: true
+			name: true,
+			type: true
 		},
 		orderBy: {
 			id: 'desc'
