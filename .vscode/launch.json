@@ -2,7 +2,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"command": "npm run dev",
+			"command": "npm run dev:reload",
 			"name": "[DEV] Start backend",
 			"request": "launch",
 			"type": "node-terminal",
