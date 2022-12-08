@@ -1,5 +1,5 @@
 <template>
-	<button type="button" class="" :class="[getVariant, getAlign, getSize]">
+	<button type="button" class="" :class="[getVariant, getAlign, getSize, getType]">
 		<slot />
 	</button>
 </template>
@@ -19,6 +19,10 @@ const props = defineProps({
 	align: {
 		type: String,
 		default: 'center'
+	},
+	type: {
+		type: String,
+		default: 'none'
 	}
 });
 
@@ -42,5 +46,13 @@ const getAlign = computed(() => {
 	}
 
 	return 'justify-center';
+});
+
+const getType = computed(() => {
+	if (props.type === 'success') {
+		return 'dark:bg-green-700 dark:hover:bg-green-600';
+	}
+
+	return '';
 });
 </script>

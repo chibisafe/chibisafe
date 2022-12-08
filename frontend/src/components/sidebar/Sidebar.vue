@@ -244,7 +244,7 @@ const logout = async () => {
 
 const navigationItems = [
 	{ type: 'main', name: 'Home', href: '/', icon: IconHome, current: false },
-	{ type: 'main', name: 'Uploads', href: '/dashboard', icon: IconUploads, current: false },
+	{ type: 'main', name: 'Uploads', href: '/dashboard/uploads', icon: IconUploads, current: false },
 	{ type: 'main', name: 'Albums', href: '/dashboard/albums', icon: IconAlbums, current: false },
 	{ type: 'main', name: 'Tags', href: '/dashboard/tags', icon: IconTags, current: false },
 	{ type: 'main', name: 'My account', href: '/dashboard/account', icon: IconAccount, current: false },

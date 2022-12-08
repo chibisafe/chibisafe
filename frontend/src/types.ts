@@ -47,6 +47,8 @@ export interface Album {
 	zippedAt: string;
 	createdAt: string;
 	editedAt: string;
+	cover?: string;
+	count?: number;
 }
 
 export interface AlbumWithSelected extends Album {

@@ -109,3 +109,12 @@ export const removeFileFromAlbum = async (fileUuid: string, albumUuid: string) =
 		sendErrorToast(error.message);
 	}
 };
+
+export const createAlbum = async (name: string) => {
+	try {
+		const data = await request.post('album/create', { name });
+		console.log('createAlbum', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
