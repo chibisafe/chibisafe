@@ -59,7 +59,7 @@
 		"helmet": "^3.15.1",
 		"imagesloaded": "^4.1.4",
 		"joi": "^17.3.0",
-		"jsonwebtoken": "^8.5.0",
+		"jsonwebtoken": "^9.0.0",
 		"knex": "^0.21.15",
 		"masonry-layout": "^4.2.2",
 		"moment": "^2.24.0",
