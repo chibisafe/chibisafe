@@ -249,13 +249,14 @@ export const getAlbumStats = async () => {
 		})
 		.then(row => row.id);
 
-	stats['Files in albums'] = await prisma.albumsFiles
-		.count({
-			select: {
-				id: true
-			}
-		})
-		.then(row => row.id);
+	// TODO: Fix relation
+	// stats['Files in albums'] = await prisma.albumsFiles
+	// 	.count({
+	// 		select: {
+	// 			id: true
+	// 		}
+	// 	})
+	// 	.then(row => row.id);
 
 	return stats;
 };

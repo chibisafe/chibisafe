@@ -13,26 +13,6 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	const { uuid } = req.path_parameters;
 	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
 
-	// Make sure the public link exists and it's enabled
-	const album = await prisma.albums.findFirst({
-		where: {
-			uuid,
-			userId: req.user.id
-		}
-	});
-
-	if (!album) return res.status(404).json({ message: 'The album could not be found' });
-
-	// TODO: Figure out how to join with prisma, probably need to update the schema for it
-	const albumsFiles = await prisma.albumsFiles.findMany({
-		where: {
-			albumId: album.id
-		},
-		select: {
-			fileId: true
-		}
-	});
-
 	// Set up pagination options
 	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
 	const options = {
@@ -40,44 +20,45 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		skip: (page - 1) * limit
 	};
 
-	// Grab all the files
-	const files = (await prisma.files.findMany({
+	// Make sure the uuid exists and it belongs to the user
+	const album = await prisma.albums.findFirst({
 		where: {
-			id: {
-				in: albumsFiles.map(af => af.fileId)
-			}
+			uuid,
+			userId: req.user.id
 		},
 		select: {
-			uuid: true,
+			id: true,
 			name: true,
-			type: true
-		},
-		orderBy: {
-			id: 'desc'
-		},
-		...options
-	})) as File[];
-
-	// Count total files in album
-	const fileCount = await prisma.files.count({
-		where: {
-			id: {
-				in: albumsFiles.map(af => af.fileId)
-			}
+			nsfw: true,
+			files: {
+				select: {
+					uuid: true,
+					name: true,
+					type: true
+				},
+				orderBy: {
+					id: 'desc'
+				},
+				...options
+			},
+			_count: true
 		}
 	});
 
-	// Build the public links
-	const parsedFiles: ExtendedFile[] = [];
-	for (const file of files) {
-		parsedFiles.push(constructFilePublicLink(req, file));
+	if (!album) return res.status(404).json({ message: 'The album could not be found' });
+
+	// Construct the public links
+	const files = [] as File[];
+	for (const file of album.files) {
+		const modifiedFile = file as File;
+		files.push(constructFilePublicLink(req, modifiedFile));
 	}
 
 	return res.json({
 		message: 'Successfully retrieved album',
 		name: album.name,
-		files: parsedFiles,
+		files,
 		isNsfw: album.nsfw,
-		filesCount: fileCount
+		filesCount: album._count.files
 	});
 };

@@ -1,6 +1,6 @@
 import type { Response } from 'hyper-express';
 import prisma from '../../structures/database';
-import type { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser, Album } from '../../structures/interfaces';
 import { constructFilePublicLink } from '../../utils/File';
 
 export const options = {
@@ -15,20 +15,23 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			userId: req.user.id
 		},
 		select: {
-			id: true, // Don't forget to remove id from the final object as to not expose it to the public
 			uuid: true,
 			name: true,
 			nsfw: true,
 			zippedAt: true,
 			createdAt: true,
-			editedAt: true
+			editedAt: true,
+			files: {
+				orderBy: {
+					id: 'asc'
+				},
+				take: 1
+			},
+			_count: true
 		}
 	});
 
 	if (!albums.length) return res.status(404).json({ message: 'No albums where found' });
-
-	// TODO: Do a join instead of this to grab the amount of files an album has
-	// And since we're at it, grab the first pic uploaded and use it as a thumb
 
 	// TODO: Instead of the first, being able to select a cover picture for an album would
 	// be a neat feature
@@ -38,34 +41,13 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		const newObject = {
 			...album,
 			cover: ('' as string) || undefined,
-			count: 0
-		};
+			count: album._count.files
+		} as Partial<Album>;
 
-		const fetchRelation = await prisma.albumsFiles.findFirst({
-			where: {
-				albumId: album.id
-			},
-			orderBy: {
-				id: 'asc'
-			}
-		});
+		delete newObject.files;
+		delete newObject._count;
 
-		if (fetchRelation?.fileId) {
-			const fetchFile = await prisma.files.findFirst({
-				where: {
-					id: fetchRelation?.fileId
-				}
-			});
-
-			newObject.cover = fetchFile ? constructFilePublicLink(req, fetchFile).thumbSquare : '';
-		}
-
-		const filesInAlbum = await prisma.albums.count({
-			where: {
-				uuid: album.uuid
-			}
-		});
-
+		newObject.cover = album.files[0] ? constructFilePublicLink(req, album.files[0]).thumbSquare : '';
 		fetchedAlbums.push(newObject);
 	}
 

@@ -30,18 +30,16 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (!albumExists) return res.status(401).json({ message: "Album doesn't exist or doesn't belong to the user" });
 
-	const relationExists = await prisma.albumsFiles.findFirst({
+	await prisma.files.update({
 		where: {
-			fileId: fileExists.id,
-			albumId: albumExists.id
-		}
-	});
-
-	if (!relationExists) return res.status(400).json({ message: "The file doesn't belong to the album" });
-
-	await prisma.albumsFiles.delete({
-		where: {
-			id: relationExists.id
+			id: fileExists.id
+		},
+		data: {
+			albums: {
+				disconnect: {
+					id: albumExists.id
+				}
+			}
 		}
 	});
 

@@ -25,24 +25,24 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			uuid: tagUuid,
 			userId: req.user.id
+		},
+		select: {
+			id: true
 		}
 	});
 
 	if (!tagExists) return res.status(401).json({ message: "Tag doesn't exist or doesn't belong to the user" });
 
-	const relationExists = await prisma.fileTags.findFirst({
+	await prisma.files.update({
 		where: {
-			fileId: fileExists.id,
-			tagId: tagExists.id
-		}
-	});
-
-	if (relationExists) return res.status(400).json({ message: 'The file already has this tag' });
-
-	await prisma.fileTags.create({
+			id: fileExists.id
+		},
 		data: {
-			fileId: fileExists.id,
-			tagId: tagExists.id
+			tags: {
+				connect: {
+					id: tagExists.id
+				}
+			}
 		}
 	});
 

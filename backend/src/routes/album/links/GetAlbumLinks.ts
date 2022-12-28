@@ -16,6 +16,9 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			uuid,
 			userId: req.user.id
+		},
+		select: {
+			id: true
 		}
 	});
 
@@ -25,6 +28,16 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			albumId: album.id,
 			userId: req.user.id
+		},
+		select: {
+			uuid: true,
+			identifier: true,
+			views: true,
+			enabled: true,
+			enableDownload: true,
+			expiresAt: true,
+			createdAt: true,
+			editedAt: true
 		}
 	});
 

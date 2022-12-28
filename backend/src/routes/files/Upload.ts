@@ -482,11 +482,8 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 	// so can not aggregrate multiple INSERTs into one query (?).
 	log.debug(`await db insert: ${files.length}`);
 	for (const file of files) {
-		const entry = await storeFileToDb(req.user, file);
+		const entry = await storeFileToDb(req.user, file, albumId ? albumId : undefined);
 		stored.push(entry);
-		if (!entry.repeated && albumId !== null) {
-			await saveFileToAlbum(albumId, entry.file.id);
-		}
 	}
 
 	return res.json({

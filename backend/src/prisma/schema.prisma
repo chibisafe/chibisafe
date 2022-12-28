@@ -22,35 +22,6 @@ model users {
 	editedAt DateTime?
 }
 
-model albums {
-	id Int @id @default(autoincrement())
-	uuid String @unique
-	userId Int
-	name String
-	zippedAt DateTime?
-	createdAt DateTime @default(now())
-	editedAt DateTime?
-	nsfw Boolean @default(false)
-}
-
-model albumsFiles {
-	id Int @id @default(autoincrement())
-	albumId Int
-	fileId Int
-}
-
-model bans {
-	id Int @id @default(autoincrement())
-	ip String
-	createdAt DateTime @default(now())
-}
-
-model fileTags {
-	id Int @id @default(autoincrement())
-	fileId Int
-	tagId Int
-}
-
 model files {
 	id Int @id @default(autoincrement())
 	uuid String @unique
@@ -63,6 +34,26 @@ model files {
 	ip String
 	createdAt DateTime @default(now())
 	editedAt DateTime?
+	albums albums[]
+	tags tags[]
+}
+
+model albums {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int
+	name String
+	zippedAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+	nsfw Boolean @default(false)
+	files files[]
+}
+
+model bans {
+	id Int @id @default(autoincrement())
+	ip String
+	createdAt DateTime @default(now())
 }
 
 model links {
@@ -100,6 +91,7 @@ model tags {
 	name String
 	createdAt DateTime @default(now())
 	editedAt  DateTime?
+	files files[]
 }
 
 model invites {

@@ -26,19 +26,13 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			uuid: albumUuid,
 			userId: req.user.id
+		},
+		select: {
+			id: true
 		}
 	});
 
 	if (!albumExists) return res.status(401).json({ message: "Album doesn't exist or doesn't belong to the user" });
-
-	const relationExists = await prisma.albumsFiles.findFirst({
-		where: {
-			fileId: fileExists.id,
-			albumId: albumExists.id
-		}
-	});
-
-	if (relationExists) return res.status(400).json({ message: 'The file is already in the album' });
 
 	await saveFileToAlbum(albumExists.id, fileExists.id);
 

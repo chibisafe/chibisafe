@@ -30,18 +30,16 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (!tagExists) return res.status(401).json({ message: "Tag doesn't exist or doesn't belong to the user" });
 
-	const relationExists = await prisma.fileTags.findFirst({
+	await prisma.files.update({
 		where: {
-			fileId: fileExists.id,
-			tagId: tagExists.id
-		}
-	});
-
-	if (!relationExists) return res.status(400).json({ message: "The tag doesn't belong to the file" });
-
-	await prisma.fileTags.delete({
-		where: {
-			id: relationExists.id
+			id: fileExists.id
+		},
+		data: {
+			tags: {
+				disconnect: {
+					id: tagExists.id
+				}
+			}
 		}
 	});
 

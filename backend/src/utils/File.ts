@@ -213,33 +213,6 @@ export const deleteFile = async (filename: string, deleteFromDB = false) => {
 	}
 };
 
-export const deleteAllFilesFromAlbum = async (id: number) => {
-	try {
-		const fileAlbums = await prisma.albumsFiles.findMany({
-			where: {
-				albumId: id
-			},
-			select: {
-				fileId: true
-			}
-		});
-
-		for (const fileAlbum of fileAlbums) {
-			const file = await prisma.files.findUnique({
-				where: {
-					id: fileAlbum.fileId
-				}
-			});
-
-			if (!file?.name) continue;
-
-			await deleteFile(file.name, true);
-		}
-	} catch (error) {
-		log.error(error);
-	}
-};
-
 export const deleteAllFilesFromUser = async (uuid: string) => {
 	try {
 		const files = await prisma.files.findMany({
@@ -256,40 +229,16 @@ export const deleteAllFilesFromUser = async (uuid: string) => {
 	}
 };
 
-export const deleteAllFilesFromTag = async (id: number) => {
-	try {
-		const fileTags = await prisma.fileTags.findMany({
-			where: {
-				tagId: id
-			}
-		});
-		for (const fileTag of fileTags) {
-			const file = await prisma.files.findFirst({
-				where: {
-					id: fileTag.fileId
-				},
-				select: {
-					name: true
-				}
-			});
-			if (!file) continue;
-			await deleteFile(file.name, true);
-		}
-	} catch (error) {
-		log.error(error);
-	}
-};
-
 export const getFilenameFromPath = (fullPath: string) => fullPath.replace(/^.*[/\\]/, ''); // eslint-disable-line no-useless-escape
 
-export const createZip = (files: string[], album: Album) => {
+export const createZip = (files: string[], albumUuid: string) => {
 	try {
 		const zip = new Zip();
 		for (const file of files) {
 			zip.addLocalFile(path.join(uploadPath, file));
 		}
 
-		zip.writeZip(path.join(__dirname, '../../../', 'uploads', 'zips', `${album.uuid}.zip`));
+		zip.writeZip(path.join(__dirname, '../../../', 'uploads', 'zips', `${albumUuid}.zip`));
 	} catch (error) {
 		log.error(error);
 	}
@@ -309,25 +258,11 @@ export const constructFilePublicLink = (req: Request, file: File) => {
 	return extended;
 };
 
-/*
-export const fileExists = (req: Request, res: Response, exists: File, filename: string) => {
-	const file = constructFilePublicLink(req, exists);
-	void res.json({
-		message: 'Successfully uploaded the file.',
-		name: file.name,
-		hash: file.hash,
-		size: file.size,
-		url: file.url,
-		thumb: file.thumb,
-		deleteUrl: `${getHost(req)}/api/file/${file.id}`,
-		repeated: true
-	});
-
-	return deleteFile(filename);
-};
-*/
-
-export const storeFileToDb = async (user: RequestUser | User | undefined, file: FileInProgress) => {
+export const storeFileToDb = async (
+	user: RequestUser | User | undefined,
+	file: FileInProgress,
+	albumId?: number | null
+) => {
 	const dbFile = await prisma.files.findFirst({
 		where: {
 			hash: file.hash,
@@ -348,6 +283,7 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, file: 
 	}
 
 	const now = utc().toDate();
+
 	const data = {
 		userId: user?.id ?? undefined,
 		uuid: uuidv4(),
@@ -362,26 +298,56 @@ export const storeFileToDb = async (user: RequestUser | User | undefined, file: 
 	};
 	void generateThumbnails(file.name);
 
-	const fileId = await prisma.files.create({
-		data
-	});
+	log.debug('albumId:', albumId);
+	if (albumId && albumId !== null && albumId !== undefined) {
+		log.debug('entramos');
+		const fileId = await prisma.files.create({
+			data: {
+				...data,
+				albums: {
+					connect: {
+						id: albumId
+					}
+				}
+			}
+		});
 
-	return {
-		file: {
-			id: fileId.id,
-			...data
-		}
-	};
+		return {
+			file: {
+				id: fileId.id,
+				...data
+			}
+		};
+	} else {
+		log.debug('no entramos');
+		const fileId = await prisma.files.create({
+			data
+		});
+
+		return {
+			file: {
+				id: fileId.id,
+				...data
+			}
+		};
+	}
 };
 
 export const saveFileToAlbum = async (albumId: number, fileId: number) => {
 	const now = utc().toDate();
-	await prisma.albumsFiles.create({
+	await prisma.files.update({
+		where: {
+			id: fileId
+		},
 		data: {
-			albumId,
-			fileId
+			albums: {
+				connect: {
+					id: albumId
+				}
+			}
 		}
 	});
+
 	await prisma.albums.update({
 		where: {
 			id: albumId

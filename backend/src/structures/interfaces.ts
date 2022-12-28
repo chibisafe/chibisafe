@@ -89,6 +89,9 @@ export interface Album {
 	createdAt: Date;
 	editedAt: Date | null;
 	nsfw: boolean;
+	files?: File[];
+	cover?: string;
+	_count?: any;
 }
 
 export interface Settings {

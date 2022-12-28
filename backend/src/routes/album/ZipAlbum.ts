@@ -31,6 +31,16 @@ export const run = async (req: Request, res: Response) => {
 	const album = await prisma.albums.findFirst({
 		where: {
 			id: link.albumId
+		},
+		select: {
+			uuid: true,
+			zippedAt: true,
+			editedAt: true,
+			files: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
@@ -48,35 +58,13 @@ export const run = async (req: Request, res: Response) => {
 		}
 	}
 
-	const fileList = await prisma.albumsFiles.findMany({
-		where: {
-			albumId: album.id
-		},
-		select: {
-			fileId: true
-		}
-	});
-
-	if (!fileList.length) return res.status(400).json({ message: 'No files could be found' });
-
-	const files = await prisma.files.findMany({
-		where: {
-			id: {
-				in: fileList.map(file => file.fileId)
-			}
-		},
-		select: {
-			name: true
-		}
-	});
-
-	const filesToZip = files.map(file => file.name);
+	const filesToZip = album.files.map(file => file.name);
 
 	try {
-		createZip(filesToZip, album);
+		createZip(filesToZip, album.uuid);
 		await prisma.albums.update({
 			where: {
-				id: album.id
+				uuid: album.uuid
 			},
 			data: {
 				zippedAt: utc().toDate()
