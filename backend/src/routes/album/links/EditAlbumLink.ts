@@ -3,16 +3,16 @@ import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
 export const options = {
-	url: '/album/:uuid/link/:identifier/edit',
+	url: '/album/:uuid/link/:linkUuid/edit',
 	method: 'post',
 	middlewares: ['auth']
 };
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid, identifier } = req.path_parameters;
-	if (!uuid || !identifier) return res.status(400).json({ message: 'No uuid or identifier provided' });
+	const { uuid, linkUuid } = req.path_parameters;
+	if (!uuid || !linkUuid) return res.status(400).json({ message: 'No uuid or linkUuid provided' });
 
-	const { enableDownload, expiresAt } = await req.json();
+	const { enabled, enableDownload, expiresAt } = await req.json();
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -27,20 +27,21 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			userId: req.user.id,
 			albumId: album.id,
-			identifier
+			uuid: linkUuid
 		}
 	});
 
 	if (!link) return res.status(400).json({ message: 'No link found' });
 
 	const updateObj = {
+		enabled: enabled === true ? true : enabled === false ? false : link.enabled,
 		enableDownload: enableDownload === true ? true : enableDownload === false ? false : link.enableDownload,
 		expiresAt
 	};
 
 	await prisma.links.update({
 		where: {
-			identifier
+			uuid: linkUuid
 		},
 		data: {
 			...updateObj

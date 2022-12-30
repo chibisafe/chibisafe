@@ -67,7 +67,7 @@ export const getFile = async (uuid: string) => {
 	try {
 		const data = await request.get(`file/${uuid}`);
 		console.log('getFile', data);
-		return { file: data.file, albums: data.albums, tags: data.tags };
+		return data.file;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -134,6 +134,37 @@ export const getAlbumLinks = async (uuid: string) => {
 		const data = await request.get(`album/${uuid}/links`);
 		console.log('getAlbumLinks', data);
 		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const createAlbumLink = async (uuid: string) => {
+	try {
+		const data = await request.post(`album/${uuid}/link`);
+		console.log('createAlbumLink', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const updateAlbumLink = async (uuid: string, linkUuid: string, setting: any) => {
+	try {
+		const data = await request.post(`album/${uuid}/link/${linkUuid}/edit`, {
+			[setting.name]: setting.value
+		});
+		console.log('updateAlbumLink', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const deleteAlbumLink = async (uuid: string, linkUuid: string) => {
+	try {
+		const data = await request.delete(`album/${uuid}/link/${linkUuid}`);
+		console.log('deleteAlbumLink', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

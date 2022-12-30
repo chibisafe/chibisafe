@@ -3,14 +3,14 @@ import prisma from '../../../structures/database';
 import type { RequestWithUser } from '../../../structures/interfaces';
 
 export const options = {
-	url: '/album/:uuid/link/:identifier',
+	url: '/album/:uuid/link/:linkUuid',
 	method: 'delete',
 	middlewares: ['auth']
 };
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid, identifier } = req.path_parameters;
-	if (!uuid || !identifier) return res.status(400).json({ message: 'No uuid or identifier provided' });
+	const { uuid, linkUuid } = req.path_parameters;
+	if (!uuid || !linkUuid) return res.status(400).json({ message: 'No uuid or linkUuid provided' });
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -25,7 +25,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		where: {
 			userId: req.user.id,
 			albumId: album.id,
-			identifier
+			uuid: linkUuid
 		}
 	});
 
@@ -33,7 +33,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	await prisma.links.delete({
 		where: {
-			identifier
+			uuid: linkUuid
 		}
 	});
 

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { FileWithAdditionalData, Album } from '~/types';
+import type { FileWithAdditionalData, Album, Tag } from '~/types';
 import { getFile } from '~/use/api';
 
 export const useModalstore = defineStore('modals', {
@@ -8,7 +8,8 @@ export const useModalstore = defineStore('modals', {
 		fileInformation: {
 			show: false,
 			file: {} as FileWithAdditionalData | null,
-			albums: [] as string[]
+			albums: [] as string[],
+			tags: [] as string[]
 		},
 		deleteFile: {
 			show: false,
@@ -28,6 +29,7 @@ export const useModalstore = defineStore('modals', {
 			const file = await getFile(this.fileInformation.file.uuid);
 			if (!file) return;
 			this.fileInformation.albums = file.albums.map((album: Album) => album.uuid);
+			this.fileInformation.tags = file.tags.map((tag: Tag) => tag.uuid);
 		}
 	}
 });

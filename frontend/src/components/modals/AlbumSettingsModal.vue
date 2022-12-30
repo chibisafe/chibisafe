@@ -49,6 +49,7 @@
 										<Button
 											type="button"
 											class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+											@click="createLink"
 											>Create new link</Button
 										>
 									</div>
@@ -83,6 +84,12 @@
 												>
 													Enabled
 												</th>
+												<th
+													scope="col"
+													class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100"
+												>
+													Expiry date
+												</th>
 												<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
 													<span class="sr-only">Delete</span>
 												</th>
@@ -111,6 +118,7 @@
 																:class="[
 																	link.enableDownload ? 'bg-blue-400' : 'bg-gray-200'
 																]"
+																@update:modelValue="setEnableDownload(link)"
 															>
 																<span class="sr-only">Use setting</span>
 																<span
@@ -138,6 +146,7 @@
 														v-model="link.enableDownload"
 														class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
 														:class="[link.enableDownload ? 'bg-blue-400' : 'bg-gray-200']"
+														@update:modelValue="setEnableDownload(link)"
 													>
 														<span class="sr-only">Use setting</span>
 														<span
@@ -154,6 +163,7 @@
 														v-model="link.enabled"
 														class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
 														:class="[link.enabled ? 'bg-blue-400' : 'bg-gray-200']"
+														@update:modelValue="setEnabled(link)"
 													>
 														<span class="sr-only">Use setting</span>
 														<span
@@ -163,10 +173,23 @@
 														/>
 													</Switch>
 												</td>
-												<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-													<a href="#" class="text-blue-400 hover:text-indigo-900"
-														>Delete<span class="sr-only">, {{ link.identifier }}</span></a
+												<td class="py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+													<Button
+														type="button"
+														class="inline-flex items-center justify-center rounded-md border border-transparent !bg-dark-100 hover:!bg-dark-90 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+														>Set</Button
 													>
+												</td>
+												<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+													<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+													<button
+														href="#"
+														type="button"
+														class="text-blue-400 hover:text-indigo-900"
+														@click="deleteLink(link)"
+													>
+														Delete<span class="sr-only">, {{ link.identifier }}</span>
+													</button>
 												</td>
 											</tr>
 										</tbody>
@@ -190,7 +213,9 @@ import { TransitionRoot, TransitionChild, Dialog, DialogOverlay, Switch } from '
 import { useModalstore } from '~/store/modals';
 import { useToastStore } from '~/store/toast';
 import { useAlbumsStore } from '~/store/albums';
+import { createAlbumLink, updateAlbumLink, deleteAlbumLink } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
+import type { AlbumLink } from '~/types';
 
 const modalsStore = useModalstore();
 const toastStore = useToastStore();
@@ -199,6 +224,41 @@ const albumsStore = useAlbumsStore();
 const isModalOpen = computed(() => modalsStore.albumSettings.show);
 
 const links = computed(() => albumsStore.currentAlbumLinks);
+
+const createLink = async () => {
+	if (!modalsStore.albumSettings.album) return;
+	const newLink = await createAlbumLink(modalsStore.albumSettings.album.uuid);
+	albumsStore.currentAlbumLinks.push(newLink.data);
+};
+
+const setEnabled = async (link: AlbumLink) => {
+	if (!modalsStore.albumSettings.album) return;
+	await updateAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid, {
+		name: 'enabled',
+		value: link.enabled
+	});
+};
+
+const setEnableDownload = async (link: AlbumLink) => {
+	if (!modalsStore.albumSettings.album) return;
+	await updateAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid, {
+		name: 'enableDownload',
+		value: link.enableDownload
+	});
+};
+
+const setExpiryDate = async (link: AlbumLink) => {
+	// if (!modalsStore.albumSettings.album) return;
+	// await updateAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid, {
+	// 	name: 'enableDownload',
+	// 	value: link.enabled
+	// });
+};
+
+const deleteLink = async (link: AlbumLink) => {
+	if (!modalsStore.albumSettings.album) return;
+	await deleteAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid);
+};
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {

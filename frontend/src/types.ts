@@ -60,14 +60,20 @@ export interface AlbumForMasonry {
 	files: FileWithAdditionalData[];
 }
 
-export interface AlbumLinks {
+export interface AlbumLink {
 	uuid: string;
 	identifier: string;
 	views: number;
 	enabled: boolean;
 	enableDownload: boolean;
+	expiresAt: string;
 }
 
 export interface AlbumWithSelected extends Album {
 	selected: boolean;
+}
+
+export interface Tag {
+	uuid: string;
+	name: string;
 }
