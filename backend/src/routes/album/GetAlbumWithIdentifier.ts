@@ -64,6 +64,17 @@ export const run = async (req: Request, res: Response) => {
 		files.push(constructFilePublicLink(req, modifiedFile));
 	}
 
+	await prisma.links.update({
+		where: {
+			identifier
+		},
+		data: {
+			views: {
+				increment: 1
+			}
+		}
+	});
+
 	return res.json({
 		message: 'Successfully retrieved album',
 		name: album.name,
