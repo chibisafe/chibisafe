@@ -169,3 +169,13 @@ export const deleteAlbumLink = async (uuid: string, linkUuid: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getFilesFromPublicAlbum = async (identifier: string) => {
+	try {
+		const data = await request.get(`album/${identifier}/view`);
+		console.log('getFilesFromPublicAlbum', data);
+		return { name: data.name, files: data.files, count: data.filesCount, isNsfw: data.isNsfw };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

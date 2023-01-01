@@ -102,7 +102,13 @@
 												<td
 													class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6"
 												>
-													{{ link.identifier }}
+													<a
+														:href="`/a/${link.identifier}`"
+														target="_blank"
+														rel="noopener noreferrer"
+														class="text-blue-400 dark:text-blue-400"
+														>{{ link.identifier }}</a
+													>
 													<dl class="font-normal lg:hidden">
 														<dt class="sr-only">Views</dt>
 														<dd class="mt-1 truncate text-gray-700 dark:text-light-100">
@@ -258,6 +264,7 @@ const setExpiryDate = async (link: AlbumLink) => {
 const deleteLink = async (link: AlbumLink) => {
 	if (!modalsStore.albumSettings.album) return;
 	await deleteAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid);
+	albumsStore.currentAlbumLinks = albumsStore.currentAlbumLinks.filter(l => l.uuid !== link.uuid);
 };
 
 // Clear the store only after the transition is done to prevent artifacting
