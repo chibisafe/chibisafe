@@ -29,7 +29,9 @@
 				<IconAudio v-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
 				<IconPdf v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
 				<IconDocument v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
-				<span class="text-dark-100 dark:text-light-100 mt-4 text-lg">{{ file.original }}</span>
+				<span class="text-dark-100 dark:text-light-100 mt-4 text-lg text-center">{{
+					file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
+				}}</span>
 			</div>
 		</div>
 	</div>

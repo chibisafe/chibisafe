@@ -33,7 +33,8 @@ export const run = async (req: RequestWithUser, res: Response) => {
 				select: {
 					uuid: true,
 					name: true,
-					type: true
+					type: true,
+					original: true
 				},
 				orderBy: {
 					id: 'desc'
