@@ -182,6 +182,24 @@ export const deleteAlbumLink = async (uuid: string, linkUuid: string) => {
 	}
 };
 
+export const deleteAlbum = async (uuid: string) => {
+	try {
+		const data = await request.delete(`album/${uuid}`);
+		console.log('deleteAlbum', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const purgeAlbum = async (uuid: string) => {
+	try {
+		const data = await request.delete(`album/${uuid}/purge`);
+		console.log('purgeAlbum', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getFilesFromPublicAlbum = async (identifier: string) => {
 	try {
 		const data = await request.get(`album/${identifier}/view`);

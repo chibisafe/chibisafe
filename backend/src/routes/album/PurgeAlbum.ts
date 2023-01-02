@@ -3,7 +3,7 @@ import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
 export const options = {
-	url: '/album/:uuid',
+	url: '/album/:uuid/purge',
 	method: 'delete',
 	middlewares: ['auth']
 };
@@ -25,6 +25,16 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		await prisma.links.deleteMany({
 			where: {
 				albumId: album.id
+			}
+		});
+
+		await prisma.files.deleteMany({
+			where: {
+				albums: {
+					every: {
+						uuid
+					}
+				}
 			}
 		});
 

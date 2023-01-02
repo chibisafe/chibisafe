@@ -272,14 +272,14 @@
 									<Button
 										type="button"
 										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-										@click="createLink"
+										@click="doDeleteAlbum"
 										>Delete album</Button
 									>
 
 									<Button
 										type="button"
 										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-										@click="createLink"
+										@click="doPurgeAlbum"
 										>Delete album and all files</Button
 									>
 								</div>
@@ -309,7 +309,7 @@ import {
 import { useModalstore } from '~/store/modals';
 import { useToastStore } from '~/store/toast';
 import { useAlbumsStore } from '~/store/albums';
-import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink } from '~/use/api';
+import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 import Input from '~/components/forms/Input.vue';
 import type { AlbumLink } from '~/types';
@@ -376,6 +376,22 @@ const deleteLink = async (link: AlbumLink) => {
 	if (!modalsStore.albumSettings.album) return;
 	await deleteAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid);
 	albumsStore.currentAlbumLinks = albumsStore.currentAlbumLinks.filter(l => l.uuid !== link.uuid);
+};
+
+const doDeleteAlbum = async () => {
+	if (!modalsStore.albumSettings.album) return;
+	await deleteAlbum(modalsStore.albumSettings.album.uuid);
+	albumsStore.albums = albumsStore.albums.filter(a => a.uuid !== modalsStore.albumSettings.album?.uuid);
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
+	closeModal();
+};
+
+const doPurgeAlbum = async () => {
+	if (!modalsStore.albumSettings.album) return;
+	await purgeAlbum(modalsStore.albumSettings.album.uuid);
+	albumsStore.albums = albumsStore.albums.filter(a => a.uuid !== modalsStore.albumSettings.album?.uuid);
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
+	closeModal();
 };
 
 // Clear the store only after the transition is done to prevent artifacting
