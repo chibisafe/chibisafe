@@ -43,6 +43,29 @@ export const register = async (username: string, password: string, invite?: stri
 	}
 };
 
+export const changePassword = async (password: string, newPassword: string) => {
+	try {
+		const data = await request.post('auth/password/change', {
+			password,
+			newPassword
+		});
+		console.log('changePassword', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const changeApiKey = async () => {
+	try {
+		const data = await request.post('auth/apikey/change');
+		console.log('changeApiKey', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getMe = async () => {
 	try {
 		const data = await request.get('verify');

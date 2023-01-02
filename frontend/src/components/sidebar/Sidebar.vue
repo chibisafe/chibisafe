@@ -158,7 +158,7 @@
 							{{ item.name }}
 						</router-link>
 					</nav>
-					<nav class="flex-1 space-y-1 px-8">
+					<nav v-if="isAdmin" class="flex-1 space-y-1 px-8">
 						<h3 id="projects-headline" class="px-3 text-sm font-medium text-gray-500">Admin section</h3>
 						<router-link
 							v-for="item in adminNavigation"
@@ -236,6 +236,8 @@ import IconClose from '~icons/carbon/close';
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+
+const isAdmin = computed(() => userStore.isAdmin);
 
 const logout = async () => {
 	await router.push('/');

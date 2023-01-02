@@ -85,33 +85,33 @@
 
 									<h2 class="text-dark-100 dark:text-light-100 mt-1">File info</h2>
 
-									<InputWithOverlappingLabel class="mt-4" label="UUID" :value="file.uuid" readOnly />
-									<InputWithOverlappingLabel class="mt-4" label="Name" :value="file.name" readOnly />
+									<InputWithOverlappingLabel v-model="file.uuid" class="mt-4" label="UUID" readOnly />
+									<InputWithOverlappingLabel v-model="file.name" class="mt-4" label="Name" readOnly />
 									<InputWithOverlappingLabel
+										v-model="file.original"
 										class="mt-4"
 										label="Original Name"
-										:value="file.original"
 										readOnly
 									/>
-									<InputWithOverlappingLabel class="mt-4" label="IP" :value="file.ip" readOnly />
+									<InputWithOverlappingLabel v-model="file.ip" class="mt-4" label="IP" readOnly />
 									<InputWithOverlappingLabel
+										v-model="file.url"
 										class="mt-4"
 										label="Link"
 										type="link"
-										:value="file.url"
 										readOnly
 									/>
 									<InputWithOverlappingLabel
+										:value="String(formatBytes(file.size))"
 										class="mt-4"
 										label="Size"
-										:value="String(formatBytes(file.size))"
 										readOnly
 									/>
-									<InputWithOverlappingLabel class="mt-4" label="Hash" :value="file.hash" readOnly />
+									<InputWithOverlappingLabel v-model="file.hash" class="mt-4" label="Hash" readOnly />
 									<InputWithOverlappingLabel
+										v-model="file.createdAt"
 										class="mt-4"
 										label="Uploaded"
-										:value="file.createdAt"
 										readOnly
 									/>
 
