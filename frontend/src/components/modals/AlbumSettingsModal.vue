@@ -35,6 +35,63 @@
 
 							<div class="px-4 sm:px-6 lg:px-8 mt-6 mb-8">
 								<div class="sm:flex sm:items-center">
+									<div v-if="album" class="sm:flex-auto">
+										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
+											Album settings
+										</h1>
+										<SwitchGroup>
+											<div class="flex items-center mt-8">
+												<SwitchLabel class="mr-4 dark:text-light-100">Mark as NSFW</SwitchLabel>
+												<Switch
+													v-model="album.nsfw"
+													class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+													:class="[album.nsfw ? 'bg-blue-400' : 'bg-gray-200']"
+													@update:modelValue="setNsfw"
+												>
+													<span class="sr-only">Mark as NSFW</span>
+													<span
+														aria-hidden="true"
+														class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+														:class="[album.nsfw ? 'translate-x-5' : 'translate-x-0']"
+													/>
+												</Switch>
+											</div>
+										</SwitchGroup>
+
+										<div class="mt-4 max-w-xs">
+											<div class="flex rounded-md shadow-sm">
+												<div class="relative flex flex-grow items-stretch focus-within:z-10">
+													<div
+														class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+													></div>
+													<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+													<input
+														v-model="album.name"
+														type="text"
+														class="block w-full rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+														@keyup.enter="setNewAlbumName"
+													/>
+												</div>
+												<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+												<button
+													type="button"
+													class="relative -ml-px inline-flex items-center space-x-2 rounded-r-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:bg-dark-100 dark:hover:bg-dark-90 dark:text-light-100 focus:border-indigo-500 focus:ring-indigo-500 w-36 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 dark:border-gray-700"
+													@click="setNewAlbumName"
+												>
+													<span class="w-full text-center">Change name</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="relative mt-8 mb-4 h-[1px]">
+									<div class="absolute inset-0 flex items-center" aria-hidden="true">
+										<div class="w-full border-t border-gray-500" />
+									</div>
+								</div>
+
+								<div class="sm:flex sm:items-center mt-8">
 									<div class="sm:flex-auto">
 										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
 											Album links
@@ -201,6 +258,31 @@
 										</tbody>
 									</table>
 								</div>
+
+								<div class="relative my-8">
+									<div class="absolute inset-0 flex items-center" aria-hidden="true">
+										<div class="w-full border-t border-gray-500" />
+									</div>
+									<div class="relative flex justify-center">
+										<span class="bg-dark-90 px-2 text-sm text-white">Danger zone</span>
+									</div>
+								</div>
+
+								<div class="sm:mt-0 sm:flex-none">
+									<Button
+										type="button"
+										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+										@click="createLink"
+										>Delete album</Button
+									>
+
+									<Button
+										type="button"
+										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+										@click="createLink"
+										>Delete album and all files</Button
+									>
+								</div>
 							</div>
 
 							<!--  -->
@@ -214,13 +296,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { TransitionRoot, TransitionChild, Dialog, DialogOverlay, Switch } from '@headlessui/vue';
+import { computed } from 'vue';
+import {
+	TransitionRoot,
+	TransitionChild,
+	Dialog,
+	DialogOverlay,
+	Switch,
+	SwitchGroup,
+	SwitchLabel
+} from '@headlessui/vue';
 import { useModalstore } from '~/store/modals';
 import { useToastStore } from '~/store/toast';
 import { useAlbumsStore } from '~/store/albums';
-import { createAlbumLink, updateAlbumLink, deleteAlbumLink } from '~/use/api';
+import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
+import Input from '~/components/forms/Input.vue';
 import type { AlbumLink } from '~/types';
 
 const modalsStore = useModalstore();
@@ -230,11 +321,13 @@ const albumsStore = useAlbumsStore();
 const isModalOpen = computed(() => modalsStore.albumSettings.show);
 
 const links = computed(() => albumsStore.currentAlbumLinks);
+const album = computed(() => modalsStore.albumSettings.album);
 
 const createLink = async () => {
 	if (!modalsStore.albumSettings.album) return;
 	const newLink = await createAlbumLink(modalsStore.albumSettings.album.uuid);
 	albumsStore.currentAlbumLinks.push(newLink.data);
+	toastStore.create('success', 'Link created');
 };
 
 const setEnabled = async (link: AlbumLink) => {
@@ -259,6 +352,24 @@ const setExpiryDate = async (link: AlbumLink) => {
 	// 	name: 'enableDownload',
 	// 	value: link.enabled
 	// });
+};
+
+const setNsfw = async () => {
+	if (!modalsStore.albumSettings.album) return;
+	await updateAlbum(modalsStore.albumSettings.album.uuid, {
+		name: 'nsfw',
+		value: album.value?.nsfw
+	});
+};
+
+const setNewAlbumName = async () => {
+	if (!album.value?.name) return;
+	if (!modalsStore.albumSettings.album) return;
+	await updateAlbum(modalsStore.albumSettings.album.uuid, {
+		name: 'name',
+		value: album.value.name
+	});
+	toastStore.create('success', 'Changed album name');
 };
 
 const deleteLink = async (link: AlbumLink) => {

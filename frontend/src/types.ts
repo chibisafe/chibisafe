@@ -43,7 +43,7 @@ export interface ApiError {
 export interface Album {
 	uuid: string;
 	name: string;
-	isNsfw: boolean;
+	nsfw: boolean;
 	zippedAt: string;
 	createdAt: string;
 	editedAt: string;

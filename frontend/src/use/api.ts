@@ -119,6 +119,18 @@ export const createAlbum = async (name: string) => {
 	}
 };
 
+export const updateAlbum = async (uuid: string, setting: any) => {
+	try {
+		const data = await request.post(`album/${uuid}/edit`, {
+			[setting.name]: setting.value
+		});
+		console.log('updateAlbum', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getAlbum = async (uuid: string) => {
 	try {
 		const data = await request.get(`album/${uuid}`);

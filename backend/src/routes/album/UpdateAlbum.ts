@@ -3,7 +3,7 @@ import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
 export const options = {
-	url: '/album/:uuid/update',
+	url: '/album/:uuid/edit',
 	method: 'post',
 	middlewares: ['auth']
 };
@@ -25,6 +25,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 
 	if (!album) return res.status(401).json({ message: "The album doesn't exist or doesn't belong to the user" });
 
+	console.log('nsfw', nsfw);
 	const updateObj = {
 		name: name || album.name,
 		nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw
