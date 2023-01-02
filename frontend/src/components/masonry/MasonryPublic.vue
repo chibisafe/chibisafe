@@ -43,7 +43,6 @@ import IconPdf from '~icons/carbon/document-pdf';
 import IconAudio from '~icons/carbon/document-audio';
 
 const filesStore = useFilesStore();
-
 const files = computed(() => filesStore.files);
 
 const isHovered = ref<any>({});
