@@ -108,7 +108,7 @@
 		"puppeteer": "^5.5.0",
 		"sass": "^1.48.0",
 		"sass-loader": "^10.1.0",
-		"vue-jest": "^3.0.7"
+		"vue-jest": "^4.0.1"
 	},
 	"eslintConfig": {
 		"extends": [
