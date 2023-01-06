@@ -20,12 +20,13 @@ model users {
 	apiKeyEditedAt DateTime?
 	createdAt DateTime @default(now())
 	editedAt DateTime?
+	files files[]
 }
 
 model files {
 	id Int @id @default(autoincrement())
 	uuid String @unique
-	userId Int?
+	userId Int
 	name String
 	original String
 	type String
@@ -34,6 +35,7 @@ model files {
 	ip String
 	createdAt DateTime @default(now())
 	editedAt DateTime?
+	user users? @relation(fields: [userId], references: [id])
 	albums albums[]
 	tags tags[]
 }

@@ -269,7 +269,9 @@ export const storeFileToDb = async (
 			size: file.size,
 			// Must be null for guest uploads,
 			// to ensure guests uploads will only be matched against other guest uploads
-			userId: user ? user.id : null
+			user: {
+				id: user ? user.id : undefined
+			}
 		}
 	});
 
