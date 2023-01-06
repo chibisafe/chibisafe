@@ -3,10 +3,16 @@
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-screen overflow-auto">
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
 			<div class="mt-8 max-w-md">
+				<span class="text-dark-90 dark:text-light-100 block">Your current username. Can't be changed.</span>
 				<InputWithOverlappingLabel v-model="username" class="mt-4" label="Username" readOnly />
+
+				<span class="mt-12 text-dark-90 dark:text-light-100 block"
+					>If you want to change your password please enter your current one followed by the new password
+					twice.</span
+				>
 				<InputWithOverlappingLabel
 					v-model="currentPassword"
-					class="mt-12"
+					class="mt-4"
 					label="Current password"
 					type="password"
 					:value="currentPassword"
@@ -21,7 +27,10 @@
 				<Button class="mt-4" @click="doChangePassword">Change password</Button>
 				<p v-if="error" class="text-red-400">{{ error }}</p>
 
-				<InputWithOverlappingLabel v-model="apiKey" class="mt-16" label="API Key" readOnly />
+				<span class="mt-12 text-dark-90 dark:text-light-100 block"
+					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
+				>
+				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" readOnly />
 				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
 			</div>
 		</div>
