@@ -35,7 +35,7 @@
 			</div>
 		</div>
 	</div>
-	<FileInformationModal />
+	<FileInformationModal :type="props.type === 'admin' ? 'admin' : null" />
 </template>
 
 <script setup lang="ts">
@@ -53,7 +53,7 @@ import IconPdf from '~icons/carbon/document-pdf';
 import IconAudio from '~icons/carbon/document-audio';
 
 const props = defineProps<{
-	type: 'album' | 'uploads';
+	type: 'admin' | 'album' | 'uploads';
 }>();
 
 const filesStore = useFilesStore();
@@ -61,7 +61,7 @@ const albumsStore = useAlbumsStore();
 const modalsStore = useModalstore();
 
 const files = computed(() => {
-	if (props.type === 'uploads') return filesStore.files;
+	if (props.type === 'uploads' || props.type === 'admin') return filesStore.files;
 	else if (props.type === 'album') return albumsStore.album?.files;
 	else return [];
 });

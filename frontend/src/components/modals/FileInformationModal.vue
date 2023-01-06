@@ -115,33 +115,72 @@
 										readOnly
 									/>
 
-									<h2 class="text-dark-100 dark:text-light-100 mt-4 mb-4">Albums</h2>
-
-									<ul
-										class="w-full max-h-[540px] text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-dark-110 dark:border-dark-90 dark:text-white overflow-y-auto"
-									>
-										<li
-											v-for="album in albums"
-											:key="album.uuid"
-											class="w-full rounded-t-lg border-b border-gray-200 dark:border-dark-90"
+									<!-- Album information section -->
+									<template v-if="props.type !== 'admin'">
+										<h2 class="text-dark-100 dark:text-light-100 mt-8 mb-4">Albums</h2>
+										<ul
+											class="w-full max-h-[540px] text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-dark-110 dark:border-dark-90 dark:text-white overflow-y-auto"
 										>
-											<div class="flex items-center pl-3">
-												<input
-													:id="album.uuid"
-													type="checkbox"
-													value=""
-													:checked="album.selected"
-													class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-0 checked:bg-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-dark-90 dark:border-gray-500"
-													@change="clickedAlbum(!album.selected, album.uuid)"
-												/>
-												<label
-													:for="album.uuid"
-													class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
-													>{{ album.name }}</label
-												>
-											</div>
-										</li>
-									</ul>
+											<li
+												v-for="album in albums"
+												:key="album.uuid"
+												class="w-full rounded-t-lg border-b border-gray-200 dark:border-dark-90"
+											>
+												<div class="flex items-center pl-3">
+													<input
+														:id="album.uuid"
+														type="checkbox"
+														value=""
+														:checked="album.selected"
+														class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-0 checked:bg-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-dark-90 dark:border-gray-500"
+														@change="clickedAlbum(!album.selected, album.uuid)"
+													/>
+													<label
+														:for="album.uuid"
+														class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+														>{{ album.name }}</label
+													>
+												</div>
+											</li>
+										</ul>
+									</template>
+									<!-- Album information section -->
+
+									<!-- User information section -->
+									<template v-else>
+										<h2 class="text-dark-100 dark:text-light-100 mt-8">User info</h2>
+										<InputWithOverlappingLabel
+											v-model="user.username"
+											class="mt-4"
+											label="Username"
+											readOnly
+										/>
+										<InputWithOverlappingLabel
+											v-model="user.uuid"
+											class="mt-4"
+											label="UUID"
+											readOnly
+										/>
+										<InputWithOverlappingLabel
+											:value="String(user.enabled)"
+											class="mt-4"
+											label="Enabled"
+											readOnly
+										/>
+										<InputWithOverlappingLabel
+											:value="String(user.isAdmin)"
+											class="mt-4"
+											label="Admin?"
+											readOnly
+										/>
+										<InputWithOverlappingLabel
+											v-model="user.createdAt"
+											class="mt-4"
+											label="Created at"
+											readOnly
+										/>
+									</template>
+									<!-- User information section -->
 								</div>
 							</div>
 						</div>
@@ -166,13 +205,22 @@ import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLa
 import Button from '~/components/buttons/Button.vue';
 import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
 
+const props = defineProps<{
+	type: 'admin' | null;
+}>();
+
 const modalsStore = useModalstore();
 const albumsStore = useAlbumsStore();
-void albumsStore.get();
+
+// If the admin is loading this component we dont want to load the albums
+if (props.type !== 'admin') {
+	void albumsStore.get();
+}
 
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
 const fileAlbums = computed(() => modalsStore.fileInformation.albums);
+const user = computed(() => modalsStore.fileInformation.user);
 
 const albums = computed(() => {
 	if (!fileAlbums.value) return albumsStore.albums as AlbumWithSelected[];
@@ -202,6 +250,13 @@ const { copy } = useClipboard();
 const isCopying = ref(false);
 
 watch(file, async () => {
+	// If the admin is loading this component we want to load the user information
+	if (props.type === 'admin' && file.value) {
+		void modalsStore.getFileUser();
+		return;
+	}
+
+	// Otherwise load the albums once the file is loaded
 	if (file.value?.uuid) {
 		void modalsStore.getFileAlbums();
 	}

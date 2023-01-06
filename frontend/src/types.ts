@@ -5,6 +5,8 @@ export interface User {
 	isAdmin: boolean;
 	apiKey: string;
 	token: string;
+	enabled?: string;
+	createdAt?: string;
 }
 
 export interface Toast {
@@ -34,6 +36,10 @@ export interface FileWithAdditionalData extends File {
 	hash: string;
 	createdAt: string;
 	preview?: string;
+	user?: {
+		uuid: string;
+		username: string;
+	};
 }
 
 export interface ApiError {

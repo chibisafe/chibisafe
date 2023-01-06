@@ -76,10 +76,30 @@ export const getMe = async () => {
 	}
 };
 
+export const getUserAdmin = async (uuid: string) => {
+	try {
+		const data = await request.get(`/admin/user/${uuid}`);
+		console.log('getUserAdmin', data);
+		return { user: data.user };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getFiles = async (page: number) => {
 	try {
 		const data = await request.get('files');
 		console.log('getFiles', data);
+		return { files: data.files, count: data.count };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getFilesAdmin = async (page: number) => {
+	try {
+		const data = await request.get('admin/files');
+		console.log('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
 		sendErrorToast(error.message);
