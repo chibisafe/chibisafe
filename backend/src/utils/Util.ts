@@ -37,7 +37,6 @@ export const getEnvironmentDefaults = () =>
 		blockNoExtension: parseEnvVariable(process.env.BLOCK_NO_EXTENSION) ?? true,
 		publicMode: parseEnvVariable(process.env.PUBLIC_MODE) ?? true,
 		userAccounts: parseEnvVariable(process.env.USER_ACCOUNTS) ?? true,
-		metaThemeColor: process.env.META_THEME_COLOR ?? '#20222b',
 		metaDescription: process.env.META_DESCRIPTION ?? 'Blazing fast file uploader and bunker written in node! 🚀',
 		metaKeywords:
 			process.env.META_KEYWORDS ?? 'chibisafe,lolisafe,upload,uploader,file,vue,images,ssr,file uploader,free',

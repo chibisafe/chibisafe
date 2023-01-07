@@ -20,3 +20,5 @@ npm-debug.log*
 # chibisafe generated files
 uploads/
 database/
+
+.env

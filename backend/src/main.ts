@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+
 import type { Request, Response, MiddlewareNext } from 'hyper-express';
 import HyperExpress from 'hyper-express';
 // @ts-ignore
@@ -17,6 +19,11 @@ import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { getEnvironmentDefaults } from './utils/Util';
+
+// Since we're using the same .env file for both the frontend and backend, we need to specify the path
+dotenv.config({
+	path: path.join(__dirname, '..', '..', '.env')
+});
 
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {

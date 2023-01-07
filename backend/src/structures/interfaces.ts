@@ -110,7 +110,6 @@ export interface Settings {
 	blockedExtensions: string[];
 	publicMode: boolean;
 	userAccounts: boolean;
-	metaThemeColor: string;
 	metaDescription: string;
 	metaKeywords: string;
 	metaTwitterHandle: string;
