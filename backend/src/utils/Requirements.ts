@@ -11,7 +11,7 @@ export default async () => {
 
 	log.info('Node version: OK');
 
-	if (!process.env.JWT_SECRET) {
+	if (!process.env.SECRET) {
 		log.error('It seems there are no environment variables configured. To fix this please run `npm run setup`');
 		process.exit(1);
 	}

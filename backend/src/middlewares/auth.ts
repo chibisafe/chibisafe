@@ -1,5 +1,6 @@
 import type { Response, MiddlewareNext } from 'hyper-express';
 import type { RequestWithOptionalUser } from '../structures/interfaces';
+import { getEnvironmentDefaults } from '../utils/Util';
 import JWT from 'jsonwebtoken';
 import log from '../utils/Log';
 import prisma from '../structures/database';
@@ -36,7 +37,7 @@ export default (
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises, promise/prefer-await-to-callbacks
-	JWT.verify(token, process.env.JWT_SECRET ?? '', async (error, decoded) => {
+	JWT.verify(token, getEnvironmentDefaults().secret ?? '', async (error, decoded) => {
 		if (error) return res.status(401).json({ message: 'Invalid token' });
 		const id = (decoded as Decoded | undefined)?.sub ?? null;
 		const dateSigned = (decoded as Decoded | undefined)?.iat ?? null;

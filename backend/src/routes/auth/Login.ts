@@ -3,6 +3,7 @@ import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import process from 'node:process';
+import { getEnvironmentDefaults } from '../../utils/Util';
 
 export const options = {
 	url: '/auth/login',
@@ -33,7 +34,7 @@ export const run = async (req: Request, res: Response) => {
 			sub: user.id,
 			iat: Date.now()
 		},
-		process.env.JWT_SECRET ?? '',
+		getEnvironmentDefaults().secret ?? '',
 		{ expiresIn: '30d' }
 	);
 
