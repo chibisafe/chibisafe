@@ -76,6 +76,16 @@ export const getMe = async () => {
 	}
 };
 
+export const getUsersAdmin = async () => {
+	try {
+		const data = await request.get(`/admin/users`);
+		console.log('getUsersAdmin', data);
+		return { users: data.users };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getUserAdmin = async (uuid: string) => {
 	try {
 		const data = await request.get(`/admin/user/${uuid}`);

@@ -1,7 +1,13 @@
 import type { FileWithAdditionalData } from '~/types';
 
-export function formatBytes(bytes: number, decimals = 2) {
+export const formatBytes = (bytes: number, decimals = 2) => {
 	if (bytes === 0) return '0 Bytes';
+
+	// If the size is MB add a decimal point
+	if (bytes >= 1000000) {
+		// eslint-disable-next-line no-param-reassign
+		decimals = 1;
+	}
 
 	const k = 1024;
 	const dm = decimals < 0 ? 0 : decimals;
@@ -10,7 +16,7 @@ export function formatBytes(bytes: number, decimals = 2) {
 	const i = Math.floor(Math.log(bytes) / Math.log(k));
 
 	return `${Number.parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
-}
+};
 
 export const isFileVideo = (file: FileWithAdditionalData) => {
 	const { type } = file;

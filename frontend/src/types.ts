@@ -9,6 +9,13 @@ export interface User {
 	createdAt?: string;
 }
 
+export interface UserWithCount extends User {
+	_count: {
+		files: number;
+	};
+	size: Number;
+}
+
 export interface Toast {
 	type: 'error' | 'success' | 'warning';
 	message: string;

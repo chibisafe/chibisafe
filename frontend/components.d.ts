@@ -21,7 +21,9 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/sidebar/Sidebar.vue')['default']
+    Table: typeof import('./src/components/table/Table.vue')['default']
     Toast: typeof import('./src/components/toast/Toast.vue')['default']
     Upload: typeof import('./src/components/upload/Upload.vue')['default']
+    UsersTable: typeof import('./src/components/table/UsersTable.vue')['default']
   }
 }

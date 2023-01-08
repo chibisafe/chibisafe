@@ -1,0 +1,22 @@
+<template>
+	<Sidebar>
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-screen overflow-auto">
+			<h1 class="text-2xl mt-8 font-semibold text-light-100">Registered users</h1>
+			<Table :users="users" class="mt-12" />
+		</div>
+	</Sidebar>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { getUsersAdmin } from '~/use/api';
+import Sidebar from '~/components/sidebar/Sidebar.vue';
+import Table from '~/components/table/UsersTable.vue';
+
+const users = ref([]);
+onMounted(async () => {
+	const response = await getUsersAdmin();
+	if (!response) return;
+	users.value = response.users;
+});
+</script>
