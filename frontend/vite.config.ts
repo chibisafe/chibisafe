@@ -67,7 +67,7 @@ export default defineConfig({
 		}),
 		createHtmlPlugin({
 			minify: true,
-			entry: 'src/main.ts',
+			entry: '/src/main.ts',
 			template: 'src/index.html',
 			inject: {
 				data: {
