@@ -59,8 +59,7 @@ export const useUserStore = defineStore('user', {
 		},
 		logout() {
 			localStorage.removeItem('chibisafe-user');
-			// @ts-ignore
-			window.location.reload(true);
+			window.location.href = '/';
 		}
 	}
 });
