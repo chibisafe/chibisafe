@@ -98,6 +98,8 @@ const doChangePassword = async () => {
 	newPassword.value = '';
 	// eslint-disable-next-line require-atomic-updates
 	reNewPassword.value = '';
+
+	userStore.logout();
 };
 
 const doRequestApiKey = async () => {
