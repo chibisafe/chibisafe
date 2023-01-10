@@ -122,9 +122,9 @@ const start = async () => {
 	});
 
 	// Start the server
-	await server.listen(8000);
+	await server.listen(Number(getEnvironmentDefaults().port));
 	log.info('');
-	log.info('Server ready on port 8000');
+	log.info(`Server ready on port ${Number(getEnvironmentDefaults().port)}`);
 
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
