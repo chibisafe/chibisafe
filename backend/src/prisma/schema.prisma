@@ -92,6 +92,9 @@ model settings {
 	disableStatisticsCron Boolean
 	backgroundImageURL String
 	logoURL String
+	metaDescription String
+	metaKeywords String
+	metaTwitterHandle String
 }
 
 model statistics {
