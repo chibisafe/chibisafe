@@ -93,7 +93,7 @@ export default {
 					route.run(req, res)
 				);
 
-				log.info(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
+				log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 				log.error(routeFile);

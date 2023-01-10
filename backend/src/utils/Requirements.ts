@@ -9,7 +9,7 @@ export default async () => {
 		process.exit(1);
 	}
 
-	log.info('Node version: OK');
+	log.debug('Node version: OK');
 
 	if (!process.env.PORT) {
 		log.error(
@@ -18,7 +18,7 @@ export default async () => {
 		process.exit(1);
 	}
 
-	log.info('Env variables: OK');
+	log.debug('Env variables: OK');
 
 	const ffmpegExists = await lookpath('ffmpeg');
 	if (!ffmpegExists) {
@@ -28,5 +28,5 @@ export default async () => {
 		process.exit(1);
 	}
 
-	log.info('ffmpeg: OK');
+	log.debug('ffmpeg: OK');
 };
