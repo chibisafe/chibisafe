@@ -2,8 +2,7 @@ import type { Request, Response } from 'hyper-express';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
-import process from 'node:process';
-import { getEnvironmentDefaults } from '../../utils/Util';
+import { SETTINGS } from '../../structures/settings';
 
 export const options = {
 	url: '/auth/login',
@@ -34,7 +33,7 @@ export const run = async (req: Request, res: Response) => {
 			sub: user.id,
 			iat: Date.now()
 		},
-		getEnvironmentDefaults().secret ?? '',
+		SETTINGS.secret ?? '',
 		{ expiresIn: '30d' }
 	);
 

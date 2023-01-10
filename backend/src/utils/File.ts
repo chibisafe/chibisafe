@@ -11,7 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../structures/database';
 import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
-import { getEnvironmentDefaults, getHost } from './Util';
+import { getHost } from './Util';
+import { SETTINGS } from '../structures/settings';
 
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
@@ -28,7 +29,7 @@ export const uploadPath = path.join(__dirname, '../../../', 'uploads');
 // so if you really want to use network drives, you should symlink the chunks folder and try.
 export const chunksPath = path.join(uploadPath, 'chunks');
 
-const chunkedUploadsTimeout = getEnvironmentDefaults().chunkedUploadsTimeout;
+const chunkedUploadsTimeout = SETTINGS.chunkedUploadsTimeout;
 
 export const chunksData: Map<string, ChunksData> = new Map();
 
@@ -116,8 +117,8 @@ export const cleanUpChunks = async (uuid: string): Promise<void> => {
 };
 
 export const isExtensionBlocked = (extension: string) => {
-	if (!extension && getEnvironmentDefaults().blockNoExtension) return true;
-	return getEnvironmentDefaults().blockedExtensions.includes(extension);
+	if (!extension && SETTINGS.blockNoExtension) return true;
+	return SETTINGS.blockedExtensions.includes(extension);
 };
 
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
@@ -146,7 +147,7 @@ export const unholdFileIdentifiers = (res: Response): void => {
 export const getUniqueFileIdentifier = async (res?: Response): Promise<string | null> => {
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
-			length: getEnvironmentDefaults().generatedFilenameLength,
+			length: SETTINGS.generatedFilenameLength,
 			capitalization: 'lowercase'
 		});
 

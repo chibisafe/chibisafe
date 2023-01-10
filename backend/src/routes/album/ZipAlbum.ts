@@ -2,7 +2,7 @@ import type { Request, Response } from 'hyper-express';
 import prisma from '../../structures/database';
 import jetpack from 'fs-jetpack';
 import path from 'node:path';
-import { getEnvironmentDefaults } from '../../utils/Util';
+import { SETTINGS } from '../../structures/settings';
 import { createZip } from '../../utils/File';
 import { utc } from 'moment';
 import log from '../../utils/Log';
@@ -52,7 +52,7 @@ export const run = async (req: Request, res: Response) => {
 		const exists = await jetpack.existsAsync(filePath);
 
 		if (exists) {
-			const fileName = `${getEnvironmentDefaults().serviceName}-${identifier}.zip`;
+			const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
 			res.download(filePath, fileName);
 			return;
 		}
@@ -72,7 +72,7 @@ export const run = async (req: Request, res: Response) => {
 		});
 
 		const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.uuid}.zip`);
-		const fileName = `${getEnvironmentDefaults().serviceName}-${identifier}.zip`;
+		const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
 		res.download(filePath, fileName);
 		return;
 	} catch (error) {

@@ -3,7 +3,7 @@ import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import log from '../../utils/Log';
-import { getEnvironmentDefaults } from '../../utils/Util';
+import { SETTINGS } from '../../structures/settings';
 import { utc } from 'moment';
 
 export const options = {
@@ -15,7 +15,7 @@ export const run = async (req: Request, res: Response) => {
 	let foundInvite = null;
 
 	// If new account creation is deactivated then check for an invite
-	if (!getEnvironmentDefaults().userAccounts) {
+	if (!SETTINGS.userAccounts) {
 		if (!req.headers.invite) {
 			return res.status(401).json({
 				message: 'Creation of new accounts is currently disabled'

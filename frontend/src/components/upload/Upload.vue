@@ -39,7 +39,7 @@ onMounted(() => {
 			parallelUploads: 5,
 			autoProcessQueue: true,
 			chunking: true,
-			chunkSize: 5 * 1e6, // MB
+			chunkSize: 5 * 1e6, // 5MB
 			maxFilesize: 100 * 1e6, // 100MB
 			createImageThumbnails: false,
 			previewTemplate: '',

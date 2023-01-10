@@ -18,7 +18,7 @@ import Serve from './structures/serve';
 import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
-import { getEnvironmentDefaults } from './utils/Util';
+import { SETTINGS, loadSettings } from './structures/settings';
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -39,6 +39,9 @@ process.on('unhandledRejection', error => {
 const start = async () => {
 	// Check the environment has all the requirements before running chibisafe
 	await Requirements();
+
+	// Create the settings in the database
+	await loadSettings();
 
 	// Create the HyperExpress server
 	const server = new HyperExpress.Server({
@@ -71,7 +74,7 @@ const start = async () => {
 	log.info('Chibisafe is starting with the following configuration:');
 	log.info('');
 
-	const defaults = getEnvironmentDefaults();
+	const defaults = SETTINGS;
 	for (const [key, value] of Object.entries(defaults)) {
 		log.info(`${key}: ${JSON.stringify(value)}`);
 	}
@@ -122,9 +125,9 @@ const start = async () => {
 	});
 
 	// Start the server
-	await server.listen(Number(getEnvironmentDefaults().port));
+	await server.listen(Number(SETTINGS.port));
 	log.info('');
-	log.info(`Server ready on port ${Number(getEnvironmentDefaults().port)}`);
+	log.info(`Server ready on port ${Number(SETTINGS.port)}`);
 
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();

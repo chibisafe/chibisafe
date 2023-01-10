@@ -11,8 +11,10 @@ export default async () => {
 
 	log.info('Node version: OK');
 
-	if (!process.env.SECRET) {
-		log.error('It seems there are no environment variables configured. To fix this please run `npm run setup`');
+	if (!process.env.PORT) {
+		log.error(
+			'It seems there are no environment variables configured. To fix this please rename `.env.sample` to `.env` and fill in the required values.'
+		);
 		process.exit(1);
 	}
 

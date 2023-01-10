@@ -6,8 +6,7 @@ import * as si from 'systeminformation';
 import log from '../utils/Log';
 
 import prisma from '../structures/database';
-
-import { getEnvironmentDefaults } from './Util';
+import { SETTINGS } from '../structures/settings';
 
 interface StatGeneratorOptions {
 	funct(): Promise<{ [index: string]: any }>;
@@ -285,9 +284,7 @@ const statGenerators: { [index: string]: StatGeneratorOptions } = {
 	}
 };
 
-export const keyOrder = Object.keys(statGenerators).filter(category =>
-	getEnvironmentDefaults().enabledStatistics.includes(category)
-);
+export const keyOrder = Object.keys(statGenerators).filter(category => SETTINGS.enabledStatistics?.includes(category));
 
 export const getStats = async (categories?: string[], force = false) => {
 	let keys: string[] = keyOrder;
@@ -338,16 +335,16 @@ export const getStats = async (categories?: string[], force = false) => {
 export const jumpstartStatistics = async () => {
 	// Only use scheduler to generate the following categories
 	const scheduledStatsCategories = ['uploads', 'users', 'albums'].filter(category =>
-		getEnvironmentDefaults().enabledStatistics.includes(category)
+		SETTINGS.enabledStatistics.includes(category)
 	);
 
 	// Immediately generate stats for the first time
 	log.debug('Generate scheduled stats categories for the first time\u2026');
 	await getStats(scheduledStatsCategories);
 
-	if (!getEnvironmentDefaults().disableStatisticsCron) {
+	if (!SETTINGS.disableStatisticsCron) {
 		// Start scheduler
-		schedule.scheduleJob(getEnvironmentDefaults().statisticsCron, async () => {
+		schedule.scheduleJob(SETTINGS.statisticsCron, async () => {
 			// Get scheduled stats categories, forced
 			log.debug('Generating scheduled stats categories\u2026');
 			return getStats(scheduledStatsCategories, true);

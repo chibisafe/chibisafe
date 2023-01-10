@@ -75,8 +75,23 @@ model links {
 
 model settings {
 	id Int @id @default(autoincrement())
-	key String
-	value String
+	rateLimitWindow Int
+	rateLimitMax Int
+	secret String
+	serviceName String
+	chunkSize Int
+	chunkedUploadsTimeout Int
+	maxSize Int
+	generateZips Boolean
+	generatedFilenameLength Int
+	generatedAlbumLength Int
+	blockedExtensions String
+	blockNoExtension Boolean
+	publicMode Boolean
+	userAccounts Boolean
+	disableStatisticsCron Boolean
+	backgroundImageURL String
+	logoURL String
 }
 
 model statistics {

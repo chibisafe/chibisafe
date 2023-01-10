@@ -95,8 +95,8 @@ export interface Album {
 }
 
 export interface Settings {
+	port: number;
 	domain: string;
-	routePrefix: string;
 	rateLimitWindow: number;
 	rateLimitMax: number;
 	secret: string;
@@ -108,6 +108,7 @@ export interface Settings {
 	generatedFilenameLength: number;
 	generatedAlbumLength: number;
 	blockedExtensions: string[];
+	blockNoExtension: boolean;
 	publicMode: boolean;
 	userAccounts: boolean;
 	metaDescription: string;

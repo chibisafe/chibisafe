@@ -14,13 +14,13 @@ import {
 	getUniqueFileIdentifier,
 	initChunks,
 	isExtensionBlocked,
-	saveFileToAlbum,
 	storeFileToDb,
 	unholdFileIdentifiers,
 	uploadPath
 } from '../../utils/File';
 import log from '../../utils/Log';
-import { getEnvironmentDefaults, getHost, unlistenEmitters } from '../../utils/Util';
+import { SETTINGS } from '../../structures/settings';
+import { getHost, unlistenEmitters } from '../../utils/Util';
 import prisma from '../../structures/database';
 
 import type { NodeHash, NodeHashReader } from 'blake3';
@@ -44,7 +44,7 @@ export const options: RouteOptions = {
 		}
 	],
 	options: {
-		max_body_length: getEnvironmentDefaults().maxSize * 1e6 // in bytes
+		max_body_length: SETTINGS.maxSize * 1e6 // in bytes
 	}
 	// debug: true
 };
@@ -54,7 +54,7 @@ const busboyOptions = {
 	// This would otherwise defaults to latin1
 	defParamCharset: 'utf8',
 	limits: {
-		fileSize: getEnvironmentDefaults().maxSize * 1e6, // in bytes
+		fileSize: SETTINGS.maxSize * 1e6, // in bytes
 		// Maximum number of non-file fields.
 		// Dropzone.js will add 6 extra fields for chunked uploads.
 		// We don't use them for anything else.
@@ -375,7 +375,7 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 
 				if (size === 0) {
 					throw new Error('Empty files are not allowed.');
-				} else if (size > getEnvironmentDefaults().maxSize * 1e6) {
+				} else if (size > SETTINGS.maxSize * 1e6) {
 					throw new Error('File too large.');
 				}
 
