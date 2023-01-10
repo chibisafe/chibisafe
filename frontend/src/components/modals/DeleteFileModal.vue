@@ -76,10 +76,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import IconClose from '~icons/carbon/close';
-import { deleteFile } from '~/use/api';
+import { deleteFile, deleteFileAsAdmin } from '~/use/api';
 
 import { useModalstore } from '~/store/modals';
 import { useToastStore } from '~/store/toast';
@@ -91,10 +91,12 @@ const filesStore = useFilesStore();
 
 const isModalOpen = computed(() => modalsStore.deleteFile.show);
 const file = computed(() => modalsStore.deleteFile.file);
+const isAdmin = computed(() => modalsStore.deleteFile.admin);
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
 	modalsStore.deleteFile.file = null;
+	modalsStore.deleteFile.admin = false;
 };
 
 const closeModal = (closeParentModal = false) => {
@@ -104,7 +106,12 @@ const closeModal = (closeParentModal = false) => {
 
 const doDeleteFile = () => {
 	if (!file.value) return;
-	void deleteFile(file.value.uuid);
+
+	// If the user is an admin, we need to use the admin endpoint
+	if (isAdmin.value) void deleteFileAsAdmin(file.value.uuid);
+	// Otherwise, we can use the normal endpoint
+	else void deleteFile(file.value.uuid);
+
 	filesStore.removeFile(file.value.uuid);
 	toastStore.create('success', 'File deleted');
 	closeModal(true);

@@ -145,6 +145,15 @@ export const deleteFile = async (uuid: string) => {
 	}
 };
 
+export const deleteFileAsAdmin = async (uuid: string) => {
+	try {
+		const data = await request.delete(`/admin/file/${uuid}`);
+		console.log('deleteFileAsAdmin', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getAlbums = async () => {
 	try {
 		const data = await request.get('albums');

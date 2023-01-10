@@ -14,6 +14,7 @@ export const useModalstore = defineStore('modals', {
 		},
 		deleteFile: {
 			show: false,
+			admin: false,
 			file: {} as FileWithAdditionalData | null
 		},
 		newAlbum: {

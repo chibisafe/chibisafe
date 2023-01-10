@@ -273,6 +273,11 @@ const copyLink = () => {
 
 const showDeleteFileModal = (file: FileWithAdditionalData | null) => {
 	if (!file) return;
+	// If the user is an admin we want to delete it through another endpoint
+	if (props.type === 'admin') {
+		modalsStore.deleteFile.admin = true;
+	}
+
 	modalsStore.deleteFile.file = file;
 	modalsStore.deleteFile.show = true;
 };
