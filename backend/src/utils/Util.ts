@@ -3,6 +3,8 @@ import { SETTINGS } from '../structures/settings';
 import randomstring from 'randomstring';
 import log from './Log';
 import prisma from '../structures/database';
+import bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getHost = (req: Request) => `${req.protocol}://${req.headers.host}`;
 
@@ -46,5 +48,31 @@ export const unlistenEmitters = (emitters: any[], eventName: string, listener?: 
 	for (const emitter of emitters) {
 		if (!emitter) continue;
 		emitter.off(eventName, listener);
+	}
+};
+
+export const createAdminUserIfNotExists = async () => {
+	const adminUser = await prisma.users.findFirst({
+		where: {
+			isAdmin: true
+		}
+	});
+
+	if (!adminUser) {
+		const hash = await bcrypt.hash('admin', 10);
+		await prisma.users.create({
+			data: {
+				uuid: uuidv4(),
+				username: 'admin',
+				password: hash,
+				isAdmin: true
+			}
+		});
+
+		log.info('>>>');
+		log.info('');
+		log.info(`Created admin user with password: admin`);
+		log.info('');
+		log.info('>>>');
 	}
 };

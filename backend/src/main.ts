@@ -20,6 +20,7 @@ import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
+import { createAdminUserIfNotExists } from './utils/Util';
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -43,6 +44,9 @@ const start = async () => {
 
 	// Create the settings in the database
 	await loadSettings();
+
+	// Create the admin user if it doesn't exist
+	await createAdminUserIfNotExists();
 
 	// Create the HyperExpress server
 	const server = new HyperExpress.Server({
@@ -72,17 +76,17 @@ const start = async () => {
 	jetpack.dir('../uploads/thumbs/square');
 	jetpack.dir('../uploads/thumbs/preview');
 
-	log.info('Chibisafe is starting with the following configuration:');
-	log.info('');
+	log.debug('Chibisafe is starting with the following configuration:');
+	log.debug('');
 
 	const defaults = SETTINGS;
 	for (const [key, value] of Object.entries(defaults)) {
-		log.info(`${key}: ${JSON.stringify(value)}`);
+		log.debug(`${key}: ${JSON.stringify(value)}`);
 	}
 
-	log.info('');
-	log.info('Loading routes...');
-	log.info('');
+	log.debug('');
+	log.debug('Loading routes...');
+	log.debug('');
 
 	// Scan and load routes into express
 	await Routes.load(server);
