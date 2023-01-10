@@ -14,7 +14,7 @@
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">Registered users</h1>
-			<Table :users="users" class="mt-12" />
+			<Table :users="users" class="mt-12 bg-dark-110" />
 		</div>
 	</Sidebar>
 </template>
