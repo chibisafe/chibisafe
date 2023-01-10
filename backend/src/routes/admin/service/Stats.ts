@@ -1,12 +1,10 @@
 import type { Response } from 'hyper-express';
-import type { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '../../../structures/interfaces';
 
-import log from '../../utils/Log';
-
-import { cachedStats, getStats, keyOrder, Type } from '../../utils/StatsGenerator';
+import { cachedStats, getStats, keyOrder, Type } from '../../../utils/StatsGenerator';
 
 export const options = {
-	url: '/service/statistics',
+	url: '/admin/service/statistics',
 	method: 'get',
 	middlewares: ['auth', 'admin']
 };

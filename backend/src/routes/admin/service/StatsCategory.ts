@@ -1,13 +1,11 @@
 import type { Response } from 'hyper-express';
-import type { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '../../../structures/interfaces';
 
-import log from '../../utils/Log';
-
-import { cachedStats, getStats, keyOrder, Type } from '../../utils/StatsGenerator';
+import { cachedStats, getStats, keyOrder, Type } from '../../../utils/StatsGenerator';
 
 // NOTE: Use case? Refresh button per-category to request on-demand refresh
 export const options = {
-	url: '/service/statistics/:category',
+	url: '/admin/service/statistics/:category',
 	method: 'get',
 	middlewares: ['auth', 'admin']
 };
