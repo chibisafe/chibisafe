@@ -281,3 +281,13 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getStatistics = async () => {
+	try {
+		const data = await request.get('/admin/service/statistics');
+		console.log('getStatistics', data);
+		return data.statistics;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
