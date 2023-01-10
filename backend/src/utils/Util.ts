@@ -19,6 +19,7 @@ const parseEnvVariable = (value: boolean | number | string | undefined): boolean
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const getEnvironmentDefaults = () =>
 	({
+		port: parseEnvVariable(process.env.PORT) ?? 8000,
 		domain: process.env.DOMAIN ?? 'localhost:8000',
 		routePrefix: '/api',
 		rateLimitWindow: parseEnvVariable(process.env.RATE_LIMIT_WINDOW) ?? 2,
