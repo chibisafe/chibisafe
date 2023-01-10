@@ -16,7 +16,7 @@
 				<div class="flex items-center h-12">
 					<IconChevronRight class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
 					<router-link
-						to="/dashboard"
+						to="/dashboard/uploads"
 						class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-light-100 dark:hover:text-white"
 						>Dashboard
 					</router-link>

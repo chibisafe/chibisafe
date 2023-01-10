@@ -24,7 +24,10 @@ export const useUserStore = defineStore('user', {
 		},
 		async loginWithToken() {
 			const response = await getMe();
-			if (!response) return;
+			if (!response) {
+				this.logout();
+				return;
+			}
 
 			this.username = response.username;
 			this.uuid = response.uuid;
