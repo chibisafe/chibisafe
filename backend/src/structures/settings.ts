@@ -31,6 +31,12 @@ export const loadSettings = async () => {
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number(process.env.PORT) ?? 8000;
 		SETTINGS.domain = process.env.DOMAIN ?? 'localhost:8000';
+		SETTINGS.metaDescription = process.env.META_DESCRIPTION ?? 'description for please-change-me.com 🚀';
+		SETTINGS.metaKeywords =
+			process.env.META_KEYWORDS ?? 'comma, separated, keywords, that, describe, this, website';
+		SETTINGS.metaTwitterHandle = process.env.META_TWITTER_HANDLE ?? '@your-twitter-handle';
+
+		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
