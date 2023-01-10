@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     About: typeof import('./src/components/about/About.vue')['default']
     AlbumSettingsModal: typeof import('./src/components/modals/AlbumSettingsModal.vue')['default']
+    Breadcrumbs: typeof import('./src/components/breadcrumbs/Breadcrumbs.vue')['default']
     Button: typeof import('./src/components/buttons/Button.vue')['default']
     DeleteFileModal: typeof import('./src/components/modals/DeleteFileModal.vue')['default']
     FileInformationModal: typeof import('./src/components/modals/FileInformationModal.vue')['default']
@@ -21,7 +22,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/sidebar/Sidebar.vue')['default']
-    Table: typeof import('./src/components/table/Table.vue')['default']
     Toast: typeof import('./src/components/toast/Toast.vue')['default']
     Upload: typeof import('./src/components/upload/Upload.vue')['default']
     UsersTable: typeof import('./src/components/table/UsersTable.vue')['default']

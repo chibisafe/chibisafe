@@ -1,6 +1,14 @@
 <template>
 	<Sidebar>
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-screen overflow-auto">
+			<Breadcrumbs
+				:pages="[
+					{
+						name: 'My account',
+						href: '/dashboard/account'
+					}
+				]"
+			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
 			<div class="mt-8 max-w-md">
 				<span class="text-dark-90 dark:text-light-100 block">Your current username. Can't be changed.</span>
@@ -46,6 +54,7 @@ import { changePassword, changeApiKey } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const userStore = useUserStore();
 const toastStore = useToastStore();

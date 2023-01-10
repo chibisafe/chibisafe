@@ -1,6 +1,14 @@
 <template>
 	<Sidebar>
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-screen overflow-auto">
+			<Breadcrumbs
+				:pages="[
+					{
+						name: 'Albums',
+						href: '/dashboard/albums'
+					}
+				]"
+			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
 				You have {{ albums.length }} album{{ albums.length > 1 ? 's' : '' }}
 				<Button class="ml-4 mt-3" @click="showNewAlbumModal">Add new</Button>
@@ -57,6 +65,7 @@ import IconSettings from '~icons/carbon/settings';
 
 import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const albumsStore = useAlbumsStore();
 const modalsStore = useModalstore();

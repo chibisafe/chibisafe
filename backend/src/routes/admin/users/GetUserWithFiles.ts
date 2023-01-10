@@ -51,7 +51,7 @@ export const run = async (req: Request, res: Response) => {
 	}
 
 	return res.json({
-		message: 'Successfully retrieved users',
+		message: 'Successfully retrieved user',
 		user,
 		files: readyFiles,
 		count
