@@ -88,8 +88,8 @@ const start = async () => {
 	await Routes.load(server);
 
 	if (process.env.NODE_ENV === 'production') {
-		if (!jetpack.exists(path.join(__dirname, '..', '..', 'frontend', 'dist', 'index.html'))) {
-			log.error('Frontend build not found, please run `npm run build` in the frontend directory');
+		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
+			log.error('Frontend build not found, please run `npm run build` in the frontend directory first');
 			process.exit(1);
 		}
 
@@ -97,28 +97,45 @@ const start = async () => {
 			path: path.join(__dirname, '..', 'dist', 'site')
 		});
 
+		// Prepare index.html to be served with the necessary meta tags in place
+		let indexHTML = jetpack.read(path.join(__dirname, '..', 'dist', 'site', 'index.html'), 'utf8');
+		if (!indexHTML) {
+			log.error('There was a problem parsing the frontend');
+			process.exit(1);
+		}
+
+		indexHTML = indexHTML.replace(/{{title}}/g, SETTINGS.serviceName);
+		indexHTML = indexHTML.replace(/{{description}}/g, SETTINGS.metaDescription);
+		indexHTML = indexHTML.replace(/{{keywords}}/g, SETTINGS.metaKeywords);
+		indexHTML = indexHTML.replace(/{{twitter}}/g, SETTINGS.metaTwitterHandle);
+		indexHTML = indexHTML.replace(/{{domain}}/g, SETTINGS.domain);
+		const newBuffer = Buffer.from(indexHTML);
+
 		// @ts-ignore -- Hyper's typings for this overload seem to be missing
 		server.use((req: Request, res: Response, next: MiddlewareNext) => {
-			if (req.method === 'GET' || req.method === 'HEAD') {
-				const page = req.path === '/' ? 'index.html' : req.path.slice(1);
-				const file = LiveAssets.get(page);
+			if (req.method !== 'GET' && req.method !== 'HEAD') {
+				next();
+				return;
+			}
 
-				if (file) {
-					if (page === 'index.html') {
-						// Replace the placeholders in the index.html file
-						// with the correct meta tags needed for SEO and link sharing
-						let htmlString = file.buffer.toString();
-						htmlString = htmlString.replace(/{{title}}/g, SETTINGS.serviceName);
-						htmlString = htmlString.replace(/{{description}}/g, SETTINGS.metaDescription);
-						htmlString = htmlString.replace(/{{keywords}}/g, SETTINGS.metaKeywords);
-						htmlString = htmlString.replace(/{{twitter}}/g, SETTINGS.metaTwitterHandle);
-						htmlString = htmlString.replace(/{{domain}}/g, SETTINGS.domain);
-						const newBuffer = Buffer.from(htmlString);
-						return res.type(file.extension).send(newBuffer);
-					}
+			const routes = [
+				'/dashboard',
+				'/invite',
+				'/login',
+				'/register',
+				'/faq',
+				'/features',
+				'/about',
+				'/privacy',
+				'/tos'
+			];
+			const route = routes.some(r => req.path.startsWith(r));
 
-					return res.type(file.extension).send(file.buffer);
-				}
+			if (req.path === '/' || route) return res.type('html').send(newBuffer);
+
+			const file = LiveAssets.get(req.path.slice(1));
+			if (file) {
+				return res.type(file.extension).send(file.buffer);
 			}
 
 			next();
