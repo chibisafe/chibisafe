@@ -14,17 +14,11 @@
 <script setup lang="ts">
 import { useMeta } from 'vue-meta';
 import { useUserStore } from './store/user';
-import { useRoute } from 'vue-router';
 import About from '~/components/about/About.vue';
 import Toast from './components/toast/Toast.vue';
 
-const route = useRoute();
-if (!route.path.startsWith('/a/')) {
-	// Check for a valid token and try logging in unless we're on the /a/ route
-	// The reason is that /a/ is public and we don't need auth
-	const userStore = useUserStore();
-	userStore.checkToken();
-}
+const userStore = useUserStore();
+userStore.checkToken();
 
 // Override meta data
 useMeta({
