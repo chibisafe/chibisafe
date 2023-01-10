@@ -1,7 +1,7 @@
 import type { Request, Response } from 'hyper-express';
-import prisma from '../../structures/database';
-import { constructFilePublicLink } from '../../utils/File';
-import type { User } from '../../structures/interfaces';
+import prisma from '../../../structures/database';
+import { constructFilePublicLink } from '../../../utils/File';
+import type { User } from '../../../structures/interfaces';
 
 export const options = {
 	url: '/admin/file/:uuid',

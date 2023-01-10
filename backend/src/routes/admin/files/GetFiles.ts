@@ -1,6 +1,6 @@
 import type { Request, Response } from 'hyper-express';
-import prisma from '../../structures/database';
-import { constructFilePublicLink } from '../../utils/File';
+import prisma from '../../../structures/database';
+import { constructFilePublicLink } from '../../../utils/File';
 
 export const options = {
 	url: '/admin/files',
