@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import { getFilesFromPublicAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
@@ -23,6 +24,7 @@ const props = defineProps<{
 	identifier: string;
 }>();
 
+const router = useRouter();
 const filesStore = useFilesStore();
 const totalFiles = ref(0);
 const albumName = ref('');
@@ -31,7 +33,11 @@ const enableNsfw = ref(false);
 
 onMounted(async () => {
 	const response = await getFilesFromPublicAlbum(props.identifier);
-	if (!response) return;
+	if (!response) {
+		// If the album doesn't exist, redirect to the home page
+		await router.replace('/');
+		return;
+	}
 
 	totalFiles.value = response.count;
 	albumName.value = response.name;
