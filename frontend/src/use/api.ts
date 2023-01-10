@@ -78,7 +78,7 @@ export const getMe = async () => {
 
 export const getUsersAdmin = async () => {
 	try {
-		const data = await request.get(`/admin/users`);
+		const data = await request.get(`admin/users`);
 		console.log('getUsersAdmin', data);
 		return { users: data.users };
 	} catch (error: any) {
@@ -88,7 +88,7 @@ export const getUsersAdmin = async () => {
 
 export const getUserAdmin = async (uuid: string) => {
 	try {
-		const data = await request.get(`/admin/user/${uuid}`);
+		const data = await request.get(`admin/user/${uuid}`);
 		console.log('getUserAdmin', data);
 		return { user: data.user };
 	} catch (error: any) {
@@ -147,7 +147,7 @@ export const deleteFile = async (uuid: string) => {
 
 export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
-		const data = await request.delete(`/admin/file/${uuid}`);
+		const data = await request.delete(`admin/file/${uuid}`);
 		console.log('deleteFileAsAdmin', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -284,7 +284,7 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 
 export const getStatistics = async () => {
 	try {
-		const data = await request.get('/admin/service/statistics');
+		const data = await request.get('admin/service/statistics');
 		console.log('getStatistics', data);
 		return data.statistics;
 	} catch (error: any) {
