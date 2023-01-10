@@ -30,13 +30,13 @@ export const loadSettings = async () => {
 
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number(process.env.PORT) ?? 8000;
-		SETTINGS.domain = process.env.DOMAIN ?? 'localhost:8000';
 
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
 		// These settings should be set from the database
+		SETTINGS.domain = settingsTable.domain;
 		SETTINGS.rateLimitWindow = settingsTable.rateLimitWindow;
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
@@ -63,6 +63,7 @@ export const loadSettings = async () => {
 	// if SETTINGS is empty and there is no database entry, create it
 	log.debug("Settings don't exist in database, creating...");
 	const data = {
+		domain: 'localhost:8000',
 		rateLimitWindow: 2,
 		rateLimitMax: 5,
 		secret: randomstring.generate(64),

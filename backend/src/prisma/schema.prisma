@@ -75,6 +75,7 @@ model links {
 
 model settings {
 	id Int @id @default(autoincrement())
+	domain String
 	rateLimitWindow Int
 	rateLimitMax Int
 	secret String
