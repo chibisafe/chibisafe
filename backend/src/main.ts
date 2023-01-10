@@ -9,6 +9,7 @@ import jetpack from 'fs-jetpack';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
+import { Buffer } from 'node:buffer';
 // import helmet from 'helmet';
 import cors from 'cors';
 
@@ -101,7 +102,21 @@ const start = async () => {
 			if (req.method === 'GET' || req.method === 'HEAD') {
 				const page = req.path === '/' ? 'index.html' : req.path.slice(1);
 				const file = LiveAssets.get(page);
+
 				if (file) {
+					if (page === 'index.html') {
+						// Replace the placeholders in the index.html file
+						// with the correct meta tags needed for SEO and link sharing
+						let htmlString = file.buffer.toString();
+						htmlString = htmlString.replace(/{{title}}/g, SETTINGS.serviceName);
+						htmlString = htmlString.replace(/{{description}}/g, SETTINGS.metaDescription);
+						htmlString = htmlString.replace(/{{keywords}}/g, SETTINGS.metaKeywords);
+						htmlString = htmlString.replace(/{{twitter}}/g, SETTINGS.metaTwitterHandle);
+						htmlString = htmlString.replace(/{{domain}}/g, SETTINGS.domain);
+						const newBuffer = Buffer.from(htmlString);
+						return res.type(file.extension).send(newBuffer);
+					}
+
 					return res.type(file.extension).send(file.buffer);
 				}
 			}

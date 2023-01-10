@@ -68,16 +68,7 @@ export default defineConfig({
 		createHtmlPlugin({
 			minify: true,
 			entry: '/src/main.ts',
-			template: 'src/index.html',
-			inject: {
-				data: {
-					title: process.env.SERVICE_NAME,
-					description: process.env.META_DESCRIPTION,
-					keywords: process.env.META_KEYWORDS,
-					twitter: process.env.META_TWITTER_HANDLE,
-					domain: process.env.DOMAIN
-				}
-			}
+			template: 'src/index.html'
 		})
 	],
 	optimizeDeps: {
