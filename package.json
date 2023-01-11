@@ -60,7 +60,7 @@
 		"imagesloaded": "^4.1.4",
 		"joi": "^17.3.0",
 		"jsonwebtoken": "^8.5.0",
-		"knex": "^0.21.15",
+		"knex": "^2.4.0",
 		"masonry-layout": "^4.2.2",
 		"moment": "^2.24.0",
 		"morgan": "^1.10.0",
