@@ -11,15 +11,6 @@ export default async () => {
 
 	log.debug('Node version: OK');
 
-	if (!process.env.PORT) {
-		log.error(
-			'It seems there are no environment variables configured. To fix this please rename `.env.sample` to `.env` and fill in the required values.'
-		);
-		process.exit(1);
-	}
-
-	log.debug('Env variables: OK');
-
 	const ffmpegExists = await lookpath('ffmpeg');
 	if (!ffmpegExists) {
 		log.error(
