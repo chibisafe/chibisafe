@@ -29,7 +29,7 @@ export const loadSettings = async () => {
 		log.debug('Settings already exist in database, skipping creation...');
 
 		// These settings should be set from the environment variables
-		SETTINGS.port = Number(process.env.PORT) ?? 8000;
+		SETTINGS.port = Number.isNaN(Number(process.env.PORT)) ? 8000 : Number(process.env.PORT) ?? 8000;
 
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
