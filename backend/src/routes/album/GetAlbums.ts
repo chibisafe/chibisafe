@@ -31,7 +31,11 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!albums.length) return res.status(404).json({ message: 'No albums where found' });
+	if (!albums.length)
+		return res.json({
+			message: 'Successfully retrieved albums',
+			albums: []
+		});
 
 	// TODO: Instead of the first, being able to select a cover picture for an album would
 	// be a neat feature
