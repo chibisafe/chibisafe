@@ -8,16 +8,6 @@ import process from 'node:process';
 
 export const SETTINGS = {} as Settings;
 
-const parseEnvVariable = (value: boolean | number | string | undefined): boolean | number | string | undefined => {
-	if (!value) return undefined;
-	if (typeof value === 'boolean') return value;
-	if (typeof value === 'number') return value;
-	if (typeof value === 'string' && value.toLowerCase() === 'true') return true;
-	if (typeof value === 'string' && value.toLowerCase() === 'false') return false;
-	if (typeof value === 'string' && !Number.isNaN(Number(value))) return Number.parseInt(value, 10);
-	return value;
-};
-
 export const loadSettings = async () => {
 	log.debug('Loading settings...');
 	// if SETTINGS is not empty, return it
