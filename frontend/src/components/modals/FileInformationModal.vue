@@ -115,8 +115,16 @@
 										readOnly
 									/>
 
-									<!-- Album information section -->
+									<!-- Albums and Tags information section -->
 									<template v-if="props.type !== 'admin'">
+										<!-- Tags section -->
+										<!--
+										  <h2 class="text-dark-100 dark:text-light-100 mt-8 mb-4">Tags</h2>
+										  <CreateTag class="mb-4" :fileUuid="null" />
+										  <Tag text="test" />
+										-->
+
+										<!-- Albums section -->
 										<h2 class="text-dark-100 dark:text-light-100 mt-8 mb-4">Albums</h2>
 										<ul
 											class="w-full max-h-[540px] text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-dark-110 dark:border-dark-90 dark:text-white overflow-y-auto"
@@ -144,7 +152,7 @@
 											</li>
 										</ul>
 									</template>
-									<!-- Album information section -->
+									<!-- Albums and Tags information section -->
 
 									<!-- User information section -->
 									<template v-else>
@@ -204,6 +212,8 @@ import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
 import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
+import CreateTag from '~/components/tags/CreateTag.vue';
+import Tag from '~/components/tags/Tag.vue';
 
 const props = defineProps<{
 	type: 'admin' | null;

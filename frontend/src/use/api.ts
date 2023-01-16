@@ -291,3 +291,29 @@ export const getStatistics = async () => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const createTag = async (name: string) => {
+	try {
+		const data = await request.post('tag/create', { name });
+		console.log('createTag', data);
+		return {
+			message: data.message,
+			tag: {
+				uuid: data.uuid,
+				name: data.name
+			}
+		};
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getTags = async () => {
+	try {
+		const data = await request.get(`tags`);
+		console.log('getTags', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
