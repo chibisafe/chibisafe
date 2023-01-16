@@ -456,10 +456,10 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 			if (album) {
 				albumId = album.id;
 			} else {
-				res.status(401).json({ message: "Album doesn't exist or it doesn't belong to the user." });
+				res.status(400).json({ message: "Album doesn't exist or it doesn't belong to the user." });
 			}
 		} else {
-			return res.status(400).json({ message: 'Only registered users can upload files to an album.' });
+			return res.status(401).json({ message: 'Only registered users can upload files to an album.' });
 		}
 	}
 

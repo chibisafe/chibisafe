@@ -21,7 +21,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (exists) return res.status(401).json({ message: "There's already a tag with that name" });
+	if (exists) return res.status(400).json({ message: "There's already a tag with that name" });
 
 	const now = utc().toDate();
 	const newTag = await prisma.tags.create({

@@ -23,7 +23,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(401).json({ message: "The album doesn't exist or doesn't belong to the user" });
+	if (!album) return res.status(400).json({ message: "The album doesn't exist or doesn't belong to the user" });
 
 	console.log('nsfw', nsfw);
 	const updateObj = {

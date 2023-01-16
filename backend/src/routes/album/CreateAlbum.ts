@@ -21,7 +21,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (exists) return res.status(401).json({ message: "There's already an album with that name" });
+	if (exists) return res.status(400).json({ message: "There's already an album with that name" });
 
 	const now = utc().toDate();
 

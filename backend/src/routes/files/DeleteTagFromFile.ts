@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!fileExists) return res.status(401).json({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) return res.status(400).json({ message: "File doesn't exist or doesn't belong to the user" });
 
 	const tagExists = await prisma.tags.findFirst({
 		where: {
@@ -28,7 +28,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!tagExists) return res.status(401).json({ message: "Tag doesn't exist or doesn't belong to the user" });
+	if (!tagExists) return res.status(400).json({ message: "Tag doesn't exist or doesn't belong to the user" });
 
 	await prisma.files.update({
 		where: {

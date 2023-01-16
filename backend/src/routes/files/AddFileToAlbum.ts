@@ -20,7 +20,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!fileExists) return res.status(401).json({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) return res.status(400).json({ message: "File doesn't exist or doesn't belong to the user" });
 
 	const albumExists = await prisma.albums.findFirst({
 		where: {
@@ -32,7 +32,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!albumExists) return res.status(401).json({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!albumExists) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
 
 	await saveFileToAlbum(albumExists.id, fileExists.id);
 

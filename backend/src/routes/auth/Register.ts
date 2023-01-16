@@ -58,7 +58,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (exists) return res.status(401).json({ message: 'Username already exists' });
+	if (exists) return res.status(400).json({ message: 'Username already exists' });
 
 	let hash;
 	try {
