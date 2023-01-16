@@ -3,11 +3,11 @@ import type { RequestWithUser } from '../structures/interfaces';
 import prisma from '../structures/database';
 
 export default async (req: RequestWithUser, res: Response) => {
-	const token = req.headers.token;
-	if (!token) return;
+	const apiKey = req.headers['x-api-key'];
+	if (!apiKey) return;
 	const user = await prisma.users.findFirst({
 		where: {
-			apiKey: token
+			apiKey
 		}
 	});
 

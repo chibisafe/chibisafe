@@ -64,6 +64,7 @@ const start = async () => {
 				'X-Requested-With',
 				'Content-Type',
 				'albumUuid',
+				'X-API-KEY',
 				// 'finishedChunks', // Not used, we simply check if Content-Type is 'application/json'
 				'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
 			]
