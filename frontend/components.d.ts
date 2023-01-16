@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     CreateTag: typeof import('./src/components/tags/CreateTag.vue')['default']
     DeleteFileModal: typeof import('./src/components/modals/DeleteFileModal.vue')['default']
     FileInformationModal: typeof import('./src/components/modals/FileInformationModal.vue')['default']
+    FilesTable: typeof import('./src/components/table/FilesTable.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
     Input: typeof import('./src/components/forms/Input.vue')['default']
     InputWithOverlappingLabel: typeof import('./src/components/forms/InputWithOverlappingLabel.vue')['default']

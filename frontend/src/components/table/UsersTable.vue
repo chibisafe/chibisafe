@@ -1,6 +1,6 @@
 <template>
 	<table class="min-w-full divide-y divide-gray-500">
-		<thead class="bg-new-background">
+		<thead class="bg-dark-80">
 			<tr>
 				<th
 					scope="col"
@@ -48,7 +48,7 @@
 			<tr
 				v-for="(user, indexUser) in users"
 				:key="user.uuid"
-				:class="indexUser % 2 === 0 ? ' bg-new-block' : 'bg-new-background'"
+				:class="indexUser % 2 === 0 ? ' bg-dark-90' : 'bg-dark-80'"
 			>
 				<td
 					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6 underline"
@@ -80,7 +80,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { UserWithCount } from '@/types';
 import { formatBytes } from '~/use/file';
 
