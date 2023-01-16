@@ -223,6 +223,7 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { useUserStore } from '~/store/user';
+import { saveAs } from 'file-saver';
 
 // @ts-ignore
 import IconHome from '~icons/carbon/home';
@@ -238,10 +239,35 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const isAdmin = computed(() => userStore.isAdmin);
+const apiKey = computed(() => userStore.apiKey);
 
 const logout = async () => {
 	await router.push('/');
 	userStore.logout();
+};
+
+const getShareXConfig = async () => {
+	if (!apiKey.value) {
+		// eslint-disable-next-line no-alert
+		window.alert('You need to generate an API key first!');
+		return;
+	}
+
+	const sharexFile = `{
+		"Name": "chibisafe",
+		"DestinationType": "ImageUploader, FileUploader",
+		"RequestType": "POST",
+		"RequestURL": "${location.origin}/api/upload",
+		"FileFormName": "files[]",
+		"Headers": {
+			"token": "${apiKey.value}"
+		},
+		"ResponseType": "Text",
+		"URL": "$json:url$",
+		"ThumbnailURL": "$json:thumb$"
+	}`;
+	const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
+	saveAs(sharexBlob, `${location.hostname}.sxcu`);
 };
 
 const navigationItems = [
@@ -255,7 +281,7 @@ const navigationItems = [
 	{ type: 'secondary', name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
 	{ type: 'secondary', name: 'Patreon', href: 'https://www.patreon.com/pitu' },
 	{ type: 'secondary', name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
-	{ type: 'secondary', name: 'Get ShareX config', href: '#' },
+	{ type: 'secondary', name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
 	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
 
 	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: IconTags, current: false },
