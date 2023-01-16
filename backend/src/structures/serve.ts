@@ -19,10 +19,13 @@ export default async (req: Request, res: Response) => {
 	}
 
 	const readStream = jetpack.createReadStream(fullPath);
+
 	readStream.on('error', error => {
 		readStream.destroy();
 		log.error(error);
 	});
 
-	res.stream(readStream, exists.size);
+	// We need the extension to set the correct content type
+	const extension = path.extname(req.path).slice(1);
+	res.type(extension).stream(readStream, exists.size);
 };
