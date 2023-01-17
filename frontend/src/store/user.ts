@@ -18,6 +18,9 @@ export const useUserStore = defineStore('user', {
 				this.user.token = token;
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				void this.loginWithToken();
+
+				// Let's assume there are preferences saved
+				this.loadPreferences();
 			}
 		},
 		async loginWithToken() {
@@ -59,8 +62,18 @@ export const useUserStore = defineStore('user', {
 				})
 			);
 		},
+		savePreferences() {
+			localStorage.setItem('chibisafe-preferences', JSON.stringify(this.preferences));
+		},
+		loadPreferences() {
+			const preferences = localStorage.getItem('chibisafe-preferences');
+			if (preferences) {
+				this.preferences = JSON.parse(preferences);
+			}
+		},
 		logout() {
 			localStorage.removeItem('chibisafe-user');
+			localStorage.removeItem('chibisafe-preferences');
 			window.location.href = '/';
 		}
 	}
