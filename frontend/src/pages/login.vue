@@ -72,7 +72,7 @@ const userStore = useUserStore();
 const username = ref('');
 const password = ref('');
 
-const loggedIn = computed(() => userStore.loggedIn);
+const loggedIn = computed(() => userStore.user.loggedIn);
 
 const login = async () => {
 	if (!username.value || !password.value) {

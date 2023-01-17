@@ -238,8 +238,8 @@ const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 
-const isAdmin = computed(() => userStore.isAdmin);
-const apiKey = computed(() => userStore.apiKey);
+const isAdmin = computed(() => userStore.user.isAdmin);
+const apiKey = computed(() => userStore.user.apiKey);
 
 const logout = async () => {
 	await router.push('/');

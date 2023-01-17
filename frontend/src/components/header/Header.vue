@@ -63,5 +63,5 @@ import IconDiscord from '~icons/carbon/logo-discord';
 
 import { useUserStore } from '~/store/user';
 const userStore = useUserStore();
-const loggedIn = computed(() => userStore.loggedIn);
+const loggedIn = computed(() => userStore.user.loggedIn);
 </script>

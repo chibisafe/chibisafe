@@ -3,21 +3,19 @@ import { login, getMe } from '~/use/api';
 import type { User } from '~/types';
 
 export const useUserStore = defineStore('user', {
-	state: () =>
-		({
-			token: '',
-			loggedIn: false,
-			username: '',
-			uuid: '',
-			isAdmin: false
-		} as User),
+	state: () => ({
+		user: {} as User,
+		preferences: {
+			preferMasonry: true
+		}
+	}),
 	actions: {
 		checkToken() {
 			const user = localStorage.getItem('chibisafe-user');
 			if (user) {
 				const { token } = JSON.parse(user);
 				if (!token) return;
-				this.token = token;
+				this.user.token = token;
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				void this.loginWithToken();
 			}
@@ -29,11 +27,14 @@ export const useUserStore = defineStore('user', {
 				return;
 			}
 
-			this.username = response.username;
-			this.uuid = response.uuid;
-			this.apiKey = response.apiKey;
-			this.isAdmin = response.isAdmin;
-			this.loggedIn = true;
+			this.user = {
+				// Keep the token
+				...this.user,
+				// Update the rest of the user object
+				...response,
+				// Set loggedIn to true
+				loggedIn: true
+			};
 		},
 		async login(username: string, password: string) {
 			if (!username || !password) return;
@@ -42,21 +43,19 @@ export const useUserStore = defineStore('user', {
 			if (!response) return;
 			if (!response.token) return;
 
-			this.token = response.token;
-			this.username = response.username;
-			this.uuid = response.uuid;
-			this.apiKey = response.apiKey;
-			this.isAdmin = response.isAdmin;
-			this.loggedIn = true;
+			this.user = {
+				...response,
+				loggedIn: true
+			};
 
 			localStorage.setItem(
 				'chibisafe-user',
 				JSON.stringify({
-					username: this.username,
-					uuid: this.uuid,
-					apiKey: this.apiKey,
-					isAdmin: this.isAdmin,
-					token: this.token
+					username: this.user.username,
+					uuid: this.user.uuid,
+					apiKey: this.user.apiKey,
+					isAdmin: this.user.isAdmin,
+					token: this.user.token
 				})
 			);
 		},

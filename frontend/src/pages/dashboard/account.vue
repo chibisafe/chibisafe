@@ -59,12 +59,12 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 const userStore = useUserStore();
 const toastStore = useToastStore();
 
-const username = computed(() => userStore.username);
+const username = computed(() => userStore.user.username);
 const currentPassword = ref('');
 const newPassword = ref('');
 const reNewPassword = ref('');
 const error = ref('');
-const apiKey = computed(() => userStore.apiKey);
+const apiKey = computed(() => userStore.user.apiKey);
 
 const doChangePassword = async () => {
 	error.value = '';
@@ -114,6 +114,6 @@ const doChangePassword = async () => {
 const doRequestApiKey = async () => {
 	const response = await changeApiKey();
 	if (!response) return;
-	userStore.apiKey = response.apiKey;
+	userStore.user.apiKey = response.apiKey;
 };
 </script>

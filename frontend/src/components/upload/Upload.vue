@@ -27,8 +27,8 @@ const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
 const dropzone = ref<HTMLDivElement>();
 
-const isLoggedIn = computed(() => userStore.loggedIn);
-const token = computed(() => userStore.token);
+const isLoggedIn = computed(() => userStore.user.loggedIn);
+const token = computed(() => userStore.user.token);
 
 onMounted(() => {
 	if (dropzone.value) {
