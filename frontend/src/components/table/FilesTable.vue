@@ -4,13 +4,13 @@
 			<tr>
 				<th
 					scope="col"
-					class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:pl-6"
+					class="py-3.5 pl-4 pr-3 text-sm font-semibold text-dark-90 dark:text-light-100 sm:pl-6 text-center w-24"
 				>
 					Thumb
 				</th>
 				<th
 					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
+					class="hidden px-3 py-3.5 text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell text-center"
 				>
 					Link
 				</th>
@@ -47,13 +47,19 @@
 				:class="indexFile % 2 === 0 ? ' bg-dark-90' : 'bg-dark-80'"
 			>
 				<td
-					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6"
+					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6 cursor-pointer flex justify-center"
+					@click="showModal(file)"
 				>
 					<template v-if="isFileImage(file) || isFileVideo(file)">
-						<img :src="file.thumb" class="cursor-pointer h-10" @click="showModal(file)" />
+						<img :src="file.thumb" class="h-10" />
 					</template>
+					<IconAudio v-else-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<IconPdf v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<IconDocument v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
 				</td>
-				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell underline">
+				<td
+					class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell underline text-center"
+				>
 					<a :href="file.url" target="_blank" rel="noopener noreferrer">{{ file.name }}</a>
 				</td>
 				<!--
@@ -78,13 +84,12 @@
 
 <script setup lang="ts">
 import type { FileWithAdditionalData } from '~/types';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useFilesStore } from '~/store/files';
 import { useAlbumsStore } from '~/store/albums';
 import { useModalstore } from '~/store/modals';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
-import IconVideo from '~icons/carbon/video-filled';
 import IconDocument from '~icons/carbon/document';
 import IconPdf from '~icons/carbon/document-pdf';
 import IconAudio from '~icons/carbon/document-audio';

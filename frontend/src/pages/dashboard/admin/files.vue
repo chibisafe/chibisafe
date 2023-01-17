@@ -14,7 +14,7 @@
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">All uploads ({{ totalFiles }} files)</h1>
-			<Masonry type="admin" />
+			<FilesWrapper type="admin" />
 		</div>
 	</Sidebar>
 </template>
@@ -23,8 +23,8 @@
 import { computed } from 'vue';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
-import Masonry from '~/components/masonry/Masonry.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 
 const filesStore = useFilesStore();
 const totalFiles = computed(() => filesStore.count);

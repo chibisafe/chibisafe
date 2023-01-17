@@ -16,7 +16,7 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">
 				`{{ albumName }}` uploads ({{ totalFiles }} files)
 			</h1>
-			<Masonry type="album" />
+			<FilesWrapper type="album" />
 		</div>
 	</Sidebar>
 </template>
@@ -25,8 +25,8 @@
 import { computed } from 'vue';
 import { useAlbumsStore } from '~/store/albums';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
-import Masonry from '~/components/masonry/Masonry.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 
 const props = defineProps<{
 	uuid: string;
