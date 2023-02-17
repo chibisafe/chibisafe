@@ -98,7 +98,7 @@ export const getUserAdmin = async (uuid: string) => {
 
 export const getFiles = async (page: number) => {
 	try {
-		const data = await request.get('files');
+		const data = await request.get(`files?page=${page}`);
 		console.log('getFiles', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
@@ -108,7 +108,7 @@ export const getFiles = async (page: number) => {
 
 export const getFilesAdmin = async (page: number) => {
 	try {
-		const data = await request.get('admin/files');
+		const data = await request.get(`admin/files?page=${page}`);
 		console.log('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
@@ -203,9 +203,9 @@ export const updateAlbum = async (uuid: string, setting: any) => {
 	}
 };
 
-export const getAlbum = async (uuid: string) => {
+export const getAlbum = async (uuid: string, page: number) => {
 	try {
-		const data = await request.get(`album/${uuid}`);
+		const data = await request.get(`album/${uuid}?page=${page}`);
 		console.log('getAlbum', data);
 		return data;
 	} catch (error: any) {

@@ -13,9 +13,7 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100">
-				`{{ albumName }}` uploads ({{ totalFiles }} files)
-			</h1>
+			<h1 class="text-2xl mt-8 font-semibold text-light-100">`{{ albumName }}` uploads</h1>
 			<FilesWrapper type="album" />
 		</div>
 	</Sidebar>
@@ -34,7 +32,6 @@ const props = defineProps<{
 
 const albumsStore = useAlbumsStore();
 const albumName = computed(() => albumsStore.album?.name ?? '');
-const totalFiles = computed(() => albumsStore.album?.count ?? 0);
 
 void albumsStore.getAlbum(props.uuid);
 </script>

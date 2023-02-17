@@ -10,13 +10,15 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: Response) => {
-	const { page = 1, limit = 100 } = req.query_parameters as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
 
 	const count = await prisma.files.count({
 		where: {
 			userId: req.user.id
 		}
 	});
+
+	console.log(limit, page);
 
 	const files = await prisma.files.findMany({
 		take: limit,

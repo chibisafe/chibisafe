@@ -8,28 +8,49 @@ export const useFilesStore = defineStore('files', {
 		owner: {} as User,
 		// Loaded files from the database
 		files: [] as FileWithAdditionalData[],
-		// Total amount of files for pagination
-		count: 0
+		// File and page count for pagination
+		currentPage: 1,
+		adminCurrentPage: 1,
+		count: 0,
+		adminCount: 0
 	}),
 	actions: {
-		async get(page = 0) {
+		async getPreviousPage() {
+			await this.get(this.currentPage - 1);
+		},
+		async getPreviousPageAdmin() {
+			await this.getAdmin(this.adminCurrentPage - 1);
+		},
+		async getNextPage() {
+			await this.get(this.currentPage + 1);
+		},
+		async getNextPageAdmin() {
+			await this.getAdmin(this.adminCurrentPage + 1);
+		},
+
+		async get(page = 1) {
+			if (page < 1) return;
 			const response = await getFiles(page);
 			// TODO: Error handling
 			if (!response) return;
+			this.currentPage = page;
 			this.files = response.files;
 			this.count = response.count;
 		},
-		async getAdmin(page = 0) {
+		async getAdmin(page = 1) {
+			if (page < 1) return;
 			const response = await getFilesAdmin(page);
 			// TODO: Error handling
 			if (!response) return;
+			this.adminCurrentPage = page;
 			this.files = response.files;
-			this.count = response.count;
+			this.adminCount = response.count;
 		},
 		async getUserAsAdmin(uuid: string, page = 0) {
 			const response = await getFilesFromUser(uuid, page);
 			// TODO: Error handling
 			if (!response) return;
+			this.currentPage = page;
 			this.files = response.files;
 			this.count = response.count;
 			this.owner = response.user;

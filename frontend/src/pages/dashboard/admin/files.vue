@@ -13,21 +13,19 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100">All uploads ({{ totalFiles }} files)</h1>
+			<h1 class="text-2xl mt-8 font-semibold text-light-100">All uploads</h1>
 			<FilesWrapper type="admin" />
 		</div>
 	</Sidebar>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 
 const filesStore = useFilesStore();
-const totalFiles = computed(() => filesStore.count);
 
 void filesStore.getAdmin();
 </script>

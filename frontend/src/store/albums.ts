@@ -6,9 +6,20 @@ export const useAlbumsStore = defineStore('albums', {
 	state: () => ({
 		albums: [] as Album[],
 		album: {} as AlbumForMasonry | null,
-		currentAlbumLinks: [] as AlbumLink[]
+		currentAlbumLinks: [] as AlbumLink[],
+		currentPage: 1,
+		// Total amount of files for pagination
+		count: 0
 	}),
 	actions: {
+		async getPreviousPage() {
+			if (!this.album?.uuid) return;
+			await this.getAlbum(this.album.uuid, this.currentPage - 1);
+		},
+		async getNextPage() {
+			if (!this.album?.uuid) return;
+			await this.getAlbum(this.album.uuid, this.currentPage + 1);
+		},
 		async get(force = false) {
 			if (!force && this.albums.length) return;
 
@@ -16,9 +27,13 @@ export const useAlbumsStore = defineStore('albums', {
 			if (!response) return;
 			this.albums = response.albums;
 		},
-		async getAlbum(uuid: string) {
-			const response = await getAlbum(uuid);
+		async getAlbum(uuid: string, page = 1) {
+			if (page < 1) return;
+			const response = await getAlbum(uuid, page);
 			if (!response) return;
+
+			this.currentPage = page;
+			this.count = response.filesCount;
 
 			this.album = {
 				uuid,

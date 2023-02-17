@@ -9,7 +9,7 @@ export const options = {
 };
 
 export const run = async (req: Request, res: Response) => {
-	const { page = 1, limit = 100 } = req.query_parameters as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
 
 	const count = await prisma.files.count();
 	const files = await prisma.files.findMany({
