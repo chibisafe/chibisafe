@@ -82,5 +82,6 @@ jobs:
           file: ./docker/chibisafe/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.kubero-meta.outputs.tags }}
-          platforms: linux/amd64,linux/arm64
+          #platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           labels: ${{ steps.kubero-meta.outputs.labels }}
