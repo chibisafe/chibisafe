@@ -79,6 +79,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: ./docker/chibisafe/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.kubero-meta.outputs.tags }}
           platforms: linux/amd64,linux/arm64
