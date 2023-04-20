@@ -21,6 +21,7 @@ services:
         build:
             context: ../
             dockerfile: ./docker/chibisafe/Dockerfile
+        image: ghcr.io/chibisafe/chibisafe:latest
         expose:
             - "5000"
             - "5001"
