@@ -9,6 +9,12 @@ export default async (req: Request, res: Response) => {
 	if (ignorePaths.includes(req.path)) return res.status(404).send('Not found');
 	log.debug(`Requesting file: ${req.path}`);
 
+	// Prevent malicious requests that try to access files outside of the uploads folder
+	const UP_PATH_REGEXP = /(?:^|[/\\])\.\.(?:[/\\]|$)/;
+	if (UP_PATH_REGEXP.test(req.path)) {
+		return res.status(403).send('Forbidden');
+	}
+
 	const fullPath = path.join(__dirname, '..', '..', '..', 'uploads', req.path);
 	const exists = await jetpack.inspectAsync(fullPath);
 	if (!exists || exists.type !== 'file') return res.status(404).send('Not found');
