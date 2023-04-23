@@ -14,11 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import Dropzone from 'dropzone';
 import { useUploadsStore } from '~/store/uploads';
 import { useUserStore } from '~/store/user';
 import type { ApiError } from '~/types';
+import { getFileExtension } from '~/use/file';
 
 // @ts-ignore
 import IconUpload from '~icons/carbon/cloud-upload';
@@ -26,13 +27,28 @@ import IconUpload from '~icons/carbon/cloud-upload';
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
 const dropzone = ref<HTMLDivElement>();
+const drop = ref<Dropzone>();
 
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const token = computed(() => userStore.user.token);
 
+const pasteHandler = (event: ClipboardEvent) => {
+	if (!event.clipboardData) return;
+	if (!drop.value) return;
+	for (const file of Array.from(event.clipboardData.files)) {
+		if (!file?.type) continue;
+		// eslint-disable-next-line prefer-named-capture-group
+		const fileData = new File([file], `pasted-file.${getFileExtension(file)}`, {
+			type: file.type
+		});
+
+		drop.value.addFile(fileData as Dropzone.DropzoneFile);
+	}
+};
+
 onMounted(() => {
 	if (dropzone.value) {
-		const drop = new Dropzone(dropzone.value, {
+		drop.value = new Dropzone(dropzone.value, {
 			url: '/api/upload',
 			paramName: 'files[]',
 			timeout: 600000, // 10 minutes
@@ -112,9 +128,15 @@ onMounted(() => {
 			}
 		});
 
-		drop.options.headers = {
+		drop.value.options.headers = {
 			Authorization: token.value ? `Bearer ${token.value}` : ''
 		};
 	}
+
+	window.addEventListener('paste', pasteHandler);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('paste', pasteHandler);
 });
 </script>
