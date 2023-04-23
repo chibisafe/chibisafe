@@ -1,8 +1,24 @@
 <template>
 	<div class="flex items-center">
 		<span class="text-dark-80 dark:text-light-100 mr-4">Page {{ page }} of {{ Math.ceil(total / 50) }}</span>
-		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10 mr-2" @click="previousPage">Previous</button>
-		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nextPage">Next</button>
+		<button
+			:disabled="isFirstPage"
+			type="button"
+			:class="[isFirstPage ? 'cursor-not-allowed bg-dark-90' : 'bg-dark-80']"
+			class="text-light-100 p-2 h-10 mr-2"
+			@click="previousPage"
+		>
+			Previous
+		</button>
+		<button
+			:disabled="isLastPage"
+			type="button"
+			:class="[isLastPage ? 'cursor-not-allowed bg-dark-90' : 'bg-dark-80']"
+			class="text-light-100 p-2 h-10"
+			@click="nextPage"
+		>
+			Next
+		</button>
 	</div>
 </template>
 
@@ -32,6 +48,13 @@ const total = computed(() => {
 	return 1;
 });
 
+const isFirstPage = computed(() => {
+	if (props.type === 'admin') return filesStore.adminCurrentPage === 1;
+	else if (props.type === 'album') return albumsStore.currentPage === 1;
+	else if (props.type === 'uploads') return filesStore.currentPage === 1;
+	return true;
+});
+
 const isLastPage = computed(() => {
 	if (props.type === 'admin') return filesStore.adminCurrentPage === Math.ceil(filesStore.adminCount / 50);
 	else if (props.type === 'album') return albumsStore.currentPage === Math.ceil(albumsStore.count / 50);
@@ -46,7 +69,6 @@ const previousPage = async () => {
 };
 
 const nextPage = async () => {
-	if (isLastPage.value) return;
 	if (props.type === 'admin') await filesStore.getNextPageAdmin();
 	else if (props.type === 'album') await albumsStore.getNextPage();
 	else if (props.type === 'uploads') await filesStore.getNextPage();
