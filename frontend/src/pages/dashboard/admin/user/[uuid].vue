@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
@@ -36,9 +37,24 @@ const props = defineProps<{
 	uuid: string;
 }>();
 
+const route = useRoute();
 const filesStore = useFilesStore();
 const totalFiles = computed(() => filesStore.count);
 const user = computed(() => filesStore.owner);
 
-void filesStore.getUserAsAdmin(props.uuid);
+const checkRouteQuery = () => {
+	if (route.query.page) {
+		const pageNum = Number(route.query.page);
+		if (!Number.isNaN(pageNum)) {
+			void filesStore.getUserAsAdmin(props.uuid, pageNum);
+			return;
+		}
+
+		void filesStore.getUserAsAdmin(props.uuid);
+	}
+
+	void filesStore.getUserAsAdmin(props.uuid);
+};
+
+checkRouteQuery();
 </script>

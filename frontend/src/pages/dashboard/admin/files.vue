@@ -20,12 +20,28 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 
+const route = useRoute();
 const filesStore = useFilesStore();
 
-void filesStore.getAdmin();
+const checkRouteQuery = () => {
+	if (route.query.page) {
+		const pageNum = Number(route.query.page);
+		if (!Number.isNaN(pageNum)) {
+			void filesStore.getAdmin(pageNum);
+			return;
+		}
+
+		void filesStore.getAdmin();
+	}
+
+	void filesStore.getAdmin();
+};
+
+checkRouteQuery();
 </script>

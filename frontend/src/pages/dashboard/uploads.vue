@@ -16,12 +16,28 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 
+const route = useRoute();
 const filesStore = useFilesStore();
 
-void filesStore.get();
+const checkRouteQuery = () => {
+	if (route.query.page) {
+		const pageNum = Number(route.query.page);
+		if (!Number.isNaN(pageNum)) {
+			void filesStore.get(pageNum);
+			return;
+		}
+
+		void filesStore.get();
+	}
+
+	void filesStore.get();
+};
+
+checkRouteQuery();
 </script>

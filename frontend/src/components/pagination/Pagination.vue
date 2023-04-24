@@ -23,13 +23,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import { useAlbumsStore } from '~/store/albums';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';
 }>();
+
+const route = useRoute();
+const router = useRouter();
+const queryPage = ref(route.query.page);
 
 const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
@@ -66,11 +71,15 @@ const previousPage = async () => {
 	if (props.type === 'admin') await filesStore.getPreviousPageAdmin();
 	else if (props.type === 'album') await albumsStore.getPreviousPage();
 	else if (props.type === 'uploads') await filesStore.getPreviousPage();
+	const query = { ...route.query };
+	if (page.value === 1) delete query.page;
+	await router.replace({ query });
 };
 
 const nextPage = async () => {
 	if (props.type === 'admin') await filesStore.getNextPageAdmin();
 	else if (props.type === 'album') await albumsStore.getNextPage();
 	else if (props.type === 'uploads') await filesStore.getNextPage();
+	await router.replace({ query: { page: page.value } });
 };
 </script>
