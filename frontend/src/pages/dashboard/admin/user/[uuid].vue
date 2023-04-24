@@ -13,7 +13,7 @@
 					},
 					{
 						name: user.username,
-						href: '/dashboard/admin/users' + user.uuid
+						href: '/dashboard/admin/user/' + props.uuid
 					}
 				]"
 			/>
@@ -46,14 +46,14 @@ const checkRouteQuery = () => {
 	if (route.query.page) {
 		const pageNum = Number(route.query.page);
 		if (!Number.isNaN(pageNum)) {
-			void filesStore.getUserAsAdmin(props.uuid, pageNum);
+			void filesStore.get({ admin: true, userUuid: props.uuid, page: pageNum });
 			return;
 		}
 
-		void filesStore.getUserAsAdmin(props.uuid);
+		void filesStore.get({ admin: true, page: pageNum });
 	}
 
-	void filesStore.getUserAsAdmin(props.uuid);
+	void filesStore.get({ admin: true, userUuid: props.uuid });
 };
 
 checkRouteQuery();

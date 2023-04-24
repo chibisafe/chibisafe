@@ -33,14 +33,14 @@ const checkRouteQuery = () => {
 	if (route.query.page) {
 		const pageNum = Number(route.query.page);
 		if (!Number.isNaN(pageNum)) {
-			void filesStore.getAdmin(pageNum);
+			void filesStore.get({ admin: true, page: pageNum });
 			return;
 		}
 
-		void filesStore.getAdmin();
+		void filesStore.get({ admin: true });
 	}
 
-	void filesStore.getAdmin();
+	void filesStore.get({ admin: true });
 };
 
 checkRouteQuery();

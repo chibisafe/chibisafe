@@ -29,7 +29,7 @@ const checkRouteQuery = () => {
 	if (route.query.page) {
 		const pageNum = Number(route.query.page);
 		if (!Number.isNaN(pageNum)) {
-			void filesStore.get(pageNum);
+			void filesStore.get({ page: pageNum });
 			return;
 		}
 
