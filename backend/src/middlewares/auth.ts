@@ -69,7 +69,7 @@ export default (
 			isAdmin: user.isAdmin,
 			apiKey: user.apiKey
 		};
-		log.debug(`Username: ${user.username}`);
+		log.debug(`Request from user: ${user.username}`);
 		next();
 	});
 };

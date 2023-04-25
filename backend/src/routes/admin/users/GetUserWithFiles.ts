@@ -42,6 +42,9 @@ export const run = async (req: Request, res: Response) => {
 		skip: (page - 1) * limit,
 		where: {
 			userId: user.id
+		},
+		orderBy: {
+			id: 'desc'
 		}
 	});
 
