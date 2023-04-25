@@ -10,9 +10,6 @@ RUN apt -y install ffmpeg
 # Create app directory
 WORKDIR /home/node/chibisafe
 
-# Copy the .env file
-COPY .env ./.env
-
 # Install app dependencies
 COPY backend/package.json ./backend/
 COPY backend/package-lock.json ./backend/
