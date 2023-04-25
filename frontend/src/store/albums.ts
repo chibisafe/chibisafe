@@ -20,6 +20,11 @@ export const useAlbumsStore = defineStore('albums', {
 			if (!this.album?.uuid) return;
 			await this.getAlbum(this.album.uuid, this.currentPage + 1);
 		},
+		async goToPage(pageNumber: number) {
+			if (!this.album?.uuid) return;
+			await this.getAlbum(this.album.uuid, pageNumber);
+		},
+
 		async get(force = false) {
 			if (!force && this.albums.length) return;
 

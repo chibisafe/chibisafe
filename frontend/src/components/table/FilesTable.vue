@@ -1,5 +1,5 @@
 <template>
-	<table class="min-w-full divide-y divide-gray-500">
+	<table class="min-w-full divide-y divide-gray-500 mb-5">
 		<thead class="bg-dark-80">
 			<tr>
 				<th
@@ -20,7 +20,7 @@
 				  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
 				  >
 				  Uploader
-				  </th> 
+				  </th>
 				-->
 				<th
 					scope="col"
@@ -64,8 +64,8 @@
 				</td>
 				<!--
 				  <td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
-				  {{ file.uploader }} 
-				  </td> 
+				  {{ file.uploader }}
+				  </td>
 				-->
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
 					{{ formatBytes(Number(file.size)) }}

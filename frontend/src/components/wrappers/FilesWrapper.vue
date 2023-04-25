@@ -33,10 +33,8 @@ const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
 
 const totalFiles = computed(() => {
-	if (props.type === 'admin') return filesStore.adminCount;
-	else if (props.type === 'album') return albumsStore.count;
-	else if (props.type === 'uploads') return filesStore.count;
-	return 0;
+	if (props.type === 'album') return albumsStore.count;
+	else return filesStore.count;
 });
 
 const preferMasonry = computed(() => userStore.preferences.preferMasonry);

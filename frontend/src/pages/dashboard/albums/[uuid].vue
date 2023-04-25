@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useAlbumsStore } from '~/store/albums';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
@@ -30,8 +31,23 @@ const props = defineProps<{
 	uuid: string;
 }>();
 
+const route = useRoute();
 const albumsStore = useAlbumsStore();
 const albumName = computed(() => albumsStore.album?.name ?? '');
 
-void albumsStore.getAlbum(props.uuid);
+const checkRouteQuery = () => {
+	if (route.query.page) {
+		const pageNum = Number(route.query.page);
+		if (!Number.isNaN(pageNum)) {
+			void albumsStore.getAlbum(props.uuid, pageNum);
+			return;
+		}
+
+		void albumsStore.getAlbum(props.uuid);
+	}
+
+	void albumsStore.getAlbum(props.uuid);
+};
+
+checkRouteQuery();
 </script>

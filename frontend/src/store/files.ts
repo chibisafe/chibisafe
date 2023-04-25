@@ -2,6 +2,12 @@ import { defineStore } from 'pinia';
 import { getFiles, getFilesAdmin, getFilesFromUser } from '~/use/api';
 import type { FileWithAdditionalData, User } from '../types';
 
+interface GetParameters {
+	page?: number;
+	admin?: boolean;
+	userUuid?: string;
+}
+
 export const useFilesStore = defineStore('files', {
 	state: () => ({
 		// Owner of the files, in case an admin is viewing the files of a user
@@ -10,50 +16,63 @@ export const useFilesStore = defineStore('files', {
 		files: [] as FileWithAdditionalData[],
 		// File and page count for pagination
 		currentPage: 1,
-		adminCurrentPage: 1,
 		count: 0,
-		adminCount: 0
+		helperData: {
+			asAdmin: false,
+			userUuid: ''
+		}
 	}),
 	actions: {
 		async getPreviousPage() {
-			await this.get(this.currentPage - 1);
-		},
-		async getPreviousPageAdmin() {
-			await this.getAdmin(this.adminCurrentPage - 1);
+			await this.get({
+				page: this.currentPage - 1,
+				admin: this.helperData.asAdmin,
+				userUuid: this.helperData.userUuid
+			});
 		},
 		async getNextPage() {
-			await this.get(this.currentPage + 1);
+			await this.get({
+				page: this.currentPage + 1,
+				admin: this.helperData.asAdmin,
+				userUuid: this.helperData.userUuid
+			});
 		},
-		async getNextPageAdmin() {
-			await this.getAdmin(this.adminCurrentPage + 1);
+		async goToPage(pageNumber: number) {
+			await this.get({
+				page: pageNumber,
+				admin: this.helperData.asAdmin,
+				userUuid: this.helperData.userUuid
+			});
 		},
 
-		async get(page = 1) {
-			if (page < 1) return;
-			const response = await getFiles(page);
+		async get(params: GetParameters = {}) {
+			const { page, admin, userUuid } = params;
+
+			const pageNumber = page ?? 1;
+			if (pageNumber < 1) return;
+
+			this.helperData.asAdmin = admin ?? false;
+			this.helperData.userUuid = userUuid ?? '';
+
+			let response;
+			if (admin) {
+				if (userUuid && userUuid !== '') {
+					response = await getFilesFromUser(userUuid, pageNumber);
+				} else {
+					response = await getFilesAdmin(pageNumber);
+				}
+			} else {
+				response = await getFiles(pageNumber);
+			}
+
 			// TODO: Error handling
 			if (!response) return;
-			this.currentPage = page;
+			this.currentPage = pageNumber;
 			this.files = response.files;
 			this.count = response.count;
-		},
-		async getAdmin(page = 1) {
-			if (page < 1) return;
-			const response = await getFilesAdmin(page);
-			// TODO: Error handling
-			if (!response) return;
-			this.adminCurrentPage = page;
-			this.files = response.files;
-			this.adminCount = response.count;
-		},
-		async getUserAsAdmin(uuid: string, page = 0) {
-			const response = await getFilesFromUser(uuid, page);
-			// TODO: Error handling
-			if (!response) return;
-			this.currentPage = page;
-			this.files = response.files;
-			this.count = response.count;
-			this.owner = response.user;
+			if ('user' in response) {
+				this.owner = response.user as User;
+			}
 		},
 		removeFile(uuid: string) {
 			this.files = this.files.filter(file => file.uuid !== uuid);

@@ -31,10 +31,14 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			nsfw: true,
 			files: {
 				select: {
-					uuid: true,
+					createdAt: true,
+					hash: true,
+					ip: true,
 					name: true,
+					original: true,
+					size: true,
 					type: true,
-					original: true
+					uuid: true
 				},
 				orderBy: {
 					id: 'desc'
