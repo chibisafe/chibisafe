@@ -52,7 +52,11 @@
 						<!-- TODO: Add transition to the background so it's smooth -->
 						<div
 							class="w-full h-full absolute top-0 left-0 pointer-events-none"
-							:class="[file.status !== 'error' ? 'bg-[#22a061]' : 'bg-[#832c2c]']"
+							:class="{
+								'bg-green-800': file.status === 'success',
+								'bg-yellow-900': file.status === 'uploading',
+								'bg-red-900': file.status === 'error'
+							}"
 							:style="[
 								{
 									width: file.status === 'error' ? '100%' : `${file.progress}%`
