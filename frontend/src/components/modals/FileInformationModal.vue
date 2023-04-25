@@ -85,17 +85,17 @@
 
 									<h2 class="text-dark-100 dark:text-light-100 mt-1">File info</h2>
 
-									<InputWithOverlappingLabel v-model="file.uuid" class="mt-4" label="UUID" readOnly />
-									<InputWithOverlappingLabel v-model="file.name" class="mt-4" label="Name" readOnly />
+									<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
+									<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
 									<InputWithOverlappingLabel
-										v-model="file.original"
+										:value="file.original"
 										class="mt-4"
 										label="Original Name"
 										readOnly
 									/>
-									<InputWithOverlappingLabel v-model="file.ip" class="mt-4" label="IP" readOnly />
+									<InputWithOverlappingLabel :value="file.ip" class="mt-4" label="IP" readOnly />
 									<InputWithOverlappingLabel
-										v-model="file.url"
+										:value="file.url"
 										class="mt-4"
 										label="Link"
 										type="link"
@@ -107,9 +107,9 @@
 										label="Size"
 										readOnly
 									/>
-									<InputWithOverlappingLabel v-model="file.hash" class="mt-4" label="Hash" readOnly />
+									<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
 									<InputWithOverlappingLabel
-										v-model="file.createdAt"
+										:value="file.createdAt"
 										class="mt-4"
 										label="Uploaded"
 										readOnly
@@ -158,13 +158,13 @@
 									<template v-else>
 										<h2 class="text-dark-100 dark:text-light-100 mt-8">User info</h2>
 										<InputWithOverlappingLabel
-											v-model="user.username"
+											:value="user.username"
 											class="mt-4"
 											label="Username"
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											v-model="user.uuid"
+											:value="user.uuid"
 											class="mt-4"
 											label="UUID"
 											readOnly
@@ -182,7 +182,7 @@
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											v-model="user.createdAt"
+											:value="user.createdAt"
 											class="mt-4"
 											label="Created at"
 											readOnly
