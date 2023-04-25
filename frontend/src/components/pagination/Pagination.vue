@@ -10,6 +10,9 @@
 		>
 			Previous
 		</button>
+		<select :value="page" class="bg-dark-80 text-light-100 h-10 mr-2" @change="goToPage">
+			<option v-for="index in totalPages" :key="index" :value="index">{{ index }}</option>
+		</select>
 		<button
 			:disabled="isLastPage"
 			type="button"
@@ -49,14 +52,19 @@ const total = computed(() => {
 	else return filesStore.count;
 });
 
+const totalPages = computed(() => {
+	if (props.type === 'album') return Math.ceil(albumsStore.count / 50);
+	else return Math.ceil(filesStore.count / 50);
+});
+
 const isFirstPage = computed(() => {
 	if (props.type === 'album') return albumsStore.currentPage === 1;
 	else return filesStore.currentPage === 1;
 });
 
 const isLastPage = computed(() => {
-	if (props.type === 'album') return albumsStore.currentPage === Math.ceil(albumsStore.count / 50);
-	else return filesStore.currentPage === Math.ceil(filesStore.count / 50);
+	if (props.type === 'album') return albumsStore.currentPage === totalPages.value;
+	else return filesStore.currentPage === totalPages.value;
 });
 
 const previousPage = async () => {
@@ -73,5 +81,19 @@ const nextPage = async () => {
 	else await filesStore.getNextPage();
 
 	await router.replace({ query: { page: page.value } });
+};
+
+const goToPage = async (event: Event) => {
+	if (!event.target) return;
+	const target = event.target as HTMLSelectElement;
+	const pageNum = Number(target.value);
+
+	if (props.type === 'album') await albumsStore.goToPage(pageNum);
+	else await filesStore.goToPage(pageNum);
+
+	const query = { ...route.query };
+	if (pageNum === 1) delete query.page;
+	else query.page = String(pageNum);
+	await router.replace({ query });
 };
 </script>

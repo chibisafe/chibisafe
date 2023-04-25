@@ -37,6 +37,13 @@ export const useFilesStore = defineStore('files', {
 				userUuid: this.helperData.userUuid
 			});
 		},
+		async goToPage(pageNumber: number) {
+			await this.get({
+				page: pageNumber,
+				admin: this.helperData.asAdmin,
+				userUuid: this.helperData.userUuid
+			});
+		},
 
 		async get(params: GetParameters = {}) {
 			const { page, admin, userUuid } = params;
