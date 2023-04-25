@@ -12,7 +12,7 @@ export const run = async (req: Request, res: Response) => {
 	const { uuid } = req.path_parameters;
 	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
 
-	const { page = 1, limit = 100 } = req.query_parameters as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
 
 	const user = await prisma.users.findUnique({
 		where: {

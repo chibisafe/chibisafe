@@ -118,7 +118,7 @@ export const getFilesAdmin = async (page: number) => {
 
 export const getFilesFromUser = async (uuid: string, page: number) => {
 	try {
-		const data = await request.get(`admin/user/${uuid}/files`);
+		const data = await request.get(`admin/user/${uuid}/files?page=${page}`);
 		console.log('getFilesFromUser', data);
 		return { user: data.user, files: data.files, count: data.count };
 	} catch (error: any) {
