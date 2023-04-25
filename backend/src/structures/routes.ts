@@ -2,7 +2,7 @@ import jetpack from 'fs-jetpack';
 import path from 'node:path';
 import { inspect } from 'node:util';
 import process from 'node:process';
-import type { MiddlewareNext, Request, Response, Server } from 'hyper-express';
+import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RouteOptions } from './interfaces';
 import log from '../utils/Log';
 import { addSpaces } from '../utils/Util';
@@ -10,7 +10,7 @@ import { addSpaces } from '../utils/Util';
 const defaultMiddlewares = ['log', 'ban'];
 
 export default {
-	load: async (server: Server) => {
+	load: async (server: FastifyInstance) => {
 		/*
 			While in development we only want to match routes written in TypeScript but for production
 			we need to change it to javascript files since they will be compiled.
@@ -70,7 +70,7 @@ export default {
 
 						// Init anonymous function, to pass middleware options to the middleware on run, if applicable
 						if (middlewareOptions) {
-							middlewares.push((req: Request, res: Response, next: MiddlewareNext) =>
+							middlewares.push((req: FastifyRequest, res: FastifyReply, next: HookHandlerDoneFunction) =>
 								importedMiddleware.default(req, res, next, middlewareOptions)
 							);
 						} else {
@@ -80,18 +80,25 @@ export default {
 				}
 
 				// Insert built middlewares array into route's options object
-				options.options.middlewares = middlewares;
+				// options.options.middlewares = middlewares;
 
 				// TODO May consider getting rid of this post-development
 				if (options.debug) {
 					log.debug(inspect(options));
 				}
 
-				// Register the route in hyper-express
+				// Register the route in fastify
+				server.route({
+					method: options.method.toUpperCase() as any,
+					url: options.url,
+					preHandler: middlewares,
+					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res)
+				});
+
 				// @ts-ignore
-				server[options.method](options.url, options.options, (req: Request, res: Response) =>
-					route.run(req, res)
-				);
+				// server[options.method](options.url, options.options, (req: Request, res: Response) =>
+				// 	route.run(req, res)
+				// );
 
 				log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
 			} catch (error) {

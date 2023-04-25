@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
 import type { RequestWithUser } from '../../../structures/interfaces';
@@ -9,11 +9,11 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { page = 1, limit = 100 } = req.query_parameters as { page?: number; limit?: number };
-	const { ip }: { ip: string } = await req.json();
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 100 } = req.query as { page?: number; limit?: number };
+	const { ip }: { ip: string } = req.body as { ip: string };
 
-	if (!ip) return res.status(400).json({ message: 'No ip provided' });
+	if (!ip) return res.code(400).send({ message: 'No ip provided' });
 
 	const count = await prisma.files.count({
 		where: {
@@ -37,7 +37,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		readyFiles.push(constructFilePublicLink(req, file));
 	}
 
-	return res.json({
+	return res.send({
 		message: "Successfully retrieved IP's files",
 		files: readyFiles,
 		count

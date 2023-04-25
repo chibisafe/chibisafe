@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import { deleteFile } from '../../../utils/File';
@@ -9,9 +9,9 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'No uuid provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
 
 	const file = await prisma.files.findFirst({
 		where: {
@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!file) return res.status(400).json({ message: "The file doesn't exist" });
+	if (!file) return res.code(400).send({ message: "The file doesn't exist" });
 
 	// Delete the file from the DB
 	await prisma.files.delete({
@@ -31,7 +31,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	// Remove the file from disk
 	await deleteFile(file.name);
 
-	return res.json({
+	return res.send({
 		message: 'Successfully deleted the file'
 	});
 };

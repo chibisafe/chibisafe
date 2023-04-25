@@ -1,4 +1,4 @@
-import type { MiddlewareNext, Request } from 'hyper-express';
+import type { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import log from '../utils/Log';
 
 interface DebugInformation {
@@ -10,7 +10,7 @@ interface DebugInformation {
 	query: object | undefined;
 }
 
-export default (req: Request, res: Response, next: MiddlewareNext) => {
+export default (req: FastifyRequest, res: FastifyReply, next: HookHandlerDoneFunction) => {
 	const debug = {
 		ip: req.ip,
 		url: req.url,
@@ -18,7 +18,7 @@ export default (req: Request, res: Response, next: MiddlewareNext) => {
 	} as DebugInformation;
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (req.path_parameters) debug.params = req.path_parameters;
+	if (req.params) debug.params = req.params;
 
 	log.debug(JSON.stringify(debug));
 

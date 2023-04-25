@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../../structures/interfaces';
 
 import { cachedStats, getStats, keyOrder, Type } from '../../../utils/StatsGenerator';
@@ -10,10 +10,10 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { category } = req.path_parameters;
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { category } = req.params as { category?: string };
 	if (!category || !keyOrder.includes(category)) {
-		return res.status(400).json({ message: 'Bad request.' });
+		return res.code(400).send({ message: 'Bad request.' });
 	}
 
 	// Generate required stats category, forced
@@ -30,5 +30,5 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	};
 
-	return res.json({ statistics });
+	return res.send({ statistics });
 };

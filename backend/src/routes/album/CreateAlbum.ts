@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,9 +10,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { name } = await req.json();
-	if (!name) return res.status(400).json({ message: 'No name provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { name } = req.body as { name?: string };
+	if (!name) return res.code(400).send({ message: 'No name provided' });
 
 	const exists = await prisma.albums.findFirst({
 		where: {
@@ -21,7 +21,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (exists) return res.status(400).json({ message: "There's already an album with that name" });
+	if (exists) return res.code(400).send({ message: "There's already an album with that name" });
 
 	const now = utc().toDate();
 
@@ -35,7 +35,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully created album',
 		data: {
 			uuid: newAlbum.uuid,

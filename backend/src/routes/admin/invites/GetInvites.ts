@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
@@ -8,7 +8,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const invites = await prisma.invites.findMany();
 
 	const response = [];
@@ -51,7 +51,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		response.push(temp);
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved invites',
 		invites: response
 	});

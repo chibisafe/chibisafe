@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser, Album } from '../../structures/interfaces';
 import { constructFilePublicLink } from '../../utils/File';
@@ -9,7 +9,7 @@ export const options = {
 	middlewares: ['auth', 'apiKey']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const albums = await prisma.albums.findMany({
 		where: {
 			userId: req.user.id
@@ -32,7 +32,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	});
 
 	if (!albums.length)
-		return res.json({
+		return res.send({
 			message: 'Successfully retrieved albums',
 			albums: []
 		});
@@ -55,7 +55,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		fetchedAlbums.push(newObject);
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved albums',
 		albums: fetchedAlbums
 	});

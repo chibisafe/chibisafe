@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,7 +9,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const code = uuidv4();
 	await prisma.invites.create({
 		data: {
@@ -18,7 +18,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully created invite',
 		code
 	});

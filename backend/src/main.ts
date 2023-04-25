@@ -1,26 +1,29 @@
 import * as dotenv from 'dotenv';
 
-import type { Request, Response, MiddlewareNext } from 'hyper-express';
-import HyperExpress from 'hyper-express';
-// @ts-ignore
+import fastify from 'fastify';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+
+import helmet from '@fastify/helmet';
+import cors from '@fastify/cors';
+import fstatic from '@fastify/static';
+
 import LiveDirectory from 'live-directory';
+
 import jetpack from 'fs-jetpack';
 // import schedule from 'node-schedule';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
-// import helmet from 'helmet';
-import cors from 'cors';
 
 import Routes from './structures/routes';
-import Serve from './structures/serve';
 
 import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
+import { unholdFileIdentifiers } from './utils/File';
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -48,28 +51,62 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
-	// Create the HyperExpress server
-	const server = new HyperExpress.Server({
-		trust_proxy: true,
-		fast_buffers: true
+	const developmentLogger = {
+		transport: {
+			target: 'pino-pretty',
+			options: {
+				translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
+				ignore: 'pid,hostname,reqId,req,res,responseTime',
+				/*
+					TODO:
+					Find a way to merge incoming request and request completed into 1 line using
+					messageFormat as a function instead of a string.
+					Maybe even set a new flag under log like log.app instead of log.info
+					to be able to print logs without req and res information
+
+					I want to change from this:
+					[2021-06-21 19:22:21.553] INFO: incoming request [ - GET /api/verify - ]
+					[2021-06-21 19:22:21.556] INFO: request completed [ -   - 401]
+
+					To this:
+					[2021-06-21 19:22:21.553] INFO: incoming request [127.0.0.1 - GET /api/verify - 200]
+				*/
+				messageFormat: '{msg} [{req.ip} - {req.method} {req.url} - {res.statusCode}]'
+			}
+		}
+	};
+
+	// Create the Fastify server
+	const server = fastify({
+		trustProxy: true,
+		logger: process.env.NODE_ENV === 'production' ? true : developmentLogger,
+		connectionTimeout: 600000
+	});
+
+	// Add decorator for the user object to use with FastifyRequest
+	server.decorateRequest('user', '');
+
+	// See src/utils/File.ts:126 for more information
+	// These hooks and decorators are to hold unique identifiers in memory
+	server.decorateReply('locals', null);
+	server.addHook('onResponse', async (request, reply) => {
+		unholdFileIdentifiers(reply);
 	});
 
 	// server.use(helmet());
-	server.use(
-		cors({
-			allowedHeaders: [
-				'Accept',
-				'Authorization',
-				'Cache-Control',
-				'X-Requested-With',
-				'Content-Type',
-				'albumUuid',
-				'X-API-KEY',
-				// 'finishedChunks', // Not used, we simply check if Content-Type is 'application/json'
-				'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
-			]
-		})
-	);
+	await server.register(helmet, { crossOriginResourcePolicy: false });
+	await server.register(cors, {
+		allowedHeaders: [
+			'Accept',
+			'Authorization',
+			'Cache-Control',
+			'X-Requested-With',
+			'Content-Type',
+			'albumUuid',
+			'X-API-KEY',
+			'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
+		]
+	});
 
 	// Create the neccessary folders
 	jetpack.dir('../uploads/zips');
@@ -89,7 +126,7 @@ const start = async () => {
 	log.debug('Loading routes...');
 	log.debug('');
 
-	// Scan and load routes into express
+	// Scan and load routes into fastify
 	await Routes.load(server);
 
 	if (process.env.NODE_ENV === 'production') {
@@ -98,7 +135,9 @@ const start = async () => {
 			process.exit(1);
 		}
 
+		// @ts-ignore
 		const LiveAssets = new LiveDirectory({
+			static: true,
 			path: path.join(__dirname, '..', 'dist', 'site')
 		});
 
@@ -116,8 +155,18 @@ const start = async () => {
 		indexHTML = indexHTML.replace(/{{domain}}/g, SETTINGS.domain);
 		const newBuffer = Buffer.from(indexHTML);
 
-		// @ts-ignore -- Hyper's typings for this overload seem to be missing
-		server.use((req: Request, res: Response, next: MiddlewareNext) => {
+		server.route({
+			method: 'GET',
+			url: '/',
+			handler: (req: FastifyRequest, res: FastifyReply) => {
+				log.debug('hi');
+			}
+		});
+
+		server.addHook('onRequest', (req, reply, next) => {
+			log.debug(req);
+			console.log(req);
+
 			if (req.method !== 'GET' && req.method !== 'HEAD') {
 				next();
 				return;
@@ -134,13 +183,15 @@ const start = async () => {
 				'/privacy',
 				'/tos'
 			];
-			const route = routes.some(r => req.path.startsWith(r));
 
-			if (req.path === '/' || route) return res.type('html').send(newBuffer);
+			const route = routes.some(r => req.url.startsWith(r));
 
-			const file = LiveAssets.get(req.path.slice(1));
+			if (req.url === '/' || route) return reply.type('html').send(newBuffer);
+
+			const file = LiveAssets.get(req.url.slice(1));
 			if (file) {
-				return res.type(file.extension).send(file.buffer);
+				// @ts-ignore
+				return reply.type(file.extension).send(file.buffer);
 			}
 
 			next();
@@ -148,21 +199,12 @@ const start = async () => {
 	}
 
 	// Serve uploads
-	server.get('/*', Serve);
-	server.head('/*', Serve);
-
-	// Essentially unused for GET and HEAD due to Serve's handlers
-	server.set_not_found_handler((req: Request, res: Response) => {
-		res.status(404).send('Not found');
-	});
-
-	server.set_error_handler((req: Request, res: Response, error: Error) => {
-		log.error(error);
-		res.status(500).send('Internal server error');
+	await server.register(fstatic, {
+		root: path.join(__dirname, '..', '..', 'uploads')
 	});
 
 	// Start the server
-	await server.listen(Number(SETTINGS.port));
+	await server.listen({ port: Number(SETTINGS.port) });
 	log.info('');
 	log.info(`Server ready on port ${Number(SETTINGS.port)}`);
 

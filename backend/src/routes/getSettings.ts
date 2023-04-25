@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../structures/interfaces';
 import { SETTINGS } from '../structures/settings';
 
@@ -7,8 +7,8 @@ export const options = {
 	method: 'get'
 };
 
-export const run = (req: RequestWithUser, res: Response) =>
-	res.json({
+export const run = (req: RequestWithUser, res: FastifyReply) =>
+	res.send({
 		message: 'Successfully retrieved settings',
 		settings: {
 			serviceName: SETTINGS.serviceName,

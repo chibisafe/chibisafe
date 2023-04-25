@@ -254,7 +254,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 
 	log.debug(`files.length: ${files.length}`);
 	if (!files.length) {
-		return res.status(400).json({ message: 'No files.' });
+		return res.code(400).json({ message: 'No files.' });
 	}
 
 	// Validate files
@@ -284,7 +284,7 @@ const uploadFile = async (req: RequestWithOptionalUser, res: Response) => {
 		void cleanUpFiles(files);
 		unfreezeChunksData(files);
 
-		return res.status(400).json({ message: error instanceof Error ? error.message : 'Bad request.' });
+		return res.code(400).json({ message: error instanceof Error ? error.message : 'Bad request.' });
 	}
 
 	// If the uploaded file is a chunk, then just say that it was a success.
@@ -301,10 +301,10 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 	// can probably be streamlined using runtime type checking library? io-ts? Thoughts?
 	const _body = await req.json();
 
-	if (!Array.isArray(_body?.files)) return res.status(400).json({ message: 'files[] needs to be an array' });
-	if (!_body.files.length) return res.status(400).json({ message: 'files[] is empty' });
+	if (!Array.isArray(_body?.files)) return res.code(400).json({ message: 'files[] needs to be an array' });
+	if (!_body.files.length) return res.code(400).json({ message: 'files[] is empty' });
 	if (_body.files.some((file: any) => typeof file !== 'object' || !file.uuid))
-		return res.status(400).json({ message: "One of the files is not an object or doesn't have an uuid" });
+		return res.code(400).json({ message: "One of the files is not an object or doesn't have an uuid" });
 
 	// Re-init as a new variable with TS typing
 	const body: {
@@ -324,7 +324,7 @@ const finishChunks = async (req: RequestWithOptionalUser, res: Response) => {
 	}
 
 	if (body.files.some(file => !file.chunksData || file.chunksData.processing)) {
-		return res.status(400).json({
+		return res.code(400).json({
 			message: 'Invalid file UUID, chunks data had already timed out, or is still processing. Try again?'
 		});
 	}
@@ -456,10 +456,10 @@ export const run = async (req: RequestWithOptionalUser, res: Response) => {
 			if (album) {
 				albumId = album.id;
 			} else {
-				res.status(400).json({ message: "Album doesn't exist or it doesn't belong to the user." });
+				res.code(400).json({ message: "Album doesn't exist or it doesn't belong to the user." });
 			}
 		} else {
-			return res.status(401).json({ message: 'Only registered users can upload files to an album.' });
+			return res.code(401).json({ message: 'Only registered users can upload files to an album.' });
 		}
 	}
 

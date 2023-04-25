@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
@@ -8,9 +8,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid, albumUuid } = req.path_parameters;
-	if (!uuid || !albumUuid) return res.status(400).json({ message: 'No uuid or albumUuid provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid, albumUuid } = req.params as { uuid?: string; albumUuid?: string };
+	if (!uuid || !albumUuid) return res.code(400).send({ message: 'No uuid or albumUuid provided' });
 
 	const fileExists = await prisma.files.findFirst({
 		where: {
@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!fileExists) return res.status(400).json({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) return res.code(400).send({ message: "File doesn't exist or doesn't belong to the user" });
 
 	const albumExists = await prisma.albums.findFirst({
 		where: {
@@ -28,7 +28,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!albumExists) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!albumExists) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
 
 	await prisma.files.update({
 		where: {
@@ -43,7 +43,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully deleted file from album'
 	});
 };

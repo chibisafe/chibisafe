@@ -17,7 +17,7 @@ import { SETTINGS } from '../structures/settings';
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'node:fs';
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 const fileIdentifierMaxTries = 5;
 
@@ -133,18 +133,21 @@ export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTy
 */
 const heldFileIdentifiers = new Set();
 
-export const unholdFileIdentifiers = (res: Response): void => {
-	if (!res.locals.identifiers) return;
+export const unholdFileIdentifiers = (res: FastifyReply): void => {
+	// @ts-ignore
+	if (!res.locals?.identifiers) return;
 
+	// @ts-ignore
 	for (const identifier of res.locals.identifiers) {
 		heldFileIdentifiers.delete(identifier);
 		// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
 	}
 
+	// @ts-ignore
 	delete res.locals.identifiers;
 };
 
-export const getUniqueFileIdentifier = async (res?: Response): Promise<string | null> => {
+export const getUniqueFileIdentifier = async (res?: FastifyReply): Promise<string | null> => {
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
 			length: SETTINGS.generatedFilenameLength,
@@ -175,13 +178,13 @@ export const getUniqueFileIdentifier = async (res?: Response): Promise<string | 
 					allowing automatic removal once the Response ends.
 				*/
 				if (res) {
+					// @ts-ignore
 					if (!res.locals.identifiers) {
+						// @ts-ignore
 						res.locals.identifiers = [];
-						res.once('finish', () => {
-							unholdFileIdentifiers(res);
-						});
 					}
 
+					// @ts-ignore
 					res.locals.identifiers.push(identifier);
 				}
 
@@ -245,7 +248,7 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLink = (req: Request, file: File) => {
+export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
 	const extended: ExtendedFile = { ...file };
 	const host = getHost(req);
 	extended.url = `${host}/${extended.name}`;

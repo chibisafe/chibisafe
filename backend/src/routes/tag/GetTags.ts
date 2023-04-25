@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
@@ -8,14 +8,14 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const tags = await prisma.tags.findMany({
 		where: {
 			userId: req.user.id
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully fetched tags',
 		data: tags
 	});

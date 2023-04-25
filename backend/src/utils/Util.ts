@@ -1,4 +1,4 @@
-import type { Request } from 'hyper-express';
+import type { FastifyRequest } from 'fastify';
 import { SETTINGS } from '../structures/settings';
 import randomstring from 'randomstring';
 import log from './Log';
@@ -6,7 +6,7 @@ import prisma from '../structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
-export const getHost = (req: Request) => `${req.protocol}://${req.headers.host}`;
+export const getHost = (req: FastifyRequest) => `${req.protocol}://${req.headers.host}`;
 
 export const getUniqueAlbumIdentifier = () => {
 	const retry: any = async (i = 0) => {

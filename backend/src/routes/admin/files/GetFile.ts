@@ -1,7 +1,7 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
-import type { User } from '../../../structures/interfaces';
+import type { User, RequestWithUser } from '../../../structures/interfaces';
 
 export const options = {
 	url: '/admin/file/:uuid',
@@ -13,9 +13,9 @@ interface UserWithFileCount extends User {
 	fileCount?: number;
 }
 
-export const run = async (req: Request, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
 	const file = await prisma.files.findUnique({
 		where: {
@@ -23,7 +23,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!file) return res.status(404).json({ message: "File doesn't exist" });
+	if (!file) return res.code(404).send({ message: "File doesn't exist" });
 
 	let user;
 	if (file.userId) {
@@ -53,7 +53,7 @@ export const run = async (req: Request, res: Response) => {
 
 	const extendedFile = constructFilePublicLink(req, file);
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved file',
 		file: extendedFile,
 		user

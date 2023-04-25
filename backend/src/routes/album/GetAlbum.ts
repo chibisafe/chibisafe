@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import { constructFilePublicLink } from '../../utils/File';
 import type { ExtendedFile, File, RequestWithUser } from '../../structures/interfaces';
@@ -9,12 +9,12 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
 	// Set up pagination options
-	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 	const options = {
 		take: limit,
 		skip: (page - 1) * limit
@@ -49,7 +49,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(404).json({ message: 'The album could not be found' });
+	if (!album) return res.code(404).send({ message: 'The album could not be found' });
 
 	// Construct the public links
 	const files = [] as File[];
@@ -58,7 +58,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		files.push(constructFilePublicLink(req, modifiedFile));
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved album',
 		name: album.name,
 		files,

@@ -1,5 +1,4 @@
-import type { Request } from 'hyper-express';
-
+import type { FastifyRequest } from 'fastify';
 import type { ChunksData } from '../utils/File';
 
 export interface RequestUser {
@@ -10,11 +9,11 @@ export interface RequestUser {
 	apiKey?: string | null | undefined;
 }
 
-export interface RequestWithUser extends Request {
+export interface RequestWithUser extends FastifyRequest {
 	user: RequestUser;
 }
 
-export interface RequestWithOptionalUser extends Request {
+export interface RequestWithOptionalUser extends FastifyRequest {
 	user?: RequestUser;
 }
 

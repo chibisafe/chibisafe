@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import { constructFilePublicLink } from '../../utils/File';
 import type { RequestWithUser } from '../../structures/interfaces';
@@ -9,8 +9,8 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 
 	const count = await prisma.files.count({
 		where: {
@@ -47,7 +47,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		readyFiles.push(constructFilePublicLink(req, file));
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved files',
 		files: readyFiles,
 		count
