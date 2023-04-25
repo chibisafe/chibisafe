@@ -58,9 +58,9 @@ export const loadSettings = async () => {
 		rateLimitMax: 5,
 		secret: randomstring.generate(64),
 		serviceName: 'change-me',
-		chunkSize: 90, // 90MB
+		chunkSize: 5 * 1e6, // 5MB
 		chunkedUploadsTimeout: 30 * 60 * 1000, // 30 minutes
-		maxSize: 5 * 1000, // 5MN
+		maxSize: 100 * 1e6, // 100MB
 		generateZips: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
