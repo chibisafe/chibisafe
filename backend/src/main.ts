@@ -17,6 +17,7 @@ import path from 'node:path';
 import { Buffer } from 'node:buffer';
 
 import Routes from './structures/routes';
+import Uploads from './structures/uploads';
 
 import Requirements from './utils/Requirements';
 
@@ -96,16 +97,19 @@ const start = async () => {
 	// server.use(helmet());
 	await server.register(helmet, { crossOriginResourcePolicy: false });
 	await server.register(cors, {
-		allowedHeaders: [
-			'Accept',
-			'Authorization',
-			'Cache-Control',
-			'X-Requested-With',
-			'Content-Type',
-			'albumUuid',
-			'X-API-KEY',
-			'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
-		]
+		// TODO: Find out what headers are needed for TUS
+		// allowedHeaders: [
+		// 	'Accept',
+		// 	'Authorization',
+		// 	'Connection',
+		// 	'Cache-Control',
+		// 	'X-Requested-With',
+		// 	'Content-Type',
+		// 	'albumUuid',
+		// 	'X-API-KEY',
+		// 	'Tus-Resumable',
+		// 	'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
+		// ]
 	});
 
 	// Create the neccessary folders
@@ -128,6 +132,9 @@ const start = async () => {
 
 	// Scan and load routes into fastify
 	await Routes.load(server);
+
+	// Initialize TUS handler
+	await Uploads.init(server);
 
 	if (process.env.NODE_ENV === 'production') {
 		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
@@ -205,8 +212,6 @@ const start = async () => {
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port) });
-	log.info('');
-	log.info(`Server ready on port ${Number(SETTINGS.port)}`);
 
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
