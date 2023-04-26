@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 
 import fastify from 'fastify';
-import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
@@ -52,37 +52,18 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
-	const developmentLogger = {
-		transport: {
-			target: 'pino-pretty',
-			options: {
-				translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
-				ignore: 'pid,hostname,reqId,req,res,responseTime',
-				/*
-					TODO:
-					Find a way to merge incoming request and request completed into 1 line using
-					messageFormat as a function instead of a string.
-					Maybe even set a new flag under log like log.app instead of log.info
-					to be able to print logs without req and res information
-
-					I want to change from this:
-					[2021-06-21 19:22:21.553] INFO: incoming request [ - GET /api/verify - ]
-					[2021-06-21 19:22:21.556] INFO: request completed [ -   - 401]
-
-					To this:
-					[2021-06-21 19:22:21.553] INFO: incoming request [127.0.0.1 - GET /api/verify - 200]
-				*/
-				messageFormat: '{msg} [{req.ip} - {req.method} {req.url} - {res.statusCode}]'
-			}
-		}
-	};
-
+	interface test extends FastifyInstance {
+		logger: typeof log;
+	}
 	// Create the Fastify server
 	const server = fastify({
 		trustProxy: true,
-		logger: process.env.NODE_ENV === 'production' ? true : developmentLogger,
 		connectionTimeout: 600000
-	});
+	}) as unknown as test;
+
+	server.decorate('logger', log);
+	server.decorateReply('logger', log);
+	server.decorateRequest('logger', log);
 
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
@@ -92,6 +73,8 @@ const start = async () => {
 	server.decorateReply('locals', null);
 	server.addHook('onResponse', async (request, reply) => {
 		unholdFileIdentifiers(reply);
+		// http logging
+		server.logger.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
 	});
 
 	// server.use(helmet());
