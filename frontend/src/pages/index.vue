@@ -22,7 +22,7 @@
 				<!-- Dummy to keep the flexbox layout -->
 				<div class="w-80 h-80 max-w-[320px]" />
 
-				<Upload />
+				<UppyUploader />
 			</div>
 
 			<TransitionRoot
@@ -116,7 +116,7 @@ import { useUploadsStore } from '~/store/uploads';
 import { formatBytes } from '~/use/file';
 
 import Header from '~/components/header/Header.vue';
-import Upload from '~/components/upload/Upload.vue';
+import UppyUploader from '~/components/upload/UppyUploader.vue';
 
 // @ts-ignore
 import IconCheck from '~icons/carbon/checkmark';
