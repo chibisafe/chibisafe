@@ -1,0 +1,68 @@
+import { SETTINGS } from '../structures/settings';
+import JWT from 'jsonwebtoken';
+import prisma from '../structures/database';
+import type { RequestUser } from '../structures/interfaces';
+import log from './Log';
+
+interface Decoded {
+	sub: number;
+	iat: number;
+}
+
+export const authUser = async (authorization?: string) => {
+	if (!authorization) return null;
+
+	let id;
+	let dateSigned;
+
+	try {
+		const decoded = JWT.verify(authorization, SETTINGS.secret ?? '');
+		id = decoded.sub ?? null;
+		// @ts-ignore
+		dateSigned = decoded.iat ?? null;
+		if (!id) throw new Error('Invalid authorization');
+	} catch {
+		throw new Error('Invalid token');
+	}
+
+	const user = await prisma.users.findFirst({
+		where: {
+			id: id as unknown as number
+		},
+		select: {
+			id: true,
+			uuid: true,
+			username: true,
+			isAdmin: true,
+			apiKey: true,
+			passwordEditedAt: true
+		}
+	});
+
+	if (dateSigned && Number(user?.passwordEditedAt) > dateSigned) {
+		throw new Error('Expired token');
+	}
+
+	if (!user) throw new Error("User doesn't exist");
+	return {
+		id: user.id,
+		uuid: user.uuid,
+		username: user.username,
+		isAdmin: user.isAdmin,
+		apiKey: user.apiKey
+	} as RequestUser;
+};
+
+export const validateAlbum = async (albumUuid?: string, user?: any) => {
+	if (!albumUuid) return null;
+	if (!user) throw new Error('Only registered users can upload files to an album.');
+
+	const album = await prisma.albums.findFirst({
+		where: {
+			uuid: albumUuid,
+			userId: user.id
+		}
+	});
+	if (!album) throw new Error("Album doesn't exist or it doesn't belong to the user.");
+	return album.id;
+};
