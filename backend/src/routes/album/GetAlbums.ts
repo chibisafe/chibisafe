@@ -6,7 +6,7 @@ import { constructFilePublicLink } from '../../utils/File';
 export const options = {
 	url: '/albums',
 	method: 'get',
-	middlewares: ['auth', 'apiKey']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import prisma from '../structures/database';
 
-export default async (req: FastifyRequest, res: FastifyReply, next: HookHandlerDoneFunction) => {
+export default async (req: FastifyRequest, res: FastifyReply) => {
 	const banned = await prisma.bans.findFirst({
 		where: {
 			ip: req.ip
@@ -11,6 +11,4 @@ export default async (req: FastifyRequest, res: FastifyReply, next: HookHandlerD
 	if (banned) {
 		return res.code(401).send({ message: 'This IP has been banned' });
 	}
-
-	next();
 };
