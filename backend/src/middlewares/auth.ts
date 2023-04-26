@@ -16,6 +16,12 @@ export default (
 	next: HookHandlerDoneFunction,
 	options?: { [index: number | string]: any }
 ) => {
+	// We already authed in the apiKey middleware
+	if (req.user && req.headers['x-api-key']) {
+		next();
+		return;
+	}
+
 	if (!req.headers.authorization) {
 		if (options?.optional) {
 			next();
