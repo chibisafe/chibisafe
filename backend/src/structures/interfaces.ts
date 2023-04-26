@@ -1,5 +1,4 @@
 import type { FastifyRequest } from 'fastify';
-import type { ChunksData } from '../utils/File';
 
 export interface RequestUser {
 	id: number;
@@ -41,7 +40,6 @@ export interface FileInProgress {
 	hash: string;
 	ip: string;
 	field?: string;
-	chunksData?: ChunksData;
 }
 
 export interface File {
