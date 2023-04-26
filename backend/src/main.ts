@@ -26,6 +26,20 @@ import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
 import { unholdFileIdentifiers } from './utils/File';
 
+declare module 'fastify' {
+	interface FastifyInstance {
+		logger: typeof log;
+	}
+
+	interface FastifyRequest {
+		logger: typeof log;
+	}
+
+	interface FastifyReply {
+		logger: typeof log;
+	}
+}
+
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
 	path: path.join(__dirname, '..', '..', '.env')
@@ -52,15 +66,13 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
-	interface test extends FastifyInstance {
-		logger: typeof log;
-	}
 	// Create the Fastify server
 	const server = fastify({
 		trustProxy: true,
 		connectionTimeout: 600000
-	}) as unknown as test;
+	});
 
+	// Add log decorators to server, request and reply
 	server.decorate('logger', log);
 	server.decorateReply('logger', log);
 	server.decorateRequest('logger', log);
