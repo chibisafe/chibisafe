@@ -82,6 +82,9 @@ tusServer.options.onUploadCreate = async (req, res, upload) => {
 	const user = await authUser(uploadObject.metadata.authorization);
 	const album = await validateAlbum(uploadObject.metadata.albumUuid, user);
 
+	// Store user and album in upload object so that
+	// onUploadFinish has access to them
+
 	// @ts-ignore
 	// eslint-disable-next-line require-atomic-updates
 	upload.internal.user = user;
@@ -96,6 +99,7 @@ tusServer.options.onUploadFinish = async (req, res, upload) => {
 	const uploadObject = upload as unknown as UploadObject;
 	log.debug(uploadObject.internal);
 
+	// Retrieve user and album from upload object
 	const user = uploadObject.internal.user;
 	const album = uploadObject.internal.album;
 
