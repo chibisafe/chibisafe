@@ -1,8 +1,7 @@
 import type { FastifyInstance } from 'fastify';
-import type { RequestUser } from './interfaces';
 import { Server, EVENTS } from '@tus/server';
 import { FileStore } from '@tus/file-store';
-import { getUniqueFileIdentifier, isExtensionBlocked, storeFileToDb } from '../utils/File';
+import { getUniqueFileIdentifier, isExtensionBlocked, storeFileToDb, constructFilePublicLink } from '../utils/File';
 import { generateThumbnails } from '../utils/Thumbnails';
 import { authUser, validateAlbum } from '../utils/UploadHelpers';
 import { SETTINGS } from './settings';
@@ -16,12 +15,6 @@ const tusServer = new Server({
 	path: '/api/tus',
 	datastore: new FileStore({ directory: path.join(__dirname, '..', '..', '..', 'uploads') })
 });
-
-declare module '@tus/server' {
-	interface Upload {
-		metadata: Record<string, string | null> | undefined;
-	}
-}
 
 /*
 	TUS Upload object
@@ -71,8 +64,8 @@ tusServer.options.onUploadCreate = async (req, res, upload) => {
 
 	// Validate user and album if any
 	// TODO: Validate if public uploads are allowed
-	const user = await authUser(upload.metadata.authorization);
-	const album = await validateAlbum(upload.metadata.albumUuid, user);
+	const user = await authUser(req.headers.authorization);
+	const album = await validateAlbum(req.headers.albumuuid as string, user);
 
 	// Store user and album in upload object so that
 	// onUploadFinish has access to them
@@ -125,6 +118,9 @@ tusServer.options.onUploadFinish = async (req, res, upload) => {
 
 	await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
 
+	const publicLink = `${req.headers.protocol}://${req.headers.host}/${newFileName}`;
+	res.setHeader('public-link', publicLink);
+
 	return res;
 };
 
@@ -163,9 +159,11 @@ export default {
 		 */
 
 		server.all('/api/tus', async (req, res) => {
+			req.raw.headers.protocol = req.protocol;
 			await tusServer.handle(req.raw, res.raw);
 		});
 		server.all('/api/tus/*', async (req, res) => {
+			req.raw.headers.protocol = req.protocol;
 			await tusServer.handle(req.raw, res.raw);
 		});
 	}

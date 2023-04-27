@@ -12,11 +12,14 @@ interface Decoded {
 export const authUser = async (authorization?: string | null) => {
 	if (!authorization) return null;
 
+	const token = authorization.split(' ')[1];
+	if (!token) throw new Error('Malformed authorization header');
+
 	let id;
 	let dateSigned;
 
 	try {
-		const decoded = JWT.verify(authorization, SETTINGS.secret ?? '');
+		const decoded = JWT.verify(token, SETTINGS.secret ?? '');
 		id = decoded.sub ?? null;
 		// @ts-ignore
 		dateSigned = decoded.iat ?? null;
