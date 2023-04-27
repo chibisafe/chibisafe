@@ -4,7 +4,6 @@ import { inspect } from 'node:util';
 import process from 'node:process';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RouteOptions } from './interfaces';
-import log from '../utils/Log';
 import { addSpaces } from '../utils/Util';
 
 const defaultMiddlewares = ['log', 'ban'];
@@ -25,7 +24,7 @@ export default {
 				const options: RouteOptions = route.options;
 
 				if (!options.url || !options.method) {
-					log.warn(`Found route without URL or METHOD - ${routeFile}`);
+					server.logger.warn(`Found route without URL or METHOD - ${routeFile}`);
 					continue;
 				}
 
@@ -62,7 +61,7 @@ export default {
 
 						// Assert that middleware name is a valid string
 						if (!name || typeof name !== 'string') {
-							log.error(`Invalid middleware options in route ${options.method} ${options.url}`);
+							server.logger.error(`Invalid middleware options in route ${options.method} ${options.url}`);
 							continue;
 						}
 
@@ -84,7 +83,7 @@ export default {
 
 				// TODO May consider getting rid of this post-development
 				if (options.debug) {
-					log.debug(inspect(options));
+					server.logger.debug(inspect(options));
 				}
 
 				// Register the route in fastify
@@ -100,11 +99,11 @@ export default {
 				// 	route.run(req, res)
 				// );
 
-				log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
+				server.logger.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-				log.error(routeFile);
-				log.error(error);
+				server.logger.error(routeFile);
+				server.logger.error(error);
 			}
 		}
 	}

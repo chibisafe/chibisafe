@@ -1,6 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
-import log from '../../../utils/Log';
 
 export const options = {
 	url: '/admin/ip/unban',
@@ -29,7 +28,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		});
 	}
 
-	log.warn(`IP ${ip} has been unbanned`);
+	res.logger.warn(`IP ${ip} has been unbanned`);
 
 	return res.send({
 		message: 'Successfully unbanned the ip'

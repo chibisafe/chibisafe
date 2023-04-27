@@ -2,7 +2,6 @@ import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import log from '../../utils/Log';
 import { SETTINGS } from '../../structures/settings';
 import { utc } from 'moment';
 
@@ -66,7 +65,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	try {
 		hash = await bcrypt.hash(password, 10);
 	} catch (error) {
-		log.error(error);
+		res.logger.error(error);
 		return res.code(401).send({ message: 'There was a problem processing your account' });
 	}
 

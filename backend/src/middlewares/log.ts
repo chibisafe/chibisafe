@@ -1,5 +1,4 @@
 import type { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import log from '../utils/Log';
 
 interface DebugInformation {
 	ip: string;
@@ -20,7 +19,7 @@ export default (req: FastifyRequest, res: FastifyReply, next: HookHandlerDoneFun
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (req.params) debug.params = req.params;
 
-	log.debug(JSON.stringify(debug));
+	req.logger.debug(JSON.stringify(debug));
 
 	next();
 };

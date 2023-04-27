@@ -157,12 +157,12 @@ const start = async () => {
 			method: 'GET',
 			url: '/',
 			handler: (req: FastifyRequest, res: FastifyReply) => {
-				log.debug('hi');
+				req.logger.debug('hi');
 			}
 		});
 
 		server.addHook('onRequest', (req, reply, next) => {
-			log.debug(req);
+			req.logger.debug(req);
 			console.log(req);
 
 			if (req.method !== 'GET' && req.method !== 'HEAD') {
