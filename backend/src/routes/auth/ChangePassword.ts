@@ -3,7 +3,6 @@ import type { RequestWithUser } from '../../structures/interfaces';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import { utc } from 'moment';
-import log from '../../utils/Log';
 
 export const options = {
 	url: '/auth/password/change',
@@ -36,7 +35,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	try {
 		hash = await bcrypt.hash(newPassword, 10);
 	} catch (error) {
-		log.error(error);
+		res.logger.error(error);
 		return res.code(401).send({ message: 'There was a problem processing your account' });
 	}
 

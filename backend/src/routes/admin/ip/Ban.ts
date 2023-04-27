@@ -1,6 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
-import log from '../../../utils/Log';
 
 export const options = {
 	url: '/admin/ip/ban',
@@ -27,7 +26,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	log.warn(`IP ${ip} has been banned`);
+	req.logger.warn(`IP ${ip} has been banned`);
 
 	return res.send({
 		message: 'Successfully banned the ip'

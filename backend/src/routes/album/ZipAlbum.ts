@@ -5,7 +5,6 @@ import path from 'node:path';
 import { SETTINGS } from '../../structures/settings';
 import { createZip } from '../../utils/File';
 import { utc } from 'moment';
-import log from '../../utils/Log';
 
 export const options = {
 	url: '/album/:identifier/zip',
@@ -76,7 +75,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		await res.download(filePath, fileName);
 		return;
 	} catch (error) {
-		log.error(error);
+		res.logger.error(error);
 		return res.code(500).send({ message: 'There was a problem downloading the album' });
 	}
 };

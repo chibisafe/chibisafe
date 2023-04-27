@@ -2,7 +2,6 @@ import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RequestWithOptionalUser } from '../structures/interfaces';
 import { SETTINGS } from '../structures/settings';
 import JWT from 'jsonwebtoken';
-import log from '../utils/Log';
 import prisma from '../structures/database';
 
 interface Decoded {
@@ -74,7 +73,7 @@ export default (
 			isAdmin: user.isAdmin,
 			apiKey: user.apiKey
 		};
-		log.debug(`Request from user: ${user.username}`);
+		req.logger.debug(`Request from user: ${user.username}`);
 		next();
 	});
 };
