@@ -49,9 +49,9 @@
 							}
 						]"
 					>
-						<!-- TODO: Add transition to the background so it's smooth -->
+						<div class="w-full h-full absolute top-0 left-0 pointer-events-none bg-dark-100" />
 						<div
-							class="w-full h-full absolute top-0 left-0 pointer-events-none"
+							class="w-full h-full absolute top-0 left-0 pointer-events-none transition-all linear duration-200"
 							:class="{
 								'bg-green-800': file.status === 'success',
 								'bg-yellow-900': file.status === 'uploading',
