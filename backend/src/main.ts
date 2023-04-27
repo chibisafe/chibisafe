@@ -24,7 +24,7 @@ import Requirements from './utils/Requirements';
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
-import { unholdFileIdentifiers } from './utils/File';
+// import { unholdFileIdentifiers } from './utils/File';
 
 declare module 'fastify' {
 	interface FastifyInstance {
@@ -80,16 +80,12 @@ const start = async () => {
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
 
-	// See src/utils/File.ts:126 for more information
 	// These hooks and decorators are to hold unique identifiers in memory
-	server.decorateReply('locals', null);
 	server.addHook('onResponse', async (request, reply) => {
-		unholdFileIdentifiers(reply);
 		// http logging
 		server.logger.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
 	});
 
-	// server.use(helmet());
 	await server.register(helmet, { crossOriginResourcePolicy: false });
 	await server.register(cors, {
 		// TODO: Find out what headers are needed for TUS

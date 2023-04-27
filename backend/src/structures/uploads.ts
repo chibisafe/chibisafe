@@ -1,38 +1,26 @@
 import type { FastifyInstance } from 'fastify';
-import type { Upload } from '@tus/server';
 import type { RequestUser } from './interfaces';
-import { Server } from '@tus/server';
+import { Server, EVENTS } from '@tus/server';
 import { FileStore } from '@tus/file-store';
 import { getUniqueFileIdentifier, isExtensionBlocked, storeFileToDb } from '../utils/File';
+import { generateThumbnails } from '../utils/Thumbnails';
 import { authUser, validateAlbum } from '../utils/UploadHelpers';
 import { SETTINGS } from './settings';
+import jetpack from 'fs-jetpack';
+import proxyaddr from 'proxy-addr';
 
 import path from 'node:path';
 import log from '../utils/Log';
 
 const tusServer = new Server({
 	path: '/api/tus',
-	datastore: new FileStore({ directory: path.join(__dirname, '..', '..', 'uploads') })
+	datastore: new FileStore({ directory: path.join(__dirname, '..', '..', '..', 'uploads') })
 });
 
-interface UploadObject extends Upload {
-	id: string;
-	size: number;
-	offset: number;
-	metadata: {
-		authorization?: string;
-		albumUuid?: string;
-		relativePath: string;
-		name: string;
-		type: string;
-		filetype: string;
-		filename: string;
-	};
-	internal: {
-		user?: RequestUser;
-		album?: number;
-	};
-	creation_date: string;
+declare module '@tus/server' {
+	interface Upload {
+		metadata: Record<string, string | null> | undefined;
+	}
 }
 
 /*
@@ -56,11 +44,13 @@ interface UploadObject extends Upload {
 */
 
 tusServer.options.onUploadCreate = async (req, res, upload) => {
-	if (!upload.metadata) throw new Error('Zero-bytes file is not allowed.');
-	const uploadObject = upload as unknown as UploadObject;
+	log.debug('> onUploadCreate');
+	if (!upload.metadata) throw new Error('No metadata for file.');
+	if (!upload.metadata.filename) throw new Error('No filename in metadata.');
+	if (!upload.size) throw new Error('No size for file.');
 
 	// Validate files
-	const fileExtension = path.extname(uploadObject.metadata.filename);
+	const fileExtension = path.extname(upload.metadata.filename);
 	if (isExtensionBlocked(fileExtension)) {
 		throw new Error(
 			fileExtension
@@ -69,55 +59,89 @@ tusServer.options.onUploadCreate = async (req, res, upload) => {
 		);
 	}
 
-	if (uploadObject.size === 0) {
+	if (upload.size === 0) {
 		throw new Error('Zero-bytes file is not allowed.');
 	}
 
-	if (uploadObject.size > SETTINGS.maxSize) {
+	log.debug(`> Upload size: ${upload.size / 1000 / 1000} / ${SETTINGS.maxSize} MB`);
+
+	if (upload.size / 1000 / 1000 > SETTINGS.maxSize) {
 		throw new Error('File is too large.');
 	}
 
 	// Validate user and album if any
 	// TODO: Validate if public uploads are allowed
-	const user = await authUser(uploadObject.metadata.authorization);
-	const album = await validateAlbum(uploadObject.metadata.albumUuid, user);
+	const user = await authUser(upload.metadata.authorization);
+	const album = await validateAlbum(upload.metadata.albumUuid, user);
 
 	// Store user and album in upload object so that
 	// onUploadFinish has access to them
 
 	// @ts-ignore
 	// eslint-disable-next-line require-atomic-updates
-	upload.internal.user = user;
-	// @ts-ignore
-	// eslint-disable-next-line require-atomic-updates
-	upload.internal.album = album;
+	upload.metadata.internal = {
+		user,
+		album,
+		ip: proxyaddr(req, () => true)
+	};
 
 	return res;
 };
 
 tusServer.options.onUploadFinish = async (req, res, upload) => {
-	const uploadObject = upload as unknown as UploadObject;
-	log.debug(uploadObject.internal);
+	log.debug('> onUploadFinish');
 
-	// Retrieve user and album from upload object
-	const user = uploadObject.internal.user;
-	const album = uploadObject.internal.album;
+	// Assign a unique identifier to the file
+	const uniqueIdentifier = await getUniqueFileIdentifier();
+	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
 
-	// const file = {
-	// 	name: 'UNIQUE IDENTIFIER',
-	// 	extension: path.extname(uploadObject.metadata.filename),
-	// 	path: uploadObject.id,
-	// 	original: uploadObject.metadata.filename,
-	// 	type: uploadObject.metadata.type,
-	// 	size: uploadObject.size,
-	// 	hash: 'WE NEED TO HASH THE FILE',
-	// 	ip: 'WE NEED TO GET THE IP FROM THE REQUEST'
-	// };
+	// @ts-ignore
+	const newFileName = uniqueIdentifier + path.extname(upload.metadata.filename);
+	// @ts-ignore
+	upload.metadata.internal.identifier = newFileName;
 
-	// await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
+	log.debug(`> Name for upload: ${newFileName}`);
+
+	const file = {
+		name: newFileName,
+		// @ts-ignore
+		extension: path.extname(upload.metadata.filename),
+		path: upload.id,
+		// @ts-ignore
+		original: upload.metadata.filename as string,
+		// @ts-ignore
+		type: upload.metadata.type as string,
+		// @ts-ignore
+		size: upload.size / 1000 / 1000,
+		hash: 'WE NEED TO HASH THE FILE',
+		// @ts-ignore
+		ip: upload.metadata.internal.ip
+	};
+
+	// @ts-ignore
+	const user = upload.metadata.internal.user;
+	// @ts-ignore
+	const album = upload.metadata.internal.album;
+
+	await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
 
 	return res;
 };
+
+tusServer.on(EVENTS.POST_FINISH, async (req, res, upload) => {
+	log.debug('> EVENTS.POST_FINISH');
+	// @ts-ignore
+	if (!upload.metadata.internal.identifier) throw new Error('No identifier for file.');
+
+	await jetpack.moveAsync(
+		path.join(__dirname, '..', '..', '..', 'uploads', upload.id),
+		// @ts-ignore
+		path.join(__dirname, '..', '..', '..', 'uploads', upload.metadata.internal.identifier)
+	);
+
+	// @ts-ignore
+	void generateThumbnails(upload.metadata.internal.identifier);
+});
 
 export default {
 	init: async (server: FastifyInstance) => {

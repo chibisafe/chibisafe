@@ -33,74 +33,21 @@ export const isExtensionBlocked = (extension: string) => {
 
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
-/*
-	TODO: Where to put this?
-	This is necesary, because when we first allocate an identifier,
-	it will not immediately be pushed into db,
-	which means the rest of the service has no context as to whether
-	that identifier is currently being used by other upload in progress or not.
-	In-memory, thus only for single-thread, thoughts?
-*/
-const heldFileIdentifiers = new Set();
-
-export const unholdFileIdentifiers = (res: FastifyReply): void => {
-	// @ts-ignore
-	if (!res.locals?.identifiers) return;
-
-	// @ts-ignore
-	for (const identifier of res.locals.identifiers) {
-		heldFileIdentifiers.delete(identifier);
-		// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
-	}
-
-	// @ts-ignore
-	delete res.locals.identifiers;
-};
-
-export const getUniqueFileIdentifier = async (res?: FastifyReply): Promise<string | null> => {
+export const getUniqueFileIdentifier = async (): Promise<string | null> => {
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
 			length: SETTINGS.generatedFilenameLength,
 			capitalization: 'lowercase'
 		});
 
-		if (!heldFileIdentifiers.has(identifier)) {
-			heldFileIdentifiers.add(identifier);
+		const exists = await prisma.$queryRaw<{ id: number }[]>`
+			SELECT id from files
+			WHERE name LIKE ${`${identifier}.%`}
+			LIMIT 1;
+		`;
 
-			/*
-				We use $queryRaw() because we need to ignore extension when finding existing matches,
-				and to do so we need to use SQL LIKE operator, which is still not available in Prisma
-				for SQLite as a shorthand function (supposedly already implemented PostgreSQL, however).
-				https://github.com/prisma/prisma/discussions/3159
-				https://github.com/prisma/prisma/issues/9414
-			*/
-			const exists = await prisma.$queryRaw<{ id: number }[]>`
-				SELECT id from files
-				WHERE name LIKE ${`${identifier}.%`}
-				LIMIT 1;
-			`;
-
-			if (exists.length) {
-				heldFileIdentifiers.delete(identifier);
-			} else {
-				/*
-					If Response is specified, push identifier into its locals object,
-					allowing automatic removal once the Response ends.
-				*/
-				if (res) {
-					// @ts-ignore
-					if (!res.locals.identifiers) {
-						// @ts-ignore
-						res.locals.identifiers = [];
-					}
-
-					// @ts-ignore
-					res.locals.identifiers.push(identifier);
-				}
-
-				// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
-				return identifier;
-			}
+		if (!exists.length) {
+			return identifier;
 		}
 	}
 
@@ -212,9 +159,7 @@ export const storeFileToDb = async (
 		createdAt: now,
 		editedAt: now
 	};
-	void generateThumbnails(file.name);
 
-	log.debug('albumId:', albumId);
 	if (albumId && albumId !== null && albumId !== undefined) {
 		const fileId = await prisma.files.create({
 			data: {

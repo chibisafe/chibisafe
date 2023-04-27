@@ -9,7 +9,7 @@ interface Decoded {
 	iat: number;
 }
 
-export const authUser = async (authorization?: string) => {
+export const authUser = async (authorization?: string | null) => {
 	if (!authorization) return null;
 
 	let id;
@@ -53,7 +53,7 @@ export const authUser = async (authorization?: string) => {
 	} as RequestUser;
 };
 
-export const validateAlbum = async (albumUuid?: string, user?: any) => {
+export const validateAlbum = async (albumUuid?: string | null, user?: any) => {
 	if (!albumUuid) return null;
 	if (!user) throw new Error('Only registered users can upload files to an album.');
 

@@ -27,7 +27,7 @@ model users {
 model files {
 	id Int @id @default(autoincrement())
 	uuid String @unique
-	userId Int
+	userId Int?
 	name String
 	original String
 	type String
