@@ -1,7 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import { Server, EVENTS } from '@tus/server';
 import { FileStore } from '@tus/file-store';
-import { getUniqueFileIdentifier, isExtensionBlocked, storeFileToDb, constructFilePublicLink } from '../utils/File';
+import {
+	getUniqueFileIdentifier,
+	isExtensionBlocked,
+	storeFileToDb,
+	constructFilePublicLink,
+	hashFile,
+	deleteFile
+} from '../utils/File';
 import { generateThumbnails } from '../utils/Thumbnails';
 import { authUser, validateAlbum } from '../utils/UploadHelpers';
 import { SETTINGS } from './settings';
@@ -75,7 +82,9 @@ tusServer.options.onUploadCreate = async (req, res, upload) => {
 	upload.metadata.internal = {
 		user,
 		album,
-		ip: proxyaddr(req, () => true)
+		ip: proxyaddr(req, () => true),
+		identifier: null,
+		repeated: false
 	};
 
 	return res;
@@ -106,7 +115,7 @@ tusServer.options.onUploadFinish = async (req, res, upload) => {
 		type: upload.metadata.type as string,
 		// @ts-ignore
 		size: upload.size / 1000 / 1000,
-		hash: 'WE NEED TO HASH THE FILE',
+		hash: await hashFile(upload.id),
 		// @ts-ignore
 		ip: upload.metadata.internal.ip
 	};
@@ -116,7 +125,12 @@ tusServer.options.onUploadFinish = async (req, res, upload) => {
 	// @ts-ignore
 	const album = upload.metadata.internal.album;
 
-	await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
+	const savedFiled = await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
+	if (savedFiled.repeated) {
+		// @ts-ignore
+		// eslint-disable-next-line require-atomic-updates
+		upload.metadata.internal.repeated = true;
+	}
 
 	const publicLink = `${req.headers.protocol}://${req.headers.host}/${newFileName}`;
 	res.setHeader('public-link', publicLink);
@@ -128,6 +142,12 @@ tusServer.on(EVENTS.POST_FINISH, async (req, res, upload) => {
 	log.debug('> EVENTS.POST_FINISH');
 	// @ts-ignore
 	if (!upload.metadata.internal.identifier) throw new Error('No identifier for file.');
+
+	// @ts-ignore
+	if (upload.metadata.internal.repeated) {
+		await deleteFile(upload.id);
+		return;
+	}
 
 	await jetpack.moveAsync(
 		path.join(__dirname, '..', '..', '..', 'uploads', upload.id),

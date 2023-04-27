@@ -79,7 +79,7 @@ const initUppy = () => {
 			if (!file) return;
 
 			uploadsStore.setCompleted(file.id, 'TODO');
-			console.log(file.name, response.uploadURL, response);
+			console.log(file, response);
 		})
 		.on('upload-error', (file, error, response) => {
 			if (!file) return;

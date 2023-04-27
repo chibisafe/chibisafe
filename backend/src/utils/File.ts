@@ -137,8 +137,6 @@ export const storeFileToDb = async (
 	});
 
 	if (dbFile) {
-		// Delete temp file (do not wait)
-		void deleteFile(file.name);
 		return {
 			file: dbFile,
 			repeated: true
@@ -247,4 +245,24 @@ export const getExtension = (filename: string, lower = false): string => {
 
 	const str = extension + multi;
 	return lower ? str.toLowerCase() : str;
+};
+
+export const hashFile = async (file: string): Promise<string> => {
+	const hash = blake3.createHash();
+	const stream = jetpack.createReadStream(path.join(__dirname, '..', '..', '..', 'uploads', file));
+	return new Promise((resolve, reject) => {
+		stream.on('data', data => {
+			hash.update(data);
+		});
+
+		stream.on('end', () => {
+			resolve(hash.digest('hex'));
+			hash.dispose();
+		});
+
+		stream.on('error', error => {
+			reject(error);
+			hash.dispose();
+		});
+	});
 };

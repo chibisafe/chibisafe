@@ -105,7 +105,6 @@ const start = async () => {
 
 	// Create the neccessary folders
 	jetpack.dir('../uploads/zips');
-	jetpack.dir('../uploads/chunks', { empty: true });
 	jetpack.dir('../uploads/thumbs/square');
 	jetpack.dir('../uploads/thumbs/preview');
 
