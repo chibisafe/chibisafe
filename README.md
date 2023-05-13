@@ -29,6 +29,7 @@ If you want to deploy a docker instance instead of manually setting the service 
 This guide asumes a whole lot of things, including that you know your way around linux, nginx and internet in general.
 
 - Decently updated version of linux (we recommend Debian)
+- `python` version 2.7 (python3 will not work)
 - `node` version 12.18.2+ (we recommend using [volta.sh](https://volta.sh/) or [n](https://github.com/tj/n))
 - `build-essential` package installed in your system to build dependencies
 - `ffmpeg` package installed
