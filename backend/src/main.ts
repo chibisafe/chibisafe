@@ -72,6 +72,9 @@ const start = async () => {
 		connectionTimeout: 600000
 	});
 
+	// Enable form-data parsing
+	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
+
 	// Add log decorators to server, request and reply
 	server.decorate('logger', log);
 	server.decorateReply('logger', log);
@@ -88,22 +91,26 @@ const start = async () => {
 
 	await server.register(helmet, { crossOriginResourcePolicy: false });
 	await server.register(cors, {
-		// TODO: Find out what headers are needed for TUS
-		// allowedHeaders: [
-		// 	'Accept',
-		// 	'Authorization',
-		// 	'Connection',
-		// 	'Cache-Control',
-		// 	'X-Requested-With',
-		// 	'Content-Type',
-		// 	'albumUuid',
-		// 	'X-API-KEY',
-		// 	'Tus-Resumable',
-		// 	'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
-		// ]
+		preflightContinue: true,
+		allowedHeaders: [
+			'Accept',
+			'Authorization',
+			'Connection',
+			'Cache-Control',
+			'X-Requested-With',
+			'Content-Type',
+			'albumUuid',
+			'X-API-KEY',
+			'application/vnd.chibisafe.json', // I'm deprecating this header but will remain here for compatibility reasons
+			// @chibisafe/uploarder headers
+			'chibi-chunk-number',
+			'chibi-chunks-total',
+			'chibi-uuid'
+		]
 	});
 
 	// Create the neccessary folders
+	jetpack.dir('../uploads/tmp');
 	jetpack.dir('../uploads/zips');
 	jetpack.dir('../uploads/thumbs/square');
 	jetpack.dir('../uploads/thumbs/preview');
