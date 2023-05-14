@@ -25,12 +25,8 @@
 		"node": ">=16.0.0"
 	},
 	"dependencies": {
+		"@chibisafe/uploader-client": "^1.0.0",
 		"@headlessui/vue": "^1.6.5",
-		"@uppy/core": "^3.2.0",
-		"@uppy/dashboard": "^3.4.0",
-		"@uppy/drag-drop": "^3.0.2",
-		"@uppy/progress-bar": "^3.0.2",
-		"@uppy/tus": "^3.1.0",
 		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",
 		"dayjs": "^1.11.5",
