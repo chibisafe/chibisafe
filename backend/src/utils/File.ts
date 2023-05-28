@@ -138,6 +138,8 @@ export const storeFileToDb = async (
 
 	if (dbFile) {
 		return {
+			// TODO: If public uploads are enabled we probably should NOT return the IP
+			// from which the file was uploaded
 			file: dbFile,
 			repeated: true
 		};

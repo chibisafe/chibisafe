@@ -18,7 +18,8 @@ import { computed, ref } from 'vue';
 import { useUserStore } from '~/store/user';
 import { useUploadsStore } from '~/store/uploads';
 
-import { chibiUploader } from '@chibisafe/uploader-client';
+// import { chibiUploader } from '@chibisafe/uploader-client';
+import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib'
 
 // @ts-ignore
 import IconUpload from '~icons/carbon/cloud-upload';

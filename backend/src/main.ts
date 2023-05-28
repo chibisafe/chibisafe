@@ -17,7 +17,6 @@ import path from 'node:path';
 import { Buffer } from 'node:buffer';
 
 import Routes from './structures/routes';
-import Uploads from './structures/uploads';
 
 import Requirements from './utils/Requirements';
 
@@ -129,9 +128,6 @@ const start = async () => {
 
 	// Scan and load routes into fastify
 	await Routes.load(server);
-
-	// Initialize TUS handler
-	await Uploads.init(server);
 
 	if (process.env.NODE_ENV === 'production') {
 		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
