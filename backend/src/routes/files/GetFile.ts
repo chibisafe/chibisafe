@@ -14,7 +14,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
 	// Make sure the file exists and belongs to the user
-	const file = await prisma.files.findFirst({
+	const file = (await prisma.files.findFirst({
 		where: {
 			uuid,
 			userId: req.user.id
@@ -39,7 +39,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				}
 			}
 		}
-	});
+	})) as ExtendedFile | null;
 
 	if (!file) return res.code(404).send({ message: 'The file could not be found' });
 

@@ -36,7 +36,7 @@ export interface FileInProgress {
 	path: string;
 	original: string;
 	type: string;
-	size: number;
+	size: string;
 	hash: string;
 	ip: string;
 	field?: string;

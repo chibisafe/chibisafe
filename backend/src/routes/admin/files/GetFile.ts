@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
-import type { User, RequestWithUser } from '../../../structures/interfaces';
+import type { User, RequestWithUser, ExtendedFile } from '../../../structures/interfaces';
 
 export const options = {
 	url: '/admin/file/:uuid',
@@ -17,11 +17,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
 	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
-	const file = await prisma.files.findUnique({
+	const file = (await prisma.files.findUnique({
 		where: {
 			uuid
 		}
-	});
+	})) as ExtendedFile | null;
 
 	if (!file) return res.code(404).send({ message: "File doesn't exist" });
 

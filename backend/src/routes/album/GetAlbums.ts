@@ -46,12 +46,15 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			...album,
 			cover: ('' as string) || undefined,
 			count: album._count.files
-		} as Partial<Album>;
+			// file.size is BigInt because of prisma, so we need to convert it to a number
+		} as unknown as Partial<Album>;
 
 		delete newObject.files;
 		delete newObject._count;
 
-		newObject.cover = album.files[0] ? constructFilePublicLink(req, album.files[0]).thumbSquare : '';
+		newObject.cover = album.files[0]
+			? constructFilePublicLink(req, album.files[0] as unknown as any).thumbSquare
+			: '';
 		fetchedAlbums.push(newObject);
 	}
 

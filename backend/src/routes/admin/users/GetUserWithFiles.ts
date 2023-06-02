@@ -1,4 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { ExtendedFile } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
 
@@ -37,7 +38,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	const files = await prisma.files.findMany({
+	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
 		where: {
@@ -46,7 +47,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		orderBy: {
 			id: 'desc'
 		}
-	});
+	})) as ExtendedFile[] | [];
 
 	const readyFiles = [];
 	for (const file of files) {

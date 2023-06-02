@@ -1,5 +1,5 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../../structures/interfaces';
+import type { RequestWithUser, ExtendedFile } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
 
@@ -13,7 +13,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 
 	const count = await prisma.files.count();
-	const files = await prisma.files.findMany({
+	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
 		select: {
@@ -36,7 +36,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		orderBy: {
 			id: 'desc'
 		}
-	});
+	})) as ExtendedFile[] | [];
 
 	if (!files) return res.code(404).send({ message: 'No files exist' });
 

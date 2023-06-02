@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
-import type { User } from '../../../structures/interfaces';
+import type { User, ExtendedFile } from '../../../structures/interfaces';
 
 export const options = {
 	url: '/admin/users',
@@ -41,7 +41,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			size: 0
 		} as unknown as extendedUser;
 
-		for (const file of user.files) newObject.size += file.size;
+		const files = [...user.files] as ExtendedFile[] | [];
+		for (const file of files) newObject.size += file.size;
 
 		delete newObject.files;
 

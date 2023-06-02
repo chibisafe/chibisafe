@@ -54,7 +54,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	// Construct the public links
 	const files = [] as File[];
 	for (const file of album.files) {
-		const modifiedFile = file as File;
+		const modifiedFile = file as unknown as File;
 		files.push(constructFilePublicLink(req, modifiedFile));
 	}
 

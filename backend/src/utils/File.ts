@@ -105,6 +105,27 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
+export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string) => {
+	const host = getHost(req);
+	const data = {
+		url: `${host}/${fileName}`,
+		thumb: '',
+		thumbSquare: '',
+		preview: ''
+	};
+
+	const { thumb, preview } = getFileThumbnail(fileName) ?? {};
+	if (thumb) {
+		data.thumb = `${host}/thumbs/${thumb}`;
+		data.thumbSquare = `${host}/thumbs/square/${thumb}`;
+		if (preview) {
+			data.preview = `${host}/thumbs/preview/${preview}`;
+		}
+	}
+
+	return data;
+};
+
 export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
 	const extended: ExtendedFile = { ...file };
 	const host = getHost(req);
