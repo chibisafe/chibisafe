@@ -136,9 +136,8 @@ const start = async () => {
 		}
 
 		// @ts-ignore
-		const LiveAssets = new LiveDirectory({
-			static: true,
-			path: path.join(__dirname, '..', 'dist', 'site')
+		const LiveAssets = new LiveDirectory(path.join(__dirname, '..', 'dist', 'site'), {
+			static: true
 		});
 
 		// Prepare index.html to be served with the necessary meta tags in place
