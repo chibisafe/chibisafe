@@ -18,8 +18,8 @@ import { computed, ref } from 'vue';
 import { useUserStore } from '~/store/user';
 import { useUploadsStore } from '~/store/uploads';
 
-// import { chibiUploader } from '@chibisafe/uploader-client';
-import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib'
+import { chibiUploader } from '@chibisafe/uploader-client';
+// import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
 // @ts-ignore
 import IconUpload from '~icons/carbon/cloud-upload';
@@ -33,6 +33,7 @@ const files = ref<File[] | null>();
 const processFile = async (file: File) => {
 	files.value?.push(file);
 	await chibiUploader({
+		debug: true,
 		endpoint: '/api/upload',
 		file,
 		chunkSize: 90,
@@ -69,9 +70,13 @@ const processFile = async (file: File) => {
 		onRetry: (uuid: string, reason: any) => {
 			console.log('onRetry', reason);
 		},
-		onFinish: (uuid: string, body: any) => {
-			debug(`Finished uploading ${file.name} with uuid ${uuid}`, body);
-			uploadsStore.setCompleted(uuid, body);
+		onFinish: (uuid: string, response: any) => {
+			debug('Finished uploading file', {
+				name: file.name,
+				uuid,
+				url: response.url
+			});
+			uploadsStore.setCompleted(uuid, response.url);
 		}
 	});
 };

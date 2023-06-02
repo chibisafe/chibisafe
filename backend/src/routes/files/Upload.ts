@@ -1,8 +1,8 @@
 import jetpack from 'fs-jetpack';
 import path from 'node:path';
 
-// import { processFile } from '@chibisafe/uploader-module';
-import { processFile } from '../../../../../chibisafe-uploader/packages/uploader-module/lib';
+import { processFile } from '@chibisafe/uploader-module';
+// import { processFile } from '../../../../../chibisafe-uploader/packages/uploader-module/lib';
 import { validateAlbum } from '../../utils/UploadHelpers';
 import { generateThumbnails } from '../../utils/Thumbnails';
 import { SETTINGS } from '../../structures/settings';
@@ -10,6 +10,7 @@ import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
 	constructFilePublicLink,
+	constructFilePublicLinkNew,
 	hashFile,
 	deleteFile
 } from '../../utils/File';
@@ -39,7 +40,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			maxFileSize,
 			maxChunkSize,
 			blockedExtensions: SETTINGS.blockedExtensions,
-			DEBUG: true
+			debug: true
 		});
 
 		if (upload.isChunkedUpload && !upload.ready) {
@@ -69,7 +70,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			// @ts-ignore
 			type: upload.metadata.type as string,
 			// @ts-ignore
-			size: Number(upload.metadata.size),
+			size: String(upload.metadata.size),
 			hash: await hashFile(newFileName),
 			// @ts-ignore
 			ip: req.ip
@@ -82,8 +83,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			await deleteFile(newPath);
 		}
 
+		const uploadedFile = savedFile.file;
+
+		const linkData = constructFilePublicLinkNew(req, uploadedFile.name);
 		// Construct public link
-		const publicLink = constructFilePublicLink(req, savedFile.file);
+		const fileWithLink = {
+			...uploadedFile,
+			...linkData
+		};
 
 		// Generate thumbnails
 		void generateThumbnails(savedFile.file.name);
@@ -103,7 +110,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		 * 	}
 		 */
 
-		await res.code(200).send(publicLink);
+		await res.code(200).send(fileWithLink);
 	} catch (error: any) {
 		let statusCode = 500;
 		switch (error.message) {
