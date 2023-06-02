@@ -2,6 +2,7 @@
 	<div
 		id="upload"
 		class="absolute w-80 h-80 max-h-[320px] max-w-[320px] right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg border-[#303436] flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
+		@click="triggerFileInput"
 	>
 		<IconUpload class="h-12 w-12 pointer-events-none" />
 		<h3 class="font-bold text-center mt-4 pointer-events-none">
@@ -9,7 +10,7 @@
 		</h3>
 		<p class="text-center mt-4 w-3/4 pointer-events-none mb-4">Drag and drop your files here. 5GB max per file.</p>
 
-		<input type="file" multiple @change="onFileChanged($event)" />
+		<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
 	</div>
 </template>
 
@@ -29,6 +30,11 @@ const uploadsStore = useUploadsStore();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const token = computed(() => userStore.user.token);
 const files = ref<File[] | null>();
+const inputUpload = ref<HTMLInputElement>();
+
+const triggerFileInput = () => {
+	inputUpload.value?.click();
+};
 
 const pasteHandler = (event: ClipboardEvent) => {
 	if (!event.clipboardData) return;
