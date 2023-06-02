@@ -112,10 +112,12 @@ const onFileChanged = ($event: Event) => {
 };
 
 onMounted(() => {
+	// @ts-expect-error Argument of type '"paste"' is not assignable to parameter of type 'keyof WindowEventMap'
 	window.addEventListener('paste', pasteHandler);
 });
 
 onUnmounted(() => {
+	// @ts-expect-error Argument of type '"paste"' is not assignable to parameter of type 'keyof WindowEventMap'
 	window.removeEventListener('paste', pasteHandler);
 });
 </script>
