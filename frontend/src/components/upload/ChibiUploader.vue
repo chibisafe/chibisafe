@@ -14,10 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useUserStore } from '~/store/user';
 import { useUploadsStore } from '~/store/uploads';
-
+import { getFileExtension } from '~/use/file';
 import { chibiUploader } from '@chibisafe/uploader-client';
 // import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
@@ -29,6 +29,20 @@ const uploadsStore = useUploadsStore();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const token = computed(() => userStore.user.token);
 const files = ref<File[] | null>();
+
+const pasteHandler = (event: ClipboardEvent) => {
+	if (!event.clipboardData) return;
+	for (const file of Array.from(event.clipboardData.files)) {
+		if (!file?.type) continue;
+
+		const fileData = new File([file], `pasted-file.${getFileExtension(file)}`, {
+			type: file.type
+		});
+
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		void processFile(fileData);
+	}
+};
 
 const processFile = async (file: File) => {
 	files.value?.push(file);
@@ -90,4 +104,12 @@ const onFileChanged = ($event: Event) => {
 		}
 	}
 };
+
+onMounted(() => {
+	window.addEventListener('paste', pasteHandler);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('paste', pasteHandler);
+});
 </script>

@@ -39,6 +39,6 @@ export const isFilePDF = (file: FileWithAdditionalData) => {
 };
 
 export const getFileExtension = (file: File) => {
-	const { type } = file;
-	return type.split('/')[1];
+	const { name } = file;
+	return name.split('.').pop();
 };
