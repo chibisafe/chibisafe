@@ -8,7 +8,7 @@
 		<h3 class="font-bold text-center mt-4 pointer-events-none">
 			DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
 		</h3>
-		<p class="text-center mt-4 w-3/4 pointer-events-none mb-4">Drag and drop your files here. 5GB max per file.</p>
+		<p class="text-center mt-4 w-3/4 pointer-events-none">Drag and drop your files here. 5GB max per file.</p>
 
 		<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
 	</div>

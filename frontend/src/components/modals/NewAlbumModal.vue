@@ -51,13 +51,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
-import { useModalstore } from '~/store/modals';
-import { useToastStore } from '~/store/toast';
-import { useAlbumsStore } from '~/store/albums';
+import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
 import { createAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 const toastStore = useToastStore();
 const albumsStore = useAlbumsStore();
 

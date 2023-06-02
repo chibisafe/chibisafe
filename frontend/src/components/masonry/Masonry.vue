@@ -42,9 +42,7 @@
 import type { FileWithAdditionalData } from '~/types';
 import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
-import { useFilesStore } from '~/store/files';
-import { useAlbumsStore } from '~/store/albums';
-import { useModalstore } from '~/store/modals';
+import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import IconVideo from '~icons/carbon/video-filled';
@@ -58,7 +56,7 @@ const props = defineProps<{
 
 const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 
 const files = computed(() => {
 	if (props.type === 'uploads' || props.type === 'admin') return filesStore.files;

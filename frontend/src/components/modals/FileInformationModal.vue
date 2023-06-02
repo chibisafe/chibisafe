@@ -205,8 +205,7 @@ import type { AlbumWithSelected, FileWithAdditionalData } from '~/types';
 import { ref, computed, watch } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
 import { useClipboard } from '@vueuse/core';
-import { useModalstore } from '~/store/modals';
-import { useAlbumsStore } from '~/store/albums';
+import { useModalStore, useAlbumsStore } from '~/store';
 import { formatBytes, isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
@@ -219,7 +218,7 @@ const props = defineProps<{
 	type: 'admin' | null;
 }>();
 
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 const albumsStore = useAlbumsStore();
 
 // If the admin is loading this component we dont want to load the albums

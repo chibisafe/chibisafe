@@ -81,11 +81,9 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
 import IconClose from '~icons/carbon/close';
 import { deleteFile, deleteFileAsAdmin } from '~/use/api';
 
-import { useModalstore } from '~/store/modals';
-import { useToastStore } from '~/store/toast';
-import { useFilesStore } from '~/store/files';
+import { useModalStore, useToastStore, useFilesStore } from '~/store';
 
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 const toastStore = useToastStore();
 const filesStore = useFilesStore();
 
