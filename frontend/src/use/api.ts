@@ -66,6 +66,16 @@ export const changeApiKey = async () => {
 	}
 };
 
+export const getSettings = async () => {
+	try {
+		const data = await request.get('settings');
+		console.log('getSettings', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getMe = async () => {
 	try {
 		const data = await request.get('verify');
