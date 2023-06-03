@@ -210,17 +210,14 @@ const start = async () => {
 				svg: 'image/svg+xml'
 			};
 
-			if (file.cached) {
-				// Simply send the Buffer returned by asset.content as the response
-				// You can convert a Buffer to a string using Buffer.toString() if your webserver requires string response body
-				// @ts-expect-error contentType[extension]
-				return reply.type(contentType[extension]).send(file.content);
-			} else {
-				// For files that are not cached, you must create a stream and pipe it as the response for memory efficiency
-				const readable = file.stream();
-				// @ts-expect-error contentType[extension]
-				return reply.type(contentType[extension]).send(readable);
-			}
+			return (
+				reply
+					.header('etag', file.etag)
+					.header('Cache-Control', 'max-age=604800, stale-while-revalidate=86400')
+					// @ts-expect-error contentType[extension]
+					.type(contentType[extension])
+					.send(file.cached ? file.content : file.stream())
+			);
 		});
 	}
 
