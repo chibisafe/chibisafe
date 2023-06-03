@@ -88,7 +88,7 @@ const start = async () => {
 		server.logger.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
 	});
 
-	await server.register(helmet, { crossOriginResourcePolicy: false });
+	await server.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
 	await server.register(cors, {
 		preflightContinue: true,
 		allowedHeaders: [
