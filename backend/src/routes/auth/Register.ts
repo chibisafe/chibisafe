@@ -1,8 +1,7 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import log from '../../utils/Log';
 import { SETTINGS } from '../../structures/settings';
 import { utc } from 'moment';
 
@@ -11,13 +10,15 @@ export const options = {
 	method: 'post'
 };
 
-export const run = async (req: Request, res: Response) => {
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	let foundInvite = null;
+
+	const invite = req.headers.invite as string;
 
 	// If new account creation is deactivated then check for an invite
 	if (!SETTINGS.userAccounts) {
-		if (!req.headers.invite) {
-			return res.status(401).json({
+		if (!invite) {
+			return res.code(401).send({
 				message: 'Creation of new accounts is currently disabled'
 			});
 		}
@@ -25,31 +26,31 @@ export const run = async (req: Request, res: Response) => {
 		// Check if the invite is valid has not been used yet
 		foundInvite = await prisma.invites.findFirst({
 			where: {
-				code: req.headers.invite,
+				code: invite,
 				used: false
 			}
 		});
 
 		// If no invite was found then reject the call
 		if (!foundInvite) {
-			return res.status(401).json({
+			return res.code(401).send({
 				message: 'Invalid invite code'
 			});
 		}
 	}
 
-	const { username, password } = await req.json();
+	const { username, password } = req.body as { username?: string; password?: string };
 	if (!username || !password)
-		return res.status(400).json({
+		return res.code(400).send({
 			message: 'No username or password provided'
 		});
 
 	if (username.length < 4 || username.length > 32) {
-		return res.status(400).json({ message: 'Username must have 4-32 characters' });
+		return res.code(400).send({ message: 'Username must have 4-32 characters' });
 	}
 
 	if (password.length < 6 || password.length > 64) {
-		return res.status(400).json({ message: 'Password must have 6-64 characters' });
+		return res.code(400).send({ message: 'Password must have 6-64 characters' });
 	}
 
 	const exists = await prisma.users.findFirst({
@@ -58,14 +59,14 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (exists) return res.status(400).json({ message: 'Username already exists' });
+	if (exists) return res.code(400).send({ message: 'Username already exists' });
 
 	let hash;
 	try {
 		hash = await bcrypt.hash(password, 10);
 	} catch (error) {
-		log.error(error);
-		return res.status(401).json({ message: 'There was a problem processing your account' });
+		res.logger.error(error);
+		return res.code(401).send({ message: 'There was a problem processing your account' });
 	}
 
 	// Create the user in the database
@@ -82,7 +83,7 @@ export const run = async (req: Request, res: Response) => {
 	if (foundInvite) {
 		await prisma.invites.update({
 			where: {
-				code: req.headers.invite
+				code: invite
 			},
 			data: {
 				used: true,
@@ -92,5 +93,5 @@ export const run = async (req: Request, res: Response) => {
 		});
 	}
 
-	return res.json({ message: 'The account was created successfully' });
+	return res.send({ message: 'The account was created successfully' });
 };

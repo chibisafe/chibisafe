@@ -1,6 +1,6 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
-import type { User } from '../../../structures/interfaces';
+import type { User, ExtendedFile } from '../../../structures/interfaces';
 
 export const options = {
 	url: '/admin/users',
@@ -8,7 +8,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: Request, res: Response) => {
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const users = await prisma.users.findMany({
 		select: {
 			uuid: true,
@@ -41,14 +41,15 @@ export const run = async (req: Request, res: Response) => {
 			size: 0
 		} as unknown as extendedUser;
 
-		for (const file of user.files) newObject.size += file.size;
+		const files = [...user.files] as ExtendedFile[] | [];
+		for (const file of files) newObject.size += file.size;
 
 		delete newObject.files;
 
 		fetchedUsers.push(newObject);
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved users',
 		users: fetchedUsers
 	});

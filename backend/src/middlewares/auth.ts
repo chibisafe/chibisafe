@@ -1,10 +1,8 @@
-import type { Response, MiddlewareNext } from 'hyper-express';
+import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RequestWithOptionalUser } from '../structures/interfaces';
 import { SETTINGS } from '../structures/settings';
 import JWT from 'jsonwebtoken';
-import log from '../utils/Log';
 import prisma from '../structures/database';
-import process from 'node:process';
 
 interface Decoded {
 	sub: number;
@@ -13,17 +11,23 @@ interface Decoded {
 
 export default (
 	req: RequestWithOptionalUser,
-	res: Response,
-	next: MiddlewareNext,
+	res: FastifyReply,
+	next: HookHandlerDoneFunction,
 	options?: { [index: number | string]: any }
 ) => {
+	// We already authed in the apiKey middleware
+	if (req.user && req.headers['x-api-key']) {
+		next();
+		return;
+	}
+
 	if (!req.headers.authorization) {
 		if (options?.optional) {
 			next();
 			return;
 		}
 
-		return res.status(401).json({ message: 'No authorization header provided' });
+		return res.code(401).send({ message: 'No authorization header provided' });
 	}
 
 	const token = req.headers.authorization.split(' ')[1];
@@ -33,15 +37,15 @@ export default (
 			return;
 		}
 
-		return res.status(401).json({ message: 'No authorization header provided' });
+		return res.code(401).send({ message: 'No authorization header provided' });
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises, promise/prefer-await-to-callbacks
 	JWT.verify(token, SETTINGS.secret ?? '', async (error, decoded) => {
-		if (error) return res.status(401).json({ message: 'Invalid token' });
+		if (error) return res.code(401).send({ message: 'Invalid token' });
 		const id = (decoded as Decoded | undefined)?.sub ?? null;
 		const dateSigned = (decoded as Decoded | undefined)?.iat ?? null;
-		if (!id) return res.status(401).json({ message: 'Invalid authorization' });
+		if (!id) return res.code(401).send({ message: 'Invalid authorization' });
 
 		const user = await prisma.users.findFirst({
 			where: {
@@ -58,10 +62,10 @@ export default (
 		});
 
 		if (dateSigned && Number(user?.passwordEditedAt) > dateSigned) {
-			return res.status(401).json({ message: 'Token expired' });
+			return res.code(401).send({ message: 'Token expired' });
 		}
 
-		if (!user) return res.status(401).json({ message: "User doesn't exist" });
+		if (!user) return res.code(401).send({ message: "User doesn't exist" });
 		req.user = {
 			id: user.id,
 			uuid: user.uuid,
@@ -69,7 +73,7 @@ export default (
 			isAdmin: user.isAdmin,
 			apiKey: user.apiKey
 		};
-		log.debug(`Request from user: ${user.username}`);
+		req.logger.debug(`Request from user: ${user.username}`);
 		next();
 	});
 };

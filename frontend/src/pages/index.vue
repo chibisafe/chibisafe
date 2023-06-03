@@ -22,7 +22,7 @@
 				<!-- Dummy to keep the flexbox layout -->
 				<div class="w-80 h-80 max-w-[320px]" />
 
-				<Upload />
+				<ChibiUploader />
 			</div>
 
 			<TransitionRoot
@@ -49,10 +49,14 @@
 							}
 						]"
 					>
-						<!-- TODO: Add transition to the background so it's smooth -->
+						<div class="w-full h-full absolute top-0 left-0 pointer-events-none bg-dark-100" />
 						<div
-							class="w-full h-full absolute top-0 left-0 pointer-events-none"
-							:class="[file.status !== 'error' ? 'bg-[#22a061]' : 'bg-[#832c2c]']"
+							class="w-full h-full absolute top-0 left-0 pointer-events-none transition-all linear duration-200"
+							:class="{
+								'bg-green-800': file.status === 'success',
+								'bg-yellow-900': file.status === 'uploading',
+								'bg-red-900': file.status === 'error'
+							}"
 							:style="[
 								{
 									width: file.status === 'error' ? '100%' : `${file.progress}%`
@@ -112,7 +116,7 @@ import { useUploadsStore } from '~/store/uploads';
 import { formatBytes } from '~/use/file';
 
 import Header from '~/components/header/Header.vue';
-import Upload from '~/components/upload/Upload.vue';
+import ChibiUploader from '~/components/upload/ChibiUploader.vue';
 
 // @ts-ignore
 import IconCheck from '~icons/carbon/checkmark';

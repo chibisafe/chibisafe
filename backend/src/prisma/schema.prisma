@@ -1,6 +1,6 @@
 generator client {
 	provider = "prisma-client-js"
-	previewFeatures = ["filteredRelationCount"]
+	previewFeatures = ["filteredRelationCount", "jsonProtocol"]
 }
 
 datasource db {
@@ -27,11 +27,11 @@ model users {
 model files {
 	id Int @id @default(autoincrement())
 	uuid String @unique
-	userId Int
+	userId Int?
 	name String
 	original String
 	type String
-	size Int
+	size String
 	hash String
 	ip String
 	createdAt DateTime @default(now())
@@ -80,9 +80,9 @@ model settings {
 	rateLimitMax Int
 	secret String
 	serviceName String
-	chunkSize Int
+	chunkSize String
 	chunkedUploadsTimeout Int
-	maxSize Int
+	maxSize String
 	generateZips Boolean
 	generatedFilenameLength Int
 	generatedAlbumLength Int

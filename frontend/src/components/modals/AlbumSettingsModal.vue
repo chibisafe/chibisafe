@@ -306,15 +306,13 @@ import {
 	SwitchGroup,
 	SwitchLabel
 } from '@headlessui/vue';
-import { useModalstore } from '~/store/modals';
-import { useToastStore } from '~/store/toast';
-import { useAlbumsStore } from '~/store/albums';
+import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
 import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 import Input from '~/components/forms/Input.vue';
 import type { AlbumLink } from '~/types';
 
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 const toastStore = useToastStore();
 const albumsStore = useAlbumsStore();
 

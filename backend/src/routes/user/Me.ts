@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../structures/interfaces';
 
 export const options = {
@@ -7,8 +7,8 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = (req: RequestWithUser, res: Response) =>
-	res.json({
+export const run = (req: RequestWithUser, res: FastifyReply) =>
+	res.send({
 		message: 'Successfully retrieved user',
 		user: {
 			...req.user

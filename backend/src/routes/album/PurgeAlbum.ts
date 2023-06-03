@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
@@ -8,9 +8,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'No uuid provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(400).json({ message: "The album doesn't exist or doesn't belong to the user" });
+	if (!album) return res.code(400).send({ message: "The album doesn't exist or doesn't belong to the user" });
 
 	try {
 		await prisma.links.deleteMany({
@@ -44,10 +44,10 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			}
 		});
 
-		return res.json({
+		return await res.send({
 			message: 'Successfully deleted the album'
 		});
 	} catch {
-		return res.status(500).json({ message: 'An error occurred while deleting the album' });
+		return res.code(500).send({ message: 'An error occurred while deleting the album' });
 	}
 };

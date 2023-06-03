@@ -95,4 +95,17 @@
 	::-webkit-scrollbar-track:active {
 		background: #131314;
 	}
+
+	
+}
+
+.uppy-Root {
+	opacity: 0;
+	position: absolute !important;
+	top: 0;
+	left: 0;
+}
+
+.uppy-Root button {
+	cursor: pointer;
 }

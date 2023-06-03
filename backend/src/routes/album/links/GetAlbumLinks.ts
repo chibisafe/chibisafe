@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
@@ -8,9 +8,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -22,7 +22,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!album) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
 
 	const links = await prisma.links.findMany({
 		where: {
@@ -41,7 +41,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved links',
 		links
 	});

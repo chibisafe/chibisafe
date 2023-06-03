@@ -55,8 +55,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useAlbumsStore } from '~/store/albums';
-import { useModalstore } from '~/store/modals';
+import { useAlbumsStore, useModalStore } from '~/store';
 import type { Album } from '~/types';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
@@ -68,7 +67,7 @@ import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const albumsStore = useAlbumsStore();
-const modalsStore = useModalstore();
+const modalsStore = useModalStore();
 const albums = computed(() => albumsStore.albums);
 
 const showNewAlbumModal = () => {

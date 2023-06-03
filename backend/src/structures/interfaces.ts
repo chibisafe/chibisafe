@@ -1,6 +1,4 @@
-import type { Request } from 'hyper-express';
-
-import type { ChunksData } from '../utils/File';
+import type { FastifyRequest } from 'fastify';
 
 export interface RequestUser {
 	id: number;
@@ -10,11 +8,11 @@ export interface RequestUser {
 	apiKey?: string | null | undefined;
 }
 
-export interface RequestWithUser extends Request {
+export interface RequestWithUser extends FastifyRequest {
 	user: RequestUser;
 }
 
-export interface RequestWithOptionalUser extends Request {
+export interface RequestWithOptionalUser extends FastifyRequest {
 	user?: RequestUser;
 }
 
@@ -38,11 +36,10 @@ export interface FileInProgress {
 	path: string;
 	original: string;
 	type: string;
-	size: number;
+	size: string;
 	hash: string;
 	ip: string;
 	field?: string;
-	chunksData?: ChunksData;
 }
 
 export interface File {

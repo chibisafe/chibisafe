@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
 import type { RequestWithUser } from '../../../structures/interfaces';
 
@@ -8,9 +8,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid, linkUuid } = req.path_parameters;
-	if (!uuid || !linkUuid) return res.status(400).json({ message: 'No uuid or linkUuid provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid, linkUuid } = req.params as { uuid?: string; linkUuid?: string };
+	if (!uuid || !linkUuid) return res.code(400).send({ message: 'No uuid or linkUuid provided' });
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(400).json({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!album) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
 
 	const link = await prisma.links.findFirst({
 		where: {
@@ -29,7 +29,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!link) return res.status(400).json({ message: 'No link found' });
+	if (!link) return res.code(400).send({ message: 'No link found' });
 
 	await prisma.links.delete({
 		where: {
@@ -37,7 +37,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully deleted the link'
 	});
 };

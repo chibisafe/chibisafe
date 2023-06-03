@@ -1,5 +1,5 @@
 import prisma from '../../../structures/database';
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 export const options = {
 	url: '/admin/user/:uuid/purge',
@@ -7,9 +7,9 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: Request, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
 	const user = await prisma.users.findUnique({
 		where: {
@@ -17,7 +17,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!user) return res.status(400).json({ message: 'User not found' });
+	if (!user) return res.code(400).send({ message: 'User not found' });
 
 	await prisma.files.deleteMany({
 		where: {
@@ -31,7 +31,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: "Successfully purged user's files and albums"
 	});
 };

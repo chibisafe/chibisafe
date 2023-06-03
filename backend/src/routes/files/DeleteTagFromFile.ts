@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser } from '../../structures/interfaces';
 
@@ -8,9 +8,9 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid, tagUuid } = req.path_parameters;
-	if (!uuid || !tagUuid) return res.status(400).json({ message: 'No uuid or tagUuid provided' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid, tagUuid } = req.params as { uuid?: string; tagUuid?: string };
+	if (!uuid || !tagUuid) return res.code(400).send({ message: 'No uuid or tagUuid provided' });
 
 	const fileExists = await prisma.files.findFirst({
 		where: {
@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!fileExists) return res.status(400).json({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) return res.code(400).send({ message: "File doesn't exist or doesn't belong to the user" });
 
 	const tagExists = await prisma.tags.findFirst({
 		where: {
@@ -28,7 +28,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (!tagExists) return res.status(400).json({ message: "Tag doesn't exist or doesn't belong to the user" });
+	if (!tagExists) return res.code(400).send({ message: "Tag doesn't exist or doesn't belong to the user" });
 
 	await prisma.files.update({
 		where: {
@@ -43,7 +43,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully removed tag from file'
 	});
 };

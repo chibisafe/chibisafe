@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../structures/interfaces';
 import prisma from '../../structures/database';
 import { utc } from 'moment';
@@ -10,7 +10,7 @@ export const options = {
 	middlewares: ['auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const now = utc().toDate();
 	const apiKey = randomstring.generate(64);
 
@@ -24,7 +24,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully created new api key',
 		apiKey
 	});

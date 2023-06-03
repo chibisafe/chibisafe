@@ -1,4 +1,5 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
+import type { RequestWithUser, ExtendedFile } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 import { constructFilePublicLink } from '../../../utils/File';
 
@@ -8,11 +9,11 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: Request, res: Response) => {
-	const { page = 1, limit = 50 } = req.query_parameters as { page?: number; limit?: number };
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 
 	const count = await prisma.files.count();
-	const files = await prisma.files.findMany({
+	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
 		select: {
@@ -35,16 +36,16 @@ export const run = async (req: Request, res: Response) => {
 		orderBy: {
 			id: 'desc'
 		}
-	});
+	})) as ExtendedFile[] | [];
 
-	if (!files) return res.status(404).json({ message: 'No files exist' });
+	if (!files) return res.code(404).send({ message: 'No files exist' });
 
 	const readyFiles = [];
 	for (const file of files) {
 		readyFiles.push(constructFilePublicLink(req, file));
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved files',
 		files: readyFiles,
 		count

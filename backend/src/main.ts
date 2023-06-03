@@ -1,26 +1,43 @@
 import * as dotenv from 'dotenv';
 
-import type { Request, Response, MiddlewareNext } from 'hyper-express';
-import HyperExpress from 'hyper-express';
-// @ts-ignore
+import fastify from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+
+import helmet from '@fastify/helmet';
+import cors from '@fastify/cors';
+import fstatic from '@fastify/static';
+
 import LiveDirectory from 'live-directory';
+
 import jetpack from 'fs-jetpack';
 // import schedule from 'node-schedule';
 import log from './utils/Log';
 import process from 'node:process';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
-// import helmet from 'helmet';
-import cors from 'cors';
 
 import Routes from './structures/routes';
-import Serve from './structures/serve';
 
 import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
+// import { unholdFileIdentifiers } from './utils/File';
+
+declare module 'fastify' {
+	interface FastifyInstance {
+		logger: typeof log;
+	}
+
+	interface FastifyRequest {
+		logger: typeof log;
+	}
+
+	interface FastifyReply {
+		logger: typeof log;
+	}
+}
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -48,32 +65,52 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
-	// Create the HyperExpress server
-	const server = new HyperExpress.Server({
-		trust_proxy: true,
-		fast_buffers: true
+	// Create the Fastify server
+	const server = fastify({
+		trustProxy: true,
+		connectionTimeout: 600000
 	});
 
-	// server.use(helmet());
-	server.use(
-		cors({
-			allowedHeaders: [
-				'Accept',
-				'Authorization',
-				'Cache-Control',
-				'X-Requested-With',
-				'Content-Type',
-				'albumUuid',
-				'X-API-KEY',
-				// 'finishedChunks', // Not used, we simply check if Content-Type is 'application/json'
-				'application/vnd.chibisafe.json' // I'm deprecating this header but will remain here for compatibility reasons
-			]
-		})
-	);
+	// Enable form-data parsing
+	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
+
+	// Add log decorators to server, request and reply
+	server.decorate('logger', log);
+	server.decorateReply('logger', log);
+	server.decorateRequest('logger', log);
+
+	// Add decorator for the user object to use with FastifyRequest
+	server.decorateRequest('user', '');
+
+	// These hooks and decorators are to hold unique identifiers in memory
+	server.addHook('onResponse', async (request, reply) => {
+		// http logging
+		server.logger.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
+	});
+
+	await server.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
+	await server.register(cors, {
+		preflightContinue: true,
+		allowedHeaders: [
+			'Accept',
+			'Authorization',
+			'Connection',
+			'Cache-Control',
+			'X-Requested-With',
+			'Content-Type',
+			'albumUuid',
+			'X-API-KEY',
+			'application/vnd.chibisafe.json', // I'm deprecating this header but will remain here for compatibility reasons
+			// @chibisafe/uploarder headers
+			'chibi-chunk-number',
+			'chibi-chunks-total',
+			'chibi-uuid'
+		]
+	});
 
 	// Create the neccessary folders
+	jetpack.dir('../uploads/tmp');
 	jetpack.dir('../uploads/zips');
-	jetpack.dir('../uploads/chunks', { empty: true });
 	jetpack.dir('../uploads/thumbs/square');
 	jetpack.dir('../uploads/thumbs/preview');
 
@@ -89,7 +126,7 @@ const start = async () => {
 	log.debug('Loading routes...');
 	log.debug('');
 
-	// Scan and load routes into express
+	// Scan and load routes into fastify
 	await Routes.load(server);
 
 	if (process.env.NODE_ENV === 'production') {
@@ -98,8 +135,13 @@ const start = async () => {
 			process.exit(1);
 		}
 
-		const LiveAssets = new LiveDirectory({
-			path: path.join(__dirname, '..', 'dist', 'site')
+		// @ts-ignore
+		const LiveAssets = new LiveDirectory(path.join(__dirname, '..', 'dist', 'site'), {
+			static: true,
+			cache: {
+				max_file_count: 50,
+				max_file_size: 1024 * 1024 * 2.5
+			}
 		});
 
 		// Prepare index.html to be served with the necessary meta tags in place
@@ -116,8 +158,17 @@ const start = async () => {
 		indexHTML = indexHTML.replace(/{{domain}}/g, SETTINGS.domain);
 		const newBuffer = Buffer.from(indexHTML);
 
-		// @ts-ignore -- Hyper's typings for this overload seem to be missing
-		server.use((req: Request, res: Response, next: MiddlewareNext) => {
+		server.route({
+			method: 'GET',
+			url: '/',
+			handler: (req: FastifyRequest, res: FastifyReply) => {
+				req.logger.debug('hi');
+			}
+		});
+
+		server.addHook('onRequest', (req, reply, next) => {
+			req.logger.debug(req);
+
 			if (req.method !== 'GET' && req.method !== 'HEAD') {
 				next();
 				return;
@@ -134,38 +185,53 @@ const start = async () => {
 				'/privacy',
 				'/tos'
 			];
-			const route = routes.some(r => req.path.startsWith(r));
 
-			if (req.path === '/' || route) return res.type('html').send(newBuffer);
+			const route = routes.some(r => req.url.startsWith(r));
 
-			const file = LiveAssets.get(req.path.slice(1));
-			if (file) {
-				return res.type(file.extension).send(file.buffer);
+			if (req.url === '/' || route) return reply.type('text/html').send(newBuffer);
+
+			const file = LiveAssets.get(req.url.slice(1));
+			if (!file) {
+				next();
+				return;
 			}
 
-			next();
+			// @ts-ignore
+			const extension = req.url.slice(1).split('.').pop() as string;
+
+			// Map extension to content type
+			const contentType = {
+				js: 'text/javascript',
+				css: 'text/css',
+				html: 'text/html',
+				ico: 'image/x-icon',
+				png: 'image/png',
+				jpg: 'image/jpeg',
+				svg: 'image/svg+xml'
+			};
+
+			if (file.cached) {
+				// Simply send the Buffer returned by asset.content as the response
+				// You can convert a Buffer to a string using Buffer.toString() if your webserver requires string response body
+				// @ts-expect-error contentType[extension]
+				return reply.type(contentType[extension]).send(file.content);
+			} else {
+				// For files that are not cached, you must create a stream and pipe it as the response for memory efficiency
+				const readable = file.stream();
+				// @ts-expect-error contentType[extension]
+				return reply.type(contentType[extension]).send(readable);
+			}
 		});
 	}
 
 	// Serve uploads
-	server.get('/*', Serve);
-	server.head('/*', Serve);
-
-	// Essentially unused for GET and HEAD due to Serve's handlers
-	server.set_not_found_handler((req: Request, res: Response) => {
-		res.status(404).send('Not found');
-	});
-
-	server.set_error_handler((req: Request, res: Response, error: Error) => {
-		log.error(error);
-		res.status(500).send('Internal server error');
+	await server.register(fstatic, {
+		root: path.join(__dirname, '..', '..', 'uploads')
 	});
 
 	// Start the server
-	await server.listen(Number(SETTINGS.port));
-	log.info('');
-	log.info(`Server ready on port ${Number(SETTINGS.port)}`);
-
+	await server.listen({ port: Number(SETTINGS.port) });
+	log.info(`Chibisafe is now listening on port ${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 };

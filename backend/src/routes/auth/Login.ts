@@ -1,4 +1,4 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
@@ -9,10 +9,10 @@ export const options = {
 	method: 'post'
 };
 
-export const run = async (req: Request, res: Response) => {
-	const { username, password } = await req.json();
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
+	const { username, password } = req.body as { username?: string; password?: string };
 	if (!username || !password)
-		return res.status(400).json({
+		return res.code(400).send({
 			message: 'No username or password provided'
 		});
 
@@ -22,10 +22,10 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!user) return res.status(401).json({ message: "User doesn't exist" });
+	if (!user) return res.code(401).send({ message: "User doesn't exist" });
 
 	const comparePassword = await bcrypt.compare(password, user.password);
-	if (!comparePassword) return res.status(401).json({ message: 'Wrong password' });
+	if (!comparePassword) return res.code(401).send({ message: 'Wrong password' });
 
 	const jwt = JWT.sign(
 		{
@@ -37,7 +37,7 @@ export const run = async (req: Request, res: Response) => {
 		{ expiresIn: '30d' }
 	);
 
-	return res.json({
+	return res.send({
 		message: 'Successfully logged in.',
 		id: user.id,
 		uuid: user.uuid,

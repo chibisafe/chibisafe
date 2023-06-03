@@ -54,7 +54,14 @@ export const useFilesStore = defineStore('files', {
 			this.helperData.asAdmin = admin ?? false;
 			this.helperData.userUuid = userUuid ?? '';
 
-			let response;
+			let response:
+				| {
+						files: FileWithAdditionalData[];
+						count: number;
+						user?: User;
+				  }
+				| undefined;
+
 			if (admin) {
 				if (userUuid && userUuid !== '') {
 					response = await getFilesFromUser(userUuid, pageNumber);
@@ -70,7 +77,7 @@ export const useFilesStore = defineStore('files', {
 			this.currentPage = pageNumber;
 			this.files = response.files;
 			this.count = response.count;
-			if ('user' in response) {
+			if (response.user) {
 				this.owner = response.user as User;
 			}
 		},

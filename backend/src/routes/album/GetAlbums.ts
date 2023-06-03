@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import type { RequestWithUser, Album } from '../../structures/interfaces';
 import { constructFilePublicLink } from '../../utils/File';
@@ -6,10 +6,10 @@ import { constructFilePublicLink } from '../../utils/File';
 export const options = {
 	url: '/albums',
 	method: 'get',
-	middlewares: ['auth', 'apiKey']
+	middlewares: ['apiKey', 'auth']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const albums = await prisma.albums.findMany({
 		where: {
 			userId: req.user.id
@@ -32,7 +32,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 	});
 
 	if (!albums.length)
-		return res.json({
+		return res.send({
 			message: 'Successfully retrieved albums',
 			albums: []
 		});
@@ -46,16 +46,19 @@ export const run = async (req: RequestWithUser, res: Response) => {
 			...album,
 			cover: ('' as string) || undefined,
 			count: album._count.files
-		} as Partial<Album>;
+			// file.size is BigInt because of prisma, so we need to convert it to a number
+		} as unknown as Partial<Album>;
 
 		delete newObject.files;
 		delete newObject._count;
 
-		newObject.cover = album.files[0] ? constructFilePublicLink(req, album.files[0]).thumbSquare : '';
+		newObject.cover = album.files[0]
+			? constructFilePublicLink(req, album.files[0] as unknown as any).thumbSquare
+			: '';
 		fetchedAlbums.push(newObject);
 	}
 
-	return res.json({
+	return res.send({
 		message: 'Successfully retrieved albums',
 		albums: fetchedAlbums
 	});

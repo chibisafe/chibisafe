@@ -1,20 +1,19 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../structures/database';
 import jetpack from 'fs-jetpack';
 import path from 'node:path';
 import { SETTINGS } from '../../structures/settings';
 import { createZip } from '../../utils/File';
 import { utc } from 'moment';
-import log from '../../utils/Log';
 
 export const options = {
 	url: '/album/:identifier/zip',
 	method: 'get'
 };
 
-export const run = async (req: Request, res: Response) => {
-	const { identifier } = req.path_parameters;
-	if (!identifier) return res.status(400).json({ message: 'No identifier provided' });
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
+	const { identifier } = req.params as { identifier: string };
+	if (!identifier) return res.code(400).send({ message: 'No identifier provided' });
 
 	// Make sure the album identifier exists and is enabled
 	const link = await prisma.links.findFirst({
@@ -25,7 +24,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!link) return res.status(400).json({ message: 'No identifier could be found' });
+	if (!link) return res.code(400).send({ message: 'No identifier could be found' });
 
 	// Make sure the album exists
 	const album = await prisma.albums.findFirst({
@@ -44,7 +43,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!album) return res.status(400).json({ message: 'No album could be found' });
+	if (!album) return res.code(400).send({ message: 'No album could be found' });
 
 	// If the date the album was zipped is greater than the date the album was last updated, send the zip
 	if (album.zippedAt && album.editedAt && album.zippedAt > album.editedAt) {
@@ -53,7 +52,7 @@ export const run = async (req: Request, res: Response) => {
 
 		if (exists) {
 			const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
-			res.download(filePath, fileName);
+			await res.download(filePath, fileName);
 			return;
 		}
 	}
@@ -73,10 +72,10 @@ export const run = async (req: Request, res: Response) => {
 
 		const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.uuid}.zip`);
 		const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
-		res.download(filePath, fileName);
+		await res.download(filePath, fileName);
 		return;
 	} catch (error) {
-		log.error(error);
-		return res.status(500).json({ message: 'There was a problem downloading the album' });
+		res.logger.error(error);
+		return res.code(500).send({ message: 'There was a problem downloading the album' });
 	}
 };

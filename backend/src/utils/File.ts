@@ -17,7 +17,7 @@ import { SETTINGS } from '../structures/settings';
 import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
 import type { NodeHash, NodeHashReader } from 'blake3';
 import type { WriteStream } from 'node:fs';
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 const fileIdentifierMaxTries = 5;
 
@@ -25,96 +25,6 @@ const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
 export const uploadPath = path.join(__dirname, '../../../', 'uploads');
-// Note: network drives typically don't support "append" operation used in our chunking method.
-// so if you really want to use network drives, you should symlink the chunks folder and try.
-export const chunksPath = path.join(uploadPath, 'chunks');
-
-const chunkedUploadsTimeout = SETTINGS.chunkedUploadsTimeout;
-
-export const chunksData: Map<string, ChunksData> = new Map();
-
-export class ChunksData {
-	public readonly uuid: string;
-	public readonly root: string;
-	public readonly name: string = 'tmp';
-	public readonly path: string;
-	public chunks = 0;
-	public writeStream?: WriteStream;
-	public hashStream?: NodeHash<NodeHashReader>;
-	// Immediately mark this chunked upload as currently processing
-	public processing = true;
-	private _timeout?: NodeJS.Timeout;
-
-	public constructor(uuid: string) {
-		this.uuid = uuid;
-		this.root = path.join(chunksPath, this.uuid);
-		this.path = path.join(this.root, this.name);
-	}
-
-	private onTimeout() {
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		void cleanUpChunks(this.uuid);
-	}
-
-	public setTimeout(delay: number) {
-		this.clearTimeout();
-		this._timeout = setTimeout(this.onTimeout.bind(this), delay);
-	}
-
-	public clearTimeout() {
-		if (this._timeout) {
-			clearTimeout(this._timeout);
-		}
-	}
-}
-
-export const initChunks = async (uuid: string): Promise<ChunksData> => {
-	// This returns reference to the ChunksData instance, if already exists
-	let data = chunksData.get(uuid);
-
-	// Wait for the first spawned init tasks
-	if (data?.processing) {
-		throw new Error('Previous chunk upload is still being processed. Parallel chunked uploads is not supported.');
-	}
-
-	// Otherwise let's init a new one
-	if (!data) {
-		data = new ChunksData(uuid);
-		chunksData.set(uuid, data);
-		await jetpack.dirAsync(data.root);
-		// Init write & hasher streams
-		data.writeStream = jetpack.createWriteStream(data.path, { flags: 'a' });
-		data.hashStream = blake3.createHash();
-	}
-
-	// Reset its timeout
-	data.setTimeout(chunkedUploadsTimeout);
-	return data;
-};
-
-export const cleanUpChunks = async (uuid: string): Promise<void> => {
-	const data = chunksData.get(uuid);
-	if (!data) return;
-
-	// Dispose of unfinished write & hasher streams
-	if (data.writeStream && !data.writeStream.destroyed) {
-		data.writeStream.destroy();
-	}
-
-	// @ts-ignore
-	if (data.hashStream?.hash?.hash) {
-		data.hashStream.dispose();
-	}
-
-	// Remove UUID dir
-	await jetpack.removeAsync(data.root).catch(error => {
-		// Re-throw non-ENOENT error
-		if (error.code !== 'ENOENT') log.error(error);
-	});
-
-	// Delete cached chunks data
-	chunksData.delete(uuid);
-};
 
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && SETTINGS.blockNoExtension) return true;
@@ -123,71 +33,21 @@ export const isExtensionBlocked = (extension: string) => {
 
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
-/*
-	TODO: Where to put this?
-	This is necesary, because when we first allocate an identifier,
-	it will not immediately be pushed into db,
-	which means the rest of the service has no context as to whether
-	that identifier is currently being used by other upload in progress or not.
-	In-memory, thus only for single-thread, thoughts?
-*/
-const heldFileIdentifiers = new Set();
-
-export const unholdFileIdentifiers = (res: Response): void => {
-	if (!res.locals.identifiers) return;
-
-	for (const identifier of res.locals.identifiers) {
-		heldFileIdentifiers.delete(identifier);
-		// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)} -> ${inspect(identifier)}`);
-	}
-
-	delete res.locals.identifiers;
-};
-
-export const getUniqueFileIdentifier = async (res?: Response): Promise<string | null> => {
+export const getUniqueFileIdentifier = async (): Promise<string | null> => {
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
 		const identifier = randomstring.generate({
 			length: SETTINGS.generatedFilenameLength,
 			capitalization: 'lowercase'
 		});
 
-		if (!heldFileIdentifiers.has(identifier)) {
-			heldFileIdentifiers.add(identifier);
+		const exists = await prisma.$queryRaw<{ id: number }[]>`
+			SELECT id from files
+			WHERE name LIKE ${`${identifier}.%`}
+			LIMIT 1;
+		`;
 
-			/*
-				We use $queryRaw() because we need to ignore extension when finding existing matches,
-				and to do so we need to use SQL LIKE operator, which is still not available in Prisma
-				for SQLite as a shorthand function (supposedly already implemented PostgreSQL, however).
-				https://github.com/prisma/prisma/discussions/3159
-				https://github.com/prisma/prisma/issues/9414
-			*/
-			const exists = await prisma.$queryRaw<{ id: number }[]>`
-				SELECT id from files
-				WHERE name LIKE ${`${identifier}.%`}
-				LIMIT 1;
-			`;
-
-			if (exists.length) {
-				heldFileIdentifiers.delete(identifier);
-			} else {
-				/*
-					If Response is specified, push identifier into its locals object,
-					allowing automatic removal once the Response ends.
-				*/
-				if (res) {
-					if (!res.locals.identifiers) {
-						res.locals.identifiers = [];
-						res.once('finish', () => {
-							unholdFileIdentifiers(res);
-						});
-					}
-
-					res.locals.identifiers.push(identifier);
-				}
-
-				// log.debug(`File.heldFileIdentifiers: ${inspect(heldFileIdentifiers)}`);
-				return identifier;
-			}
+		if (!exists.length) {
+			return identifier;
 		}
 	}
 
@@ -245,7 +105,28 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLink = (req: Request, file: File) => {
+export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string) => {
+	const host = getHost(req);
+	const data = {
+		url: `${host}/${fileName}`,
+		thumb: '',
+		thumbSquare: '',
+		preview: ''
+	};
+
+	const { thumb, preview } = getFileThumbnail(fileName) ?? {};
+	if (thumb) {
+		data.thumb = `${host}/thumbs/${thumb}`;
+		data.thumbSquare = `${host}/thumbs/square/${thumb}`;
+		if (preview) {
+			data.preview = `${host}/thumbs/preview/${preview}`;
+		}
+	}
+
+	return data;
+};
+
+export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
 	const extended: ExtendedFile = { ...file };
 	const host = getHost(req);
 	extended.url = `${host}/${extended.name}`;
@@ -277,9 +158,9 @@ export const storeFileToDb = async (
 	});
 
 	if (dbFile) {
-		// Delete temp file (do not wait)
-		void deleteFile(file.name);
 		return {
+			// TODO: If public uploads are enabled we probably should NOT return the IP
+			// from which the file was uploaded
 			file: dbFile,
 			repeated: true
 		};
@@ -299,11 +180,8 @@ export const storeFileToDb = async (
 		createdAt: now,
 		editedAt: now
 	};
-	void generateThumbnails(file.name);
 
-	log.debug('albumId:', albumId);
 	if (albumId && albumId !== null && albumId !== undefined) {
-		log.debug('entramos');
 		const fileId = await prisma.files.create({
 			data: {
 				...data,
@@ -322,7 +200,6 @@ export const storeFileToDb = async (
 			}
 		};
 	} else {
-		log.debug('no entramos');
 		const fileId = await prisma.files.create({
 			data
 		});
@@ -391,4 +268,24 @@ export const getExtension = (filename: string, lower = false): string => {
 
 	const str = extension + multi;
 	return lower ? str.toLowerCase() : str;
+};
+
+export const hashFile = async (file: string): Promise<string> => {
+	const hash = blake3.createHash();
+	const stream = jetpack.createReadStream(path.join(__dirname, '..', '..', '..', 'uploads', file));
+	return new Promise((resolve, reject) => {
+		stream.on('data', data => {
+			hash.update(data);
+		});
+
+		stream.on('end', () => {
+			resolve(hash.digest('hex'));
+			hash.dispose();
+		});
+
+		stream.on('error', error => {
+			reject(error);
+			hash.dispose();
+		});
+	});
 };

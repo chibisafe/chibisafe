@@ -20,6 +20,7 @@ export const loadSettings = async () => {
 
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number.isNaN(Number(process.env.PORT)) ? 8000 : Number(process.env.PORT) ?? 8000;
+		SETTINGS.host = process.env.HOST ?? '0.0.0.0';
 
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
@@ -31,9 +32,9 @@ export const loadSettings = async () => {
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
 		SETTINGS.serviceName = settingsTable.serviceName;
-		SETTINGS.chunkSize = settingsTable.chunkSize;
+		SETTINGS.chunkSize = Number(settingsTable.chunkSize);
 		SETTINGS.chunkedUploadsTimeout = settingsTable.chunkedUploadsTimeout;
-		SETTINGS.maxSize = settingsTable.maxSize;
+		SETTINGS.maxSize = Number(settingsTable.maxSize);
 		SETTINGS.generateZips = settingsTable.generateZips;
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
@@ -58,9 +59,9 @@ export const loadSettings = async () => {
 		rateLimitMax: 5,
 		secret: randomstring.generate(64),
 		serviceName: 'change-me',
-		chunkSize: 5 * 1e6, // 5MB
+		chunkSize: 9 * 9e7, // 90 MB
 		chunkedUploadsTimeout: 30 * 60 * 1000, // 30 minutes
-		maxSize: 100 * 1e6, // 100MB
+		maxSize: 1 * 1e9, // 1 GB
 		generateZips: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
@@ -77,7 +78,12 @@ export const loadSettings = async () => {
 	};
 
 	await prisma.settings.create({
-		data
+		data: {
+			...data,
+			// This is due to prisma not supporting int64
+			maxSize: String(data.maxSize),
+			chunkSize: String(data.chunkSize)
+		}
 	});
 
 	log.debug('Settings created, loading...');

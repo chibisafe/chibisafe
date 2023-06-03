@@ -1,6 +1,5 @@
-import type { Request, Response } from 'hyper-express';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '../../../structures/database';
-import log from '../../../utils/Log';
 
 export const options = {
 	url: '/admin/ip/unban',
@@ -8,10 +7,10 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: Request, res: Response) => {
-	const { ip }: { ip: string } = await req.json();
+export const run = async (req: FastifyRequest, res: FastifyReply) => {
+	const { ip }: { ip: string } = req.body as { ip: string };
 
-	if (!ip) return res.status(400).json({ message: 'No ip provided' });
+	if (!ip) return res.code(400).send({ message: 'No ip provided' });
 
 	const record = await prisma.bans.findFirst({
 		where: {
@@ -19,7 +18,7 @@ export const run = async (req: Request, res: Response) => {
 		}
 	});
 
-	if (!record) return res.status(400).json({ message: 'IP is not banned' });
+	if (!record) return res.code(400).send({ message: 'IP is not banned' });
 
 	if (record) {
 		await prisma.bans.delete({
@@ -29,9 +28,9 @@ export const run = async (req: Request, res: Response) => {
 		});
 	}
 
-	log.warn(`IP ${ip} has been unbanned`);
+	res.logger.warn(`IP ${ip} has been unbanned`);
 
-	return res.json({
+	return res.send({
 		message: 'Successfully unbanned the ip'
 	});
 };

@@ -1,4 +1,4 @@
-import type { Response } from 'hyper-express';
+import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '../../../structures/interfaces';
 import prisma from '../../../structures/database';
 
@@ -8,11 +8,11 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: Response) => {
-	const { uuid } = req.path_parameters;
-	if (!uuid) return res.status(400).json({ message: 'Invalid uuid supplied' });
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { uuid } = req.params as { uuid?: string };
+	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
 
-	if (uuid === req.user.uuid) return res.status(400).json({ message: "You can't apply this action to yourself" });
+	if (uuid === req.user.uuid) return res.code(400).send({ message: "You can't apply this action to yourself" });
 
 	const user = await prisma.users.findUnique({
 		where: {
@@ -20,7 +20,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	if (user?.isAdmin) return res.status(400).json({ message: 'User is already an admin' });
+	if (user?.isAdmin) return res.code(400).send({ message: 'User is already an admin' });
 
 	await prisma.users.update({
 		where: {
@@ -31,7 +31,7 @@ export const run = async (req: RequestWithUser, res: Response) => {
 		}
 	});
 
-	return res.json({
+	return res.send({
 		message: 'Successfully promoted user'
 	});
 };

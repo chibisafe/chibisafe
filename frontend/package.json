@@ -25,6 +25,7 @@
 		"node": ">=16.0.0"
 	},
 	"dependencies": {
+		"@chibisafe/uploader-client": "^1.0.2",
 		"@headlessui/vue": "^1.6.5",
 		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",

@@ -6,19 +6,19 @@
 	</metainfo>
 	<div class="flex flex-col flex-1 h-full relative">
 		<router-view />
-		<About />
 		<Toast />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useMeta } from 'vue-meta';
-import { useUserStore } from './store/user';
-import About from '~/components/about/About.vue';
+import { useUserStore, useSettingsStore } from './store';
 import Toast from './components/toast/Toast.vue';
 
 const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 userStore.checkToken();
+void settingsStore.get();
 
 // Override meta data
 useMeta({
