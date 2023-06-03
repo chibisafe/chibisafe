@@ -20,6 +20,7 @@ export const loadSettings = async () => {
 
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number.isNaN(Number(process.env.PORT)) ? 8000 : Number(process.env.PORT) ?? 8000;
+		SETTINGS.host = process.env.HOST ?? '0.0.0.0';
 
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
@@ -58,9 +59,9 @@ export const loadSettings = async () => {
 		rateLimitMax: 5,
 		secret: randomstring.generate(64),
 		serviceName: 'change-me',
-		chunkSize: 90 * 1000 * 1024, // 90 MB
+		chunkSize: 9 * 9e7, // 90 MB
 		chunkedUploadsTimeout: 30 * 60 * 1000, // 30 minutes
-		maxSize: 10 * 1000 * 1000 * 1024, // 10 GB
+		maxSize: 1 * 1e9, // 1 GB
 		generateZips: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,

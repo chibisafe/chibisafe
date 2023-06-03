@@ -16,8 +16,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
-import { useUserStore } from '~/store/user';
-import { useUploadsStore } from '~/store/uploads';
+import { useUserStore, useUploadsStore, useSettingsStore } from '~/store';
 import { getFileExtension } from '~/use/file';
 import { chibiUploader } from '@chibisafe/uploader-client';
 // import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib';
@@ -27,10 +26,14 @@ import IconUpload from '~icons/carbon/cloud-upload';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
+const settingsStore = useSettingsStore();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const token = computed(() => userStore.user.token);
 const files = ref<File[] | null>();
 const inputUpload = ref<HTMLInputElement>();
+
+const maxFileSize = computed(() => settingsStore.maxFileSize);
+const chunkSize = computed(() => settingsStore.chunkSize);
 
 const triggerFileInput = () => {
 	inputUpload.value?.click();
@@ -56,7 +59,8 @@ const processFile = async (file: File) => {
 		debug: true,
 		endpoint: '/api/upload',
 		file,
-		chunkSize: 90,
+		maxFileSize: maxFileSize.value,
+		chunkSize: chunkSize.value,
 		postParams: {
 			name: file.name,
 			type: file.type,

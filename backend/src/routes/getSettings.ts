@@ -9,12 +9,9 @@ export const options = {
 
 export const run = (req: RequestWithUser, res: FastifyReply) =>
 	res.send({
-		message: 'Successfully retrieved settings',
-		settings: {
-			serviceName: SETTINGS.serviceName,
-			chunkSize: SETTINGS.chunkSize,
-			maxFileSize: SETTINGS.maxSize,
-			logo: SETTINGS.logoURL,
-			background: SETTINGS.backgroundImageURL
-		}
+		serviceName: SETTINGS.serviceName,
+		chunkSize: SETTINGS.chunkSize,
+		maxFileSize: SETTINGS.maxSize,
+		logo: SETTINGS.logoURL,
+		background: SETTINGS.backgroundImageURL
 	});

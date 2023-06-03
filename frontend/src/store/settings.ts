@@ -9,10 +9,10 @@ export const useSettingsStore = defineStore('settings', {
 	actions: {
 		async get() {
 			const response = await getSettings();
-			if (!response) {
-				this.maxFileSize = response.maxFileSize;
-				this.chunkSize = response.chunkSize;
-			}
+			if (!response) return;
+
+			this.maxFileSize = response.maxFileSize;
+			this.chunkSize = response.chunkSize;
 		}
 	}
 });
