@@ -185,7 +185,7 @@ const start = async () => {
 
 			const route = routes.some(r => req.url.startsWith(r));
 
-			if (req.url === '/' || route) return reply.type('html').send(newBuffer);
+			if (req.url === '/' || route) return reply.type('text/html').send(newBuffer);
 
 			const file = LiveAssets.get(req.url.slice(1));
 			if (file) {
