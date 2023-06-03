@@ -1,7 +1,0 @@
-version: "3.7"
-
-services:
-    chibisafe:
-        volumes:
-            - ./chibisafe-data:/usr/chibisafe/uploads
-            - ./chibisafe-database:/usr/chibisafe/database

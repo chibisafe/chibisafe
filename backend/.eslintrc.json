@@ -1,0 +1,15 @@
+{
+	"root": true,
+	"extends": [
+		"neon/common",
+		"neon/browser",
+		"neon/node",
+		"neon/typescript",
+		"neon/prettier",
+		"../.eslint.rules.json"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./backend/tsconfig.eslint.json"
+	}
+}

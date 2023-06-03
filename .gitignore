@@ -1,16 +1,24 @@
 # Packages
 node_modules/
-dist/
-.nuxt/
-logs/
-# Chibisafe specifics
+backend/node_modules/
+frontend/node_modules/
+
+# Build artifacts
+backend/dist/
+frontend/dist/
+
+# Env files
+/backend/.env
+
+# Database
 database.sqlite
-uploads/
-.env
-!src/api/routes/uploads
-db
 database.sqlite-journal
-docker/nginx/chibisafe.moe.conf
-docker-compose.config.yml
-/coverage
-local/
+
+# Log files
+npm-debug.log*
+
+# chibisafe generated files
+uploads/
+database/
+
+.env
