@@ -137,7 +137,11 @@ const start = async () => {
 
 		// @ts-ignore
 		const LiveAssets = new LiveDirectory(path.join(__dirname, '..', 'dist', 'site'), {
-			static: true
+			static: true,
+			cache: {
+				max_file_count: 50,
+				max_file_size: 1024 * 1024 * 2.5
+			}
 		});
 
 		// Prepare index.html to be served with the necessary meta tags in place
@@ -164,7 +168,6 @@ const start = async () => {
 
 		server.addHook('onRequest', (req, reply, next) => {
 			req.logger.debug(req);
-			console.log(req);
 
 			if (req.method !== 'GET' && req.method !== 'HEAD') {
 				next();
@@ -188,12 +191,36 @@ const start = async () => {
 			if (req.url === '/' || route) return reply.type('text/html').send(newBuffer);
 
 			const file = LiveAssets.get(req.url.slice(1));
-			if (file) {
-				// @ts-ignore
-				return reply.type(file.extension).send(file.buffer);
+			if (!file) {
+				next();
+				return;
 			}
 
-			next();
+			// @ts-ignore
+			const extension = req.url.slice(1).split('.').pop() as string;
+
+			// Map extension to content type
+			const contentType = {
+				js: 'text/javascript',
+				css: 'text/css',
+				html: 'text/html',
+				ico: 'image/x-icon',
+				png: 'image/png',
+				jpg: 'image/jpeg',
+				svg: 'image/svg+xml'
+			};
+
+			if (file.cached) {
+				// Simply send the Buffer returned by asset.content as the response
+				// You can convert a Buffer to a string using Buffer.toString() if your webserver requires string response body
+				// @ts-expect-error contentType[extension]
+				return reply.type(contentType[extension]).send(file.content);
+			} else {
+				// For files that are not cached, you must create a stream and pipe it as the response for memory efficiency
+				const readable = file.stream();
+				// @ts-expect-error contentType[extension]
+				return reply.type(contentType[extension]).send(readable);
+			}
 		});
 	}
 
@@ -204,7 +231,7 @@ const start = async () => {
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port) });
-
+	log.info(`Chibisafe is now listening on port ${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 };
