@@ -227,8 +227,8 @@ const start = async () => {
 	});
 
 	// Start the server
-	await server.listen({ port: Number(SETTINGS.port) });
-	log.info(`Chibisafe is now listening on port ${SETTINGS.port}`);
+	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
+	log.info(`Chibisafe is now listening on ${SETTINGS.host}:${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 };
