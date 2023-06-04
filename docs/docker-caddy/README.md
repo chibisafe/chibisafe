@@ -11,8 +11,16 @@ OS that supports Docker (This guide is written with Ubuntu 22 being the target O
 Ensure no other applications are using ports 80, 443, and 24424. 24424 is only temporarily used to test Chibisafe, but 80 and 443 need to be free and forwarded for Caddy to do its thing.
 A text editor. Ubuntu 22 comes with `nano`, but I recommend setting up a VS Code work environment to make things easier.
 
-## Basic setup guide
-Docker and Caddy make things super simple, so this should be rather short, except for the fact that I like padding my word count like it's an essay, so let's begin this rather long-winded guide.
+## Quick setup
+If you just want the quickest way to get Chibisafe up and running (On Ubuntu 22):
+1. Create a base folder, in this case `chibi`. Change to that directory. (`mkdir ~/chibi && cd ~/chibi`)
+2. Copy `docker-compose.yml` and `Caddyfile` to `chibi`. Modify `CADDY_DOMAIN` within `docker-compose.yml` to your domain.
+3. Clone the repo and switch to the fastify feature. (`git clone https://github.com/chibisafe/chibisafe.git && cd chibisafe && git checkout feature/fastify && cd ..`)
+4. Forward ports 80 and 443 to the server if needed.
+5. Run `docker compose up -d`
+
+## Basic setup guide (Recommended for beginners)
+Docker and Caddy make things super simple, so this should be rather short, except for the fact that I like padding my word count like it's an essay. Let's begin this rather long-winded guide.
 
 1. Install Docker with the Compose plugin if you do not have it. If you are using Ubuntu 18 or later, follow [this guide](https://docs.docker.com/engine/install/ubuntu/). Do note that we are also going to be using the root user, which may not be the most secure implementation, but it is being done for the sake of convenience. For the more advanced users, instructions on how to use Docker rootless can be found [here](https://docs.docker.com/engine/security/rootless/).
 2. Create a folder where everything will reside and change into that directory. In this example I'll name it `chibi`. (`mkdir ~/chibi && cd ~/chibi`)
