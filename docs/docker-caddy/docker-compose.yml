@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  chibisafe:
+    container_name: chibisafe
+    build:
+      context: ./chibisafe
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./chibisafe/database:/app/database:rw
+      - ./chibisafe/uploads:/app/uploads:rw
+    environment:
+      - NODE_ENV=production
+    restart: always
+  caddy:
+    image: caddy-2.7
+    container_name: caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      -	CADDY_DOMAIN=my.domain.com
+    depends_on:
+      - chibisafe
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
