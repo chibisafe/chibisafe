@@ -22,17 +22,17 @@ It should look like this:
 ```yml
 version: "3.7"
 services:
-	chibisafe:
-		container_name: chibisafe
-		build:
-		 context: ./
-		 dockerfile: ./Dockerfile
-		volumes:
-		 - ./database:/home/node/chibisafe/database:rw
-		 - ./uploads:/home/node/chibisafe/uploads:rw
-		ports:
-		 - 24424:8000
-		restart: always
+  chibisafe:
+    container_name: chibisafe
+    build:
+     context: ./
+     dockerfile: ./Dockerfile
+    volumes:
+     - ./database:/home/node/chibisafe/database:rw
+     - ./uploads:/home/node/chibisafe/uploads:rw
+    ports:
+     - 24424:8000
+    restart: always
 ```
 5. Modify the build context and volumes to reflect the fact that the `docker-compose.yml` will be one level higher. It should look something like this:
 ```yml
@@ -57,12 +57,12 @@ services:
 9. Create a file named `Caddyfile` (no extensions) and use this as a base:
 ```
 {$CADDY_DOMAIN} {
-	reverse_proxy chibisafe:8000 {
-		transport http {
-			read_buffer 0
-			write_buffer 0
-		}
-	}
+  reverse_proxy chibisafe:8000 {
+    transport http {
+      read_buffer 0
+      write_buffer 0
+    }
+  }
 }
 ```
 This might look a bit weird for folks unfamiliar with Docker. Docker uses an internal network for each container and allows your applications in the same container to address each other by name. We will also be using environment variables to specify our IP/domain. Read and write buffers are not needed since we're running everything under the same machine.
@@ -85,7 +85,7 @@ services:
       - NODE_ENV=production
     restart: always
   caddy:
-	  image: caddy-2.7
+    image: caddy-2.7
     container_name: caddy
     restart: always
     ports:
@@ -95,7 +95,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-	    -	CADDY_DOMAIN=localhost:80
+      -	CADDY_DOMAIN=localhost:80
     depends_on:
       - chibisafe
 
@@ -126,7 +126,7 @@ services:
       - NODE_ENV=production
     restart: always
   caddy:
-	  image: caddy-2.7
+    image: caddy-2.7
     container_name: caddy
     restart: always
     ports:
@@ -137,7 +137,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-	    -	CADDY_DOMAIN=my.domain.com
+      -	CADDY_DOMAIN=my.domain.com
     depends_on:
       - chibisafe
 
@@ -149,20 +149,20 @@ volumes:
 16. You can now also modify Caddyfile to properly support HSTS, which adds just a bit more security:
 ```
 {$CADDY_DOMAIN} {
-	header {
-		# enable HSTS
-		Strict-Transport-Security max-age=31536000;
+  header {
+    # enable HSTS
+    Strict-Transport-Security max-age=31536000;
 
-		# keep referrer data off of HTTP connections
-		Referrer-Policy no-referrer-when-downgrade
-	}
+    # keep referrer data off of HTTP connections
+    Referrer-Policy no-referrer-when-downgrade
+  }
 
-	reverse_proxy chibisafe:8000 {
-		transport http {
-			read_buffer 0
-			write_buffer 0
-		}
-	}
+  reverse_proxy chibisafe:8000 {
+    transport http {
+      read_buffer 0
+      write_buffer 0
+    }
+  }
 }
 ```
 17. You can now run `docker compose up`. Give some time for Caddy to obtain a TLS cert, then you should be able to visit `https://my.domain.com`
