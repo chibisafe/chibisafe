@@ -1,2 +1,2 @@
-# Implementation
-There are many ways to implement Chibisafe. You can either expose it directly to the internet or use the myriad of tools to proxy requests to and from the service, allowing for greater flexibility. Refer to the folders to see how different tools can be used to deploy Chibisafe. If you find a method that isn't listed here which suits your needs, please do not hesitate to contribute as it may help other people in the future!
+# Deployment
+There are many ways to deploy Chibisafe. You can either expose it directly to the internet or use the myriad of tools to proxy requests to and from the service, allowing for greater flexibility. Refer to the folders to see how different tools can be used to deploy Chibisafe. If you find a method that isn't listed here which suits your needs, please do not hesitate to share your findings as it may help other people in the future!
