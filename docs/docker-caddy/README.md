@@ -52,11 +52,11 @@ services:
   chibisafe:
     container_name: chibisafe
     build:
-      context: ./chibisafe
+      context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./chibisafe/database:/app/database:rw
-      - ./chibisafe/uploads:/app/uploads:rw
+      - ./database:/app/database:rw
+      - ./uploads:/app/uploads:rw
     environment:
       - NODE_ENV=production
     restart: always
@@ -93,11 +93,11 @@ services:
   chibisafe:
     container_name: chibisafe
     build:
-      context: ./chibisafe
+      context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./chibisafe/database:/app/database:rw
-      - ./chibisafe/uploads:/app/uploads:rw
+      - ./database:/app/database:rw
+      - ./uploads:/app/uploads:rw
     environment:
       - NODE_ENV=production
     restart: always
