@@ -7,7 +7,9 @@
 
 ## Prerequisites
 OS that supports Docker (This guide is written with Ubuntu 22 being the target OS, but steps should be quite similar for others)
-[Docker Compose](https://docs.docker.com/engine/install/)
+
+[Docker](https://docs.docker.com/engine/install/) with the Compose plugin
+
 Ensure no other applications are using ports 80, 443, and 24424. 24424 is only temporarily used to test Chibisafe, but 80 and 443 need to be free and forwarded for Caddy to do its thing.
 A text editor. Ubuntu 22 comes with `nano`, but I recommend setting up a VS Code work environment to make things easier.
 
