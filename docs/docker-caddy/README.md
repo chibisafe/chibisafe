@@ -17,7 +17,7 @@ A text editor. Ubuntu 22 comes with `nano`, but I recommend setting up a VS Code
 If you just want the quickest way to get Chibisafe up and running (On Ubuntu 22):
 1. Create a base folder, in this case `chibi`. Change to that directory. (`mkdir ~/chibi && cd ~/chibi`)
 2. Copy `docker-compose.yml` and `Caddyfile` to `chibi`. Modify `CADDY_DOMAIN` within `docker-compose.yml` to your domain.
-3. Clone the repo and switch to the fastify feature. (`git clone https://github.com/chibisafe/chibisafe.git && cd chibisafe && git checkout feature/fastify && cd ..`)
+3. Clone the repo and switch to the fastify feature. (`git clone https://github.com/chibisafe/chibisafe.git && cd chibisafe && git checkout feature/typescript && cd ..`)
 4. Forward ports 80 and 443 to the server if needed.
 5. Run `docker compose up -d`
 
@@ -26,7 +26,7 @@ Docker and Caddy make things super simple, so this should be rather short, excep
 
 1. Install Docker with the Compose plugin if you do not have it. If you are using Ubuntu 18 or later, follow [this guide](https://docs.docker.com/engine/install/ubuntu/). Do note that we are also going to be using the root user, which may not be the most secure implementation, but it is being done for the sake of convenience. For the more advanced users, instructions on how to use Docker rootless can be found [here](https://docs.docker.com/engine/security/rootless/).
 2. Create a folder where everything will reside and change into that directory. In this example I'll name it `chibi`. (`mkdir ~/chibi && cd ~/chibi`)
-3. Go into the newly created directory and pull the Chibisafe repository (`git clone https://github.com/chibisafe/chibisafe.git`). This will create a new directory named `chibisafe` with most of what we need to get things going. Change into the Chibisafe directory and checkout to the fastify branch, then return to the base directory. (`cd chibisafe && git checkout feature/fastify && cd ..`) NOTE: `feature/fastify` [will be merged into main at some point](https://github.com/chibisafe/chibisafe/pull/378), which means you'll have to checkout back to main (`git checkout main`) to keep up with updates once that's done.
+3. Go into the newly created directory and pull the Chibisafe repository (`git clone https://github.com/chibisafe/chibisafe.git`). This will create a new directory named `chibisafe` with most of what we need to get things going. Change into the Chibisafe directory and checkout to the fastify branch, then return to the base directory. (`cd chibisafe && git checkout feature/typescript && cd ..`) NOTE: `feature/typescript` [will be merged into main at some point](https://github.com/chibisafe/chibisafe/pull/378), which means you'll have to checkout back to main (`git checkout main`) to keep up with updates once that's done.
 4. Copy the `docker-compose.yml` file from the `chibisafe` directory into the current directory. (`cp chibisafe/docker-compose.yml .`)
 It should look like this:
 ```yml
