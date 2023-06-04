@@ -10,5 +10,5 @@ services:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
     ports:
-      - 24424:24424
+      - 24424:8000
     restart: always
