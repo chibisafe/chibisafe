@@ -27,7 +27,8 @@
 					<div v-for="(value, key) in obj" :key="key" class="p-4 text-light-100 relative">
 						<h3 class="text-2xl mb-4 capitalize">{{ key }}</h3>
 						<div v-for="(val, item) in value" :key="item" class="columns-2 flex">
-							<template v-if="item !== 'meta'">
+							<!-- @ts-ignore -->
+							<template v-if="String(item) !== 'meta'">
 								<span class="w-52">{{ item }}:</span> <span>{{ val }}</span>
 							</template>
 							<template v-else>
@@ -46,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getStatistics, getStatisticsCategory } from '~/use/api';
+import { getStatistics } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import dayjs from 'dayjs';
