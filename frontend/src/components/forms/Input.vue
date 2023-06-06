@@ -3,7 +3,7 @@
 		<label class="block text-sm font-medium text-dark-100 dark:text-light-100">{{ label }}</label>
 		<div class="mt-1">
 			<input
-				class="shadow focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-sm text-dark-100"
+				class="shadow focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-sm text-dark-100 bg-light-100"
 				:type="type"
 				:placeholder="placeholder"
 				:value="modelValue"
@@ -16,7 +16,7 @@
 <script setup lang="ts">
 const props = defineProps({
 	modelValue: {
-		type: String,
+		type: [String, Number],
 		default: ''
 	},
 	label: {

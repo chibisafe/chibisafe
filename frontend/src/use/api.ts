@@ -302,6 +302,16 @@ export const getStatistics = async (force: boolean = false) => {
 	}
 };
 
+export const getAdminSettings = async (force: boolean = false) => {
+	try {
+		const data = await request.get('admin/service/settings');
+		console.log('geAdminSettings', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });
