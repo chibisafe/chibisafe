@@ -302,16 +302,6 @@ export const getStatistics = async (force: boolean = false) => {
 	}
 };
 
-export const getStatisticsCategory = async (category: string) => {
-	try {
-		const data = await request.get(`admin/service/statistics/${category}`);
-		console.log('getStatisticsCategory', data);
-		return data.statistics;
-	} catch (error: any) {
-		sendErrorToast(error.message);
-	}
-};
-
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });
