@@ -292,10 +292,20 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 	}
 };
 
-export const getStatistics = async () => {
+export const getStatistics = async (force: boolean = false) => {
 	try {
-		const data = await request.get('admin/service/statistics');
-		console.log('getStatistics', data);
+		const data = await request.get(`admin/service/statistics/${force ? 'force' : ''}`);
+		console.log(`getStatistics${force ? ' (forced)' : ''}`, data);
+		return data.statistics;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getStatisticsCategory = async (category: string) => {
+	try {
+		const data = await request.get(`admin/service/statistics/${category}`);
+		console.log('getStatisticsCategory', data);
 		return data.statistics;
 	} catch (error: any) {
 		sendErrorToast(error.message);

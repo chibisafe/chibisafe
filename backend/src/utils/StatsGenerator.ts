@@ -148,22 +148,12 @@ export const getUploadsInfo = async () => {
 		}
 	});
 
-	// Mime types ordered container
-	const typesOrdered: { [index: string]: number } = {};
-
 	const stats = {
 		Total: uploads.length,
 		Images: 0,
 		Videos: 0,
 		Others: 0,
-		'Size in DB': {
-			value: 0,
-			type: Type.BYTE
-		},
-		'Mime Types': {
-			value: typesOrdered,
-			type: Type.DETAILED
-		}
+		sizeInDB: 0
 	};
 
 	// Temporary mime types container
@@ -178,7 +168,7 @@ export const getUploadsInfo = async () => {
 			stats.Others++;
 		}
 
-		stats['Size in DB'].value += Number(upload.size);
+		stats.sizeInDB += Number(upload.size);
 
 		if (types[upload.type] === undefined) {
 			types[upload.type] = 0;
@@ -186,16 +176,6 @@ export const getUploadsInfo = async () => {
 
 		types[upload.type]++;
 	}
-
-	// Sort mime types by count, and alphabetical ordering of the types
-	stats['Mime Types'].value = Object.keys(types)
-		.sort((a, b) => {
-			return types[b] - types[a] || a.localeCompare(b);
-		})
-		.reduce((acc, type) => {
-			acc[type] = types[type];
-			return acc;
-		}, stats['Mime Types'].value);
 
 	return stats;
 };
@@ -334,8 +314,8 @@ export const getStats = async (categories?: string[], force = false) => {
 
 export const jumpstartStatistics = async () => {
 	// Only use scheduler to generate the following categories
-	const scheduledStatsCategories = ['uploads', 'users', 'albums'].filter(category =>
-		SETTINGS.enabledStatistics.includes(category)
+	const scheduledStatsCategories = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'].filter(
+		category => SETTINGS.enabledStatistics.includes(category)
 	);
 
 	// Immediately generate stats for the first time
