@@ -60,6 +60,7 @@ const fetchStats = async (forced: boolean = false) => {
 	// Only spin if forced by clicking on the icon
 	if (forced) loading.value = true;
 	const response = await getStatistics(forced);
+	// eslint-disable-next-line require-atomic-updates
 	loading.value = false;
 	if (!response) return;
 	stats.value = response;
