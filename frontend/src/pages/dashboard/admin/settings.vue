@@ -58,13 +58,14 @@
 						<div class="w-60 text-sm">{{ setting.name }}</div>
 						<template v-if="setting.name === 'blockedExtensions'">
 							<div class="mt-1 mb-2">
+								<!-- @ts-ignore -->
 								<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
 								<input
 									ref="blockedExtensionsInput"
 									class="shadow focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-sm text-dark-100 bg-light-100"
 									type="text"
 									placeholder="Type here an extension and then hit ENTER"
-									@keydown.enter="event => addExtension(setting, event.target.value)"
+									@keydown.enter="event => addExtension(setting, event.target)"
 								/>
 							</div>
 							<span
@@ -115,10 +116,10 @@ const settingsStore = useSettingsStore();
 const settings = ref(null) as any;
 const blockedExtensionsInput = ref<HTMLInputElement>();
 
-const addExtension = (setting: any, extension: string) => {
+const addExtension = (setting: any, extension: any) => {
 	const extensions = setting.value;
-	if (extensions.includes(extension)) return;
-	extensions.push(extension);
+	if (extensions.includes(extension.value)) return;
+	extensions.push(extension.value);
 	// @ts-expect-error erh something about the element not being an array
 	blockedExtensionsInput.value[0].value = '';
 };
