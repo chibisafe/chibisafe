@@ -29,7 +29,8 @@
 						<div v-for="(val, item) in value" :key="item" class="columns-2 flex">
 							<!-- @ts-ignore -->
 							<template v-if="String(item) !== 'meta'">
-								<span class="w-52">{{ item }}:</span> <span>{{ val }}</span>
+								<span class="w-52">{{ item }}:</span>
+								<span>{{ val }}</span>
 							</template>
 							<template v-else>
 								<div class="absolute top-4 right-4 flex">

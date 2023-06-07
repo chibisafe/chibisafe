@@ -7,6 +7,11 @@ const sendErrorToast = (message: string) => {
 	toastStore.create('error', message);
 };
 
+const sendSuccessToast = (message: string) => {
+	if (!toastStore) toastStore = useToastStore();
+	toastStore.create('success', message);
+};
+
 export const login = async (username: string, password: string) => {
 	try {
 		const data = await request.post('auth/login', {
@@ -306,6 +311,17 @@ export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
 		console.log('geAdminSettings', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const setAdminSettings = async (settings: any) => {
+	try {
+		const data = await request.post('admin/service/settings', { settings });
+		console.log('setAdminSettings', data);
+		if (data.message) sendSuccessToast(data.message);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);

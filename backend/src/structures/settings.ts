@@ -8,10 +8,10 @@ import process from 'node:process';
 
 export const SETTINGS = {} as Settings;
 
-export const loadSettings = async () => {
+export const loadSettings = async (force = false) => {
 	log.debug('Loading settings...');
 	// if SETTINGS is not empty, return it
-	if (Object.keys(SETTINGS).length > 0) return SETTINGS;
+	if (Object.keys(SETTINGS).length > 0 && !force) return SETTINGS;
 
 	// if SETTINGS is empty, get it from the database
 	const settingsTable = await prisma.settings.findFirst();
