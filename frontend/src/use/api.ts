@@ -19,7 +19,7 @@ export const login = async (username: string, password: string) => {
 			password
 		});
 
-		console.log('login', data);
+		debug('login', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -41,7 +41,7 @@ export const register = async (username: string, password: string, invite?: stri
 				: undefined
 		);
 
-		console.log('register', data);
+		debug('register', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -54,7 +54,7 @@ export const changePassword = async (password: string, newPassword: string) => {
 			password,
 			newPassword
 		});
-		console.log('changePassword', data);
+		debug('changePassword', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -64,7 +64,7 @@ export const changePassword = async (password: string, newPassword: string) => {
 export const changeApiKey = async () => {
 	try {
 		const data = await request.post('auth/apikey/change');
-		console.log('changeApiKey', data);
+		debug('changeApiKey', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -74,7 +74,7 @@ export const changeApiKey = async () => {
 export const getSettings = async () => {
 	try {
 		const data = await request.get('settings');
-		console.log('getSettings', data);
+		debug('getSettings', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -84,7 +84,7 @@ export const getSettings = async () => {
 export const getMe = async () => {
 	try {
 		const data = await request.get('verify');
-		console.log('getMe', data);
+		debug('getMe', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -94,7 +94,7 @@ export const getMe = async () => {
 export const getUsersAdmin = async () => {
 	try {
 		const data = await request.get(`admin/users`);
-		console.log('getUsersAdmin', data);
+		debug('getUsersAdmin', data);
 		return { users: data.users };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -104,7 +104,7 @@ export const getUsersAdmin = async () => {
 export const getUserAdmin = async (uuid: string) => {
 	try {
 		const data = await request.get(`admin/user/${uuid}`);
-		console.log('getUserAdmin', data);
+		debug('getUserAdmin', data);
 		return { user: data.user };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -114,7 +114,7 @@ export const getUserAdmin = async (uuid: string) => {
 export const getFiles = async (page: number) => {
 	try {
 		const data = await request.get(`files?page=${page}`);
-		console.log('getFiles', data);
+		debug('getFiles', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -124,7 +124,7 @@ export const getFiles = async (page: number) => {
 export const getFilesAdmin = async (page: number) => {
 	try {
 		const data = await request.get(`admin/files?page=${page}`);
-		console.log('getFilesAdmin', data);
+		debug('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -134,7 +134,7 @@ export const getFilesAdmin = async (page: number) => {
 export const getFilesFromUser = async (uuid: string, page: number) => {
 	try {
 		const data = await request.get(`admin/user/${uuid}/files?page=${page}`);
-		console.log('getFilesFromUser', data);
+		debug('getFilesFromUser', data);
 		return { user: data.user, files: data.files, count: data.count };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -144,7 +144,7 @@ export const getFilesFromUser = async (uuid: string, page: number) => {
 export const getFile = async (uuid: string) => {
 	try {
 		const data = await request.get(`file/${uuid}`);
-		console.log('getFile', data);
+		debug('getFile', data);
 		return data.file;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -154,7 +154,7 @@ export const getFile = async (uuid: string) => {
 export const deleteFile = async (uuid: string) => {
 	try {
 		const data = await request.delete(`file/${uuid}`);
-		console.log('deleteFile', data);
+		debug('deleteFile', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -163,7 +163,7 @@ export const deleteFile = async (uuid: string) => {
 export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const data = await request.delete(`admin/file/${uuid}`);
-		console.log('deleteFileAsAdmin', data);
+		debug('deleteFileAsAdmin', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -172,7 +172,7 @@ export const deleteFileAsAdmin = async (uuid: string) => {
 export const getAlbums = async () => {
 	try {
 		const data = await request.get('albums');
-		console.log('getAlbums', data);
+		debug('getAlbums', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -182,7 +182,7 @@ export const getAlbums = async () => {
 export const addFileToAlbum = async (fileUuid: string, albumUuid: string) => {
 	try {
 		const data = await request.post(`file/${fileUuid}/album/${albumUuid}`);
-		console.log('addFileToAlbum', data);
+		debug('addFileToAlbum', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -191,7 +191,7 @@ export const addFileToAlbum = async (fileUuid: string, albumUuid: string) => {
 export const removeFileFromAlbum = async (fileUuid: string, albumUuid: string) => {
 	try {
 		const data = await request.delete(`file/${fileUuid}/album/${albumUuid}`);
-		console.log('removeFileFromAlbum', data);
+		debug('removeFileFromAlbum', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -200,7 +200,7 @@ export const removeFileFromAlbum = async (fileUuid: string, albumUuid: string) =
 export const createAlbum = async (name: string) => {
 	try {
 		const data = await request.post('album/create', { name });
-		console.log('createAlbum', data);
+		debug('createAlbum', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -211,7 +211,7 @@ export const updateAlbum = async (uuid: string, setting: any) => {
 		const data = await request.post(`album/${uuid}/edit`, {
 			[setting.name]: setting.value
 		});
-		console.log('updateAlbum', data);
+		debug('updateAlbum', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -221,7 +221,7 @@ export const updateAlbum = async (uuid: string, setting: any) => {
 export const getAlbum = async (uuid: string, page: number) => {
 	try {
 		const data = await request.get(`album/${uuid}?page=${page}`);
-		console.log('getAlbum', data);
+		debug('getAlbum', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -231,7 +231,7 @@ export const getAlbum = async (uuid: string, page: number) => {
 export const getAlbumLinks = async (uuid: string) => {
 	try {
 		const data = await request.get(`album/${uuid}/links`);
-		console.log('getAlbumLinks', data);
+		debug('getAlbumLinks', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -241,7 +241,7 @@ export const getAlbumLinks = async (uuid: string) => {
 export const createAlbumLink = async (uuid: string) => {
 	try {
 		const data = await request.post(`album/${uuid}/link`);
-		console.log('createAlbumLink', data);
+		debug('createAlbumLink', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -253,7 +253,7 @@ export const updateAlbumLink = async (uuid: string, linkUuid: string, setting: a
 		const data = await request.post(`album/${uuid}/link/${linkUuid}/edit`, {
 			[setting.name]: setting.value
 		});
-		console.log('updateAlbumLink', data);
+		debug('updateAlbumLink', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -263,7 +263,7 @@ export const updateAlbumLink = async (uuid: string, linkUuid: string, setting: a
 export const deleteAlbumLink = async (uuid: string, linkUuid: string) => {
 	try {
 		const data = await request.delete(`album/${uuid}/link/${linkUuid}`);
-		console.log('deleteAlbumLink', data);
+		debug('deleteAlbumLink', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -272,7 +272,7 @@ export const deleteAlbumLink = async (uuid: string, linkUuid: string) => {
 export const deleteAlbum = async (uuid: string) => {
 	try {
 		const data = await request.delete(`album/${uuid}`);
-		console.log('deleteAlbum', data);
+		debug('deleteAlbum', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -281,7 +281,7 @@ export const deleteAlbum = async (uuid: string) => {
 export const purgeAlbum = async (uuid: string) => {
 	try {
 		const data = await request.delete(`album/${uuid}/purge`);
-		console.log('purgeAlbum', data);
+		debug('purgeAlbum', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -290,7 +290,7 @@ export const purgeAlbum = async (uuid: string) => {
 export const getFilesFromPublicAlbum = async (identifier: string) => {
 	try {
 		const data = await request.get(`album/${identifier}/view`);
-		console.log('getFilesFromPublicAlbum', data);
+		debug('getFilesFromPublicAlbum', data);
 		return { name: data.name, files: data.files, count: data.filesCount, isNsfw: data.isNsfw };
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -300,7 +300,7 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 export const getStatistics = async (force: boolean = false) => {
 	try {
 		const data = await request.get(`admin/service/statistics/${force ? 'force' : ''}`);
-		console.log(`getStatistics${force ? ' (forced)' : ''}`, data);
+		debug(`getStatistics${force ? ' (forced)' : ''}`, data);
 		return data.statistics;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -310,7 +310,7 @@ export const getStatistics = async (force: boolean = false) => {
 export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
-		console.log('geAdminSettings', data);
+		debug('geAdminSettings', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -320,7 +320,7 @@ export const getAdminSettings = async (force: boolean = false) => {
 export const setAdminSettings = async (settings: any) => {
 	try {
 		const data = await request.post('admin/service/settings', { settings });
-		console.log('setAdminSettings', data);
+		debug('setAdminSettings', data);
 		if (data.message) sendSuccessToast(data.message);
 		return data;
 	} catch (error: any) {
@@ -331,7 +331,7 @@ export const setAdminSettings = async (settings: any) => {
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });
-		console.log('createTag', data);
+		debug('createTag', data);
 		return {
 			message: data.message,
 			tag: {
@@ -347,7 +347,7 @@ export const createTag = async (name: string) => {
 export const getTags = async () => {
 	try {
 		const data = await request.get(`tags`);
-		console.log('getTags', data);
+		debug('getTags', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);

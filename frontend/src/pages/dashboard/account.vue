@@ -93,8 +93,6 @@ const doChangePassword = async () => {
 		return;
 	}
 
-	console.log('good stuff');
-
 	const response = await changePassword(currentPassword.value, newPassword.value);
 	if (!response) return;
 

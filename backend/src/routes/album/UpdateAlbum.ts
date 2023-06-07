@@ -25,7 +25,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	if (!album) return res.code(400).send({ message: "The album doesn't exist or doesn't belong to the user" });
 
-	console.log('nsfw', nsfw);
 	const updateObj = {
 		name: name ?? album.name,
 		nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw

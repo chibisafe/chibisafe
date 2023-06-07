@@ -18,8 +18,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	console.log(limit, page);
-
 	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
