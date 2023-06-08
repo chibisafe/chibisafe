@@ -75,7 +75,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		await res.download(filePath, fileName);
 		return;
 	} catch (error) {
-		res.logger.error(error);
+		res.log.error(error);
 		return res.code(500).send({ message: 'There was a problem downloading the album' });
 	}
 };

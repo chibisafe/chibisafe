@@ -23,21 +23,6 @@ import Requirements from './utils/Requirements';
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
-// import { unholdFileIdentifiers } from './utils/File';
-
-declare module 'fastify' {
-	interface FastifyInstance {
-		logger: typeof log;
-	}
-
-	interface FastifyRequest {
-		logger: typeof log;
-	}
-
-	interface FastifyReply {
-		logger: typeof log;
-	}
-}
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -65,27 +50,37 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
+	// Create the pino logger
+	const envToLogger = {
+		development: {
+			transport: {
+				target: 'pino-pretty',
+				options: {
+					translateTime: 'HH:MM:ss Z',
+					ignore: 'pid,hostname'
+				}
+			},
+			level: 'debug',
+			sync: true
+		}
+	};
+
 	// Create the Fastify server
 	const server = fastify({
 		trustProxy: true,
-		connectionTimeout: 600000
+		connectionTimeout: 600000,
+		// @ts-ignore-error can't use process.env as its undefined
+		logger: process.env.NODE_ENV === 'production' ? true : envToLogger.development
 	});
 
 	// Enable form-data parsing
 	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
 
-	// Add log decorators to server, request and reply
-	server.decorate('logger', log);
-	server.decorateReply('logger', log);
-	server.decorateRequest('logger', log);
-
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
 
-	// These hooks and decorators are to hold unique identifiers in memory
 	server.addHook('onResponse', async (request, reply) => {
-		// http logging
-		server.logger.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
+		server.log.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
 	});
 
 	await server.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
@@ -162,12 +157,12 @@ const start = async () => {
 			method: 'GET',
 			url: '/',
 			handler: (req: FastifyRequest, res: FastifyReply) => {
-				req.logger.debug('hi');
+				req.log.debug('hi');
 			}
 		});
 
 		server.addHook('onRequest', (req, reply, next) => {
-			req.logger.debug(req);
+			req.log.debug(req);
 
 			if (req.method !== 'GET' && req.method !== 'HEAD') {
 				next();

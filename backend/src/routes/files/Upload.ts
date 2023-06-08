@@ -54,7 +54,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const uniqueIdentifier = await getUniqueFileIdentifier();
 		if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
 		const newFileName = uniqueIdentifier + path.extname(upload.metadata.name);
-		req.logger.debug(`> Name for upload: ${newFileName}`);
+		req.log.debug(`> Name for upload: ${newFileName}`);
 
 		// Move file to permanent location
 		const newPath = path.join(__dirname, '..', '..', '..', '..', 'uploads', newFileName);
@@ -129,7 +129,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				break;
 		}
 
-		res.logger.error(error);
+		res.log.error(error);
 		await res.code(statusCode).send(error.message);
 	}
 

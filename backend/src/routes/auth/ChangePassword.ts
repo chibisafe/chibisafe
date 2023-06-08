@@ -35,7 +35,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	try {
 		hash = await bcrypt.hash(newPassword, 10);
 	} catch (error) {
-		res.logger.error(error);
+		res.log.error(error);
 		return res.code(401).send({ message: 'There was a problem processing your account' });
 	}
 

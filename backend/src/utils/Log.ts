@@ -1,9 +1,20 @@
 import pino from 'pino';
 import process from 'node:process';
 
-const log = pino({
-	level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-	sync: true
-});
+const log = pino(
+	process.env.NODE_ENV === 'production'
+		? {}
+		: {
+				transport: {
+					target: 'pino-pretty',
+					options: {
+						translateTime: 'HH:MM:ss Z',
+						ignore: 'pid,hostname'
+					}
+				},
+				level: 'debug',
+				sync: true
+		  }
+);
 
 export default log;

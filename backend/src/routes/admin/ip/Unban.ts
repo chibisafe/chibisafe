@@ -28,7 +28,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		});
 	}
 
-	res.logger.warn(`IP ${ip} has been unbanned`);
+	res.log.warn(`IP ${ip} has been unbanned`);
 
 	return res.send({
 		message: 'Successfully unbanned the ip'

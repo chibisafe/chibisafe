@@ -10,9 +10,9 @@
 	},
 	"scripts": {
 		"build": "rimraf \"dist/*/{*.js,!(site/)}\" && tsc",
-		"start": "cross-env NODE_ENV=production node dist/main.js | pino-pretty",
-		"dev": "ts-node src/main.ts | pino-pretty",
-		"dev:reload": "nodemon src/main.ts | pino-pretty",
+		"start": "cross-env NODE_ENV=production node dist/main.js",
+		"dev": "ts-node src/main.ts",
+		"dev:reload": "nodemon src/main.ts",
 		"studio": "prisma studio",
 		"migrate": "prisma migrate deploy && prisma generate",
 		"setup": "npm i && npm run migrate"

@@ -73,7 +73,7 @@ export default (
 			isAdmin: user.isAdmin,
 			apiKey: user.apiKey
 		};
-		req.logger.debug(`Request from user: ${user.username}`);
+		req.log.debug(`Request from user: ${user.username}`);
 		next();
 	});
 };

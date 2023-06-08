@@ -44,7 +44,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 		return;
 	} catch (error) {
-		req.logger.error(error);
+		req.log.error(error);
 		return res.code(500).send({ message: error });
 	}
 };

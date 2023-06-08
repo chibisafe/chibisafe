@@ -19,7 +19,7 @@ export default (req: FastifyRequest, res: FastifyReply, next: HookHandlerDoneFun
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (req.params) debug.params = req.params;
 
-	req.logger.debug(JSON.stringify(debug));
+	req.log.debug(JSON.stringify(debug));
 
 	next();
 };
