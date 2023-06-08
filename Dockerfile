@@ -10,18 +10,13 @@ RUN apt -y install ffmpeg
 # Create app directory
 WORKDIR /home/node/chibisafe
 
-# Install app dependencies
-COPY backend/package.json ./backend/
-COPY backend/package-lock.json ./backend/
-RUN cd backend && npm i
-
-COPY frontend/package.json ./frontend/
-COPY frontend/package-lock.json ./frontend/
-RUN cd frontend && npm i
-
-# Bundle app source
+# Copy app source
 COPY backend ./backend
 COPY frontend ./frontend
+
+# Install app dependencies
+RUN cd backend && npm i
+RUN cd frontend && npm i
 
 # Build backend
 WORKDIR /home/node/chibisafe/backend
