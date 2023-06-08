@@ -62,6 +62,24 @@ const start = async () => {
 			},
 			level: 'debug',
 			sync: true
+		},
+		production: {
+			serializers: {
+				res(reply: FastifyReply) {
+					return {
+						statusCode: reply.statusCode
+					};
+				},
+				req(request: FastifyRequest) {
+					return {
+						method: request.method,
+						url: request.url,
+						parameters: request.params,
+						remoteAddress: request.ip
+					};
+				}
+			},
+			file: '../logs/chibisafe.log'
 		}
 	};
 
@@ -70,7 +88,7 @@ const start = async () => {
 		trustProxy: true,
 		connectionTimeout: 600000,
 		// @ts-ignore-error can't use process.env as its undefined
-		logger: process.env.NODE_ENV === 'production' ? true : envToLogger.development
+		logger: process.env.NODE_ENV === 'production' ? envToLogger.production : envToLogger.development
 	});
 
 	// Enable form-data parsing
@@ -78,10 +96,6 @@ const start = async () => {
 
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
-
-	server.addHook('onResponse', async (request, reply) => {
-		server.log.info(`${request.ip} - ${request.method} ${request.url} - ${reply.statusCode}`);
-	});
 
 	await server.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
 	await server.register(cors, {
@@ -223,7 +237,6 @@ const start = async () => {
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
-	log.info(`Chibisafe is now listening on ${SETTINGS.host}:${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 };

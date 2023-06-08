@@ -3,7 +3,9 @@ import process from 'node:process';
 
 const log = pino(
 	process.env.NODE_ENV === 'production'
-		? {}
+		? {
+				file: '../logs/chibisafe.log'
+		  }
 		: {
 				transport: {
 					target: 'pino-pretty',
