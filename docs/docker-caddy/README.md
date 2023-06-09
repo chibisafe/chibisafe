@@ -145,3 +145,11 @@ volumes:
 13. You can now run `docker compose up`.
 14. Give some time for Caddy to obtain a TLS cert, then you should be able to visit `https://my.domain.com`
 15. Close the container one last time and run it as a daemon with `docker compose up -d`. This will allow the container to persist even through reboots. If you ever want to restart the container, you can use `docker compose restart` within the `chibisafe` directory. 
+
+## Updating
+Updating is very simple, but can lead to confusion if you haven't used git before.
+1. Stash your changes with `git stash`
+2. Pull new updates with `git pull`
+3. Re-apply your changes with `git apply`
+4. Rebuild the chibisafe image with `docker compose build chibisafe`
+5. Recreate the container with the new chibisafe image with `docker compose down && docker compose up -d`
