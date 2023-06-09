@@ -1,17 +1,17 @@
 <template>
 	<div v-if="files?.length" class="masonry mt-8 pb-16">
-		<div v-for="file in files" :key="file.uuid">
+		<div v-for="file in files" :key="file.uuid" class="shadow-lg">
 			<template v-if="isFileImage(file) || isFileVideo(file)">
 				<img
 					v-element-hover="(value: boolean) => onHover(value, file.uuid)"
 					:src="file.thumb"
-					class="cursor-pointer w-full"
+					class="cursor-pointer w-full min-w-[160px] min-h-[160px]"
 					@click="showModal(file)"
 				/>
 
 				<video
 					v-if="isHovered[file.uuid]"
-					class="preview absolute top-0 left-0 w-full h-full pointer-events-none"
+					class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px] min-h-[160px]"
 					autoplay
 					loop
 					muted
