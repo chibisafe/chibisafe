@@ -9,7 +9,8 @@ export const useAlbumsStore = defineStore('albums', {
 		currentAlbumLinks: [] as AlbumLink[],
 		currentPage: 1,
 		// Total amount of files for pagination
-		count: 0
+		count: 0,
+		selectedAlbumForUpload: null as string | null
 	}),
 	actions: {
 		async getPreviousPage() {

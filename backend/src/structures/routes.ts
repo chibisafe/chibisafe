@@ -79,9 +79,6 @@ export default {
 				}
 
 				// Insert built middlewares array into route's options object
-				// options.options.middlewares = middlewares;
-
-				// TODO May consider getting rid of this post-development
 				if (options.debug) {
 					server.log.debug(inspect(options));
 				}

@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { TransitionRoot } from '@headlessui/vue';
-import { useUploadsStore } from '~/store/uploads';
+import { useUploadsStore } from '~/store';
 import { formatBytes } from '~/use/file';
 
 import Header from '~/components/header/Header.vue';
