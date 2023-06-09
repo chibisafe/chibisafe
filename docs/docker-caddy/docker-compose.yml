@@ -7,8 +7,8 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./database:/app/database:rw
-      - ./uploads:/app/uploads:rw
+      - ./database:/home/node/chibisafe/database:rw
+      - ./uploads:/home/node/chibisafe/uploads:rw
     environment:
       - NODE_ENV=production
     restart: always
