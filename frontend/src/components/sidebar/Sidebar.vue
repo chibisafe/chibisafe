@@ -158,29 +158,33 @@
 							{{ item.name }}
 						</router-link>
 					</nav>
-					<nav v-if="isAdmin" class="flex-1 space-y-1 px-8">
-						<h3 id="projects-headline" class="px-3 text-sm font-medium text-gray-500">Admin section</h3>
-						<router-link
-							v-for="item in adminNavigation"
-							:key="item.name"
-							:to="item.href"
-							class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-							:class="[
-								item.current
-									? 'bg-dark-100 text-white'
-									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
-							]"
-						>
-							<component
-								:is="item.icon"
-								class="mr-3 flex-shrink-0 h-6 w-6"
-								:class="[item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300']"
-								aria-hidden="true"
-							/>
-							{{ item.name }}
-						</router-link>
+					<nav class="flex-1 space-y-1 px-8">
+						<template v-if="isAdmin">
+							<h3 id="projects-headline" class="px-3 text-sm font-medium text-gray-500">Admin section</h3>
+							<router-link
+								v-for="item in adminNavigation"
+								:key="item.name"
+								:to="item.href"
+								class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+								:class="[
+									item.current
+										? 'bg-dark-100 text-white'
+										: 'text-gray-300 hover:bg-dark-100 hover:text-white'
+								]"
+							>
+								<component
+									:is="item.icon"
+									class="mr-3 flex-shrink-0 h-6 w-6"
+									:class="[
+										item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300'
+									]"
+									aria-hidden="true"
+								/>
+								{{ item.name }}
+							</router-link>
+						</template>
 					</nav>
-					<nav class="mt-8 mb-12">
+					<nav class="mt-8">
 						<div class="mt-1 space-y-1">
 							<a
 								v-for="item in secondaryNavigation"
