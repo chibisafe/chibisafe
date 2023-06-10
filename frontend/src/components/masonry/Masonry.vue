@@ -5,13 +5,14 @@
 				<img
 					v-element-hover="(value: boolean) => onHover(value, file.uuid)"
 					:src="file.thumb"
-					class="cursor-pointer w-full min-w-[160px] min-h-[160px]"
+					class="cursor-pointer w-full min-w-[160px]"
+					:class="isFileVideo(file) ? '' : 'min-h-[160px]'"
 					@click="showModal(file)"
 				/>
 
 				<video
 					v-if="isHovered[file.uuid]"
-					class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px] min-h-[160px]"
+					class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
 					autoplay
 					loop
 					muted
