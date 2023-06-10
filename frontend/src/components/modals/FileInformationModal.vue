@@ -109,7 +109,7 @@
 									/>
 									<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
 									<InputWithOverlappingLabel
-										:value="file.createdAt"
+										:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
 										class="mt-4"
 										label="Uploaded"
 										readOnly
@@ -184,7 +184,7 @@
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											:value="user.createdAt"
+											:value="dayjs(user.createdAt).format('MMMM D, YYYY h:mm A')"
 											class="mt-4"
 											label="Created at"
 											readOnly
@@ -208,13 +208,12 @@ import { ref, computed, watch } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
 import { useClipboard } from '@vueuse/core';
 import { useModalStore, useAlbumsStore } from '~/store';
-import { formatBytes, isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
+import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
 import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
-import CreateTag from '~/components/tags/CreateTag.vue';
-import Tag from '~/components/tags/Tag.vue';
+import dayjs from 'dayjs';
 
 const props = defineProps<{
 	type: 'admin' | null;

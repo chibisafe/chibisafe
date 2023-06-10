@@ -68,7 +68,7 @@
 					{{ formatBytes(Number(user.size)) }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
-					{{ user.createdAt }}
+					{{ dayjs(user.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-dark-90 dark:text-light-100">
 					<router-link :to="`/dashboard/admin/user/${user.uuid}`" class="underline">View files</router-link>
@@ -118,6 +118,7 @@ import type { UserWithCount } from '@/types';
 import { formatBytes } from '~/use/file';
 import { useModalStore, useUserStore } from '~/store';
 import ManageUserModal from '../modals/ManageUserModal.vue';
+import dayjs from 'dayjs';
 
 const props = defineProps<{
 	users: UserWithCount[];
