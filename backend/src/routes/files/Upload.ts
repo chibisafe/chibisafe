@@ -35,6 +35,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const maxFileSize = SETTINGS.maxSize;
 
 	try {
+		if (!SETTINGS.publicMode && !req.user) throw new Error('Only registered users are allowed to upload files.');
 		const upload = await processFile(req.raw, {
 			destination: tmpDir,
 			maxFileSize,
