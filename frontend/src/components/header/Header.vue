@@ -1,10 +1,10 @@
 <template>
 	<div class="flex w-full h-12 items-center mt-8 max-w-4xl">
 		<router-link to="/">
-			<img src="../../assets/images/logo.png" alt="chibisafe logo" class="w-12 mr-2" />
+			<img src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
 		</router-link>
 		<router-link to="/">
-			<span class="font-bold text-3xl">chibisafe</span>
+			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
 		</router-link>
 		<span class="flex-1" />
 
@@ -58,10 +58,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useUserStore, useSettingsStore } from '~/store';
 import IconGitHub from '~icons/carbon/logo-github';
 import IconDiscord from '~icons/carbon/logo-discord';
 
-import { useUserStore } from '~/store/user';
 const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 const loggedIn = computed(() => userStore.user.loggedIn);
 </script>

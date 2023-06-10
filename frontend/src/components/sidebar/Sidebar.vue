@@ -48,7 +48,18 @@
 							<div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
 								<div class="flex flex-shrink-0 items-center px-4 justify-center">
 									<router-link to="/">
-										<img src="../../assets/images/logo-96.png" alt="chibisafe logo" class="w-24" />
+										<img
+											v-if="settingsStore.logo"
+											:src="settingsStore.logo"
+											alt="chibisafe logo"
+											class="w-24"
+										/>
+										<img
+											v-else
+											src="../../assets/images/logo.svg"
+											alt="chibisafe logo"
+											class="w-24"
+										/>
 									</router-link>
 								</div>
 								<nav class="mt-5 space-y-1 px-8 mb-8">
@@ -134,7 +145,13 @@
 				<div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
 					<div class="flex flex-shrink-0 items-center px-4 justify-center">
 						<router-link to="/">
-							<img src="../../assets/images/logo-96.png" alt="chibisafe logo" class="w-24" />
+							<img
+								v-if="settingsStore.logo"
+								:src="settingsStore.logo"
+								alt="chibisafe logo"
+								class="w-24"
+							/>
+							<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-24" />
 						</router-link>
 					</div>
 					<nav class="mt-5 flex-0 mb-8 space-y-1 px-8">
@@ -226,7 +243,7 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import { useUserStore } from '~/store/user';
+import { useUserStore, useSettingsStore } from '~/store';
 import { saveAs } from 'file-saver';
 
 // @ts-ignore
@@ -241,6 +258,7 @@ import IconClose from '~icons/carbon/close';
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 
 const isAdmin = computed(() => userStore.user.isAdmin);
 const apiKey = computed(() => userStore.user.apiKey);
