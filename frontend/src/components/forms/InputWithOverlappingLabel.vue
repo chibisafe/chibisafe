@@ -10,7 +10,7 @@
 			class="block w-full border-0 p-0 text-blue-400 hover:text-blue-500 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
 			rel="noopener noreferrer"
 			target="_blank"
-			:href="value"
+			:href="href ?? value"
 			>{{ value }}</a
 		>
 
@@ -50,6 +50,10 @@ const props = defineProps({
 	type: {
 		type: String,
 		default: 'text'
+	},
+	href: {
+		type: String,
+		default: ''
 	}
 });
 

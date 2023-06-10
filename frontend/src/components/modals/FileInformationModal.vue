@@ -162,6 +162,8 @@
 											class="mt-4"
 											label="Username"
 											readOnly
+											type="link"
+											:href="`/dashboard/admin/user/${user.uuid}`"
 										/>
 										<InputWithOverlappingLabel
 											:value="user.uuid"

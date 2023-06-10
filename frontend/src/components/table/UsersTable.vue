@@ -18,13 +18,13 @@
 					scope="col"
 					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
 				>
-					Enabled
+					Status
 				</th>
 				<th
 					scope="col"
 					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
 				>
-					Admin
+					Role
 				</th>
 				<th
 					scope="col"
@@ -59,10 +59,10 @@
 					{{ user._count.files }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
-					{{ user.enabled }}
+					{{ user.enabled ? 'Enabled' : 'Disabled' }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
-					{{ user.isAdmin }}
+					{{ user.isAdmin ? 'Admin' : 'User' }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
 					{{ formatBytes(Number(user.size)) }}
@@ -72,18 +72,67 @@
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-dark-90 dark:text-light-100">
 					<router-link :to="`/dashboard/admin/user/${user.uuid}`" class="underline">View files</router-link>
-					<button type="button" class="ml-4">Delete</button>
+					<!-- Only show one action if we're the user on the table -->
+					<template v-if="user.uuid === ownUser.uuid">
+						<button type="button" class="ml-4" @click="showManageUserModal(user, 'purge')">
+							Purge files
+						</button>
+					</template>
+					<template v-else>
+						<button
+							v-if="user.enabled"
+							type="button"
+							class="ml-4"
+							@click="showManageUserModal(user, 'disable')"
+						>
+							Disable
+						</button>
+						<button v-else type="button" class="ml-4" @click="showManageUserModal(user, 'enable')">
+							Enable
+						</button>
+						<button
+							v-if="user.isAdmin"
+							type="button"
+							class="ml-4"
+							@click="showManageUserModal(user, 'demote')"
+						>
+							Demote
+						</button>
+						<button v-else type="button" class="ml-4" @click="showManageUserModal(user, 'promote')">
+							Promote
+						</button>
+						<button type="button" class="ml-4" @click="showManageUserModal(user, 'purge')">
+							Purge files
+						</button>
+					</template>
 				</td>
 			</tr>
 		</tbody>
+		<ManageUserModal />
 	</table>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { UserWithCount } from '@/types';
 import { formatBytes } from '~/use/file';
+import { useModalStore, useUserStore } from '~/store';
+import ManageUserModal from '../modals/ManageUserModal.vue';
 
 const props = defineProps<{
 	users: UserWithCount[];
 }>();
+
+const modalsStore = useModalStore();
+const userStore = useUserStore();
+
+const ownUser = computed(() => userStore.user);
+
+const showManageUserModal = (user: UserWithCount | null, action: string) => {
+	if (!user) return;
+
+	modalsStore.manageUser.user = user;
+	modalsStore.manageUser.action = action;
+	modalsStore.manageUser.show = true;
+};
 </script>

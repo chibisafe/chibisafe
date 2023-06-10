@@ -278,6 +278,56 @@ export const deleteAlbum = async (uuid: string) => {
 	}
 };
 
+export const purgeUser = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/purge`);
+		debug('purgeUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const disableUser = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/disable`);
+		debug('disableUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const enableUser = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/enable`);
+		debug('enableUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const promoteUser = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/promote`);
+		debug('promoteUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const demoteUser = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/demote`);
+		debug('demoteUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const purgeAlbum = async (uuid: string) => {
 	try {
 		const data = await request.delete(`album/${uuid}/purge`);
