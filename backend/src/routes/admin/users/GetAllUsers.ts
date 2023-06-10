@@ -42,7 +42,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		} as unknown as extendedUser;
 
 		const files = [...user.files] as ExtendedFile[] | [];
-		for (const file of files) newObject.size += file.size;
+		for (const file of files) newObject.size += Number(file.size);
 
 		delete newObject.files;
 
