@@ -222,8 +222,11 @@ const props = defineProps<{
 const modalsStore = useModalStore();
 const albumsStore = useAlbumsStore();
 
-// If the admin is loading this component we dont want to load the albums
-if (props.type !== 'admin') {
+if (props.type === 'admin') {
+	// If the admin is loading this component we want to load the file information
+	void modalsStore.getFileUser();
+} else {
+	// If the admin is loading this component we dont want to load the albums
 	void albumsStore.get();
 }
 
