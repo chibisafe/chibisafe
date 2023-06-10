@@ -1,4 +1,5 @@
 export interface User {
+	id: number;
 	loggedIn: boolean;
 	username: string;
 	uuid: string;
@@ -7,6 +8,7 @@ export interface User {
 	token: string;
 	enabled?: string;
 	createdAt?: string;
+	passwordEditedAt?: Date;
 }
 
 export interface UserWithCount extends User {

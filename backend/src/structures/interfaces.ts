@@ -6,6 +6,7 @@ export interface RequestUser {
 	username: string;
 	isAdmin: boolean;
 	apiKey?: string | null | undefined;
+	passwordEditedAt: Date | null;
 }
 
 export interface RequestWithUser extends FastifyRequest {

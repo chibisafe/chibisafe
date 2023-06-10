@@ -71,7 +71,8 @@ export default (
 			uuid: user.uuid,
 			username: user.username,
 			isAdmin: user.isAdmin,
-			apiKey: user.apiKey
+			apiKey: user.apiKey,
+			passwordEditedAt: user.passwordEditedAt
 		};
 		req.log.debug(`Request from user: ${user.username}`);
 		next();

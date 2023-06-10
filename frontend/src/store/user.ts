@@ -54,6 +54,7 @@ export const useUserStore = defineStore('user', {
 			localStorage.setItem(
 				'chibisafe-user',
 				JSON.stringify({
+					id: this.user.id,
 					username: this.user.username,
 					uuid: this.user.uuid,
 					apiKey: this.user.apiKey,

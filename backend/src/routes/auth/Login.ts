@@ -44,6 +44,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		username: user.username,
 		apiKey: user.apiKey,
 		isAdmin: user.isAdmin,
-		token: jwt
+		token: jwt,
+		passwordEditedAt: user.passwordEditedAt
 	});
 };
