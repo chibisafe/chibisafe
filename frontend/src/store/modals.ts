@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { FileWithAdditionalData, Album, Tag, User } from '~/types';
+import type { FileWithAdditionalData, Album, Tag, User, AlbumLink } from '~/types';
 import { getFile, getUserAdmin } from '~/use/api';
 
 export const useModalStore = defineStore('modals', {
@@ -28,6 +28,13 @@ export const useModalStore = defineStore('modals', {
 			show: false,
 			user: {} as User | null,
 			action: '' as String | null
+		},
+		manageAlbum: {
+			show: false,
+			album: {} as Album | null,
+			action: '' as String | null,
+			link: undefined as AlbumLink | undefined,
+			callback: {} as Function | null
 		}
 	}),
 	actions: {

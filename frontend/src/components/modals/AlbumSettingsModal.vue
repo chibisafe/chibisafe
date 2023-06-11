@@ -252,7 +252,7 @@
 														href="#"
 														type="button"
 														class="text-blue-400 hover:text-indigo-900"
-														@click="deleteLink(link)"
+														@click="showManageAlbumModal('deletelink', link)"
 													>
 														Delete<span class="sr-only">, {{ link.identifier }}</span>
 													</button>
@@ -275,14 +275,14 @@
 									<Button
 										type="button"
 										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-										@click="doDeleteAlbum"
+										@click="showManageAlbumModal('delete')"
 										>Delete album</Button
 									>
 
 									<Button
 										type="button"
 										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-										@click="doPurgeAlbum"
+										@click="showManageAlbumModal('purge')"
 										>Delete album and all files</Button
 									>
 								</div>
@@ -296,6 +296,7 @@
 		</Dialog>
 	</TransitionRoot>
 	<DeleteFileModal />
+	<ManageAlbumModal />
 </template>
 
 <script setup lang="ts">
@@ -313,7 +314,8 @@ import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
 import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 import Input from '~/components/forms/Input.vue';
-import type { AlbumLink } from '~/types';
+import ManageAlbumModal from '~/components/modals/ManageAlbumModal.vue';
+import type { Album, AlbumLink } from '~/types';
 
 const modalsStore = useModalStore();
 const toastStore = useToastStore();
@@ -373,26 +375,29 @@ const setNewAlbumName = async () => {
 	toastStore.create('success', 'Changed album name');
 };
 
-const deleteLink = async (link: AlbumLink) => {
+const afterDeleteLink = async (link: AlbumLink | undefined) => {
 	if (!modalsStore.albumSettings.album) return;
-	await deleteAlbumLink(modalsStore.albumSettings.album.uuid, link.uuid);
+	if (!link) return;
 	albumsStore.currentAlbumLinks = albumsStore.currentAlbumLinks.filter(l => l.uuid !== link.uuid);
 };
 
-const doDeleteAlbum = async () => {
+const afterDeleteAlbum = async () => {
 	if (!modalsStore.albumSettings.album) return;
-	await deleteAlbum(modalsStore.albumSettings.album.uuid);
 	albumsStore.albums = albumsStore.albums.filter(a => a.uuid !== modalsStore.albumSettings.album?.uuid);
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	closeModal();
 };
 
-const doPurgeAlbum = async () => {
+const showManageAlbumModal = (action: string, link?: AlbumLink) => {
 	if (!modalsStore.albumSettings.album) return;
-	await purgeAlbum(modalsStore.albumSettings.album.uuid);
-	albumsStore.albums = albumsStore.albums.filter(a => a.uuid !== modalsStore.albumSettings.album?.uuid);
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define
-	closeModal();
+	if (action === 'deletelink' && !link) return;
+
+	modalsStore.manageAlbum.album = modalsStore.albumSettings.album;
+	modalsStore.manageAlbum.action = action;
+	modalsStore.manageAlbum.link = link;
+	modalsStore.manageAlbum.show = true;
+
+	modalsStore.manageAlbum.callback =
+		action === 'deletelink' ? async () => afterDeleteLink(link) : async () => afterDeleteAlbum();
 };
 
 // Clear the store only after the transition is done to prevent artifacting

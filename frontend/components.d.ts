@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./src/components/header/Header.vue')['default']
     Input: typeof import('./src/components/forms/Input.vue')['default']
     InputWithOverlappingLabel: typeof import('./src/components/forms/InputWithOverlappingLabel.vue')['default']
+    ManageAlbumModal: typeof import('./src/components/modals/ManageAlbumModal.vue')['default']
     ManageUserModal: typeof import('./src/components/modals/ManageUserModal.vue')['default']
     Masonry: typeof import('./src/components/masonry/Masonry.vue')['default']
     MasonryPublic: typeof import('./src/components/masonry/MasonryPublic.vue')['default']

@@ -40,30 +40,30 @@
 							<div class="sm:flex sm:items-start">
 								<div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
 									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
-										<span class="capitalize">{{ action }} user </span>
-										<span class="font-bold">{{ user?.username }}</span>
+										<template v-if="link">
+											<span>Delete link </span>
+											<span class="font-bold">{{ link?.identifier }}</span>
+										</template>
+										<template v-else>
+											<span class="capitalize">{{ action }} album </span>
+											<span class="font-bold">{{ album?.name }}</span>
+										</template>
 									</DialogTitle>
 									<div class="mt-2 text-sm text-gray-500">
-										<p v-if="action === 'enable'">
-											This action will enable the user and allow them to log into chibisafe again.
-											They'll be able to access all previous uploads and albums.<br />
+										<p v-if="action === 'deletelink'">
+											This action will delete the public link associated to this album and prevent
+											people from accessing it from hereon. If you decide to undo this action keep
+											in mind that you won't be able to get the same public link again.<br />
 										</p>
-										<p v-if="action === 'disable'">
-											This action will disable the user and thus prevent them from logging into
-											chibisafe again until you enable them once more.<br />
-											All uploaded files and albums will remain intact.
+										<p v-if="action === 'delete'">
+											This action will delete the album and every public link associated with
+											it.<br />
+											All uploaded files will remain intact.
 										</p>
 										<p v-if="action === 'purge'">
-											This action will delete ALL files and albums uploaded by the user.<br />
+											This action will delete the album and ALL files associated with it, even if
+											they are part of more than just this album.<br />
 											This action is not reversible.
-										</p>
-										<p v-if="action === 'promote'">
-											This action will promote the user to ADMIN. They'll be able to do everything
-											you can do.<br />
-											Be careful before promoting anyone to understand the risks.
-										</p>
-										<p v-if="action === 'demote'">
-											This action will demote an ADMIN back to USER.<br />
 										</p>
 									</div>
 								</div>
@@ -74,7 +74,8 @@
 									class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-400 focus:outline-none focus:ring-0 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
 									@click="doAction"
 								>
-									<span class="capitalize">{{ action }}</span>
+									<span v-if="action === 'deletelink'">Delete</span>
+									<span v-else class="capitalize">{{ action }}</span>
 								</button>
 								<button
 									type="button"
@@ -96,33 +97,38 @@
 import { computed } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import IconClose from '~icons/carbon/close';
-import { enableUser, disableUser, purgeUser, promoteUser, demoteUser } from '~/use/api';
+import { deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
 
 import { useModalStore } from '~/store';
 
 const modalsStore = useModalStore();
 
-const isModalOpen = computed(() => modalsStore.manageUser.show);
-const user = computed(() => modalsStore.manageUser.user);
-const action = computed(() => modalsStore.manageUser.action);
+const isModalOpen = computed(() => modalsStore.manageAlbum.show);
+const album = computed(() => modalsStore.manageAlbum.album);
+const action = computed(() => modalsStore.manageAlbum.action);
+const link = computed(() => modalsStore.manageAlbum.link);
+const callback = computed(() => modalsStore.manageAlbum.callback);
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
-	modalsStore.manageUser.user = null;
-	modalsStore.manageUser.action = null;
+	modalsStore.manageAlbum.album = null;
+	modalsStore.manageAlbum.action = null;
 };
 
 const closeModal = () => {
-	modalsStore.manageUser.show = false;
+	modalsStore.manageAlbum.show = false;
 };
 
 const doAction = () => {
-	if (!user.value) return;
-	if (action.value === 'enable') void enableUser(user.value.uuid);
-	if (action.value === 'disable') void disableUser(user.value.uuid);
-	if (action.value === 'purge') void purgeUser(user.value.uuid);
-	if (action.value === 'promote') void promoteUser(user.value.uuid);
-	if (action.value === 'demote') void demoteUser(user.value.uuid);
+	if (!album.value) return;
+	if (action.value === 'deletelink') {
+		if (!link.value) return;
+		void deleteAlbumLink(album.value.uuid, link.value.uuid);
+	}
+
+	if (action.value === 'delete') void deleteAlbum(album.value.uuid);
+	if (action.value === 'purge') void purgeAlbum(album.value.uuid);
+	callback.value?.();
 	closeModal();
 
 	// TODO: Enable 2-way binding for this, otherwise the table won't update until refresh

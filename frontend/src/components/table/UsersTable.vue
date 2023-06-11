@@ -117,7 +117,7 @@ import { computed } from 'vue';
 import type { UserWithCount } from '@/types';
 import { formatBytes } from '~/use/file';
 import { useModalStore, useUserStore } from '~/store';
-import ManageUserModal from '../modals/ManageUserModal.vue';
+import ManageUserModal from '~/components/modals/ManageUserModal.vue';
 import dayjs from 'dayjs';
 
 const props = defineProps<{
