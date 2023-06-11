@@ -1,8 +1,7 @@
 import process from 'node:process';
 import { lookpath } from 'lookpath';
-import log from './Log';
 
-export default async () => {
+export default async (log: any) => {
 	const nodeMajorVersion = process.versions.node.split('.')[0];
 	if (Number(nodeMajorVersion) < 18) {
 		log.error('chibisafe needs node v18 or newer to run properly, please upgrade.');

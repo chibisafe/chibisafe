@@ -2,7 +2,7 @@ import { SETTINGS } from '../structures/settings';
 import JWT from 'jsonwebtoken';
 import prisma from '../structures/database';
 import type { RequestUser } from '../structures/interfaces';
-import log from './Log';
+import { log } from '../main';
 
 interface Decoded {
 	sub: number;

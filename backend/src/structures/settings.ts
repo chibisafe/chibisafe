@@ -2,9 +2,9 @@
 
 import type { Settings } from '../structures/interfaces';
 import randomstring from 'randomstring';
-import log from '../utils/Log';
 import prisma from './database';
 import process from 'node:process';
+import { log } from '../main';
 
 export const SETTINGS = {} as Settings;
 

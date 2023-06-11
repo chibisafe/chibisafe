@@ -1,9 +1,7 @@
-import jetpack from 'fs-jetpack';
-import path from 'node:path';
 import process from 'node:process';
 import schedule from 'node-schedule';
 import * as si from 'systeminformation';
-import log from '../utils/Log';
+import { log } from '../main';
 
 import prisma from '../structures/database';
 import { SETTINGS } from '../structures/settings';
