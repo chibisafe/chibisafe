@@ -99,6 +99,7 @@
 										class="mt-4"
 										label="Link"
 										type="link"
+										:href="file.url"
 										readOnly
 									/>
 									<InputWithOverlappingLabel
