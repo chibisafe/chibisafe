@@ -1,0 +1,111 @@
+{
+	"name": "@chibisafe/backend",
+	"version": "5.0.0",
+	"description": "Blazing fast file uploader and bunker written in node! 🚀",
+	"license": "MIT",
+	"author": {
+		"name": "Pitu",
+		"email": "heyitspitu@gmail.com",
+		"url": "https://github.com/Pitu"
+	},
+	"scripts": {
+		"build": "rimraf \"dist/*/{*.js,!(site/)}\" && tsc && tsc-alias",
+		"start": "cross-env NODE_ENV=production node -r tsconfig-paths/register dist/main.js",
+		"dev": "ts-node src/main.ts",
+		"dev:reload": "nodemon src/main.ts",
+		"studio": "prisma studio",
+		"migrate": "prisma migrate deploy && prisma generate",
+		"setup": "npm i && npm run migrate",
+		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
+		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts --fix"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WeebDev/chibisafe"
+	},
+	"bugs": {
+		"url": "https://github.com/WeebDev/chibisafe/issues"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"dependencies": {
+		"@chibisafe/uploader-module": "^1.0.3",
+		"@fastify/cors": "^8.2.1",
+		"@fastify/helmet": "^10.1.0",
+		"@fastify/rate-limit": "^8.0.0",
+		"@fastify/static": "^6.10.1",
+		"@prisma/client": "^4.13.0",
+		"@tus/file-store": "^1.0.0-beta.1",
+		"@tus/server": "^1.0.0-beta.5",
+		"adm-zip": "^0.5.9",
+		"bcryptjs": "^2.4.3",
+		"blake3": "^2.1.7",
+		"cross-env": "^7.0.3",
+		"dotenv": "^16.0.1",
+		"fastify": "^4.15.0",
+		"ffmpeg-probe": "^1.0.6",
+		"file-stream-rotator": "^1.0.0",
+		"fluent-ffmpeg": "^2.1.2",
+		"fs-jetpack": "^4.3.1",
+		"jsonwebtoken": "^8.5.1",
+		"live-directory": "^3.0.3",
+		"lookpath": "^1.2.2",
+		"moment": "^2.29.4",
+		"node-schedule": "^2.1.0",
+		"pino": "^8.5.0",
+		"pino-pretty": "^10.0.0",
+		"proxy-addr": "^2.0.7",
+		"randomstring": "^1.2.2",
+		"sharp": "^0.30.7",
+		"systeminformation": "^5.12.6",
+		"tsc-alias": "^1.8.6",
+		"tsconfig-paths": "^4.2.0",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"@types/adm-zip": "^0.5.0",
+		"@types/bcryptjs": "^2.4.2",
+		"@types/cors": "^2.8.12",
+		"@types/fancy-log": "^2.0.0",
+		"@types/fluent-ffmpeg": "^2.1.20",
+		"@types/jsonwebtoken": "^8.5.8",
+		"@types/node": "^18.0.6",
+		"@types/node-schedule": "^2.1.0",
+		"@types/proxy-addr": "^2.0.0",
+		"@types/randomstring": "^1.1.8",
+		"@types/sharp": "^0.30.4",
+		"@types/uuid": "^8.3.4",
+		"eslint": "^8.20.0",
+		"eslint-config-neon": "^0.1.33",
+		"nodemon": "^2.0.19",
+		"prettier": "^2.7.1",
+		"prisma": "^4.13.0",
+		"rimraf": "^3.0.2",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.8.4"
+	},
+	"prisma": {
+		"schema": "src/prisma/schema.prisma"
+	},
+	"nodemonConfig": {
+		"watch": [
+			"src/*"
+		],
+		"delay": 2500
+	},
+	"keywords": [
+		"chibisafe",
+		"lolisafe",
+		"upload",
+		"uploader",
+		"file",
+		"vue",
+		"ssr",
+		"file uploader",
+		"images"
+	],
+	"volta": {
+		"node": "18.9.0"
+	}
+}

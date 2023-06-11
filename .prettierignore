@@ -2,3 +2,6 @@
 node_modules
 dist
 components.d.ts
+
+packages/backend/dist
+packages/frontend/dist

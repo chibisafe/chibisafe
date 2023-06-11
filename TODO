@@ -1,0 +1,7 @@
+Things to ask crawl:
+
+- Best way to use aliases so that it doesn't error out like its doing now
+- If there's a way to alias a folder outside of the project, so instead of:
+	jetpack.dir('../../../uploads');
+	I can do
+	hetpack.dir(@root/uploads)

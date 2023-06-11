@@ -1,0 +1,81 @@
+{
+	"name": "@chibisafe/website",
+	"version": "5.0.0",
+	"description": "Blazing fast file uploader and bunker written in node! 🚀",
+	"license": "MIT",
+	"author": {
+		"name": "Pitu",
+		"email": "heyitspitu@gmail.com",
+		"url": "https://github.com/Pitu"
+	},
+	"scripts": {
+		"dev": "vite --host",
+		"build": "vue-tsc --noEmit && vite build && cpy ./ ../../backend/dist/site --parents --cwd=dist",
+		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
+		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts --fix"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WeebDev/chibisafe"
+	},
+	"bugs": {
+		"url": "https://github.com/WeebDev/chibisafe/issues"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	},
+	"dependencies": {
+		"@chibisafe/uploader-client": "^1.0.3",
+		"@headlessui/vue": "^1.6.5",
+		"@vueuse/components": "^9.4.0",
+		"@vueuse/core": "^8.7.5",
+		"dayjs": "^1.11.5",
+		"dotenv": "^16.0.3",
+		"file-saver": "^2.0.5",
+		"media-chrome": "^0.16.0",
+		"pinia": "^2.0.22",
+		"vue": "^3.2.40",
+		"vue-meta": "^3.0.0-alpha.10",
+		"vue-router": "^4.1.0"
+	},
+	"devDependencies": {
+		"@iconify-json/carbon": "^1.1.8",
+		"@tailwindcss/forms": "^0.5.3",
+		"@tailwindcss/typography": "^0.5.7",
+		"@types/file-saver": "^2.0.5",
+		"@types/node": "^18.11.1",
+		"@vitejs/plugin-vue": "^3.1.2",
+		"@vue/compiler-sfc": "^3.2.40",
+		"autoprefixer": "^10.4.2",
+		"cpy-cli": "^4.2.0",
+		"eslint": "^8.8.0",
+		"eslint-config-neon": "^0.1.33",
+		"postcss": "^8.4.6",
+		"postcss-focus-visible": "^6.0.4",
+		"prettier": "^2.7.1",
+		"tailwindcss": "^3.1.8",
+		"ts-node": "^10.8.2",
+		"typescript": "^4.7.4",
+		"unplugin-icons": "^0.14.11",
+		"unplugin-vue-components": "^0.22.8",
+		"vite": "^3.1.4",
+		"vite-plugin-html": "^3.2.0",
+		"vite-plugin-pages": "^0.26.0",
+		"vue-demi": "^0.13.11",
+		"vue-tsc": "^1.4.4"
+	},
+	"keywords": [
+		"chibisafe",
+		"lolisafe",
+		"upload",
+		"uploader",
+		"file",
+		"vue",
+		"ssr",
+		"file uploader",
+		"images"
+	],
+	"volta": {
+		"node": "18.9.0"
+	}
+}
