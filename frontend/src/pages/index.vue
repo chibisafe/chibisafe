@@ -88,7 +88,7 @@
 				</div>
 			</TransitionRoot>
 
-			<div class="flex w-full mt-32 flex-col max-w-4xl mb-32">
+			<div class="flex w-full mt-32 flex-col max-w-4xl">
 				<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
 				<h5 class="text-blue-400">Did we mention that extending it is super easy?</h5>
 
@@ -104,6 +104,51 @@
 						</dt>
 					</div>
 				</dl>
+			</div>
+
+			<div class="flex w-full mt-32 flex-col max-w-4xl mb-32">
+				<h3 class="font-bold text-4xl mb-6">Frequently Asked Questions</h3>
+
+				<h4 class="text-2xl mb-2">What is chibisafe?</h4>
+				<p class="text-lg mb-8">
+					chibisafe is an easy to use, open source and completely free file upload service. We accept your
+					files, photos, documents, anything, and give you back a shareable link for you to send to others.
+				</p>
+
+				<h4 class="text-2xl mb-2">Can I run my own chibisafe?</h4>
+				<p class="text-lg mb-8">
+					Definitely. Head to our
+					<a
+						href="https://github.com/chibisafe/chibisafe"
+						rel="noopener noreferrer"
+						target="_blank"
+						class="text-blue-400"
+						>GitHub repo</a
+					>
+					and follow the instructions to clone, build and deploy it by yourself. It's super easy too!
+				</p>
+
+				<h4 class="text-2xl mb-2">How can I keep track of my uploads?</h4>
+				<p class="text-lg mb-8">
+					You can do that by creating a user on the site and then every upload will be associated with your
+					account, granting you access to your uploaded files through our dashboard.
+				</p>
+
+				<h4 class="text-2xl mb-2">What are albums?</h4>
+				<p class="text-lg mb-8">
+					Albums are a simple way of sorting uploads together. Right now you can create albums through the
+					dashboard and use them only with our chrome extension which will enable you to right click -> send
+					to chibisafe or to a desired album if you have any.
+				</p>
+
+				<h4 class="text-2xl mb-2">Why should I use this?</h4>
+				<p class="text-lg mb-8">
+					There are too many file upload services out there, and a lot of them rely on the foundations of pomf
+					which is ancient. In a desperate and unsuccessful attempt of finding a good file uploader that's
+					easily extendable, chibisafe was born. We give you control over your files, we give you a way to
+					sort your uploads into albums for ease of access and we give you an api to use with ShareX or any
+					other thing that let's you make POST requests.
+				</p>
 			</div>
 		</div>
 	</div>
