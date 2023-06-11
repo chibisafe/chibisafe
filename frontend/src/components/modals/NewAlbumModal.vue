@@ -29,7 +29,7 @@
 						leave-to="opacity-0 scale-95"
 					>
 						<div
-							class="inline-block max-h-96 w-full max-w-sm p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-90 shadow-xl rounded-md overflow-y-auto"
+							class="inline-block max-h-96 w-full max-w-sm p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
 							<label class="block text-sm font-medium text-gray-700 dark:text-light-100">Name</label>
 							<div class="mt-1">
