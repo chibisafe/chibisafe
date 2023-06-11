@@ -4,7 +4,7 @@ import { inspect } from 'node:util';
 import process from 'node:process';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RouteOptions } from './interfaces';
-import { addSpaces } from '../utils/Util';
+import { addSpaces } from '@/utils/Util';
 
 const defaultMiddlewares = ['log', 'ban'];
 

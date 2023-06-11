@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../structures/interfaces';
-import { SETTINGS } from '../structures/settings';
+import type { RequestWithUser } from '@/structures/interfaces';
+import { SETTINGS } from '@/structures/settings';
 
 export const options = {
 	url: '/settings',

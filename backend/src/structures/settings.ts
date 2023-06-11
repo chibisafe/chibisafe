@@ -1,10 +1,10 @@
 /* eslint-disable require-atomic-updates */
 
-import type { Settings } from '../structures/interfaces';
+import type { Settings } from '@/structures/interfaces';
 import randomstring from 'randomstring';
 import prisma from './database';
 import process from 'node:process';
-import { log } from '../main';
+import { log } from '@/main';
 
 export const SETTINGS = {} as Settings;
 

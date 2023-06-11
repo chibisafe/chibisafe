@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '../../../structures/database';
-import type { RequestWithUser } from '../../../structures/interfaces';
-import { getUniqueAlbumIdentifier } from '../../../utils/Util';
+import prisma from '@/structures/database';
+import type { RequestWithUser } from '@/structures/interfaces';
+import { getUniqueAlbumIdentifier } from '@/utils/Util';
 import { v4 as uuidv4 } from 'uuid';
 
 export const options = {

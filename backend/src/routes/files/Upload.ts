@@ -3,9 +3,9 @@ import path from 'node:path';
 
 import { processFile } from '@chibisafe/uploader-module';
 // import { processFile } from '../../../../../chibisafe-uploader/packages/uploader-module/lib';
-import { validateAlbum } from '../../utils/UploadHelpers';
-import { generateThumbnails } from '../../utils/Thumbnails';
-import { SETTINGS } from '../../structures/settings';
+import { validateAlbum } from '@/utils/UploadHelpers';
+import { generateThumbnails } from '@/utils/Thumbnails';
+import { SETTINGS } from '@/structures/settings';
 import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
@@ -13,10 +13,10 @@ import {
 	constructFilePublicLinkNew,
 	hashFile,
 	deleteFile
-} from '../../utils/File';
+} from '@/utils/File';
 
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
 	url: '/upload',

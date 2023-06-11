@@ -1,8 +1,8 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
+import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
-import { SETTINGS } from '../../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 
 export const options = {
 	url: '/auth/login',

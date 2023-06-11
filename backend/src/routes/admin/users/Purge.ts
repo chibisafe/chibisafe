@@ -1,4 +1,4 @@
-import prisma from '../../../structures/database';
+import prisma from '@/structures/database';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 
 export const options = {

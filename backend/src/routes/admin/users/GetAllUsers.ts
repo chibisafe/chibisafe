@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '../../../structures/database';
-import type { User, ExtendedFile } from '../../../structures/interfaces';
+import prisma from '@/structures/database';
+import type { User, ExtendedFile } from '@/structures/interfaces';
 
 export const options = {
 	url: '/admin/users',

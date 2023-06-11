@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
-import { saveFileToAlbum } from '../../utils/File';
-import type { RequestWithUser } from '../../structures/interfaces';
+import prisma from '@/structures/database';
+import { saveFileToAlbum } from '@/utils/File';
+import type { RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
 	url: '/file/:uuid/album/:albumUuid',

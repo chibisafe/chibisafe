@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
-import type { RequestWithUser } from '../../structures/interfaces';
+import prisma from '@/structures/database';
+import type { RequestWithUser } from '@/structures/interfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { utc } from 'moment';
 

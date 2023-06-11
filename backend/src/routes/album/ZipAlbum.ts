@@ -1,9 +1,9 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
+import prisma from '@/structures/database';
 import jetpack from 'fs-jetpack';
 import path from 'node:path';
-import { SETTINGS } from '../../structures/settings';
-import { createZip } from '../../utils/File';
+import { SETTINGS } from '@/structures/settings';
+import { createZip } from '@/utils/File';
 import { utc } from 'moment';
 
 export const options = {

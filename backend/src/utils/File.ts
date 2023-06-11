@@ -3,20 +3,17 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'node:path';
-import { setTimeout, clearTimeout } from 'node:timers';
-import { log } from '../main';
+import { log } from '@/main';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
 
-import prisma from '../structures/database';
-import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails';
+import prisma from '@/structures/database';
+import { getFileThumbnail, removeThumbs } from './Thumbnails';
 import { getHost } from './Util';
-import { SETTINGS } from '../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 
-import type { Album, ExtendedFile, File, FileInProgress, RequestUser, User } from '../structures/interfaces';
-import type { NodeHash, NodeHashReader } from 'blake3';
-import type { WriteStream } from 'node:fs';
-import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { ExtendedFile, File, FileInProgress, RequestUser, User } from '@/structures/interfaces';
+import type { FastifyRequest } from 'fastify';
 
 const fileIdentifierMaxTries = 5;
 

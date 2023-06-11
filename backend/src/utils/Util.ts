@@ -1,8 +1,8 @@
 import type { FastifyRequest } from 'fastify';
-import { SETTINGS } from '../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 import randomstring from 'randomstring';
-import { log } from '../main';
-import prisma from '../structures/database';
+import { log } from '@/main';
+import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 

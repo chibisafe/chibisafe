@@ -1,8 +1,8 @@
 import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import type { RequestWithOptionalUser } from '../structures/interfaces';
-import { SETTINGS } from '../structures/settings';
+import type { RequestWithOptionalUser } from '@/structures/interfaces';
+import { SETTINGS } from '@/structures/settings';
 import JWT from 'jsonwebtoken';
-import prisma from '../structures/database';
+import prisma from '@/structures/database';
 
 interface Decoded {
 	sub: number;

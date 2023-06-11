@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../../structures/interfaces';
+import type { RequestWithUser } from '@/structures/interfaces';
 
-import { SETTINGS } from '../../../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 
 export const options = {
 	url: '/admin/service/settings',

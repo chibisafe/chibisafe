@@ -19,10 +19,11 @@
 		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["src/*"],
 			"@/*": ["src/*"]
-		},
+		}
 	},
-	"include": ["src/**/*.ts", "src/**/*.vue"]
-
+	"include": ["src/**/*.ts", "src/**/*.vue"],
+	"ts-node": {
+        "require": ["tsconfig-paths/register"]
+    }
 }

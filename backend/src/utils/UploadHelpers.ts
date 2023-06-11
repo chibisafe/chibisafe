@@ -1,8 +1,7 @@
-import { SETTINGS } from '../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 import JWT from 'jsonwebtoken';
-import prisma from '../structures/database';
-import type { RequestUser } from '../structures/interfaces';
-import { log } from '../main';
+import prisma from '@/structures/database';
+import type { RequestUser } from '@/structures/interfaces';
 
 interface Decoded {
 	sub: number;

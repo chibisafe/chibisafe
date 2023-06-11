@@ -1,8 +1,8 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
+import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import { SETTINGS } from '../../structures/settings';
+import { SETTINGS } from '@/structures/settings';
 import { utc } from 'moment';
 
 export const options = {

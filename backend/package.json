@@ -9,8 +9,8 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"build": "rimraf \"dist/*/{*.js,!(site/)}\" && tsc",
-		"start": "cross-env NODE_ENV=production node dist/main.js",
+		"build": "rimraf \"dist/*/{*.js,!(site/)}\" && tsc && tsc-alias",
+		"start": "cross-env NODE_ENV=production node -r tsconfig-paths/register dist/main.js",
 		"dev": "ts-node src/main.ts",
 		"dev:reload": "nodemon src/main.ts",
 		"studio": "prisma studio",
@@ -79,6 +79,8 @@
 		"prisma": "^4.13.0",
 		"rimraf": "^3.0.2",
 		"ts-node": "^10.9.1",
+		"tsc-alias": "^1.8.6",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "^4.8.4"
 	},
 	"prisma": {

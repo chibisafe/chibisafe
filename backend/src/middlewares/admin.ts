@@ -1,5 +1,5 @@
 import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import type { RequestWithUser } from '../structures/interfaces';
+import type { RequestWithUser } from '@/structures/interfaces';
 
 export default (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {
 	if (!req.user?.isAdmin) {

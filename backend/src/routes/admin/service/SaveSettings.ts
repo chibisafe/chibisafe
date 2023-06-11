@@ -1,8 +1,8 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../../structures/interfaces';
-import prisma from '../../../structures/database';
-import type { SETTINGS } from '../../../structures/settings';
-import { loadSettings } from '../../../structures/settings';
+import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database';
+import type { SETTINGS } from '@/structures/settings';
+import { loadSettings } from '@/structures/settings';
 
 export const options = {
 	url: '/admin/service/settings',

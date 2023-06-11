@@ -1,5 +1,5 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../structures/interfaces';
+import type { RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
 	url: '/user/me',

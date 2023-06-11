@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '../../structures/interfaces';
-import prisma from '../../structures/database';
+import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import { utc } from 'moment';
 

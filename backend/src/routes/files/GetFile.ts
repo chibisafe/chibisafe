@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
-import { constructFilePublicLink } from '../../utils/File';
-import type { ExtendedFile, RequestWithUser } from '../../structures/interfaces';
+import prisma from '@/structures/database';
+import { constructFilePublicLink } from '@/utils/File';
+import type { ExtendedFile, RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
 	url: '/file/:uuid',

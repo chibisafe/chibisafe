@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '../../structures/database';
-import { constructFilePublicLink } from '../../utils/File';
-import type { File } from '../../structures/interfaces';
+import prisma from '@/structures/database';
+import { constructFilePublicLink } from '@/utils/File';
+import type { File } from '@/structures/interfaces';
 
 export const options = {
 	url: '/album/:identifier/view',
