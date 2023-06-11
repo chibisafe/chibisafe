@@ -2,7 +2,7 @@
 <template>
 	<TransitionRoot appear :show="isModalOpen" as="template" @afterLeave="clearStore">
 		<Dialog as="div" @close="closeModal">
-			<DialogOverlay class="fixed inset-0 bg-black opacity-50" />
+			<DialogOverlay class="fixed inset-0 bg-black opacity-80" />
 			<div class="fixed inset-0 z-10 overflow-y-auto">
 				<div class="min-h-screen px-4 text-center">
 					<TransitionChild
@@ -29,7 +29,7 @@
 						leave-to="opacity-0 scale-95"
 					>
 						<div
-							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-90 shadow-xl rounded-md overflow-y-auto"
+							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
 							<div v-if="file" class="flex">
 								<!-- File preview -->

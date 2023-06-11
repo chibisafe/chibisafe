@@ -62,7 +62,7 @@
 								<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
 								<input
 									ref="blockedExtensionsInput"
-									class="shadow focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-sm text-dark-100 bg-light-100"
+									class="shadow focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-700 rounded-sm text-light-100 bg-dark-110"
 									type="text"
 									placeholder="Type here an extension and then hit ENTER"
 									@keydown.enter="event => addExtension(setting, event.target)"

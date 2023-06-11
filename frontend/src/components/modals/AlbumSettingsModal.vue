@@ -29,7 +29,7 @@
 						leave-to="opacity-0 scale-95"
 					>
 						<div
-							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-90 shadow-xl rounded-md overflow-y-auto"
+							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
 							<!--  -->
 
@@ -267,7 +267,7 @@
 										<div class="w-full border-t border-gray-500" />
 									</div>
 									<div class="relative flex justify-center">
-										<span class="bg-dark-90 px-2 text-sm text-white">Danger zone</span>
+										<span class="bg-dark-90 px-2 text-sm text-red-400">Danger zone</span>
 									</div>
 								</div>
 
