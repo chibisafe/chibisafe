@@ -17,16 +17,16 @@ CREATE TABLE "users" (
 CREATE TABLE "files" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "uuid" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" INTEGER,
     "name" TEXT NOT NULL,
     "original" TEXT NOT NULL,
     "type" TEXT NOT NULL,
-    "size" INTEGER NOT NULL,
+    "size" TEXT NOT NULL,
     "hash" TEXT NOT NULL,
     "ip" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "editedAt" DATETIME,
-    CONSTRAINT "files_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "files_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -71,9 +71,9 @@ CREATE TABLE "settings" (
     "rateLimitMax" INTEGER NOT NULL,
     "secret" TEXT NOT NULL,
     "serviceName" TEXT NOT NULL,
-    "chunkSize" INTEGER NOT NULL,
+    "chunkSize" TEXT NOT NULL,
     "chunkedUploadsTimeout" INTEGER NOT NULL,
-    "maxSize" INTEGER NOT NULL,
+    "maxSize" TEXT NOT NULL,
     "generateZips" BOOLEAN NOT NULL,
     "generatedFilenameLength" INTEGER NOT NULL,
     "generatedAlbumLength" INTEGER NOT NULL,
