@@ -71,7 +71,7 @@
 					{{ formatBytes(Number(file.size)) }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
-					{{ file.createdAt }}
+					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-dark-90 dark:text-light-100">
 					<button type="button" class="ml-4">Delete</button>
@@ -87,6 +87,8 @@ import type { FileWithAdditionalData } from '~/types';
 import { computed } from 'vue';
 import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
+import dayjs from 'dayjs';
+
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import IconDocument from '~icons/carbon/document';
 import IconPdf from '~icons/carbon/document-pdf';
