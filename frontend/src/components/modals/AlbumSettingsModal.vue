@@ -98,8 +98,7 @@
 										</h1>
 										<p class="mt-2 text-sm text-gray-700 dark:text-light-100">
 											A list of all the links created for this album. Each link is unique and will
-											remain private unless you share it with the world. You can also specify if
-											you'd like to enable zip downloads for the specified link.
+											remain private unless you share it with the world.
 										</p>
 									</div>
 									<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -129,12 +128,14 @@
 												>
 													Views
 												</th>
-												<th
-													scope="col"
-													class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 sm:table-cell"
-												>
-													Allow download
-												</th>
+												<!--
+												  <th
+												  scope="col"
+												  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 sm:table-cell"
+												  >
+												  Allow download
+												  </th> 
+												-->
 												<th
 													scope="col"
 													class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100"
@@ -202,25 +203,27 @@
 												>
 													{{ link.views }}
 												</td>
-												<td
-													class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 sm:table-cell"
-												>
-													<Switch
-														v-model="link.enableDownload"
-														class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
-														:class="[link.enableDownload ? 'bg-blue-400' : 'bg-gray-200']"
-														@update:modelValue="setEnableDownload(link)"
-													>
-														<span class="sr-only">Use setting</span>
-														<span
-															aria-hidden="true"
-															class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
-															:class="[
-																link.enableDownload ? 'translate-x-5' : 'translate-x-0'
-															]"
-														/>
-													</Switch>
-												</td>
+												<!--
+												  <td
+												  class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 sm:table-cell"
+												  >
+												  <Switch
+												  v-model="link.enableDownload"
+												  class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+												  :class="[link.enableDownload ? 'bg-blue-400' : 'bg-gray-200']"
+												  @update:modelValue="setEnableDownload(link)"
+												  >
+												  <span class="sr-only">Use setting</span>
+												  <span
+												  aria-hidden="true"
+												  class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+												  :class="[
+												  link.enableDownload ? 'translate-x-5' : 'translate-x-0'
+												  ]"
+												  />
+												  </Switch>
+												  </td> 
+												-->
 												<td class="px-3 py-4 text-sm text-gray-500 dark:text-light-100">
 													<Switch
 														v-model="link.enabled"
