@@ -43,6 +43,7 @@
 		"dotenv": "^16.0.1",
 		"fastify": "^4.15.0",
 		"ffmpeg-probe": "^1.0.6",
+		"file-stream-rotator": "^1.0.0",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
 		"jsonwebtoken": "^8.5.1",

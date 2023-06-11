@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 
 import fastify from 'fastify';
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
@@ -10,8 +10,8 @@ import fstatic from '@fastify/static';
 import LiveDirectory from 'live-directory';
 
 import jetpack from 'fs-jetpack';
-// import schedule from 'node-schedule';
-import log from './utils/Log';
+import * as FileStreamRotator from 'file-stream-rotator';
+
 import process from 'node:process';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
@@ -29,67 +29,75 @@ dotenv.config({
 	path: path.join(__dirname, '..', '..', '.env')
 });
 
+// Create the pino logger
+const envToLogger = {
+	development: {
+		transport: {
+			target: 'pino-pretty',
+			options: {
+				translateTime: 'HH:MM:ss Z',
+				ignore: 'pid,hostname'
+			}
+		},
+		level: 'debug',
+		sync: true
+	},
+	production: {
+		serializers: {
+			res(reply: FastifyReply) {
+				return {
+					statusCode: reply.statusCode
+				};
+			},
+			req(request: FastifyRequest) {
+				return {
+					method: request.method,
+					url: request.url,
+					parameters: request.params,
+					remoteAddress: request.ip
+				};
+			}
+		},
+		stream: FileStreamRotator.getStream({
+			filename: `../logs/chibisafe-%DATE%`,
+			extension: '.log',
+			date_format: 'YYYY-MM-DD',
+			frequency: 'daily',
+			audit_file: '../logs/chibisafe-audit.json'
+		})
+	}
+};
+
+// Create the Fastify server
+const server = fastify({
+	trustProxy: true,
+	connectionTimeout: 600000,
+	// @ts-ignore-error can't use process.env as its undefined
+	logger: process.env.NODE_ENV === 'production' ? envToLogger.production : envToLogger.development
+});
+
+export const log = server.log;
+
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
-	log.error('Uncaught Exception:');
-	log.error(error);
+	server.log.error('Uncaught Exception:');
+	server.log.error(error);
 });
 
 process.on('unhandledRejection', error => {
-	log.error('Unhandled Rejection:');
-	log.error(error);
+	server.log.error('Unhandled Rejection:');
+	server.log.error(error);
 });
 
 const start = async () => {
 	// Check the environment has all the requirements before running chibisafe
-	await Requirements();
+	await Requirements(server.log);
 
 	// Create the settings in the database
 	await loadSettings();
 
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
-
-	// Create the pino logger
-	const envToLogger = {
-		development: {
-			transport: {
-				target: 'pino-pretty',
-				options: {
-					translateTime: 'HH:MM:ss Z',
-					ignore: 'pid,hostname'
-				}
-			},
-			level: 'debug',
-			sync: true
-		},
-		production: {
-			serializers: {
-				res(reply: FastifyReply) {
-					return {
-						statusCode: reply.statusCode
-					};
-				},
-				req(request: FastifyRequest) {
-					return {
-						method: request.method,
-						url: request.url,
-						parameters: request.params,
-						remoteAddress: request.ip
-					};
-				}
-			},
-			file: '../logs/chibisafe.log'
-		}
-	};
-
-	// Create the Fastify server
-	const server = fastify({
-		trustProxy: true,
-		connectionTimeout: 600000,
-		// @ts-ignore-error can't use process.env as its undefined
-		logger: process.env.NODE_ENV === 'production' ? envToLogger.production : envToLogger.development
-	});
 
 	// Enable form-data parsing
 	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
@@ -118,29 +126,30 @@ const start = async () => {
 	});
 
 	// Create the neccessary folders
+	jetpack.dir('../logs');
 	jetpack.dir('../uploads/tmp');
 	jetpack.dir('../uploads/zips');
 	jetpack.dir('../uploads/thumbs/square');
 	jetpack.dir('../uploads/thumbs/preview');
 
-	log.debug('Chibisafe is starting with the following configuration:');
-	log.debug('');
+	server.log.debug('Chibisafe is starting with the following configuration:');
+	server.log.debug('');
 
 	const defaults = SETTINGS;
 	for (const [key, value] of Object.entries(defaults)) {
-		log.debug(`${key}: ${JSON.stringify(value)}`);
+		server.log.debug(`${key}: ${JSON.stringify(value)}`);
 	}
 
-	log.debug('');
-	log.debug('Loading routes...');
-	log.debug('');
+	server.log.debug('');
+	server.log.debug('Loading routes...');
+	server.log.debug('');
 
 	// Scan and load routes into fastify
 	await Routes.load(server);
 
 	if (process.env.NODE_ENV === 'production') {
 		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
-			log.error('Frontend build not found, please run `npm run build` in the frontend directory first');
+			server.log.error('Frontend build not found, please run `npm run build` in the frontend directory first');
 			process.exit(1);
 		}
 
@@ -156,7 +165,7 @@ const start = async () => {
 		// Prepare index.html to be served with the necessary meta tags in place
 		let indexHTML = jetpack.read(path.join(__dirname, '..', 'dist', 'site', 'index.html'), 'utf8');
 		if (!indexHTML) {
-			log.error('There was a problem parsing the frontend');
+			server.log.error('There was a problem parsing the frontend');
 			process.exit(1);
 		}
 
