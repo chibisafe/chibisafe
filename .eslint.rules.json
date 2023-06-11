@@ -19,6 +19,7 @@
 		"@typescript-eslint/no-unsafe-call": "off",
 		"@typescript-eslint/no-unsafe-return": "off",
 		"@typescript-eslint/consistent-type-assertions": "off",
+		"@typescript-eslint/no-use-before-define": "off",
 		"vue/multi-word-component-names": "off",
 		"vue/v-on-event-hyphenation": "off",
 		"vue/sort-keys": "off",
