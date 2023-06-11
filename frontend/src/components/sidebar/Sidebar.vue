@@ -254,6 +254,7 @@ import IconTags from '~icons/carbon/tag-group';
 import IconAccount from '~icons/carbon/user-identification';
 import IconMenu from '~icons/carbon/menu';
 import IconClose from '~icons/carbon/close';
+import IconInvite from '~icons/carbon/user-follow';
 
 const route = useRoute();
 const router = useRouter();
@@ -308,6 +309,7 @@ const navigationItems = [
 
 	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: IconTags, current: false },
 	{ type: 'admin', name: 'Users', href: '/dashboard/admin/users', icon: IconHome, current: false },
+	{ type: 'admin', name: 'Invites', href: '/dashboard/admin/invites', icon: IconInvite, current: false },
 	{ type: 'admin', name: 'Settings', href: '/dashboard/admin/settings', icon: IconUploads, current: false },
 	{ type: 'admin', name: 'Statistics', href: '/dashboard/admin/statistics', icon: IconAlbums, current: false }
 ];

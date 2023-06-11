@@ -16,13 +16,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const invite = req.headers.invite as string;
 
 	// If new account creation is deactivated then check for an invite
-	if (!SETTINGS.userAccounts) {
-		if (!invite) {
-			return res.code(401).send({
-				message: 'Creation of new accounts is currently disabled'
-			});
-		}
+	if (!SETTINGS.userAccounts && !invite) {
+		return res.code(401).send({
+			message: 'Creation of new accounts is currently disabled without an invite'
+		});
+	}
 
+	if (invite) {
 		// Check if the invite is valid has not been used yet
 		foundInvite = await prisma.invites.findFirst({
 			where: {

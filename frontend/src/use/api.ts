@@ -101,6 +101,40 @@ export const getUsersAdmin = async () => {
 	}
 };
 
+export const getInvites = async () => {
+	try {
+		const data = await request.get(`admin/invites`);
+		debug('getInvites', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const createInvite = async () => {
+	try {
+		const data = await request.post(`admin/invite/create`);
+		debug('getInvites', data);
+		if (data.message) sendSuccessToast(data.message);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const cancelInvite = async (code: string) => {
+	try {
+		const data = await request.post(`admin/invite/delete`, {
+			code
+		});
+		debug('cancelInvite', data);
+		if (data.message) sendSuccessToast(data.message);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getUserAdmin = async (uuid: string) => {
 	try {
 		const data = await request.get(`admin/user/${uuid}`);

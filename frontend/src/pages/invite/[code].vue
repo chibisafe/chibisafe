@@ -106,6 +106,6 @@ const register = async () => {
 	// eslint-disable-next-line require-atomic-updates
 	repassword.value = '';
 
-	// TODO: Redirect to login page
+	await router.push('/login');
 };
 </script>
