@@ -28,12 +28,26 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		});
 
+		const albumFiles = await prisma.albums.findFirst({
+			where: {
+				uuid,
+				userId: req.user.id
+			},
+			select: {
+				files: {
+					select: {
+						id: true
+					}
+				}
+			}
+		});
+
+		const fileIds = albumFiles?.files.map(file => file.id);
+
 		await prisma.files.deleteMany({
 			where: {
-				albums: {
-					every: {
-						uuid
-					}
+				id: {
+					in: fileIds
 				}
 			}
 		});
