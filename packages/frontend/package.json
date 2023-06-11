@@ -29,6 +29,7 @@
 		"@headlessui/vue": "^1.6.5",
 		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",
+		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.5",
 		"dotenv": "^16.0.3",
 		"file-saver": "^2.0.5",

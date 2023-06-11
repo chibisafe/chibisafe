@@ -332,6 +332,7 @@ __metadata:
     "@vueuse/core": ^8.7.5
     autoprefixer: ^10.4.2
     cpy-cli: ^4.2.0
+    cross-env: ^7.0.3
     dayjs: ^1.11.5
     dotenv: ^16.0.3
     eslint: ^8.8.0
