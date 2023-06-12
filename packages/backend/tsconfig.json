@@ -1,0 +1,18 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"target": "ESNext",
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"module": "CommonJS",
+		"types": ["node"],
+		"paths": {
+			"@/*": ["packages/backend/src/*"]
+		}
+	},
+	"include": ["src/**/*.ts"],
+	"exlude": ["node_modules"],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	}
+}

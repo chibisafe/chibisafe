@@ -1,14 +1,14 @@
 # Packages
 node_modules/
-backend/node_modules/
-frontend/node_modules/
+packages/backend/node_modules/
+packages/frontend/node_modules/
 
 # Build artifacts
-backend/dist/
-frontend/dist/
+packages/backend/dist/
+packages/frontend/dist/
 
 # Env files
-/backend/.env
+packages/backend/.env
 
 # Database
 database.sqlite
@@ -20,5 +20,17 @@ npm-debug.log*
 # chibisafe generated files
 uploads/
 database/
+logs/
 
 .env
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.turbo

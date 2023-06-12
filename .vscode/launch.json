@@ -2,18 +2,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"command": "npm run dev:reload",
+			"command": "yarn dev:reload",
 			"name": "[DEV] Start backend",
 			"request": "launch",
 			"type": "node-terminal",
-			"cwd": "${workspaceFolder}/backend"
+			"cwd": "${workspaceFolder}/packages/backend"
 		},
 		{
-			"command": "npm run dev",
+			"command": "yarn dev",
 			"name": "[DEV] Start frontend",
 			"request": "launch",
 			"type": "node-terminal",
-			"cwd": "${workspaceFolder}/frontend"
+			"cwd": "${workspaceFolder}/packages/frontend"
 		},
 		{
 			"type": "chrome",
