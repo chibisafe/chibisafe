@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "./",
+		"outDir": "./dist",
+		"module": "ESNext",
+		"types": ["node", "vite/client", "unplugin-icons/types/vue"],
+		"typeRoots": ["node_modules/@types", "src"],
+		"paths": {
+			"@/*": ["packages/frontend/src/*"],
+			"~/*": ["packages/frontend/src/*"]
+		}
+	},
+	"include": ["**/*.ts", "**/*.js", "**/*.vue", "**/*.test.ts", "**/*.test.js", "**/*.spec.ts", "**/*.spec.js"],
+	"exlude": ["node_modules", "dist", "public"]
+}

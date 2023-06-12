@@ -1,0 +1,127 @@
+generator client {
+	provider = "prisma-client-js"
+	previewFeatures = ["filteredRelationCount", "jsonProtocol"]
+}
+
+datasource db {
+	provider          = "sqlite"
+	url               = "file:../../../../database/database.sqlite"
+	shadowDatabaseUrl = "file:../../../../database/shadow.sqlite"
+}
+
+model users {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	username String @unique
+	password String
+	enabled Boolean @default(true)
+	isAdmin Boolean @default(false)
+	apiKey String? @unique
+	passwordEditedAt DateTime?
+	apiKeyEditedAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+	files files[]
+}
+
+model files {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int?
+	name String
+	original String
+	type String
+	size String
+	hash String
+	ip String
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+	user users? @relation(fields: [userId], references: [id])
+	albums albums[]
+	tags tags[]
+}
+
+model albums {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int
+	name String
+	zippedAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+	nsfw Boolean @default(false)
+	files files[]
+}
+
+model bans {
+	id Int @id @default(autoincrement())
+	ip String
+	createdAt DateTime @default(now())
+}
+
+model links {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int
+	albumId Int
+	identifier String @unique
+	views Int @default(0)
+	enabled Boolean @default(true)
+	enableDownload Boolean @default(false)
+	expiresAt DateTime?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
+
+model settings {
+	id Int @id @default(autoincrement())
+	domain String
+	rateLimitWindow Int
+	rateLimitMax Int
+	secret String
+	serviceName String
+	chunkSize String
+	chunkedUploadsTimeout Int
+	maxSize String
+	generateZips Boolean
+	generatedFilenameLength Int
+	generatedAlbumLength Int
+	blockedExtensions String
+	blockNoExtension Boolean
+	publicMode Boolean
+	userAccounts Boolean
+	disableStatisticsCron Boolean
+	backgroundImageURL String
+	logoURL String
+	metaDescription String
+	metaKeywords String
+	metaTwitterHandle String
+}
+
+model statistics {
+	id Int @id @default(autoincrement())
+	batchId Int?
+	type String?
+	data String?
+	createdAt DateTime @default(now())
+}
+
+model tags {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int
+	name String
+	createdAt DateTime @default(now())
+	editedAt  DateTime?
+	files files[]
+}
+
+model invites {
+	id Int @id @default(autoincrement())
+	createdBy String
+	usedBy String?
+	code String @unique
+	used Boolean @default(false)
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
