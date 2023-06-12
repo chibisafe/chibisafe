@@ -42,7 +42,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			maxFileSize,
 			maxChunkSize,
 			blockedExtensions: SETTINGS.blockedExtensions,
-			debug: process.env.NODE_ENV === 'production'
+			debug: process.env.NODE_ENV !== 'production'
 		});
 
 		if (upload.isChunkedUpload && !upload.ready) {
