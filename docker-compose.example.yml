@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
+    image: itspitu/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./

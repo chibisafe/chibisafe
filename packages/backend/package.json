@@ -14,6 +14,7 @@
 		"dev": "ts-node src/main.ts",
 		"dev:reload": "nodemon src/main.ts",
 		"studio": "prisma studio",
+		"generate": "prisma generate",
 		"migrate": "prisma migrate deploy && prisma generate",
 		"setup": "yarn install && yarn migrate",
 		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",

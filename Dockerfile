@@ -21,7 +21,7 @@ COPY turbo.json turbo.json
 
 # Install and prepare the app
 RUN yarn install
-RUN yarn migrate
+RUN yarn generate
 RUN yarn build
 
-CMD ["sh", "-c", "yarn start"];
+CMD ["sh", "-c", "yarn migrate && yarn start"];

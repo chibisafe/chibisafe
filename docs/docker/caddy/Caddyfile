@@ -1,7 +1,7 @@
 {$CADDY_DOMAIN} {
 	header {
 		# enable HSTS
-		Strict-Transport-Security max-age=86400;
+		# Strict-Transport-Security max-age=86400;
 
 		# keep referrer data off of HTTP connections
 		Referrer-Policy no-referrer-when-downgrade

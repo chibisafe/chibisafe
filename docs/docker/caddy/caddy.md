@@ -16,7 +16,7 @@ A text editor. Ubuntu 22 comes with `nano`, but I recommend setting up a VS Code
 ## Quick setup
 If you just want the quickest way to get Chibisafe up and running (On Ubuntu 22):
 1. Clone the repo (`git clone https://github.com/chibisafe/chibisafe.git && cd chibisafe`)
-2. Copy `docs/docker-caddy/docker-compose.yml` and `docs/docker-caddy/Caddyfile` to `chibisafe`. (`cp docs/docker-caddy/{Caddyfile,docker-compose.yml} .`)
+2. Copy `docs/docker/caddy/docker-compose.yml` and `docs/docker/caddy/Caddyfile` to `chibisafe`. (`cp docs/docker/caddy/{Caddyfile,docker-compose.yml} .`)
 3. Modify `CADDY_DOMAIN` within `docker-compose.yml` to your domain.
 4. Run `docker volume create caddy_data` to create a persistent volume for Caddy to store certs.
 5. Forward ports 80 and 443 to the server if needed.

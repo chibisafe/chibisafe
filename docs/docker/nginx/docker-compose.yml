@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
+    image: itspitu/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./
@@ -10,8 +11,6 @@ services:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
       - ./logs:/home/node/chibisafe/logs:rw
-    ports:
-      - 24424:8000
     restart: always
   nginx:
     build:

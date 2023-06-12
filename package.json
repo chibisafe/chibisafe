@@ -9,6 +9,7 @@
 		"lint": "turbo run lint",
 		"format": "turbo run format",
 		"postinstall": "husky install",
+		"generate": "yarn workspace @chibisafe/backend generate",
 		"migrate": "yarn workspace @chibisafe/backend migrate",
 		"start": "yarn workspace @chibisafe/backend start"
 	},

@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
+    image: itspitu/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./
@@ -10,11 +11,9 @@ services:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
       - ./logs:/home/node/chibisafe/logs:rw
-    environment:
-      - NODE_ENV=production
     restart: always
   caddy:
-    image: caddy-2.7
+    image: caddy:2.6
     container_name: caddy
     restart: always
     ports:
@@ -25,7 +24,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      -	CADDY_DOMAIN=my.domain.com
+      - CADDY_DOMAIN=my.domain.com
     depends_on:
       - chibisafe
 
