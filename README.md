@@ -71,9 +71,11 @@ If you are upgrading from `v3.x` to `v4.0.0` (lolisafe to chibisafe) and you wan
 
 ### Screenshots
 <p align="center">
-  <img src="https://lolisafe.moe/73up1d.png">
-  <img src="https://lolisafe.moe/q0uctp.png">
-  <img src="https://lolisafe.moe/8fi2x6.png">
+	
+![image](https://github.com/chibisafe/chibisafe/assets/7425261/659068cd-f154-4fe0-860f-4478e0f859d5)
+![image](https://github.com/chibisafe/chibisafe/assets/7425261/83dae9d1-5f71-404a-b79c-19fb4d0dfd62)
+![image](https://github.com/chibisafe/chibisafe/assets/7425261/0dad05a8-f42b-4834-983f-2ca82eedb176)
+	
 </p>
 
 ## Author
