@@ -1,8 +1,6 @@
 # Ignore artifacts:
 node_modules
 dist
-packages/frontend/components.d.ts
-packages/frontend/src/components.d.ts
 
 packages/backend/dist
 packages/frontend/dist

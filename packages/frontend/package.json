@@ -78,5 +78,8 @@
 	],
 	"volta": {
 		"node": "18.9.0"
-	}
+	},
+	"eslintIgnore": [
+		"components.d.ts"
+	]
 }
