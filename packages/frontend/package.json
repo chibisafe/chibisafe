@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"dev": "vite --host",
-		"build": "vue-tsc --noEmit && vite build && cpy ./ ../../backend/dist/site --parents --cwd=dist",
+		"build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build && cpy ./ ../../backend/dist/site --parents --cwd=dist",
 		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
 		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts --fix"
 	},

@@ -1,5 +1,6 @@
-const IS_PRODUCTION = false;
-export const debug = IS_PRODUCTION
+// @ts-ignore
+// eslint-disable-next-line no-negated-condition
+export const debug = import.meta.env.PROD
 	? // eslint-disable-next-line @typescript-eslint/no-empty-function
 	  () => {}
 	: console.log.bind(

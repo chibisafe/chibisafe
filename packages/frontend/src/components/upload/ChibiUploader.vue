@@ -62,7 +62,8 @@ const pasteHandler = (event: ClipboardEvent) => {
 const processFile = async (file: File) => {
 	files.value?.push(file);
 	await chibiUploader({
-		debug: true,
+		// @ts-ignore
+		debug: !import.meta.env.PROD,
 		endpoint: '/api/upload',
 		file,
 		maxFileSize: maxFileSize.value,
