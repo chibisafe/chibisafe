@@ -34,7 +34,7 @@ The service also comes with a control panel where you can edit almost every conf
 
 ## Docker
 To deploy chibisafe with docker clone the repository and then run `docker-compose up`. Now chibisafe will be available in port 24424.
-For more in-depth configurations [Please refer to the docs here](docs/docker.md)
+For more in-depth configurations [Please refer to the docs here](docs/docker/docker.md)
 
 ## Manually
 
@@ -54,7 +54,7 @@ This small guide assumes a lot of things including but not limited to you knowin
 4. Run `yarn build`
 5. Run `yarn start`
 6. Chibisafe should now be running at http://localhost:8000
-7. If you want to run chibisafe behind your own domain, we have a simple [nginx](docs/nginx.md) guide on how to do this.
+7. If you want to run chibisafe behind your own domain, we have some [docker guides](docs/docker/docker.md) on how to do this.
 
 <details>
   <summary>Migrating from v3.x (lolisafe) to v4.x (chibisafe)</summary>
