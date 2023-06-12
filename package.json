@@ -8,7 +8,8 @@
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
-		"postinstall": "husky install"
+		"postinstall": "husky install",
+		"prisma:generate": "cd packages/backend && yarn prisma generate"
 	},
 	"author": {
 		"name": "Pitu",

@@ -11,27 +11,20 @@ RUN apt -y install ffmpeg
 WORKDIR /home/node/chibisafe
 
 # Copy app source
-COPY backend ./backend
-COPY frontend ./frontend
+COPY packages ./packages
+COPY .yarn .yarn
+COPY .yarnrc.yml .yarnrc.yml
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+COPY tsconfig.json tsconfig.json
+COPY turbo.json turbo.json
 
 # Install app dependencies
-RUN cd backend && npm i
-RUN cd frontend && npm i
-
-# Build backend
-WORKDIR /home/node/chibisafe/backend
-
-# Generate prisma typings to be able to build
-RUN npx prisma generate
-RUN npm run build
-
-# Build frontend
-WORKDIR /home/node/chibisafe/frontend
-RUN npm run build
+RUN yarn install
+RUN yarn prisma:generate
+RUN yarn build
 
 # Workdir for running
-WORKDIR /home/node/chibisafe/backend
+WORKDIR /home/node/chibisafe/packages/backend
 
-CMD ["sh", "-c", "npm run setup && npm run start"];
-
-# HEALTHCHECK --interval=3s --timeout=2s --start-period=15s CMD node ./healthcheck.js
+CMD ["sh", "-c", "yarn setup && yarn start"];
