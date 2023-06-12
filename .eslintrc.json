@@ -20,6 +20,7 @@
 		"import/order": "off",
 		"import/extensions": "off",
 		"no-warning-comments": "off",
+		"no-use-before-define": "off",
 		"unicorn/prefer-math-trunc": "off",
 		"unicorn/numeric-separators-style": "off",
 		"typescript-sort-keys/interface": "off",
@@ -42,7 +43,8 @@
 		"vue/attribute-hyphenation": "off",
 		"vue/html-self-closing": "off",
 		"vue/comma-dangle": "off",
-		"vue/operator-linebreak": "off"
+		"vue/operator-linebreak": "off",
+		"vue/max-attributes-per-line": "off"
 	},
 	"globals": {
 		"defineProps": "readonly",
