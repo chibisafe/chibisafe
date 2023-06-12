@@ -14,7 +14,7 @@ services:
     restart: always
   nginx:
     build:
-      context: ./nginx
+      context: ./docs/docker/nginx
       dockerfile: Dockerfile
     expose:
       - 80

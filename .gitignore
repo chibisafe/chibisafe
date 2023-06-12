@@ -36,3 +36,4 @@ logs/
 .turbo
 
 /docker-compose.yml
+chibisafe.moe.conf
