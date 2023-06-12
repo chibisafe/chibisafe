@@ -47,7 +47,7 @@
 		"file-stream-rotator": "^1.0.0",
 		"fluent-ffmpeg": "^2.1.2",
 		"fs-jetpack": "^4.3.1",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"live-directory": "^3.0.3",
 		"lookpath": "^1.2.2",
 		"moment": "^2.29.4",
