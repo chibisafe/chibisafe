@@ -19,12 +19,9 @@ COPY yarn.lock yarn.lock
 COPY tsconfig.json tsconfig.json
 COPY turbo.json turbo.json
 
-# Install app dependencies
+# Install and prepare the app
 RUN yarn install
-RUN yarn prisma:generate
+RUN yarn migrate
 RUN yarn build
 
-# Workdir for running
-WORKDIR /home/node/chibisafe/packages/backend
-
-CMD ["sh", "-c", "yarn setup && yarn start"];
+CMD ["sh", "-c", "yarn start"];
