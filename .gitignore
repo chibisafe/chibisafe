@@ -34,3 +34,5 @@ logs/
 !.yarn/versions
 
 .turbo
+
+/docker-compose.yml
