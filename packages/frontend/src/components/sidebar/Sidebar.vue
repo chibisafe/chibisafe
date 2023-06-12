@@ -122,7 +122,7 @@
 											:key="item.name"
 											:href="item.href"
 											rel="noopener noreferrer"
-											class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-light-100 hover:text-white"
+											class="group flex items-center rounded-md px-3 py-1 text-sm font-medium text-light-100 hover:text-white"
 										>
 											<span class="truncate">{{ item.name }}</span>
 										</a>
@@ -182,7 +182,7 @@
 								v-for="item in adminNavigation"
 								:key="item.name"
 								:to="item.href"
-								class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+								class="group flex items-center px-2 py-1 text-sm font-medium rounded-md"
 								:class="[
 									item.current
 										? 'bg-dark-100 text-white'
@@ -209,7 +209,7 @@
 								:href="item.href"
 								rel="noopener noreferrer"
 								target="_blank"
-								class="group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-light-100 hover:text-white"
+								class="group flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium text-light-100 hover:text-white"
 								@click="item.onClick ? item.onClick() : null"
 							>
 								<span class="truncate">{{ item.name }}</span>

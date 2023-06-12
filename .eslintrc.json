@@ -40,7 +40,9 @@
 		"vue/first-attribute-linebreak": "off",
 		"vue/require-emit-validator": "off",
 		"vue/attribute-hyphenation": "off",
-		"vue/html-self-closing": "off"
+		"vue/html-self-closing": "off",
+		"vue/comma-dangle": "off",
+		"vue/operator-linebreak": "off"
 	},
 	"globals": {
 		"defineProps": "readonly",
