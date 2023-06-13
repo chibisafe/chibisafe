@@ -32,7 +32,7 @@ const settingsStore = useSettingsStore();
 
 userStore.checkToken();
 
-// @ts-expect-error env doesn';t exist, but it does at runtime.
+// @ts-ignore
 if (import.meta.env.DEV) {
 	void settingsStore.get();
 } else {
