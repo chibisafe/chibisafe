@@ -138,8 +138,4 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		res.log.error(error);
 		await res.code(statusCode).send(error.message);
 	}
-
-	return res.send({
-		message: 'Successfully added tag to file'
-	});
 };
