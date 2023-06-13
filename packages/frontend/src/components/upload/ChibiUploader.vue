@@ -9,7 +9,9 @@
 			<h3 class="font-bold text-center mt-4 pointer-events-none">
 				DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
 			</h3>
-			<p class="text-center mt-4 w-3/4 pointer-events-none">Drag and drop your files here. 5GB max per file.</p>
+			<p class="text-center mt-4 w-3/4 pointer-events-none">
+				Drag and drop your files here. {{ formatBytes(maxFileSize) }} max per file.
+			</p>
 
 			<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
 		</div>
@@ -20,7 +22,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
-import { getFileExtension } from '~/use/file';
+import { getFileExtension, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
 import { chibiUploader } from '@chibisafe/uploader-client';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
