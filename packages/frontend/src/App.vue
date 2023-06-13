@@ -4,6 +4,7 @@
 			{{ content ? `${content} | ${settingsStore.serviceName}` : settingsStore.serviceName }}
 		</template>
 	</metainfo>
+
 	<div
 		v-if="userStore.user?.id === 1 && !userStore.user.passwordEditedAt"
 		class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
@@ -12,7 +13,7 @@
 		change it.
 	</div>
 	<div
-		class="bg-white dark:bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
+		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
 		:style="`background-image: url(${settingsStore.background});`"
 	></div>
 	<div class="flex flex-col flex-1 h-full relative">
@@ -28,8 +29,21 @@ import Toast from './components/toast/Toast.vue';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
+
 userStore.checkToken();
-void settingsStore.get();
+
+// @ts-expect-error env doesn';t exist, but it does at runtime.
+if (import.meta.env.DEV) {
+	void settingsStore.get();
+} else {
+	// Since we bake the settings into the HTML, we need to override the store
+	const __CHIBISAFE__ = (window as any).__CHIBISAFE__;
+	settingsStore.serviceName = __CHIBISAFE__.serviceName;
+	settingsStore.background = __CHIBISAFE__.background;
+	settingsStore.chunkSize = __CHIBISAFE__.chunkSize;
+	settingsStore.maxFileSize = __CHIBISAFE__.maxFileSize;
+	settingsStore.logo = __CHIBISAFE__.logo;
+}
 
 // Override meta data
 useMeta({

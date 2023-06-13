@@ -3,6 +3,7 @@ import type { RequestWithUser } from '@/structures/interfaces';
 import prisma from '@/structures/database';
 import type { SETTINGS } from '@/structures/settings';
 import { loadSettings } from '@/structures/settings';
+import { getHtmlBuffer } from '@/main';
 
 export const options = {
 	url: '/admin/service/settings',
@@ -40,7 +41,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		});
 
 		await res.send({ message: 'Settings updated' });
-		void loadSettings(true);
+		await loadSettings(true);
+		await getHtmlBuffer();
 	} catch (error) {
 		req.log.error(error);
 		return res.code(500).send({ message: error });

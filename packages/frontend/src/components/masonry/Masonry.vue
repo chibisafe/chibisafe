@@ -11,7 +11,7 @@
 				/>
 
 				<video
-					v-if="isHovered[file.uuid]"
+					v-if="isFileVideo(file) && isHovered[file.uuid]"
 					class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
 					autoplay
 					loop

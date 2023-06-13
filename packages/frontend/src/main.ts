@@ -1,7 +1,6 @@
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import { createMetaManager } from 'vue-meta';
-import { debug } from './use/log';
 
 import 'media-chrome';
 
