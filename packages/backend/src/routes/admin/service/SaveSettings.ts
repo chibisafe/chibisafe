@@ -1,4 +1,5 @@
 import type { FastifyReply } from 'fastify';
+import process from 'node:process';
 import type { RequestWithUser } from '@/structures/interfaces';
 import prisma from '@/structures/database';
 import type { SETTINGS } from '@/structures/settings';
@@ -41,8 +42,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		});
 
 		await res.send({ message: 'Settings updated' });
+		// Refresh the instance settings
 		await loadSettings(true);
-		await getHtmlBuffer();
+		// If running in production, we need to update the html buffer
+		if (process.env.NODE_ENV === 'production') await getHtmlBuffer();
 	} catch (error) {
 		req.log.error(error);
 		return res.code(500).send({ message: error });
