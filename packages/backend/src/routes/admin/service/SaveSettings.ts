@@ -20,7 +20,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const parsedSettings: Partial<typeof SETTINGS> = {};
 		for (const key of settings) {
 			// @ts-expect-error key is any, proper typings would be good here
-			parsedSettings[key.name] = key.value;
+			parsedSettings[key.name] = key.type === 'number' ? Number(key.value) : key.value;
 		}
 
 		// @ts-expect-error chunkSize is a string on the db, but int here.
