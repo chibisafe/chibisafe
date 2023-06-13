@@ -1,7 +1,18 @@
 <template>
 	<div class="flex w-full h-12 items-center mt-8 max-w-4xl">
 		<router-link to="/">
-			<img src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
+			<img
+				v-if="settingsStore.logo"
+				:src="settingsStore.logo"
+				alt="chibisafe logo"
+				class="w-12 mr-2"
+			/>
+			<img
+				v-else
+				src="../../assets/images/logo.svg"
+				alt="chibisafe logo"
+				class="w-12 mr-2"
+			/>
 		</router-link>
 		<router-link to="/">
 			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
