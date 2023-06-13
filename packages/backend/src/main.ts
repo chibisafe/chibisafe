@@ -243,7 +243,7 @@ export const getHtmlBuffer = async () => {
 	const settings = {
 		background: SETTINGS.backgroundImageURL,
 		chunkSize: SETTINGS.chunkSize,
-		logo: SETTINGS.logo,
+		logo: SETTINGS.logoURL,
 		maxFileSize: SETTINGS.maxSize,
 		serviceName: SETTINGS.serviceName
 	};

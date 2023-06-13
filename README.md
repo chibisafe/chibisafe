@@ -31,9 +31,42 @@ The service also comes with a control panel where you can edit almost every conf
 - No ads
 
 ## Installing and running chibisafe
+Whichever method you choose to install chibisafe keep in mind that the installation process creates an account named `admin` with the same password. Once you log in the first time make sure to change it!
 
 ## Docker
-To deploy chibisafe with docker clone the repository and then run `docker-compose up`. Now chibisafe will be available in port 24424.
+To deploy chibisafe with docker you have a few options.
+If you want the latest features you can clone the repository and then run `docker-compose up`.
+
+If you want to use the latest stable image published by us you can make a `docker-compose.yml` file with the following contents and then run `docker-compose up`:
+```yml
+version: "3.7"
+
+services:
+  chibisafe:
+    image: ghcr.io/chibisafe/chibisafe:latest
+    container_name: chibisafe
+    volumes:
+      - ./database:/home/node/chibisafe/database:rw
+      - ./uploads:/home/node/chibisafe/uploads:rw
+      - ./logs:/home/node/chibisafe/logs:rw
+    ports:
+      - 24424:8000
+    restart: always
+
+```
+Or if you prefer to use docker directly, you could do something like this replacing the path values with your own:
+```bash
+docker run -d \
+  --name=chibisafe \
+  -v /path/to/database:/home/node/chibisafe/database \
+  -v /path/to/uploads:/home/node/chibisafe/uploads \
+  -v /path/to/logs:/home/node/chibisafe/logs \
+  --restart unless-stopped \
+  ghcr.io/chibisafe/chibisafe:latest
+```
+
+Now chibisafe will be available in port 24424.
+
 For more in-depth configurations [Please refer to the docs here](docs/docker/docker.md)
 
 ## Manually

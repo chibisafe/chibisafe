@@ -1,11 +1,11 @@
-FROM node:18
+FROM node:18-alpine
 USER root
 
-# Update apt
-RUN apt -y update
+# Update apk
+RUN apk update
 
 # Install ffmpeg
-RUN apt -y install ffmpeg
+RUN apk add --no-cache ffmpeg
 
 # Create app directory
 WORKDIR /home/node/chibisafe

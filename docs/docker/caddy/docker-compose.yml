@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
-    image: itspitu/chibisafe:latest
+    image: ghcr.io/chibisafe/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./
@@ -11,7 +11,7 @@ services:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
       - ./logs:/home/node/chibisafe/logs:rw
-    restart: always
+    restart: unless-stopped
   caddy:
     image: caddy:2.6
     container_name: caddy
