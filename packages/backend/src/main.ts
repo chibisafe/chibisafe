@@ -71,6 +71,8 @@ const server = fastify({
 
 export const log = server.log;
 
+let htmlBuffer: Buffer | null = null;
+
 // Stray errors and exceptions capturers
 process.on('uncaughtException', error => {
 	server.log.error('Uncaught Exception:');
@@ -156,28 +158,8 @@ const start = async () => {
 			}
 		});
 
-		// Prepare index.html to be served with the necessary meta tags in place
-		let indexHTML = jetpack.read(path.join(__dirname, '..', 'dist', 'site', 'index.html'), 'utf8');
-		if (!indexHTML) {
-			server.log.error('There was a problem parsing the frontend');
-			process.exit(1);
-		}
-
-		indexHTML = indexHTML.replaceAll('{{title}}', SETTINGS.serviceName);
-		indexHTML = indexHTML.replaceAll('{{description}}', SETTINGS.metaDescription);
-		indexHTML = indexHTML.replaceAll('{{keywords}}', SETTINGS.metaKeywords);
-		indexHTML = indexHTML.replaceAll('{{twitter}}', SETTINGS.metaTwitterHandle);
-		indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.domain);
-		const newBuffer = Buffer.from(indexHTML);
-
-		server.route({
-			method: 'GET',
-			url: '/',
-			// @ts-expect-error it's fine
-			handler: (req: FastifyRequest, res: FastifyReply) => {
-				req.log.debug('hi');
-			}
-		});
+		// Wait for the html buffer with replaced values to be ready
+		await getHtmlBuffer();
 
 		server.addHook('onRequest', (req, reply, next) => {
 			req.log.debug(req);
@@ -201,7 +183,7 @@ const start = async () => {
 
 			const route = routes.some(r => req.url.startsWith(r));
 
-			if (req.url === '/' || route) return reply.type('text/html').send(newBuffer);
+			if (req.url === '/' || route) return reply.type('text/html').send(htmlBuffer);
 
 			const file = LiveAssets.get(req.url.slice(1));
 			if (!file) {
@@ -243,6 +225,35 @@ const start = async () => {
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
+};
+
+export const getHtmlBuffer = async () => {
+	let indexHTML = jetpack.read(path.join(__dirname, '..', 'dist', 'site', 'index.html'), 'utf8');
+	if (!indexHTML) {
+		server.log.error('There was a problem parsing the frontend');
+		process.exit(1);
+	}
+
+	indexHTML = indexHTML.replaceAll('{{title}}', SETTINGS.serviceName);
+	indexHTML = indexHTML.replaceAll('{{description}}', SETTINGS.metaDescription);
+	indexHTML = indexHTML.replaceAll('{{keywords}}', SETTINGS.metaKeywords);
+	indexHTML = indexHTML.replaceAll('{{twitter}}', SETTINGS.metaTwitterHandle);
+	indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.domain);
+
+	const settings = {
+		background: SETTINGS.backgroundImageURL,
+		chunkSize: SETTINGS.chunkSize,
+		logo: SETTINGS.logo,
+		maxFileSize: SETTINGS.maxSize,
+		serviceName: SETTINGS.serviceName
+	};
+
+	indexHTML = indexHTML.replaceAll(
+		'</body>',
+		`<script>window.__CHIBISAFE__ = ${JSON.stringify(settings)};</script></body>`
+	);
+
+	htmlBuffer = Buffer.from(indexHTML);
 };
 
 void start();
