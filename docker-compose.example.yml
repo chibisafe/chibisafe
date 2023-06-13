@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
-    image: itspitu/chibisafe:latest
+    image: ghcr.io/chibisafe/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./
@@ -13,4 +13,4 @@ services:
       - ./logs:/home/node/chibisafe/logs:rw
     ports:
       - 24424:8000
-    restart: always
+    restart: unless-stopped
