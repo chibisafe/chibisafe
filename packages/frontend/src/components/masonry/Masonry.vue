@@ -2,13 +2,19 @@
 	<div v-if="files?.length" class="masonry mt-8 pb-16">
 		<div v-for="file in files" :key="file.uuid" class="shadow-lg">
 			<template v-if="isFileImage(file) || isFileVideo(file)">
-				<img
-					v-element-hover="(value: boolean) => onHover(value, file.uuid)"
-					:src="file.thumb"
-					class="cursor-pointer w-full min-w-[160px]"
-					:class="isFileVideo(file) ? '' : 'min-h-[160px]'"
-					@click="showModal(file)"
-				/>
+				<a
+					:href="file.url"
+					target="_blank"
+					rel="noopener noreferrer"
+					@click.left.stop="event => showModal(file, event)"
+				>
+					<img
+						v-element-hover="(value: boolean) => onHover(value, file.uuid)"
+						:src="file.thumb"
+						class="cursor-pointer w-full min-w-[160px]"
+						:class="isFileVideo(file) ? '' : 'min-h-[160px]'"
+					/>
+				</a>
 
 				<video
 					v-if="isFileVideo(file) && isHovered[file.uuid]"
@@ -70,7 +76,8 @@ function onHover(state: boolean, uuid: string) {
 	isHovered.value[uuid] = state;
 }
 
-const showModal = (file: FileWithAdditionalData) => {
+const showModal = (file: FileWithAdditionalData, event?: MouseEvent) => {
+	event?.preventDefault();
 	modalsStore.fileInformation.file = file;
 	modalsStore.fileInformation.show = true;
 };
