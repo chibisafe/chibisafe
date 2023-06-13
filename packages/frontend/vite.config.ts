@@ -8,10 +8,9 @@ import vue from '@vitejs/plugin-vue';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import Pages from 'vite-plugin-pages';
 import { createHtmlPlugin } from 'vite-plugin-html';
-import process from 'node:process';
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
@@ -20,10 +19,7 @@ dotenv.config({
 
 // https://icon-sets.iconify.design/carbon
 
-// TODO: Revisit when implementing docker
-
-// eslint-disable-next-line no-restricted-globals, n/prefer-global/process
-const backendUrl = process.env.ENV === 'docker' ? '/api/' : 'http://127.0.0.1:8000';
+const backendUrl = 'http://127.0.0.1:8000';
 
 export default defineConfig({
 	resolve: {
@@ -78,7 +74,6 @@ export default defineConfig({
 	server: {
 		port: 8001,
 		proxy: {
-			// TODO: Disable if running through docker or in production
 			'/api': {
 				target: backendUrl,
 				changeOrigin: true,
