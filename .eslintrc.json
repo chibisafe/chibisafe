@@ -44,7 +44,10 @@
 		"vue/html-self-closing": "off",
 		"vue/comma-dangle": "off",
 		"vue/operator-linebreak": "off",
-		"vue/max-attributes-per-line": "off"
+		"vue/max-attributes-per-line": "off",
+		"vue/multiline-html-element-content-newline": "off",
+		"vue/html-indent": "off",
+		"vue/html-closing-bracket-newline": "off"
 	},
 	"globals": {
 		"defineProps": "readonly",
