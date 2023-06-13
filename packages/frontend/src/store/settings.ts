@@ -3,7 +3,7 @@ import { getSettings } from '~/use/api';
 
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
-		serviceName: 'chibisafe',
+		serviceName: '',
 		maxFileSize: 0,
 		chunkSize: 0,
 		logo: '',
