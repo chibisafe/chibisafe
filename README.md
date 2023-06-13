@@ -36,6 +36,7 @@ Whichever method you choose to install chibisafe keep in mind that the installat
 ## Docker
 To deploy chibisafe with docker you have a few options.
 If you want the latest features you can clone the repository and then run `docker-compose up`.
+
 If you want to use the latest stable image published by us you can make a `docker-compose.yml` file with the following contents and then run `docker-compose up`:
 ```yml
 version: "3.7"
@@ -53,7 +54,19 @@ services:
     restart: always
 
 ```
+Or if you prefer to use docker directly, you could do something like this replacing the path values with your own:
+```bash
+docker run -d \
+  --name=chibisafe \
+  -v /path/to/database:/home/node/chibisafe/database \
+  -v /path/to/uploads:/home/node/chibisafe/uploads \
+  -v /path/to/logs:/home/node/chibisafe/logs \
+  --restart unless-stopped \
+  ghcr.io/chibisafe/chibisafe:latest
+```
+
 Now chibisafe will be available in port 24424.
+
 For more in-depth configurations [Please refer to the docs here](docs/docker/docker.md)
 
 ## Manually
