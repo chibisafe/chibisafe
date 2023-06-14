@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-screen relative">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
 		<h1 class="text-2xl mt-8 font-semibold text-light-100">{{ albumName }} ({{ totalFiles }} files)</h1>
 		<div
 			v-if="nsfw && !enableNsfw"

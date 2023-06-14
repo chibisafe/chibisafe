@@ -231,7 +231,7 @@
 				</button>
 			</div>
 			<main class="flex-1">
-				<div id="dashboard-container" class="overflow-auto">
+				<div id="dashboard-container" class="overflow-auto h-screen">
 					<slot />
 				</div>
 			</main>
