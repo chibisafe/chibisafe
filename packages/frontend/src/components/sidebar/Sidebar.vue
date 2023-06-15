@@ -281,9 +281,9 @@ const getShareXConfig = async () => {
 		"DestinationType": "ImageUploader, FileUploader",
 		"RequestType": "POST",
 		"RequestURL": "${location.origin}/api/upload",
-		"FileFormName": "files[]",
+		"FileFormName": "file[]",
 		"Headers": {
-			"token": "${apiKey.value}"
+			"x-api-key": "${apiKey.value}"
 		},
 		"ResponseType": "Text",
 		"URL": "$json:url$",

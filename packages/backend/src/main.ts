@@ -178,7 +178,8 @@ const start = async () => {
 				'/features',
 				'/about',
 				'/privacy',
-				'/tos'
+				'/tos',
+				'/a/'
 			];
 
 			const route = routes.some(r => req.url.startsWith(r));
@@ -223,6 +224,8 @@ const start = async () => {
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
+	if (process.env.NODE_ENV === 'production')
+		console.log(`Chibisafe is listening on ${SETTINGS.host}:${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 };

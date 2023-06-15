@@ -24,6 +24,10 @@ export const options = {
 	method: 'post',
 	middlewares: [
 		{
+			name: 'apiKey',
+			optional: true
+		},
+		{
 			name: 'auth',
 			optional: true
 		}
@@ -36,7 +40,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const maxFileSize = SETTINGS.maxSize;
 
 	try {
-		if (!SETTINGS.publicMode && !req.user) throw new Error('Only registered users are allowed to upload files.');
+		if (!SETTINGS.publicMode && !req.user)
+			return await res.code(401).send({ message: 'Only registered users are allowed to upload files.' });
 		const upload = await processFile(req.raw, {
 			destination: tmpDir,
 			maxFileSize,
@@ -134,8 +139,4 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		res.log.error(error);
 		await res.code(statusCode).send(error.message);
 	}
-
-	return res.send({
-		message: 'Successfully added tag to file'
-	});
 };
