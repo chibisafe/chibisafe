@@ -83,7 +83,7 @@ This small guide assumes a lot of things including but not limited to you knowin
 ### Installing
 1. Clone the repository and `cd` into it
 2. Run `yarn install`
-3. Run `yarn generate`
+3. Run `yarn migrate`
 4. Run `yarn build`
 5. Run `yarn start`
 6. Chibisafe should now be running at http://localhost:8000
