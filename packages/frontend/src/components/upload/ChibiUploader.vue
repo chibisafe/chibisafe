@@ -4,6 +4,9 @@
 			id="upload"
 			class="absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg border-[#303436] flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
 			@click="triggerFileInput"
+			@drop.prevent="event => dropHandler(event)"
+			@dragenter.prevent
+			@dragover.prevent
 		>
 			<IconUpload class="h-12 w-12 pointer-events-none" />
 			<h3 class="font-bold text-center mt-4 pointer-events-none">
@@ -45,6 +48,18 @@ const chunkSize = computed(() => settingsStore.chunkSize);
 
 const triggerFileInput = () => {
 	inputUpload.value?.click();
+};
+
+const dropHandler = (event: DragEvent) => {
+	if (!event.dataTransfer) return;
+	for (const file of Array.from(event.dataTransfer.files)) {
+		const fileData = new File([file], file.name, {
+			type: file.type
+		});
+
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		void processFile(fileData);
+	}
 };
 
 const pasteHandler = (event: ClipboardEvent) => {
