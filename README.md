@@ -99,7 +99,10 @@ If you are upgrading from `v3.x` to `v4.0.0` (lolisafe to chibisafe) and you wan
 
 <details>
 	<summary>Migrating from v4.x to v5</summary>
-	At the moment there is no migration script, so users that want to use v5 need to start with a clean slate.
+
+If you're upgrading from `v4.x` to `v5` you can run `yarn migrate-v4-to-v5` to start the migration process. Depending how many files you have in your old instance it can take up to 30 minutes so be patient. It'll ask you for the absolute path to your v4 sqlite database and then it'll proceed to migrate your data. Once the process is done there is one more thing to do, which is to move the old `./uploads` folder from chibisafe v4 to the root of your v5 folder.
+
+> Note: if your uploads folder is in another location like a different/network drive and you are using symlinks, make sure to update the symlink to point it to the uploads folder in root of the new chibisafe
 </details>
 
 ### Screenshots
