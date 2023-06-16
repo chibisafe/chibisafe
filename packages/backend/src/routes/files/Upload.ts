@@ -82,8 +82,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			ip: req.ip
 		};
 
-		console.log('FILE HASH:', file.hash);
-
 		let uploadedFile;
 		const fileOnDb = await checkFileHashOnDB(req.user, file);
 		if (fileOnDb?.repeated) {
