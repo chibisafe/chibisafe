@@ -1,0 +1,47 @@
+{
+	"name": "@chibisafe/migration",
+	"version": "0.0.1",
+	"description": "Migration tool for chibisafe versions 🚀",
+	"license": "MIT",
+	"author": {
+		"name": "Pitu",
+		"email": "heyitspitu@gmail.com",
+		"url": "https://github.com/Pitu"
+	},
+	"scripts": {
+		"start": "ts-node src/index.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WeebDev/chibisafe"
+	},
+	"bugs": {
+		"url": "https://github.com/WeebDev/chibisafe/issues"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"devDependencies": {
+		"@clack/prompts": "^0.6.3",
+		"@prisma/client": "^4.15.0",
+		"@types/better-sqlite3": "^7.6.4",
+		"@types/node": "^18.0.6",
+		"@types/uuid": "^8.3.4",
+		"better-sqlite3": "^8.4.0",
+		"eslint": "^8.20.0",
+		"eslint-config-neon": "^0.1.33",
+		"prisma": "^4.13.0",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.8.4",
+		"uuid": "^9.0.0"
+	},
+	"prisma": {
+		"schema": "../backend/src/prisma/schema.prisma"
+	},
+	"volta": {
+		"node": "18.9.0"
+	},
+	"dependencies": {
+		"remove": "^0.1.5"
+	}
+}
