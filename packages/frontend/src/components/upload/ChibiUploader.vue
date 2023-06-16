@@ -13,6 +13,7 @@
 			@dragend.prevent="onDragEnd"
 			@dragexit.prevent="onDragEnd"
 			@dragleave.prevent="onDragEnd"
+			@dragover.prevent
 		>
 			<IconUpload class="h-12 w-12 pointer-events-none" />
 			<h3 class="font-bold text-center mt-4 pointer-events-none">
@@ -67,6 +68,8 @@ const dropHandler = (event: DragEvent) => {
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		void processFile(fileData);
 	}
+
+	onDragEnd();
 };
 
 const pasteHandler = (event: ClipboardEvent) => {
