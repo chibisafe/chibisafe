@@ -89,6 +89,8 @@ This small guide assumes a lot of things including but not limited to you knowin
 6. Chibisafe should now be running at http://localhost:8000
 7. If you want to run chibisafe behind your own domain, we have some [docker guides](docs/docker/docker.md) on how to do this.
 
+## Migration
+
 <details>
   <summary>Migrating from v3.x (lolisafe) to v4.x (chibisafe)</summary>
 
