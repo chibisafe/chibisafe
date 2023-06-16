@@ -21,6 +21,7 @@ const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
 export const uploadPath = path.join(__dirname, '../../../../', 'uploads');
+export const tmpUploadPath = path.join(__dirname, '../../../../', 'uploads', 'tmp');
 
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && SETTINGS.blockNoExtension) return true;
@@ -49,6 +50,15 @@ export const getUniqueFileIdentifier = async (): Promise<string | null> => {
 
 	log.error('Couldnt allocate identifier for file');
 	return null;
+};
+
+export const deleteTmpFile = async (uploadPath: string) => {
+	try {
+		await jetpack.removeAsync(uploadPath);
+	} catch (error) {
+		log.error(`There was an error removing the file at < ${uploadPath} >`);
+		log.error(error);
+	}
 };
 
 export const deleteFile = async (filename: string, deleteFromDB = false) => {
@@ -136,11 +146,7 @@ export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
 	return extended;
 };
 
-export const storeFileToDb = async (
-	user: RequestUser | User | undefined,
-	file: FileInProgress,
-	albumId?: number | null
-) => {
+export const checkFileHashOnDB = async (user: RequestUser | User | undefined, file: FileInProgress) => {
 	const dbFile = await prisma.files.findFirst({
 		where: {
 			hash: file.hash,
@@ -161,7 +167,13 @@ export const storeFileToDb = async (
 			repeated: true
 		};
 	}
+};
 
+export const storeFileToDb = async (
+	user: RequestUser | User | undefined,
+	file: FileInProgress,
+	albumId?: number | null
+) => {
 	const now = utc().toDate();
 
 	const data = {
@@ -266,9 +278,9 @@ export const getExtension = (filename: string, lower = false): string => {
 	return lower ? str.toLowerCase() : str;
 };
 
-export const hashFile = async (file: string): Promise<string> => {
+export const hashFile = async (uploadPath: string): Promise<string> => {
 	const hash = blake3.createHash();
-	const stream = jetpack.createReadStream(path.join(__dirname, '..', '..', '..', '..', 'uploads', file));
+	const stream = jetpack.createReadStream(uploadPath);
 	return new Promise((resolve, reject) => {
 		stream.on('data', data => {
 			hash.update(data);
