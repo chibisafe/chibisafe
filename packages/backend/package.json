@@ -10,8 +10,8 @@
 	},
 	"scripts": {
 		"build": "rimraf \"dist/*/{*.js,!(site/)}\" && tsc && tsc-alias",
-		"start": "cross-env NODE_ENV=production node -r tsconfig-paths/register dist/main.js",
-		"dev": "ts-node src/main.ts",
+		"start": "cross-env NODE_ENV=production NODE_PRESERVE_SYMLINKS=1 node -r tsconfig-paths/register dist/main.js",
+		"dev": "cross-env NODE_PRESERVE_SYMLINKS=1 ts-node src/main.ts",
 		"dev:reload": "nodemon src/main.ts",
 		"studio": "prisma studio",
 		"generate": "prisma generate",
@@ -31,7 +31,7 @@
 		"node": ">=18.0.0"
 	},
 	"dependencies": {
-		"@chibisafe/uploader-module": "latest",
+		"@chibisafe/uploader-module": "^1.0.5",
 		"@fastify/cors": "^8.2.1",
 		"@fastify/helmet": "^10.1.0",
 		"@fastify/rate-limit": "^8.0.0",
@@ -46,7 +46,7 @@
 		"ffmpeg-probe": "^1.0.6",
 		"file-stream-rotator": "^1.0.0",
 		"fluent-ffmpeg": "^2.1.2",
-		"fs-jetpack": "^4.3.1",
+		"fs-jetpack": "^5.1.0",
 		"jsonwebtoken": "^8.5.1",
 		"live-directory": "^3.0.3",
 		"lookpath": "^1.2.2",
@@ -60,7 +60,7 @@
 		"systeminformation": "^5.12.6",
 		"tsc-alias": "^1.8.6",
 		"tsconfig-paths": "^4.2.0",
-		"uuid": "^8.3.2"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@types/adm-zip": "^0.5.0",
