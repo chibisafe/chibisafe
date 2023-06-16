@@ -1,8 +1,8 @@
-import path from 'node:path';
 import { PrismaClient } from '@prisma/client';
-import { intro, outro, text, spinner } from '@clack/prompts';
+import { intro, outro, text, spinner, confirm } from '@clack/prompts';
 import betterSqlite from 'better-sqlite3';
 import { v4 as uuidv4 } from 'uuid';
+import process from 'node:process';
 
 type sqliteUser = {
 	id: number;
@@ -53,73 +53,64 @@ type sqliteFile = {
 	editedAt: number;
 };
 
-const getPrismaUserId = (
-	sqliteUserId: number,
-	sqliteUsers: sqliteUser[],
-	prismaUsers: { id: number; username: string }[]
-) => {
-	const sqliteUser = sqliteUsers.find(user => user.id === sqliteUserId);
-	const prismaUser = prismaUsers.find(user => user.username === sqliteUser?.username);
-	if (!prismaUser) {
-		throw new Error(`Could not find user with id ${sqliteUserId}`);
-	}
-
-	return prismaUser.id;
-};
-
-const getPrismaAlbumId = (
-	sqliteAlbumId: number,
-	sqliteAlbums: sqliteAlbum[],
-	prismaAlbums: { id: number; name: string }[]
-) => {
-	const sqliteAlbum = sqliteAlbums.find(album => album.id === sqliteAlbumId);
-	const prismaAlbum = prismaAlbums.find(album => album.name === sqliteAlbum?.name);
-	if (!prismaAlbum) {
-		throw new Error(`Could not find album with id ${sqliteAlbumId}`);
-	}
-
-	return prismaAlbum.id;
+type sqliteAlbumFile = {
+	id: number;
+	albumId: number;
+	fileId: number;
 };
 
 const start = async () => {
 	const loading = spinner();
-	intro('This tool will help you migrate from chibisafe v4 to chibisafe v5');
+	intro(
+		'This tool will help you migrate from chibisafe v4 to chibisafe v5 \n   Keep in mind this will delete the admin account created by chibisafe v5 \n   Once this migration is done, you should be able to log in with your \n   old username and password \n\n   NOTE: THIS WILL DELETE EVERYTHING IN THE CHIBISAFE V5 DATABASE'
+	);
 
-	// TODO: tell the suer they can only run this if the database is empty
-	// const databaseLocation = await text({
-	// 	message: 'Paste the full location to your Chibisafe v4 database file',
-	// 	placeholder: '    (For example /home/chibisafe/database/database.sqlite)',
-	// 	initialValue: '',
-	// 	validate(value) {
-	// 		if (value.length === 0) return `Value is required!`;
-	// 		if (!value.endsWith('.sqlite')) return `Value must be a .sqlite file!`;
-	// 	}
-	// });
+	const acceptAndContinue = await confirm({
+		message: 'Do you want to continue?'
+	});
+
+	if (!acceptAndContinue) {
+		process.exit(0);
+	}
+
+	const databaseLocation = await text({
+		message: 'Paste the full location to your Chibisafe v4 database file',
+		placeholder: '    (For example /home/chibisafe/database/database.sqlite)',
+		initialValue: '',
+		validate(value) {
+			if (value.length === 0) return `Value is required!`;
+			if (!value.endsWith('.sqlite')) return `Value must be a .sqlite file!`;
+		}
+	});
 
 	const prisma = new PrismaClient();
-	const tempPath = path.join(__dirname, '..', 'test', 'database.sqlite');
-	// const sqlite = betterSqlite(databaseLocation as string);
-	const sqlite = betterSqlite(tempPath);
+	// const tempPath = path.join(__dirname, '..', 'test', 'database.sqlite');
+	// const sqlite = betterSqlite(tempPath);
+	const sqlite = betterSqlite(databaseLocation as string);
 
 	const sqliteUsers = sqlite.prepare('SELECT * FROM users').all() as sqliteUser[];
 	const sqliteAlbums = sqlite.prepare('SELECT * FROM albums').all() as sqliteAlbum[];
 	const sqliteLinks = sqlite.prepare('SELECT * FROM links').all() as sqliteLink[];
 	const sqliteFiles = sqlite.prepare('SELECT * FROM files').all() as sqliteFile[];
+	const sqliteAlbumFiles = sqlite.prepare('SELECT * FROM albumsFiles').all() as sqliteAlbumFile[];
+
+	// ============================ COMMENT RIGHT HERE
+	loading.start('Deleting all data from the database');
+	await prisma.$executeRawUnsafe('Delete from users');
+	await prisma.$executeRawUnsafe("DELETE FROM SQLITE_SEQUENCE WHERE name='users';");
+	await prisma.$executeRawUnsafe('Delete from albums');
+	await prisma.$executeRawUnsafe("DELETE FROM SQLITE_SEQUENCE WHERE name='albums';");
+	await prisma.$executeRawUnsafe('Delete from links');
+	await prisma.$executeRawUnsafe("DELETE FROM SQLITE_SEQUENCE WHERE name='links';");
+	await prisma.$executeRawUnsafe('Delete from files');
+	await prisma.$executeRawUnsafe("DELETE FROM SQLITE_SEQUENCE WHERE name='files';");
+	loading.stop('Deleted all data from the database');
 
 	loading.start('Processing users');
 	for (const user of sqliteUsers) {
-		const userExists = await prisma.users.findFirst({
-			where: {
-				username: user.username
-			}
-		});
-
-		if (userExists) {
-			continue;
-		}
-
 		await prisma.users.create({
 			data: {
+				id: user.id,
 				uuid: uuidv4(),
 				apiKey: user.apiKey,
 				apiKeyEditedAt: user.apiKeyEditedAt ? new Date(user.apiKeyEditedAt) : null,
@@ -136,50 +127,35 @@ const start = async () => {
 
 	loading.stop('Processed all users');
 
-	// Save the users in a variable so we can use it later
-	const prismaUsers = await prisma.users.findMany();
-
 	loading.start('Processing albums');
 	for (const album of sqliteAlbums) {
-		const albumExists = await prisma.albums.findFirst({
-			where: {
-				userId: getPrismaUserId(album.userId, sqliteUsers, prismaUsers),
-				name: album.name
-			}
-		});
-
-		if (albumExists) {
-			continue;
-		}
-
 		await prisma.albums.create({
 			data: {
+				id: album.id,
 				uuid: uuidv4(),
-				userId: getPrismaUserId(album.userId, sqliteUsers, prismaUsers),
+				userId: album.userId,
 				name: album.name,
 				zippedAt: album.zippedAt ? new Date(album.zippedAt) : null,
 				createdAt: new Date(album.createdAt),
 				editedAt: new Date(album.editedAt),
-				nsfw: album.nsfw
+				nsfw: Boolean(album.nsfw)
 			}
 		});
 	}
 
 	loading.stop('Processed all albums');
 
-	// Save the albums in a variable so we can use it later
-	const prismaAlbums = await prisma.albums.findMany();
-
 	loading.start('Processing album links');
 	for (const link of sqliteLinks) {
 		await prisma.links.create({
 			data: {
+				id: link.id,
 				uuid: uuidv4(),
-				userId: getPrismaUserId(link.userId, sqliteUsers, prismaUsers),
-				albumId: getPrismaAlbumId(link.albumId, sqliteAlbums, prismaAlbums),
+				userId: link.userId,
+				albumId: link.albumId,
 				identifier: link.identifier,
 				views: link.views,
-				enabled: link.enabled,
+				enabled: Boolean(link.enabled),
 				enableDownload: link.enabledDownload,
 				expiresAt: link.expiresAt ? new Date(link.expiresAt) : null,
 				createdAt: new Date(link.createdAt),
@@ -194,8 +170,8 @@ const start = async () => {
 	for (const file of sqliteFiles) {
 		await prisma.files.create({
 			data: {
+				id: file.id,
 				uuid: uuidv4(),
-				userId: getPrismaUserId(file.userId, sqliteUsers, prismaUsers),
 				name: file.name,
 				original: file.original,
 				type: file.type,
@@ -210,7 +186,58 @@ const start = async () => {
 
 	loading.stop('Processed all files');
 
-	outro(`You're all set!`);
+	const prismaFiles = await prisma.files.findMany();
+
+	loading.start('Processing file-album relations');
+	const everyAlbum = await prisma.albums.findMany();
+
+	for (const file of prismaFiles) {
+		const foundAlbumRelation = sqliteAlbumFiles.find(albumFile => albumFile.fileId === file.id);
+		if (!foundAlbumRelation?.albumId) continue;
+		if (typeof foundAlbumRelation.albumId !== 'number') continue;
+
+		const albumExists = everyAlbum.find(album => album.id === foundAlbumRelation.albumId);
+		if (!albumExists) continue;
+
+		await prisma.files.update({
+			where: {
+				id: file.id
+			},
+			data: {
+				albums: {
+					connect: {
+						id: foundAlbumRelation.albumId
+					}
+				}
+			}
+		});
+	}
+
+	loading.stop('Processed file-album relations');
+
+	loading.start('Processing file-user relations');
+	for (const file of prismaFiles) {
+		const foundUserRelation = sqliteFiles.find(sqliteFile => sqliteFile.id === file.id);
+		if (!foundUserRelation?.userId) continue;
+		if (typeof foundUserRelation.userId !== 'number') continue;
+
+		await prisma.files.update({
+			where: {
+				id: file.id
+			},
+			data: {
+				user: {
+					connect: {
+						id: foundUserRelation.userId
+					}
+				}
+			}
+		});
+	}
+
+	loading.stop('Processed file-user relations');
+
+	outro(`You're all set! The final step is to copy your old ./uploads folder to the root of this project.`);
 };
 
 void start();
