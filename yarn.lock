@@ -302,15 +302,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@portal:/C:/Users/crawl/Source/uploader/packages/uploader-module::locator=chibisafe%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@chibisafe/uploader-module@portal:/C:/Users/crawl/Source/uploader/packages/uploader-module::locator=chibisafe%40workspace%3A."
+"@chibisafe/uploader-module@npm:latest":
+  version: 1.0.4
+  resolution: "@chibisafe/uploader-module@npm:1.0.4"
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
+  checksum: 48bf3d8237a4f5eeed08856fb7a94aa1b52ffe21e573533145694809cf9c14761da4fa40e5383ba4cc1d3f7eb99d15066f780ff786a4e38515ae3b2169dd875d
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@chibisafe/website@workspace:packages/frontend":
   version: 0.0.0-use.local
