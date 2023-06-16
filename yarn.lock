@@ -242,7 +242,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/backend@workspace:packages/backend"
   dependencies:
-    "@chibisafe/uploader-module": latest
+    "@chibisafe/uploader-module": ^1.0.5
     "@fastify/cors": ^8.2.1
     "@fastify/helmet": ^10.1.0
     "@fastify/rate-limit": ^8.0.0
@@ -295,21 +295,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@chibisafe/uploader-client@npm:latest":
-  version: 1.0.4
-  resolution: "@chibisafe/uploader-client@npm:1.0.4"
-  checksum: b86a478b1e750a04ae39d1b0d55d92ee90fedefc35e26ee5b6a9e327ed668b0d788d38353b677e6925892fc0af15b3b17ee3a1c88390089ffbb2da8a9bb21dc2
+"@chibisafe/uploader-client@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@chibisafe/uploader-client@npm:1.0.5"
+  checksum: 774bcd412f266619290d7be4a375896f30994d28831060f5e3f164e0dd53b7a0545a6449dfe70bcabc46a066efeac67bafc07d182ef09f3249d4b40eaa6648b6
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@npm:latest":
-  version: 1.0.4
-  resolution: "@chibisafe/uploader-module@npm:1.0.4"
+"@chibisafe/uploader-module@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@chibisafe/uploader-module@npm:1.0.5"
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
-  checksum: 48bf3d8237a4f5eeed08856fb7a94aa1b52ffe21e573533145694809cf9c14761da4fa40e5383ba4cc1d3f7eb99d15066f780ff786a4e38515ae3b2169dd875d
+  checksum: 1b9f4635eb2e9cb631d18c68ae8e2827db332706eadbd71c64845fad92cb1a327c532b98d1224a27dd776892e49ef185ed8d901466762792f415ae07b0c8c486
   languageName: node
   linkType: hard
 
@@ -317,7 +317,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/website@workspace:packages/frontend"
   dependencies:
-    "@chibisafe/uploader-client": latest
+    "@chibisafe/uploader-client": ^1.0.5
     "@headlessui/vue": ^1.6.5
     "@iconify-json/carbon": ^1.1.8
     "@tailwindcss/forms": ^0.5.3
