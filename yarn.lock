@@ -271,7 +271,7 @@ __metadata:
     ffmpeg-probe: ^1.0.6
     file-stream-rotator: ^1.0.0
     fluent-ffmpeg: ^2.1.2
-    fs-jetpack: ^4.3.1
+    fs-jetpack: ^5.1.0
     jsonwebtoken: ^8.5.1
     live-directory: ^3.0.3
     lookpath: ^1.2.2
@@ -291,7 +291,7 @@ __metadata:
     tsc-alias: ^1.8.6
     tsconfig-paths: ^4.2.0
     typescript: ^4.8.4
-    uuid: ^8.3.2
+    uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 
@@ -302,16 +302,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@npm:latest":
-  version: 1.0.4
-  resolution: "@chibisafe/uploader-module@npm:1.0.4"
+"@chibisafe/uploader-module@portal:/C:/Users/crawl/Source/uploader/packages/uploader-module::locator=chibisafe%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@chibisafe/uploader-module@portal:/C:/Users/crawl/Source/uploader/packages/uploader-module::locator=chibisafe%40workspace%3A."
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
-  checksum: 48bf3d8237a4f5eeed08856fb7a94aa1b52ffe21e573533145694809cf9c14761da4fa40e5383ba4cc1d3f7eb99d15066f780ff786a4e38515ae3b2169dd875d
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@chibisafe/website@workspace:packages/frontend":
   version: 0.0.0-use.local
@@ -4740,16 +4739,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-jetpack@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "fs-jetpack@npm:4.3.1"
-  dependencies:
-    minimatch: "npm:^3.0.2"
-    rimraf: "npm:^2.6.3"
-  checksum: ffe90946ec250c6042569faa2ec7753594779ca0e8a72eea0b76b82574542c50d580974f54c5d6885f44f5719ece173be778cf82dc50ad90f43dab043f4061c9
-  languageName: node
-  linkType: hard
-
 "fs-jetpack@npm:^5.1.0":
   version: 5.1.0
   resolution: "fs-jetpack@npm:5.1.0"
@@ -6977,7 +6966,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^3.0.2, minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
+"minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
   dependencies:
@@ -8638,17 +8627,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^2.6.3":
-  version: 2.7.1
-  resolution: "rimraf@npm:2.7.1"
-  dependencies:
-    glob: "npm:^7.1.3"
-  bin:
-    rimraf: ./bin.js
-  checksum: cdc7f6eacb17927f2a075117a823e1c5951792c6498ebcce81ca8203454a811d4cf8900314154d3259bb8f0b42ab17f67396a8694a54cae3283326e57ad250cd
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:^3.0.2":
   version: 3.0.2
   resolution: "rimraf@npm:3.0.2"
@@ -10103,15 +10081,6 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^8.3.2":
-  version: 8.3.2
-  resolution: "uuid@npm:8.3.2"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
   languageName: node
   linkType: hard
 

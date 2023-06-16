@@ -12,7 +12,8 @@ import {
 	constructFilePublicLink,
 	constructFilePublicLinkNew,
 	hashFile,
-	deleteFile
+	checkFileHashOnDB,
+	deleteTmpFile
 } from '@/utils/File';
 import process from 'node:process';
 
@@ -65,8 +66,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 		// Move file to permanent location
 		const newPath = path.join(__dirname, '..', '..', '..', '..', '..', 'uploads', newFileName);
-		await jetpack.moveAsync(upload.path as string, newPath);
-
 		const file = {
 			name: newFileName,
 			// @ts-ignore
@@ -78,19 +77,28 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			type: upload.metadata.type as string,
 			// @ts-ignore
 			size: String(upload.metadata.size),
-			hash: await hashFile(newFileName),
+			hash: await hashFile(upload.path as string),
 			// @ts-ignore
 			ip: req.ip
 		};
 
-		// Store file in database
-		const savedFile = await storeFileToDb(req.user ? req.user : undefined, file, album ? album : undefined);
-		if (savedFile.repeated) {
-			// TODO: It would be nice to delete the file BEFORE moving it to another directory to save resources
-			await deleteFile(newPath);
-		}
+		console.log('FILE HASH:', file.hash);
 
-		const uploadedFile = savedFile.file;
+		let uploadedFile;
+		const fileOnDb = await checkFileHashOnDB(req.user, file);
+		if (fileOnDb?.repeated) {
+			uploadedFile = fileOnDb.file;
+			await deleteTmpFile(upload.path as string);
+		} else {
+			await jetpack.moveAsync(upload.path as string, newPath);
+			// Store file in database
+			const savedFile = await storeFileToDb(req.user ? req.user : undefined, file, album ? album : undefined);
+
+			uploadedFile = savedFile.file;
+
+			// Generate thumbnails
+			void generateThumbnails(savedFile.file.name);
+		}
 
 		const linkData = constructFilePublicLinkNew(req, uploadedFile.name);
 		// Construct public link
@@ -98,9 +106,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			...uploadedFile,
 			...linkData
 		};
-
-		// Generate thumbnails
-		void generateThumbnails(savedFile.file.name);
 
 		/*
 		 * The response object structure.
