@@ -1,72 +1,27 @@
 import fastify from 'fastify';
-import type { FastifyRequest, FastifyReply } from 'fastify';
-
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import fstatic from '@fastify/static';
-
 import LiveDirectory from 'live-directory';
-
 import jetpack from 'fs-jetpack';
-import * as FileStreamRotator from 'file-stream-rotator';
-
 import process from 'node:process';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 
 import Routes from './structures/routes';
-
 import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
-
-// Create the pino logger
-const envToLogger = {
-	development: {
-		transport: {
-			target: 'pino-pretty',
-			options: {
-				translateTime: 'HH:MM:ss Z',
-				ignore: 'pid,hostname'
-			}
-		},
-		level: 'debug',
-		sync: true
-	},
-	production: {
-		serializers: {
-			res(reply: FastifyReply) {
-				return {
-					statusCode: reply.statusCode
-				};
-			},
-			req(request: FastifyRequest) {
-				return {
-					method: request.method,
-					url: request.url,
-					parameters: request.params,
-					remoteAddress: request.ip
-				};
-			}
-		},
-		stream: FileStreamRotator.getStream({
-			filename: path.join(__dirname, '..', '..', '..', 'logs', 'chibisafe-%DATE%'),
-			extension: '.log',
-			date_format: 'YYYY-MM-DD',
-			frequency: 'daily',
-			audit_file: path.join(__dirname, '..', '..', '..', 'logs', 'chibisafe-audit.json')
-		})
-	}
-};
+import { Logger } from './utils/Logger';
 
 // Create the Fastify server
 const server = fastify({
 	trustProxy: true,
 	connectionTimeout: 600000,
 	// @ts-ignore-error can't use process.env as its undefined
-	logger: process.env.NODE_ENV === 'production' ? envToLogger.production : envToLogger.development
+	logger: process.env.NODE_ENV === 'production' ? Logger.production : Logger.development
 });
 
 export const log = server.log;
