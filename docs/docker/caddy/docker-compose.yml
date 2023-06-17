@@ -4,9 +4,6 @@ services:
   chibisafe:
     image: ghcr.io/chibisafe/chibisafe:latest
     container_name: chibisafe
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
     volumes:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
