@@ -7,7 +7,7 @@ import { utc } from 'moment';
 export const options = {
 	url: '/tag/create',
 	method: 'post',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

@@ -6,7 +6,7 @@ import { deleteFile } from '@/utils/File';
 export const options = {
 	url: '/file/:uuid',
 	method: 'delete',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

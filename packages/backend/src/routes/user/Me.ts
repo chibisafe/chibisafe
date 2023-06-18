@@ -4,7 +4,7 @@ import type { RequestWithUser } from '@/structures/interfaces';
 export const options = {
 	url: '/user/me',
 	method: 'get',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = (req: RequestWithUser, res: FastifyReply) =>

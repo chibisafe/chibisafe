@@ -5,7 +5,7 @@ import prisma from '@/structures/database';
 export const options = {
 	url: '/album/:uuid/link/:linkUuid/edit',
 	method: 'post',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

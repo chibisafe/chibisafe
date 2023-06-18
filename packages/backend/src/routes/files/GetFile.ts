@@ -6,7 +6,7 @@ import type { ExtendedFile, RequestWithUser } from '@/structures/interfaces';
 export const options = {
 	url: '/file/:uuid',
 	method: 'get',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

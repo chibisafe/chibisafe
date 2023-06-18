@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const options = {
 	url: '/album/:uuid/link',
 	method: 'post',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
