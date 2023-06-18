@@ -5,7 +5,7 @@ import type { RequestWithUser } from '@/structures/interfaces';
 export const options = {
 	url: '/file/:uuid/album/:albumUuid',
 	method: 'delete',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

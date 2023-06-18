@@ -6,7 +6,7 @@ import type { ExtendedFile, File, RequestWithUser } from '@/structures/interface
 export const options = {
 	url: '/album/:uuid',
 	method: 'get',
-	middlewares: ['auth']
+	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
