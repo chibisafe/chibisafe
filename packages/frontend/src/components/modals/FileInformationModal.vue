@@ -93,7 +93,14 @@
 										label="Original Name"
 										readOnly
 									/>
-									<InputWithOverlappingLabel :value="file.ip" class="mt-4" label="IP" readOnly />
+									<InputWithOverlappingLabel
+										:value="file.ip"
+										class="mt-4"
+										label="IP"
+										type="link"
+										:href="`/dashboard/admin/ip/${file.ip}`"
+										readOnly
+									/>
 									<InputWithOverlappingLabel
 										:value="file.url"
 										class="mt-4"
