@@ -2,18 +2,8 @@ import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RequestWithUser } from '@/structures/interfaces';
 import prisma from '@/structures/database';
 
-export default async (
-	req: RequestWithUser,
-	res: FastifyReply,
-	next: HookHandlerDoneFunction,
-	options?: { [index: number | string]: any }
-) => {
+export default async (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {
 	const apiKey = req.headers['x-api-key'] as string;
-
-	if (!apiKey && options?.optional) {
-		next();
-		return;
-	}
 
 	if (!apiKey) return;
 
