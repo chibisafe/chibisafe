@@ -74,12 +74,13 @@
 					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-dark-90 dark:text-light-100">
-					<button type="button" class="ml-4">Delete</button>
+					<button type="button" class="ml-4" @click="showDeleteFileModal(file)">Delete</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<FileInformationModal :type="props.type === 'admin' ? 'admin' : null" />
+	<DeleteFileModal />
 </template>
 
 <script setup lang="ts">
@@ -90,6 +91,7 @@ import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~
 import dayjs from 'dayjs';
 
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
+import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
 import IconDocument from '~icons/carbon/document';
 import IconPdf from '~icons/carbon/document-pdf';
 import IconAudio from '~icons/carbon/document-audio';
@@ -107,6 +109,17 @@ const files = computed(() => {
 	else if (props.type === 'album') return albumsStore.album?.files;
 	else return [];
 });
+
+const showDeleteFileModal = (file: FileWithAdditionalData | null) => {
+	if (!file) return;
+	// If the user is an admin we want to delete it through another endpoint
+	if (props.type === 'admin') {
+		modalsStore.deleteFile.admin = true;
+	}
+
+	modalsStore.deleteFile.file = file;
+	modalsStore.deleteFile.show = true;
+};
 
 const showModal = (file: FileWithAdditionalData) => {
 	modalsStore.fileInformation.file = file;
