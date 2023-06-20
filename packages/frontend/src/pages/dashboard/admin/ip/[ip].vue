@@ -17,10 +17,30 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100">
-				<!-- {{ user.username }} uploads ({{ totalFiles }} files) -->
+			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
+				{{ props.ip }} uploads ({{ totalFiles }} files)
+				<span class="grow h-1 w-full"></span>
+
+				<div class="items-center my-8">
+					<button
+						v-if="isBanned"
+						type="button"
+						class="bg-green-700 hover:bg-green-800 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base"
+						@click="doUnbanIP"
+					>
+						Unban IP
+					</button>
+					<button
+						v-else
+						type="button"
+						class="bg-red-600 hover:bg-red-900 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base"
+						@click="doBanIP"
+					>
+						Ban IP
+					</button>
+				</div>
 			</h1>
-			<!-- <FilesWrapper type="admin" /> -->
+			<FilesWrapper type="admin" />
 		</div>
 	</Sidebar>
 </template>
@@ -29,6 +49,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
+import { banIP, unbanIP } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
@@ -40,7 +61,7 @@ const props = defineProps<{
 const route = useRoute();
 const filesStore = useFilesStore();
 const totalFiles = computed(() => filesStore.count);
-const user = computed(() => filesStore.owner);
+const isBanned = computed(() => filesStore.isBanned);
 
 const checkRouteQuery = () => {
 	if (route.query.page) {
@@ -54,6 +75,16 @@ const checkRouteQuery = () => {
 	}
 
 	void filesStore.get({ admin: true, ip: props.ip });
+};
+
+const doBanIP = async () => {
+	await banIP(props.ip);
+	filesStore.isBanned = true;
+};
+
+const doUnbanIP = async () => {
+	await unbanIP(props.ip);
+	filesStore.isBanned = false;
 };
 
 checkRouteQuery();

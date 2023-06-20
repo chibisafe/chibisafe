@@ -10,7 +10,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 100 } = req.query as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 	const { ip }: { ip: string } = req.body as { ip: string };
 
 	if (!ip) return res.code(400).send({ message: 'No ip provided' });
@@ -37,9 +37,16 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		readyFiles.push(constructFilePublicLink(req, file));
 	}
 
+	const checkForBan = await prisma.bans.findFirst({
+		where: {
+			ip
+		}
+	});
+
 	return res.send({
 		message: "Successfully retrieved IP's files",
 		files: readyFiles,
-		count
+		count,
+		banned: Boolean(checkForBan)
 	});
 };
