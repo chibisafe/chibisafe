@@ -176,6 +176,18 @@ export const getFilesFromUser = async (uuid: string, page: number) => {
 	}
 };
 
+export const getFilesFromIP = async (ip: string, page: number) => {
+	try {
+		const data = await request.post(`admin/ip/files?page=${page}`, {
+			ip
+		});
+		debug('getFilesFromIP', data);
+		return { files: data.files, count: data.count, banned: data.banned };
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getFile = async (uuid: string) => {
 	try {
 		const data = await request.get(`file/${uuid}`);
@@ -199,6 +211,26 @@ export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const data = await request.delete(`admin/file/${uuid}`);
 		debug('deleteFileAsAdmin', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const banIP = async (ip: string) => {
+	try {
+		const data = await request.post(`admin/ip/ban`, { ip });
+		debug('banIP', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const unbanIP = async (ip: string) => {
+	try {
+		const data = await request.post(`admin/ip/unban`, { ip });
+		debug('unbanIP', data);
+		if (data.message) sendSuccessToast(data.message);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
