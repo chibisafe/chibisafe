@@ -15,15 +15,20 @@
 			@dragleave.prevent="onDragEnd"
 			@dragover.prevent
 		>
-			<IconUpload class="h-12 w-12 pointer-events-none" />
-			<h3 class="font-bold text-center mt-4 pointer-events-none">
-				DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
-			</h3>
-			<p class="text-center mt-4 w-3/4 pointer-events-none">
-				Drag and drop your files here. {{ formatBytes(maxFileSize) }} max per file.
-			</p>
+			<template v-if="isUploadEnabled">
+				<IconUpload class="h-12 w-12 pointer-events-none" />
+				<h3 class="font-bold text-center mt-4 pointer-events-none">
+					DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
+				</h3>
+				<p class="text-center mt-4 w-3/4 pointer-events-none">
+					Drag and drop your files here. {{ formatBytes(maxFileSize) }} max per file.
+				</p>
 
-			<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
+				<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
+			</template>
+			<template v-else>
+				<h3 class="text-center mt-4 w-3/4 pointer-events-none">Upload is disabled without an account</h3>
+			</template>
 		</div>
 		<AlbumDropdown v-if="isLoggedIn" class="absolute -bottom-12 w-full" />
 	</div>
@@ -51,6 +56,11 @@ const files = ref<File[] | null>();
 const inputUpload = ref<HTMLInputElement>();
 const isDragging = ref(false);
 
+const isUploadEnabled = computed(() => {
+	if (settingsStore.publicMode) return true;
+	return isLoggedIn.value;
+});
+
 const maxFileSize = computed(() => settingsStore.maxFileSize);
 const chunkSize = computed(() => settingsStore.chunkSize);
 
@@ -59,6 +69,7 @@ const triggerFileInput = () => {
 };
 
 const dropHandler = (event: DragEvent) => {
+	if (!isUploadEnabled.value) return;
 	if (!event.dataTransfer) return;
 	for (const file of Array.from(event.dataTransfer.files)) {
 		const fileData = new File([file], file.name, {

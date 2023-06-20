@@ -25,8 +25,7 @@ export const options = {
 	method: 'post',
 	middlewares: [
 		{
-			name: 'apiKey',
-			optional: true
+			name: 'apiKey'
 		},
 		{
 			name: 'auth',

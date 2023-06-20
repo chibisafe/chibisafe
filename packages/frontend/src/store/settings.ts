@@ -7,7 +7,9 @@ export const useSettingsStore = defineStore('settings', {
 		maxFileSize: 0,
 		chunkSize: 0,
 		logo: '',
-		background: ''
+		background: '',
+		publicMode: false,
+		userAccounts: false
 	}),
 	actions: {
 		async get() {
@@ -19,6 +21,8 @@ export const useSettingsStore = defineStore('settings', {
 			this.chunkSize = response.chunkSize;
 			this.logo = response.logo;
 			this.background = response.background;
+			this.publicMode = response.publicMode;
+			this.userAccounts = response.userAccounts;
 		}
 	}
 });

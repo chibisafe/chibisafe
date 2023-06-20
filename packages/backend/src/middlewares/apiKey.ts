@@ -4,6 +4,7 @@ import prisma from '@/structures/database';
 
 export default async (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {
 	const apiKey = req.headers['x-api-key'] as string;
+
 	if (!apiKey) return;
 
 	const user = await prisma.users.findFirst({

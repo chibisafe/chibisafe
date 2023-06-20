@@ -13,5 +13,7 @@ export const run = (req: RequestWithUser, res: FastifyReply) =>
 		chunkSize: SETTINGS.chunkSize,
 		maxFileSize: SETTINGS.maxSize,
 		logo: SETTINGS.logoURL,
-		background: SETTINGS.backgroundImageURL
+		background: SETTINGS.backgroundImageURL,
+		publicMode: SETTINGS.publicMode,
+		userAccounts: SETTINGS.userAccounts
 	});

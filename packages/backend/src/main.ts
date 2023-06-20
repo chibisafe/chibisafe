@@ -203,7 +203,9 @@ export const getHtmlBuffer = async () => {
 		chunkSize: SETTINGS.chunkSize,
 		logo: SETTINGS.logoURL,
 		maxFileSize: SETTINGS.maxSize,
-		serviceName: SETTINGS.serviceName
+		serviceName: SETTINGS.serviceName,
+		publicMode: SETTINGS.publicMode,
+		userAccounts: SETTINGS.userAccounts
 	};
 
 	indexHTML = indexHTML.replaceAll(
