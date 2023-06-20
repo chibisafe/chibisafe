@@ -5,6 +5,9 @@ import { getFile, getUserAdmin } from '~/use/api';
 export const useModalStore = defineStore('modals', {
 	state: () => ({
 		login: false,
+		generic: {
+			show: false
+		},
 		fileInformation: {
 			show: false,
 			file: {} as FileWithAdditionalData | null,
