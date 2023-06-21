@@ -1,4 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { RouteOptions } from '@/structures/interfaces';
 import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,8 +8,14 @@ import { utc } from 'moment';
 
 export const options = {
 	url: '/auth/register',
-	method: 'post'
-};
+	method: 'post',
+	options: {
+		rateLimit: {
+			max: 3, // Three rquests
+			timeWindow: 1000 * 60 // Per minute
+		}
+	}
+} as RouteOptions;
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	let foundInvite = null;
