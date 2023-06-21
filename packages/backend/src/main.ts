@@ -49,6 +49,13 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
+	// Add global rate limit
+	await server.register(import('@fastify/rate-limit'), {
+		global: true,
+		max: SETTINGS.rateLimitMax,
+		timeWindow: SETTINGS.rateLimitWindow
+	});
+
 	// Enable form-data parsing
 	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
 

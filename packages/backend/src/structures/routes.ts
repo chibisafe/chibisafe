@@ -5,6 +5,7 @@ import process from 'node:process';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RouteOptions } from './interfaces';
 import { addSpaces } from '@/utils/Util';
+import { SETTINGS } from './settings';
 
 const defaultMiddlewares = ['log', 'ban'];
 
@@ -88,7 +89,13 @@ export default {
 					method: options.method.toUpperCase() as any,
 					url: options.url,
 					preHandler: middlewares,
-					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res)
+					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res),
+					config: {
+						rateLimit: {
+							max: options.options?.rateLimit?.max ?? SETTINGS.rateLimitMax,
+							timeWindow: options.options?.rateLimit?.timeWindow ?? SETTINGS.rateLimitWindow
+						}
+					}
 				});
 
 				server.log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
