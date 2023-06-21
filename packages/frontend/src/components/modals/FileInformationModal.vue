@@ -166,33 +166,33 @@
 									<template v-else>
 										<h2 class="text-dark-100 dark:text-light-100 mt-8">User info</h2>
 										<InputWithOverlappingLabel
-											:value="user.username"
+											:value="file.user?.username"
 											class="mt-4"
 											label="Username"
 											readOnly
 											type="link"
-											:href="`/dashboard/admin/user/${user.uuid}`"
+											:href="`/dashboard/admin/user/${file.user?.uuid}`"
 										/>
 										<InputWithOverlappingLabel
-											:value="user.uuid"
+											:value="file.user?.uuid"
 											class="mt-4"
 											label="UUID"
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											:value="String(user.enabled)"
+											:value="String(file.user?.enabled)"
 											class="mt-4"
 											label="Enabled"
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											:value="String(user.isAdmin)"
+											:value="String(file.user?.isAdmin)"
 											class="mt-4"
 											label="Admin?"
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											:value="dayjs(user.createdAt).format('MMMM D, YYYY h:mm A')"
+											:value="dayjs(file.user?.createdAt).format('MMMM D, YYYY h:mm A')"
 											class="mt-4"
 											label="Created at"
 											readOnly
@@ -230,18 +230,14 @@ const props = defineProps<{
 const modalsStore = useModalStore();
 const albumsStore = useAlbumsStore();
 
-if (props.type === 'admin') {
-	// If the admin is loading this component we want to load the file information
-	void modalsStore.getFileUser();
-} else {
-	// If the admin is loading this component we dont want to load the albums
+if (props.type !== 'admin') {
+	// We only load the albums if the user is not an admin and the owner of the files
 	void albumsStore.get();
 }
 
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
 const fileAlbums = computed(() => modalsStore.fileInformation.albums);
-const user = computed(() => modalsStore.fileInformation.user);
 
 const albums = computed(() => {
 	if (!fileAlbums.value) return albumsStore.albums as AlbumWithSelected[];
@@ -271,9 +267,8 @@ const { copy } = useClipboard();
 const isCopying = ref(false);
 
 watch(file, async () => {
-	// If the admin is loading this component we want to load the user information
+	// If the admin is loading this component we early exit to prevent loading the albums
 	if (props.type === 'admin' && file.value) {
-		void modalsStore.getFileUser();
 		return;
 	}
 

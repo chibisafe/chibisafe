@@ -12,8 +12,7 @@ export const useModalStore = defineStore('modals', {
 			show: false,
 			file: {} as FileWithAdditionalData | null,
 			albums: [] as string[],
-			tags: [] as string[],
-			user: {} as User
+			tags: [] as string[]
 		},
 		deleteFile: {
 			show: false,
@@ -47,12 +46,6 @@ export const useModalStore = defineStore('modals', {
 			if (!file) return;
 			this.fileInformation.albums = file.albums.map((album: Album) => album.uuid);
 			this.fileInformation.tags = file.tags.map((tag: Tag) => tag.uuid);
-		},
-		async getFileUser() {
-			if (!this.fileInformation.file?.user) return;
-			const user = await getUserAdmin(this.fileInformation.file.user.uuid);
-			if (!user) return;
-			this.fileInformation.user = user.user;
 		}
 	}
 });
