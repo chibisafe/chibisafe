@@ -124,7 +124,14 @@ export interface Settings {
 export interface RouteOptions {
 	url: string;
 	method: string;
-	options?: { [index: number | string]: any };
+	// options?: { [index: number | string]: any };
+	options?: {
+		rateLimit?: {
+			max: number;
+			timeWindow: number;
+		};
+		[index: number | string]: any;
+	};
 	middlewares?: (string | { [index: number | string]: any })[];
 	debug?: boolean;
 }

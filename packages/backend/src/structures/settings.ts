@@ -55,8 +55,8 @@ export const loadSettings = async (force = false) => {
 	log.debug("Settings don't exist in database, creating...");
 	const data = {
 		domain: 'localhost:8000',
-		rateLimitWindow: 2,
-		rateLimitMax: 5,
+		rateLimitWindow: 1000,
+		rateLimitMax: 100,
 		secret: randomstring.generate(64),
 		serviceName: 'change-me',
 		chunkSize: 9 * 9e6, // 90 MB

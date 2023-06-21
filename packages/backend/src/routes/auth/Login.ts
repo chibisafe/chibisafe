@@ -6,7 +6,13 @@ import { SETTINGS } from '@/structures/settings';
 
 export const options = {
 	url: '/auth/login',
-	method: 'post'
+	method: 'post',
+	options: {
+		rateLimit: {
+			max: 3, // Three rquests
+			timeWindow: 1000 * 60 // Per minute
+		}
+	}
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
