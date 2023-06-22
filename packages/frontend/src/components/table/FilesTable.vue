@@ -4,39 +4,39 @@
 			<tr>
 				<th
 					scope="col"
-					class="py-3.5 pl-4 pr-3 text-sm font-semibold text-dark-90 dark:text-light-100 sm:pl-6 text-center w-24"
+					class="py-3.5 pl-4 pr-3 text-sm font-semibold text-dark-90 dark:text-light-100 desktop:pl-6 text-center w-24"
 				>
 					Thumb
 				</th>
 				<th
 					scope="col"
-					class="hidden px-3 py-3.5 text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell text-center"
+					class="px-3 py-3.5 text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell text-center"
 				>
 					Link
 				</th>
 				<!--
 				  <th
 				  scope="col"
-				  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
+				  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
 				  >
 				  Uploader
 				  </th>
 				-->
 				<th
 					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
+					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
 				>
 					Size
 				</th>
 				<th
 					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
+					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
 				>
 					Created
 				</th>
 				<th
 					scope="col"
-					class="px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 sm:table-cell"
+					class="px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
 				></th>
 			</tr>
 		</thead>
@@ -47,7 +47,7 @@
 				:class="indexFile % 2 === 0 ? ' bg-dark-90' : 'bg-dark-80'"
 			>
 				<td
-					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6 cursor-pointer flex justify-center"
+					class="w-full px-3 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6 cursor-pointer flex justify-center"
 					@click="showModal(file)"
 				>
 					<template v-if="isFileImage(file) || isFileVideo(file)">
@@ -57,23 +57,21 @@
 					<IconPdf v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
 					<IconDocument v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
 				</td>
-				<td
-					class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell underline text-center"
-				>
+				<td class="px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell underline text-center">
 					<a :href="file.url" target="_blank" rel="noopener noreferrer">{{ file.name }}</a>
 				</td>
 				<!--
-				  <td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
+				  <td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
 				  {{ file.uploader }}
 				  </td>
 				-->
-				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
+				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
 					{{ formatBytes(Number(file.size)) }}
 				</td>
-				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 sm:table-cell">
+				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
 					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
-				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-dark-90 dark:text-light-100">
+				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-dark-90 dark:text-light-100">
 					<button type="button" class="ml-4" @click="showDeleteFileModal(file)">Delete</button>
 				</td>
 			</tr>
