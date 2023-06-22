@@ -1,7 +1,5 @@
 <template>
 	<div class="flex items-center mobile:justify-center">
-		<!-- <template v-if="isMobile"> </template> -->
-		<!-- <template v-else> -->
 		<span class="text-dark-80 dark:text-light-100 mr-4 mobile:hidden"
 			>Page {{ page }} of {{ Math.ceil(total / 50) }}</span
 		>
@@ -29,7 +27,6 @@
 		>
 			Next
 		</button>
-		<!-- </template> -->
 	</div>
 </template>
 
