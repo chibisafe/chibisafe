@@ -1,5 +1,6 @@
 import prisma from '@/structures/database';
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { purgeUserFiles } from '@/utils/File';
 
 export const options = {
 	url: '/admin/user/:uuid/purge',
@@ -19,11 +20,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	if (!user) return res.code(400).send({ message: 'User not found' });
 
-	await prisma.files.deleteMany({
-		where: {
-			userId: user.id
-		}
-	});
+	await purgeUserFiles(user.id);
 
 	await prisma.albums.deleteMany({
 		where: {
