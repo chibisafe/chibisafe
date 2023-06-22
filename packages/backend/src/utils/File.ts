@@ -111,13 +111,34 @@ export const purgePublicFiles = async () => {
 		});
 
 		for (const file of files) {
-			log.info(`Purging file ${file.name}`);
 			await deleteFile(file.name);
 		}
 
 		await prisma.files.deleteMany({
 			where: {
 				userId: null
+			}
+		});
+	} catch (error) {
+		log.error(error);
+	}
+};
+
+export const purgeIpFiles = async (ip: string) => {
+	try {
+		const files = await prisma.files.findMany({
+			where: {
+				ip
+			}
+		});
+
+		for (const file of files) {
+			await deleteFile(file.name);
+		}
+
+		await prisma.files.deleteMany({
+			where: {
+				ip
 			}
 		});
 	} catch (error) {

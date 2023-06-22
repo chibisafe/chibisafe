@@ -365,6 +365,16 @@ export const purgeAnonymousFiles = async () => {
 	}
 };
 
+export const purgeFilesFromIP = async (ip: string) => {
+	try {
+		const data = await request.post(`admin/ip/files/purge`, { ip });
+		debug('purgeFilesFromIP', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const disableUser = async (uuid: string) => {
 	try {
 		const data = await request.post(`admin/user/${uuid}/disable`);
