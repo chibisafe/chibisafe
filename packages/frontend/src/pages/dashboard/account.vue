@@ -10,7 +10,7 @@
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
-			<div class="mt-8 max-w-md">
+			<div class="mt-8 bg-dark-110 p-8">
 				<span class="text-dark-90 dark:text-light-100 block">Your current username. Can't be changed.</span>
 				<InputWithOverlappingLabel v-model="username" class="mt-4" label="Username" readOnly />
 
@@ -38,7 +38,12 @@
 				<span class="mt-12 text-dark-90 dark:text-light-100 block"
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
-				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" readOnly />
+				<InputWithOverlappingLabel
+					v-model="apiKey"
+					class="mt-4 blur-sm hover:blur-none"
+					label="API Key"
+					readOnly
+				/>
 				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
 			</div>
 		</div>
