@@ -31,7 +31,7 @@
 						<div
 							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
-							<div v-if="file" class="flex">
+							<div v-if="file" class="flex mobile:flex-col">
 								<!-- File preview -->
 								<div class="flex flex-1 justify-center items-center">
 									<img v-if="isFileImage(file)" :src="file.url" class="max-w-full h-fit" />
@@ -66,8 +66,8 @@
 								</div>
 
 								<!-- File information panel -->
-								<div class="flex flex-col w-1/3 pl-4">
-									<div class="flex justify-between">
+								<div class="flex flex-col w-1/3 pl-4 mobile:w-full">
+									<div class="flex justify-between mobile:mt-4">
 										<Button class="flex-auto" @click="copyLink">{{
 											isCopying ? 'Copied!' : 'Copy link'
 										}}</Button>

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<TransitionRoot as="template" :show="sidebarOpen">
-			<Dialog as="div" class="relative z-40 md:hidden" @close="sidebarOpen = false">
+			<Dialog as="div" class="relative z-40 desktop:hidden" @close="sidebarOpen = false">
 				<TransitionChild
 					as="template"
 					enter="transition-opacity ease-linear duration-300"
@@ -115,7 +115,7 @@
 										{{ item.name }}
 									</router-link>
 								</nav>
-								<div class="mt-8 pl-2">
+								<div class="mt-8 px-8">
 									<div class="mt-1 space-y-1" aria-labelledby="projects-headline">
 										<a
 											v-for="item in secondaryNavigation"
@@ -139,7 +139,7 @@
 		</TransitionRoot>
 
 		<!-- Static sidebar for desktop -->
-		<div class="hidden md:fixed md:inset-y-0 md:flex md:w-48 md:flex-col">
+		<div class="hidden desktop:fixed desktop:inset-y-0 desktop:flex desktop:w-48 desktop:flex-col">
 			<!-- Sidebar component, swap this element with another sidebar if you like -->
 			<div class="flex min-h-0 flex-1 flex-col bg-dark-110">
 				<div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
@@ -219,11 +219,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex flex-1 flex-col md:pl-48">
-			<div class="sticky top-0 z-10 bg-dark-110 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
+		<div class="flex flex-1 flex-col desktop:pl-48">
+			<div class="sticky top-0 z-10 bg-dark-110 pl-1 pt-1 mobile:pl-3 mobile:pt-3 desktop:hidden">
 				<button
 					type="button"
-					class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-light-100 hover:text-whitefocus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+					class="-ml-0.5 -mt-0.5 mobile:mb-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-light-100 hover:text-whitefocus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
 					@click="sidebarOpen = true"
 				>
 					<span class="sr-only">Open sidebar</span>

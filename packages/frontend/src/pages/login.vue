@@ -4,11 +4,11 @@
 			<Header />
 		</div>
 		<div
-			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
+			class="flex flex-col items-center h-auto min-h-[900px] mobile:min-h-0 w-full dark:text-light-100 justify-center self-center"
 		>
-			<div class="flex w-full mt-16 items-center relative max-w-4xl flex-col">
-				<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 w-full">
-					<div class="sm:mx-auto sm:w-full sm:max-w-md">
+			<div class="flex w-full mt-16 mobile:mt-0 items-center relative max-w-4xl flex-col">
+				<div class="flex min-h-full flex-col justify-center py-12 mobile:py-0 desktop:px-6 lg:px-8 w-full">
+					<div class="desktop:mx-auto desktop:w-full desktop:max-w-md">
 						<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-light-100">
 							Authentication
 						</h2>
@@ -18,8 +18,8 @@
 						</p>
 					</div>
 
-					<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+					<div class="mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md">
+						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow desktop:rounded-lg desktop:px-10">
 							<form class="space-y-6" action="#" method="POST">
 								<div>
 									<label class="block text-sm font-medium text-gray-700 dark:text-light-100"

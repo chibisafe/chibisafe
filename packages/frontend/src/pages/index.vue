@@ -6,21 +6,28 @@
 		<div
 			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
 		>
-			<div class="flex w-full mt-16 items-center relative max-w-4xl">
-				<div class="flex flex-1 justify-center flex-col">
-					<h4 class="font-bold text-7xl">Seriously fast <br />file uploader</h4>
-					<p class="mt-10 text-lg pr-16">
+			<div
+				class="flex w-full mt-16 mobile:mt-6 items-center relative max-w-4xl mobile:flex-col-reverse mobile:p-6"
+			>
+				<div
+					v-if="!isMobile || (isMobile && !files.length)"
+					class="flex flex-1 justify-center flex-col mobile:mt-8"
+				>
+					<h4 class="font-bold text-7xl mobile:text-center">
+						Seriously fast <br v-if="!isMobile" />file uploader
+					</h4>
+					<p class="mt-10 text-lg pr-16 mobile:pr-0">
 						<strong>chibisafe</strong> is a modern and self-hosted take on file uploading services that can
 						handle anything you throw at it thanks to it's robust and fast API, chunked uploads support and
 						more.
 					</p>
-					<p class="mt-4 text-lg pr-16">
+					<p class="mt-4 text-lg pr-16 mobile:pr-0">
 						It's easily customizable and deploying your own instance is a breeze.
 					</p>
 				</div>
 
 				<!-- Dummy to keep the flexbox layout -->
-				<div class="w-80 h-80 max-w-[320px]" />
+				<div class="w-80 h-80 max-w-[320px] mobile:hidden" />
 
 				<ChibiUploader />
 			</div>
@@ -43,11 +50,7 @@
 						v-for="file in files"
 						:key="file.uuid"
 						class="w-[calc(100%-2rem)] h-8 rounded-sm pl-2 py-1 relative last:mb-0"
-						:class="[
-							{
-								'mb-2': files.length > 1
-							}
-						]"
+						:class="[{ 'mb-2': files.length > 1 }]"
 					>
 						<div class="w-full h-full absolute top-0 left-0 pointer-events-none bg-dark-100" />
 						<div
@@ -57,11 +60,7 @@
 								'bg-yellow-900': file.status === 'uploading',
 								'bg-red-900': file.status === 'error'
 							}"
-							:style="[
-								{
-									width: file.status === 'error' ? '100%' : `${file.progress}%`
-								}
-							]"
+							:style="[{ width: file.status === 'error' ? '100%' : `${file.progress}%` }]"
 						/>
 						<div class="absolute top-0 left-0 flex items-center w-full h-full">
 							<div>
@@ -88,12 +87,12 @@
 				</div>
 			</TransitionRoot>
 
-			<div class="flex w-full mt-32 flex-col max-w-4xl">
+			<div class="flex w-full mt-32 mobile:mt-20 flex-col max-w-4xl mobile:p-6">
 				<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
 				<h5 class="text-blue-400">Did we mention that extending it is super easy?</h5>
 
 				<dl
-					class="mt-8 space-y-10 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8"
+					class="mt-8 space-y-10 desktop:grid desktop:grid-cols-2 desktop:gap-x-6 desktop:gap-y-4 desktop:space-y-0 mobile:grid-cols-4 mobile:gap-x-8"
 				>
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
@@ -106,7 +105,7 @@
 				</dl>
 			</div>
 
-			<div class="flex w-full mt-32 flex-col max-w-4xl mb-32">
+			<div class="flex w-full mt-32 mobile:mt-20 flex-col max-w-4xl mb-32 mobile:p-6">
 				<h3 class="font-bold text-4xl mb-6">Frequently Asked Questions</h3>
 
 				<h4 class="text-2xl mb-2">What is chibisafe?</h4>
@@ -159,6 +158,7 @@ import { ref, computed } from 'vue';
 import { TransitionRoot } from '@headlessui/vue';
 import { useUploadsStore } from '~/store';
 import { formatBytes } from '~/use/file';
+import { useWindowSize } from '@vueuse/core';
 
 import Header from '~/components/header/Header.vue';
 import ChibiUploader from '~/components/upload/ChibiUploader.vue';
@@ -168,6 +168,7 @@ import IconCheck from '~icons/carbon/checkmark';
 
 const uploadsStore = useUploadsStore();
 const files = computed(() => uploadsStore.files);
+const isMobile = computed(() => useWindowSize().width.value < 640);
 
 const features = ref([
 	'Chunked uploads',

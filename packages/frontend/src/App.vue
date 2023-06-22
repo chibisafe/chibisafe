@@ -16,7 +16,7 @@
 		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
 		:style="`background-image: url(${settingsStore.background});`"
 	></div>
-	<div class="flex flex-col flex-1 h-full relative overflow-auto">
+	<div class="flex flex-col flex-1 h-full relative overflow-auto mobile:overflow-hidden">
 		<router-view />
 		<Toast />
 	</div>

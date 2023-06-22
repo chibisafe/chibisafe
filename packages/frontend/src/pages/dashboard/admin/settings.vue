@@ -1,6 +1,6 @@
 <template>
 	<Sidebar>
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-7xl px-6 mobile:pb-12">
 			<Breadcrumbs
 				:pages="[
 					{
@@ -13,7 +13,7 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 mb-8 font-semibold text-light-100 flex items-center">
+			<h1 class="text-2xl mt-8 mb-8 font-semibold text-light-100 flex items-center mobile:flex-col">
 				Settings
 				<span class="grow h-1 w-full"></span>
 

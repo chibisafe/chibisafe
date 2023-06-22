@@ -1,8 +1,11 @@
 <template>
-	<div class="w-80 h-80 max-h-[320px] max-w-[320px] absolute right-0 top-0">
+	<div
+		class="w-80 h-80 max-h-[320px] max-w-[320px] absolute mobile:relative right-0 top-0 mobile:h-16"
+		:class="[isUploadEnabled && isMobile ? 'mb-12' : '']"
+	>
 		<div
 			id="upload"
-			class="absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
+			class="absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl mobile:rounded-lg border-4 shadow-lg flex items-center justify-center mobile:justify-start blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
 			:class="{
 				'border-blue-400': isDragging,
 				'border-[#303436]': !isDragging
@@ -16,18 +19,27 @@
 			@dragover.prevent
 		>
 			<template v-if="isUploadEnabled">
-				<IconUpload class="h-12 w-12 pointer-events-none" />
+				<IconUpload class="h-12 w-12 pointer-events-none mobile:hidden" />
 				<h3 class="font-bold text-center mt-4 pointer-events-none">
-					DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span>
+					<template v-if="isMobile">
+						<p class="text-blue-400">
+							TAP TO UPLOAD <span class="text-light-100 ml-2">({{ formatBytes(maxFileSize) }} max)</span>
+						</p>
+					</template>
+					<template v-else> DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span> </template>
 				</h3>
-				<p class="text-center mt-4 w-3/4 pointer-events-none">
+				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden">
 					Drag and drop your files here. {{ formatBytes(maxFileSize) }} max per file.
 				</p>
 
 				<input ref="inputUpload" type="file" class="hidden" multiple @change="onFileChanged($event)" />
 			</template>
 			<template v-else>
-				<h3 class="text-center mt-4 w-3/4 pointer-events-none">Upload is disabled without an account</h3>
+				<h3
+					class="text-center mt-4 mobile:mt-0 mobile:w-full mobile:h-full mobile:flex mobile:justify-center mobile:items-center w-3/4 pointer-events-none"
+				>
+					Upload is disabled without an account
+				</h3>
 			</template>
 		</div>
 		<AlbumDropdown v-if="isLoggedIn" class="absolute -bottom-12 w-full" />
@@ -45,6 +57,7 @@ import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 
 // @ts-ignore
 import IconUpload from '~icons/carbon/cloud-upload';
+import { useWindowSize } from '@vueuse/core';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
@@ -63,6 +76,7 @@ const isUploadEnabled = computed(() => {
 
 const maxFileSize = computed(() => settingsStore.maxFileSize);
 const chunkSize = computed(() => settingsStore.chunkSize);
+const isMobile = computed(() => useWindowSize().width.value < 640);
 
 const triggerFileInput = () => {
 	inputUpload.value?.click();

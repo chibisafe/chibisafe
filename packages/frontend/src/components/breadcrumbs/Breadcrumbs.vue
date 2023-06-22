@@ -1,6 +1,6 @@
 <template>
 	<nav class="flex mt-8" aria-label="Breadcrumb">
-		<ol role="list" class="flex space-x-4 rounded-md bg-white dark:bg-dark-90 px-6 shadow">
+		<ol role="list" class="flex space-x-4 rounded-md bg-white dark:bg-dark-90 px-6 shadow mobile:flex-wrap">
 			<li class="flex">
 				<div class="flex items-center">
 					<router-link

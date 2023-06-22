@@ -1,6 +1,13 @@
 <template>
-	<div class="flex items-center">
-		<span class="text-dark-80 dark:text-light-100 mr-4">Page {{ page }} of {{ Math.ceil(total / 50) }}</span>
+	<div class="flex items-center mobile:justify-center">
+		<!-- <template v-if="isMobile"> </template> -->
+		<!-- <template v-else> -->
+		<span class="text-dark-80 dark:text-light-100 mr-4 mobile:hidden"
+			>Page {{ page }} of {{ Math.ceil(total / 50) }}</span
+		>
+		<span class="text-dark-80 dark:text-light-100 mr-4 desktop:hidden"
+			>{{ page }} / {{ Math.ceil(total / 50) }}</span
+		>
 		<button
 			:disabled="isFirstPage"
 			type="button"
@@ -22,6 +29,7 @@
 		>
 			Next
 		</button>
+		<!-- </template> -->
 	</div>
 </template>
 
@@ -30,6 +38,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import { useAlbumsStore } from '~/store/albums';
+import { useWindowSize } from '@vueuse/core';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';
@@ -41,6 +50,8 @@ const queryPage = ref(route.query.page);
 
 const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
+
+const isMobile = computed(() => useWindowSize().width.value < 640);
 
 const page = computed(() => {
 	if (props.type === 'album') return albumsStore.currentPage;
