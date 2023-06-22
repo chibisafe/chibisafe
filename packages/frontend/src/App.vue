@@ -46,6 +46,14 @@ const hotkeys = ref<HotKey[]>([
 			if (!isLoggedIn.value) return;
 			modalStore.search.show = true;
 		}
+	},
+	{
+		keys: ['meta', 'k'],
+		preventDefault: true,
+		handler() {
+			if (!isLoggedIn.value) return;
+			modalStore.search.show = true;
+		}
 	}
 ]);
 useHotkey(hotkeys.value);
