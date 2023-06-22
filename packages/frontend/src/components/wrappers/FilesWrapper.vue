@@ -1,18 +1,30 @@
 <template>
-	<div class="my-4 bg-dark-90 h-14 px-2 flex items-center">
+	<div class="my-4 bg-dark-90 h-14 mobile:h-auto px-2 mobile:py-2 flex items-center mobile:flex-wrap">
 		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10 mr-2" @click="toggleMasonry">
 			Toggle view
 		</button>
-		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk operations</button>
+		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button>
 		<!-- Pagination -->
 		<div class="flex-grow" />
 		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
-		<div class="flex-grow" />
-		<Pagination :type="type" />
+		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
+		<Pagination :type="type" class="mobile:basis-full" />
 	</div>
 
 	<Masonry v-if="preferMasonry" :type="type" />
 	<FilesTable v-else :type="type" />
+
+	<div class="my-4 bg-dark-90 h-14 mobile:h-auto px-2 mobile:py-2 flex items-center mobile:flex-wrap mobile:mb-20">
+		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10 mr-2" @click="toggleMasonry">
+			Toggle view
+		</button>
+		<button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button>
+		<!-- Pagination -->
+		<div class="flex-grow" />
+		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
+		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
+		<Pagination :type="type" class="mobile:basis-full" />
+	</div>
 </template>
 
 <script setup lang="ts">

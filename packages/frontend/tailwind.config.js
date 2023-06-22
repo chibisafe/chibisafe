@@ -14,6 +14,14 @@ module.exports = {
 				sans: ['Nunito', ...defaultTheme.fontFamily.sans]
 			}
 		},
+		screens: {
+			mobile: {
+				max: '639px'
+			},
+			desktop: {
+				min: '640px'
+			}
+		},
 		colors: {
 			white: '#ffffff',
 			black: '#000000',

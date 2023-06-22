@@ -20,13 +20,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			uuid
 		},
 		select: {
-			id: true,
-			username: true,
-			enabled: true,
-			isAdmin: true,
-			createdAt: true,
-			editedAt: true,
-			apiKeyEditedAt: true
+			id: true
 		}
 	});
 
@@ -44,6 +38,26 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		where: {
 			userId: user.id
 		},
+		select: {
+			createdAt: true,
+			editedAt: true,
+			hash: true,
+			ip: true,
+			name: true,
+			original: true,
+			size: true,
+			type: true,
+			uuid: true,
+			user: {
+				select: {
+					uuid: true,
+					username: true,
+					enabled: true,
+					isAdmin: true,
+					createdAt: true
+				}
+			}
+		},
 		orderBy: {
 			id: 'desc'
 		}
@@ -55,8 +69,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	}
 
 	return res.send({
-		message: 'Successfully retrieved user',
-		user,
+		message: "Successfully retrieved user's files",
 		files: readyFiles,
 		count
 	});

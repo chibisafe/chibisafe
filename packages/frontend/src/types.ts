@@ -48,6 +48,9 @@ export interface FileWithAdditionalData extends File {
 	user?: {
 		uuid: string;
 		username: string;
+		enabled: boolean;
+		isAdmin: boolean;
+		createdAt: number;
 	};
 }
 
