@@ -102,6 +102,29 @@ export const purgeUserFiles = async (userId: number) => {
 	}
 };
 
+export const purgePublicFiles = async () => {
+	try {
+		const files = await prisma.files.findMany({
+			where: {
+				userId: null
+			}
+		});
+
+		for (const file of files) {
+			log.info(`Purging file ${file.name}`);
+			await deleteFile(file.name);
+		}
+
+		await prisma.files.deleteMany({
+			where: {
+				userId: null
+			}
+		});
+	} catch (error) {
+		log.error(error);
+	}
+};
+
 export const getFilenameFromPath = (fullPath: string) => fullPath.replace(/^.*[/\\]/, ''); // eslint-disable-line no-useless-escape
 
 export const createZip = (files: string[], albumUuid: string) => {

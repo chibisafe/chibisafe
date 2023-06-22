@@ -355,6 +355,16 @@ export const purgeUser = async (uuid: string) => {
 	}
 };
 
+export const purgeAnonymousFiles = async () => {
+	try {
+		const data = await request.post(`admin/files/purge/public`);
+		debug('purgeAnonymousFiles', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const disableUser = async (uuid: string) => {
 	try {
 		const data = await request.post(`admin/user/${uuid}/disable`);

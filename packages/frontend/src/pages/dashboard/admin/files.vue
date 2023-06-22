@@ -37,10 +37,17 @@
 					<button
 						type="button"
 						class="mt-4 bg-red-900 hover:bg-red-600 text-light-100 font-semibold py-2 px-4 rounded items-center text-center text-base"
-						@click="() => {}"
+						@click="() => (modalStore.generic.show = true)"
 					>
 						Purge all anonymous uploads
 					</button>
+
+					<GenericConfirmationModal
+						title="Purge all anonymous files?"
+						message="This action will remove every upload that doesn't belong to a specific user. This is not reversible. Are you sure?"
+						action-text="Purge anonymous files"
+						:callback="doPurgeAnonymousFiles"
+					/>
 				</div>
 			</div>
 
@@ -52,15 +59,23 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore } from '~/store/files';
+import { useFilesStore, useModalStore } from '~/store';
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
+import { purgeAnonymousFiles } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
+import GenericConfirmationModal from '~/components/modals/GenericConfirmationModal.vue';
 
 const route = useRoute();
 const filesStore = useFilesStore();
+const modalStore = useModalStore();
 const publicOnly = ref(false);
+
+const doPurgeAnonymousFiles = async () => {
+	await purgeAnonymousFiles();
+	void filesStore.get({ admin: true, publicOnly: publicOnly.value });
+};
 
 watch(
 	() => publicOnly.value,
