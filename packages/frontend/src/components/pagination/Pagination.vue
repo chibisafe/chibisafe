@@ -31,11 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import { useAlbumsStore } from '~/store/albums';
-import { useWindowSize } from '@vueuse/core';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';
@@ -43,12 +42,9 @@ const props = defineProps<{
 
 const route = useRoute();
 const router = useRouter();
-const queryPage = ref(route.query.page);
 
 const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
-
-const isMobile = computed(() => useWindowSize().width.value < 640);
 
 const page = computed(() => {
 	if (props.type === 'album') return albumsStore.currentPage;
@@ -80,7 +76,12 @@ const previousPage = async () => {
 	else await filesStore.getPreviousPage();
 
 	const query = { ...route.query };
-	if (page.value === 1) delete query.page;
+	if (page.value === 1) {
+		delete query.page;
+	} else {
+		query.page = String(page.value);
+	}
+
 	await router.replace({ query });
 };
 
@@ -88,7 +89,9 @@ const nextPage = async () => {
 	if (props.type === 'album') await albumsStore.getNextPage();
 	else await filesStore.getNextPage();
 
-	await router.replace({ query: { page: page.value } });
+	const query = { ...route.query };
+	query.page = String(page.value);
+	await router.replace({ query });
 };
 
 const goToPage = async (event: Event) => {

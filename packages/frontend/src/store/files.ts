@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getFiles, getFilesAdmin, getFilesFromUser, getFilesFromIP } from '~/use/api';
+import { getFiles, getFilesAdmin, getFilesFromUser, getFilesFromIP, searchFiles } from '~/use/api';
 import type { FileWithAdditionalData, User } from '../types';
 import { debug } from '~/use/log';
 
@@ -8,6 +8,7 @@ interface GetParameters {
 	admin?: boolean;
 	userUuid?: string;
 	ip?: string;
+	searchTerm?: string;
 }
 
 export const useFilesStore = defineStore('files', {
@@ -22,7 +23,8 @@ export const useFilesStore = defineStore('files', {
 		helperData: {
 			asAdmin: false,
 			userUuid: '',
-			ip: ''
+			ip: '',
+			searchTerm: ''
 		},
 		isBanned: false
 	}),
@@ -32,7 +34,8 @@ export const useFilesStore = defineStore('files', {
 				page: this.currentPage - 1,
 				admin: this.helperData.asAdmin,
 				userUuid: this.helperData.userUuid,
-				ip: this.helperData.ip
+				ip: this.helperData.ip,
+				searchTerm: this.helperData.searchTerm
 			});
 		},
 		async getNextPage() {
@@ -40,7 +43,8 @@ export const useFilesStore = defineStore('files', {
 				page: this.currentPage + 1,
 				admin: this.helperData.asAdmin,
 				userUuid: this.helperData.userUuid,
-				ip: this.helperData.ip
+				ip: this.helperData.ip,
+				searchTerm: this.helperData.searchTerm
 			});
 		},
 		async goToPage(pageNumber: number) {
@@ -48,12 +52,13 @@ export const useFilesStore = defineStore('files', {
 				page: pageNumber,
 				admin: this.helperData.asAdmin,
 				userUuid: this.helperData.userUuid,
-				ip: this.helperData.ip
+				ip: this.helperData.ip,
+				searchTerm: this.helperData.searchTerm
 			});
 		},
 
 		async get(params: GetParameters = {}) {
-			const { page, admin, userUuid, ip } = params;
+			const { page, admin, userUuid, ip, searchTerm } = params;
 
 			const pageNumber = page ?? 1;
 			if (pageNumber < 1) return;
@@ -61,6 +66,7 @@ export const useFilesStore = defineStore('files', {
 			this.helperData.asAdmin = admin ?? false;
 			this.helperData.userUuid = userUuid ?? '';
 			this.helperData.ip = ip ?? '';
+			this.helperData.searchTerm = searchTerm ?? '';
 
 			let response:
 				| {
@@ -79,6 +85,8 @@ export const useFilesStore = defineStore('files', {
 				} else {
 					response = await getFilesAdmin(pageNumber);
 				}
+			} else if (searchTerm && searchTerm !== '') {
+				response = await searchFiles(searchTerm, pageNumber);
 			} else {
 				response = await getFiles(pageNumber);
 			}

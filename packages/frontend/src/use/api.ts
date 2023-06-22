@@ -470,3 +470,13 @@ export const getTags = async () => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const searchFiles = async (text: string, page: number) => {
+	try {
+		const data = await request.post(`files/search?page=${page}`, { text });
+		debug('searchFiles', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
