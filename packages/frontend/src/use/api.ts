@@ -156,9 +156,9 @@ export const getFiles = async (page: number) => {
 	}
 };
 
-export const getFilesAdmin = async (page: number) => {
+export const getFilesAdmin = async (page: number, publicOnly = false) => {
 	try {
-		const data = await request.get(`admin/files?page=${page}`);
+		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}`);
 		debug('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
