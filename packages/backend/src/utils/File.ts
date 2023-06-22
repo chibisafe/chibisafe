@@ -80,17 +80,67 @@ export const deleteFile = async (filename: string, deleteFromDB = false) => {
 	}
 };
 
-export const deleteAllFilesFromUser = async (uuid: string) => {
+export const purgeUserFiles = async (userId: number) => {
 	try {
 		const files = await prisma.files.findMany({
 			where: {
-				uuid
+				userId
 			}
 		});
 
 		for (const file of files) {
-			await deleteFile(file.name, true);
+			await deleteFile(file.name);
 		}
+
+		await prisma.files.deleteMany({
+			where: {
+				userId
+			}
+		});
+	} catch (error) {
+		log.error(error);
+	}
+};
+
+export const purgePublicFiles = async () => {
+	try {
+		const files = await prisma.files.findMany({
+			where: {
+				userId: null
+			}
+		});
+
+		for (const file of files) {
+			await deleteFile(file.name);
+		}
+
+		await prisma.files.deleteMany({
+			where: {
+				userId: null
+			}
+		});
+	} catch (error) {
+		log.error(error);
+	}
+};
+
+export const purgeIpFiles = async (ip: string) => {
+	try {
+		const files = await prisma.files.findMany({
+			where: {
+				ip
+			}
+		});
+
+		for (const file of files) {
+			await deleteFile(file.name);
+		}
+
+		await prisma.files.deleteMany({
+			where: {
+				ip
+			}
+		});
 	} catch (error) {
 		log.error(error);
 	}

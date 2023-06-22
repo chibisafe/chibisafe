@@ -1,5 +1,5 @@
 <template>
-	<div class="relative rounded-md dark:bg-dark-100 border px-3 py-2 shadow-sm">
+	<div class="relative rounded-md dark:bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm">
 		<label
 			class="absolute -top-2 left-2 -mt-px pointer-events-none inline-block bg-white dark:bg-dark-100 px-1 text-xs font-medium text-gray-900 dark:text-light-100"
 			>{{ label }}</label

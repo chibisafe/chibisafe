@@ -10,10 +10,14 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
+	const {
+		publicOnly = false,
+		page = 1,
+		limit = 50
+	} = req.query as { publicOnly: string; page?: number; limit?: number };
 
-	const count = await prisma.files.count();
-	const files = (await prisma.files.findMany({
+	const dbSearchObject = {} as any;
+	const dbObject = {
 		take: limit,
 		skip: (page - 1) * limit,
 		select: {
@@ -25,18 +29,32 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			original: true,
 			size: true,
 			type: true,
-			uuid: true,
-			user: {
-				select: {
-					uuid: true,
-					username: true
-				}
-			}
+			uuid: true
 		},
 		orderBy: {
 			id: 'desc'
 		}
-	})) as ExtendedFile[] | [];
+	} as any;
+
+	if (publicOnly && publicOnly === 'true') {
+		dbSearchObject.where = {
+			userId: null
+		};
+
+		dbObject.where = {
+			userId: null
+		};
+	} else {
+		dbObject.select.user = {
+			select: {
+				uuid: true,
+				username: true
+			}
+		};
+	}
+
+	const count = await prisma.files.count(dbSearchObject);
+	const files = (await prisma.files.findMany(dbObject)) as ExtendedFile[] | [];
 
 	if (!files) return res.code(404).send({ message: 'No files exist' });
 

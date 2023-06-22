@@ -156,9 +156,9 @@ export const getFiles = async (page: number) => {
 	}
 };
 
-export const getFilesAdmin = async (page: number) => {
+export const getFilesAdmin = async (page: number, publicOnly = false) => {
 	try {
-		const data = await request.get(`admin/files?page=${page}`);
+		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}`);
 		debug('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
@@ -349,6 +349,26 @@ export const purgeUser = async (uuid: string) => {
 	try {
 		const data = await request.post(`admin/user/${uuid}/purge`);
 		debug('purgeUser', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const purgeAnonymousFiles = async () => {
+	try {
+		const data = await request.post(`admin/files/purge/public`);
+		debug('purgeAnonymousFiles', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const purgeFilesFromIP = async (ip: string) => {
+	try {
+		const data = await request.post(`admin/ip/files/purge`, { ip });
+		debug('purgeFilesFromIP', data);
 		if (data.message) sendSuccessToast(data.message);
 	} catch (error: any) {
 		sendErrorToast(error.message);
