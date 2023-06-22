@@ -1,6 +1,6 @@
 <template>
 	<Sidebar>
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-7xl px-4 desktop:px-6 mobile:px-8">
 			<Breadcrumbs
 				:pages="[
 					{
@@ -14,7 +14,10 @@
 				<Button class="ml-4 mt-3" @click="showNewAlbumModal">Add new</Button>
 			</h1>
 			<div class="mt-8 pb-16">
-				<ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+				<ul
+					role="list"
+					class="mt-3 grid grid-cols-1 gap-5 desktop:grid-cols-3 desktop:gap-6 mobile:grid-cols-1"
+				>
 					<li
 						v-for="album in albums"
 						:key="album.uuid"
