@@ -77,12 +77,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			original: true,
 			size: true,
 			type: true,
-			uuid: true,
-			albums: {
-				select: {
-					name: true
-				}
-			}
+			uuid: true
 		},
 		orderBy: {
 			id: 'desc'

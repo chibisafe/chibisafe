@@ -110,7 +110,6 @@ import IconAccount from '~icons/carbon/user-identification';
 
 const router = useRouter();
 const modalsStore = useModalStore();
-// const filesStore = useFilesStore();
 const isModalOpen = computed(() => modalsStore.search.show);
 
 const closeModal = () => {
@@ -124,9 +123,6 @@ const clearStore = () => {
 const query = ref('');
 
 const doSearch = async () => {
-	// await filesStore.get({
-	// 	searchTerm: query.value
-	// });
 	void router.push('/dashboard/uploads?search=' + query.value);
 };
 
