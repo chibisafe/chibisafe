@@ -19,18 +19,36 @@
 	<div class="flex flex-col flex-1 h-full relative overflow-auto mobile:overflow-hidden">
 		<router-view />
 		<Toast />
+		<SearchModal />
 	</div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useMeta } from 'vue-meta';
-import { useUserStore, useSettingsStore } from './store';
+import { useUserStore, useSettingsStore, useModalStore } from './store';
+import useHotkey, { HotKey } from 'vue3-hotkey';
 import Toast from './components/toast/Toast.vue';
+import SearchModal from './components/modals/SearchModal.vue';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
+const modalStore = useModalStore();
+const isLoggedIn = computed(() => userStore.user.loggedIn);
 
 userStore.checkToken();
+
+const hotkeys = ref<HotKey[]>([
+	{
+		keys: ['ctrl', 'k'],
+		preventDefault: true,
+		handler() {
+			if (!isLoggedIn.value) return;
+			modalStore.search.show = true;
+		}
+	}
+]);
+useHotkey(hotkeys.value);
 
 // @ts-ignore
 if (import.meta.env.DEV) {

@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
@@ -25,19 +26,28 @@ import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 const route = useRoute();
 const filesStore = useFilesStore();
 
-const checkRouteQuery = () => {
-	if (route.query.page) {
-		const pageNum = Number(route.query.page);
-		if (!Number.isNaN(pageNum)) {
-			void filesStore.get({ page: pageNum });
-			return;
-		}
+const processRouteQuery = () => {
+	const searchTerm = route.query.search;
+	const pageNum = Number(route.query.page);
 
-		void filesStore.get();
+	const objToPass: Record<string, unknown> = {};
+	if (searchTerm) {
+		objToPass.searchTerm = String(searchTerm);
 	}
 
-	void filesStore.get();
+	if (pageNum && !Number.isNaN(pageNum)) {
+		objToPass.page = pageNum;
+	}
+
+	void filesStore.get(objToPass);
 };
 
-checkRouteQuery();
+processRouteQuery();
+
+watch(
+	() => route.query.search,
+	() => {
+		processRouteQuery();
+	}
+);
 </script>

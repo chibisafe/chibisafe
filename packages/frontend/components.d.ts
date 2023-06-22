@@ -30,6 +30,7 @@ declare module '@vue/runtime-core' {
     Pagination: typeof import('./src/components/pagination/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchModal: typeof import('./src/components/modals/SearchModal.vue')['default']
     Sidebar: typeof import('./src/components/sidebar/Sidebar.vue')['default']
     Tag: typeof import('./src/components/tags/Tag.vue')['default']
     Toast: typeof import('./src/components/toast/Toast.vue')['default']
