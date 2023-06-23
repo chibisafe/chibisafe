@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useUserStore, useSettingsStore, useModalStore } from './store';
-import useHotkey, { HotKey } from 'vue3-hotkey';
+import { useMagicKeys, whenever } from '@vueuse/core';
 import Toast from './components/toast/Toast.vue';
 import SearchModal from './components/modals/SearchModal.vue';
 
@@ -38,25 +38,19 @@ const isLoggedIn = computed(() => userStore.user.loggedIn);
 
 userStore.checkToken();
 
-const hotkeys = ref<HotKey[]>([
-	{
-		keys: ['ctrl', 'k'],
-		preventDefault: true,
-		handler() {
-			if (!isLoggedIn.value) return;
-			modalStore.search.show = true;
-		}
-	},
-	{
-		keys: ['meta', 'k'],
-		preventDefault: true,
-		handler() {
-			if (!isLoggedIn.value) return;
-			modalStore.search.show = true;
+const { ctrl_k } = useMagicKeys({
+	passive: false,
+	onEventFired(e) {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'k' && e.type === 'keydown') {
+			e.preventDefault();
 		}
 	}
-]);
-useHotkey(hotkeys.value);
+});
+
+whenever(ctrl_k, () => {
+	if (!isLoggedIn.value) return;
+	modalStore.search.show = true;
+});
 
 // @ts-ignore
 if (import.meta.env.DEV) {
