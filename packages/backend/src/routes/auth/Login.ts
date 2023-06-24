@@ -49,16 +49,16 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		{ expiresIn: '30d' }
 	);
 
-	// TODO: make this response more consistent with the rest of the API
 	return res.send({
 		message: 'Successfully logged in.',
-		id: user.id,
-		uuid: user.uuid,
-		username: user.username,
-		apiKey: user.apiKey,
-		isAdmin: user.isAdmin,
-		token: jwt,
-		passwordEditedAt: user.passwordEditedAt
+		user: {
+			uuid: user.uuid,
+			username: user.username,
+			isAdmin: user.isAdmin,
+			apiKey: user.apiKey,
+			passwordEditedAt: user.passwordEditedAt,
+			token: jwt
+		}
 	});
 };
 

@@ -20,7 +20,7 @@ export const login = async (username: string, password: string) => {
 			password
 		});
 
-		debug('login', data);
+		debug('login', data.user);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
