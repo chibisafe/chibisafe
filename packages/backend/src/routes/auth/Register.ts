@@ -106,3 +106,45 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	return res.send({ message: 'The account was created successfully' });
 };
+
+export const schema = {
+	description: 'Create a new user account',
+	tags: ['Auth'],
+	body: {
+		type: 'object',
+		properties: {
+			username: {
+				type: 'string',
+				description: 'The username of the user.'
+			},
+			password: {
+				type: 'string',
+				description: 'The password of the user.'
+			}
+		},
+		required: ['username', 'password']
+	},
+	headers: {
+		type: 'object',
+		properties: {
+			invite: {
+				type: 'string',
+				description: 'The invite code to use.'
+			}
+		}
+	},
+	response: {
+		200: {
+			type: 'object',
+			properties: {
+				message: {
+					type: 'string',
+					title: 'Message',
+					description: 'A message describing the result of the request.'
+				}
+			}
+		},
+		'4xx': { $ref: 'HTTP4xxError' },
+		'5xx': { $ref: 'HTTP5xxError' }
+	}
+};

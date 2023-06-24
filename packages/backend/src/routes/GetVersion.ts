@@ -11,3 +11,20 @@ export const run = (req: FastifyRequest, res: FastifyReply) => {
 		version: process.env.npm_package_version
 	});
 };
+
+export const schema = {
+	description: 'Get the current version of the application.',
+	tags: ['Server'],
+	response: {
+		200: {
+			type: 'object',
+			properties: {
+				version: {
+					type: 'string',
+					description: 'The current version of the application.',
+					example: '1.0.0'
+				}
+			}
+		}
+	}
+};

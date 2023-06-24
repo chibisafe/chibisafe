@@ -56,6 +56,47 @@ const start = async () => {
 		timeWindow: SETTINGS.rateLimitWindow
 	});
 
+	// Register the fastify-sensible plugin
+	await server.register(import('@fastify/sensible'));
+
+	await server.register(import('@fastify/swagger'), {
+		openapi: {
+			info: {
+				title: 'Chibisafe API',
+				version: (process.env.npm_package_version as string) ?? 'unknown'
+			},
+			tags: [
+				{ name: 'Auth' },
+				{ name: 'User' },
+				{ name: 'Tags' },
+				{
+					name: 'API Key',
+					description: 'Routes can be used with an API Key.'
+				},
+				{
+					name: 'Server',
+					description: 'Routes that returns data about the server instance.'
+				},
+				{ name: 'Albums' }
+			]
+		}
+	});
+
+	await server.register(import('@fastify/swagger-ui'), {
+		routePrefix: '/swagger'
+	});
+
+	// Route error handler
+	// eslint-disable-next-line promise/prefer-await-to-callbacks
+	server.setErrorHandler((error, req, res) => {
+		if (error.statusCode) {
+			return res.send(error);
+		} else {
+			server.log.error(error);
+			res.internalServerError('Something went wrong');
+		}
+	});
+
 	// Enable form-data parsing
 	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
 
@@ -222,5 +263,88 @@ export const getHtmlBuffer = async () => {
 
 	htmlBuffer = Buffer.from(indexHTML);
 };
+
+// TODO: move to a better place.
+server.addSchema({
+	$id: 'RequestUser',
+	type: 'object',
+	description: 'The user object.',
+	properties: {
+		id: {
+			type: 'number',
+			description: "The user's ID.",
+			example: 1
+		},
+		uuid: {
+			type: 'string',
+			description: "The user's UUID.",
+			example: '1453821d-aaf9-435c-8a51-e3f16f7d2ee5'
+		},
+		username: {
+			type: 'string',
+			description: "The user's username.",
+			example: 'admin'
+		},
+		isAdmin: {
+			type: 'boolean',
+			description: 'Whether or not the user is an administrator.',
+			example: true
+		},
+		apiKey: {
+			type: 'string',
+			description: "The user's API key.",
+			example: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'
+		},
+		passwordEditedAt: {
+			type: 'string',
+			description: "The date and time the user's password was last edited.",
+			example: '2021-01-01T00:00:00.000Z'
+		}
+	}
+});
+
+server.addSchema({
+	$id: 'HTTP4xxError',
+	type: 'object',
+	description: 'An error response.',
+	properties: {
+		statusCode: {
+			type: 'number',
+			description: 'HTTP status code.',
+			example: 401
+		},
+		error: {
+			type: 'string',
+			description: 'HTTP status description.',
+			example: 'Unauthorized'
+		},
+		message: {
+			type: 'string',
+			description: 'A message describing the result of the request.'
+		}
+	}
+});
+
+server.addSchema({
+	$id: 'HTTP5xxError',
+	type: 'object',
+	description: 'An error response.',
+	properties: {
+		statusCode: {
+			type: 'number',
+			description: 'HTTP status code',
+			example: 500
+		},
+		error: {
+			type: 'string',
+			description: 'HTTP status description',
+			example: 'Internal Server Error'
+		},
+		message: {
+			type: 'string',
+			description: 'A message describing the result of the request.'
+		}
+	}
+});
 
 void start();

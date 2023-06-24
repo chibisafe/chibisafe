@@ -23,6 +23,7 @@ export default {
 				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const options: RouteOptions = route.options;
+				const schema = route.schema;
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
@@ -89,6 +90,7 @@ export default {
 					method: options.method.toUpperCase() as any,
 					url: options.url,
 					preHandler: middlewares,
+					schema: schema ?? {},
 					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res),
 					config: {
 						rateLimit: {
