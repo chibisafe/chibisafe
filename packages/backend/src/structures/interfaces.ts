@@ -1,4 +1,4 @@
-import type { FastifyRequest, FastifySchema } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 
 export interface RequestUser {
 	id: number;
@@ -132,7 +132,6 @@ export interface RouteOptions {
 		};
 		[index: number | string]: any;
 	};
-	schema?: FastifySchema;
 	middlewares?: (string | { [index: number | string]: any })[];
 	debug?: boolean;
 }
