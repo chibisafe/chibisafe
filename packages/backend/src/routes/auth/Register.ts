@@ -24,9 +24,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	// If new account creation is deactivated then check for an invite
 	if (!SETTINGS.userAccounts && !invite) {
-		return res.code(401).send({
-			message: 'Creation of new accounts is currently disabled without an invite'
-		});
+		res.unauthorized('Creation of new accounts is currently disabled without an invite');
+		return;
 	}
 
 	if (invite) {
@@ -40,24 +39,25 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 		// If no invite was found then reject the call
 		if (!foundInvite) {
-			return res.code(401).send({
-				message: 'Invalid invite code'
-			});
+			res.unauthorized('Invalid invite code');
+			return;
 		}
 	}
 
 	const { username, password } = req.body as { username?: string; password?: string };
-	if (!username || !password)
-		return res.code(400).send({
-			message: 'No username or password provided'
-		});
+	if (!username || !password) {
+		res.badRequest('No username or password provided');
+		return;
+	}
 
 	if (username.length < 4 || username.length > 32) {
-		return res.code(400).send({ message: 'Username must have 4-32 characters' });
+		res.badRequest('Username must have 4-32 characters');
+		return;
 	}
 
 	if (password.length < 6 || password.length > 64) {
-		return res.code(400).send({ message: 'Password must have 6-64 characters' });
+		res.badRequest('Password must have 6-64 characters');
+		return;
 	}
 
 	const exists = await prisma.users.findFirst({
@@ -66,14 +66,18 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (exists) return res.code(400).send({ message: 'Username already exists' });
+	if (exists) {
+		res.badRequest('Username already exists');
+		return;
+	}
 
 	let hash;
 	try {
 		hash = await bcrypt.hash(password, 10);
 	} catch (error) {
 		res.log.error(error);
-		return res.code(401).send({ message: 'There was a problem processing your account' });
+		res.internalServerError('There was a problem processing your account');
+		return;
 	}
 
 	// Create the user in the database

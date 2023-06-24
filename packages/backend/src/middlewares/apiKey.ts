@@ -13,9 +13,23 @@ export default async (req: RequestWithUser, res: FastifyReply, next: HookHandler
 		}
 	});
 
-	if (!user) return res.code(401).send({ message: 'Invalid authorization' });
-	if (!user.enabled) return res.code(401).send({ message: 'This account has been disabled' });
+	if (!user) {
+		res.unauthorized('Invalid authorization');
+		return;
+	}
+
+	if (!user.enabled) {
+		res.unauthorized('This account has been disabled');
+		return;
+	}
 
 	// eslint-disable-next-line require-atomic-updates
-	req.user = user;
+	req.user = {
+		id: user.id,
+		uuid: user.uuid,
+		username: user.username,
+		isAdmin: user.isAdmin,
+		apiKey: user.apiKey,
+		passwordEditedAt: user.passwordEditedAt
+	};
 };

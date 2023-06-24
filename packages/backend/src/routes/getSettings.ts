@@ -7,8 +7,8 @@ export const options = {
 	method: 'get'
 };
 
-export const run = (req: RequestWithUser, res: FastifyReply) =>
-	res.send({
+export const run = (req: RequestWithUser, res: FastifyReply) => {
+	return res.send({
 		serviceName: SETTINGS.serviceName,
 		chunkSize: SETTINGS.chunkSize,
 		maxFileSize: SETTINGS.maxSize,
@@ -17,3 +17,4 @@ export const run = (req: RequestWithUser, res: FastifyReply) =>
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts
 	});
+};

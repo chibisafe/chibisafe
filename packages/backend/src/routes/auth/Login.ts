@@ -17,10 +17,10 @@ export const options = {
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { username, password } = req.body as { username?: string; password?: string };
-	if (!username || !password)
-		return res.code(400).send({
-			message: 'No username or password provided'
-		});
+	if (!username || !password) {
+		res.unauthorized('No username or password provided');
+		return;
+	}
 
 	const user = await prisma.users.findFirst({
 		where: {
@@ -28,10 +28,16 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!user) return res.code(401).send({ message: "User doesn't exist" });
+	if (!user) {
+		res.unauthorized("User doesn't exist");
+		return;
+	}
 
 	const comparePassword = await bcrypt.compare(password, user.password);
-	if (!comparePassword) return res.code(401).send({ message: 'Wrong password' });
+	if (!comparePassword) {
+		res.unauthorized('Wrong password');
+		return;
+	}
 
 	const jwt = JWT.sign(
 		{
@@ -43,6 +49,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		{ expiresIn: '30d' }
 	);
 
+	// TODO: make this response more consistent with the rest of the API
 	return res.send({
 		message: 'Successfully logged in.',
 		id: user.id,
