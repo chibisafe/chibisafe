@@ -13,8 +13,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 	const { ip }: { ip: string } = req.body as { ip: string };
 
-	if (!ip) return res.code(400).send({ message: 'No ip provided' });
-
 	const count = await prisma.files.count({
 		where: {
 			ip
