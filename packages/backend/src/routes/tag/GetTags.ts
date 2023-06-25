@@ -17,6 +17,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully fetched tags',
-		data: tags
+		tags
 	});
 };

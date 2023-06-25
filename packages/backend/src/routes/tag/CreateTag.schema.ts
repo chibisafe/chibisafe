@@ -16,7 +16,7 @@ export default {
 			type: 'object',
 			properties: {
 				message: { $ref: 'ResponseMessage' },
-				data: {
+				tag: {
 					type: 'object',
 					properties: {
 						uuid: {

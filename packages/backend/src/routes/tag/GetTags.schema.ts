@@ -6,7 +6,7 @@ export default {
 			type: 'object',
 			properties: {
 				message: { $ref: 'ResponseMessage' },
-				data: {
+				tags: {
 					type: 'array',
 					description: 'An array of tags belonging to the user.',
 					items: {

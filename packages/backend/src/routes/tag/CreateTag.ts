@@ -36,7 +36,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully created tag',
-		data: {
+		tag: {
 			uuid: newTag.uuid,
 			name: newTag.name,
 			createdAt: newTag.createdAt
