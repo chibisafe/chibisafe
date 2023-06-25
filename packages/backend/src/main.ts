@@ -385,4 +385,19 @@ server.addSchema({
 	description: 'A message describing the result of the request.'
 });
 
+server.addSchema({
+	$id: 'QueryPage',
+	type: 'number',
+	description: 'The page number.',
+	minimum: 1
+});
+
+server.addSchema({
+	$id: 'QueryLimit',
+	type: 'number',
+	description: 'The amount of items per page.',
+	minimum: 1,
+	maximum: 500
+});
+
 void start();

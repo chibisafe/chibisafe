@@ -12,7 +12,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
-	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
 
 	const exists = await prisma.albums.findFirst({
 		where: {
@@ -21,25 +20,38 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!exists) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!exists) {
+		res.badRequest("Album doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	let { identifier } = req.body as { identifier?: string };
 	if (identifier) {
-		if (!req.user.isAdmin) return res.code(401).send({ message: 'Only administrators can create custom links' });
-		if (!/^[\w-]+$/.test(identifier))
-			return res
-				.status(400)
-				.send({ message: 'Only alphanumeric, dashes, and underscore characters are allowed' });
+		if (!req.user.isAdmin) {
+			res.unauthorized('Only administrators can create custom links');
+			return;
+		}
+
+		if (!/^[\w-]+$/.test(identifier)) {
+			res.badRequest('Only alphanumeric, dashes, and underscore characters are allowed');
+			return;
+		}
 
 		const identifierExists = await prisma.links.findFirst({
 			where: {
 				identifier
 			}
 		});
-		if (identifierExists) return res.code(400).send({ message: 'Album with this identifier already exists' });
+		if (identifierExists) {
+			res.conflict('Album with this identifier already exists');
+			return;
+		}
 	} else {
 		identifier = await getUniqueAlbumIdentifier();
-		if (!identifier) return res.code(500).send({ message: 'There was a problem allocating a link for your album' });
+		if (!identifier) {
+			res.internalServerError('There was a problem allocating a link for your album');
+			return;
+		}
 	}
 
 	const insertObj = {

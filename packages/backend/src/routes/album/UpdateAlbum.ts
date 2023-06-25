@@ -9,11 +9,13 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
+	const { uuid } = req.params as { uuid: string };
 
 	const { name, nsfw } = req.body as { name?: string; nsfw?: boolean };
-	if (!name && nsfw === undefined) return res.code(400).send({ message: 'No data supplied' });
+	if (!name && nsfw === undefined) {
+		res.badRequest('No data supplied');
+		return;
+	}
 
 	// Make sure the album exists and belongs to the user
 	const album = await prisma.albums.findFirst({
@@ -23,7 +25,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(400).send({ message: "The album doesn't exist or doesn't belong to the user" });
+	if (!album) {
+		res.notFound("The album doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	const updateObj = {
 		name: name ?? album.name,

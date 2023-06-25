@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
 import { constructFilePublicLink } from '@/utils/File';
-import type { ExtendedFile, File, RequestWithUser } from '@/structures/interfaces';
+import type { File, RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
 	url: '/album/:uuid',
@@ -10,8 +10,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
+	const { uuid } = req.params as { uuid: string };
 
 	// Set up pagination options
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
@@ -49,7 +48,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(404).send({ message: 'The album could not be found' });
+	if (!album) {
+		res.notFound('The album could not be found');
+		return;
+	}
 
 	// Construct the public links
 	const files = [] as File[];
@@ -60,9 +62,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved album',
-		name: album.name,
-		files,
-		isNsfw: album.nsfw,
-		filesCount: album._count.files
+		album: {
+			name: album.name,
+			files,
+			isNsfw: album.nsfw,
+			filesCount: album._count.files
+		}
 	});
 };

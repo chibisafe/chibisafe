@@ -9,8 +9,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
+	const { uuid } = req.params as { uuid: string };
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -19,7 +18,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(400).send({ message: "The album doesn't exist or doesn't belong to the user" });
+	if (!album) {
+		res.badRequest("The album doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	try {
 		await prisma.links.deleteMany({
@@ -38,6 +40,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			message: 'Successfully deleted the album'
 		});
 	} catch {
-		return res.code(500).send({ message: 'An error occurred while deleting the album' });
+		res.internalServerError('An error occurred while deleting the album');
 	}
 };
