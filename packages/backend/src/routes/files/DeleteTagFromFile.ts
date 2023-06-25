@@ -10,7 +10,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid, tagUuid } = req.params as { uuid?: string; tagUuid?: string };
-	if (!uuid || !tagUuid) return res.code(400).send({ message: 'No uuid or tagUuid provided' });
 
 	const fileExists = await prisma.files.findFirst({
 		where: {
@@ -19,7 +18,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!fileExists) return res.code(400).send({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) {
+		res.notFound("File doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	const tagExists = await prisma.tags.findFirst({
 		where: {
@@ -28,7 +30,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!tagExists) return res.code(400).send({ message: "Tag doesn't exist or doesn't belong to the user" });
+	if (!tagExists) {
+		res.notFound("Tag doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	await prisma.files.update({
 		where: {

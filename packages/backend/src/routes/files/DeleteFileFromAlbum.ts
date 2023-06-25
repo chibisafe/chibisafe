@@ -10,7 +10,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid, albumUuid } = req.params as { uuid?: string; albumUuid?: string };
-	if (!uuid || !albumUuid) return res.code(400).send({ message: 'No uuid or albumUuid provided' });
 
 	const fileExists = await prisma.files.findFirst({
 		where: {
@@ -19,7 +18,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!fileExists) return res.code(400).send({ message: "File doesn't exist or doesn't belong to the user" });
+	if (!fileExists) {
+		res.notFound("File doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	const albumExists = await prisma.albums.findFirst({
 		where: {
@@ -28,7 +30,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!albumExists) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!albumExists) {
+		res.notFound("Album doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	await prisma.files.update({
 		where: {
