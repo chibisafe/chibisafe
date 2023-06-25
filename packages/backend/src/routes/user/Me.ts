@@ -13,22 +13,3 @@ export const run = (req: RequestWithUser, res: FastifyReply) => {
 		user: req.user
 	});
 };
-
-export const schema = {
-	description: 'Return the current user.',
-	tags: ['User', 'API Key'],
-	response: {
-		200: {
-			type: 'object',
-			properties: {
-				message: {
-					type: 'string',
-					description: 'A message describing the result of the request.'
-				},
-				user: { $ref: 'RequestUser' }
-			}
-		},
-		'4xx': { $ref: 'HTTP4xxError' },
-		'5xx': { $ref: 'HTTP5xxError' }
-	}
-};

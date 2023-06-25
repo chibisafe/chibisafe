@@ -85,7 +85,7 @@ export const getSettings = async () => {
 export const getMe = async () => {
 	try {
 		const data = await request.get('verify');
-		debug('getMe', data.user);
+		debug('getMe', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);

@@ -15,15 +15,27 @@ export default {
 			While in development we only want to match routes written in TypeScript but for production
 			we need to change it to javascript files since they will be compiled.
 		*/
-		const matching = `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
+		const routeFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
+			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`,
+			filter: file => !file.name.endsWith('.schema.ts')
+		});
 
-		for (const routeFile of await jetpack.findAsync(path.join(__dirname, '..', 'routes'), { matching })) {
+		const schemas = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
+			matching: `*.schema.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+		});
+
+		for (const routeFile of routeFiles) {
 			try {
 				const slash = process.platform === 'win32' ? '\\' : '/';
 				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const options: RouteOptions = route.options;
-				const schema = route.schema;
+				// const schema = route.schema;
+
+				const schemaFile = schemas.find(schema => schema === routeFile.replace('.ts', '.schema.ts'));
+				const schema = schemaFile
+					? (await import(schemaFile.replace(replace, `..${slash}`))).default
+					: undefined;
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);

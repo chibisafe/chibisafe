@@ -34,7 +34,7 @@ export const useUserStore = defineStore('user', {
 				// Keep the token
 				...this.user,
 				// Update the rest of the user object
-				...response,
+				...response.user,
 				// Set loggedIn to true
 				loggedIn: true
 			};
@@ -47,7 +47,8 @@ export const useUserStore = defineStore('user', {
 			if (!response.token) return;
 
 			this.user = {
-				...response,
+				...response.user,
+				token: response.token,
 				loggedIn: true
 			};
 

@@ -66,18 +66,28 @@ const start = async () => {
 				version: (process.env.npm_package_version as string) ?? 'unknown'
 			},
 			tags: [
-				{ name: 'Auth' },
-				{ name: 'User' },
-				{ name: 'Tags' },
+				{
+					name: 'Auth',
+					description: 'Authentication routes.'
+				},
+				{
+					name: 'User',
+					description: 'Routes that return data related to the authenticated user.'
+				},
+				{
+					name: 'Albums'
+				},
+				{
+					name: 'Tags'
+				},
 				{
 					name: 'API Key',
-					description: 'Routes can be used with an API Key.'
+					description: 'Routes that can be used with an API Key.'
 				},
 				{
 					name: 'Server',
-					description: 'Routes that returns data about the server instance.'
-				},
-				{ name: 'Albums' }
+					description: 'Routes that returns info about the server instance.'
+				}
 			]
 		}
 	});
@@ -318,10 +328,7 @@ server.addSchema({
 			description: 'HTTP status description.',
 			example: 'Unauthorized'
 		},
-		message: {
-			type: 'string',
-			description: 'A message describing the result of the request.'
-		}
+		message: { $ref: 'ResponseMessage' }
 	}
 });
 
@@ -340,11 +347,14 @@ server.addSchema({
 			description: 'HTTP status description',
 			example: 'Internal Server Error'
 		},
-		message: {
-			type: 'string',
-			description: 'A message describing the result of the request.'
-		}
+		message: { $ref: 'ResponseMessage' }
 	}
+});
+
+server.addSchema({
+	$id: 'ResponseMessage',
+	type: 'string',
+	description: 'A message describing the result of the request.'
 });
 
 void start();

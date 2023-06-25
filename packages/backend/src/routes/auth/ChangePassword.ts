@@ -12,8 +12,16 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { password, newPassword } = req.body as { password?: string; newPassword?: string };
-	if (!password || !newPassword) return res.code(400).send({ message: 'Invalid password or newPassword supplied' });
-	if (password === newPassword) return res.code(400).send({ message: 'Passwords have to be different' });
+
+	if (!password || !newPassword) {
+		res.badRequest('Invalid password or newPassword supplied');
+		return;
+	}
+
+	if (password === newPassword) {
+		res.badRequest('Passwords have to be different');
+		return;
+	}
 
 	const user = await prisma.users.findUnique({
 		where: {
@@ -25,10 +33,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	const comparePassword = await bcrypt.compare(password, user?.password ?? '');
-	if (!comparePassword) return res.code(401).send({ message: 'Current password is incorrect' });
+	if (!comparePassword) {
+		res.unauthorized('Current password is incorrect');
+		return;
+	}
 
 	if (newPassword.length < 6 || newPassword.length > 64) {
-		return res.code(400).send({ message: 'Password must have 6-64 characters' });
+		res.badRequest('Password must have 6-64 characters');
+		return;
 	}
 
 	let hash;
@@ -36,7 +48,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		hash = await bcrypt.hash(newPassword, 10);
 	} catch (error) {
 		res.log.error(error);
-		return res.code(401).send({ message: 'There was a problem processing your account' });
+		res.internalServerError('There was a problem processing your account');
+		return;
 	}
 
 	const now = utc().toDate();

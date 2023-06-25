@@ -52,45 +52,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	return res.send({
 		message: 'Successfully logged in.',
 		user: {
+			id: user.id,
 			uuid: user.uuid,
 			username: user.username,
 			isAdmin: user.isAdmin,
 			apiKey: user.apiKey,
-			passwordEditedAt: user.passwordEditedAt,
-			token: jwt
-		}
+			passwordEditedAt: user.passwordEditedAt
+		},
+		token: jwt
 	});
-};
-
-export const schema = {
-	description: 'Login to an existing account.',
-	tags: ['Auth'],
-	body: {
-		type: 'object',
-		properties: {
-			username: {
-				type: 'string',
-				description: 'The username of the user.'
-			},
-			password: {
-				type: 'string',
-				description: 'The password of the user.'
-			}
-		},
-		required: ['username', 'password']
-	},
-	response: {
-		200: {
-			type: 'object',
-			properties: {
-				message: {
-					type: 'string',
-					title: 'Message',
-					description: 'A message describing the result of the request.'
-				}
-			}
-		},
-		'4xx': { $ref: 'HTTP4xxError' },
-		'5xx': { $ref: 'HTTP5xxError' }
-	}
 };

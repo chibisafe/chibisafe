@@ -31,31 +31,3 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		message: 'Successfully deleted the tag'
 	});
 };
-
-export const schema = {
-	description: 'Delete a tag.',
-	tags: ['Tags', 'API Key'],
-	params: {
-		type: 'object',
-		properties: {
-			uuid: {
-				type: 'string',
-				description: 'The uuid of the tag.'
-			}
-		},
-		required: ['uuid']
-	},
-	response: {
-		200: {
-			type: 'object',
-			properties: {
-				message: {
-					type: 'string',
-					description: 'A message describing the result of the request.'
-				}
-			}
-		},
-		'4xx': { $ref: 'HTTP4xxError' },
-		'5xx': { $ref: 'HTTP5xxError' }
-	}
-};
