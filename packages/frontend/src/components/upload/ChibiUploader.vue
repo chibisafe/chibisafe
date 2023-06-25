@@ -74,7 +74,7 @@ const isUploadEnabled = computed(() => {
 	return isLoggedIn.value;
 });
 
-const maxFileSize = computed(() => settingsStore.maxFileSize);
+const maxFileSize = computed(() => settingsStore.maxSize);
 const chunkSize = computed(() => settingsStore.chunkSize);
 const isMobile = computed(() => useWindowSize().width.value < 640);
 

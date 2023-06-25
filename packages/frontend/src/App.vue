@@ -14,7 +14,7 @@
 	</div>
 	<div
 		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
-		:style="`background-image: url(${settingsStore.background});`"
+		:style="`background-image: url(${settingsStore.backgroundImageURL});`"
 	></div>
 	<div class="flex flex-col flex-1 h-full relative overflow-auto mobile:overflow-hidden">
 		<router-view />
@@ -58,11 +58,10 @@ if (import.meta.env.DEV) {
 } else {
 	// Since we bake the settings into the HTML, we need to override the store
 	const __CHIBISAFE__ = (window as any).__CHIBISAFE__;
-	settingsStore.serviceName = __CHIBISAFE__.serviceName;
-	settingsStore.background = __CHIBISAFE__.background;
-	settingsStore.chunkSize = __CHIBISAFE__.chunkSize;
-	settingsStore.maxFileSize = __CHIBISAFE__.maxFileSize;
-	settingsStore.logo = __CHIBISAFE__.logo;
+	for (const [key, value] of Object.entries(__CHIBISAFE__)) {
+		// @ts-ignore
+		settingsStore[key] = value;
+	}
 }
 
 // Override meta data
