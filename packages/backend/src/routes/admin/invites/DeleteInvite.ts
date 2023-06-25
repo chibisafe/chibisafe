@@ -10,7 +10,10 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { code }: { code: string } = req.body as { code: string };
-	if (!code) return res.code(400).send({ message: 'No code provided' });
+	if (!code) {
+		res.badRequest('No code provided');
+		return;
+	}
 
 	const invite = await prisma.invites.findUnique({
 		where: {
@@ -18,7 +21,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (invite?.used) return res.code(400).send({ message: 'Invite has already been used' });
+	if (invite?.used) {
+		return res.code(400).send({ message: 'Invite has already been used' });
+	}
 
 	await prisma.invites.delete({
 		where: {
@@ -26,8 +31,5 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	return res.send({
-		message: 'Successfully deleted invite',
-		code
-	});
+	return res.send({ message: 'Successfully deleted invite' });
 };

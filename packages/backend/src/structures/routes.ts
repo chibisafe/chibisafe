@@ -15,24 +15,30 @@ export default {
 			While in development we only want to match routes written in TypeScript but for production
 			we need to change it to javascript files since they will be compiled.
 		*/
-		const routeFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
-			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`,
-			filter: file => !file.name.endsWith('.schema.ts')
+
+		const allRouteFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
+			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
 		});
 
-		const schemas = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
-			matching: `*.schema.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
-		});
+		const routeFiles = allRouteFiles.filter(file => !file.endsWith('.schema.ts'));
+		const schemaFiles = allRouteFiles.filter(file => file.endsWith('.schema.ts'));
 
 		for (const routeFile of routeFiles) {
 			try {
+				// Replace slashes if user is on Windows
 				const slash = process.platform === 'win32' ? '\\' : '/';
+				// Replace extension from ts to js if in production
 				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const options: RouteOptions = route.options;
-				// const schema = route.schema;
 
-				const schemaFile = schemas.find(schema => schema === routeFile.replace('.ts', '.schema.ts'));
+				// Try to grab the schema file for the route
+				const routeFileName = routeFile.split(slash).pop();
+				const schemaFile = schemaFiles.find(file => {
+					if (!routeFileName) return null;
+					return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
+				});
+
 				const schema = schemaFile
 					? (await import(schemaFile.replace(replace, `..${slash}`))).default
 					: undefined;
@@ -112,7 +118,12 @@ export default {
 					}
 				});
 
-				server.log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
+				server.log.debug(
+					// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+					`Found route |${schema ? ' SCHEMA |' : addSpaces('') + ' |'}${addSpaces(
+						options.method.toUpperCase()
+					)} ${options.url}`
+				);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 				server.log.error(routeFile);

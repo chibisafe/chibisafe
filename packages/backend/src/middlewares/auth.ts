@@ -64,6 +64,7 @@ export default (
 				id: true,
 				uuid: true,
 				username: true,
+				enabled: true,
 				isAdmin: true,
 				apiKey: true,
 				passwordEditedAt: true
@@ -77,6 +78,11 @@ export default (
 
 		if (!user) {
 			res.unauthorized("User doesn't exist");
+			return;
+		}
+
+		if (!user.enabled) {
+			res.forbidden('User is disabled');
 			return;
 		}
 

@@ -75,10 +75,24 @@ const start = async () => {
 					description: 'Routes that return data related to the authenticated user.'
 				},
 				{
-					name: 'Albums'
+					name: 'Albums',
+					description: 'Routes that return data related to albums.'
 				},
 				{
-					name: 'Tags'
+					name: 'Files',
+					description: 'Routes that return data related to files.'
+				},
+				{
+					name: 'Tags',
+					description: 'Routes that return data related to tags.'
+				},
+				{
+					name: 'Invites',
+					description: 'Routes that return data related to invites.'
+				},
+				{
+					name: 'Admin',
+					description: 'Routes that return data related to the admin panel.'
 				},
 				{
 					name: 'API Key',
@@ -275,6 +289,20 @@ export const getHtmlBuffer = async () => {
 };
 
 // TODO: move to a better place.
+server.addSchema({
+	$id: 'FilesAsUser',
+	type: 'object',
+	description: 'The file object.',
+	properties: {}
+});
+
+server.addSchema({
+	$id: 'FilesAsAdmin',
+	type: 'object',
+	description: 'The file object.',
+	properties: {}
+});
+
 server.addSchema({
 	$id: 'RequestUser',
 	type: 'object',
