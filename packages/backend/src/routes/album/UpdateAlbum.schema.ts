@@ -23,7 +23,9 @@ export default {
 				description: 'Whether the album is nsfw or not.'
 			}
 		},
-		additionalProperties: false
+		minProperties: 1,
+		additionalProperties: false,
+		anyOf: [{ required: ['name'] }, { required: ['nsfw'] }]
 	},
 	response: {
 		200: {
