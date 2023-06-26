@@ -14,7 +14,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { settings }: { settings: string } = req.body as { settings: string };
-	if (!settings) return res.code(400).send({ message: 'No settings provided' });
 
 	try {
 		// TODO: Validation of the settings
@@ -48,6 +47,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		if (process.env.NODE_ENV === 'production') await getHtmlBuffer();
 	} catch (error) {
 		req.log.error(error);
-		return res.code(500).send({ message: error });
+		res.internalServerError(error as string);
 	}
 };
