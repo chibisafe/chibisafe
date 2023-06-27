@@ -22,7 +22,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (invite?.used) {
-		return res.code(400).send({ message: 'Invite has already been used' });
+		res.notFound('Invite has already been used');
+		return;
 	}
 
 	await prisma.invites.delete({

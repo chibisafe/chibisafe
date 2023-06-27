@@ -10,7 +10,10 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
+	if (!uuid) {
+		res.badRequest('No uuid provided');
+		return;
+	}
 
 	const tag = await prisma.tags.findFirst({
 		where: {
@@ -19,7 +22,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!tag) return res.code(400).send({ message: "The tag doesn't exist or doesn't belong to the user" });
+	if (!tag) {
+		res.notFound("The tag doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	await prisma.tags.delete({
 		where: {

@@ -432,6 +432,21 @@ server.addSchema({
 					type: 'string',
 					description: "The user's username.",
 					example: 'admin'
+				},
+				enabled: {
+					type: 'boolean',
+					description: "Whether the user's account is enabled or not.",
+					example: true
+				},
+				isAdmin: {
+					type: 'boolean',
+					description: 'Whether the user is an admin or not.',
+					example: true
+				},
+				createdAt: {
+					type: 'string',
+					description: "The user's creation date.",
+					example: '2021-01-01T00:00:00.000Z'
 				}
 			}
 		}

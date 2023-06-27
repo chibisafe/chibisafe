@@ -48,7 +48,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		dbObject.select.user = {
 			select: {
 				uuid: true,
-				username: true
+				username: true,
+				enabled: true,
+				isAdmin: true,
+				createdAt: true
 			}
 		};
 	}

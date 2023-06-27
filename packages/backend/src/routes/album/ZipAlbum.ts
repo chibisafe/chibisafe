@@ -7,13 +7,16 @@ import { createZip } from '@/utils/File';
 import { utc } from 'moment';
 
 export const options = {
-	url: '/album/:identifier/zip',
+	// url: '/album/:identifier/zip',
 	method: 'get'
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { identifier } = req.params as { identifier: string };
-	if (!identifier) return res.code(400).send({ message: 'No identifier provided' });
+	if (!identifier) {
+		res.badRequest('No identifier provided');
+		return;
+	}
 
 	// Make sure the album identifier exists and is enabled
 	const link = await prisma.links.findFirst({
@@ -24,7 +27,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!link) return res.code(400).send({ message: 'No identifier could be found' });
+	if (!link) {
+		res.notFound('No identifier could be found');
+		return;
+	}
 
 	// Make sure the album exists
 	const album = await prisma.albums.findFirst({
@@ -43,7 +49,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(400).send({ message: 'No album could be found' });
+	if (!album) {
+		res.notFound('No album could be found');
+		return;
+	}
 
 	// If the date the album was zipped is greater than the date the album was last updated, send the zip
 	if (album.zippedAt && album.editedAt && album.zippedAt > album.editedAt) {
@@ -75,6 +84,6 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		await res.download(filePath, fileName);
 	} catch (error) {
 		res.log.error(error);
-		return res.code(500).send({ message: 'There was a problem downloading the album' });
+		res.internalServerError('There was a problem downloading the album');
 	}
 };
