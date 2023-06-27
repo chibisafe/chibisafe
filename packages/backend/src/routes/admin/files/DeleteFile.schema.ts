@@ -1,5 +1,5 @@
 export default {
-	summary: 'Deletes a file.',
+	summary: 'Deletes a file',
 	tags: ['Files', 'Admin'],
 	params: {
 		type: 'object',

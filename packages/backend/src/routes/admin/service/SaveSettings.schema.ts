@@ -1,5 +1,5 @@
 export default {
-	summary: 'Save the chibisafe instance settings.',
+	summary: 'Save the chibisafe instance settings',
 	tags: ['Admin', 'Server'],
 	body: {
 		type: 'object',

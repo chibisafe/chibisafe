@@ -1,5 +1,5 @@
 export default {
-	summary: 'Return a list of tags belonging to the user.',
+	summary: 'Return a list of tags belonging to the user',
 	tags: ['Tags'],
 	response: {
 		200: {

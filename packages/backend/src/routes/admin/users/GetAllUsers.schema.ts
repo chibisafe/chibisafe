@@ -1,5 +1,5 @@
 export default {
-	summary: 'Get all users.',
+	summary: 'Get all users',
 	tags: ['User Management', 'Admin'],
 	response: {
 		200: {

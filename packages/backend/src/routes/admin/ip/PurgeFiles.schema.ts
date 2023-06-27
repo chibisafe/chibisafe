@@ -1,5 +1,5 @@
 export default {
-	summary: 'Purge all files uploaded from an IP address.',
+	summary: 'Purge all files uploaded from an IP address',
 	tags: ['IP Management', 'Admin'],
 	body: {
 		type: 'object',

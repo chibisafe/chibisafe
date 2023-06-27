@@ -1,5 +1,5 @@
 export default {
-	summary: 'Purges all public files.',
+	summary: 'Purges all public files',
 	tags: ['Files', 'Admin'],
 	response: {
 		200: {

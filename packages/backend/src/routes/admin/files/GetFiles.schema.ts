@@ -1,5 +1,5 @@
 export default {
-	summary: 'Gets all files.',
+	summary: 'Gets all files',
 	tags: ['Files', 'Admin'],
 	query: {
 		type: 'object',

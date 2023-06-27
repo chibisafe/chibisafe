@@ -1,5 +1,5 @@
 export default {
-	summary: 'Purges an album and all its files.',
+	summary: 'Purges an album and all its files',
 	tags: ['Albums'],
 	params: {
 		type: 'object',

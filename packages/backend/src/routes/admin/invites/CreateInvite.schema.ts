@@ -1,5 +1,5 @@
 export default {
-	summary: 'Create an invite.',
+	summary: 'Create an invite',
 	tags: ['Invites', 'Admin'],
 	response: {
 		200: {

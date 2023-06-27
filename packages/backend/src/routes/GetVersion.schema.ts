@@ -1,5 +1,5 @@
 export default {
-	summary: 'Get the current version of the application.',
+	summary: 'Get the current version of the application',
 	tags: ['Server'],
 	response: {
 		200: {

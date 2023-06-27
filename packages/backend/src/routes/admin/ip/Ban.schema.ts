@@ -1,5 +1,5 @@
 export default {
-	summary: 'Ban an IP address from using the service.',
+	summary: 'Ban an IP address from using the service',
 	tags: ['IP Management', 'Admin'],
 	body: {
 		type: 'object',

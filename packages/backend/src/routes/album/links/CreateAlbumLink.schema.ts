@@ -1,5 +1,5 @@
 export default {
-	summary: 'Creates a new album link.',
+	summary: 'Creates a new album link',
 	tags: ['Albums'],
 	params: {
 		type: 'object',

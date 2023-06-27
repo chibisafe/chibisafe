@@ -1,5 +1,5 @@
 export default {
-	summary: 'Return the current user.',
+	summary: 'Return the current user',
 	tags: ['User'],
 	response: {
 		200: {

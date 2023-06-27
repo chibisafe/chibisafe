@@ -1,5 +1,5 @@
 export default {
-	summary: 'Disable a user account.',
+	summary: 'Disable a user account',
 	tags: ['User Management', 'Admin'],
 	params: {
 		type: 'object',
