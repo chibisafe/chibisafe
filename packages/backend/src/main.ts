@@ -14,6 +14,7 @@ import Requirements from './utils/Requirements';
 import { jumpstartStatistics } from './utils/StatsGenerator';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
+import Docs from './utils/Docs';
 import { Logger } from './utils/Logger';
 
 // Create the Fastify server
@@ -59,74 +60,7 @@ const start = async () => {
 	// Register the fastify-sensible plugin
 	await server.register(import('@fastify/sensible'));
 
-	await server.register(import('@fastify/swagger'), {
-		openapi: {
-			info: {
-				title: 'Chibisafe API',
-				version: (process.env.npm_package_version as string) ?? 'unknown'
-			},
-			tags: [
-				{
-					name: 'Auth',
-					description: 'Authentication routes.'
-				},
-				{
-					name: 'User',
-					description: 'Routes that return data related to the authenticated user.'
-				},
-				{
-					name: 'Albums',
-					description: 'Routes that return data related to albums.'
-				},
-				{
-					name: 'Files',
-					description: 'Routes that return data related to files.'
-				},
-				{
-					name: 'Tags',
-					description: 'Routes that return data related to tags.'
-				},
-				{
-					name: 'Server',
-					description: 'Routes that returns info about the server instance.'
-				},
-				{
-					name: 'Invites',
-					description: 'Routes that return data related to invites.'
-				},
-				{
-					name: 'User Management',
-					description: 'Routes that return data related to User Management.'
-				},
-				{
-					name: 'IP Management',
-					description: 'Routes that return data related to IP Management.'
-				},
-				{
-					name: 'Admin',
-					description: 'Routes that return data related to the admin panel.'
-				}
-			]
-		}
-	});
-
-	await server.register(import('@fastify/swagger-ui'), {
-		routePrefix: '/swagger',
-		theme: {
-			title: 'Chibisafe API',
-			css: [
-				{
-					filename: '',
-					content: `
-					.body { background: #eeeeee; }
-					.topbar { display: none; }
-					.opblock-summary-description { text-align: right; padding-right: 2em; }
-					.view-line-link.copy-to-clipboard { display: none; }
-					`
-				}
-			]
-		}
-	});
+	await server.register(import('@fastify/swagger'), Docs);
 
 	// Route error handler
 	// eslint-disable-next-line promise/prefer-await-to-callbacks
@@ -145,7 +79,12 @@ const start = async () => {
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
 
-	await server.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
+	await server.register(helmet, {
+		crossOriginResourcePolicy: false,
+		contentSecurityPolicy: false,
+		crossOriginEmbedderPolicy: false
+	});
+
 	await server.register(cors, {
 		preflightContinue: true,
 		allowedHeaders: [

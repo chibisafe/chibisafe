@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css" />
+		<style>
+			.SendButtonHolder > div {
+				display: none;
+			}
+			.SendButtonHolder {
+				padding-bottom: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<elements-api
+			apiDescriptionUrl="/docs/json"
+			router="hash"
+			layout="sidebar"
+			hideSchemas="true"
+			hideExport="true"
+			logo="/logo.svg"
+		/>
+	</body>
+</html>

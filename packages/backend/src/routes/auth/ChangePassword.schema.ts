@@ -1,5 +1,6 @@
 export default {
-	summary: 'Change the password of the current user',
+	summary: 'Change Password',
+	description: 'Change the password of the current user',
 	tags: ['Auth'],
 	body: {
 		type: 'object',

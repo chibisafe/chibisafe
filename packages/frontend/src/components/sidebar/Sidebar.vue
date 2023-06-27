@@ -54,12 +54,7 @@
 											alt="chibisafe logo"
 											class="w-24"
 										/>
-										<img
-											v-else
-											src="../../assets/images/logo.svg"
-											alt="chibisafe logo"
-											class="w-24"
-										/>
+										<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 									</router-link>
 								</div>
 								<nav class="mt-5 space-y-1 px-8 mb-8">
@@ -151,7 +146,7 @@
 								alt="chibisafe logo"
 								class="w-24"
 							/>
-							<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-24" />
+							<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 						</router-link>
 					</div>
 					<nav class="mt-5 flex-0 mb-8 space-y-1 px-8">

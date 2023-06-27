@@ -134,6 +134,7 @@ export interface RouteOptions {
 	};
 	middlewares?: (string | { [index: number | string]: any })[];
 	debug?: boolean;
+	schema?: any;
 }
 
 export interface UploadResult {
