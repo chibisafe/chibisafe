@@ -10,9 +10,15 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
+	if (!uuid) {
+		res.badRequest('Invalid uuid supplied');
+		return;
+	}
 
-	if (uuid === req.user.uuid) return res.code(400).send({ message: "You can't apply this action to yourself" });
+	if (uuid === req.user.uuid) {
+		res.badRequest("You can't apply this action to yourself");
+		return;
+	}
 
 	const user = await prisma.users.findUnique({
 		where: {
@@ -20,7 +26,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (user?.isAdmin) return res.code(400).send({ message: 'User is already an admin' });
+	if (user?.isAdmin) {
+		res.badRequest('User is already an admin');
+		return;
+	}
 
 	await prisma.users.update({
 		where: {

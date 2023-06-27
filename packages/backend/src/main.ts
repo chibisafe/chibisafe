@@ -91,6 +91,10 @@ const start = async () => {
 					description: 'Routes that return data related to invites.'
 				},
 				{
+					name: 'User Management',
+					description: 'Routes that return data related to User Management.'
+				},
+				{
 					name: 'IP Management',
 					description: 'Routes that return data related to IP Management.'
 				},
