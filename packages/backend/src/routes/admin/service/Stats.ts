@@ -26,7 +26,5 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	}));
 
-	console.log(stats);
-
 	return res.send({ statistics: stats });
 };
