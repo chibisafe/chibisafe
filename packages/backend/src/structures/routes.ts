@@ -11,9 +11,12 @@ const defaultMiddlewares = ['log', 'ban'];
 
 export default {
 	load: async (server: FastifyInstance) => {
+		// Different extension for build and dev modes
+		const extension = `${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
+
 		// Load the base schemas to extend from
 		const baseSchemaFiles = await jetpack.findAsync(path.join(__dirname, '..', 'structures', 'schemas'), {
-			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+			matching: `*.${extension}`
 		});
 
 		for (const schemaFile of baseSchemaFiles) {
@@ -31,11 +34,11 @@ export default {
 		*/
 
 		const allRouteFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
-			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+			matching: `*.${extension}`
 		});
 
-		const routeFiles = allRouteFiles.filter(file => !file.endsWith('.schema.ts'));
-		const schemaFiles = allRouteFiles.filter(file => file.endsWith('.schema.ts'));
+		const routeFiles = allRouteFiles.filter(file => !file.endsWith(`.schema.${extension}`));
+		const schemaFiles = allRouteFiles.filter(file => file.endsWith(`.schema.${extension}`));
 
 		for (const routeFile of routeFiles) {
 			try {
