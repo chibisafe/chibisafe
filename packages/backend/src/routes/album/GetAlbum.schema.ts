@@ -23,7 +23,7 @@ export default {
 			type: 'object',
 			properties: {
 				message: { $ref: 'ResponseMessage' },
-				data: {
+				album: {
 					type: 'object',
 					properties: {
 						name: { type: 'string', description: 'The name of the album.', example: 'Cats' },

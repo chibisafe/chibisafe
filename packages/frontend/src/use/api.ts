@@ -448,7 +448,7 @@ export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
 		debug('geAdminSettings', data);
-		return data;
+		return data.settings;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

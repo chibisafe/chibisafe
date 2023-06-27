@@ -1,7 +1,7 @@
 export default {
 	description: 'Purge a user from the database and delete all their files and albums.',
 	tags: ['User Management', 'Admin'],
-	body: {
+	params: {
 		type: 'object',
 		properties: {
 			uuid: {

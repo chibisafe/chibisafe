@@ -1,7 +1,7 @@
 export default {
 	description: 'Promote a user to admin.',
 	tags: ['User Management', 'Admin'],
-	body: {
+	params: {
 		type: 'object',
 		properties: {
 			uuid: {

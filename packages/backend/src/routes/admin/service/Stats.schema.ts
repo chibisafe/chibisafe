@@ -15,15 +15,18 @@ export default {
 			type: 'object',
 			properties: {
 				statistics: {
-					type: 'object',
+					type: 'array',
 					description: 'The statistics of the system.',
-					properties: {
-						system: { type: 'object', description: 'The system statistics.' },
-						service: { type: 'object', description: 'The service statistics.' },
-						fileSystems: { type: 'object', description: 'The file system statistics.' },
-						uploads: { type: 'object', description: 'The upload statistics.' },
-						albums: { type: 'object', description: 'The album statistics.' },
-						users: { type: 'object', description: 'The user statistics.' }
+					items: {
+						type: 'object',
+						properties: {
+							system: { type: 'object', description: 'The system statistics.' },
+							service: { type: 'object', description: 'The service statistics.' },
+							fileSystems: { type: 'object', description: 'The file system statistics.' },
+							uploads: { type: 'object', description: 'The upload statistics.' },
+							albums: { type: 'object', description: 'The album statistics.' },
+							users: { type: 'object', description: 'The user statistics.' }
+						}
 					}
 				}
 			}

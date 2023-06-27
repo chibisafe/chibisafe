@@ -30,5 +30,5 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		});
 	}
 
-	return res.send(settingsWithTypes);
+	return res.send({ settings: settingsWithTypes });
 };

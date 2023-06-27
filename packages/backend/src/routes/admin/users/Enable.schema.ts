@@ -1,7 +1,7 @@
 export default {
 	description: 'Enable a user account.',
 	tags: ['User Management', 'Admin'],
-	body: {
+	params: {
 		type: 'object',
 		properties: {
 			uuid: {

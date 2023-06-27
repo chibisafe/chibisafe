@@ -16,7 +16,7 @@ export default {
 			type: 'object',
 			properties: {
 				message: { $ref: 'ResponseMessage' },
-				file: { $ref: 'FilesAsUser' }
+				file: { $ref: 'FilesAsUserWithAlbums' }
 			}
 		},
 		'4xx': { $ref: 'HTTP4xxError' },

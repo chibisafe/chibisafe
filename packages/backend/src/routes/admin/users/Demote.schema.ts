@@ -1,7 +1,7 @@
 export default {
 	description: 'Demote a user from admin.',
 	tags: ['User Management', 'Admin'],
-	body: {
+	params: {
 		type: 'object',
 		properties: {
 			uuid: {
