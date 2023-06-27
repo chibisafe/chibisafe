@@ -11,6 +11,18 @@ export default {
 		}
 	},
 	response: {
+		200: {
+			type: 'object',
+			properties: {
+				statistics: {
+					type: 'array',
+					items: {
+						type: 'object',
+						additionalProperties: true
+					}
+				}
+			}
+		},
 		'4xx': { $ref: 'HTTP4xxError' },
 		'5xx': { $ref: 'HTTP5xxError' }
 	}
