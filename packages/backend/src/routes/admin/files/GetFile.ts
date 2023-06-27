@@ -15,7 +15,10 @@ interface UserWithFileCount extends User {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
+	if (!uuid) {
+		res.badRequest('Invalid uuid supplied');
+		return;
+	}
 
 	const file = (await prisma.files.findUnique({
 		where: {
@@ -23,7 +26,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	})) as ExtendedFile | null;
 
-	if (!file) return res.code(404).send({ message: "File doesn't exist" });
+	if (!file) {
+		res.notFound("File doesn't exist");
+		return;
+	}
 
 	let user;
 	if (file.userId) {

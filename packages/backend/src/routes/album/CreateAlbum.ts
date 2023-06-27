@@ -11,8 +11,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { name } = req.body as { name?: string };
-	if (!name) return res.code(400).send({ message: 'No name provided' });
+	const { name } = req.body as { name: string };
 
 	const exists = await prisma.albums.findFirst({
 		where: {
@@ -21,7 +20,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (exists) return res.code(400).send({ message: "There's already an album with that name" });
+	if (exists) {
+		res.badRequest("There's already an album with that name");
+		return;
+	}
 
 	const now = utc().toDate();
 
@@ -37,7 +39,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully created album',
-		data: {
+		album: {
 			uuid: newAlbum.uuid,
 			name: newAlbum.name,
 			createdAt: newAlbum.createdAt

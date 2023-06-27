@@ -11,18 +11,51 @@ const defaultMiddlewares = ['log', 'ban'];
 
 export default {
 	load: async (server: FastifyInstance) => {
+		// Load the base schemas to extend from
+		const baseSchemaFiles = await jetpack.findAsync(path.join(__dirname, '..', 'structures', 'schemas'), {
+			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+		});
+
+		for (const schemaFile of baseSchemaFiles) {
+			// Replace slashes if user is on Windows
+			const slash = process.platform === 'win32' ? '\\' : '/';
+			// Replace extension from ts to js if in production
+			const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
+			const schema = await import(schemaFile.replace(replace, `..${slash}`));
+			server.addSchema(schema.default);
+		}
+
 		/*
 			While in development we only want to match routes written in TypeScript but for production
 			we need to change it to javascript files since they will be compiled.
 		*/
-		const matching = `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
 
-		for (const routeFile of await jetpack.findAsync(path.join(__dirname, '..', 'routes'), { matching })) {
+		const allRouteFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
+			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+		});
+
+		const routeFiles = allRouteFiles.filter(file => !file.endsWith('.schema.ts'));
+		const schemaFiles = allRouteFiles.filter(file => file.endsWith('.schema.ts'));
+
+		for (const routeFile of routeFiles) {
 			try {
+				// Replace slashes if user is on Windows
 				const slash = process.platform === 'win32' ? '\\' : '/';
+				// Replace extension from ts to js if in production
 				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
 				const route = await import(routeFile.replace(replace, `..${slash}`));
 				const options: RouteOptions = route.options;
+
+				// Try to grab the schema file for the route
+				const routeFileName = routeFile.split(slash).pop();
+				const schemaFile = schemaFiles.find(file => {
+					if (!routeFileName) return null;
+					return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
+				});
+
+				const schema = schemaFile
+					? (await import(schemaFile.replace(replace, `..${slash}`))).default
+					: undefined;
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
@@ -89,6 +122,7 @@ export default {
 					method: options.method.toUpperCase() as any,
 					url: options.url,
 					preHandler: middlewares,
+					schema: schema ?? {},
 					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res),
 					config: {
 						rateLimit: {
@@ -98,7 +132,12 @@ export default {
 					}
 				});
 
-				server.log.debug(`Found route |${addSpaces(options.method.toUpperCase())} ${options.url}`);
+				server.log.debug(
+					// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+					`Found route |${schema ? ' SCHEMA |' : addSpaces('') + ' |'}${addSpaces(
+						options.method.toUpperCase()
+					)} ${options.url}`
+				);
 			} catch (error) {
 				// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 				server.log.error(routeFile);

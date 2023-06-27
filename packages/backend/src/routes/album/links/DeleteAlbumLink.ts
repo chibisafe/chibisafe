@@ -9,8 +9,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid, linkUuid } = req.params as { uuid?: string; linkUuid?: string };
-	if (!uuid || !linkUuid) return res.code(400).send({ message: 'No uuid or linkUuid provided' });
+	const { uuid, linkUuid } = req.params as { uuid: string; linkUuid: string };
 
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -19,7 +18,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(400).send({ message: "Album doesn't exist or doesn't belong to the user" });
+	if (!album) {
+		res.badRequest("Album doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	const link = await prisma.links.findFirst({
 		where: {
@@ -29,7 +31,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!link) return res.code(400).send({ message: 'No link found' });
+	if (!link) {
+		res.notFound('No link found');
+		return;
+	}
 
 	await prisma.links.delete({
 		where: {

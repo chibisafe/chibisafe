@@ -4,7 +4,7 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/**/*.ts", "vite.config.ts"],
+			"inputs": ["src/**/*.ts", "vite.config.ts", "src/**/*.vue"],
 			"outputs": ["dist/**"]
 		},
 		"dev": {

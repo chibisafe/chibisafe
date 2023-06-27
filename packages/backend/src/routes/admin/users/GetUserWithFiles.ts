@@ -11,7 +11,10 @@ export const options = {
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'Invalid uuid supplied' });
+	if (!uuid) {
+		res.badRequest('Invalid uuid supplied');
+		return;
+	}
 
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 
@@ -24,7 +27,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!user) return res.code(404).send({ message: 'User not found' });
+	if (!user) {
+		res.notFound('User not found');
+		return;
+	}
 
 	const count = await prisma.files.count({
 		where: {

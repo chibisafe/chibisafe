@@ -7,4 +7,8 @@ export const options = {
 	middlewares: ['apiKey', 'auth']
 };
 
-export const run = (req: RequestWithUser, res: FastifyReply) => res.code(200).send(req.user);
+export const run = (req: RequestWithUser, res: FastifyReply) => {
+	return res.send({
+		user: req.user
+	});
+};

@@ -12,7 +12,6 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
 	const { text } = req.body as { text?: string };
-	if (!text) return res.code(400).send({ message: 'No text provided' });
 
 	const count = await prisma.files.count({
 		where: {

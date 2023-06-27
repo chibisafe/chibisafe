@@ -10,7 +10,6 @@ export const options = {
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { identifier } = req.params as { identifier?: string };
-	if (!identifier) return res.code(400).send({ message: 'Invalid identifier supplied' });
 
 	// Set up pagination options
 	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
@@ -30,8 +29,15 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!link) return res.code(404).send({ message: "The link is disabled or it doesn't exist" });
-	if (link.expiresAt && link.expiresAt < new Date()) return res.code(404).send({ message: 'The link has expired' });
+	if (!link) {
+		res.notFound("The link is disabled or it doesn't exist");
+		return;
+	}
+
+	if (link.expiresAt && link.expiresAt < new Date()) {
+		res.notFound('The link has expired');
+		return;
+	}
 
 	// Make sure the uuid exists and it belongs to the user
 	const album = await prisma.albums.findFirst({
@@ -55,7 +61,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!album) return res.code(404).send({ message: 'The album could not be found' });
+	if (!album) {
+		res.notFound('The album could not be found');
+		return;
+	}
 
 	// Construct the public links
 	const files = [] as File[];
@@ -77,9 +86,11 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved album',
-		name: album.name,
-		files,
-		isNsfw: album.nsfw,
-		filesCount: album._count.files
+		album: {
+			name: album.name,
+			files,
+			isNsfw: album.nsfw,
+			filesCount: album._count.files
+		}
 	});
 };

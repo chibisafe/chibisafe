@@ -12,16 +12,23 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
+type incomingSettings = {
+	name: string;
+	value: string;
+	type: string;
+};
+
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { settings }: { settings: string } = req.body as { settings: string };
-	if (!settings) return res.code(400).send({ message: 'No settings provided' });
 
 	try {
 		// TODO: Validation of the settings
 		const parsedSettings: Partial<typeof SETTINGS> = {};
-		for (const key of settings) {
-			// @ts-expect-error key is any, proper typings would be good here
-			parsedSettings[key.name] = key.type === 'number' ? Number(key.value) : key.value;
+		for (const key of settings as unknown as incomingSettings[]) {
+			// if (key.type === 'array') parsedSettings[key.name] = JSON.parse(key.value);
+			if (key.type === 'boolean') parsedSettings[key.name] = key.value === 'true';
+			else if (key.type === 'number') parsedSettings[key.name] = Number(key.value);
+			else parsedSettings[key.name] = key.value;
 		}
 
 		// @ts-expect-error chunkSize is a string on the db, but int here.
@@ -48,6 +55,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		if (process.env.NODE_ENV === 'production') await getHtmlBuffer();
 	} catch (error) {
 		req.log.error(error);
-		return res.code(500).send({ message: error });
+		res.internalServerError(error as string);
 	}
 };

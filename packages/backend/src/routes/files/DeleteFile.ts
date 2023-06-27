@@ -11,7 +11,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) return res.code(400).send({ message: 'No uuid provided' });
 
 	const file = await prisma.files.findFirst({
 		where: {
@@ -20,7 +19,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (!file) return res.code(400).send({ message: "The file doesn't exist or doesn't belong to the user" });
+	if (!file) {
+		res.notFound("The file doesn't exist or doesn't belong to the user");
+		return;
+	}
 
 	// Delete the file from the DB
 	await prisma.files.delete({

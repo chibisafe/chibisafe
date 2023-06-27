@@ -56,6 +56,85 @@ const start = async () => {
 		timeWindow: SETTINGS.rateLimitWindow
 	});
 
+	// Register the fastify-sensible plugin
+	await server.register(import('@fastify/sensible'));
+
+	await server.register(import('@fastify/swagger'), {
+		openapi: {
+			info: {
+				title: 'Chibisafe API',
+				version: (process.env.npm_package_version as string) ?? 'unknown'
+			},
+			tags: [
+				{
+					name: 'Auth',
+					description: 'Authentication routes.'
+				},
+				{
+					name: 'User',
+					description: 'Routes that return data related to the authenticated user.'
+				},
+				{
+					name: 'Albums',
+					description: 'Routes that return data related to albums.'
+				},
+				{
+					name: 'Files',
+					description: 'Routes that return data related to files.'
+				},
+				{
+					name: 'Tags',
+					description: 'Routes that return data related to tags.'
+				},
+				{
+					name: 'Server',
+					description: 'Routes that returns info about the server instance.'
+				},
+				{
+					name: 'Invites',
+					description: 'Routes that return data related to invites.'
+				},
+				{
+					name: 'User Management',
+					description: 'Routes that return data related to User Management.'
+				},
+				{
+					name: 'IP Management',
+					description: 'Routes that return data related to IP Management.'
+				},
+				{
+					name: 'Admin',
+					description: 'Routes that return data related to the admin panel.'
+				}
+			]
+		}
+	});
+
+	await server.register(import('@fastify/swagger-ui'), {
+		routePrefix: '/swagger',
+		theme: {
+			title: 'Chibisafe API',
+			css: [
+				{
+					filename: '',
+					content:
+						'.topbar { display: none; } .opblock-summary-description { text-align: right; padding-right: 2em; }'
+				}
+			]
+		}
+	});
+
+	// Route error handler
+	// eslint-disable-next-line promise/prefer-await-to-callbacks
+	server.setErrorHandler((error, req, res) => {
+		if (error.statusCode) {
+			return res.send(error);
+		} else {
+			server.log.error(error);
+			res.internalServerError('Something went wrong');
+		}
+	});
+
 	// Enable form-data parsing
 	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
 

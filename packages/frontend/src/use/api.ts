@@ -20,7 +20,7 @@ export const login = async (username: string, password: string) => {
 			password
 		});
 
-		debug('login', data);
+		debug('login', data.user);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
@@ -448,7 +448,7 @@ export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
 		debug('geAdminSettings', data);
-		return data;
+		return data.settings;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

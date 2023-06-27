@@ -10,7 +10,10 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { ip }: { ip: string } = req.body as { ip: string };
 
-	if (!ip) return res.code(400).send({ message: 'No ip provided' });
+	if (!ip) {
+		res.badRequest('No ip provided');
+		return;
+	}
 
 	const record = await prisma.bans.findFirst({
 		where: {
@@ -18,7 +21,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	if (!record) return res.code(400).send({ message: 'IP is not banned' });
+	if (!record) {
+		res.badRequest('IP is not banned');
+		return;
+	}
 
 	if (record) {
 		await prisma.bans.delete({

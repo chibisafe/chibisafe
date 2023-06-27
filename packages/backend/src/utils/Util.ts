@@ -32,8 +32,8 @@ export const getUniqueAlbumIdentifier = () => {
 };
 
 // A function that adds spaces to the beginning of the string until there are 7 characters
-export const addSpaces = (str: string) => {
-	const spaces = 7 - str.length;
+export const addSpaces = (str: string, amount = 7) => {
+	const spaces = amount - str.length;
 	let newStr = '';
 	for (let i = 0; i < spaces; i++) {
 		newStr += ' ';

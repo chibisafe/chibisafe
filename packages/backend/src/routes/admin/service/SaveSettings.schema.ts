@@ -1,0 +1,31 @@
+export default {
+	summary: 'Save the chibisafe instance settings',
+	tags: ['Admin', 'Server'],
+	body: {
+		type: 'object',
+		properties: {
+			settings: {
+				type: 'array',
+				description: 'Items to save in the settings.',
+				items: {
+					type: 'object',
+					properties: {
+						name: { type: 'string', description: 'The name of the setting.' },
+						value: { type: 'string', description: 'The value of the setting.' },
+						type: { type: 'string', description: 'The type of the setting.' }
+					}
+				}
+			}
+		}
+	},
+	response: {
+		200: {
+			type: 'object',
+			properties: {
+				message: { $ref: 'ResponseMessage' }
+			}
+		},
+		'4xx': { $ref: 'HTTP4xxError' },
+		'5xx': { $ref: 'HTTP5xxError' }
+	}
+};

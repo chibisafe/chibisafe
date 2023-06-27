@@ -27,7 +27,8 @@ export default (
 			return;
 		}
 
-		return res.code(401).send({ message: 'No authorization header provided' });
+		res.unauthorized('No authorization header provided');
+		return;
 	}
 
 	const token = req.headers.authorization.split(' ')[1];
@@ -37,15 +38,23 @@ export default (
 			return;
 		}
 
-		return res.code(401).send({ message: 'No authorization header provided' });
+		res.unauthorized('No authorization header provided');
+		return;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises, promise/prefer-await-to-callbacks
 	JWT.verify(token, SETTINGS.secret ?? '', async (error, decoded) => {
-		if (error) return res.code(401).send({ message: 'Invalid token' });
+		if (error) {
+			res.unauthorized('Invalid token');
+			return;
+		}
+
 		const id = (decoded as Decoded | undefined)?.sub ?? null;
 		const dateSigned = (decoded as Decoded | undefined)?.iat ?? null;
-		if (!id) return res.code(401).send({ message: 'Invalid authorization' });
+		if (!id) {
+			res.unauthorized('Invalid authorization');
+			return;
+		}
 
 		const user = await prisma.users.findFirst({
 			where: {
@@ -55,6 +64,7 @@ export default (
 				id: true,
 				uuid: true,
 				username: true,
+				enabled: true,
 				isAdmin: true,
 				apiKey: true,
 				passwordEditedAt: true
@@ -62,10 +72,20 @@ export default (
 		});
 
 		if (dateSigned && Number(user?.passwordEditedAt) > dateSigned) {
-			return res.code(401).send({ message: 'Token expired' });
+			res.unauthorized('Token expired');
+			return;
 		}
 
-		if (!user) return res.code(401).send({ message: "User doesn't exist" });
+		if (!user) {
+			res.unauthorized("User doesn't exist");
+			return;
+		}
+
+		if (!user.enabled) {
+			res.forbidden('User is disabled');
+			return;
+		}
+
 		req.user = {
 			id: user.id,
 			uuid: user.uuid,

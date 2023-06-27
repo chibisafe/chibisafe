@@ -11,8 +11,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { name } = req.body as { name?: string };
-	if (!name) return res.code(400).send({ message: 'No name provided' });
+	const { name } = req.body as { name: string };
 
 	const exists = await prisma.tags.findFirst({
 		where: {
@@ -21,7 +20,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	if (exists) return res.code(400).send({ message: "There's already a tag with that name" });
+	if (exists) {
+		res.badRequest("There's already a tag with that name");
+		return;
+	}
 
 	const now = utc().toDate();
 	const newTag = await prisma.tags.create({
@@ -36,7 +38,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully created tag',
-		data: {
+		tag: {
 			uuid: newTag.uuid,
 			name: newTag.name,
 			createdAt: newTag.createdAt
