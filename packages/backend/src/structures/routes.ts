@@ -11,6 +11,20 @@ const defaultMiddlewares = ['log', 'ban'];
 
 export default {
 	load: async (server: FastifyInstance) => {
+		// Load the base schemas to extend from
+		const baseSchemaFiles = await jetpack.findAsync(path.join(__dirname, '..', 'structures', 'schemas'), {
+			matching: `*.${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`
+		});
+
+		for (const schemaFile of baseSchemaFiles) {
+			// Replace slashes if user is on Windows
+			const slash = process.platform === 'win32' ? '\\' : '/';
+			// Replace extension from ts to js if in production
+			const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
+			const schema = await import(schemaFile.replace(replace, `..${slash}`));
+			server.addSchema(schema.default);
+		}
+
 		/*
 			While in development we only want to match routes written in TypeScript but for production
 			we need to change it to javascript files since they will be compiled.
