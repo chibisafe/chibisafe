@@ -1,5 +1,5 @@
 export default {
-	description: 'Create a new user account',
+	summary: 'Create a new user account',
 	tags: ['Auth'],
 	body: {
 		type: 'object',

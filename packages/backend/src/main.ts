@@ -114,7 +114,13 @@ const start = async () => {
 		routePrefix: '/swagger',
 		theme: {
 			title: 'Chibisafe API',
-			css: [{ filename: 'theme.css', content: '.topbar { display: none; }' }]
+			css: [
+				{
+					filename: '',
+					content:
+						'.topbar { display: none; } .opblock-summary-description { text-align: right; padding-right: 2em; }'
+				}
+			]
 		}
 	});
 

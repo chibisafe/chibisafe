@@ -1,5 +1,5 @@
 export default {
-	description: 'Deletes a file from an album.',
+	summary: 'Deletes a file from an album.',
 	tags: ['Files', 'Albums'],
 	params: {
 		type: 'object',

@@ -1,5 +1,5 @@
 export default {
-	description: 'Adds a file to an album.',
+	summary: 'Adds a file to an album.',
 	tags: ['Files', 'Albums'],
 	params: {
 		type: 'object',

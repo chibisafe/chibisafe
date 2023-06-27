@@ -1,5 +1,5 @@
 export default {
-	description: 'Delete a tag.',
+	summary: 'Delete a tag.',
 	tags: ['Tags'],
 	params: {
 		type: 'object',

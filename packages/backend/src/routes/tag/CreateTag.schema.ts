@@ -1,5 +1,5 @@
 export default {
-	description: 'Create a new tag.',
+	summary: 'Create a new tag.',
 	tags: ['Tags'],
 	body: {
 		type: 'object',

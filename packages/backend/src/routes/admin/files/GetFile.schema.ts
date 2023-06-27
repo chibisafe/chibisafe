@@ -1,5 +1,5 @@
 export default {
-	description: 'Gets a file.',
+	summary: 'Gets a file.',
 	tags: ['Files', 'Admin'],
 	params: {
 		type: 'object',

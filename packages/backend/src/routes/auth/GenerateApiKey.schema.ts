@@ -1,5 +1,5 @@
 export default {
-	description: 'Generate a new API key for the current user.',
+	summary: 'Generate a new API key for the current user.',
 	tags: ['Auth'],
 	response: {
 		200: {

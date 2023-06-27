@@ -1,5 +1,5 @@
 export default {
-	description: 'Promote a user to admin.',
+	summary: 'Promote a user to admin.',
 	tags: ['User Management', 'Admin'],
 	params: {
 		type: 'object',

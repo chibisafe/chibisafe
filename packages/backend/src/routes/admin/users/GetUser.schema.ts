@@ -1,5 +1,5 @@
 export default {
-	description: 'Get a user.',
+	summary: 'Get a user.',
 	tags: ['User Management', 'Admin'],
 	params: {
 		type: 'object',

@@ -1,5 +1,5 @@
 export default {
-	description: 'Returns the chibisafe instance settings.',
+	summary: 'Returns the chibisafe instance settings.',
 	tags: ['Admin', 'Server'],
 	response: {
 		200: {

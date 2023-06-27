@@ -1,5 +1,5 @@
 export default {
-	description: 'Search all the files.',
+	summary: 'Search all the files.',
 	tags: ['Files'],
 	query: {
 		type: 'object',
