@@ -117,8 +117,12 @@ const start = async () => {
 			css: [
 				{
 					filename: '',
-					content:
-						'.topbar { display: none; } .opblock-summary-description { text-align: right; padding-right: 2em; }'
+					content: `
+					.body { background: #eeeeee; }
+					.topbar { display: none; }
+					.opblock-summary-description { text-align: right; padding-right: 2em; }
+					.view-line-link.copy-to-clipboard { display: none; }
+					`
 				}
 			]
 		}
