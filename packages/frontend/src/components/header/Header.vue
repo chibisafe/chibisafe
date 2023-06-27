@@ -9,6 +9,14 @@
 		</router-link>
 		<span class="flex-1" />
 
+		<a
+			href="/swagger"
+			target="_blank"
+			rel="noreferrer noopener"
+			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mr-4"
+			>API Docs</a
+		>
+
 		<router-link
 			v-if="!loggedIn"
 			to="/login"
