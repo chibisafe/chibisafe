@@ -1,6 +1,6 @@
 export default {
 	description: 'Deletes an album link.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	params: {
 		type: 'object',
 		properties: {

@@ -1,6 +1,6 @@
 export default {
 	description: 'Deletes a file from an album.',
-	tags: ['Files', 'Albums', 'API Key'],
+	tags: ['Files', 'Albums'],
 	params: {
 		type: 'object',
 		properties: {

@@ -1,6 +1,6 @@
 export default {
 	description: 'Gets a public album link with its contents',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	params: {
 		type: 'object',
 		properties: {

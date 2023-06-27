@@ -1,6 +1,6 @@
 export default {
 	description: 'Create a new tag.',
-	tags: ['Tags', 'API Key'],
+	tags: ['Tags'],
 	body: {
 		type: 'object',
 		properties: {

@@ -87,6 +87,10 @@ const start = async () => {
 					description: 'Routes that return data related to tags.'
 				},
 				{
+					name: 'Server',
+					description: 'Routes that returns info about the server instance.'
+				},
+				{
 					name: 'Invites',
 					description: 'Routes that return data related to invites.'
 				},
@@ -101,14 +105,6 @@ const start = async () => {
 				{
 					name: 'Admin',
 					description: 'Routes that return data related to the admin panel.'
-				},
-				{
-					name: 'API Key',
-					description: 'Routes that can be used with an API Key.'
-				},
-				{
-					name: 'Server',
-					description: 'Routes that returns info about the server instance.'
 				}
 			]
 		}

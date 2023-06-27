@@ -1,6 +1,6 @@
 export default {
 	description: 'Gets the content of an album.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	params: {
 		type: 'object',
 		properties: {

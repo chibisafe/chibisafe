@@ -1,6 +1,6 @@
 export default {
 	description: 'Deletes a file.',
-	tags: ['Files', 'API Key'],
+	tags: ['Files'],
 	params: {
 		type: 'object',
 		properties: {

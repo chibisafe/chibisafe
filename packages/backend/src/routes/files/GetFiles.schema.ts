@@ -1,6 +1,6 @@
 export default {
 	description: 'Get all the files.',
-	tags: ['Files', 'API Key'],
+	tags: ['Files'],
 	query: {
 		type: 'object',
 		properties: {

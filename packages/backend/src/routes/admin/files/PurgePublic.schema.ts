@@ -1,6 +1,6 @@
 export default {
 	description: 'Purges all public files.',
-	tags: ['Files', 'Admin', 'API Key'],
+	tags: ['Files', 'Admin'],
 	response: {
 		200: {
 			type: 'object',

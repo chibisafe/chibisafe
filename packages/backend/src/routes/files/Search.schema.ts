@@ -1,6 +1,6 @@
 export default {
 	description: 'Search all the files.',
-	tags: ['Files', 'API Key'],
+	tags: ['Files'],
 	query: {
 		type: 'object',
 		properties: {

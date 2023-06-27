@@ -1,6 +1,6 @@
 export default {
 	description: 'Creates a new album link.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	params: {
 		type: 'object',
 		properties: {

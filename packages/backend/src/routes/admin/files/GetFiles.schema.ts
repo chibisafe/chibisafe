@@ -1,6 +1,6 @@
 export default {
 	description: 'Gets all files.',
-	tags: ['Files', 'Admin', 'API Key'],
+	tags: ['Files', 'Admin'],
 	query: {
 		type: 'object',
 		properties: {

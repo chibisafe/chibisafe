@@ -1,6 +1,6 @@
 export default {
 	description: 'Delete a tag.',
-	tags: ['Tags', 'API Key'],
+	tags: ['Tags'],
 	params: {
 		type: 'object',
 		properties: {

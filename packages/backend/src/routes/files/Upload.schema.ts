@@ -1,6 +1,6 @@
 export default {
 	description: 'Uploads a file.',
-	tags: ['Files', 'API Key'],
+	tags: ['Files'],
 	headers: {
 		type: 'object',
 		properties: {

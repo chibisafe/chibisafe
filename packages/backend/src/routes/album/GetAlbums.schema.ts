@@ -1,6 +1,6 @@
 export default {
 	description: 'Gets all the albums.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	response: {
 		200: {
 			type: 'object',

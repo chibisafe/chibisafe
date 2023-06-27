@@ -1,6 +1,6 @@
 export default {
 	description: 'Creates a new album.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	body: {
 		type: 'object',
 		properties: {

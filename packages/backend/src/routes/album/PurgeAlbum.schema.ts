@@ -1,6 +1,6 @@
 export default {
 	description: 'Purges an album and all its files.',
-	tags: ['Albums', 'API Key'],
+	tags: ['Albums'],
 	params: {
 		type: 'object',
 		properties: {

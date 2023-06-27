@@ -1,6 +1,6 @@
 export default {
 	description: 'Return the current user.',
-	tags: ['User', 'API Key'],
+	tags: ['User'],
 	response: {
 		200: {
 			type: 'object',

@@ -1,6 +1,6 @@
 export default {
 	description: 'Return a list of tags belonging to the user.',
-	tags: ['Tags', 'API Key'],
+	tags: ['Tags'],
 	response: {
 		200: {
 			type: 'object',

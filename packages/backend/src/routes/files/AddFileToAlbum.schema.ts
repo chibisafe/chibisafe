@@ -1,6 +1,6 @@
 export default {
 	description: 'Adds a file to an album.',
-	tags: ['Files', 'Albums', 'API Key'],
+	tags: ['Files', 'Albums'],
 	params: {
 		type: 'object',
 		properties: {
