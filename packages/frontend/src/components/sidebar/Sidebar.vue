@@ -49,8 +49,8 @@
 								<div class="flex flex-shrink-0 items-center px-4 justify-center">
 									<router-link to="/">
 										<img
-											v-if="settingsStore.logo"
-											:src="settingsStore.logo"
+											v-if="settingsStore.logoURL"
+											:src="settingsStore.logoURL"
 											alt="chibisafe logo"
 											class="w-24"
 										/>
@@ -146,8 +146,8 @@
 					<div class="flex flex-shrink-0 items-center px-4 justify-center">
 						<router-link to="/">
 							<img
-								v-if="settingsStore.logo"
-								:src="settingsStore.logo"
+								v-if="settingsStore.logoURL"
+								:src="settingsStore.logoURL"
 								alt="chibisafe logo"
 								class="w-24"
 							/>

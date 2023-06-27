@@ -11,9 +11,9 @@ export const run = (req: RequestWithUser, res: FastifyReply) => {
 	return res.send({
 		serviceName: SETTINGS.serviceName,
 		chunkSize: SETTINGS.chunkSize,
-		maxFileSize: SETTINGS.maxSize,
-		logo: SETTINGS.logoURL,
-		background: SETTINGS.backgroundImageURL,
+		maxSize: SETTINGS.maxSize,
+		logoURL: SETTINGS.logoURL,
+		backgroundImageURL: SETTINGS.backgroundImageURL,
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts
 	});

@@ -285,10 +285,10 @@ export const getHtmlBuffer = async () => {
 	indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.domain);
 
 	const settings = {
-		background: SETTINGS.backgroundImageURL,
+		backgroundImageURL: SETTINGS.backgroundImageURL,
 		chunkSize: SETTINGS.chunkSize,
-		logo: SETTINGS.logoURL,
-		maxFileSize: SETTINGS.maxSize,
+		logoURL: SETTINGS.logoURL,
+		maxSize: SETTINGS.maxSize,
 		serviceName: SETTINGS.serviceName,
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts

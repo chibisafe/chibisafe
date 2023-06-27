@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!isMobile" class="flex w-full h-12 items-center mt-8 max-w-4xl">
 		<router-link to="/">
-			<img v-if="settingsStore.logo" :src="settingsStore.logo" alt="chibisafe logo" class="w-12 mr-2" />
+			<img v-if="settingsStore.logoURL" :src="settingsStore.logoURL" alt="chibisafe logo" class="w-12 mr-2" />
 			<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
 		</router-link>
 		<router-link to="/">
@@ -63,7 +63,7 @@
 
 	<div v-else class="flex w-full h-auto items-center mt-8 max-w-4xl flex-col">
 		<router-link to="/" class="flex items-center">
-			<img v-if="settingsStore.logo" :src="settingsStore.logo" alt="chibisafe logo" class="w-12 mr-2" />
+			<img v-if="settingsStore.logoURL" :src="settingsStore.logoURL" alt="chibisafe logo" class="w-12 mr-2" />
 			<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
 			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
 		</router-link>
