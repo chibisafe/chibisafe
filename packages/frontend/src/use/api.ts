@@ -436,7 +436,7 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 
 export const getStatistics = async (force: boolean = false) => {
 	try {
-		const data = await request.get(`admin/service/statistics/${force ? 'force' : ''}`);
+		const data = await request.get(`admin/service/statistics${force ? '?force=true' : ''}`);
 		debug(`getStatistics${force ? ' (forced)' : ''}`, data);
 		return data.statistics;
 	} catch (error: any) {
