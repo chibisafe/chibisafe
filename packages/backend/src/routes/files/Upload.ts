@@ -9,7 +9,6 @@ import { SETTINGS } from '@/structures/settings';
 import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
-	constructFilePublicLink,
 	constructFilePublicLinkNew,
 	hashFile,
 	checkFileHashOnDB,

@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { ExtendedFile } from '@/structures/interfaces';
 import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
+import { constructFilePublicLinkNew } from '@/utils/File';
 
 export const options = {
 	url: '/admin/user/:uuid/files',
@@ -71,7 +71,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	const readyFiles = [];
 	for (const file of files) {
-		readyFiles.push(constructFilePublicLink(req, file));
+		readyFiles.push({
+			...file,
+			...constructFilePublicLinkNew(req, file.name)
+		});
 	}
 
 	return res.send({

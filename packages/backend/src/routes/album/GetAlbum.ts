@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
+import { constructFilePublicLinkNew } from '@/utils/File';
 import type { File, RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
@@ -57,7 +57,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const files = [] as File[];
 	for (const file of album.files) {
 		const modifiedFile = file as unknown as File;
-		files.push(constructFilePublicLink(req, modifiedFile));
+		files.push({
+			...modifiedFile,
+			...constructFilePublicLinkNew(req, modifiedFile.name)
+		});
 	}
 
 	return res.send({

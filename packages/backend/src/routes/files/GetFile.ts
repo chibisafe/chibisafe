@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
+import { constructFilePublicLinkNew } from '@/utils/File';
 import type { ExtendedFile, RequestWithUser } from '@/structures/interfaces';
 
 export const options = {
@@ -47,7 +47,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	// Build the public links
 	let parsedFile: ExtendedFile = file;
-	parsedFile = constructFilePublicLink(req, file);
+	parsedFile = {
+		...file,
+		...constructFilePublicLinkNew(req, file.name)
+	};
 
 	return res.send({
 		message: 'Successfully retrieved file',

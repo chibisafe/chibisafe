@@ -182,20 +182,6 @@ export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string
 	return data;
 };
 
-export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
-	const extended: ExtendedFile = { ...file };
-	const host = getHost(req);
-	extended.url = `${host}/${extended.name}`;
-	const { thumb, preview } = getFileThumbnail(extended.name) ?? {};
-	if (thumb) {
-		extended.thumb = `${host}/thumbs/${thumb}`;
-		extended.thumbSquare = `${host}/thumbs/square/${thumb}`;
-		extended.preview = preview && `${host}/thumbs/preview/${preview}`;
-	}
-
-	return extended;
-};
-
 export const checkFileHashOnDB = async (user: RequestUser | User | undefined, file: FileInProgress) => {
 	const dbFile = await prisma.files.findFirst({
 		where: {
