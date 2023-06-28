@@ -1,5 +1,6 @@
 export default {
-	summary: 'Uploads a file',
+	summary: 'Upload file',
+	description: 'Uploads a file',
 	tags: ['Files'],
 	headers: {
 		type: 'object',

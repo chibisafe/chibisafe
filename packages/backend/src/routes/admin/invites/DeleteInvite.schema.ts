@@ -1,6 +1,7 @@
 export default {
-	summary: 'Delete an invite',
-	tags: ['Invites', 'Admin'],
+	summary: '🔒 Delete invite',
+	description: 'Delete an invite',
+	tags: ['Invites'],
 	response: {
 		200: {
 			type: 'object',

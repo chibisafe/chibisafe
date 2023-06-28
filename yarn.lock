@@ -249,7 +249,6 @@ __metadata:
     "@fastify/sensible": ^5.2.0
     "@fastify/static": ^6.10.1
     "@fastify/swagger": ^8.6.0
-    "@fastify/swagger-ui": ^1.9.0
     "@prisma/client": ^4.13.0
     "@types/adm-zip": ^0.5.0
     "@types/bcryptjs": ^2.4.2
@@ -578,7 +577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fastify/static@npm:^6.0.0, @fastify/static@npm:^6.10.1":
+"@fastify/static@npm:^6.10.1":
   version: 6.10.2
   resolution: "@fastify/static@npm:6.10.2"
   dependencies:
@@ -590,19 +589,6 @@ __metadata:
     p-limit: "npm:^3.1.0"
     readable-stream: "npm:^4.0.0"
   checksum: 724fe72346ff0fa280f6a281ebcf784a7ede9da3e49cc28c19c7f2a2886d25c735883f77ff99fc13425b4a1d3cb831f7b21a20a1996db221cfec2cfa25e9c3c8
-  languageName: node
-  linkType: hard
-
-"@fastify/swagger-ui@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@fastify/swagger-ui@npm:1.9.0"
-  dependencies:
-    "@fastify/static": ^6.0.0
-    fastify-plugin: ^4.0.0
-    openapi-types: ^12.0.2
-    rfdc: ^1.3.0
-    yaml: ^2.2.2
-  checksum: b753a2778f54e79480189e3406b195d3b71deb21999bbde05a22872f43dfd336d48afea8152b5c03e682fb73beb22ee9e8a311776109c87599a3beea9759a5c8
   languageName: node
   linkType: hard
 
@@ -7774,7 +7760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-types@npm:^12.0.0, openapi-types@npm:^12.0.2":
+"openapi-types@npm:^12.0.0":
   version: 12.1.3
   resolution: "openapi-types@npm:12.1.3"
   checksum: 7fa5547f87a58d2aa0eba6e91d396f42d7d31bc3ae140e61b5d60b47d2fd068b48776f42407d5a8da7280cf31195aa128c2fc285e8bb871d1105edee5647a0bb

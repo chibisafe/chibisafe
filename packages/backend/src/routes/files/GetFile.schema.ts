@@ -1,5 +1,6 @@
 export default {
-	summary: 'Get aa specific file',
+	summary: 'Get file',
+	description: 'Get a specific file',
 	tags: ['Files'],
 	params: {
 		type: 'object',

@@ -1,5 +1,6 @@
 export default {
-	summary: 'Get the current settings of the application',
+	summary: 'Get settings',
+	description: 'Get the current settings of the instance',
 	tags: ['Server'],
 	response: {
 		200: {

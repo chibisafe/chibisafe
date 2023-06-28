@@ -1,6 +1,7 @@
 export default {
-	summary: 'Gets all files',
-	tags: ['Files', 'Admin'],
+	summary: '🔒 Get all files',
+	description: 'Gets all files as admin',
+	tags: ['Files'],
 	query: {
 		type: 'object',
 		properties: {

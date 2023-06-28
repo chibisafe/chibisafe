@@ -1,6 +1,7 @@
 export default {
-	summary: 'Returns the chibisafe instance settings',
-	tags: ['Admin', 'Server'],
+	summary: '🔒 Get settings',
+	description: 'Returns the chibisafe instance settings',
+	tags: ['Server'],
 	response: {
 		200: {
 			type: 'object',

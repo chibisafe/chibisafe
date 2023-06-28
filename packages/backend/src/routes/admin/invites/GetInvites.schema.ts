@@ -1,6 +1,7 @@
 export default {
-	summary: 'Get all invites',
-	tags: ['Invites', 'Admin'],
+	summary: '🔒 Get invites',
+	description: 'Get all created invites',
+	tags: ['Invites'],
 	response: {
 		200: {
 			type: 'object',

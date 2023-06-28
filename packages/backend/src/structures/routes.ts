@@ -56,9 +56,7 @@ export default {
 					return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
 				});
 
-				const schema = schemaFile
-					? (await import(schemaFile.replace(replace, `..${slash}`))).default
-					: undefined;
+				let schema = schemaFile ? (await import(schemaFile.replace(replace, `..${slash}`))).default : undefined;
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
@@ -118,6 +116,11 @@ export default {
 				// Insert built middlewares array into route's options object
 				if (options.debug) {
 					server.log.debug(inspect(options));
+				}
+
+				// Check one last time if there's a schema attached to the options object
+				if (!schema && options.schema) {
+					schema = options.schema;
 				}
 
 				// Register the route in fastify

@@ -1,6 +1,7 @@
 export default {
-	summary: 'Returns the current system stats',
-	tags: ['Admin', 'Server'],
+	summary: '🔒 Get stats',
+	description: 'Returns the current system stats',
+	tags: ['Server'],
 	params: {
 		type: 'object',
 		properties: {

@@ -54,12 +54,7 @@
 											alt="chibisafe logo"
 											class="w-24"
 										/>
-										<img
-											v-else
-											src="../../assets/images/logo.svg"
-											alt="chibisafe logo"
-											class="w-24"
-										/>
+										<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 									</router-link>
 								</div>
 								<nav class="mt-5 space-y-1 px-8 mb-8">
@@ -151,7 +146,7 @@
 								alt="chibisafe logo"
 								class="w-24"
 							/>
-							<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-24" />
+							<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 						</router-link>
 					</div>
 					<nav class="mt-5 flex-0 mb-8 space-y-1 px-8">
@@ -304,7 +299,7 @@ const navigationItems = [
 	{ type: 'secondary', name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
 	{ type: 'secondary', name: 'Patreon', href: 'https://www.patreon.com/pitu' },
 	{ type: 'secondary', name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
-	{ type: 'secondary', name: 'API Docs', href: '/swagger' },
+	{ type: 'secondary', name: 'Documentation', href: '/docs' },
 	{ type: 'secondary', name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
 	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
 

@@ -2,7 +2,7 @@
 	<div v-if="!isMobile" class="flex w-full h-12 items-center mt-8 max-w-4xl">
 		<router-link to="/">
 			<img v-if="settingsStore.logoURL" :src="settingsStore.logoURL" alt="chibisafe logo" class="w-12 mr-2" />
-			<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
+			<img v-else src="/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
 		</router-link>
 		<router-link to="/">
 			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
@@ -10,11 +10,11 @@
 		<span class="flex-1" />
 
 		<a
-			href="/swagger"
+			href="/docs"
 			target="_blank"
 			rel="noreferrer noopener"
 			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mr-4"
-			>API Docs</a
+			>Documentation</a
 		>
 
 		<router-link
@@ -72,7 +72,7 @@
 	<div v-else class="flex w-full h-auto items-center mt-8 max-w-4xl flex-col">
 		<router-link to="/" class="flex items-center">
 			<img v-if="settingsStore.logoURL" :src="settingsStore.logoURL" alt="chibisafe logo" class="w-12 mr-2" />
-			<img v-else src="../../assets/images/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
+			<img v-else src="/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
 			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
 		</router-link>
 
@@ -120,17 +120,25 @@
 				</span>
 			</div>
 
+			<a
+				href="/docs"
+				target="_blank"
+				rel="noreferrer noopener"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mt-12"
+				>Documentation</a
+			>
+
 			<router-link
 				v-if="!loggedIn && !isAuthPage"
 				to="/login"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-12"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Login / Register</router-link
 			>
 
 			<router-link
 				v-else
 				to="/dashboard/uploads"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-12"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Go to dashboard</router-link
 			>
 		</div>

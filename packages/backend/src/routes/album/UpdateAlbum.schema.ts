@@ -1,5 +1,6 @@
 export default {
-	summary: 'Updates an album',
+	summary: 'Update album',
+	description: 'Updates an album',
 	tags: ['Albums'],
 	params: {
 		type: 'object',

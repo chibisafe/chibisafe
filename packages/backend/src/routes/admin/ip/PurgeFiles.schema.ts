@@ -1,6 +1,7 @@
 export default {
-	summary: 'Purge all files uploaded from an IP address',
-	tags: ['IP Management', 'Admin'],
+	summary: '🔒 Purge files',
+	description: 'Purge all files uploaded from an IP address',
+	tags: ['IP Management'],
 	body: {
 		type: 'object',
 		properties: {
