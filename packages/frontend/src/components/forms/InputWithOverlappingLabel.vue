@@ -18,6 +18,7 @@
 			v-else
 			:type="type"
 			class="block w-full border-0 p-0 text-gray-900 dark:text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
+			:class="[blur ? 'blur-sm hover:blur-none' : '']"
 			:value="value ? value : modelValue"
 			:readonly="readOnly"
 			:placeholder="placeholder"
@@ -54,6 +55,9 @@ const props = defineProps({
 	href: {
 		type: String,
 		default: ''
+	},
+	blur: {
+		type: Boolean
 	}
 });
 
