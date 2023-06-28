@@ -10,11 +10,11 @@
 		<span class="flex-1" />
 
 		<a
-			href="/swagger"
+			href="/docs"
 			target="_blank"
 			rel="noreferrer noopener"
 			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mr-4"
-			>API Docs</a
+			>Documentation</a
 		>
 
 		<router-link
@@ -120,17 +120,25 @@
 				</span>
 			</div>
 
+			<a
+				href="/docs"
+				target="_blank"
+				rel="noreferrer noopener"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mt-12"
+				>Documentation</a
+			>
+
 			<router-link
 				v-if="!loggedIn && !isAuthPage"
 				to="/login"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-12"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Login / Register</router-link
 			>
 
 			<router-link
 				v-else
 				to="/dashboard/uploads"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-12"
+				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Go to dashboard</router-link
 			>
 		</div>

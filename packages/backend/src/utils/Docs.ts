@@ -1,11 +1,18 @@
 import process from 'node:process';
 
 const readme = `
-# Welcome to the Chibisafe API
-* List 1
-* List 2
-# Hanekawa is best waifu
-![](https://hanekawa.moe/images/1308049606685503489_t1.jpg "title")
+![](/meta.jpg)
+
+# Welcome to the API docs
+
+These are the official docs for the [Chibisafe](https://github.com/chibisafe/chibisafe) project.
+On the sidebar you will find all available endpoints that the API has to offer.
+Keep in mind that those with a 🔒 symbol are routes accesible only to admins of the instance.
+
+If you want to test the API, we've included a Thunder Client collection that you can import into your IDE of choice if you clone the repo.
+If you are using VSCode, you can install the [Thunder Client extension](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) and the collection should already be imported automatically for you.
+
+The default rate limit for the API is 100 requests per 1000ms.
 `;
 
 export default {
@@ -91,5 +98,3 @@ export const rawHTML = `
 </html>
 
 `;
-
-// .ElementsTableOfContentsItem > div > div

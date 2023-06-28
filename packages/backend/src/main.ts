@@ -60,6 +60,7 @@ const start = async () => {
 	// Register the fastify-sensible plugin
 	await server.register(import('@fastify/sensible'));
 
+	// Create the OpenAPI documentation
 	await server.register(import('@fastify/swagger'), Docs);
 
 	// Route error handler

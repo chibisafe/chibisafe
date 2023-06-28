@@ -299,7 +299,7 @@ const navigationItems = [
 	{ type: 'secondary', name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
 	{ type: 'secondary', name: 'Patreon', href: 'https://www.patreon.com/pitu' },
 	{ type: 'secondary', name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
-	{ type: 'secondary', name: 'API Docs', href: '/swagger' },
+	{ type: 'secondary', name: 'Documentation', href: '/docs' },
 	{ type: 'secondary', name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
 	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
 
