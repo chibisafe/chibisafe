@@ -83,9 +83,6 @@ export const rawHTML = `
 			.SendButtonHolder {
 				padding-bottom: 0;
 			}
-			a.ElementsTableOfContentsItem[href*="api-admin-"] > div > div:first-child {
-				order: 1;
-			}
 			a.ElementsTableOfContentsItem[href*="api-admin-"] > div:before {
 				content: 'Admin';
 				font-size: 10px;
@@ -94,9 +91,6 @@ export const rawHTML = `
 				color: #201f1f;
 				padding: 1px 5px;
 				border-radius: 3px;
-			}
-			a.ElementsTableOfContentsItem[href*="api-admin-"] > div > div:last-child {
-				order: 3;
 			}
 			@media (min-width: 1800px) {
 				.sl-markdown-viewer figure > div {
