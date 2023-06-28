@@ -16,17 +16,17 @@ export default {
 					description: 'The size of each chunk in bytes.',
 					example: 90000000
 				},
-				maxFileSize: {
+				maxSize: {
 					type: 'number',
 					description: 'The maximum size of a file in bytes.',
 					example: 1000000000
 				},
-				logo: {
+				logoURL: {
 					type: 'string',
 					description: 'The URL of the logo.',
 					example: 'https://chibisafe.moe/logo.png'
 				},
-				background: {
+				backgroundImageURL: {
 					type: 'string',
 					description: 'The URL of the background image.',
 					example: 'https://chibisafe.moe/background.png'
