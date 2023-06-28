@@ -161,7 +161,7 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string) => {
+export const constructFilePublicLink = (req: FastifyRequest, fileName: string) => {
 	const host = getHost(req);
 	const data = {
 		url: `${host}/${fileName}`,

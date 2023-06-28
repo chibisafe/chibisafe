@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
 import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces';
-import { constructFilePublicLinkNew } from '@/utils/File';
+import { constructFilePublicLink } from '@/utils/File';
 
 export const options = {
 	url: '/files/search',
@@ -87,7 +87,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	for (const file of files) {
 		readyFiles.push({
 			...file,
-			...constructFilePublicLinkNew(req, file.name)
+			...constructFilePublicLink(req, file.name)
 		});
 	}
 

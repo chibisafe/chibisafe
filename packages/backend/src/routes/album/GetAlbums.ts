@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
 import type { RequestWithUser, Album } from '@/structures/interfaces';
-import { constructFilePublicLinkNew } from '@/utils/File';
+import { constructFilePublicLink } from '@/utils/File';
 
 export const options = {
 	url: '/albums',
@@ -56,7 +56,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		delete newObject._count;
 
 		newObject.cover = album.files[0]
-			? constructFilePublicLinkNew(req, album.files[0].name as unknown as any).thumbSquare
+			? constructFilePublicLink(req, album.files[0].name as unknown as any).thumbSquare
 			: '';
 		fetchedAlbums.push(newObject);
 	}
