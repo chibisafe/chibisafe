@@ -1,6 +1,7 @@
 export default {
-	summary: 'Get a user and their files',
-	tags: ['User Management', 'Admin'],
+	summary: '🔒 Get user with files',
+	description: 'Get a user and their files',
+	tags: ['User Management'],
 	params: {
 		type: 'object',
 		properties: {

@@ -1,5 +1,6 @@
 export default {
-	summary: 'Login to an existing account',
+	summary: 'Login',
+	description: 'Login to an existing account',
 	tags: ['Auth'],
 	body: {
 		type: 'object',

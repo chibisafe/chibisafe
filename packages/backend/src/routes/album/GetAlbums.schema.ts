@@ -1,5 +1,6 @@
 export default {
-	summary: 'Gets all the albums',
+	summary: 'Get albums',
+	description: 'Gets all the albums',
 	tags: ['Albums'],
 	response: {
 		200: {

@@ -1,6 +1,7 @@
 export default {
-	summary: 'Get a user',
-	tags: ['User Management', 'Admin'],
+	summary: '🔒 Get user',
+	description: 'Get a user',
+	tags: ['User Management'],
 	params: {
 		type: 'object',
 		properties: {
@@ -19,7 +20,6 @@ export default {
 				user: {
 					type: 'object',
 					properties: {
-						// TODO: eventually make this conistent with the other schemas that return a user
 						uuid: { $ref: 'UserAsAdmin#/properties/uuid' },
 						username: { $ref: 'UserAsAdmin#/properties/username' },
 						enabled: { $ref: 'UserAsAdmin#/properties/enabled' },

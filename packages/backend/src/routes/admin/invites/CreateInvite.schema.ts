@@ -1,6 +1,7 @@
 export default {
-	summary: 'Create an invite',
-	tags: ['Invites', 'Admin'],
+	summary: '🔒 Create invite',
+	description: 'Create an invite to share with people when the chibisafe instance is invite-only',
+	tags: ['Invites'],
 	response: {
 		200: {
 			type: 'object',

@@ -1,5 +1,6 @@
 export default {
-	summary: 'Adds a tag to a file',
+	summary: 'Add tag to file',
+	description: 'Adds a tag to a file',
 	tags: ['Files', 'Tags'],
 	params: {
 		type: 'object',

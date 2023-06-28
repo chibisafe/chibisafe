@@ -59,3 +59,37 @@ export default {
 		]
 	}
 };
+
+export const rawHTML = `
+<html>
+	<head>
+		<title>Chibisafe Docs</title>
+		<meta charset="UTF-8" />
+		<meta https-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css" />
+		<style>
+			.SendButtonHolder > div {
+				display: none;
+			}
+			.SendButtonHolder {
+				padding-bottom: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<elements-api
+			apiDescriptionUrl="/docs/json"
+			router="hash"
+			layout="sidebar"
+			hideSchemas="true"
+			hideExport="true"
+			logo="/logo.svg"
+		/>
+	</body>
+</html>
+
+`;
+
+// .ElementsTableOfContentsItem > div > div

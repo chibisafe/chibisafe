@@ -1,5 +1,6 @@
 export default {
-	summary: 'Gets a public album link with its contents',
+	summary: 'Get public link',
+	description: 'Gets a public album link with its contents',
 	tags: ['Albums'],
 	params: {
 		type: 'object',
