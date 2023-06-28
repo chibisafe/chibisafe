@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Enable user',
+	summary: 'Enable user',
 	description: 'Enable a user account',
 	tags: ['User Management'],
 	params: {

@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Promote user',
+	summary: 'Promote user',
 	description: 'Promote a user to admin',
 	tags: ['User Management'],
 	params: {

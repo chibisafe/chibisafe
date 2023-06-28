@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Delete invite',
+	summary: 'Delete invite',
 	description: 'Delete an invite',
 	tags: ['Invites'],
 	response: {

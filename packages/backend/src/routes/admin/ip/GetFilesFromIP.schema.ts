@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get files',
+	summary: 'Get files',
 	description: 'Gets all files from a specific IP',
 	tags: ['Files'],
 	query: {

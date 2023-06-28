@@ -1,13 +1,14 @@
 export default {
-	summary: '🔒 Get stats',
+	summary: 'Get stats',
 	description: 'Returns the current system stats',
 	tags: ['Server'],
-	params: {
+	query: {
 		type: 'object',
 		properties: {
 			force: {
-				type: 'string',
-				description: 'Whether to force the generation of all stats categories.'
+				type: 'boolean',
+				description: 'Whether to force the generation of all stats categories.',
+				default: false
 			}
 		}
 	},

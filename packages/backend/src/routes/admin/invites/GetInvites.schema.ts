@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get invites',
+	summary: 'Get invites',
 	description: 'Get all created invites',
 	tags: ['Invites'],
 	response: {

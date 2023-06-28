@@ -7,7 +7,7 @@ const readme = `
 
 These are the official docs for the [Chibisafe](https://github.com/chibisafe/chibisafe) project.
 On the sidebar you will find all available endpoints that the API has to offer.
-Keep in mind that those with a 🔒 symbol are routes accesible only to admins of the instance.
+Keep in mind that some of those are accesible only to admins of the instance, for operations such as setting up the instance or managing users.
 
 If you want to test the API, we've included a Thunder Client collection that you can import into your IDE of choice if you clone the repo.
 If you are using VSCode, you can install the [Thunder Client extension](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) and the collection should already be imported automatically for you.
@@ -82,6 +82,27 @@ export const rawHTML = `
 			}
 			.SendButtonHolder {
 				padding-bottom: 0;
+			}
+			a.ElementsTableOfContentsItem[href*="api-admin-"] > div > div:first-child {
+				order: 1;
+			}
+			a.ElementsTableOfContentsItem[href*="api-admin-"] > div:before {
+				content: 'Admin';
+				font-size: 10px;
+				margin-right: 6px;
+				background: #ffc9d5;
+				color: #201f1f;
+				padding: 1px 5px;
+				border-radius: 3px;
+			}
+			a.ElementsTableOfContentsItem[href*="api-admin-"] > div > div:last-child {
+				order: 3;
+			}
+			@media (min-width: 1800px) {
+				.sl-markdown-viewer figure > div {
+					width: 80%;
+					margin: auto;
+				}
 			}
 		</style>
 	</head>

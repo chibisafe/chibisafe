@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get users',
+	summary: 'Get users',
 	description: 'Get all users',
 	tags: ['User Management'],
 	response: {

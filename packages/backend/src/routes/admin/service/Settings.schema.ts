@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get settings',
+	summary: 'Get settings',
 	description: 'Returns the chibisafe instance settings',
 	tags: ['Server'],
 	response: {

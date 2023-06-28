@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get user with files',
+	summary: 'Get user with files',
 	description: 'Get a user and their files',
 	tags: ['User Management'],
 	params: {
