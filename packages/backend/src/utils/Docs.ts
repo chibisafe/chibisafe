@@ -98,6 +98,12 @@ export const rawHTML = `
 			a.ElementsTableOfContentsItem[href*="api-admin-"] > div > div:last-child {
 				order: 3;
 			}
+			@media (min-width: 1800px) {
+				.sl-markdown-viewer figure > div {
+					width: 80%;
+					margin: auto;
+				}
+			}
 		</style>
 	</head>
 	<body>
