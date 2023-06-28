@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Purge all files',
+	summary: 'Purge all files',
 	description: 'Purges all public files',
 	tags: ['Files'],
 	response: {

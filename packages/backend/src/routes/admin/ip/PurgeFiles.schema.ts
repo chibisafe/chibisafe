@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Purge files',
+	summary: 'Purge files',
 	description: 'Purge all files uploaded from an IP address',
 	tags: ['IP Management'],
 	body: {

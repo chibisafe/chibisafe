@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Purge user',
+	summary: 'Purge user',
 	description: 'Purge a user from the database and delete all their files and albums',
 	tags: ['User Management'],
 	params: {

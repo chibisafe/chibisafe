@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Delete file',
+	summary: 'Delete file',
 	description: 'Deletes a file as admin',
 	tags: ['Files'],
 	params: {

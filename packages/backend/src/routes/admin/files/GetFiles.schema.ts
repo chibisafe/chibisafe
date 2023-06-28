@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get all files',
+	summary: 'Get all files',
 	description: 'Gets all files as admin',
 	tags: ['Files'],
 	query: {

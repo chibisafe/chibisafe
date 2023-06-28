@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Demote user',
+	summary: 'Demote user',
 	description: 'Demote a user from admin',
 	tags: ['User Management'],
 	params: {

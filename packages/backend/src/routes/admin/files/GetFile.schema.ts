@@ -1,5 +1,5 @@
 export default {
-	summary: '🔒 Get file',
+	summary: 'Get file',
 	description: 'Gets a file as admin',
 	tags: ['Files'],
 	params: {
