@@ -28,6 +28,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				take: 1
 			},
 			_count: true
+		},
+		orderBy: {
+			name: 'desc'
 		}
 	});
 
