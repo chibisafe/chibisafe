@@ -27,18 +27,20 @@
 					</button>
 				</div>
 			</h1>
-			<div class="my-4 bg-dark-90 p-4 text-light-100 text-lg">
-				<div v-for="(setting, index) in settings" :key="index" class="flex mb-4">
+			<div class="my-4p-4 bg-dark-110 text-light-100 text-lg p-4">
+				<div v-for="(setting, index) in settings" :key="index" class="flex mb-4 items-center bg-dark-90 p-4">
 					<div v-if="setting.type === 'string' || setting.type === 'number'" class="w-full">
 						<Input
 							v-model="setting.value"
 							:label="setting.name"
 							:type="setting.type === 'string' ? 'text' : 'number'"
+							:notice="setting.notice"
+							:blur="setting.key === 'secret'"
 							class="w-full"
 						/>
 					</div>
 
-					<div v-else-if="setting.type === 'boolean'">
+					<div v-else-if="setting.type === 'boolean'" class="w-full">
 						<div class="w-60 text-sm">{{ setting.name }}</div>
 						<Switch
 							v-model="setting.value"
@@ -56,7 +58,7 @@
 					</div>
 					<div v-else-if="setting.type === 'object'" class="w-full">
 						<div class="w-60 text-sm">{{ setting.name }}</div>
-						<template v-if="setting.name === 'blockedExtensions'">
+						<template v-if="setting.key === 'blockedExtensions'">
 							<div class="mt-1 mb-2">
 								<!-- @ts-ignore -->
 								<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
@@ -88,6 +90,12 @@
 							</span>
 						</template>
 					</div>
+					<div class="w-1/2 p-4">
+						<p>{{ setting.description }}</p>
+						<p v-if="setting.example" class="bg-dark-80 p-2 mt-1 text-sm italic">
+							Example: {{ setting.example }}
+						</p>
+					</div>
 				</div>
 			</div>
 			<div class="items-center w-full my-8">
@@ -117,17 +125,21 @@ const settings = ref(null) as any;
 const blockedExtensionsInput = ref<HTMLInputElement>();
 
 const addExtension = (setting: any, extension: any) => {
-	const extensions = setting.value;
+	if (!extension.value) return;
+	const extensions = setting.value.split(',');
 	if (extensions.includes(extension.value)) return;
 	extensions.push(extension.value);
+	setting.value = extensions.join(',');
 	// @ts-expect-error erh something about the element not being an array
 	blockedExtensionsInput.value[0].value = '';
 };
 
 const removeExtension = (setting: any, extension: string) => {
-	const index = setting.value.indexOf(extension);
+	const items = setting.value.split(',');
+	const index = items.indexOf(extension);
 	if (index > -1) {
-		setting.value.splice(index, 1);
+		items.splice(index, 1);
+		setting.value = items.join(',');
 	}
 };
 

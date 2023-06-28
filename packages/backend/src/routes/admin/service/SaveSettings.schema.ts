@@ -11,7 +11,7 @@ export default {
 				items: {
 					type: 'object',
 					properties: {
-						name: { type: 'string', description: 'The name of the setting.' },
+						key: { type: 'string', description: 'The key of the setting.' },
 						value: { type: 'string', description: 'The value of the setting.' },
 						type: { type: 'string', description: 'The type of the setting.' }
 					}

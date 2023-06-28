@@ -13,7 +13,7 @@ export const options = {
 };
 
 type incomingSettings = {
-	name: string;
+	key: string;
 	value: string;
 	type: string;
 };
@@ -24,11 +24,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	try {
 		// TODO: Validation of the settings
 		const parsedSettings: Partial<typeof SETTINGS> = {};
-		for (const key of settings as unknown as incomingSettings[]) {
-			// if (key.type === 'array') parsedSettings[key.name] = JSON.parse(key.value);
-			if (key.type === 'boolean') parsedSettings[key.name] = key.value === 'true';
-			else if (key.type === 'number') parsedSettings[key.name] = Number(key.value);
-			else parsedSettings[key.name] = key.value;
+		for (const item of settings as unknown as incomingSettings[]) {
+			if (item.type === 'boolean') parsedSettings[item.key] = item.value === 'true';
+			else if (item.type === 'number') parsedSettings[item.key] = Number(item.value);
+			else parsedSettings[item.key] = item.value;
 		}
 
 		// @ts-expect-error chunkSize is a string on the db, but int here.

@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '@/structures/interfaces';
 
-import { SETTINGS } from '@/structures/settings';
+import { SETTINGS, getSettingsMeta } from '@/structures/settings';
 
 export const options = {
 	url: '/admin/service/settings',
@@ -15,18 +15,20 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	delete settings.port;
 	delete settings.host;
 
-	// These 2 I'm lazy atm
+	// Settings not yet implemented
 	delete settings.statisticsCron;
 	delete settings.enabledStatistics;
+	delete settings.disableStatisticsCron;
+	delete settings.chunkedUploadsTimeout;
 
 	const settingsWithTypes = [];
 
 	// eslint-disable-next-line guard-for-in
 	for (const key in settings) {
 		settingsWithTypes.push({
-			name: key,
-			value: settings[key],
-			type: typeof settings[key]
+			...getSettingsMeta(key),
+			key,
+			value: settings[key]
 		});
 	}
 
