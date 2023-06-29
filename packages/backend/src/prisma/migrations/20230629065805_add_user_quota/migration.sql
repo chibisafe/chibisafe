@@ -25,7 +25,7 @@ CREATE TABLE "new_settings" (
     "metaDomain" TEXT NOT NULL DEFAULT '',
     "serveUploadsFrom" TEXT NOT NULL DEFAULT '',
     "enableMixedCaseFilenames" BOOLEAN NOT NULL DEFAULT true,
-    "usersStorageQuota" INTEGER NOT NULL DEFAULT 0
+    "usersStorageQuota" TEXT NOT NULL DEFAULT "0"
 );
 INSERT INTO "new_settings" ("backgroundImageURL", "blockNoExtension", "blockedExtensions", "chunkSize", "chunkedUploadsTimeout", "disableStatisticsCron", "enableMixedCaseFilenames", "generateZips", "generatedAlbumLength", "generatedFilenameLength", "id", "logoURL", "maxSize", "metaDescription", "metaDomain", "metaKeywords", "metaTwitterHandle", "publicMode", "rateLimitMax", "rateLimitWindow", "secret", "serveUploadsFrom", "serviceName", "userAccounts") SELECT "backgroundImageURL", "blockNoExtension", "blockedExtensions", "chunkSize", "chunkedUploadsTimeout", "disableStatisticsCron", "enableMixedCaseFilenames", "generateZips", "generatedAlbumLength", "generatedFilenameLength", "id", "logoURL", "maxSize", "metaDescription", "metaDomain", "metaKeywords", "metaTwitterHandle", "publicMode", "rateLimitMax", "rateLimitWindow", "secret", "serveUploadsFrom", "serviceName", "userAccounts" FROM "settings";
 DROP TABLE "settings";
@@ -37,7 +37,7 @@ CREATE TABLE "new_users" (
     "password" TEXT NOT NULL,
     "enabled" BOOLEAN NOT NULL DEFAULT true,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
-    "storageQuota" INTEGER NOT NULL DEFAULT 0,
+    "storageQuota" TEXT NOT NULL DEFAULT "0",
     "apiKey" TEXT,
     "passwordEditedAt" DATETIME,
     "apiKeyEditedAt" DATETIME,

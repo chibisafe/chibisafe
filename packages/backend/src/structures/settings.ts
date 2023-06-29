@@ -56,7 +56,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaKeywords = settingsTable.metaKeywords;
 		SETTINGS.metaTwitterHandle = settingsTable.metaTwitterHandle;
 		SETTINGS.metaDomain = settingsTable.metaDomain;
-		SETTINGS.usersStorageQuota = settingsTable.usersStorageQuota;
+		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		return;
 	}
 
@@ -94,7 +94,8 @@ export const loadSettings = async (force = false) => {
 			...data,
 			// This is due to prisma not supporting int64
 			maxSize: String(data.maxSize),
-			chunkSize: String(data.chunkSize)
+			chunkSize: String(data.chunkSize),
+			usersStorageQuota: String(data.usersStorageQuota)
 		}
 	});
 
