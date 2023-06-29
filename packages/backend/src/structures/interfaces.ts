@@ -119,6 +119,7 @@ export interface Settings {
 	enabledStatistics: string[];
 	serveUploadsFrom: string;
 	enableMixedCaseFilenames: boolean;
+	usersStorageQuota: number;
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
 }

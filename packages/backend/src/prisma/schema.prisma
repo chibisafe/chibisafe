@@ -16,6 +16,7 @@ model users {
 	password String
 	enabled Boolean @default(true)
 	isAdmin Boolean @default(false)
+	storageQuota Int @default(0)
 	apiKey String? @unique
 	passwordEditedAt DateTime?
 	apiKeyEditedAt DateTime?
@@ -98,6 +99,7 @@ model settings {
 	metaDomain String @default("")
 	serveUploadsFrom String @default("")
 	enableMixedCaseFilenames Boolean @default(true)
+	usersStorageQuota Int @default(0)
 }
 
 model statistics {
