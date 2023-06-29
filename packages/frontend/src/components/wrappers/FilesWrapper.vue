@@ -8,7 +8,14 @@
 		<div class="flex-grow" />
 		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
-		<Pagination :type="type" class="mobile:basis-full" />
+		<Pagination
+			:currentPage="currentPage"
+			:count="totalFiles"
+			:previousPageFn="type === 'album' ? albumsStore.getPreviousPage : filesStore.getPreviousPage"
+			:nextPageFn="type === 'album' ? albumsStore.getNextPage : filesStore.getNextPage"
+			:goToPageFn="type === 'album' ? albumsStore.goToPage : filesStore.goToPage"
+			class="mobile:basis-full"
+		/>
 	</div>
 
 	<Masonry v-if="preferMasonry" :type="type" />
@@ -23,7 +30,14 @@
 		<div class="flex-grow" />
 		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
-		<Pagination :type="type" class="mobile:basis-full" />
+		<Pagination
+			:currentPage="currentPage"
+			:count="totalFiles"
+			:previousPageFn="type === 'album' ? albumsStore.getPreviousPage : filesStore.getPreviousPage"
+			:nextPageFn="type === 'album' ? albumsStore.getNextPage : filesStore.getNextPage"
+			:goToPageFn="type === 'album' ? albumsStore.goToPage : filesStore.goToPage"
+			class="mobile:basis-full"
+		/>
 	</div>
 </template>
 
@@ -47,6 +61,11 @@ const albumsStore = useAlbumsStore();
 const totalFiles = computed(() => {
 	if (props.type === 'album') return albumsStore.count;
 	else return filesStore.count;
+});
+
+const currentPage = computed(() => {
+	if (props.type === 'album') return albumsStore.currentPage;
+	else return filesStore.currentPage;
 });
 
 const preferMasonry = computed(() => userStore.preferences.preferMasonry);

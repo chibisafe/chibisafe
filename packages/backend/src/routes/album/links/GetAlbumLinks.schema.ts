@@ -18,8 +18,8 @@ export default {
 			properties: {
 				message: { $ref: 'ResponseMessage' },
 				links: {
-					type: 'object',
-					properties: {
+					type: 'array',
+					items: {
 						identifier: { type: 'string' },
 						uuid: { type: 'string' },
 						albumId: { type: 'string' },

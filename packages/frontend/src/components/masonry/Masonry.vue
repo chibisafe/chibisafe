@@ -11,8 +11,7 @@
 					<img
 						v-element-hover="(value: boolean) => onHover(value, file.uuid)"
 						:src="file.thumb"
-						class="cursor-pointer w-full min-w-[160px]"
-						:class="isFileVideo(file) ? '' : 'min-h-[160px]'"
+						class="cursor-pointer w-full min-w-[160px] min-h-[160px]"
 					/>
 				</a>
 

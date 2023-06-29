@@ -33,47 +33,26 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useFilesStore } from '~/store/files';
-import { useAlbumsStore } from '~/store/albums';
 
 const props = defineProps<{
-	type: 'admin' | 'album' | 'uploads';
+	currentPage: number;
+	count: number;
+	previousPageFn: Function;
+	nextPageFn: Function;
+	goToPageFn: Function;
 }>();
 
 const route = useRoute();
 const router = useRouter();
 
-const filesStore = useFilesStore();
-const albumsStore = useAlbumsStore();
-
-const page = computed(() => {
-	if (props.type === 'album') return albumsStore.currentPage;
-	else return filesStore.currentPage;
-});
-
-const total = computed(() => {
-	if (props.type === 'album') return albumsStore.count;
-	else return filesStore.count;
-});
-
-const totalPages = computed(() => {
-	if (props.type === 'album') return Math.ceil(albumsStore.count / 50);
-	else return Math.ceil(filesStore.count / 50);
-});
-
-const isFirstPage = computed(() => {
-	if (props.type === 'album') return albumsStore.currentPage === 1;
-	else return filesStore.currentPage === 1;
-});
-
-const isLastPage = computed(() => {
-	if (props.type === 'album') return albumsStore.currentPage === totalPages.value;
-	else return filesStore.currentPage === totalPages.value;
-});
+const page = computed(() => props.currentPage);
+const total = computed(() => props.count);
+const totalPages = computed(() => Math.ceil(total.value / 50));
+const isFirstPage = computed(() => props.currentPage === 1);
+const isLastPage = computed(() => props.currentPage === totalPages.value);
 
 const previousPage = async () => {
-	if (props.type === 'album') await albumsStore.getPreviousPage();
-	else await filesStore.getPreviousPage();
+	await props.previousPageFn();
 
 	const query = { ...route.query };
 	if (page.value === 1) {
@@ -86,8 +65,7 @@ const previousPage = async () => {
 };
 
 const nextPage = async () => {
-	if (props.type === 'album') await albumsStore.getNextPage();
-	else await filesStore.getNextPage();
+	await props.nextPageFn();
 
 	const query = { ...route.query };
 	query.page = String(page.value);
@@ -99,8 +77,7 @@ const goToPage = async (event: Event) => {
 	const target = event.target as HTMLSelectElement;
 	const pageNum = Number(target.value);
 
-	if (props.type === 'album') await albumsStore.goToPage(pageNum);
-	else await filesStore.goToPage(pageNum);
+	await props.goToPageFn(pageNum);
 
 	const query = { ...route.query };
 	if (pageNum === 1) delete query.page;
