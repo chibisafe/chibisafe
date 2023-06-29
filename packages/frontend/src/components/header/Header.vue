@@ -9,14 +9,6 @@
 		</router-link>
 		<span class="flex-1" />
 
-		<a
-			href="/docs"
-			target="_blank"
-			rel="noreferrer noopener"
-			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mr-4"
-			>Documentation</a
-		>
-
 		<router-link
 			v-if="!loggedIn"
 			to="/login"
@@ -29,6 +21,14 @@
 			to="/dashboard/uploads"
 			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg"
 			>Dashboard</router-link
+		>
+
+		<a
+			href="/docs"
+			target="_blank"
+			rel="noreferrer noopener"
+			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg ml-4"
+			>Docs</a
 		>
 
 		<span class="ml-4">
