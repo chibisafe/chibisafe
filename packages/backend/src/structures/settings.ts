@@ -224,7 +224,7 @@ const SETTINGS_META = {
 		description: 'The URL for the logo.',
 		name: 'Logo URL'
 	},
-	domain: {
+	metaDomain: {
 		type: 'string',
 		description: 'The meta domain used for the website SEO.',
 		name: 'Meta Domain',
