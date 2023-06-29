@@ -22,6 +22,7 @@ export default {
 								description: 'The total size of all files the user has uploaded.',
 								example: 0
 							},
+							storageQuota: { $ref: 'StorageQuota' },
 							_count: {
 								type: 'object',
 								properties: {
