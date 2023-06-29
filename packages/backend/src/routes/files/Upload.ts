@@ -41,6 +41,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	try {
 		if (!SETTINGS.publicMode && !req.user) {
 			res.unauthorized('Only registered users are allowed to upload files.');
+			return;
 		}
 
 		const upload = await processFile(req.raw, {
