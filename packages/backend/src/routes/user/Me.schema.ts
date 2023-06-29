@@ -7,7 +7,8 @@ export default {
 			type: 'object',
 			properties: {
 				message: { $ref: 'ResponseMessage' },
-				user: { $ref: 'RequestUser' }
+				user: { $ref: 'RequestUser' },
+				storageQuota: { $ref: 'StorageQuota' }
 			}
 		},
 		'4xx': { $ref: 'HTTP4xxError' },
