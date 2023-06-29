@@ -243,7 +243,13 @@
 						dashboard and change it.
 					</div>
 
-					<div></div>
+					<div
+						v-if="userStore.user?.storageQuota?.overQuota"
+						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
+					>
+						It seems you've used all your storage quota and won't be able to upload any more files until you
+						free some space.
+					</div>
 					<slot />
 				</div>
 			</main>

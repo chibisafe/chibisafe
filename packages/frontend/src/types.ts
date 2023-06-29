@@ -9,6 +9,11 @@ export interface User {
 	enabled?: string;
 	createdAt?: string;
 	passwordEditedAt?: Date;
+	storageQuota: {
+		used: number;
+		quota: number;
+		overQuota: boolean;
+	};
 }
 
 export interface UserWithCount extends User {

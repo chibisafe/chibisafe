@@ -41,7 +41,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const quota = await getUsedQuota(req.user?.id as number);
 	if (quota?.overQuota) {
-		throw new Error('You are over your storage quota');
+		res.forbidden('You are over your storage quota');
+		return;
 	}
 
 	try {
@@ -66,7 +67,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const quotaAfterUpload = await getUsedQuota(req.user?.id as number, Number(upload.metadata.size));
 		if (quotaAfterUpload?.overQuota) {
 			await deleteTmpFile(upload.path as string);
-			throw new Error('You are over your storage quota');
+			res.forbidden('You are over your storage quota');
+			return;
 		}
 
 		const album = await validateAlbum(req.headers.albumuuid as string, req.user ? req.user : undefined);
@@ -132,7 +134,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			case 'chibi-uuid is not a valid uuid':
 			case 'Chunk is out of range':
 			case 'Invalid headers':
-			case 'You are over your storage quota':
 				res.badRequest(error.message);
 				break;
 		}
