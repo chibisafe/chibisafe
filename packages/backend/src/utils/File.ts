@@ -162,7 +162,7 @@ export const createZip = (files: string[], albumUuid: string) => {
 };
 
 export const constructFilePublicLink = (req: FastifyRequest, fileName: string) => {
-	const host = getHost(req);
+	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
 		url: `${host}/${fileName}`,
 		thumb: '',

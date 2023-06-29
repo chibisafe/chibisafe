@@ -33,15 +33,16 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
 		// These settings should be set from the database
-		SETTINGS.domain = settingsTable.domain;
+		SETTINGS.serviceName = settingsTable.serviceName;
+		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom;
 		SETTINGS.rateLimitWindow = settingsTable.rateLimitWindow;
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
-		SETTINGS.serviceName = settingsTable.serviceName;
 		SETTINGS.chunkSize = Number(settingsTable.chunkSize);
 		SETTINGS.chunkedUploadsTimeout = settingsTable.chunkedUploadsTimeout;
 		SETTINGS.maxSize = Number(settingsTable.maxSize);
 		SETTINGS.generateZips = settingsTable.generateZips;
+		SETTINGS.enableMixedCaseFilenames = settingsTable.enableMixedCaseFilenames;
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
 		SETTINGS.blockedExtensions = JSON.parse(settingsTable.blockedExtensions);
@@ -54,21 +55,23 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaDescription = settingsTable.metaDescription;
 		SETTINGS.metaKeywords = settingsTable.metaKeywords;
 		SETTINGS.metaTwitterHandle = settingsTable.metaTwitterHandle;
+		SETTINGS.metaDomain = settingsTable.metaDomain;
 		return;
 	}
 
 	// if SETTINGS is empty and there is no database entry, create it
 	log.debug("Settings don't exist in database, creating...");
 	const data = {
-		domain: 'localhost:8000',
 		rateLimitWindow: 1000,
 		rateLimitMax: 100,
 		secret: randomstring.generate(64),
 		serviceName: 'change-me',
+		serveUploadsFrom: '',
 		chunkSize: 9 * 9e6, // 90 MB
 		chunkedUploadsTimeout: 30 * 60 * 1000, // 30 minutes
 		maxSize: 1 * 1e9, // 1 GB
 		generateZips: true,
+		enableMixedCaseFilenames: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
 		blockedExtensions: JSON.stringify(['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh']),
@@ -78,6 +81,7 @@ export const loadSettings = async (force = false) => {
 		disableStatisticsCron: false,
 		backgroundImageURL: '',
 		logoURL: '',
+		metaDomain: 'https://your-domain.com',
 		metaDescription: 'description for please-change-me.com 🚀',
 		metaKeywords: 'comma, separated, keywords, that, describe, this, website',
 		metaTwitterHandle: '@your-twitter-handle'
@@ -108,11 +112,13 @@ const SETTINGS_META = {
 		description: 'The host the server will listen on.',
 		name: 'Host'
 	},
-	domain: {
+	serveUploadsFrom: {
 		type: 'string',
-		description: 'The domain the server will be hosted on.',
-		name: 'Domain',
-		example: 'https://chibisafe.moe'
+		description:
+			'Fill this if you want to serve your files from a custom domain with nginx/caddy. Leave empty to let chibisafe handle it.',
+		name: 'Serve Uploads From',
+		example: 'https://cdn.chibisafe.moe',
+		notice: 'For this setting to take effect, you need to restart the server.'
 	},
 	rateLimitWindow: {
 		type: 'number',
@@ -162,6 +168,11 @@ const SETTINGS_META = {
 		type: 'boolean',
 		description: 'Whether or not to allow users to generate zips from public albums.',
 		name: 'Generate Zips'
+	},
+	enableMixedCaseFilenames: {
+		type: 'boolean',
+		description: 'Whether to allow mixed case filenames.',
+		name: 'Enable Mixed Case Filenames'
 	},
 	generatedFilenameLength: {
 		type: 'number',
@@ -213,21 +224,27 @@ const SETTINGS_META = {
 		description: 'The URL for the logo.',
 		name: 'Logo URL'
 	},
+	domain: {
+		type: 'string',
+		description: 'The meta domain used for the website SEO.',
+		name: 'Meta Domain',
+		example: 'https://chibisafe.moe'
+	},
 	metaDescription: {
 		type: 'string',
-		description: 'The meta description for the website.',
+		description: 'The meta description for the website SEO.',
 		name: 'Meta Description',
 		example: 'A simple and easy to use file hosting service.'
 	},
 	metaKeywords: {
 		type: 'string',
-		description: 'The meta keywords for the website.',
+		description: 'The meta keywords for the website SEO.',
 		name: 'Meta Keywords',
 		example: 'file, hosting, service'
 	},
 	metaTwitterHandle: {
 		type: 'string',
-		description: 'The twitter handle for the website.',
+		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
 		example: '@chibisafe'
 	}

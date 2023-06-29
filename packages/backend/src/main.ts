@@ -202,10 +202,12 @@ const start = async () => {
 		});
 	}
 
-	// Serve uploads
-	await server.register(fstatic, {
-		root: path.join(__dirname, '..', '..', '..', 'uploads')
-	});
+	// Serve uploads only if the user didn't change the default value
+	if (!SETTINGS.serveUploadsFrom) {
+		await server.register(fstatic, {
+			root: path.join(__dirname, '..', '..', '..', 'uploads')
+		});
+	}
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
@@ -226,7 +228,7 @@ export const getHtmlBuffer = async () => {
 	indexHTML = indexHTML.replaceAll('{{description}}', SETTINGS.metaDescription);
 	indexHTML = indexHTML.replaceAll('{{keywords}}', SETTINGS.metaKeywords);
 	indexHTML = indexHTML.replaceAll('{{twitter}}', SETTINGS.metaTwitterHandle);
-	indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.domain);
+	indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.metaDomain);
 
 	const settings = {
 		backgroundImageURL: SETTINGS.backgroundImageURL,
