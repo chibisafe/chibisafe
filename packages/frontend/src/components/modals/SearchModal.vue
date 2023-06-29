@@ -28,7 +28,7 @@
 					>
 						<Combobox @update:modelValue="onSelect">
 							<div class="relative">
-								<IconMagnifyingGlass
+								<SearchIcon
 									class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-500"
 									aria-hidden="true"
 								/>
@@ -102,11 +102,7 @@ import {
 	TransitionChild,
 	TransitionRoot
 } from '@headlessui/vue';
-
-import IconMagnifyingGlass from '~icons/carbon/search';
-import IconUploads from '~icons/carbon/cloud-upload';
-import IconAlbums from '~icons/carbon/folders';
-import IconAccount from '~icons/carbon/user-identification';
+import { SearchIcon, FileUpIcon, LibraryIcon, User2Icon } from 'lucide-vue-next';
 
 const router = useRouter();
 const modalsStore = useModalStore();
@@ -149,11 +145,11 @@ const onSelect = (value: any) => {
 };
 
 const quickActions = [
-	{ name: 'Search...', icon: IconMagnifyingGlass, callback: doSearch },
-	// { name: 'Upload new file...', icon: IconUploads, callback: goToMainPage },
-	{ name: 'Create new album...', icon: IconAlbums, callback: goCreateAlbum },
-	{ name: 'Go to uploads...', icon: IconUploads, callback: goToUploads },
-	{ name: 'Go to albums...', icon: IconAlbums, callback: goToAlbums },
-	{ name: 'Go to my account...', icon: IconAccount, callback: goToAccount }
+	{ name: 'Search...', icon: SearchIcon, callback: doSearch },
+	// { name: 'Upload new file...', icon: FileUpIcon, callback: goToMainPage },
+	{ name: 'Create new album...', icon: LibraryIcon, callback: goCreateAlbum },
+	{ name: 'Go to uploads...', icon: FileUpIcon, callback: goToUploads },
+	{ name: 'Go to albums...', icon: LibraryIcon, callback: goToAlbums },
+	{ name: 'Go to my account...', icon: User2Icon, callback: goToAccount }
 ];
 </script>

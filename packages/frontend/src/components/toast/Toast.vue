@@ -22,7 +22,7 @@
 					<div class="p-4">
 						<div class="flex items-start">
 							<div class="flex-shrink-0">
-								<IconCheckCircle
+								<CheckCircleIcon
 									class="h-6 w-6"
 									aria-hidden="true"
 									:class="[
@@ -44,7 +44,7 @@
 									@click="toastStore.dismiss(toast.id)"
 								>
 									<span class="sr-only">Close</span>
-									<IconClose class="h-5 w-5" aria-hidden="true" />
+									<XIcon class="h-5 w-5" aria-hidden="true" />
 								</button>
 							</div>
 						</div>
@@ -56,12 +56,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useToastStore } from '~/store/toast';
-// @ts-ignore
-import IconCheckCircle from '~icons/carbon/checkmark-outline';
-// @ts-ignore
-import IconClose from '~icons/carbon/close';
+import { CheckCircleIcon, XIcon } from 'lucide-vue-next';
 
 const toastStore = useToastStore();
 const toasts = computed(() => toastStore.toasts);

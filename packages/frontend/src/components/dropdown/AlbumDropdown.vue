@@ -6,7 +6,7 @@
 			>
 				<span v-if="selectedAlbum" class="block truncate">{{ selectedAlbum.name }}</span>
 				<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-					<IconChevronUpDown class="h-5 w-5 text-light-100" aria-hidden="true" />
+					<ChevronsUpDownIcon class="h-5 w-5 text-light-100" aria-hidden="true" />
 				</span>
 			</ListboxButton>
 
@@ -36,7 +36,7 @@
 								v-if="selected"
 								class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
 							>
-								<IconCheck class="h-5 w-5" aria-hidden="true" />
+								<CheckIcon class="h-5 w-5" aria-hidden="true" />
 							</span>
 						</li>
 					</ListboxOption>
@@ -50,10 +50,8 @@
 import { computed, ref, onMounted, watch } from 'vue';
 import { useAlbumsStore } from '~/store';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
+import { CheckIcon, ChevronsUpDownIcon } from 'lucide-vue-next';
 import type { Album } from '~/types';
-
-import IconCheck from '~icons/carbon/checkmark';
-import IconChevronUpDown from '~icons/carbon/chevron-sort';
 
 const albumsStore = useAlbumsStore();
 

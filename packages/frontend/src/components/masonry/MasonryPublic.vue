@@ -19,12 +19,12 @@
 						<source :src="file.preview" type="video/mp4" />
 					</video>
 
-					<IconVideo v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
+					<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
 				</template>
 				<div v-else class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
-					<IconAudio v-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<IconPdf v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<IconDocument v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileAudioIcon v-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileTextIcon v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileIcon v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
 					<span class="text-dark-100 dark:text-light-100 mt-4 text-lg">{{ file.original }}</span>
 				</div>
 			</a>
@@ -37,10 +37,7 @@ import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
 import { useFilesStore } from '~/store/files';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
-import IconVideo from '~icons/carbon/video-filled';
-import IconDocument from '~icons/carbon/document';
-import IconPdf from '~icons/carbon/document-pdf';
-import IconAudio from '~icons/carbon/document-audio';
+import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 
 const filesStore = useFilesStore();
 const files = computed(() => filesStore.files);
