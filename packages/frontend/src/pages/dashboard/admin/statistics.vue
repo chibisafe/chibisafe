@@ -15,7 +15,7 @@
 			/>
 			<h1 class="text-2xl mt-8 mb-8 font-semibold text-light-100 flex items-center">
 				Statistics
-				<IconRepeat
+				<RepeatIcon
 					class="ml-4 w-6 h-6 cursor-pointer"
 					:class="loading ? 'animate-spin text-gray-500' : 'text-light-100'"
 					@click="fetchStats(true)"
@@ -52,7 +52,7 @@ import { getStatistics } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import dayjs from 'dayjs';
-import IconRepeat from '~icons/carbon/repeat';
+import { RepeatIcon } from 'lucide-vue-next';
 
 const stats = ref(null) as any;
 const loading = ref(false);

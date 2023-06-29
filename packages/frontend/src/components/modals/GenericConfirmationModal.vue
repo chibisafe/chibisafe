@@ -34,7 +34,7 @@
 									@click="closeModal"
 								>
 									<span class="sr-only">Close</span>
-									<IconClose class="h-6 w-6" aria-hidden="true" />
+									<XIcon class="h-6 w-6" aria-hidden="true" />
 								</button>
 							</div>
 							<div class="desktop:flex desktop:items-start">
@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import IconClose from '~icons/carbon/close';
+import { XIcon } from 'lucide-vue-next';
 import { useModalStore } from '~/store';
 
 const props = defineProps<{

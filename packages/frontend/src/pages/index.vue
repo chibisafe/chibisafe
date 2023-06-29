@@ -96,7 +96,7 @@
 				>
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
-							<IconCheck class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
+							<CheckIcon class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
 							<p class="ml-9 text-lg font-medium leading-6 text-gray-900 dark:text-light-100">
 								{{ feature }}
 							</p>
@@ -159,12 +159,9 @@ import { TransitionRoot } from '@headlessui/vue';
 import { useUploadsStore } from '~/store';
 import { formatBytes } from '~/use/file';
 import { useWindowSize } from '@vueuse/core';
-
+import { CheckIcon } from 'lucide-vue-next';
 import Header from '~/components/header/Header.vue';
 import ChibiUploader from '~/components/upload/ChibiUploader.vue';
-
-// @ts-ignore
-import IconCheck from '~icons/carbon/checkmark';
 
 const uploadsStore = useUploadsStore();
 const files = computed(() => uploadsStore.files);

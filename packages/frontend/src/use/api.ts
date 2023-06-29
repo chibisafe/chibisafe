@@ -424,11 +424,16 @@ export const purgeAlbum = async (uuid: string) => {
 	}
 };
 
-export const getFilesFromPublicAlbum = async (identifier: string) => {
+export const getFilesFromPublicAlbum = async (identifier: string, page: number) => {
 	try {
-		const data = await request.get(`album/${identifier}/view`);
+		const data = await request.get(`album/${identifier}/view?page=${page}`);
 		debug('getFilesFromPublicAlbum', data);
-		return { name: data.name, files: data.files, count: data.filesCount, isNsfw: data.isNsfw };
+		return {
+			name: data.album.name,
+			files: data.album.files,
+			count: data.album.count,
+			isNsfw: data.album.isNsfw
+		};
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

@@ -75,17 +75,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@antfu/install-pkg@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@antfu/install-pkg@npm:0.1.1"
-  dependencies:
-    execa: "npm:^5.1.1"
-    find-up: "npm:^5.0.0"
-  checksum: a463af6a0df3cf0769fd88ec94d135ca54e4f7329422fa3815bf1e71fb4ca510ec02bb39935bec65a15a8d8df5e76bf8e6a7df0c7c6cc512aefa3bec85ad903f
-  languageName: node
-  linkType: hard
-
-"@antfu/utils@npm:^0.7.2, @antfu/utils@npm:^0.7.4":
+"@antfu/utils@npm:^0.7.2":
   version: 0.7.4
   resolution: "@antfu/utils@npm:0.7.4"
   checksum: f5c1107c9aec0bda43a7021f3a9adb4bed113467a40590a9cecd3998408a5c04b0fb68be53438f56487153eaf6278fa128dbe4e0be88b7af65212fe0497e4fdd
@@ -341,7 +331,6 @@ __metadata:
   dependencies:
     "@chibisafe/uploader-client": 1.0.6
     "@headlessui/vue": ^1.6.5
-    "@iconify-json/carbon": ^1.1.8
     "@tailwindcss/forms": ^0.5.3
     "@tailwindcss/typography": ^0.5.7
     "@types/file-saver": ^2.0.5
@@ -358,6 +347,7 @@ __metadata:
     eslint: ^8.8.0
     eslint-config-neon: ^0.1.33
     file-saver: ^2.0.5
+    lucide-vue-next: ^0.256.0
     media-chrome: ^0.16.0
     pinia: ^2.0.22
     postcss: ^8.4.6
@@ -366,7 +356,6 @@ __metadata:
     tailwindcss: ^3.1.8
     ts-node: ^10.8.2
     typescript: ^4.7.4
-    unplugin-icons: ^0.14.11
     unplugin-vue-components: ^0.22.8
     vite: ^3.1.4
     vite-plugin-html: ^3.2.0
@@ -643,36 +632,6 @@ __metadata:
   version: 1.2.1
   resolution: "@humanwhocodes/object-schema@npm:1.2.1"
   checksum: a824a1ec31591231e4bad5787641f59e9633827d0a2eaae131a288d33c9ef0290bd16fda8da6f7c0fcb014147865d12118df10db57f27f41e20da92369fcb3f1
-  languageName: node
-  linkType: hard
-
-"@iconify-json/carbon@npm:^1.1.8":
-  version: 1.1.17
-  resolution: "@iconify-json/carbon@npm:1.1.17"
-  dependencies:
-    "@iconify/types": "npm:*"
-  checksum: 1cae983391d6d8c596dc9286df7eb646700f4fd7f44738deab094a644b84863f0ce1dd60b06a1d3b00423fa0f442703a3e63d8507afa38f8cdeb61df05b973af
-  languageName: node
-  linkType: hard
-
-"@iconify/types@npm:*, @iconify/types@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@iconify/types@npm:2.0.0"
-  checksum: 029f58542c160e9d4a746869cf2e475b603424d3adf3994c5cc8d0406c47e6e04a3b898b2707840c1c5b9bd5563a1660a34b110d89fce43923baca5222f4e597
-  languageName: node
-  linkType: hard
-
-"@iconify/utils@npm:^2.0.3":
-  version: 2.1.6
-  resolution: "@iconify/utils@npm:2.1.6"
-  dependencies:
-    "@antfu/install-pkg": "npm:^0.1.1"
-    "@antfu/utils": "npm:^0.7.4"
-    "@iconify/types": "npm:^2.0.0"
-    debug: "npm:^4.3.4"
-    kolorist: "npm:^1.8.0"
-    local-pkg: "npm:^0.4.3"
-  checksum: 6fbdca280cc19d0ac1c1206db9800453478d61abb1ad5fbaca46b8c64a5d4208dfc1c663fdf8f1462a17e7b3f98547b7dd56b427712959ccc4a855fdf91031df
   languageName: node
   linkType: hard
 
@@ -4478,7 +4437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0, execa@npm:^5.1.1":
+"execa@npm:^5.0.0":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -6202,13 +6161,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kolorist@npm:^1.6.0, kolorist@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "kolorist@npm:1.8.0"
-  checksum: b056de671acc8a17f1e78d6d46c47dae3e06481eabc9fed213dd9079a7454fd3a7ea1226ec718df81c9208877f7475d038ac27a400958fec278d975839e33643
-  languageName: node
-  linkType: hard
-
 "language-subtag-registry@npm:~0.3.2":
   version: 0.3.22
   resolution: "language-subtag-registry@npm:0.3.22"
@@ -6286,7 +6238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"local-pkg@npm:^0.4.2, local-pkg@npm:^0.4.3":
+"local-pkg@npm:^0.4.2":
   version: 0.4.3
   resolution: "local-pkg@npm:0.4.3"
   checksum: 7825aca531dd6afa3a3712a0208697aa4a5cd009065f32e3fb732aafcc42ed11f277b5ac67229222e96f4def55197171cdf3d5522d0381b489d2e5547b407d55
@@ -6444,6 +6396,15 @@ __metadata:
   version: 9.1.2
   resolution: "lru-cache@npm:9.1.2"
   checksum: d3415634be3908909081fc4c56371a8d562d9081eba70543d86871b978702fffd0e9e362b83921b27a29ae2b37b90f55675aad770a54ac83bb3e4de5049d4b15
+  languageName: node
+  linkType: hard
+
+"lucide-vue-next@npm:^0.256.0":
+  version: 0.256.0
+  resolution: "lucide-vue-next@npm:0.256.0"
+  peerDependencies:
+    vue: ">=3.0.1"
+  checksum: 53f3e47f4801ba53d9f916d40925247f6fc729f2c06f94c367881625853e25132fd0bae004de8f5a2a90d995d2c838112fd676b382fd9930a0406231e3f16c34
   languageName: node
   linkType: hard
 
@@ -10197,35 +10158,6 @@ __metadata:
   version: 2.0.0
   resolution: "universalify@npm:2.0.0"
   checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
-  languageName: node
-  linkType: hard
-
-"unplugin-icons@npm:^0.14.11":
-  version: 0.14.15
-  resolution: "unplugin-icons@npm:0.14.15"
-  dependencies:
-    "@antfu/install-pkg": "npm:^0.1.1"
-    "@antfu/utils": "npm:^0.7.2"
-    "@iconify/utils": "npm:^2.0.3"
-    debug: "npm:^4.3.4"
-    kolorist: "npm:^1.6.0"
-    local-pkg: "npm:^0.4.2"
-    unplugin: "npm:^1.0.1"
-  peerDependencies:
-    "@svgr/core": ">=5.5.0"
-    "@vue/compiler-sfc": ^3.0.2
-    vue-template-compiler: ^2.6.12
-    vue-template-es2015-compiler: ^1.9.0
-  peerDependenciesMeta:
-    "@svgr/core":
-      optional: true
-    "@vue/compiler-sfc":
-      optional: true
-    vue-template-compiler:
-      optional: true
-    vue-template-es2015-compiler:
-      optional: true
-  checksum: a460a3e213c2e6b4fc36e43f9b5cd5e5ece2ef64c7775a51223c6ad477a2a1e1a1f0f16c76eb0ee79615d53d1c9e43c44d5de5fe2bb0e3b69056baf3b55a60fc
   languageName: node
   linkType: hard
 

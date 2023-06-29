@@ -33,9 +33,9 @@
 						>
 							<!--  -->
 
-							<div class="px-4 sm:px-6 lg:px-8 mt-6 mb-8">
-								<div class="sm:flex sm:items-center">
-									<div v-if="album" class="sm:flex-auto">
+							<div class="px-4 desktop:px-6 lg:px-8 mt-6 mb-8">
+								<div class="desktop:flex desktop:items-center">
+									<div v-if="album" class="desktop:flex-auto">
 										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
 											Album settings
 										</h1>
@@ -68,7 +68,7 @@
 													<input
 														v-model="album.name"
 														type="text"
-														class="block w-full rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+														class="block w-full rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 desktop:text-sm"
 														@keyup.enter="setNewAlbumName"
 													/>
 												</div>
@@ -91,8 +91,8 @@
 									</div>
 								</div>
 
-								<div class="sm:flex sm:items-center mt-8">
-									<div class="sm:flex-auto">
+								<div class="desktop:flex desktop:items-center mt-8">
+									<div class="desktop:flex-auto">
 										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
 											Album links
 										</h1>
@@ -101,24 +101,24 @@
 											remain private unless you share it with the world.
 										</p>
 									</div>
-									<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+									<div class="mt-4 desktop:mt-0 desktop:ml-16 desktop:flex-none">
 										<Button
 											type="button"
-											class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+											class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 desktop:w-auto"
 											@click="createLink"
 											>Create new link</Button
 										>
 									</div>
 								</div>
 								<div
-									class="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg"
+									class="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 desktop:-mx-6 md:mx-0 md:rounded-lg"
 								>
 									<table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
 										<thead class="bg-gray-100 dark:bg-dark-100">
 											<tr>
 												<th
 													scope="col"
-													class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-light-100 sm:pl-6"
+													class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-light-100 desktop:pl-6"
 												>
 													Link
 												</th>
@@ -131,7 +131,7 @@
 												<!--
 												  <th
 												  scope="col"
-												  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 sm:table-cell"
+												  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 desktop:table-cell"
 												  >
 												  Allow download
 												  </th> 
@@ -148,7 +148,7 @@
 												>
 													Expiry date
 												</th>
-												<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+												<th scope="col" class="relative py-3.5 pl-3 pr-4 desktop:pr-6">
 													<span class="sr-only">Delete</span>
 												</th>
 											</tr>
@@ -158,7 +158,7 @@
 										>
 											<tr v-for="link in links" :key="link.uuid">
 												<td
-													class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-light-100 sm:w-auto sm:max-w-none sm:pl-6"
+													class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6"
 												>
 													<a
 														:href="`/a/${link.identifier}`"
@@ -172,9 +172,9 @@
 														<dd class="mt-1 truncate text-gray-700 dark:text-light-100">
 															{{ link.views }}
 														</dd>
-														<dt class="sr-only sm:hidden">Allow download</dt>
+														<dt class="sr-only desktop:hidden">Allow download</dt>
 														<dd
-															class="mt-1 truncate text-gray-500 dark:text-light-100 sm:hidden"
+															class="mt-1 truncate text-gray-500 dark:text-light-100 desktop:hidden"
 														>
 															<Switch
 																v-model="link.enableDownload"
@@ -205,7 +205,7 @@
 												</td>
 												<!--
 												  <td
-												  class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 sm:table-cell"
+												  class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 desktop:table-cell"
 												  >
 												  <Switch
 												  v-model="link.enableDownload"
@@ -239,14 +239,14 @@
 														/>
 													</Switch>
 												</td>
-												<td class="py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+												<td class="py-4 pl-3 pr-4 text-left text-sm font-medium desktop:pr-6">
 													<Button
 														type="button"
-														class="inline-flex items-center justify-center rounded-md border border-transparent !bg-dark-100 hover:!bg-dark-90 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+														class="inline-flex items-center justify-center rounded-md border border-transparent !bg-dark-100 hover:!bg-dark-90 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 desktop:w-auto"
 														>Set</Button
 													>
 												</td>
-												<td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+												<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6">
 													<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
 													<button
 														href="#"
@@ -271,17 +271,17 @@
 									</div>
 								</div>
 
-								<div class="sm:mt-0 sm:flex-none">
+								<div class="desktop:mt-0 desktop:flex-none">
 									<Button
 										type="button"
-										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 desktop:w-auto"
 										@click="showManageAlbumModal('delete')"
 										>Delete album</Button
 									>
 
 									<Button
 										type="button"
-										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+										class="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 desktop:w-auto"
 										@click="showManageAlbumModal('purge')"
 										>Delete album and all files</Button
 									>
@@ -311,11 +311,10 @@ import {
 	SwitchLabel
 } from '@headlessui/vue';
 import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
-import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
+import { createAlbumLink, updateAlbum, updateAlbumLink } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
-import Input from '~/components/forms/Input.vue';
 import ManageAlbumModal from '~/components/modals/ManageAlbumModal.vue';
-import type { Album, AlbumLink } from '~/types';
+import type { AlbumLink } from '~/types';
 
 const modalsStore = useModalStore();
 const toastStore = useToastStore();

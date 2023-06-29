@@ -93,7 +93,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			name: album.name,
 			files,
 			isNsfw: album.nsfw,
-			filesCount: album._count.files
+			count: album._count.files
 		}
 	});
 };

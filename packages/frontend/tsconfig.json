@@ -4,7 +4,7 @@
 		"rootDir": "./",
 		"outDir": "./dist",
 		"module": "ESNext",
-		"types": ["node", "vite/client", "unplugin-icons/types/vue"],
+		"types": ["node", "vite/client"],
 		"typeRoots": ["node_modules/@types", "src"],
 		"paths": {
 			"@/*": ["packages/frontend/src/*"],

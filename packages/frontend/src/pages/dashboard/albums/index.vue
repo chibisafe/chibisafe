@@ -45,7 +45,7 @@
 							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 dark:border-dark-90"
 							@click="showEditAlbumModal(album)"
 						>
-							<IconSettings />
+							<Settings2Icon />
 						</div>
 					</li>
 				</ul>
@@ -63,7 +63,7 @@ import type { Album } from '~/types';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Button from '~/components/buttons/Button.vue';
-import IconSettings from '~icons/carbon/settings';
+import { Settings2Icon } from 'lucide-vue-next';
 
 import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
