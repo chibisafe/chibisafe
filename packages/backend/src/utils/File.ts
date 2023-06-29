@@ -3,6 +3,7 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'node:path';
+import process from 'node:process';
 import { log } from '@/main';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
@@ -31,17 +32,23 @@ export const isExtensionBlocked = (extension: string) => {
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
 export const getUniqueFileIdentifier = async (): Promise<string | null> => {
+	const options = {
+		length: SETTINGS.generatedFilenameLength
+	};
+
+	if (!SETTINGS.enableMixedCaseFilenames || process.platform === 'win32') {
+		// @ts-ignore
+		options.capitalization = 'lowercase';
+	}
+
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
-		const identifier = randomstring.generate({
-			length: SETTINGS.generatedFilenameLength,
-			capitalization: 'lowercase'
-		});
+		const identifier = randomstring.generate(options);
 
 		const exists = await prisma.$queryRaw<{ id: number }[]>`
-			SELECT id from files
-			WHERE name LIKE ${`${identifier}.%`}
-			LIMIT 1;
-		`;
+		SELECT id from files
+		WHERE name LIKE ${`${identifier}.%`}
+		LIMIT 1;
+	`;
 
 		if (!exists.length) {
 			return identifier;
