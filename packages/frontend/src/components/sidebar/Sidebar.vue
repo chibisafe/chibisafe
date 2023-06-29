@@ -69,6 +69,7 @@
 												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
+										<!-- @vue-ignore -->
 										<component
 											:is="item.icon"
 											class="mr-4 flex-shrink-0 h-6 w-6"
@@ -97,6 +98,7 @@
 												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
+										<!-- @vue-ignore -->
 										<component
 											:is="item.icon"
 											class="mr-3 flex-shrink-0 h-6 w-6"
@@ -161,6 +163,7 @@
 									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 							]"
 						>
+							<!-- @vue-ignore -->
 							<component
 								:is="item.icon"
 								class="mr-3 flex-shrink-0 h-6 w-6"
@@ -184,6 +187,7 @@
 										: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 								]"
 							>
+								<!-- @vue-ignore -->
 								<component
 									:is="item.icon"
 									class="mr-3 flex-shrink-0 h-6 w-6"
