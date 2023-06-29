@@ -428,7 +428,12 @@ export const getFilesFromPublicAlbum = async (identifier: string) => {
 	try {
 		const data = await request.get(`album/${identifier}/view`);
 		debug('getFilesFromPublicAlbum', data);
-		return { name: data.name, files: data.files, count: data.filesCount, isNsfw: data.isNsfw };
+		return {
+			name: data.album.name,
+			files: data.album.files,
+			count: data.album.count,
+			isNsfw: data.album.isNsfw
+		};
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

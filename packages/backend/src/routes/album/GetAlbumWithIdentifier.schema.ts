@@ -29,7 +29,7 @@ export default {
 					properties: {
 						name: { type: 'string', description: 'The name of the album.', example: 'My Album' },
 						isNsfw: { type: 'boolean', description: 'Whether or not the album is NSFW.', example: false },
-						filesCount: { type: 'number', description: 'The amount of files in the album.', example: 5 },
+						count: { type: 'number', description: 'The amount of files in the album.', example: 5 },
 						files: {
 							type: 'array',
 							items: {
