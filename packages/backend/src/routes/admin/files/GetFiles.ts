@@ -14,7 +14,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		publicOnly = false,
 		page = 1,
 		limit = 50
-	} = req.query as { publicOnly: string; page?: number; limit?: number };
+	} = req.query as { publicOnly: boolean; page?: number; limit?: number };
 
 	const dbSearchObject = {} as any;
 	const dbObject = {
@@ -36,7 +36,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	} as any;
 
-	if (publicOnly && publicOnly === 'true') {
+	if (publicOnly) {
 		dbSearchObject.where = {
 			userId: null
 		};
