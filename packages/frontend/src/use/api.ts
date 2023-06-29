@@ -424,9 +424,9 @@ export const purgeAlbum = async (uuid: string) => {
 	}
 };
 
-export const getFilesFromPublicAlbum = async (identifier: string) => {
+export const getFilesFromPublicAlbum = async (identifier: string, page: number) => {
 	try {
-		const data = await request.get(`album/${identifier}/view`);
+		const data = await request.get(`album/${identifier}/view?page=${page}`);
 		debug('getFilesFromPublicAlbum', data);
 		return {
 			name: data.album.name,

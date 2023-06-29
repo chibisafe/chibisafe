@@ -8,7 +8,19 @@
 			<h2>This album is NSFW, to view the contents click on the button below</h2>
 			<Button variant="primary" class="mt-8" @click="enableNsfw = true">Show content</Button>
 		</div>
-		<Masonry v-else />
+		<template v-else>
+			<div class="my-4 bg-dark-90 h-14 mobile:h-auto px-2 mobile:py-2 flex items-center mobile:flex-wrap">
+				<Pagination
+					:currentPage="currentPage"
+					:count="totalFiles"
+					:previousPageFn="getPreviousPage"
+					:nextPageFn="getNextPage"
+					:goToPageFn="goToPage"
+					class="mobile:basis-full"
+				/>
+			</div>
+			<Masonry />
+		</template>
 	</div>
 </template>
 
@@ -30,9 +42,23 @@ const totalFiles = ref(0);
 const albumName = ref('');
 const nsfw = ref(false);
 const enableNsfw = ref(false);
+const currentPage = ref(1);
 
-onMounted(async () => {
-	const response = await getFilesFromPublicAlbum(props.identifier);
+const getPreviousPage = async () => {
+	await getFiles(currentPage.value - 1);
+};
+
+const getNextPage = async () => {
+	await getFiles(currentPage.value + 1);
+};
+
+const goToPage = async (pageNumber: number) => {
+	await getFiles(pageNumber);
+};
+
+const getFiles = async (page = 1) => {
+	currentPage.value = page;
+	const response = await getFilesFromPublicAlbum(props.identifier, currentPage.value);
 	if (!response) {
 		// If the album doesn't exist, redirect to the home page
 		await router.replace('/');
@@ -43,5 +69,9 @@ onMounted(async () => {
 	albumName.value = response.name;
 	filesStore.files = response.files;
 	nsfw.value = response.isNsfw;
+};
+
+onMounted(async () => {
+	void getFiles();
 });
 </script>
