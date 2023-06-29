@@ -13,7 +13,7 @@
 			class="text-light-100 p-2 h-10 mr-2"
 			@click="previousPage"
 		>
-			Previous
+			<ChevronLeftIcon />
 		</button>
 		<select :value="page" class="bg-dark-80 text-light-100 h-10 mr-2" @change="goToPage">
 			<option v-for="index in totalPages" :key="index" :value="index">{{ index }}</option>
@@ -25,7 +25,7 @@
 			class="text-light-100 p-2 h-10"
 			@click="nextPage"
 		>
-			Next
+			<ChevronRightIcon />
 		</button>
 	</div>
 </template>
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
 const props = defineProps<{
 	currentPage: number;
 	count: number;
