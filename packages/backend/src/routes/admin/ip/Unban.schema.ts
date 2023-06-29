@@ -1,6 +1,7 @@
 export default {
-	summary: 'Unban an IP address',
-	tags: ['IP Management', 'Admin'],
+	summary: 'Unban IP',
+	description: 'Unban an IP address',
+	tags: ['IP Management'],
 	body: {
 		type: 'object',
 		properties: {

@@ -10,7 +10,6 @@ import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
 	constructFilePublicLink,
-	constructFilePublicLinkNew,
 	hashFile,
 	checkFileHashOnDB,
 	deleteTmpFile
@@ -99,7 +98,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			void generateThumbnails(savedFile.file.name);
 		}
 
-		const linkData = constructFilePublicLinkNew(req, uploadedFile.name);
+		const linkData = constructFilePublicLink(req, uploadedFile.name);
 		// Construct public link
 		const fileWithLink = {
 			...uploadedFile,
@@ -123,12 +122,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 		await res.code(200).send(fileWithLink);
 	} catch (error: any) {
-		let statusCode = 500;
 		switch (error.message) {
 			case 'Chunked upload is above size limit':
 			case 'Chunk is too big':
 			case 'File is too big':
-				statusCode = 413;
+				res.payloadTooLarge(error.message);
 				break;
 			case 'Missing chibi-* headers':
 			case 'chibi-uuid is not a string':
@@ -136,11 +134,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			case 'chibi-uuid is not a valid uuid':
 			case 'Chunk is out of range':
 			case 'Invalid headers':
-				statusCode = 400;
+				res.badRequest(error.message);
 				break;
 		}
 
 		res.log.error(error);
-		await res.code(statusCode).send(error.message);
 	}
 };

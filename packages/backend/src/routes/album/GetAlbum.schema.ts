@@ -1,5 +1,6 @@
 export default {
-	summary: 'Gets the content of an album',
+	summary: 'Get album',
+	description: 'Gets the content of an album',
 	tags: ['Albums'],
 	params: {
 		type: 'object',

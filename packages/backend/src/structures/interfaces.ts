@@ -94,7 +94,7 @@ export interface Album {
 
 export interface Settings {
 	port: number;
-	domain: string;
+	metaDomain: string;
 	rateLimitWindow: number;
 	rateLimitMax: number;
 	secret: string;
@@ -117,6 +117,8 @@ export interface Settings {
 	statisticsCron: string;
 	disableStatisticsCron: boolean;
 	enabledStatistics: string[];
+	serveUploadsFrom: string;
+	enableMixedCaseFilenames: boolean;
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
 }
@@ -134,6 +136,7 @@ export interface RouteOptions {
 	};
 	middlewares?: (string | { [index: number | string]: any })[];
 	debug?: boolean;
+	schema?: any;
 }
 
 export interface UploadResult {

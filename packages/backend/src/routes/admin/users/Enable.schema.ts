@@ -1,6 +1,7 @@
 export default {
-	summary: 'Enable a user account',
-	tags: ['User Management', 'Admin'],
+	summary: 'Enable user',
+	description: 'Enable a user account',
+	tags: ['User Management'],
 	params: {
 		type: 'object',
 		properties: {

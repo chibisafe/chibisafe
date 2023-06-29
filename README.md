@@ -82,6 +82,7 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 ---
 
 ### Features
+- [Beautiful docs](https://chibisafe.moe/docs)
 - Chunked uploads
 - Share direct links to uploaded files
 - Albums/Folders with direct links to share

@@ -242,14 +242,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/backend@workspace:packages/backend"
   dependencies:
-    "@chibisafe/uploader-module": ^1.0.5
+    "@chibisafe/uploader-module": 1.0.6
     "@fastify/cors": ^8.2.1
     "@fastify/helmet": ^10.1.0
     "@fastify/rate-limit": ^8.0.0
     "@fastify/sensible": ^5.2.0
     "@fastify/static": ^6.10.1
     "@fastify/swagger": ^8.6.0
-    "@fastify/swagger-ui": ^1.9.0
     "@prisma/client": ^4.13.0
     "@types/adm-zip": ^0.5.0
     "@types/bcryptjs": ^2.4.2
@@ -318,21 +317,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@chibisafe/uploader-client@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "@chibisafe/uploader-client@npm:1.0.5"
-  checksum: 774bcd412f266619290d7be4a375896f30994d28831060f5e3f164e0dd53b7a0545a6449dfe70bcabc46a066efeac67bafc07d182ef09f3249d4b40eaa6648b6
+"@chibisafe/uploader-client@npm:1.0.6":
+  version: 1.0.6
+  resolution: "@chibisafe/uploader-client@npm:1.0.6"
+  checksum: 1d1aef76c8897073f13533d45a7575fbd0aeb54645604a7c29495cd535f2d43bcaf2251f029d2763ba85e6a6921635d706d81e702c7401f23cbbda00a3e3039d
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "@chibisafe/uploader-module@npm:1.0.5"
+"@chibisafe/uploader-module@npm:1.0.6":
+  version: 1.0.6
+  resolution: "@chibisafe/uploader-module@npm:1.0.6"
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
-  checksum: 1b9f4635eb2e9cb631d18c68ae8e2827db332706eadbd71c64845fad92cb1a327c532b98d1224a27dd776892e49ef185ed8d901466762792f415ae07b0c8c486
+  checksum: bbbee17869a47478c9744ab03cc2275f7bbf6d1b23abb5c9fb19207ed36ee7bf143888b80503d146939dd432f719b5e1408d981ea4ff3ebbd1ac430550e72e26
   languageName: node
   linkType: hard
 
@@ -340,7 +339,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/website@workspace:packages/frontend"
   dependencies:
-    "@chibisafe/uploader-client": ^1.0.5
+    "@chibisafe/uploader-client": 1.0.6
     "@headlessui/vue": ^1.6.5
     "@iconify-json/carbon": ^1.1.8
     "@tailwindcss/forms": ^0.5.3
@@ -578,7 +577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fastify/static@npm:^6.0.0, @fastify/static@npm:^6.10.1":
+"@fastify/static@npm:^6.10.1":
   version: 6.10.2
   resolution: "@fastify/static@npm:6.10.2"
   dependencies:
@@ -590,19 +589,6 @@ __metadata:
     p-limit: "npm:^3.1.0"
     readable-stream: "npm:^4.0.0"
   checksum: 724fe72346ff0fa280f6a281ebcf784a7ede9da3e49cc28c19c7f2a2886d25c735883f77ff99fc13425b4a1d3cb831f7b21a20a1996db221cfec2cfa25e9c3c8
-  languageName: node
-  linkType: hard
-
-"@fastify/swagger-ui@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@fastify/swagger-ui@npm:1.9.0"
-  dependencies:
-    "@fastify/static": ^6.0.0
-    fastify-plugin: ^4.0.0
-    openapi-types: ^12.0.2
-    rfdc: ^1.3.0
-    yaml: ^2.2.2
-  checksum: b753a2778f54e79480189e3406b195d3b71deb21999bbde05a22872f43dfd336d48afea8152b5c03e682fb73beb22ee9e8a311776109c87599a3beea9759a5c8
   languageName: node
   linkType: hard
 
@@ -7774,7 +7760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-types@npm:^12.0.0, openapi-types@npm:^12.0.2":
+"openapi-types@npm:^12.0.0":
   version: 12.1.3
   resolution: "openapi-types@npm:12.1.3"
   checksum: 7fa5547f87a58d2aa0eba6e91d396f42d7d31bc3ae140e61b5d60b47d2fd068b48776f42407d5a8da7280cf31195aa128c2fc285e8bb871d1105edee5647a0bb

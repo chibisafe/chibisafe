@@ -1,6 +1,7 @@
 export default {
-	summary: 'Gets a file',
-	tags: ['Files', 'Admin'],
+	summary: 'Get file',
+	description: 'Gets a file as admin',
+	tags: ['Files'],
 	params: {
 		type: 'object',
 		properties: {

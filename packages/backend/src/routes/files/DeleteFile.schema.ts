@@ -1,5 +1,6 @@
 export default {
-	summary: 'Deletes a file',
+	summary: 'Delete file',
+	description: 'Deletes a file',
 	tags: ['Files'],
 	params: {
 		type: 'object',

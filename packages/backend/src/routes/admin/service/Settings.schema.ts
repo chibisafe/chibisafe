@@ -1,6 +1,7 @@
 export default {
-	summary: 'Returns the chibisafe instance settings',
-	tags: ['Admin', 'Server'],
+	summary: 'Get settings',
+	description: 'Returns the chibisafe instance settings',
+	tags: ['Server'],
 	response: {
 		200: {
 			type: 'object',
@@ -12,11 +13,15 @@ export default {
 						type: 'object',
 						properties: {
 							name: { type: 'string', description: 'The name of the setting.' },
+							key: { type: 'string', description: 'The key of the setting.' },
 							value: {
 								type: ['string', 'number', 'boolean', 'array'],
 								description: 'The value of the setting.'
 							},
-							type: { type: 'string', description: 'The type of the setting.' }
+							type: { type: 'string', description: 'The type of the setting.' },
+							description: { type: 'string', description: 'The description of the setting.' },
+							notice: { type: 'string', description: 'The notice of the setting, if any.' },
+							example: { type: 'string', description: 'An example value of the setting.' }
 						}
 					}
 				}

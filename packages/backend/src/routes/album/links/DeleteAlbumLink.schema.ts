@@ -1,5 +1,6 @@
 export default {
-	summary: 'Deletes an album link',
+	summary: 'Delete link',
+	description: 'Deletes an album link',
 	tags: ['Albums'],
 	params: {
 		type: 'object',

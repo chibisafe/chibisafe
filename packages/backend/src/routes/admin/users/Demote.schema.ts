@@ -1,6 +1,7 @@
 export default {
-	summary: 'Demote a user from admin',
-	tags: ['User Management', 'Admin'],
+	summary: 'Demote user',
+	description: 'Demote a user from admin',
+	tags: ['User Management'],
 	params: {
 		type: 'object',
 		properties: {

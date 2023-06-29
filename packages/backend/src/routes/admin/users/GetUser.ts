@@ -1,6 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
 
 export const options = {
 	url: '/admin/user/:uuid',

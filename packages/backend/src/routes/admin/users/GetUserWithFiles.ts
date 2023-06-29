@@ -71,7 +71,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	const readyFiles = [];
 	for (const file of files) {
-		readyFiles.push(constructFilePublicLink(req, file));
+		readyFiles.push({
+			...file,
+			...constructFilePublicLink(req, file.name)
+		});
 	}
 
 	return res.send({

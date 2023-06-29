@@ -1,5 +1,6 @@
 export default {
-	summary: 'Creates a new album',
+	summary: 'Create album',
+	description: 'Creates a new album',
 	tags: ['Albums'],
 	body: {
 		type: 'object',

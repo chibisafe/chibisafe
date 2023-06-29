@@ -1,6 +1,7 @@
 export default {
-	summary: 'Purges all public files',
-	tags: ['Files', 'Admin'],
+	summary: 'Purge all files',
+	description: 'Purges all public files',
+	tags: ['Files'],
 	response: {
 		200: {
 			type: 'object',

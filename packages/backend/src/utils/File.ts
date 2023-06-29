@@ -3,6 +3,7 @@ import jetpack from 'fs-jetpack';
 import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'node:path';
+import process from 'node:process';
 import { log } from '@/main';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
@@ -31,17 +32,23 @@ export const isExtensionBlocked = (extension: string) => {
 export const getMimeFromType = (fileTypeMimeObj: Record<string, null>) => fileTypeMimeObj.mime;
 
 export const getUniqueFileIdentifier = async (): Promise<string | null> => {
+	const options = {
+		length: SETTINGS.generatedFilenameLength
+	};
+
+	if (!SETTINGS.enableMixedCaseFilenames || process.platform === 'win32') {
+		// @ts-ignore
+		options.capitalization = 'lowercase';
+	}
+
 	for (let i = 0; i < fileIdentifierMaxTries; i++) {
-		const identifier = randomstring.generate({
-			length: SETTINGS.generatedFilenameLength,
-			capitalization: 'lowercase'
-		});
+		const identifier = randomstring.generate(options);
 
 		const exists = await prisma.$queryRaw<{ id: number }[]>`
-			SELECT id from files
-			WHERE name LIKE ${`${identifier}.%`}
-			LIMIT 1;
-		`;
+		SELECT id from files
+		WHERE name LIKE ${`${identifier}.%`}
+		LIMIT 1;
+	`;
 
 		if (!exists.length) {
 			return identifier;
@@ -161,8 +168,8 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string) => {
-	const host = getHost(req);
+export const constructFilePublicLink = (req: FastifyRequest, fileName: string) => {
+	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
 		url: `${host}/${fileName}`,
 		thumb: '',
@@ -180,20 +187,6 @@ export const constructFilePublicLinkNew = (req: FastifyRequest, fileName: string
 	}
 
 	return data;
-};
-
-export const constructFilePublicLink = (req: FastifyRequest, file: File) => {
-	const extended: ExtendedFile = { ...file };
-	const host = getHost(req);
-	extended.url = `${host}/${extended.name}`;
-	const { thumb, preview } = getFileThumbnail(extended.name) ?? {};
-	if (thumb) {
-		extended.thumb = `${host}/thumbs/${thumb}`;
-		extended.thumbSquare = `${host}/thumbs/square/${thumb}`;
-		extended.preview = preview && `${host}/thumbs/preview/${preview}`;
-	}
-
-	return extended;
 };
 
 export const checkFileHashOnDB = async (user: RequestUser | User | undefined, file: FileInProgress) => {
