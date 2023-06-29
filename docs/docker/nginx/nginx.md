@@ -1,4 +1,4 @@
-Nginx
+**Nginx**
 
 To use chibisafe with Docker and a domain name of your choosing, you have two options for setting up SSL certificates: using `certbot --nginx` or `certbot certonly --webroot`. You can choose the method that best suits your needs.
 
