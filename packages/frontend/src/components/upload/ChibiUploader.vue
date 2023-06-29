@@ -19,7 +19,7 @@
 			@dragover.prevent
 		>
 			<template v-if="isUploadEnabled">
-				<IconUpload class="h-12 w-12 pointer-events-none mobile:hidden" />
+				<UploadCloudIcon class="h-12 w-12 pointer-events-none mobile:hidden" />
 				<h3 class="font-bold text-center mt-4 pointer-events-none">
 					<template v-if="isMobile">
 						<p class="text-blue-400">
@@ -55,8 +55,7 @@ import { chibiUploader } from '@chibisafe/uploader-client';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 // import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
-// @ts-ignore
-import IconUpload from '~icons/carbon/cloud-upload';
+import { UploadCloudIcon } from 'lucide-vue-next';
 import { useWindowSize } from '@vueuse/core';
 
 const userStore = useUserStore();

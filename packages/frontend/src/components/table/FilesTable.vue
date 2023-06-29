@@ -53,9 +53,9 @@
 					<template v-if="isFileImage(file) || isFileVideo(file)">
 						<img :src="file.thumb" class="h-10" />
 					</template>
-					<IconAudio v-else-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<IconPdf v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<IconDocument v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileAudioIcon v-else-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileTextIcon v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
+					<FileIcon v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
 				</td>
 				<td class="px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell underline text-center">
 					<a :href="file.url" target="_blank" rel="noopener noreferrer">{{ file.name }}</a>
@@ -86,13 +86,11 @@ import type { FileWithAdditionalData } from '~/types';
 import { computed } from 'vue';
 import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
+import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 import dayjs from 'dayjs';
 
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
-import IconDocument from '~icons/carbon/document';
-import IconPdf from '~icons/carbon/document-pdf';
-import IconAudio from '~icons/carbon/document-audio';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';

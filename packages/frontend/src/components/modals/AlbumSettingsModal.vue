@@ -311,11 +311,10 @@ import {
 	SwitchLabel
 } from '@headlessui/vue';
 import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
-import { createAlbumLink, updateAlbum, updateAlbumLink, deleteAlbumLink, deleteAlbum, purgeAlbum } from '~/use/api';
+import { createAlbumLink, updateAlbum, updateAlbumLink } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
-import Input from '~/components/forms/Input.vue';
 import ManageAlbumModal from '~/components/modals/ManageAlbumModal.vue';
-import type { Album, AlbumLink } from '~/types';
+import type { AlbumLink } from '~/types';
 
 const modalsStore = useModalStore();
 const toastStore = useToastStore();

@@ -41,7 +41,7 @@
 										@click="sidebarOpen = false"
 									>
 										<span class="sr-only">Close sidebar</span>
-										<IconClose class="h-6 w-6 text-white" aria-hidden="true" />
+										<XIcon class="h-6 w-6 text-white" aria-hidden="true" />
 									</button>
 								</div>
 							</TransitionChild>
@@ -69,6 +69,7 @@
 												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
+										<!-- @vue-ignore -->
 										<component
 											:is="item.icon"
 											class="mr-4 flex-shrink-0 h-6 w-6"
@@ -97,6 +98,7 @@
 												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 										]"
 									>
+										<!-- @vue-ignore -->
 										<component
 											:is="item.icon"
 											class="mr-3 flex-shrink-0 h-6 w-6"
@@ -161,6 +163,7 @@
 									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 							]"
 						>
+							<!-- @vue-ignore -->
 							<component
 								:is="item.icon"
 								class="mr-3 flex-shrink-0 h-6 w-6"
@@ -184,6 +187,7 @@
 										: 'text-gray-300 hover:bg-dark-100 hover:text-white'
 								]"
 							>
+								<!-- @vue-ignore -->
 								<component
 									:is="item.icon"
 									class="mr-3 flex-shrink-0 h-6 w-6"
@@ -222,7 +226,7 @@
 					@click="sidebarOpen = true"
 				>
 					<span class="sr-only">Open sidebar</span>
-					<IconMenu class="h-6 w-6" aria-hidden="true" />
+					<MenuIcon class="h-6 w-6" aria-hidden="true" />
 				</button>
 			</div>
 			<main class="flex-1">
@@ -240,16 +244,19 @@ import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { useUserStore, useSettingsStore } from '~/store';
 import { saveAs } from 'file-saver';
-
-// @ts-ignore
-import IconHome from '~icons/carbon/home';
-import IconUploads from '~icons/carbon/cloud-upload';
-import IconAlbums from '~icons/carbon/folders';
-import IconTags from '~icons/carbon/tag-group';
-import IconAccount from '~icons/carbon/user-identification';
-import IconMenu from '~icons/carbon/menu';
-import IconClose from '~icons/carbon/close';
-import IconInvite from '~icons/carbon/user-follow';
+import {
+	HomeIcon,
+	FileUpIcon,
+	LibraryIcon,
+	User2Icon,
+	MenuIcon,
+	XIcon,
+	UserPlusIcon,
+	FilesIcon,
+	UsersIcon,
+	Settings2Icon,
+	BarChart3Icon
+} from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
@@ -289,11 +296,11 @@ const getShareXConfig = async () => {
 };
 
 const navigationItems = [
-	{ type: 'main', name: 'Home', href: '/', icon: IconHome, current: false },
-	{ type: 'main', name: 'Uploads', href: '/dashboard/uploads', icon: IconUploads, current: false },
-	{ type: 'main', name: 'Albums', href: '/dashboard/albums', icon: IconAlbums, current: false },
-	// { type: 'main', name: 'Tags', href: '/dashboard/tags', icon: IconTags, current: false },
-	{ type: 'main', name: 'My account', href: '/dashboard/account', icon: IconAccount, current: false },
+	{ type: 'main', name: 'Home', href: '/', icon: HomeIcon, current: false },
+	{ type: 'main', name: 'Uploads', href: '/dashboard/uploads', icon: FileUpIcon, current: false },
+	{ type: 'main', name: 'Albums', href: '/dashboard/albums', icon: LibraryIcon, current: false },
+	// { type: 'main', name: 'Tags', href: '/dashboard/tags', icon: TagsIcon, current: false },
+	{ type: 'main', name: 'My account', href: '/dashboard/account', icon: User2Icon, current: false },
 
 	{ type: 'secondary', name: 'GitHub', href: 'https://github.com/chibisafe/chibisafe' },
 	{ type: 'secondary', name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
@@ -303,11 +310,11 @@ const navigationItems = [
 	{ type: 'secondary', name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
 	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
 
-	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: IconTags, current: false },
-	{ type: 'admin', name: 'Users', href: '/dashboard/admin/users', icon: IconHome, current: false },
-	{ type: 'admin', name: 'Invites', href: '/dashboard/admin/invites', icon: IconInvite, current: false },
-	{ type: 'admin', name: 'Settings', href: '/dashboard/admin/settings', icon: IconUploads, current: false },
-	{ type: 'admin', name: 'Statistics', href: '/dashboard/admin/statistics', icon: IconAlbums, current: false }
+	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: FilesIcon, current: false },
+	{ type: 'admin', name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon, current: false },
+	{ type: 'admin', name: 'Invites', href: '/dashboard/admin/invites', icon: UserPlusIcon, current: false },
+	{ type: 'admin', name: 'Settings', href: '/dashboard/admin/settings', icon: Settings2Icon, current: false },
+	{ type: 'admin', name: 'Statistics', href: '/dashboard/admin/statistics', icon: BarChart3Icon, current: false }
 ];
 
 // eslint-disable-next-line unicorn/no-array-for-each
