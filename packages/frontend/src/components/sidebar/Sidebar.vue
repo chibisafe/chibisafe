@@ -231,6 +231,19 @@
 			</div>
 			<main class="flex-1">
 				<div id="dashboard-container" class="overflow-auto h-screen">
+					<div
+						v-if="
+							userStore.user?.username === 'admin' &&
+							userStore.user.isAdmin &&
+							!userStore.user.passwordEditedAt
+						"
+						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
+					>
+						It seems you are using the admin account but haven't changed the default password yet. Go to the
+						dashboard and change it.
+					</div>
+
+					<div></div>
 					<slot />
 				</div>
 			</main>
