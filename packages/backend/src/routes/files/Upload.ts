@@ -10,7 +10,6 @@ import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
 	constructFilePublicLink,
-	constructFilePublicLinkNew,
 	hashFile,
 	checkFileHashOnDB,
 	deleteTmpFile
@@ -99,7 +98,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			void generateThumbnails(savedFile.file.name);
 		}
 
-		const linkData = constructFilePublicLinkNew(req, uploadedFile.name);
+		const linkData = constructFilePublicLink(req, uploadedFile.name);
 		// Construct public link
 		const fileWithLink = {
 			...uploadedFile,

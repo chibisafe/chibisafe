@@ -70,7 +70,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const files = [] as File[];
 	for (const file of album.files) {
 		const modifiedFile = file as File;
-		files.push(constructFilePublicLink(req, modifiedFile));
+		files.push({
+			...modifiedFile,
+			...constructFilePublicLink(req, modifiedFile.name)
+		});
 	}
 
 	await prisma.links.update({

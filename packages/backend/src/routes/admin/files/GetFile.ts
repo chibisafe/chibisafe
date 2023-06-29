@@ -57,7 +57,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	}
 
-	const extendedFile = constructFilePublicLink(req, file);
+	const extendedFile = {
+		...file,
+		...constructFilePublicLink(req, file.name)
+	};
 
 	return res.send({
 		message: 'Successfully retrieved file',

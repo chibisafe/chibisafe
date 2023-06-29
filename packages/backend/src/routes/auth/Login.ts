@@ -9,7 +9,7 @@ export const options = {
 	method: 'post',
 	options: {
 		rateLimit: {
-			max: 3, // Three rquests
+			max: 10, // Ten rquests
 			timeWindow: 1000 * 60 // Per minute
 		}
 	}

@@ -75,7 +75,6 @@ model links {
 
 model settings {
 	id Int @id @default(autoincrement())
-	domain String
 	rateLimitWindow Int
 	rateLimitMax Int
 	secret String
@@ -96,6 +95,9 @@ model settings {
 	metaDescription String
 	metaKeywords String
 	metaTwitterHandle String
+	metaDomain String @default("")
+	serveUploadsFrom String @default("")
+	enableMixedCaseFilenames Boolean @default(true)
 }
 
 model statistics {

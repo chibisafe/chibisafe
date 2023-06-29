@@ -56,7 +56,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		delete newObject._count;
 
 		newObject.cover = album.files[0]
-			? constructFilePublicLink(req, album.files[0] as unknown as any).thumbSquare
+			? constructFilePublicLink(req, album.files[0].name as unknown as any).thumbSquare
 			: '';
 		fetchedAlbums.push(newObject);
 	}
