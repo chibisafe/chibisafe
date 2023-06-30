@@ -23,7 +23,7 @@ export default defineConfig({
 		}
 	},
 	define: {
-		PACKAGE_VERSION: JSON.stringify(JSON.parse(readFileSync('package.json', 'utf8')).version)
+		PACKAGE_VERSION: JSON.stringify(JSON.parse(readFileSync('../../package.json', 'utf8')).version)
 	},
 	plugins: [
 		vue({

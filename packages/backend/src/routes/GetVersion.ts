@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import process from 'node:process';
+import { getChibisafeVersion } from '@/utils/Util';
 
 export const options = {
 	url: '/version',
@@ -8,6 +8,6 @@ export const options = {
 
 export const run = (req: FastifyRequest, res: FastifyReply) => {
 	return res.send({
-		version: process.env.npm_package_version
+		version: getChibisafeVersion()
 	});
 };
