@@ -1,4 +1,4 @@
-import process from 'node:process';
+import { getChibisafeVersion } from './Util';
 
 const readme = `
 ![](/meta.jpg)
@@ -20,7 +20,7 @@ export default {
 		info: {
 			title: 'Chibisafe API',
 			description: readme,
-			version: (process.env.npm_package_version as string) ?? 'unknown'
+			version: getChibisafeVersion()
 		},
 		tags: [
 			{

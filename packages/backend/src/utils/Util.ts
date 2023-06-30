@@ -5,8 +5,14 @@ import { log } from '@/main';
 import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
+const basePackageJson = path.join(__dirname, '..', '..', '..', '..', 'package.json');
+const VERSION = JSON.parse(readFileSync(basePackageJson, 'utf8')).version;
 
 export const getHost = (req: FastifyRequest) => `${req.protocol}://${req.headers.host}`;
+export const getChibisafeVersion = () => VERSION;
 
 export const getUniqueAlbumIdentifier = () => {
 	const retry: any = async (i = 0) => {
