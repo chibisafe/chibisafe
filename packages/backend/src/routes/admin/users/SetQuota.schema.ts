@@ -1,13 +1,13 @@
 export default {
-	summary: 'Promote user',
-	description: 'Promote a user to admin',
+	summary: 'Set storage quota',
+	description: 'Set the storage quota for a given user',
 	tags: ['User Management'],
 	params: {
 		type: 'object',
 		properties: {
 			uuid: {
 				type: 'string',
-				description: 'The uuid of the user to promote.'
+				description: 'The uuid of the user.'
 			}
 		},
 		required: ['uuid']
