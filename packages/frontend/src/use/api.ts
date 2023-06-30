@@ -470,6 +470,16 @@ export const setAdminSettings = async (settings: any) => {
 	}
 };
 
+export const setUserStorageQuota = async (uuid: string, space: number) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/quota`, { space });
+		debug('setUserStorageQuota', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });

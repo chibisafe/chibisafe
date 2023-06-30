@@ -36,6 +36,12 @@
 					scope="col"
 					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
 				>
+					Space limit
+				</th>
+				<th
+					scope="col"
+					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-dark-90 dark:text-light-100 desktop:table-cell"
+				>
 					Created
 				</th>
 				<th
@@ -65,7 +71,10 @@
 					{{ user.isAdmin ? 'Admin' : 'User' }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
-					{{ formatBytes(Number(user.size)) }}
+					{{ formatBytes(user.storageQuota.used) }}
+				</td>
+				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
+					{{ user.storageQuota.quota ? formatBytes(user.storageQuota.quota) : 'Unlimited' }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-dark-90 dark:text-light-100 desktop:table-cell">
 					{{ dayjs(user.createdAt).format('MMMM D, YYYY h:mm A') }}
@@ -79,6 +88,7 @@
 						</button>
 					</template>
 					<template v-else>
+						<button type="button" class="ml-4" @click="showStorageQuotaModal(user)">Set quota</button>
 						<button
 							v-if="user.enabled"
 							type="button"
@@ -109,15 +119,23 @@
 			</tr>
 		</tbody>
 		<ManageUserModal />
+		<GenericInputModal
+			title="Set storage quota"
+			message="Enter a value in bytes to limit the amount of storage used by this user"
+			action-text="Save"
+			:callback="doStorageQuotaAction"
+		/>
 	</table>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { UserWithCount } from '@/types';
 import { formatBytes } from '~/use/file';
 import { useModalStore, useUserStore } from '~/store';
 import ManageUserModal from '~/components/modals/ManageUserModal.vue';
+import GenericInputModal from '~/components/modals/GenericInputModal.vue';
+import { setUserStorageQuota } from '~/use/api';
 import dayjs from 'dayjs';
 
 const props = defineProps<{
@@ -128,6 +146,21 @@ const modalsStore = useModalStore();
 const userStore = useUserStore();
 
 const ownUser = computed(() => userStore.user);
+const userToDoActionsWith = ref(null as UserWithCount | null);
+
+const showStorageQuotaModal = (user: UserWithCount) => {
+	userToDoActionsWith.value = user;
+	modalsStore.genericInput.show = true;
+};
+
+const doStorageQuotaAction = async (value: string) => {
+	if (!userToDoActionsWith.value) return;
+
+	const quota = Number.parseInt(value, 10);
+	if (Number.isNaN(quota)) return;
+
+	await setUserStorageQuota(userToDoActionsWith.value.uuid, quota);
+};
 
 const showManageUserModal = (user: UserWithCount | null, action: string) => {
 	if (!user) return;

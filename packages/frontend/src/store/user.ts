@@ -35,6 +35,10 @@ export const useUserStore = defineStore('user', {
 				...this.user,
 				// Update the rest of the user object
 				...response.user,
+				// Quota information
+				storageQuota: {
+					...response.storageQuota
+				},
 				// Set loggedIn to true
 				loggedIn: true
 			};

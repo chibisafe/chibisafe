@@ -17,11 +17,7 @@ export default {
 							enabled: { $ref: 'UserAsAdmin#/properties/enabled' },
 							isAdmin: { $ref: 'UserAsAdmin#/properties/isAdmin' },
 							createdAt: { $ref: 'UserAsAdmin#/properties/createdAt' },
-							size: {
-								type: 'number',
-								description: 'The total size of all files the user has uploaded.',
-								example: 0
-							},
+							storageQuota: { $ref: 'StorageQuota' },
 							_count: {
 								type: 'object',
 								properties: {

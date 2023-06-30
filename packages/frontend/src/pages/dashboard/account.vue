@@ -40,6 +40,14 @@
 				>
 				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" blur readOnly />
 				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
+
+				<template v-if="userStore.user.storageQuota && showQuotaMessage">
+					<span class="mt-12 text-dark-90 dark:text-light-100 block"> Your storage quota </span>
+					<span class="text-dark-90 dark:text-light-100 block">
+						Using {{ formatBytes(userStore.user.storageQuota.used) }} /
+						{{ formatBytes(userStore.user.storageQuota.quota) }} ({{ getUsedStoragePercentage }}%)
+					</span>
+				</template>
 			</div>
 		</div>
 	</Sidebar>
@@ -50,6 +58,7 @@ import { ref, computed } from 'vue';
 import { useUserStore } from '~/store/user';
 import { useToastStore } from '~/store/toast';
 import { changePassword, changeApiKey } from '~/use/api';
+import { formatBytes } from '~/use/file';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
@@ -65,6 +74,12 @@ const newPassword = ref('');
 const reNewPassword = ref('');
 const error = ref('');
 const apiKey = computed(() => userStore.user.apiKey);
+const getUsedStoragePercentage = computed(() => {
+	return ((userStore.user.storageQuota.used / userStore.user.storageQuota.quota) * 100).toFixed(2);
+});
+const showQuotaMessage = computed(() => {
+	return userStore.user.storageQuota.quota !== 0;
+});
 
 const doChangePassword = async () => {
 	error.value = '';

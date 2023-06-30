@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     FilesTable: typeof import('./src/components/table/FilesTable.vue')['default']
     FilesWrapper: typeof import('./src/components/wrappers/FilesWrapper.vue')['default']
     GenericConfirmationModal: typeof import('./src/components/modals/GenericConfirmationModal.vue')['default']
+    GenericInputModal: typeof import('./src/components/modals/GenericInputModal.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
     Input: typeof import('./src/components/forms/Input.vue')['default']
     InputWithOverlappingLabel: typeof import('./src/components/forms/InputWithOverlappingLabel.vue')['default']

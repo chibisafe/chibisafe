@@ -36,6 +36,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		parsedSettings.maxSize = String(parsedSettings.maxSize);
 		// @ts-expect-error blockedExtensions is a string on the db, but array here.
 		parsedSettings.blockedExtensions = JSON.stringify(parsedSettings.blockedExtensions);
+		// @ts-expect-error maxSize is a string on the db, but int here.
+		parsedSettings.usersStorageQuota = String(parsedSettings.usersStorageQuota);
 
 		await prisma.settings.update({
 			where: {
