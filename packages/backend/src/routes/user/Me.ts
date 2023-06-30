@@ -1,5 +1,6 @@
 import type { FastifyReply } from 'fastify';
 import type { RequestWithUser } from '@/structures/interfaces';
+import { getUsedQuota } from '@/utils/User';
 
 export const options = {
 	url: '/user/me',
@@ -7,9 +8,10 @@ export const options = {
 	middlewares: ['apiKey', 'auth']
 };
 
-export const run = (req: RequestWithUser, res: FastifyReply) => {
+export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	return res.send({
 		message: 'Successfully retrieved user',
-		user: req.user
+		user: req.user,
+		storageQuota: await getUsedQuota(req.user.id)
 	});
 };

@@ -56,6 +56,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaKeywords = settingsTable.metaKeywords;
 		SETTINGS.metaTwitterHandle = settingsTable.metaTwitterHandle;
 		SETTINGS.metaDomain = settingsTable.metaDomain;
+		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		return;
 	}
 
@@ -84,7 +85,8 @@ export const loadSettings = async (force = false) => {
 		metaDomain: 'https://your-domain.com',
 		metaDescription: 'description for please-change-me.com 🚀',
 		metaKeywords: 'comma, separated, keywords, that, describe, this, website',
-		metaTwitterHandle: '@your-twitter-handle'
+		metaTwitterHandle: '@your-twitter-handle',
+		usersStorageQuota: 0
 	};
 
 	await prisma.settings.create({
@@ -92,7 +94,8 @@ export const loadSettings = async (force = false) => {
 			...data,
 			// This is due to prisma not supporting int64
 			maxSize: String(data.maxSize),
-			chunkSize: String(data.chunkSize)
+			chunkSize: String(data.chunkSize),
+			usersStorageQuota: String(data.usersStorageQuota)
 		}
 	});
 
@@ -247,5 +250,11 @@ const SETTINGS_META = {
 		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
 		example: '@chibisafe'
+	},
+	usersStorageQuota: {
+		type: 'number',
+		description: 'The storage quota for each user in bytes. 0 for unlimited.',
+		name: 'Users Storage Quota',
+		notice: "You can override this setting by changing it on a user's profile."
 	}
 };

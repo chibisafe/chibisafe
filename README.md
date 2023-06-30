@@ -14,6 +14,8 @@ It supports both public and private mode. Public mode let's anyone sign up and s
 
 The service also comes with a control panel where you can edit almost every configuration of the instance directly from the UI without having to touch environment or configuration files manually. Control the name, the ratelimit, max file size, accepted extensions, meta descriptions, etc directly from an intuitive panel.
 
+_If you fork/deploy your own instance it would mean a lot if you were to keep either the GitHub logo to our repo or a link to it 💖_
+
 ---
 
 <details>

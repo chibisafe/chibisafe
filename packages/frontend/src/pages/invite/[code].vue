@@ -22,13 +22,11 @@
 						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
 							<form class="space-y-6" action="#" method="POST">
 								<div>
-									<label
-										for="email"
-										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+									<label class="block text-sm font-medium text-gray-700 dark:text-light-100"
 										>Username</label
 									>
 									<div class="mt-1">
-										<Input v-model="username" type="email" autocomplete="username" />
+										<Input v-model="username" type="text" />
 									</div>
 								</div>
 
@@ -39,7 +37,7 @@
 										>Password</label
 									>
 									<div class="mt-1">
-										<Input v-model="password" type="password" autocomplete="current-password" />
+										<Input v-model="password" type="password" />
 									</div>
 								</div>
 
@@ -50,7 +48,7 @@
 										>Re-type password</label
 									>
 									<div class="mt-1">
-										<Input v-model="repassword" type="password" autocomplete="current-password" />
+										<Input v-model="repassword" type="password" />
 									</div>
 								</div>
 

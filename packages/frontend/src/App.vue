@@ -4,14 +4,6 @@
 			{{ content ? `${content} | ${settingsStore.serviceName}` : settingsStore.serviceName }}
 		</template>
 	</metainfo>
-
-	<div
-		v-if="userStore.user?.username === 'admin' && userStore.user.isAdmin && !userStore.user.passwordEditedAt"
-		class="w-full p-6 pl-64 flex justify-center items-center text-light-100 bg-red-900"
-	>
-		It seems you are using the admin account but haven't changed the default password yet. Go to the dashboard and
-		change it.
-	</div>
 	<div
 		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
 		:style="`background-image: url(${settingsStore.backgroundImageURL});`"
