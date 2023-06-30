@@ -22,6 +22,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	return res.send({
-		message: "Successfully change user's storage quota"
+		message: "Successfully changed user's storage quota"
 	});
 };
