@@ -22,13 +22,11 @@
 						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow desktop:rounded-lg desktop:px-10">
 							<form class="space-y-6" action="#" method="POST">
 								<div>
-									<label
-										for="email"
-										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+									<label class="block text-sm font-medium text-gray-700 dark:text-light-100"
 										>Username</label
 									>
 									<div class="mt-1">
-										<Input v-model="username" type="email" autocomplete="username" />
+										<Input v-model="username" type="text" autocomplete="username" />
 									</div>
 								</div>
 

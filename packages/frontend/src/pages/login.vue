@@ -26,7 +26,7 @@
 										>Username</label
 									>
 									<div class="mt-1">
-										<Input v-model="username" type="email" autocomplete="username" />
+										<Input v-model="username" type="text" autocomplete="username" />
 									</div>
 								</div>
 
