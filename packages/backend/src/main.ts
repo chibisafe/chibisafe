@@ -50,13 +50,6 @@ const start = async () => {
 	// Create the admin user if it doesn't exist
 	await createAdminUserIfNotExists();
 
-	// Add global rate limit
-	await server.register(import('@fastify/rate-limit'), {
-		global: true,
-		max: SETTINGS.rateLimitMax,
-		timeWindow: SETTINGS.rateLimitWindow
-	});
-
 	// Register the fastify-sensible plugin
 	await server.register(import('@fastify/sensible'));
 
@@ -124,9 +117,12 @@ const start = async () => {
 	server.log.debug('Loading routes...');
 	server.log.debug('');
 
-	// Scan and load routes into fastify
-	// @ts-expect-error it's fine
-	await Routes.load(server);
+	// Creating an scoped server instance to pass to the routes in
+	// order to limit the rate-limit plugin to only the routes.
+	await server.register(async (instance, opts) => {
+		// Scan and load routes into fastify
+		await Routes.load(instance);
+	});
 
 	if (process.env.NODE_ENV === 'production') {
 		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
