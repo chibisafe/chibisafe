@@ -11,6 +11,13 @@ const defaultMiddlewares = ['log', 'ban'];
 
 export default {
 	load: async (server: FastifyInstance) => {
+		// Add global rate limit
+		await server.register(import('@fastify/rate-limit'), {
+			global: true,
+			max: SETTINGS.rateLimitMax,
+			timeWindow: SETTINGS.rateLimitWindow
+		});
+
 		// Different extension for build and dev modes
 		const extension = `${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
 
