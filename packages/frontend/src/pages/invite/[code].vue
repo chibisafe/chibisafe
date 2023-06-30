@@ -28,7 +28,7 @@
 										>Username</label
 									>
 									<div class="mt-1">
-										<Input v-model="username" type="email" autocomplete="username" />
+										<Input v-model="username" type="text" />
 									</div>
 								</div>
 
@@ -39,7 +39,7 @@
 										>Password</label
 									>
 									<div class="mt-1">
-										<Input v-model="password" type="password" autocomplete="current-password" />
+										<Input v-model="password" type="password" />
 									</div>
 								</div>
 
@@ -50,7 +50,7 @@
 										>Re-type password</label
 									>
 									<div class="mt-1">
-										<Input v-model="repassword" type="password" autocomplete="current-password" />
+										<Input v-model="repassword" type="password" />
 									</div>
 								</div>
 
