@@ -31,6 +31,7 @@ export const loadSettings = async (force = false) => {
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
+		SETTINGS.updateCheckCron = '0 */3 * * *'; // Every 3 hours
 
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
@@ -50,6 +51,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.publicMode = settingsTable.publicMode;
 		SETTINGS.userAccounts = settingsTable.userAccounts;
 		SETTINGS.disableStatisticsCron = settingsTable.disableStatisticsCron;
+		SETTINGS.disableUpdateCheck = settingsTable.disableUpdateCheck;
 		SETTINGS.backgroundImageURL = settingsTable.backgroundImageURL;
 		SETTINGS.logoURL = settingsTable.logoURL;
 		SETTINGS.metaDescription = settingsTable.metaDescription;
@@ -80,6 +82,7 @@ export const loadSettings = async (force = false) => {
 		publicMode: false,
 		userAccounts: false,
 		disableStatisticsCron: false,
+		disableUpdateCheck: false,
 		backgroundImageURL: '',
 		logoURL: '',
 		metaDomain: 'https://your-domain.com',
@@ -216,6 +219,11 @@ const SETTINGS_META = {
 		type: 'boolean',
 		description: 'Whether or not to disable the statistics cron.',
 		name: 'Disable Statistics Cron'
+	},
+	disableUpdateCheck: {
+		type: 'boolean',
+		description: 'Whether or not to disable the update check.',
+		name: 'Disable Update Check'
 	},
 	backgroundImageURL: {
 		type: 'string',

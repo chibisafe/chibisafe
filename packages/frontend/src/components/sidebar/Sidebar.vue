@@ -214,6 +214,21 @@
 								<span class="truncate">{{ item.name }}</span>
 							</a>
 						</div>
+						<div
+							v-if="isAdmin && updateCheck.updateAvailable"
+							class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
+						>
+							<div>
+								New version available <span>v{{ updateCheck.latestVersion }}</span>
+							</div>
+							<a
+								:href="updateCheck.latestVersionUrl"
+								rel="noopener noreferrer"
+								target="_blank"
+								class="text-blue-400 hover:text-blue-500"
+								>See what's new</a
+							>
+						</div>
 					</nav>
 				</div>
 			</div>
@@ -258,10 +273,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { useUserStore, useSettingsStore } from '~/store';
+import { checkForUpdate } from '~/use/api';
 import { saveAs } from 'file-saver';
 import {
 	HomeIcon,
@@ -284,6 +300,25 @@ const settingsStore = useSettingsStore();
 
 const isAdmin = computed(() => userStore.user.isAdmin);
 const apiKey = computed(() => userStore.user.apiKey);
+
+const updateCheck = ref({}) as any;
+
+// @ts-ignore
+if (!import.meta.env.DEV) {
+	onMounted(() => {
+		if (isAdmin.value) void doUpdateCheck();
+	});
+
+	watch(isAdmin, async () => {
+		if (isAdmin.value) void doUpdateCheck();
+	});
+}
+
+const doUpdateCheck = async () => {
+	const response = await checkForUpdate();
+	if (!response) return;
+	updateCheck.value = response;
+};
 
 const logout = async () => {
 	await router.push('/');
