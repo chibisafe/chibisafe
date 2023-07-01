@@ -8,7 +8,8 @@ export const updateCheck = {
 	active: false,
 	updateAvailable: false,
 	latestVersion: '',
-	latestVersionUrl: ''
+	latestVersionUrl: '',
+	releaseNotes: [] as string[]
 };
 
 let updateCheckJob: schedule.Job;
@@ -57,6 +58,15 @@ export const checkForUpdates = async () => {
 	}
 
 	updateCheck.updateAvailable = true;
+
+	for (const release of releases) {
+		const version = release.tag_name.replace(/^v/, '');
+		if (version === currentVersion) {
+			break;
+		}
+
+		updateCheck.releaseNotes.push(`Version ${version}: ${release.body}`);
+	}
 
 	log.info(`Update available: ${currentVersion} -> ${latestRelease}`);
 };
