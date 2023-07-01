@@ -61,7 +61,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			await startUpdateCheckSchedule();
 			// Option is disabled, but the schedule is running
 		} else if (parsedSettings.disableUpdateCheck && updateCheck.active) {
-			await stopUpdateCheckSchedule();
+			stopUpdateCheckSchedule();
 		}
 	} catch (error) {
 		req.log.error(error);
