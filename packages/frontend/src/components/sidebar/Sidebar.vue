@@ -215,7 +215,7 @@
 							</a>
 						</div>
 						<div
-							v-if="isAdmin && updateCheck.updateAvailable"
+							v-if="isAdmin && updateCheck?.updateAvailable"
 							class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
 						>
 							<div>
@@ -292,6 +292,7 @@ import {
 	Settings2Icon,
 	BarChart3Icon
 } from 'lucide-vue-next';
+import type { UpdateCheck } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -301,7 +302,7 @@ const settingsStore = useSettingsStore();
 const isAdmin = computed(() => userStore.user.isAdmin);
 const apiKey = computed(() => userStore.user.apiKey);
 
-const updateCheck = ref({}) as any;
+const updateCheck = ref<UpdateCheck>();
 
 // @ts-ignore
 if (!import.meta.env.DEV) {
