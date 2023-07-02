@@ -12,6 +12,7 @@ import Routes from './structures/routes';
 import Requirements from './utils/Requirements';
 
 import { jumpstartStatistics } from './utils/StatsGenerator';
+import { startUpdateCheckSchedule } from './utils/UpdateCheck';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
 import Docs from './utils/Docs';
@@ -211,6 +212,10 @@ const start = async () => {
 		console.log(`Chibisafe is listening on ${SETTINGS.host}:${SETTINGS.port}`);
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
+
+	if (!SETTINGS.disableUpdateCheck) {
+		await startUpdateCheckSchedule();
+	}
 };
 
 export const getHtmlBuffer = async () => {

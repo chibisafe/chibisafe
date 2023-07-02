@@ -5,6 +5,7 @@ import prisma from '@/structures/database';
 import type { SETTINGS } from '@/structures/settings';
 import { loadSettings } from '@/structures/settings';
 import { getHtmlBuffer } from '@/main';
+import { updateCheck, startUpdateCheckSchedule, stopUpdateCheckSchedule } from '@/utils/UpdateCheck';
 
 export const options = {
 	url: '/admin/service/settings',
@@ -54,6 +55,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		await loadSettings(true);
 		// If running in production, we need to update the html buffer
 		if (process.env.NODE_ENV === 'production') await getHtmlBuffer();
+
+		// Option is enabled, but the schedule is not running
+		if (!parsedSettings.disableUpdateCheck && !updateCheck.active) {
+			await startUpdateCheckSchedule();
+			// Option is disabled, but the schedule is running
+		} else if (parsedSettings.disableUpdateCheck && updateCheck.active) {
+			stopUpdateCheckSchedule();
+		}
 	} catch (error) {
 		req.log.error(error);
 		res.internalServerError(error as string);
