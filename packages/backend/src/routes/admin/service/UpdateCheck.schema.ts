@@ -25,8 +25,29 @@ export default {
 					type: 'array',
 					description: 'The release notes for the latest version of Chibisafe',
 					items: {
-						type: 'string',
-						example: 'New version: 5.1.4 -- Release notes'
+						type: 'object',
+						properties: {
+							version: {
+								type: 'string',
+								description: 'The version of Chibisafe',
+								example: '5.1.4'
+							},
+							url: {
+								type: 'string',
+								description: 'The URL to the release',
+								example: 'https://github.com/chibisafe/chibisafe/releases/tag/v5.1.4'
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the release',
+								example: 'Bug fixes'
+							},
+							body: {
+								type: 'string',
+								description: 'The release notes',
+								example: 'Fixed a bug'
+							}
+						}
 					}
 				}
 			}

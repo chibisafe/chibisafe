@@ -29,6 +29,7 @@ declare module '@vue/runtime-core' {
     MasonryPublic: typeof import('./src/components/masonry/MasonryPublic.vue')['default']
     NewAlbumModal: typeof import('./src/components/modals/NewAlbumModal.vue')['default']
     Pagination: typeof import('./src/components/pagination/Pagination.vue')['default']
+    ReleaseNotesModal: typeof import('./src/components/modals/ReleaseNotesModal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchModal: typeof import('./src/components/modals/SearchModal.vue')['default']

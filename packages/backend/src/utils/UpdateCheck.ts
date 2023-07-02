@@ -4,12 +4,19 @@ import { log } from '@/main';
 import { SETTINGS } from '@/structures/settings';
 import { getChibisafeVersion } from '@/utils/Util';
 
+interface ReleaseNote {
+	version: string;
+	url: string;
+	name: string;
+	body: string;
+}
+
 export const updateCheck = {
 	active: false,
 	updateAvailable: false,
 	latestVersion: '',
 	latestVersionUrl: '',
-	releaseNotes: [] as string[]
+	releaseNotes: [] as ReleaseNote[]
 };
 
 let updateCheckJob: schedule.Job;
@@ -30,12 +37,20 @@ const versionCompare = (a: string, b: string) => {
 	return true;
 };
 
+const clearUpdate = () => {
+	updateCheck.updateAvailable = false;
+	updateCheck.latestVersion = '';
+	updateCheck.latestVersionUrl = '';
+	updateCheck.releaseNotes = [];
+};
+
 export const checkForUpdates = async () => {
 	const res = await fetch('https://api.github.com/repos/chibisafe/chibisafe/releases');
 
 	if (!res.ok || res.status !== 200) {
 		log.error('Failed to check for updates');
 		log.error(await res.json());
+		clearUpdate();
 		return;
 	}
 
@@ -53,6 +68,7 @@ export const checkForUpdates = async () => {
 
 	if (!versionCompare(latestRelease, currentVersion)) {
 		updateCheck.updateAvailable = false;
+		updateCheck.releaseNotes = [];
 		log.info('No updates available');
 		return;
 	}
@@ -61,11 +77,15 @@ export const checkForUpdates = async () => {
 
 	for (const release of releases) {
 		const version = release.tag_name.replace(/^v/, '');
-		if (version === currentVersion) {
-			break;
-		}
 
-		updateCheck.releaseNotes.push(`Version ${version}: ${release.body}`);
+		updateCheck.releaseNotes.push({
+			version,
+			url: release.html_url,
+			name: release.name,
+			body: release.body
+		});
+
+		if (version === currentVersion) break;
 	}
 
 	log.info(`Update available: ${currentVersion} -> ${latestRelease}`);
@@ -90,9 +110,6 @@ export const startUpdateCheckSchedule = async () => {
 export const stopUpdateCheckSchedule = () => {
 	log.debug('Stopping update check schedule');
 	updateCheckJob?.cancel();
-
 	updateCheck.active = false;
-	updateCheck.updateAvailable = false;
-	updateCheck.latestVersion = '';
-	updateCheck.latestVersionUrl = '';
+	clearUpdate();
 };

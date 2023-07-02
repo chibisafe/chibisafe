@@ -14,6 +14,9 @@ export const useModalStore = defineStore('modals', {
 		search: {
 			show: false
 		},
+		releaseNotes: {
+			show: false
+		},
 		fileInformation: {
 			show: false,
 			file: {} as FileWithAdditionalData | null,

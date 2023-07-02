@@ -219,15 +219,18 @@
 							class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
 						>
 							<div>
-								New version available <span>v{{ updateCheck.latestVersion }}</span>
+								New version available
+								<a
+									:href="updateCheck.latestVersionUrl"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-blue-400 hover:text-blue-500 cursor-pointer"
+									>v{{ updateCheck.latestVersion }}</a
+								>
 							</div>
-							<a
-								:href="updateCheck.latestVersionUrl"
-								rel="noopener noreferrer"
-								target="_blank"
-								class="text-blue-400 hover:text-blue-500"
-								>See what's new</a
-							>
+							<div class="text-blue-400 hover:text-blue-500 cursor-pointer" @click="showUpdateModal">
+								See what's new
+							</div>
 						</div>
 					</nav>
 				</div>
@@ -269,6 +272,8 @@
 				</div>
 			</main>
 		</div>
+
+		<ReleaseNotesModal :data="updateCheck?.releaseNotes || []" />
 	</div>
 </template>
 
@@ -276,7 +281,8 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import { useUserStore, useSettingsStore } from '~/store';
+import ReleaseNotesModal from '~/components/modals/ReleaseNotesModal.vue';
+import { useUserStore, useSettingsStore, useModalStore } from '~/store';
 import { checkForUpdate } from '~/use/api';
 import { saveAs } from 'file-saver';
 import {
@@ -298,6 +304,7 @@ const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
+const modalsStore = useModalStore();
 
 const isAdmin = computed(() => userStore.user.isAdmin);
 const apiKey = computed(() => userStore.user.apiKey);
@@ -319,6 +326,10 @@ const doUpdateCheck = async () => {
 	const response = await checkForUpdate();
 	if (!response) return;
 	updateCheck.value = response;
+};
+
+const showUpdateModal = () => {
+	modalsStore.releaseNotes.show = true;
 };
 
 const logout = async () => {

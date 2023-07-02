@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@chibisafe/uploader-client": "1.0.9",
 		"@headlessui/vue": "^1.6.5",
+		"@types/marked": "^5.0.0",
 		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",
 		"cross-env": "^7.0.3",
@@ -34,11 +35,13 @@
 		"dotenv": "^16.0.3",
 		"file-saver": "^2.0.5",
 		"lucide-vue-next": "^0.256.0",
+		"marked": "^5.1.0",
 		"media-chrome": "^0.16.0",
 		"pinia": "^2.0.22",
 		"vue": "^3.2.40",
 		"vue-meta": "^3.0.0-alpha.10",
-		"vue-router": "^4.1.0"
+		"vue-router": "^4.1.0",
+		"xss": "^1.0.14"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "^0.5.3",
