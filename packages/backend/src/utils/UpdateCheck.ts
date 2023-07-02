@@ -21,20 +21,19 @@ export const updateCheck = {
 
 let updateCheckJob: schedule.Job;
 
-// a > b = true
 const versionCompare = (a: string, b: string) => {
 	const pa = a.split('.');
 	const pb = b.split('.');
 	for (let i = 0; i < 3; i++) {
 		const na = Number(pa[i]);
 		const nb = Number(pb[i]);
-		if (na > nb) return true;
-		if (nb > na) return false;
-		if (!Number.isNaN(na) && Number.isNaN(nb)) return true;
-		if (Number.isNaN(na) && !Number.isNaN(nb)) return false;
+		if (na > nb) return 1;
+		if (nb > na) return -1;
+		if (!Number.isNaN(na) && Number.isNaN(nb)) return 1;
+		if (Number.isNaN(na) && !Number.isNaN(nb)) return -1;
 	}
 
-	return true;
+	return 0;
 };
 
 const clearUpdate = () => {
@@ -66,7 +65,7 @@ export const checkForUpdates = async () => {
 	updateCheck.latestVersion = latestRelease;
 	updateCheck.latestVersionUrl = releases[0].html_url;
 
-	if (!versionCompare(latestRelease, currentVersion)) {
+	if (versionCompare(latestRelease, currentVersion) <= 0) {
 		updateCheck.updateAvailable = false;
 		updateCheck.releaseNotes = [];
 		log.info('No updates available');
