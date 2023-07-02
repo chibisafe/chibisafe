@@ -86,6 +86,7 @@
 						<button type="button" class="ml-4" @click="showManageUserModal(user, 'purge')">
 							Purge files
 						</button>
+						<button type="button" class="ml-4" @click="showStorageQuotaModal(user)">Set quota</button>
 					</template>
 					<template v-else>
 						<button type="button" class="ml-4" @click="showStorageQuotaModal(user)">Set quota</button>
