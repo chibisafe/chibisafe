@@ -45,7 +45,12 @@
 									<div class="mt-2">
 										<template v-for="(release, i) in data" :key="release.version">
 											<h3 class="font-bold mt-4 text-white mb-2">
-												<a :href="release.url" target="_blank" rel="noopener noreferrer">
+												<a
+													:href="release.url"
+													target="_blank"
+													rel="noopener noreferrer"
+													class="hover:text-blue-500"
+												>
 													v{{ release.version }} - {{ release.name }}
 												</a>
 												<span
