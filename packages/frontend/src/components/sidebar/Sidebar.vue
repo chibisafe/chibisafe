@@ -282,8 +282,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import ReleaseNotesModal from '~/components/modals/ReleaseNotesModal.vue';
-import { useUserStore, useSettingsStore, useModalStore } from '~/store';
-import { checkForUpdate } from '~/use/api';
+import { useUserStore, useSettingsStore, useModalStore, useUpdateStore } from '~/store';
 import { saveAs } from 'file-saver';
 import {
 	HomeIcon,
@@ -298,35 +297,29 @@ import {
 	Settings2Icon,
 	BarChart3Icon
 } from 'lucide-vue-next';
-import type { UpdateCheck } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const modalsStore = useModalStore();
+const updateStore = useUpdateStore();
 
 const isAdmin = computed(() => userStore.user.isAdmin);
 const apiKey = computed(() => userStore.user.apiKey);
 
-const updateCheck = ref<UpdateCheck>();
+const updateCheck = computed(() => updateStore.updateCheck);
 
 // @ts-ignore
 if (!import.meta.env.DEV) {
 	onMounted(() => {
-		if (isAdmin.value) void doUpdateCheck();
+		if (isAdmin.value) void updateStore.get();
 	});
 
 	watch(isAdmin, async () => {
-		if (isAdmin.value) void doUpdateCheck();
+		if (isAdmin.value) void updateStore.get();
 	});
 }
-
-const doUpdateCheck = async () => {
-	const response = await checkForUpdate();
-	if (!response) return;
-	updateCheck.value = response;
-};
 
 const showUpdateModal = () => {
 	modalsStore.releaseNotes.show = true;
