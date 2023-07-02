@@ -54,7 +54,7 @@
 			<tr
 				v-for="(user, indexUser) in users"
 				:key="user.uuid"
-				:class="indexUser % 2 === 0 ? ' bg-dark-90' : 'bg-dark-80'"
+				:class="[indexUser % 2 === 0 ? ' bg-dark-90' : 'bg-dark-90', user.enabled ? '' : 'opacity-50']"
 			>
 				<td
 					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-dark-90 dark:text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6 underline"
@@ -80,38 +80,60 @@
 					{{ dayjs(user.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-dark-90 dark:text-light-100">
-					<router-link :to="`/dashboard/admin/user/${user.uuid}`" class="underline">View files</router-link>
+					<router-link :to="`/dashboard/admin/user/${user.uuid}`" class="underline hover:text-blue-400"
+						>View files</router-link
+					>
 					<!-- Only show one action if we're the user on the table -->
 					<template v-if="user.uuid === ownUser.uuid">
-						<button type="button" class="ml-4" @click="showManageUserModal(user, 'purge')">
+						<button
+							type="button"
+							class="ml-4 hover:text-blue-400"
+							@click="showManageUserModal(user, 'purge')"
+						>
 							Purge files
 						</button>
 					</template>
 					<template v-else>
-						<button type="button" class="ml-4" @click="showStorageQuotaModal(user)">Set quota</button>
+						<button type="button" class="ml-4 hover:text-blue-400" @click="showStorageQuotaModal(user)">
+							Set quota
+						</button>
 						<button
 							v-if="user.enabled"
 							type="button"
-							class="ml-4"
+							class="ml-4 hover:text-blue-400"
 							@click="showManageUserModal(user, 'disable')"
 						>
 							Disable
 						</button>
-						<button v-else type="button" class="ml-4" @click="showManageUserModal(user, 'enable')">
+						<button
+							v-else
+							type="button"
+							class="ml-4 hover:text-blue-400"
+							@click="showManageUserModal(user, 'enable')"
+						>
 							Enable
 						</button>
 						<button
 							v-if="user.isAdmin"
 							type="button"
-							class="ml-4"
+							class="ml-4 hover:text-blue-400"
 							@click="showManageUserModal(user, 'demote')"
 						>
 							Demote
 						</button>
-						<button v-else type="button" class="ml-4" @click="showManageUserModal(user, 'promote')">
+						<button
+							v-else
+							type="button"
+							class="ml-4 hover:text-blue-400"
+							@click="showManageUserModal(user, 'promote')"
+						>
 							Promote
 						</button>
-						<button type="button" class="ml-4" @click="showManageUserModal(user, 'purge')">
+						<button
+							type="button"
+							class="ml-4 hover:text-blue-400"
+							@click="showManageUserModal(user, 'purge')"
+						>
 							Purge files
 						</button>
 					</template>
@@ -123,6 +145,7 @@
 			title="Set storage quota"
 			message="Enter a value in bytes to limit the amount of storage used by this user"
 			action-text="Save"
+			data-type="bytes"
 			:callback="doStorageQuotaAction"
 		/>
 	</table>
