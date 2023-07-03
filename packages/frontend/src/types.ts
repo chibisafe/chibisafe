@@ -115,3 +115,15 @@ export interface Invite {
 		uuid: string;
 	};
 }
+
+export interface UpdateCheck {
+	updateAvailable: boolean;
+	latestVersion: string;
+	latestVersionUrl: string;
+	releaseNotes: {
+		version: string;
+		url: string;
+		name: string;
+		body: string;
+	}[];
+}

@@ -42,13 +42,27 @@
 									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-light-100">{{
 										title
 									}}</DialogTitle>
-									<div class="mt-2">
+									<div class="mt-4">
 										<p class="text-sm text-light-100">
 											{{ message }}
 										</p>
 									</div>
-									<div class="mt-2">
-										<input v-model="inputValue" type="text" />
+									<div class="flex items-center">
+										<div
+											class="mt-2 relative rounded-md dark:bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm w-full"
+										>
+											<input
+												v-model="inputValue"
+												type="text"
+												class="block w-full border-0 p-0 text-gray-900 dark:text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
+											/>
+										</div>
+										<p
+											v-if="dataType === 'bytes'"
+											class="text-light-100 mt-2 ml-2 whitespace-nowrap"
+										>
+											{{ formatBytes(Number(inputValue)) }}
+										</p>
 									</div>
 								</div>
 							</div>
@@ -81,11 +95,13 @@ import { computed, ref } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue';
 import { useModalStore } from '~/store';
 import { XIcon } from 'lucide-vue-next';
+import { formatBytes } from '~/use/file';
 
 const props = defineProps<{
 	title: string;
 	message: string;
 	actionText: string;
+	dataType: string;
 	callback: (value: any) => void;
 }>();
 

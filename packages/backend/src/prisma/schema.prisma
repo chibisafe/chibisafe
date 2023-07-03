@@ -91,6 +91,7 @@ model settings {
 	publicMode Boolean
 	userAccounts Boolean
 	disableStatisticsCron Boolean
+	disableUpdateCheck Boolean @default(false)
 	backgroundImageURL String
 	logoURL String
 	metaDescription String

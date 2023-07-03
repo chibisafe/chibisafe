@@ -449,6 +449,16 @@ export const getStatistics = async (force: boolean = false) => {
 	}
 };
 
+export const checkForUpdate = async () => {
+	try {
+		const data = await request.get('admin/service/updateCheck');
+		debug(`updateCheck`, data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');

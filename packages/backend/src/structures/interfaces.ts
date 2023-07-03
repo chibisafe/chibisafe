@@ -116,6 +116,8 @@ export interface Settings {
 	logoURL: string;
 	statisticsCron: string;
 	disableStatisticsCron: boolean;
+	updateCheckCron: string;
+	disableUpdateCheck: boolean;
 	enabledStatistics: string[];
 	serveUploadsFrom: string;
 	enableMixedCaseFilenames: boolean;

@@ -91,6 +91,8 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 - File management
 - File tagging
 - User management
+- User quotas
+- Update checker
 - Public or Private mode (with invite support)
 - ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
 - Browser extension to upload content from websites easily

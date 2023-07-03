@@ -17,6 +17,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	// Settings not yet implemented
 	delete settings.statisticsCron;
+	delete settings.updateCheckCron;
 	delete settings.enabledStatistics;
 	delete settings.disableStatisticsCron;
 	delete settings.chunkedUploadsTimeout;
