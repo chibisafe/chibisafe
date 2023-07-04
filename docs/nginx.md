@@ -2,7 +2,7 @@ Some things to keep in mind when using nginx or any reverse proxy when behind cl
 It's important to forward headers correctly since otherwise uploaders can spoof their own IP making it impossible for you to ban them if you have public uploads enabled.
 To do so please refer to this document https://www.authelia.com/integration/proxies/fowarded-headers/#steps
 
-After you're done, you can either add the following rules to your nginx config:
+After you're done, add the following rules to your nginx config:
 ```nginx
 set_real_ip_from 103.21.244.0/22;
 set_real_ip_from 103.22.200.0/22;
@@ -29,7 +29,7 @@ set_real_ip_from 2a06:98c0::/29;
 real_ip_header CF-Connecting-IP;
 ```
 
-Or run the following script to deny incoming requests on por 80 and 443 if the connection is not coming from a CloudFlare IP
+Additionally, if you want you can run the following script to deny incoming requests on port 80 and 443 if the connection is not coming from a CloudFlare IP
 ```bash
 for i in `curl https://www.cloudflare.com/ips-v4`; do iptables -I INPUT -p tcp -s $i --dport http -j ACCEPT; done
 for i in `curl https://www.cloudflare.com/ips-v4`; do iptables -I INPUT -p tcp -s $i --dport https -j ACCEPT; done
