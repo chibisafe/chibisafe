@@ -250,11 +250,7 @@
 			<main class="flex-1">
 				<div id="dashboard-container" class="overflow-auto h-screen">
 					<div
-						v-if="
-							userStore.user?.username === 'admin' &&
-							userStore.user.isAdmin &&
-							!userStore.user.passwordEditedAt
-						"
+						v-if="userStore.user?.username === 'admin' && isAdmin && !userStore.user.passwordEditedAt"
 						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
 					>
 						It seems you are using the admin account but haven't changed the default password yet. Go to the
@@ -305,7 +301,8 @@ const settingsStore = useSettingsStore();
 const modalsStore = useModalStore();
 const updateStore = useUpdateStore();
 
-const isAdmin = computed(() => userStore.user.isAdmin);
+const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
+const isOwner = computed(() => userStore.user.roles?.find(role => role.name === 'owner'));
 const apiKey = computed(() => userStore.user.apiKey);
 
 const updateCheck = computed(() => updateStore.updateCheck);

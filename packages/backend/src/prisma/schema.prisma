@@ -23,6 +23,13 @@ model users {
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	files files[]
+	roles roles[]
+}
+
+model roles {
+	id Int @id @default(autoincrement())
+	name String @unique
+	users users[]
 }
 
 model files {

@@ -65,9 +65,13 @@ export default (
 				uuid: true,
 				username: true,
 				enabled: true,
-				isAdmin: true,
 				apiKey: true,
-				passwordEditedAt: true
+				passwordEditedAt: true,
+				roles: {
+					select: {
+						name: true
+					}
+				}
 			}
 		});
 
@@ -90,7 +94,7 @@ export default (
 			id: user.id,
 			uuid: user.uuid,
 			username: user.username,
-			isAdmin: user.isAdmin,
+			roles: user.roles,
 			apiKey: user.apiKey,
 			passwordEditedAt: user.passwordEditedAt
 		};

@@ -185,7 +185,15 @@ export const getUsersInfo = async () => {
 		Disabled: 0
 	};
 
-	const users = await prisma.users.findMany();
+	const users = await prisma.users.findMany({
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
+		}
+	});
 	stats.Total = users.length;
 
 	for (const user of users) {
@@ -193,7 +201,7 @@ export const getUsersInfo = async () => {
 			stats.Disabled++;
 		}
 
-		if (user.isAdmin) {
+		if (user?.roles.some(role => role.name === 'admin')) {
 			stats.Admins++;
 		}
 	}

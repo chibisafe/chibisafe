@@ -120,7 +120,11 @@ const start = async () => {
 				username: user.username,
 				password: user.password,
 				enabled: user.enabled === 1,
-				isAdmin: user.isAdmin === 1
+				roles: {
+					connect: {
+						name: user.isAdmin === 1 ? 'admin' : 'user'
+					}
+				}
 			}
 		});
 	}

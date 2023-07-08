@@ -23,10 +23,17 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const user = await prisma.users.findUnique({
 		where: {
 			uuid
+		},
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
-	if (user?.isAdmin) {
+	if (user?.roles.some(role => role.name === 'admin')) {
 		res.badRequest('User is already an admin');
 		return;
 	}
@@ -36,7 +43,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uuid
 		},
 		data: {
-			isAdmin: true
+			roles: {
+				connect: {
+					name: 'admin'
+				}
+			}
 		}
 	});
 
