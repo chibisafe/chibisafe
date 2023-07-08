@@ -23,8 +23,23 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const user = await prisma.users.findUnique({
 		where: {
 			uuid
+		},
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
+
+	if (
+		user?.roles.some(role => role.name === 'admin' || role.name === 'owner') &&
+		!req.user.roles.some(role => role.name === 'owner')
+	) {
+		res.badRequest('You cannot disable another admin or owner');
+		return;
+	}
 
 	if (!user?.enabled) {
 		res.badRequest('User is already disabled');

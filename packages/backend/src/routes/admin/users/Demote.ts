@@ -5,7 +5,7 @@ import prisma from '@/structures/database';
 export const options = {
 	url: '/admin/user/:uuid/demote',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['auth', 'owner']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
