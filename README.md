@@ -125,13 +125,14 @@ services:
     restart: always
 
 ```
-Or if you prefer to use docker directly, you could do something like this replacing the path values with your own:
+Or if you prefer to use docker directly, you could do something like this replacing the path values (if necessary) with your own:
 ```bash
 docker run -d \
   --name=chibisafe \
-  -v /path/to/database:/home/node/chibisafe/database \
-  -v /path/to/uploads:/home/node/chibisafe/uploads \
-  -v /path/to/logs:/home/node/chibisafe/logs \
+  -v ./database:/home/node/chibisafe/database:rw \
+  -v ./uploads:/home/node/chibisafe/uploads:rw \
+  -v ./logs:/home/node/chibisafe/logs:rw \
+  -p 24424:8000 \
   --restart unless-stopped \
   ghcr.io/chibisafe/chibisafe:latest
 ```
