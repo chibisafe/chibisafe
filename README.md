@@ -2,7 +2,7 @@
   <img width="234" height="376" src="https://lolisafe.moe/xjoghu.png">
 </p>
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kanadeko/Kuro/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/chibisafe/chibisafe/master/LICENSE)
 [![Chat / Support](https://img.shields.io/badge/Chat%20%2F%20Support-discord-7289DA.svg?style=flat-square)](https://discord.gg/5g6vgwn)
 [![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dpitu%26type%3Dpledges&style=flat-square)](https://www.patreon.com/pitu)
 [![Support me](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/kana)
@@ -125,13 +125,14 @@ services:
     restart: always
 
 ```
-Or if you prefer to use docker directly, you could do something like this replacing the path values with your own:
+Or if you prefer to use docker directly, you could do something like this replacing the path values (if necessary) with your own:
 ```bash
 docker run -d \
   --name=chibisafe \
-  -v /path/to/database:/home/node/chibisafe/database \
-  -v /path/to/uploads:/home/node/chibisafe/uploads \
-  -v /path/to/logs:/home/node/chibisafe/logs \
+  -v ./database:/home/node/chibisafe/database:rw \
+  -v ./uploads:/home/node/chibisafe/uploads:rw \
+  -v ./logs:/home/node/chibisafe/logs:rw \
+  -p 24424:8000 \
   --restart unless-stopped \
   ghcr.io/chibisafe/chibisafe:latest
 ```
