@@ -13,7 +13,7 @@ To set up chibisafe using this method, go to the root of the project, copy and r
 
 Keep in mind that whenever there's a new version of chibisafe and you want to update, you will need to:
 ```bash
-docker pull ghcr.io/chibisafe/chibisafe:latest
+docker pull chibisafe/chibisafe:latest
 docker-compose down
 docker-compose up -d
 ```

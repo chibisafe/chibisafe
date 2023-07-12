@@ -114,7 +114,7 @@ version: "3.7"
 
 services:
   chibisafe:
-    image: ghcr.io/chibisafe/chibisafe:latest
+    image: chibisafe/chibisafe:latest
     container_name: chibisafe
     volumes:
       - ./database:/home/node/chibisafe/database:rw
@@ -134,7 +134,7 @@ docker run -d \
   -v ./logs:/home/node/chibisafe/logs:rw \
   -p 24424:8000 \
   --restart unless-stopped \
-  ghcr.io/chibisafe/chibisafe:latest
+  chibisafe/chibisafe:latest
 ```
 
 Now chibisafe will be available in port 24424.
