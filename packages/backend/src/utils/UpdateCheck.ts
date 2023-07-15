@@ -62,17 +62,15 @@ export const checkForUpdates = async () => {
 	const currentVersion = getChibisafeVersion();
 	const latestRelease = releases[0].tag_name.replace('v', '');
 
+	updateCheck.updateAvailable = versionCompare(latestRelease, currentVersion) > 0;
 	updateCheck.latestVersion = latestRelease;
 	updateCheck.latestVersionUrl = releases[0].html_url;
+	updateCheck.releaseNotes = [];
 
-	if (versionCompare(latestRelease, currentVersion) <= 0) {
-		updateCheck.updateAvailable = false;
-		updateCheck.releaseNotes = [];
+	if (!updateCheck.updateAvailable) {
 		log.info('No updates available');
 		return;
 	}
-
-	updateCheck.updateAvailable = true;
 
 	for (const release of releases) {
 		const version = release.tag_name.replace(/^v/, '');
