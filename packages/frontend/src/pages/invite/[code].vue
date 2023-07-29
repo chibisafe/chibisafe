@@ -1,11 +1,9 @@
 <template>
 	<div class="h-screen w-full overflow-auto">
-		<div class="flex flex-col items-center w-full self-center dark:text-light-100">
+		<div class="flex flex-col items-center w-full self-center text-light-100">
 			<Header />
 		</div>
-		<div
-			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
-		>
+		<div class="flex flex-col items-center h-auto min-h-[900px] w-full text-light-100 justify-center self-center">
 			<div class="flex w-full mt-16 items-center relative max-w-4xl flex-col">
 				<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 w-full">
 					<div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -19,21 +17,17 @@
 					</div>
 
 					<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-						<div class="bg-white dark:bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+						<div class="bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
 							<form class="space-y-6" action="#" method="POST">
 								<div>
-									<label class="block text-sm font-medium text-gray-700 dark:text-light-100"
-										>Username</label
-									>
+									<label class="block text-sm font-medium text-light-100">Username</label>
 									<div class="mt-1">
 										<Input v-model="username" type="text" />
 									</div>
 								</div>
 
 								<div>
-									<label
-										for="password"
-										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+									<label for="password" class="block text-sm font-medium text-light-100"
 										>Password</label
 									>
 									<div class="mt-1">
@@ -42,9 +36,7 @@
 								</div>
 
 								<div>
-									<label
-										for="password"
-										class="block text-sm font-medium text-gray-700 dark:text-light-100"
+									<label for="password" class="block text-sm font-medium text-light-100"
 										>Re-type password</label
 									>
 									<div class="mt-1">

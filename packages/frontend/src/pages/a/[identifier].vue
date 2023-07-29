@@ -3,7 +3,7 @@
 		<h1 class="text-2xl mt-8 font-semibold text-light-100">{{ albumName }} ({{ totalFiles }} files)</h1>
 		<div
 			v-if="nsfw && !enableNsfw"
-			class="dark:text-light-100 absolute top-1/2 left-0 w-full flex flex-col -translate-y-[76px] text-center"
+			class="text-light-100 absolute top-1/2 left-0 w-full flex flex-col -translate-y-[76px] text-center"
 		>
 			<h2>This album is NSFW, to view the contents click on the button below</h2>
 			<Button variant="primary" class="mt-8" @click="enableNsfw = true">Show content</Button>

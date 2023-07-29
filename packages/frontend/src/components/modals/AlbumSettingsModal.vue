@@ -29,29 +29,27 @@
 						leave-to="opacity-0 scale-95"
 					>
 						<div
-							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
+							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
 							<!--  -->
 
 							<div class="px-4 desktop:px-6 lg:px-8 mt-6 mb-8">
 								<div class="desktop:flex desktop:items-center">
 									<div v-if="album" class="desktop:flex-auto">
-										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
-											Album settings
-										</h1>
+										<h1 class="text-xl font-semibold text-light-100">Album settings</h1>
 										<SwitchGroup>
 											<div class="flex items-center mt-8">
-												<SwitchLabel class="mr-4 dark:text-light-100">Mark as NSFW</SwitchLabel>
+												<SwitchLabel class="mr-4 text-light-100">Mark as NSFW</SwitchLabel>
 												<Switch
 													v-model="album.nsfw"
-													class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+													class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 													:class="[album.nsfw ? 'bg-blue-400' : 'bg-gray-200']"
 													@update:modelValue="setNsfw"
 												>
 													<span class="sr-only">Mark as NSFW</span>
 													<span
 														aria-hidden="true"
-														class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+														class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
 														:class="[album.nsfw ? 'translate-x-5' : 'translate-x-0']"
 													/>
 												</Switch>
@@ -75,7 +73,7 @@
 												<!-- eslint-disable-next-line vue/component-name-in-template-casing -->
 												<button
 													type="button"
-													class="relative -ml-px inline-flex items-center space-x-2 rounded-r-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:bg-dark-100 dark:hover:bg-dark-90 dark:text-light-100 focus:border-indigo-500 focus:ring-indigo-500 w-36 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 dark:border-gray-700"
+													class="relative -ml-px inline-flex items-center space-x-2 rounded-r-md bg-gray-50 px-4 py-2 text-sm font-medium bg-dark-100 hover:bg-dark-90 text-light-100 focus:border-indigo-500 focus:ring-indigo-500 w-36 border focus:ring-0 focus:outline-none focus:ring-gray-100 border-gray-700"
 													@click="setNewAlbumName"
 												>
 													<span class="w-full text-center">Change name</span>
@@ -93,10 +91,8 @@
 
 								<div class="desktop:flex desktop:items-center mt-8">
 									<div class="desktop:flex-auto">
-										<h1 class="text-xl font-semibold text-gray-900 dark:text-light-100">
-											Album links
-										</h1>
-										<p class="mt-2 text-sm text-gray-700 dark:text-light-100">
+										<h1 class="text-xl font-semibold text-light-100">Album links</h1>
+										<p class="mt-2 text-sm text-light-100">
 											A list of all the links created for this album. Each link is unique and will
 											remain private unless you share it with the world.
 										</p>
@@ -113,38 +109,38 @@
 								<div
 									class="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 desktop:-mx-6 md:mx-0 md:rounded-lg"
 								>
-									<table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
-										<thead class="bg-gray-100 dark:bg-dark-100">
+									<table class="min-w-full divide-y divide-gray-600">
+										<thead class="bg-dark-100">
 											<tr>
 												<th
 													scope="col"
-													class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-light-100 desktop:pl-6"
+													class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-light-100 desktop:pl-6"
 												>
 													Link
 												</th>
 												<th
 													scope="col"
-													class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 lg:table-cell"
+													class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 lg:table-cell"
 												>
 													Views
 												</th>
 												<!--
 												  <th
 												  scope="col"
-												  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100 desktop:table-cell"
+												  class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
 												  >
 												  Allow download
 												  </th> 
 												-->
 												<th
 													scope="col"
-													class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100"
+													class="px-3 py-3.5 text-left text-sm font-semibold text-light-100"
 												>
 													Enabled
 												</th>
 												<th
 													scope="col"
-													class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-light-100"
+													class="px-3 py-3.5 text-left text-sm font-semibold text-light-100"
 												>
 													Expiry date
 												</th>
@@ -153,32 +149,28 @@
 												</th>
 											</tr>
 										</thead>
-										<tbody
-											class="divide-y divide-gray-200 bg-white dark:bg-dark-110 dark:divide-gray-600"
-										>
+										<tbody class="divide-y bg-dark-110 divide-gray-600">
 											<tr v-for="link in links" :key="link.uuid">
 												<td
-													class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6"
+													class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6"
 												>
 													<a
 														:href="`/a/${link.identifier}`"
 														target="_blank"
 														rel="noopener noreferrer"
-														class="text-blue-400 dark:text-blue-400"
+														class="text-blue-400"
 														>{{ link.identifier }}</a
 													>
 													<dl class="font-normal lg:hidden">
 														<dt class="sr-only">Views</dt>
-														<dd class="mt-1 truncate text-gray-700 dark:text-light-100">
+														<dd class="mt-1 truncate text-light-100">
 															{{ link.views }}
 														</dd>
 														<dt class="sr-only desktop:hidden">Allow download</dt>
-														<dd
-															class="mt-1 truncate text-gray-500 dark:text-light-100 desktop:hidden"
-														>
+														<dd class="mt-1 truncate text-light-100 desktop:hidden">
 															<Switch
 																v-model="link.enableDownload"
-																class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+																class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 																:class="[
 																	link.enableDownload ? 'bg-blue-400' : 'bg-gray-200'
 																]"
@@ -187,7 +179,7 @@
 																<span class="sr-only">Use setting</span>
 																<span
 																	aria-hidden="true"
-																	class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+																	class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
 																	:class="[
 																		link.enableDownload
 																			? 'translate-x-5'
@@ -198,25 +190,23 @@
 														</dd>
 													</dl>
 												</td>
-												<td
-													class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 lg:table-cell"
-												>
+												<td class="hidden px-3 py-4 text-sm text-light-100 lg:table-cell">
 													{{ link.views }}
 												</td>
 												<!--
 												  <td
-												  class="hidden px-3 py-4 text-sm text-gray-500 dark:text-light-100 desktop:table-cell"
+												  class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell"
 												  >
 												  <Switch
 												  v-model="link.enableDownload"
-												  class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+												  class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 												  :class="[link.enableDownload ? 'bg-blue-400' : 'bg-gray-200']"
 												  @update:modelValue="setEnableDownload(link)"
 												  >
 												  <span class="sr-only">Use setting</span>
 												  <span
 												  aria-hidden="true"
-												  class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+												  class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
 												  :class="[
 												  link.enableDownload ? 'translate-x-5' : 'translate-x-0'
 												  ]"
@@ -224,17 +214,17 @@
 												  </Switch>
 												  </td> 
 												-->
-												<td class="px-3 py-4 text-sm text-gray-500 dark:text-light-100">
+												<td class="px-3 py-4 text-sm text-light-100">
 													<Switch
 														v-model="link.enabled"
-														class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+														class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 														:class="[link.enabled ? 'bg-blue-400' : 'bg-gray-200']"
 														@update:modelValue="setEnabled(link)"
 													>
 														<span class="sr-only">Use setting</span>
 														<span
 															aria-hidden="true"
-															class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+															class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
 															:class="[link.enabled ? 'translate-x-5' : 'translate-x-0']"
 														/>
 													</Switch>

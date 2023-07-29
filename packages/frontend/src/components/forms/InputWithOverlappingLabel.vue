@@ -1,13 +1,13 @@
 <template>
-	<div class="relative rounded-md dark:bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm">
+	<div class="relative rounded-md bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm">
 		<label
-			class="absolute -top-2 left-2 -mt-px pointer-events-none inline-block bg-white dark:bg-dark-100 px-1 text-xs font-medium text-gray-900 dark:text-light-100"
+			class="absolute -top-2 left-2 -mt-px pointer-events-none inline-block bg-dark-100 px-1 text-xs font-medium text-light-100"
 			>{{ label }}</label
 		>
 
 		<a
 			v-if="type === 'link'"
-			class="block w-full border-0 p-0 text-blue-400 hover:text-blue-500 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
+			class="block w-full border-0 p-0 text-blue-400 hover:text-blue-500 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100"
 			rel="noopener noreferrer"
 			target="_blank"
 			:href="href ?? value"
@@ -17,7 +17,7 @@
 		<input
 			v-else
 			:type="type"
-			class="block w-full border-0 p-0 text-gray-900 dark:text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
+			class="block w-full border-0 p-0 text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100"
 			:class="[blur ? 'blur-sm hover:blur-none' : '']"
 			:value="value ? value : modelValue"
 			:readonly="readOnly"

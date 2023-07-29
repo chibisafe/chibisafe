@@ -9,17 +9,11 @@
 		</router-link>
 		<span class="flex-1" />
 
-		<router-link
-			v-if="!loggedIn"
-			to="/login"
-			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg"
+		<router-link v-if="!loggedIn" to="/login" class="text-light-100 hover:text-blue-500 text-lg"
 			>Login / Register</router-link
 		>
 
-		<router-link
-			v-else
-			to="/dashboard/uploads"
-			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg"
+		<router-link v-else to="/dashboard/uploads" class="text-light-100 hover:text-blue-500 text-lg"
 			>Dashboard</router-link
 		>
 
@@ -27,7 +21,7 @@
 			href="/docs"
 			target="_blank"
 			rel="noreferrer noopener"
-			class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg ml-4"
+			class="text-light-100 hover:text-blue-500 text-lg ml-4"
 			>Docs</a
 		>
 
@@ -159,21 +153,18 @@
 				href="/docs"
 				target="_blank"
 				rel="noreferrer noopener"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-lg mt-12"
+				class="text-light-100 hover:text-blue-500 text-lg mt-12"
 				>Documentation</a
 			>
 
 			<router-link
 				v-if="!loggedIn && !isAuthPage"
 				to="/login"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
+				class="text-light-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Login / Register</router-link
 			>
 
-			<router-link
-				v-else
-				to="/dashboard/uploads"
-				class="dark:text-light-100 dark:hover:text-blue-500 text-dark-100 hover:text-blue-500 text-xl p-4 mt-4"
+			<router-link v-else to="/dashboard/uploads" class="text-light-100 hover:text-blue-500 text-xl p-4 mt-4"
 				>Go to dashboard</router-link
 			>
 		</div>
