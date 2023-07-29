@@ -24,11 +24,11 @@
 							<Switch
 								v-model="publicOnly"
 								:class="publicOnly ? 'bg-blue-400' : 'bg-gray-200'"
-								class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-indigo-500 focus:ring-offset-2 ring-0 focus:outline-none focus:ring-0 dark:border-gray-600"
+								class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-indigo-500 focus:ring-offset-2 ring-0 focus:outline-none focus:ring-0 border-gray-600"
 							>
 								<span
 									:class="publicOnly ? 'translate-x-6' : 'translate-x-1'"
-									class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-dark-90 transition-transform ring-0"
+									class="inline-block h-4 w-4 transform rounded-full bg-dark-90 transition-transform ring-0"
 								/>
 							</Switch>
 						</div>

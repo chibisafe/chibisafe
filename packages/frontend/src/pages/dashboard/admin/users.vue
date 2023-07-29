@@ -16,16 +16,16 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">Registered users</h1>
 			<SwitchGroup>
 				<div class="flex items-center mt-8">
-					<SwitchLabel class="mr-4 dark:text-light-100">Hide disabled users</SwitchLabel>
+					<SwitchLabel class="mr-4 text-light-100">Hide disabled users</SwitchLabel>
 					<Switch
 						v-model="hideDisabledUsers"
-						class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 dark:border-gray-600"
+						class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 						:class="[hideDisabledUsers ? 'bg-blue-400' : 'bg-gray-200']"
 					>
 						<span class="sr-only">Hide disabled users</span>
 						<span
 							aria-hidden="true"
-							class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:bg-dark-90"
+							class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
 							:class="[hideDisabledUsers ? 'translate-x-5' : 'translate-x-0']"
 						/>
 					</Switch>

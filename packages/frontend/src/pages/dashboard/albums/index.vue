@@ -25,14 +25,14 @@
 					>
 						<router-link :to="`/dashboard/albums/${album.uuid}`" class="flex w-full">
 							<div
-								class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md border-t border-l border-b bg-dark-90 dark:border-dark-90"
+								class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md border-t border-l border-b bg-dark-90 border-dark-90"
 								:style="album.cover ? `background: url(${album.cover})` : ''"
 							/>
 							<div
-								class="flex flex-1 items-center justify-between truncate border-t border-r border-b border-gray-200 bg-white dark:bg-dark-110 dark:border-dark-90"
+								class="flex flex-1 items-center justify-between truncate border-t border-r border-b bg-dark-110 border-dark-90"
 							>
 								<div class="flex-1 truncate px-4 py-2 text-sm">
-									<p class="font-medium text-gray-900 hover:text-gray-600 dark:text-light-100">
+									<p class="font-medium hover:text-white text-light-100">
 										{{ album.name }}
 									</p>
 									<p v-if="album.count" class="text-gray-400">
@@ -42,7 +42,7 @@
 							</div>
 						</router-link>
 						<div
-							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 dark:border-dark-90"
+							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
 							@click="showEditAlbumModal(album)"
 						>
 							<Settings2Icon />

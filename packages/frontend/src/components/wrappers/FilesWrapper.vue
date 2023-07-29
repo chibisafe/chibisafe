@@ -12,7 +12,7 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
+		<span class="text-light-100">{{ totalFiles }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="currentPage"
@@ -40,7 +40,7 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-dark-80 dark:text-light-100">{{ totalFiles }} files</span>
+		<span class="text-light-100">{{ totalFiles }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="currentPage"

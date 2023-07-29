@@ -34,10 +34,10 @@
 					class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
 					@click="showModal(file)"
 				>
-					<FileAudioIcon v-if="isFileAudio(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<FileTextIcon v-else-if="isFilePDF(file)" class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<FileIcon v-else class="text-dark-100 dark:text-light-100 w-16 h-16" />
-					<span class="text-dark-100 dark:text-light-100 mt-4 text-lg text-center">{{
+					<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
+					<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
+					<FileIcon v-else class="text-light-100 w-16 h-16" />
+					<span class="text-light-100 mt-4 text-lg text-center">{{
 						file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
 					}}</span>
 				</div>

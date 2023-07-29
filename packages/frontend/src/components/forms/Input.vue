@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<label class="block text-sm font-medium text-dark-100 dark:text-light-100">{{ label }}</label>
+		<label class="block text-sm font-mediumtext-light-100">{{ label }}</label>
 		<div class="mt-1">
 			<input
 				class="shadow-md focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-700 rounded-sm text-light-100 bg-dark-110"
