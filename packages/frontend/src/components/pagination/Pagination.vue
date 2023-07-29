@@ -1,11 +1,7 @@
 <template>
 	<div class="flex items-center mobile:justify-center">
-		<span class="text-dark-80 dark:text-light-100 mr-4 mobile:hidden"
-			>Page {{ page }} of {{ Math.ceil(total / 50) }}</span
-		>
-		<span class="text-dark-80 dark:text-light-100 mr-4 desktop:hidden"
-			>{{ page }} / {{ Math.ceil(total / 50) }}</span
-		>
+		<span class="text-light-100 mr-4 mobile:hidden">Page {{ page }} of {{ Math.ceil(total / 50) }}</span>
+		<span class="text-light-100 mr-4 desktop:hidden">{{ page }} / {{ Math.ceil(total / 50) }}</span>
 		<button
 			:disabled="isFirstPage"
 			type="button"

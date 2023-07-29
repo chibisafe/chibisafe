@@ -29,7 +29,7 @@
 						leave-to="opacity-0 scale-95"
 					>
 						<div
-							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-dark-110 shadow-xl rounded-md overflow-y-auto"
+							class="inline-block max-h-[calc(100vh-8rem)] w-full max-w-5xl p-4 overflow-hidden text-left align-middle transition-all transform bg-dark-110 shadow-xl rounded-md overflow-y-auto"
 						>
 							<div v-if="file" class="flex mobile:flex-col">
 								<!-- File preview -->
@@ -75,7 +75,7 @@
 											:href="file.url"
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-dark-110 dark:border-gray-700 dark:text-white dark:hover:bg-dark-100 mr-2 mb-2"
+											class="border focus:ring-0 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center focus:ring-gray-600 bg-dark-110 border-gray-700 text-white hover:bg-dark-100 mr-2 mb-2"
 											>Open</a
 										>
 										<Button class="flex-auto mr-0" @click="showDeleteFileModal(file)"
@@ -83,7 +83,7 @@
 										>
 									</div>
 
-									<h2 class="text-dark-100 dark:text-light-100 mt-1">File info</h2>
+									<h2 class="text-light-100 mt-1">File info</h2>
 
 									<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
 									<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
@@ -127,20 +127,20 @@
 									<template v-if="props.type !== 'admin'">
 										<!-- Tags section -->
 										<!--
-										  <h2 class="text-dark-100 dark:text-light-100 mt-8 mb-4">Tags</h2>
+										  <h2 class="text-light-100 mt-8 mb-4">Tags</h2>
 										  <CreateTag class="mb-4" :fileUuid="null" />
 										  <Tag text="test" />
 										-->
 
 										<!-- Albums section -->
-										<h2 class="text-dark-100 dark:text-light-100 mt-8 mb-4">Albums</h2>
+										<h2 class="text-light-100 mt-8 mb-4">Albums</h2>
 										<ul
-											class="w-full max-h-[540px] text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-dark-110 dark:border-dark-90 dark:text-white overflow-y-auto"
+											class="w-full max-h-[540px] text-sm font-medium rounded-lg border bg-dark-110 border-dark-90 text-white overflow-y-auto"
 										>
 											<li
 												v-for="album in albums"
 												:key="album.uuid"
-												class="w-full rounded-t-lg border-b border-gray-200 dark:border-dark-90"
+												class="w-full rounded-t-lg border-b border-dark-90"
 											>
 												<div class="flex items-center pl-3">
 													<input
@@ -148,12 +148,12 @@
 														type="checkbox"
 														value=""
 														:checked="album.selected"
-														class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-0 checked:bg-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:bg-dark-90 dark:border-gray-500"
+														class="w-4 h-4 text-blue-600 rounded focus:ring-0 checked:bg-blue-500 focus:ring-blue-600 ring-offset-gray-700 bg-dark-90 border-gray-500"
 														@change="clickedAlbum(!album.selected, album.uuid)"
 													/>
 													<label
 														:for="album.uuid"
-														class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300"
+														class="py-3 ml-2 w-full text-sm font-medium text-gray-300"
 														>{{ album.name }}</label
 													>
 												</div>
@@ -164,7 +164,7 @@
 
 									<!-- User information section -->
 									<template v-else>
-										<h2 class="text-dark-100 dark:text-light-100 mt-8">User info</h2>
+										<h2 class="text-light-100 mt-8">User info</h2>
 										<InputWithOverlappingLabel
 											:value="file.user?.username"
 											class="mt-4"

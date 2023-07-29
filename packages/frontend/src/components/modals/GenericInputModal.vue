@@ -49,12 +49,12 @@
 									</div>
 									<div class="flex items-center">
 										<div
-											class="mt-2 relative rounded-md dark:bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm w-full"
+											class="mt-2 relative rounded-md bg-dark-100 border border-dark-80 px-3 py-2 shadow-sm w-full"
 										>
 											<input
 												v-model="inputValue"
 												type="text"
-												class="block w-full border-0 p-0 text-gray-900 dark:text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm dark:bg-dark-100"
+												class="block w-full border-0 p-0 text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100"
 											/>
 										</div>
 										<p
