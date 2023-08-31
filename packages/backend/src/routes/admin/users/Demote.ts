@@ -5,7 +5,7 @@ import prisma from '@/structures/database';
 export const options = {
 	url: '/admin/user/:uuid/demote',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['auth', 'owner']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
@@ -23,10 +23,17 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const user = await prisma.users.findUnique({
 		where: {
 			uuid
+		},
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
-	if (!user?.isAdmin) {
+	if (!user?.roles.some(role => role.name === 'admin')) {
 		res.badRequest('User is not an admin');
 		return;
 	}
@@ -36,7 +43,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uuid
 		},
 		data: {
-			isAdmin: false
+			roles: {
+				disconnect: {
+					name: 'admin'
+				}
+			}
 		}
 	});
 

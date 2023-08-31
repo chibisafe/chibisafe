@@ -3,7 +3,9 @@ export interface User {
 	loggedIn: boolean;
 	username: string;
 	uuid: string;
-	isAdmin: boolean;
+	roles: {
+		name: string;
+	}[];
 	apiKey: string;
 	token: string;
 	enabled?: string;
@@ -54,7 +56,9 @@ export interface FileWithAdditionalData extends File {
 		uuid: string;
 		username: string;
 		enabled: boolean;
-		isAdmin: boolean;
+		roles: {
+			name: string;
+		}[];
 		createdAt: number;
 	};
 }

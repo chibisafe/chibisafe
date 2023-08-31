@@ -35,7 +35,11 @@ export const authUser = async (authorization?: string | null) => {
 			id: true,
 			uuid: true,
 			username: true,
-			isAdmin: true,
+			roles: {
+				select: {
+					name: true
+				}
+			},
 			apiKey: true,
 			passwordEditedAt: true
 		}
@@ -50,7 +54,7 @@ export const authUser = async (authorization?: string | null) => {
 		id: user.id,
 		uuid: user.uuid,
 		username: user.username,
-		isAdmin: user.isAdmin,
+		roles: user.roles,
 		apiKey: user.apiKey
 	} as RequestUser;
 };

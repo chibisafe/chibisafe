@@ -27,7 +27,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	let { identifier } = req.body as { identifier?: string };
 	if (identifier) {
-		if (!req.user.isAdmin) {
+		if (!req.user?.roles.some(role => role.name === 'admin')) {
 			res.unauthorized('Only administrators can create custom links');
 			return;
 		}

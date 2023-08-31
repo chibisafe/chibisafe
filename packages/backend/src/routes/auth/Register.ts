@@ -86,7 +86,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		data: {
 			uuid: userUuid,
 			username,
-			password: hash
+			password: hash,
+			roles: {
+				connect: {
+					name: 'user'
+				}
+			}
 		}
 	});
 
