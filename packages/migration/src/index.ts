@@ -196,11 +196,11 @@ const start = async () => {
 	const everyAlbum = await prisma.albums.findMany();
 
 	for (const file of prismaFiles) {
-		const foundAlbumRelation = sqliteAlbumFiles.find(albumFile => albumFile.fileId === file.id);
+		const foundAlbumRelation = sqliteAlbumFiles.find((albumFile: any) => albumFile.fileId === file.id);
 		if (!foundAlbumRelation?.albumId) continue;
 		if (typeof foundAlbumRelation.albumId !== 'number') continue;
 
-		const albumExists = everyAlbum.find(album => album.id === foundAlbumRelation.albumId);
+		const albumExists = everyAlbum.find((album: any) => album.id === foundAlbumRelation.albumId);
 		if (!albumExists) continue;
 
 		await prisma.files.update({
@@ -221,7 +221,7 @@ const start = async () => {
 
 	loading.start('Processing file-user relations');
 	for (const file of prismaFiles) {
-		const foundUserRelation = sqliteFiles.find(sqliteFile => sqliteFile.id === file.id);
+		const foundUserRelation = sqliteFiles.find((sqliteFile: any) => sqliteFile.id === file.id);
 		if (!foundUserRelation?.userId) continue;
 		if (typeof foundUserRelation.userId !== 'number') continue;
 

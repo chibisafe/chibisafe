@@ -123,7 +123,7 @@ const SETTINGS_META = {
 	serveUploadsFrom: {
 		type: 'string',
 		description:
-			'Fill this if you want to serve your files from a custom domain with nginx/caddy. Leave empty to let chibisafe handle it.',
+			"Enabling this option shifts file hosting control to you. Chibisafe will no longer serve your files, and you'll manage the /uploads folder using nginx/caddy or a similar solution.",
 		name: 'Serve Uploads From',
 		example: 'https://cdn.chibisafe.moe',
 		notice: 'For this setting to take effect, you need to restart the server.'
