@@ -58,20 +58,33 @@ export const unlistenEmitters = (emitters: any[], eventName: string, listener?: 
 };
 
 export const createAdminUserIfNotExists = async () => {
-	const adminUser = await prisma.users.findFirst({
+	const ownerUser = await prisma.users.findFirst({
 		where: {
-			isAdmin: true
+			roles: {
+				some: {
+					name: 'owner'
+				}
+			}
 		}
 	});
 
-	if (!adminUser) {
+	if (!ownerUser) {
 		const hash = await bcrypt.hash('admin', 10);
 		await prisma.users.create({
 			data: {
 				uuid: uuidv4(),
 				username: 'admin',
 				password: hash,
-				isAdmin: true
+				roles: {
+					connect: [
+						{
+							name: 'owner'
+						},
+						{
+							name: 'admin'
+						}
+					]
+				}
 			}
 		});
 

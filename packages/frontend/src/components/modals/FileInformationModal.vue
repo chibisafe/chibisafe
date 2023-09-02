@@ -186,9 +186,9 @@
 											readOnly
 										/>
 										<InputWithOverlappingLabel
-											:value="String(file.user?.isAdmin)"
+											:value="String(file.user?.roles.map(role => role.name).join(', '))"
 											class="mt-4"
-											label="Admin?"
+											label="Roles"
 											readOnly
 										/>
 										<InputWithOverlappingLabel

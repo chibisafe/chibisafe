@@ -63,7 +63,7 @@ export const useUserStore = defineStore('user', {
 					username: this.user.username,
 					uuid: this.user.uuid,
 					apiKey: this.user.apiKey,
-					isAdmin: this.user.isAdmin,
+					roles: this.user.roles,
 					token: this.user.token
 				})
 			);

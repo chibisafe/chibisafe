@@ -62,7 +62,7 @@
 					{{ user.enabled ? 'Enabled' : 'Disabled' }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
-					{{ user.isAdmin ? 'Admin' : 'User' }}
+					{{ user.roles.map(role => role.name).join(', ') }}
 				</td>
 				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
 					{{ formatBytes(user.storageQuota.used) }}
@@ -109,7 +109,7 @@
 							Enable
 						</button>
 						<button
-							v-if="user.isAdmin"
+							v-if="user.roles.some(role => role.name === 'admin')"
 							type="button"
 							class="ml-4 hover:text-blue-400"
 							@click="showManageUserModal(user, 'demote')"

@@ -13,10 +13,19 @@ export default {
 			description: "The user's username.",
 			example: 'admin'
 		},
-		isAdmin: {
-			type: 'boolean',
-			description: 'Whether or not the user is an administrator.',
-			example: true
+		roles: {
+			type: 'array',
+			description: "The user's roles.",
+			items: {
+				type: 'object',
+				properties: {
+					name: {
+						type: 'string',
+						description: "The role's name.",
+						example: 'admin'
+					}
+				}
+			}
 		},
 		apiKey: {
 			type: 'string',

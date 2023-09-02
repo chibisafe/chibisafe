@@ -10,6 +10,13 @@ export default async (req: RequestWithUser, res: FastifyReply, next: HookHandler
 	const user = await prisma.users.findFirst({
 		where: {
 			apiKey
+		},
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
@@ -28,7 +35,7 @@ export default async (req: RequestWithUser, res: FastifyReply, next: HookHandler
 		id: user.id,
 		uuid: user.uuid,
 		username: user.username,
-		isAdmin: user.isAdmin,
+		roles: user.roles,
 		apiKey: user.apiKey,
 		passwordEditedAt: user.passwordEditedAt
 	};

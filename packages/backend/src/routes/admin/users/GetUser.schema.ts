@@ -23,7 +23,7 @@ export default {
 						uuid: { $ref: 'UserAsAdmin#/properties/uuid' },
 						username: { $ref: 'UserAsAdmin#/properties/username' },
 						enabled: { $ref: 'UserAsAdmin#/properties/enabled' },
-						isAdmin: { $ref: 'UserAsAdmin#/properties/isAdmin' },
+						roles: { $ref: 'UserAsAdmin#/properties/roles' },
 						createdAt: { $ref: 'UserAsAdmin#/properties/createdAt' },
 						editedAt: { $ref: 'UserAsAdmin#/properties/editedAt' },
 						apiKeyEditedAt: {

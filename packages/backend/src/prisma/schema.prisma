@@ -15,7 +15,6 @@ model users {
 	username String @unique
 	password String
 	enabled Boolean @default(true)
-	isAdmin Boolean @default(false)
 	storageQuota String @default("0")
 	apiKey String? @unique
 	passwordEditedAt DateTime?
@@ -23,6 +22,13 @@ model users {
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	files files[]
+	roles roles[]
+}
+
+model roles {
+	id Int @id @default(autoincrement())
+	name String @unique
+	users users[]
 }
 
 model files {
