@@ -52,6 +52,7 @@ model gists {
 	id Int @id @default(autoincrement())
 	uuid String @unique
 	userId Int?
+	identifier String @unique
 	name String
 	content String
 	language String

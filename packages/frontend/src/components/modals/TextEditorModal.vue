@@ -25,7 +25,8 @@
 						leave-to="opacity-0 translate-y-4 desktop:translate-y-0 desktop:scale-95"
 					>
 						<DialogPanel
-							class="relative transform overflow-hidden rounded-lg bg-dark-110 px-4 pt-5 pb-4 text-left shadow-xl transition-all desktop:my-8 desktop:w-full desktop:max-w-5xl desktop:p-6 desktop:h-[calc(100vh-8rem)] desktop:flex desktop:flex-col"
+							class="relative transform overflow-hidden rounded-lg bg-dark-110 px-4 pt-5 pb-4 text-left shadow-xl transition-all desktop:my-8 desktop:w-full desktop:max-w-5xl desktop:p-6 desktop:flex desktop:flex-col"
+							:class="[showPostCreate ? 'desktop:h-auto' : 'desktop:h-[calc(100vh-8rem)]']"
 						>
 							<div class="absolute top-0 right-0 hidden pt-4 pr-4 desktop:block">
 								<button
@@ -38,7 +39,39 @@
 								</button>
 							</div>
 							<div class="desktop:block desktop:items-start desktop:flex-1">
-								<div class="mt-3 text-center desktop:mt-0 desktop:text-left desktop:h-full">
+								<div v-if="showPostCreate" class="mt-3 text-center desktop:mt-0 desktop:text-left">
+									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-light-100">
+										Successfully created a new Gist!
+									</DialogTitle>
+									<div class="mt-8 flex flex-col">
+										<div class="flex-1">
+											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+												Raw gist URL
+											</label>
+											<input
+												:value="createdGist.raw"
+												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
+												placeholder="Untitled"
+												autocomplete="off"
+												spellcheck="false"
+											/>
+										</div>
+
+										<div class="flex-1 mt-4">
+											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+												Pretty gist URL
+											</label>
+											<input
+												:value="createdGist.link"
+												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
+												placeholder="Untitled"
+												autocomplete="off"
+												spellcheck="false"
+											/>
+										</div>
+									</div>
+								</div>
+								<div v-else class="mt-3 text-center desktop:mt-0 desktop:text-left desktop:h-full">
 									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-light-100">
 										{{ title }}
 									</DialogTitle>
@@ -141,6 +174,8 @@ const gistTitle = ref('');
 const passedContent = computed(() => props.content);
 const chosenLanguage = ref('plaintext');
 const textarea = ref<HTMLTextAreaElement>();
+const showPostCreate = ref(false);
+const createdGist = ref({ uuid: '', raw: '', link: '' });
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
@@ -152,6 +187,7 @@ const closeModal = () => {
 };
 
 whenever(passedContent, async () => {
+	showPostCreate.value = false;
 	inputValue.value = passedContent.value;
 });
 
@@ -186,5 +222,7 @@ const doAction = async () => {
 	if (inputValue.value === '') return;
 
 	const gist = await createGist(gistTitle.value ?? 'Untitled', inputValue.value, chosenLanguage.value ?? 'plaintext');
+	showPostCreate.value = true;
+	createdGist.value = gist?.gist;
 };
 </script>

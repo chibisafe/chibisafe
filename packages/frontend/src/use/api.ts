@@ -530,6 +530,7 @@ export const createGist = async (name: string, content: string, language: string
 	try {
 		const data = await request.post('gist/create', { name, content, language });
 		debug('createGist', data);
+		if (data.message) sendSuccessToast(data.message);
 		return {
 			message: data.message,
 			gist: data.gist

@@ -32,6 +32,16 @@ export default {
 							type: 'string',
 							description: 'The uuid of the gist.',
 							example: '1453821d-aaf9-435c-8a51-e3f16f7d2ee5'
+						},
+						raw: {
+							type: 'string',
+							description: 'The raw link of the gist.',
+							example: 'https://chibisafe.moe/api/gist/random-identifier'
+						},
+						link: {
+							type: 'string',
+							description: 'The link of the gist.',
+							example: 'https://chibisafe.moe/gist/random-identifier'
 						}
 					}
 				}
