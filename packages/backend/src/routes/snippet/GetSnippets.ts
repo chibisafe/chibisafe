@@ -22,6 +22,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uuid: true,
 			identifier: true,
 			createdAt: true
+		},
+		orderBy: {
+			createdAt: 'desc'
 		}
 	});
 
