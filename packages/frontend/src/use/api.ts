@@ -525,3 +525,16 @@ export const searchFiles = async (text: string, page: number) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const createGist = async (name: string, content: string, language: string) => {
+	try {
+		const data = await request.post('gist/create', { name, content, language });
+		debug('createGist', data);
+		return {
+			message: data.message,
+			gist: data.gist
+		};
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

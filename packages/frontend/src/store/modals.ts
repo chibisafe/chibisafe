@@ -11,6 +11,10 @@ export const useModalStore = defineStore('modals', {
 		genericInput: {
 			show: false
 		},
+		textEditor: {
+			show: false,
+			text: ''
+		},
 		search: {
 			show: false
 		},
