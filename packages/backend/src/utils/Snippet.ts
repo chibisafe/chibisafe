@@ -10,7 +10,7 @@ import type { FastifyRequest } from 'fastify';
 
 const fileIdentifierMaxTries = 5;
 
-export const getUniqueGistIdentifier = async (): Promise<string | null> => {
+export const getUniqueSnippetIdentifier = async (): Promise<string | null> => {
 	const options = {
 		length: SETTINGS.generatedFilenameLength
 	};
@@ -24,7 +24,7 @@ export const getUniqueGistIdentifier = async (): Promise<string | null> => {
 		const identifier = randomstring.generate(options);
 
 		const exists = await prisma.$queryRaw<{ id: number }[]>`
-		SELECT id from gists
+		SELECT id from snippets
 		WHERE identifier LIKE ${`${identifier}.%`}
 		LIMIT 1;
 	`;
@@ -34,14 +34,14 @@ export const getUniqueGistIdentifier = async (): Promise<string | null> => {
 		}
 	}
 
-	log.error('Couldnt allocate identifier for gist');
+	log.error('Couldnt allocate identifier for snippet');
 	return null;
 };
 
-export const constructGistPublicLink = (req: FastifyRequest, identifier: string) => {
+export const constructSnippetPublicLink = (req: FastifyRequest, identifier: string) => {
 	const host = getHost(req);
 	return {
-		raw: `${host}/api/gist/${identifier}`,
-		link: `${host}/gist/${identifier}`
+		raw: `${host}/api/snippet/${identifier}/raw`,
+		link: `${host}/s/${identifier}`
 	};
 };

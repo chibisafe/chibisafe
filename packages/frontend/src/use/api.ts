@@ -526,15 +526,45 @@ export const searchFiles = async (text: string, page: number) => {
 	}
 };
 
-export const createGist = async (name: string, content: string, language: string) => {
+export const createSnippet = async (name: string, content: string, language: string) => {
 	try {
-		const data = await request.post('gist/create', { name, content, language });
-		debug('createGist', data);
+		const data = await request.post('snippet/create', { name, content, language });
+		debug('createSnippet', data);
 		if (data.message) sendSuccessToast(data.message);
 		return {
 			message: data.message,
-			gist: data.gist
+			snippet: data.snippet
 		};
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getSnippets = async () => {
+	try {
+		const data = await request.get('snippets');
+		debug('getSnippets', data);
+		return data.snippets;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getSnippet = async (uuid: string) => {
+	try {
+		const data = await request.get(`snippet/${uuid}`);
+		debug('getSnippet', data);
+		return data.snippet;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getPublicSnippet = async (identifier: string) => {
+	try {
+		const data = await request.get(`snippet/public/${identifier}`);
+		debug('getPublicSnippet', data);
+		return data.snippet;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

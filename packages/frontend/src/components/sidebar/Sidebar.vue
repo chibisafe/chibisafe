@@ -291,7 +291,8 @@ import {
 	FilesIcon,
 	UsersIcon,
 	Settings2Icon,
-	BarChart3Icon
+	BarChart3Icon,
+	CodeIcon
 } from 'lucide-vue-next';
 
 const route = useRoute();
@@ -355,6 +356,7 @@ const navigationItems = [
 	{ type: 'main', name: 'Home', href: '/', icon: HomeIcon, current: false },
 	{ type: 'main', name: 'Uploads', href: '/dashboard/uploads', icon: FileUpIcon, current: false },
 	{ type: 'main', name: 'Albums', href: '/dashboard/albums', icon: LibraryIcon, current: false },
+	{ type: 'main', name: 'Snippets', href: '/dashboard/snippets', icon: CodeIcon, current: false },
 	// { type: 'main', name: 'Tags', href: '/dashboard/tags', icon: TagsIcon, current: false },
 	{ type: 'main', name: 'My account', href: '/dashboard/account', icon: User2Icon, current: false },
 

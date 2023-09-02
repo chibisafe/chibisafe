@@ -41,15 +41,15 @@
 							<div class="desktop:block desktop:items-start desktop:flex-1">
 								<div v-if="showPostCreate" class="mt-3 text-center desktop:mt-0 desktop:text-left">
 									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-light-100">
-										Successfully created a new Gist!
+										Successfully created a new Snippet!
 									</DialogTitle>
 									<div class="mt-8 flex flex-col">
 										<div class="flex-1">
 											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-												Raw gist URL
+												Raw snippet URL
 											</label>
 											<input
-												:value="createdGist.raw"
+												:value="createdSnippet.raw"
 												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
 												placeholder="Untitled"
 												autocomplete="off"
@@ -59,10 +59,10 @@
 
 										<div class="flex-1 mt-4">
 											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-												Pretty gist URL
+												Pretty snippet URL
 											</label>
 											<input
-												:value="createdGist.link"
+												:value="createdSnippet.link"
 												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
 												placeholder="Untitled"
 												autocomplete="off"
@@ -81,7 +81,7 @@
 												File title
 											</label>
 											<input
-												v-model="gistTitle"
+												v-model="snippetTitle"
 												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
 												placeholder="Untitled"
 												autocomplete="off"
@@ -159,7 +159,7 @@ import { useModalStore } from '~/store';
 import { XIcon } from 'lucide-vue-next';
 import { whenever } from '@vueuse/core';
 import { hljs, supportedLanguages } from '~/use/highlight';
-import { createGist } from '~/use/api';
+import { createSnippet } from '~/use/api';
 
 const props = defineProps<{
 	title: string;
@@ -170,12 +170,12 @@ const props = defineProps<{
 const modalsStore = useModalStore();
 const isModalOpen = computed(() => modalsStore.textEditor.show);
 const inputValue = ref('');
-const gistTitle = ref('');
+const snippetTitle = ref('');
 const passedContent = computed(() => props.content);
 const chosenLanguage = ref('plaintext');
 const textarea = ref<HTMLTextAreaElement>();
 const showPostCreate = ref(false);
-const createdGist = ref({ uuid: '', raw: '', link: '' });
+const createdSnippet = ref({ uuid: '', raw: '', link: '' });
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
@@ -184,6 +184,9 @@ const clearStore = () => {
 
 const closeModal = () => {
 	modalsStore.textEditor.show = false;
+	snippetTitle.value = '';
+	inputValue.value = '';
+	showPostCreate.value = false;
 };
 
 whenever(passedContent, async () => {
@@ -221,8 +224,12 @@ const determineLanguage = () => {
 const doAction = async () => {
 	if (inputValue.value === '') return;
 
-	const gist = await createGist(gistTitle.value ?? 'Untitled', inputValue.value, chosenLanguage.value ?? 'plaintext');
+	const snippet = await createSnippet(
+		snippetTitle.value ?? 'Untitled',
+		inputValue.value,
+		chosenLanguage.value ?? 'plaintext'
+	);
 	showPostCreate.value = true;
-	createdGist.value = gist?.gist;
+	createdSnippet.value = snippet?.snippet;
 };
 </script>

@@ -48,7 +48,7 @@ model files {
 	tags tags[]
 }
 
-model gists {
+model snippets {
 	id Int @id @default(autoincrement())
 	uuid String @unique
 	userId Int?

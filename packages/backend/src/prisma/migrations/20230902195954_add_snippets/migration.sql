@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "gists" (
+CREATE TABLE "snippets" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "uuid" TEXT NOT NULL,
     "userId" INTEGER,
@@ -13,7 +13,7 @@ CREATE TABLE "gists" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "gists_uuid_key" ON "gists"("uuid");
+CREATE UNIQUE INDEX "snippets_uuid_key" ON "snippets"("uuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "gists_identifier_key" ON "gists"("identifier");
+CREATE UNIQUE INDEX "snippets_identifier_key" ON "snippets"("identifier");

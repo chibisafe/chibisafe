@@ -3,10 +3,10 @@ import prisma from '@/structures/database';
 import type { RequestWithUser } from '@/structures/interfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { utc } from 'moment';
-import { constructGistPublicLink, getUniqueGistIdentifier } from '@/utils/Gist';
+import { constructSnippetPublicLink, getUniqueSnippetIdentifier } from '@/utils/Snippet';
 
 export const options = {
-	url: '/gist/create',
+	url: '/snippet/create',
 	method: 'post',
 	middlewares: [
 		{
@@ -23,13 +23,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { name, content, language } = req.body as { name: string; content: string; language: string };
 
 	const now = utc().toDate();
-	const uniqueIdentifier = await getUniqueGistIdentifier();
+	const uniqueIdentifier = await getUniqueSnippetIdentifier();
 	if (!uniqueIdentifier) {
-		res.internalServerError('Couldnt allocate identifier for gist');
+		res.internalServerError('Couldnt allocate identifier for snippet');
 		return;
 	}
 
-	const gist = await prisma.gists.create({
+	const snippet = await prisma.snippets.create({
 		data: {
 			name,
 			content,
@@ -43,12 +43,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
-	const publicLink = constructGistPublicLink(req, uniqueIdentifier);
+	const publicLink = constructSnippetPublicLink(req, uniqueIdentifier);
 
 	return res.send({
-		message: 'Successfully created gist',
-		gist: {
-			uuid: gist.uuid,
+		message: 'Successfully created snippet',
+		snippet: {
+			uuid: snippet.uuid,
 			...publicLink
 		}
 	});
