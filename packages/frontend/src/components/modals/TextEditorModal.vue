@@ -41,33 +41,35 @@
 							<div class="desktop:block desktop:items-start desktop:flex-1">
 								<div v-if="showPostCreate" class="mt-3 text-center desktop:mt-0 desktop:text-left">
 									<DialogTitle as="h3" class="text-lg font-medium leading-6 text-light-100">
-										Successfully created a new Snippet!
+										You just created a new Snippet!
 									</DialogTitle>
 									<div class="mt-8 flex flex-col">
 										<div class="flex-1">
 											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-												Raw snippet URL
+												Raw snippet URL (for hotlinking or using in scripts)
 											</label>
-											<input
-												:value="createdSnippet.raw"
-												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
-												placeholder="Untitled"
-												autocomplete="off"
-												spellcheck="false"
-											/>
+											<a
+												:href="createdSnippet.raw"
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-blue-400 hover:text-blue-500 transition-colors duration-200 block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 focus:ring-0 desktop:h-10 font-mono"
+											>
+												{{ createdSnippet.raw }}
+											</a>
 										</div>
 
 										<div class="flex-1 mt-4">
 											<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-												Pretty snippet URL
+												Pretty snippet URL (with syntax highlighting and for sharing)
 											</label>
-											<input
-												:value="createdSnippet.link"
-												class="block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 text-light-100 focus:ring-0 desktop:h-10 font-mono"
-												placeholder="Untitled"
-												autocomplete="off"
-												spellcheck="false"
-											/>
+											<a
+												:href="createdSnippet.link"
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-blue-400 hover:text-blue-500 transition-colors duration-200 block p-2.5 w-full leading-5 text-sm rounded-lg border border-dark-80 bg-dark-100 placeholder-gray-400 focus:ring-0 desktop:h-10 font-mono"
+											>
+												{{ createdSnippet.link }}
+											</a>
 										</div>
 									</div>
 								</div>
@@ -179,14 +181,13 @@ const createdSnippet = ref({ uuid: '', raw: '', link: '' });
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
-	// modalsStore.generic.otherData = null;
+	showPostCreate.value = false;
 };
 
 const closeModal = () => {
 	modalsStore.textEditor.show = false;
 	snippetTitle.value = '';
 	inputValue.value = '';
-	showPostCreate.value = false;
 };
 
 whenever(passedContent, async () => {
