@@ -14,6 +14,7 @@ import {
 	checkFileHashOnDB,
 	deleteTmpFile
 } from '@/utils/File';
+import { getUsedQuota } from '@/utils/User';
 import process from 'node:process';
 
 import type { FastifyReply } from 'fastify';
@@ -38,9 +39,16 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const maxChunkSize = SETTINGS.chunkSize;
 	const maxFileSize = SETTINGS.maxSize;
 
+	const quota = await getUsedQuota(req.user?.id as number);
+	if (quota?.overQuota) {
+		res.forbidden('You are over your storage quota');
+		return;
+	}
+
 	try {
 		if (!SETTINGS.publicMode && !req.user) {
 			res.unauthorized('Only registered users are allowed to upload files.');
+			return;
 		}
 
 		const upload = await processFile(req.raw, {
@@ -55,7 +63,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			return await res.code(204).send();
 		}
 
-		// TODO: Validate if public uploads are allowed
+		// Check if the new uploaded file sends the user over the quota
+		const quotaAfterUpload = await getUsedQuota(req.user?.id as number, Number(upload.metadata.size));
+		if (quotaAfterUpload?.overQuota) {
+			await deleteTmpFile(upload.path as string);
+			res.forbidden('You are over your storage quota');
+			return;
+		}
+
 		const album = await validateAlbum(req.headers.albumuuid as string, req.user ? req.user : undefined);
 
 		// Assign a unique identifier to the file
@@ -104,21 +119,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			...uploadedFile,
 			...linkData
 		};
-
-		/*
-		 * The response object structure.
-		 * Use this to perform any additional actions after the upload is complete,
-		 * such as moving the file to a different location, or adding it to a database.
-		 * 	{
-		 * 		"isChunkedUpload":false,
-		 * 		"path":"tmp\\62376102-9737-4edb-86d0-7b3b05c4cd91.exe",
-		 * 		"metadata":{
-		 * 			"name":"parsec-windows.exe",
-		 * 			"type":"application/x-msdownload",
-		 * 			"size":"2881040"
-		 * 		}
-		 * 	}
-		 */
 
 		await res.code(200).send(fileWithLink);
 	} catch (error: any) {

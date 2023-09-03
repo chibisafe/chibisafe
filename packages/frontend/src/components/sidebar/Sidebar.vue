@@ -214,6 +214,24 @@
 								<span class="truncate">{{ item.name }}</span>
 							</a>
 						</div>
+						<div
+							v-if="isAdmin && updateCheck?.updateAvailable"
+							class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
+						>
+							<div>
+								New version available
+								<a
+									:href="updateCheck.latestVersionUrl"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-blue-400 hover:text-blue-500 cursor-pointer"
+									>v{{ updateCheck.latestVersion }}</a
+								>
+							</div>
+							<div class="text-blue-400 hover:text-blue-500 cursor-pointer" @click="showUpdateModal">
+								See what's new
+							</div>
+						</div>
 					</nav>
 				</div>
 			</div>
@@ -231,18 +249,36 @@
 			</div>
 			<main class="flex-1">
 				<div id="dashboard-container" class="overflow-auto h-screen">
+					<div
+						v-if="userStore.user?.username === 'admin' && isAdmin && !userStore.user.passwordEditedAt"
+						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
+					>
+						It seems you are using the admin account but haven't changed the default password yet. Go to the
+						dashboard and change it.
+					</div>
+
+					<div
+						v-if="userStore.user?.storageQuota?.overQuota"
+						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
+					>
+						It seems you've used all your storage quota and won't be able to upload any more files until you
+						free some space.
+					</div>
 					<slot />
 				</div>
 			</main>
 		</div>
+
+		<ReleaseNotesModal :data="updateCheck?.releaseNotes || []" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import { useUserStore, useSettingsStore } from '~/store';
+import ReleaseNotesModal from '~/components/modals/ReleaseNotesModal.vue';
+import { useUserStore, useSettingsStore, useModalStore, useUpdateStore } from '~/store';
 import { saveAs } from 'file-saver';
 import {
 	HomeIcon,
@@ -262,9 +298,29 @@ const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
+const modalsStore = useModalStore();
+const updateStore = useUpdateStore();
 
-const isAdmin = computed(() => userStore.user.isAdmin);
+const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
+const isOwner = computed(() => userStore.user.roles?.find(role => role.name === 'owner'));
 const apiKey = computed(() => userStore.user.apiKey);
+
+const updateCheck = computed(() => updateStore.updateCheck);
+
+// @ts-ignore
+if (!import.meta.env.DEV) {
+	onMounted(() => {
+		if (isAdmin.value) void updateStore.get();
+	});
+
+	watch(isAdmin, async () => {
+		if (isAdmin.value) void updateStore.get();
+	});
+}
+
+const showUpdateModal = () => {
+	modalsStore.releaseNotes.show = true;
+};
 
 const logout = async () => {
 	await router.push('/');

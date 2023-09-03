@@ -6,3 +6,4 @@ export { useTagsStore } from './tags';
 export { useToastStore } from './toast';
 export { useUploadsStore } from './uploads';
 export { useUserStore } from './user';
+export { useUpdateStore } from './updateCheck';

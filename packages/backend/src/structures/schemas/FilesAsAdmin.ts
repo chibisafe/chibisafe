@@ -25,10 +25,19 @@ export default {
 					description: "Whether the user's account is enabled or not.",
 					example: true
 				},
-				isAdmin: {
-					type: 'boolean',
-					description: 'Whether the user is an admin or not.',
-					example: true
+				roles: {
+					type: 'array',
+					description: "The user's roles.",
+					items: {
+						type: 'object',
+						properties: {
+							name: {
+								type: 'string',
+								description: "The role's name.",
+								example: 'admin'
+							}
+						}
+					}
 				},
 				createdAt: {
 					type: 'string',

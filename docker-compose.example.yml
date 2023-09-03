@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   chibisafe:
-    image: ghcr.io/chibisafe/chibisafe:latest
+    image: chibisafe/chibisafe:latest
     container_name: chibisafe
     build:
       context: ./

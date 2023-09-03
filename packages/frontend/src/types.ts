@@ -3,12 +3,19 @@ export interface User {
 	loggedIn: boolean;
 	username: string;
 	uuid: string;
-	isAdmin: boolean;
+	roles: {
+		name: string;
+	}[];
 	apiKey: string;
 	token: string;
 	enabled?: string;
 	createdAt?: string;
 	passwordEditedAt?: Date;
+	storageQuota: {
+		used: number;
+		quota: number;
+		overQuota: boolean;
+	};
 }
 
 export interface UserWithCount extends User {
@@ -49,7 +56,9 @@ export interface FileWithAdditionalData extends File {
 		uuid: string;
 		username: string;
 		enabled: boolean;
-		isAdmin: boolean;
+		roles: {
+			name: string;
+		}[];
 		createdAt: number;
 	};
 }
@@ -109,4 +118,16 @@ export interface Invite {
 		username: string;
 		uuid: string;
 	};
+}
+
+export interface UpdateCheck {
+	updateAvailable: boolean;
+	latestVersion: string;
+	latestVersionUrl: string;
+	releaseNotes: {
+		version: string;
+		url: string;
+		name: string;
+		body: string;
+	}[];
 }

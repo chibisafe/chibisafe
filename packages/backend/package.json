@@ -1,6 +1,6 @@
 {
 	"name": "@chibisafe/backend",
-	"version": "5.1.0",
+	"version": "5.1.3",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
 	"author": {
@@ -31,7 +31,7 @@
 		"node": ">=18.0.0"
 	},
 	"dependencies": {
-		"@chibisafe/uploader-module": "1.0.6",
+		"@chibisafe/uploader-module": "1.0.9",
 		"@fastify/cors": "^8.2.1",
 		"@fastify/helmet": "^10.1.0",
 		"@fastify/rate-limit": "^8.0.0",

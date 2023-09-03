@@ -8,7 +8,13 @@ export const useModalStore = defineStore('modals', {
 		generic: {
 			show: false
 		},
+		genericInput: {
+			show: false
+		},
 		search: {
+			show: false
+		},
+		releaseNotes: {
 			show: false
 		},
 		fileInformation: {

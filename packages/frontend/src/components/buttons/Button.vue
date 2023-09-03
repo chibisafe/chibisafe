@@ -31,7 +31,7 @@ const getVariant = computed(() => {
 		return 'inline-flex font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 bg-transparent hover:bg-transparent text-light-100 hover:text-white border-transparent p-0';
 	}
 
-	return 'text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-0 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-dark-110 dark:border-gray-700 dark:text-white dark:hover:bg-dark-100 mr-2 mb-2';
+	return 'border focus:ring-0 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center focus:ring-gray-600 bg-dark-110 border-gray-700 text-white hover:bg-dark-100 mr-2 mb-2';
 });
 
 const getSize = computed(() => {
@@ -50,7 +50,7 @@ const getAlign = computed(() => {
 
 const getType = computed(() => {
 	if (props.type === 'success') {
-		return 'dark:bg-green-700 dark:hover:bg-green-600';
+		return 'bg-green-700 hover:bg-green-600';
 	}
 
 	return '';

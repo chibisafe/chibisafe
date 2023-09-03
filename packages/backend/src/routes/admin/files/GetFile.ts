@@ -44,7 +44,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				enabled: true,
 				createdAt: true,
 				editedAt: true,
-				isAdmin: true
+				roles: {
+					select: {
+						name: true
+					}
+				}
 			}
 		});
 

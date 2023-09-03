@@ -35,6 +35,10 @@ export const useUserStore = defineStore('user', {
 				...this.user,
 				// Update the rest of the user object
 				...response.user,
+				// Quota information
+				storageQuota: {
+					...response.storageQuota
+				},
 				// Set loggedIn to true
 				loggedIn: true
 			};
@@ -59,7 +63,7 @@ export const useUserStore = defineStore('user', {
 					username: this.user.username,
 					uuid: this.user.uuid,
 					apiKey: this.user.apiKey,
-					isAdmin: this.user.isAdmin,
+					roles: this.user.roles,
 					token: this.user.token
 				})
 			);

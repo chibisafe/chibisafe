@@ -449,6 +449,16 @@ export const getStatistics = async (force: boolean = false) => {
 	}
 };
 
+export const checkForUpdate = async () => {
+	try {
+		const data = await request.get('admin/service/updateCheck');
+		debug(`updateCheck`, data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const getAdminSettings = async (force: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
@@ -465,6 +475,16 @@ export const setAdminSettings = async (settings: any) => {
 		debug('setAdminSettings', data);
 		if (data.message) sendSuccessToast(data.message);
 		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const setUserStorageQuota = async (uuid: string, space: number) => {
+	try {
+		const data = await request.post(`admin/user/${uuid}/quota`, { space });
+		debug('setUserStorageQuota', data);
+		if (data.message) sendSuccessToast(data.message);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

@@ -14,19 +14,45 @@
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">Registered users</h1>
-			<Table :users="users" class="mt-12 bg-dark-110" />
+			<SwitchGroup>
+				<div class="flex items-center mt-8">
+					<SwitchLabel class="mr-4 text-light-100">Hide disabled users</SwitchLabel>
+					<Switch
+						v-model="hideDisabledUsers"
+						class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
+						:class="[hideDisabledUsers ? 'bg-blue-400' : 'bg-gray-200']"
+					>
+						<span class="sr-only">Hide disabled users</span>
+						<span
+							aria-hidden="true"
+							class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out bg-dark-90"
+							:class="[hideDisabledUsers ? 'translate-x-5' : 'translate-x-0']"
+						/>
+					</Switch>
+				</div>
+			</SwitchGroup>
+			<Table v-if="filteredUsers" :users="filteredUsers" class="mt-12 bg-dark-110" />
 		</div>
 	</Sidebar>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getUsersAdmin } from '~/use/api';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Table from '~/components/table/UsersTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
+import type { UserWithCount } from '~/types';
 
-const users = ref([]);
+const hideDisabledUsers = ref(false);
+const users = ref<UserWithCount[]>();
+
+const filteredUsers = computed(() => {
+	if (!users.value) return [];
+	return hideDisabledUsers.value ? users.value.filter(user => user.enabled) : users.value;
+});
+
 onMounted(async () => {
 	const response = await getUsersAdmin();
 	if (!response) return;

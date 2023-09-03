@@ -2,7 +2,7 @@
   <img width="234" height="376" src="https://lolisafe.moe/xjoghu.png">
 </p>
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kanadeko/Kuro/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/chibisafe/chibisafe/master/LICENSE)
 [![Chat / Support](https://img.shields.io/badge/Chat%20%2F%20Support-discord-7289DA.svg?style=flat-square)](https://discord.gg/5g6vgwn)
 [![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dpitu%26type%3Dpledges&style=flat-square)](https://www.patreon.com/pitu)
 [![Support me](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/kana)
@@ -13,6 +13,8 @@ Chibisafe is a file uploader service written in node that aims to to be easy to 
 It supports both public and private mode. Public mode let's anyone sign up and start uploading files to the service, whereas private mode only users with an invite link can do so. During upload, if the file is big it's automatically split into chunks to minimize the chance of network failures enabling you to retry each chunk up to 5 times. Users can also create an API key to use with 3rd party applications to interact directly with their account.
 
 The service also comes with a control panel where you can edit almost every configuration of the instance directly from the UI without having to touch environment or configuration files manually. Control the name, the ratelimit, max file size, accepted extensions, meta descriptions, etc directly from an intuitive panel.
+
+_If you fork/deploy your own instance it would mean a lot if you were to keep either the GitHub logo to our repo or a link to it 💖_
 
 ---
 
@@ -89,6 +91,8 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 - File management
 - File tagging
 - User management
+- User quotas
+- Update checker
 - Public or Private mode (with invite support)
 - ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
 - Browser extension to upload content from websites easily
@@ -110,7 +114,7 @@ version: "3.7"
 
 services:
   chibisafe:
-    image: ghcr.io/chibisafe/chibisafe:latest
+    image: chibisafe/chibisafe:latest
     container_name: chibisafe
     volumes:
       - ./database:/home/node/chibisafe/database:rw
@@ -121,15 +125,16 @@ services:
     restart: always
 
 ```
-Or if you prefer to use docker directly, you could do something like this replacing the path values with your own:
+Or if you prefer to use docker directly, you could do something like this replacing the path values (if necessary) with your own:
 ```bash
 docker run -d \
   --name=chibisafe \
-  -v /path/to/database:/home/node/chibisafe/database \
-  -v /path/to/uploads:/home/node/chibisafe/uploads \
-  -v /path/to/logs:/home/node/chibisafe/logs \
+  -v ./database:/home/node/chibisafe/database:rw \
+  -v ./uploads:/home/node/chibisafe/uploads:rw \
+  -v ./logs:/home/node/chibisafe/logs:rw \
+  -p 24424:8000 \
   --restart unless-stopped \
-  ghcr.io/chibisafe/chibisafe:latest
+  chibisafe/chibisafe:latest
 ```
 
 Now chibisafe will be available in port 24424.
@@ -169,7 +174,7 @@ If you are upgrading from `v3.x` to `v4.0.0` (lolisafe to chibisafe) and you wan
 <details>
 	<summary>Migrating from v4.x to v5</summary>
 
-If you're upgrading from `v4.x` to `v5` you can run `yarn migrate-v4-to-v5` to start the migration process. Depending how many files you have in your old instance it can take up to 30 minutes so be patient. It'll ask you for the absolute path to your v4 sqlite database and then it'll proceed to migrate your data. Once the process is done there is one more thing to do, which is to move the old `./uploads` folder from chibisafe v4 to the root of your v5 folder.
+If you're upgrading from `v4.x` to `v5` you can run `yarn install && yarn migrate-v4-to-v5` to start the migration process. Depending how many files you have in your old instance it can take up to 30 minutes so be patient. It'll ask you for the absolute path to your v4 sqlite database and then it'll proceed to migrate your data. Once the process is done there is one more thing to do, which is to move the old `./uploads` folder from chibisafe v4 to the root of your v5 folder.
 
 > Note: if your uploads folder is in another location like a different/network drive and you are using symlinks, make sure to update the symlink to point it to the uploads folder in root of the new chibisafe
 </details>

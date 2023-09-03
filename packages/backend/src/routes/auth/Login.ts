@@ -25,6 +25,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const user = await prisma.users.findFirst({
 		where: {
 			username
+		},
+		include: {
+			roles: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
@@ -55,7 +62,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			id: user.id,
 			uuid: user.uuid,
 			username: user.username,
-			isAdmin: user.isAdmin,
+			roles: user.roles,
 			apiKey: user.apiKey,
 			passwordEditedAt: user.passwordEditedAt
 		},

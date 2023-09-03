@@ -30,7 +30,20 @@
 							<!-- @ts-ignore -->
 							<template v-if="String(item) !== 'meta'">
 								<span class="w-52">{{ item }}:</span>
-								<span>{{ val }}</span>
+								<span v-if="val.type === 'byte'">
+									{{ formatBytes(val.value) }}
+								</span>
+								<span v-else-if="val.type === 'byteUsage'">
+									{{ `${formatBytes(val.value.used)} / ${formatBytes(val.value.total)}` }}
+									<span v-if="val.value.available">({{ formatBytes(val.value.available) }} available)</span>
+								</span>
+								<span v-else-if="val.type === 'time'">
+									{{ dayjs.duration(val.value, "seconds").humanize() }}
+								</span>
+								<span v-else-if="val.type === 'unavailable'">
+									Unavailable
+								</span>
+								<span v-else>{{ val }}</span>
 							</template>
 							<template v-else>
 								<div class="absolute top-4 right-4 flex">
@@ -49,10 +62,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getStatistics } from '~/use/api';
+import { formatBytes } from '~/use/file';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { RepeatIcon } from 'lucide-vue-next';
+dayjs.extend(duration)
+dayjs.extend(relativeTime)
 
 const stats = ref(null) as any;
 const loading = ref(false);

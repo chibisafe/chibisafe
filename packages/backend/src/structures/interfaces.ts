@@ -4,7 +4,9 @@ export interface RequestUser {
 	id: number;
 	uuid: string;
 	username: string;
-	isAdmin: boolean;
+	roles: {
+		name: string;
+	}[];
 	apiKey?: string | null | undefined;
 	passwordEditedAt: Date | null;
 }
@@ -23,7 +25,9 @@ export interface User {
 	username: string;
 	password: string;
 	enabled: boolean;
-	isAdmin: boolean;
+	roles: {
+		name: string;
+	}[];
 	apiKey: string;
 	passwordEditedAt: string;
 	apiKeyEditedAt: string;
@@ -116,9 +120,12 @@ export interface Settings {
 	logoURL: string;
 	statisticsCron: string;
 	disableStatisticsCron: boolean;
+	updateCheckCron: string;
+	disableUpdateCheck: boolean;
 	enabledStatistics: string[];
 	serveUploadsFrom: string;
 	enableMixedCaseFilenames: boolean;
+	usersStorageQuota: number;
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
 }

@@ -32,6 +32,9 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.statisticsCron = '0 0 * * * *';
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
+		// Run the update check at midnight every day
+		SETTINGS.updateCheckCron = '0 0 * * *';
+
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
 		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom;
@@ -50,12 +53,14 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.publicMode = settingsTable.publicMode;
 		SETTINGS.userAccounts = settingsTable.userAccounts;
 		SETTINGS.disableStatisticsCron = settingsTable.disableStatisticsCron;
+		SETTINGS.disableUpdateCheck = settingsTable.disableUpdateCheck;
 		SETTINGS.backgroundImageURL = settingsTable.backgroundImageURL;
 		SETTINGS.logoURL = settingsTable.logoURL;
 		SETTINGS.metaDescription = settingsTable.metaDescription;
 		SETTINGS.metaKeywords = settingsTable.metaKeywords;
 		SETTINGS.metaTwitterHandle = settingsTable.metaTwitterHandle;
 		SETTINGS.metaDomain = settingsTable.metaDomain;
+		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		return;
 	}
 
@@ -79,12 +84,14 @@ export const loadSettings = async (force = false) => {
 		publicMode: false,
 		userAccounts: false,
 		disableStatisticsCron: false,
+		disableUpdateCheck: false,
 		backgroundImageURL: '',
 		logoURL: '',
 		metaDomain: 'https://your-domain.com',
 		metaDescription: 'description for please-change-me.com 🚀',
 		metaKeywords: 'comma, separated, keywords, that, describe, this, website',
-		metaTwitterHandle: '@your-twitter-handle'
+		metaTwitterHandle: '@your-twitter-handle',
+		usersStorageQuota: 0
 	};
 
 	await prisma.settings.create({
@@ -92,7 +99,8 @@ export const loadSettings = async (force = false) => {
 			...data,
 			// This is due to prisma not supporting int64
 			maxSize: String(data.maxSize),
-			chunkSize: String(data.chunkSize)
+			chunkSize: String(data.chunkSize),
+			usersStorageQuota: String(data.usersStorageQuota)
 		}
 	});
 
@@ -115,7 +123,7 @@ const SETTINGS_META = {
 	serveUploadsFrom: {
 		type: 'string',
 		description:
-			'Fill this if you want to serve your files from a custom domain with nginx/caddy. Leave empty to let chibisafe handle it.',
+			"Enabling this option shifts file hosting control to you. Chibisafe will no longer serve your files, and you'll manage the /uploads folder using nginx/caddy or a similar solution.",
 		name: 'Serve Uploads From',
 		example: 'https://cdn.chibisafe.moe',
 		notice: 'For this setting to take effect, you need to restart the server.'
@@ -214,6 +222,11 @@ const SETTINGS_META = {
 		description: 'Whether or not to disable the statistics cron.',
 		name: 'Disable Statistics Cron'
 	},
+	disableUpdateCheck: {
+		type: 'boolean',
+		description: 'Whether or not to disable the update check.',
+		name: 'Disable Update Check'
+	},
 	backgroundImageURL: {
 		type: 'string',
 		description: 'The URL for the background image of the instance.',
@@ -247,5 +260,11 @@ const SETTINGS_META = {
 		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
 		example: '@chibisafe'
+	},
+	usersStorageQuota: {
+		type: 'number',
+		description: 'The storage quota for each user in bytes. 0 for unlimited.',
+		name: 'Users Storage Quota',
+		notice: "You can override this setting by changing it on a user's profile."
 	}
 };

@@ -1,11 +1,9 @@
 <template>
 	<div class="h-screen w-full overflow-auto">
-		<div class="flex flex-col items-center w-full self-center dark:text-light-100">
+		<div class="flex flex-col items-center w-full self-center text-light-100">
 			<Header />
 		</div>
-		<div
-			class="flex flex-col items-center h-auto min-h-[900px] w-full dark:text-light-100 justify-center self-center"
-		>
+		<div class="flex flex-col items-center h-auto min-h-[900px] w-full text-light-100 justify-center self-center">
 			<div
 				class="flex w-full mt-16 mobile:mt-6 items-center relative max-w-4xl mobile:flex-col-reverse mobile:p-6"
 			>
@@ -97,7 +95,7 @@
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
 							<CheckIcon class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
-							<p class="ml-9 text-lg font-medium leading-6 text-gray-900 dark:text-light-100">
+							<p class="ml-9 text-lg font-medium leading-6 text-light-100">
 								{{ feature }}
 							</p>
 						</dt>

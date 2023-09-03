@@ -11,10 +11,10 @@
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
 			<div class="mt-8 bg-dark-110 p-8">
-				<span class="text-dark-90 dark:text-light-100 block">Your current username. Can't be changed.</span>
+				<span class="text-light-100 block">Your current username. Can't be changed.</span>
 				<InputWithOverlappingLabel v-model="username" class="mt-4" label="Username" readOnly />
 
-				<span class="mt-12 text-dark-90 dark:text-light-100 block"
+				<span class="mt-12 text-light-100 block"
 					>If you want to change your password please enter your current one followed by the new password
 					twice.</span
 				>
@@ -35,11 +35,19 @@
 				<Button class="mt-4" @click="doChangePassword">Change password</Button>
 				<p v-if="error" class="text-red-400">{{ error }}</p>
 
-				<span class="mt-12 text-dark-90 dark:text-light-100 block"
+				<span class="mt-12 text-light-100 block"
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
 				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" blur readOnly />
 				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
+
+				<template v-if="userStore.user.storageQuota && showQuotaMessage">
+					<span class="mt-12 text-light-100 block"> Your storage quota </span>
+					<span class="text-light-100 block">
+						Using {{ formatBytes(userStore.user.storageQuota.used) }} /
+						{{ formatBytes(userStore.user.storageQuota.quota) }} ({{ getUsedStoragePercentage }}%)
+					</span>
+				</template>
 			</div>
 		</div>
 	</Sidebar>
@@ -50,6 +58,7 @@ import { ref, computed } from 'vue';
 import { useUserStore } from '~/store/user';
 import { useToastStore } from '~/store/toast';
 import { changePassword, changeApiKey } from '~/use/api';
+import { formatBytes } from '~/use/file';
 
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
@@ -65,6 +74,12 @@ const newPassword = ref('');
 const reNewPassword = ref('');
 const error = ref('');
 const apiKey = computed(() => userStore.user.apiKey);
+const getUsedStoragePercentage = computed(() => {
+	return ((userStore.user.storageQuota.used / userStore.user.storageQuota.quota) * 100).toFixed(2);
+});
+const showQuotaMessage = computed(() => {
+	return userStore.user.storageQuota.quota !== 0;
+});
 
 const doChangePassword = async () => {
 	error.value = '';

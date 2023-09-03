@@ -15,13 +15,20 @@ model users {
 	username String @unique
 	password String
 	enabled Boolean @default(true)
-	isAdmin Boolean @default(false)
+	storageQuota String @default("0")
 	apiKey String? @unique
 	passwordEditedAt DateTime?
 	apiKeyEditedAt DateTime?
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	files files[]
+	roles roles[]
+}
+
+model roles {
+	id Int @id @default(autoincrement())
+	name String @unique
+	users users[]
 }
 
 model files {
@@ -90,6 +97,7 @@ model settings {
 	publicMode Boolean
 	userAccounts Boolean
 	disableStatisticsCron Boolean
+	disableUpdateCheck Boolean @default(false)
 	backgroundImageURL String
 	logoURL String
 	metaDescription String
@@ -98,6 +106,7 @@ model settings {
 	metaDomain String @default("")
 	serveUploadsFrom String @default("")
 	enableMixedCaseFilenames Boolean @default(true)
+	usersStorageQuota String @default("0")
 }
 
 model statistics {
