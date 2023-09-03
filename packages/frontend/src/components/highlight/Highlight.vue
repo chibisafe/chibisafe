@@ -18,9 +18,6 @@ const className = computed(() => `hljs ${props.language} hljs-lines`);
 const code = computed(() => {
 	const highlightedCode = hljs.highlight(props.language, props.code);
 	const lineDigits = String(highlightedCode.value.split('\n').length).length;
-	return highlightedCode.value.replaceAll(
-		/^/gm,
-		`<span class="hljs-line" style="min-width: ${lineDigits}rem;"></span>`
-	);
+	return highlightedCode.value.replaceAll(/^/gm, `<span class="hljs-line w-${lineDigits * 4}"></span>`);
 });
 </script>

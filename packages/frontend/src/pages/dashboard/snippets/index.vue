@@ -63,8 +63,6 @@ import type { Snippet } from '~/types';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
-// import 'highlight.js/styles/github-dark.css';
-// import hljsVuePlugin from '@highlightjs/vue-plugin';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
