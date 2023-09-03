@@ -569,3 +569,13 @@ export const getPublicSnippet = async (identifier: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const deleteSnippet = async (uuid: string) => {
+	try {
+		const data = await request.delete(`snippet/${uuid}`);
+		debug('deleteSnippet', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
