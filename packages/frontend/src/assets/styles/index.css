@@ -96,3 +96,19 @@
 		background: #131314;
 	}
 }
+
+.hljs-lines {
+	counter-reset: linecounter;
+}
+
+.hljs-line {
+	display: inline-block;
+	min-width: 1rem;
+	padding-right: 1rem;
+	text-align: right;
+}
+
+.hljs-line::before {
+	counter-increment: linecounter;
+	content: counter(linecounter);
+}
