@@ -18,6 +18,14 @@
 						</p>
 					</div>
 
+					<div
+						v-if="!settingsStore.userAccounts"
+						class="p-4 text-center bg-red-900 mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md self-center"
+					>
+						This instance is currently running in invite-only mode, therefore you can't register an account
+						at this time.
+					</div>
+
 					<div class="mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md">
 						<div class="bg-dark-110 py-8 px-4 shadow desktop:rounded-lg desktop:px-10">
 							<form class="space-y-6" action="#" method="POST">
@@ -79,12 +87,13 @@
 import { ref } from 'vue';
 import { register as Register } from '~/use/api';
 import { useRouter } from 'vue-router';
-import { useToastStore } from '~/store/toast';
+import { useToastStore, useSettingsStore } from '~/store';
 import Button from '~/components/buttons/Button.vue';
 import Input from '~/components/forms/Input.vue';
 
 const router = useRouter();
 const toastStore = useToastStore();
+const settingsStore = useSettingsStore();
 
 // Form models
 const username = ref('');
@@ -92,6 +101,7 @@ const password = ref('');
 const repassword = ref('');
 
 const register = async () => {
+	if (!settingsStore.userAccounts) return;
 	if (!username.value || !password.value || !repassword.value) {
 		toastStore.create('error', 'Username or any of the two passwords are missing');
 		return;
