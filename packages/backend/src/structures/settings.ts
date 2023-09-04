@@ -26,9 +26,6 @@ export const loadSettings = async (force = false) => {
 
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number.isNaN(Number(process.env.PORT)) ? 8000 : Number(process.env.PORT) ?? 8000;
-		SETTINGS.frontendPort = Number.isNaN(Number(process.env.FRONTEND_PORT))
-			? 8001
-			: Number(process.env.FRONTEND_PORT) ?? 8001;
 		SETTINGS.host = process.env.HOST ?? '0.0.0.0';
 
 		// These are static for now
