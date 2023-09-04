@@ -24,7 +24,7 @@
 					leave-to="opacity-0 scale-95"
 				>
 					<DialogPanel
-						class="mx-auto max-w-2xl transform divide-y divide-gray-500 divide-opacity-20 overflow-hidden rounded-xl bg-dark-80 shadow-2xl transition-all"
+						class="mx-auto max-w-2xl transform divide-y divide-gray-500 divide-opacity-20 overflow-hidden rounded-xl bg-dark-90 shadow-2xl transition-all"
 					>
 						<Combobox @update:modelValue="onSelect">
 							<div class="relative">
@@ -102,7 +102,7 @@ import {
 	TransitionChild,
 	TransitionRoot
 } from '@headlessui/vue';
-import { SearchIcon, FileUpIcon, LibraryIcon, User2Icon } from 'lucide-vue-next';
+import { SearchIcon, FileUpIcon, LibraryIcon, User2Icon, CodeIcon } from 'lucide-vue-next';
 
 const router = useRouter();
 const modalsStore = useModalStore();
@@ -135,6 +135,10 @@ const goToAlbums = () => {
 	void router.push('/dashboard/albums');
 };
 
+const goToSnippets = () => {
+	void router.push('/dashboard/snippets');
+};
+
 const goToAccount = () => {
 	void router.push('/dashboard/account');
 };
@@ -150,6 +154,7 @@ const quickActions = [
 	{ name: 'Create new album...', icon: LibraryIcon, callback: goCreateAlbum },
 	{ name: 'Go to uploads...', icon: FileUpIcon, callback: goToUploads },
 	{ name: 'Go to albums...', icon: LibraryIcon, callback: goToAlbums },
+	{ name: 'Go to snippets...', icon: CodeIcon, callback: goToSnippets },
 	{ name: 'Go to my account...', icon: User2Icon, callback: goToAccount }
 ];
 </script>
