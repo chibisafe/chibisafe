@@ -42,7 +42,7 @@ export const constructSnippetPublicLink = (req: FastifyRequest, identifier: stri
 	const host = getHost(req);
 	let frontendHost = host;
 	if (process.env.NODE_ENV !== 'production') {
-		frontendHost = host.replace(String(SETTINGS.port), '8081');
+		frontendHost = host.replace(String(SETTINGS.port), '8001');
 	}
 
 	return {
