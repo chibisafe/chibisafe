@@ -1,6 +1,8 @@
 <template>
 	<div class="flex">
-		<pre><code class="hljs text-right !pr-0"><div v-for="line in lines" :key="line">{{ line }}</div></code></pre>
+		<pre
+			class="select-none"
+		><code class="hljs text-right !pr-0"><div v-for="line in lines" :key="line">{{ line }}</div></code></pre>
 		<!-- eslint-disable-next-line vue/no-v-html -->
 		<pre class="grow"><code class="h-full" :class="className" v-html="code"></code></pre>
 	</div>
