@@ -178,6 +178,7 @@ const chosenLanguage = ref('plaintext');
 const textarea = ref<HTMLTextAreaElement>();
 const showPostCreate = ref(false);
 const createdSnippet = ref({ uuid: '', raw: '', link: '' });
+const timer = ref<any>();
 
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
@@ -216,10 +217,15 @@ const onKeyDown = (event: KeyboardEvent) => {
 };
 
 const determineLanguage = () => {
-	const highlight = hljs.highlightAuto(inputValue.value);
-	if (highlight.language) {
-		chosenLanguage.value = highlight.language;
-	}
+	// eslint-disable-next-line no-restricted-globals
+	if (timer.value) clearTimeout(timer.value);
+	// eslint-disable-next-line no-restricted-globals
+	timer.value = setTimeout(() => {
+		const highlight = hljs.highlightAuto(inputValue.value);
+		if (highlight.language) {
+			chosenLanguage.value = highlight.language;
+		}
+	}, 500);
 };
 
 const doAction = async () => {
