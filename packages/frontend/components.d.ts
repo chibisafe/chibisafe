@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     GenericConfirmationModal: typeof import('./src/components/modals/GenericConfirmationModal.vue')['default']
     GenericInputModal: typeof import('./src/components/modals/GenericInputModal.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
+    Highlight: typeof import('./src/components/highlight/Highlight.vue')['default']
     Input: typeof import('./src/components/forms/Input.vue')['default']
     InputWithOverlappingLabel: typeof import('./src/components/forms/InputWithOverlappingLabel.vue')['default']
     InvitesTable: typeof import('./src/components/table/InvitesTable.vue')['default']
@@ -35,6 +36,7 @@ declare module '@vue/runtime-core' {
     SearchModal: typeof import('./src/components/modals/SearchModal.vue')['default']
     Sidebar: typeof import('./src/components/sidebar/Sidebar.vue')['default']
     Tag: typeof import('./src/components/tags/Tag.vue')['default']
+    TextEditorModal: typeof import('./src/components/modals/TextEditorModal.vue')['default']
     Toast: typeof import('./src/components/toast/Toast.vue')['default']
     UsersTable: typeof import('./src/components/table/UsersTable.vue')['default']
   }

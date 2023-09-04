@@ -525,3 +525,57 @@ export const searchFiles = async (text: string, page: number) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const createSnippet = async (name: string, content: string, language: string) => {
+	try {
+		const data = await request.post('snippet/create', { name, content, language });
+		debug('createSnippet', data);
+		if (data.message) sendSuccessToast(data.message);
+		return {
+			message: data.message,
+			snippet: data.snippet
+		};
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getSnippets = async () => {
+	try {
+		const data = await request.get('snippets');
+		debug('getSnippets', data);
+		return data.snippets;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getSnippet = async (uuid: string) => {
+	try {
+		const data = await request.get(`snippet/${uuid}`);
+		debug('getSnippet', data);
+		return data.snippet;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getPublicSnippet = async (identifier: string) => {
+	try {
+		const data = await request.get(`snippet/public/${identifier}`);
+		debug('getPublicSnippet', data);
+		return data.snippet;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const deleteSnippet = async (uuid: string) => {
+	try {
+		const data = await request.delete(`snippet/${uuid}`);
+		debug('deleteSnippet', data);
+		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};

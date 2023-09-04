@@ -48,6 +48,19 @@ model files {
 	tags tags[]
 }
 
+model snippets {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int?
+	identifier String @unique
+	name String
+	content String
+	language String
+	parentUuid String?
+	createdAt DateTime @default(now())
+	editedAt DateTime?
+}
+
 model albums {
 	id Int @id @default(autoincrement())
 	uuid String @unique

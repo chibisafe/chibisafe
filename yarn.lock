@@ -331,6 +331,7 @@ __metadata:
   dependencies:
     "@chibisafe/uploader-client": 1.0.9
     "@headlessui/vue": ^1.6.5
+    "@highlightjs/vue-plugin": ^2.1.0
     "@tailwindcss/forms": ^0.5.3
     "@tailwindcss/typography": ^0.5.7
     "@types/file-saver": ^2.0.5
@@ -348,6 +349,7 @@ __metadata:
     eslint: ^8.8.0
     eslint-config-neon: ^0.1.33
     file-saver: ^2.0.5
+    highlight.js: ^11.8.0
     lucide-vue-next: ^0.256.0
     marked: ^5.1.0
     media-chrome: ^0.16.0
@@ -610,6 +612,16 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 1a8324c8216cac06fec29dd190b4daf2ffd9d0ef60c62d54f54d4b504c17e800e0b09ae01361f87fbf382ca448b5f85b2e6fdca6e28a0956a6219c7420782e57
+  languageName: node
+  linkType: hard
+
+"@highlightjs/vue-plugin@npm:^2.1.0":
+  version: 2.1.2
+  resolution: "@highlightjs/vue-plugin@npm:2.1.2"
+  peerDependencies:
+    highlight.js: ^11.0.1
+    vue: ^3
+  checksum: 7522a78a21f4fd354ceb67f7e8ee74e3d66c38da8b638257c6adf8ba8a8fe19fed03476366c0189049c41d32ca4de6d19e41e60dd6ce9b046374c9791025ac28
   languageName: node
   linkType: hard
 
@@ -5256,6 +5268,13 @@ __metadata:
     glob: "npm:^8.0.0"
     readable-stream: "npm:^3.6.0"
   checksum: 6548acba10dd79ebfc93f0d739c4cb2f32f7932c8d87b091992f3a0f844706263415eab81be015aed4ab874154232beb666920d7e280502c6bba29a40cde343e
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^11.8.0":
+  version: 11.8.0
+  resolution: "highlight.js@npm:11.8.0"
+  checksum: d2578a57aee7315946ff19379053fd0a28b127baabf7617ab1d28d62cdc4eaf3d75053569cb8479a5afdc7a68f1ba9a6c1d612d8ae399b4b9aa43093b4fb6831
   languageName: node
   linkType: hard
 

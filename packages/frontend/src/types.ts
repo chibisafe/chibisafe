@@ -131,3 +131,14 @@ export interface UpdateCheck {
 		body: string;
 	}[];
 }
+
+export interface Snippet {
+	uuid: string;
+	parentUuid: string;
+	name: string;
+	content: string;
+	language: string;
+	createdAt: string;
+	raw: string;
+	link: string;
+}
