@@ -1,6 +1,9 @@
 <template>
-	<!-- eslint-disable-next-line vue/no-v-html -->
-	<pre><code :class="className" v-html="code"></code></pre>
+	<div class="flex">
+		<pre><code class="hljs text-right !pr-0"><div v-for="line in lines" :key="line">{{ line }}</div></code></pre>
+		<!-- eslint-disable-next-line vue/no-v-html -->
+		<pre class="grow"><code class="h-full" :class="className" v-html="code"></code></pre>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -13,11 +16,13 @@ const props = defineProps<{
 	code: string;
 }>();
 
-const className = computed(() => `hljs ${props.language} hljs-lines`);
+const className = computed(() => `hljs ${props.language}`);
 
 const code = computed(() => {
-	const highlightedCode = hljs.highlight(props.language, props.code);
-	const lineDigits = String(highlightedCode.value.split('\n').length).length;
-	return highlightedCode.value.replaceAll(/^/gm, `<span class="hljs-line w-${lineDigits * 4}"></span>`);
+	return hljs.highlight(props.code, { language: props.language }).value;
+});
+
+const lines = computed(() => {
+	return code.value.split('\n').length;
 });
 </script>
