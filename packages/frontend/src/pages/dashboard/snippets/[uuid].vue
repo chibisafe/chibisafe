@@ -72,11 +72,13 @@
 import { onMounted, ref } from 'vue';
 import { getSnippet, deleteSnippet } from '~/use/api';
 import type { Snippet } from '~/types';
+import GenericConfirmationModal from '~/components/modals/GenericConfirmationModal.vue';
 import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import Highlight from '~/components/highlight/Highlight.vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import GenericConfirmationModal from '~/components/modals/GenericConfirmationModal.vue';
+
 import { useModalStore } from '~/store';
 import { useRouter } from 'vue-router';
 

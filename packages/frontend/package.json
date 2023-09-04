@@ -27,7 +27,6 @@
 	"dependencies": {
 		"@chibisafe/uploader-client": "1.0.9",
 		"@headlessui/vue": "^1.6.5",
-		"@highlightjs/vue-plugin": "^2.1.0",
 		"@types/marked": "^5.0.0",
 		"@vueuse/components": "^9.4.0",
 		"@vueuse/core": "^8.7.5",

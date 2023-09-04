@@ -1,12 +1,6 @@
 <template>
 	<div class="bg-[#0d1117] w-full h-full">
-		<component
-			:is="hljsVuePlugin.component"
-			v-if="snippet"
-			:language="snippet.language"
-			:code="snippet.content"
-			class="h-full"
-		/>
+		<Highlight v-if="snippet" :language="snippet.language" :code="snippet.content" />
 	</div>
 </template>
 
@@ -14,8 +8,7 @@
 import { onMounted, ref } from 'vue';
 import { getPublicSnippet } from '~/use/api';
 import type { Snippet } from '~/types';
-import 'highlight.js/styles/github-dark.css';
-import hljsVuePlugin from '@highlightjs/vue-plugin';
+import Highlight from '~/components/highlight/Highlight.vue';
 
 const props = defineProps<{
 	identifier: string;
