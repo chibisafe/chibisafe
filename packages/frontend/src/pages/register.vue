@@ -40,7 +40,7 @@
 		</div>
 		<div class="p-8 relative">
 			<div
-				v-if="!settingsStore.userAccounts"
+				v-if="settingsStore.userAccounts"
 				class="p-4 text-center mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md self-center"
 			>
 				This instance is currently running in invite-only mode, therefore you can't register an account at this
@@ -48,8 +48,8 @@
 			</div>
 			<div v-else class="mx-auto flex mobile:w-full flex-col justify-center space-y-6 w-[350px]">
 				<div class="flex flex-col space-y-2 text-center">
-					<h1 class="text-2xl font-semibold tracking-tight">Authentication</h1>
-					<p class="text-sm text-muted-foreground">Enter your credentials below to log in</p>
+					<h1 class="text-2xl font-semibold tracking-tight">Registration</h1>
+					<p class="text-sm text-muted-foreground">Use the form below to create your account</p>
 				</div>
 				<div class="grid gap-2">
 					<div class="grid gap-1">
