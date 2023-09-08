@@ -14,7 +14,7 @@
 		"start": "yarn workspace @chibisafe/backend start",
 		"migrate-v4-to-v5": "yarn workspace @chibisafe/migration start",
 		"backend": "yarn workspace @chibisafe/backend dev",
-		"frontend": "yarn workspace @chibisafe/frontend dev"
+		"frontend": "yarn workspace @chibisafe/website dev"
 	},
 	"author": {
 		"name": "Pitu",
