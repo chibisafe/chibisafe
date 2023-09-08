@@ -5,12 +5,13 @@
 		"neon/browser",
 		"neon/node",
 		"neon/typescript",
-		"neon/prettier",
 		"neon/vue",
-		"neon/vue-typescript"
+		"neon/vue-typescript",
+		"neon/prettier"
 	],
 	"parserOptions": {
-		"project": "./tsconfig.json"
+		"project": ["tsconfig.json", "./packages/*/tsconfig.json"],
+		"parser": "@typescript-eslint/parser"
 	},
 	"rules": {
 		"comma-dangle": ["error", "never"],
@@ -53,5 +54,8 @@
 		"defineProps": "readonly",
 		"defineEmits": "readonly",
 		"defineExpose": "readonly"
-	}
+	},
+	"ignorePatterns": [
+		"packages/frontend/src/components/ui/*"
+	]
 }

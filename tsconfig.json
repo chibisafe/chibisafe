@@ -7,10 +7,7 @@
 		"strict": true,
 		"jsx": "preserve",
 		"resolveJsonModule": true,
-		"typeRoots": ["node_modules/@types", "src"],
 		"skipLibCheck": true,
-		"lib": ["esnext", "dom"],
-		"sourceRoot": "./",
-		"baseUrl": "."
+		"lib": ["esnext", "dom"]
 	}
 }

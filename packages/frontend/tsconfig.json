@@ -3,12 +3,13 @@
 	"compilerOptions": {
 		"rootDir": "./",
 		"outDir": "./dist",
+		"sourceRoot": "./",
+		"baseUrl": ".",
 		"module": "ESNext",
 		"types": ["node", "vite/client"],
-		"typeRoots": ["node_modules/@types", "src"],
 		"paths": {
-			"@/*": ["packages/frontend/src/*"],
-			"~/*": ["packages/frontend/src/*"]
+			"@/*": ["./src/*"],
+			"~/*": ["./src/*"]
 		}
 	},
 	"include": ["**/*.ts", "**/*.js", "**/*.vue", "**/*.test.ts", "**/*.test.js", "**/*.spec.ts", "**/*.spec.js"],

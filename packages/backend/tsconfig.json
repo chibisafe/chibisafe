@@ -4,10 +4,11 @@
 		"target": "ESNext",
 		"rootDir": "./src",
 		"outDir": "./dist",
+		"sourceRoot": "./",
+		"baseUrl": ".",
 		"module": "CommonJS",
-		"types": ["node"],
 		"paths": {
-			"@/*": ["packages/backend/src/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src/**/*.ts"],

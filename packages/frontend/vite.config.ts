@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import { readFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import vue from '@vitejs/plugin-vue';
-import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 import Pages from 'vite-plugin-pages';
 import { createHtmlPlugin } from 'vite-plugin-html';
@@ -19,7 +18,8 @@ const backendUrl = 'http://127.0.0.1:8000';
 export default defineConfig({
 	resolve: {
 		alias: {
-			'~/': `${resolve(__dirname, 'src')}/`
+			'~/': `${resolve(__dirname, 'src')}/`,
+			'@/': `${resolve(__dirname, 'src')}/`
 		}
 	},
 	define: {
@@ -43,9 +43,6 @@ export default defineConfig({
 
 				return route;
 			}
-		}),
-		Components({
-			dts: true
 		}),
 		createHtmlPlugin({
 			minify: true,
