@@ -9,7 +9,7 @@
 		>
 			Log in
 		</router-link>
-		<div class="relative mobile:hidden h-full flex-col bg-muted p-10 text-white border-r flex">
+		<div class="relative mobile:hidden h-full flex-col bg-muted p-10 text-white border-background border-r flex">
 			<div
 				class="absolute inset-0 bg-no-repeat bg-scroll bg-center bg-cover"
 				:style="`background-image: url(${settingsStore.backgroundImageURL});`"
