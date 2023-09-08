@@ -54,8 +54,5 @@
 		"defineProps": "readonly",
 		"defineEmits": "readonly",
 		"defineExpose": "readonly"
-	},
-	"ignorePatterns": [
-		"packages/frontend/src/components/ui/*"
-	]
+	}
 }
