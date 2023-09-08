@@ -11,7 +11,9 @@ module.exports = {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '2rem'
+		},
+		extend: {
 			screens: {
 				'2xl': '1400px',
 				mobile: {
@@ -20,9 +22,7 @@ module.exports = {
 				desktop: {
 					min: '640px'
 				}
-			}
-		},
-		extend: {
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
