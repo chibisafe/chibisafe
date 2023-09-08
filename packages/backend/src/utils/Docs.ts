@@ -74,8 +74,8 @@ export const rawHTML = `
 		<meta charset="UTF-8" />
 		<meta https-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-		<script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
-		<link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css" />
+		<script src="https://unpkg.com/@stoplight/elements@7.12.0/web-components.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/@stoplight/elements@7.12.0/styles.min.css" />
 		<style>
 			.SendButtonHolder > div {
 				display: none;
@@ -91,6 +91,9 @@ export const rawHTML = `
 				color: #201f1f;
 				padding: 1px 5px;
 				border-radius: 3px;
+			}
+			a.ElementsTableOfContentsItem > div > svg {
+				display: none !important;
 			}
 			@media (min-width: 1800px) {
 				.sl-markdown-viewer figure > div {

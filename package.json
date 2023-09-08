@@ -13,7 +13,7 @@
 		"migrate": "yarn workspace @chibisafe/backend migrate",
 		"start": "yarn workspace @chibisafe/backend start",
 		"migrate-v4-to-v5": "yarn workspace @chibisafe/migration start",
-		"backend": "yarn workspace @chibisafe/backend dev",
+		"backend": "yarn workspace @chibisafe/backend dev:reload",
 		"frontend": "yarn workspace @chibisafe/website dev"
 	},
 	"author": {
