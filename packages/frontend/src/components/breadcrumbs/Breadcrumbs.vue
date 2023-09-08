@@ -39,8 +39,7 @@ interface Page {
 	name: string;
 	href: string;
 }
-
-const props = defineProps({
+defineProps({
 	pages: {
 		type: Array as PropType<Page[]>,
 		required: true

@@ -51,7 +51,7 @@
 import type { FileWithAdditionalData } from '~/types';
 import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
-import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon, UnlinkIcon } from 'lucide-vue-next';
+import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';

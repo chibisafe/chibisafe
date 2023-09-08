@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -34,42 +34,39 @@
 						</div>
 					</SwitchGroup>
 
-					<button
-						type="button"
-						class="mt-4 bg-red-900 hover:bg-red-600 text-light-100 font-semibold py-2 px-4 rounded items-center text-center text-base"
-						@click="() => (modalStore.generic.show = true)"
-					>
-						Purge all anonymous uploads
-					</button>
-
-					<GenericConfirmationModal
+					<ConfirmationDialog
 						title="Purge all anonymous files?"
 						message="This action will remove every upload that doesn't belong to a specific user. This is not reversible. Are you sure?"
-						action-text="Purge anonymous files"
 						:callback="doPurgeAnonymousFiles"
-					/>
+					>
+						<button
+							type="button"
+							class="mt-4 bg-red-900 hover:bg-red-600 text-light-100 font-semibold py-2 px-4 rounded items-center text-center text-base"
+						>
+							Purge all anonymous uploads
+						</button>
+					</ConfirmationDialog>
 				</div>
 			</div>
 
 			<FilesWrapper type="admin" />
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore, useModalStore } from '~/store';
+import { useFilesStore } from '~/store';
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 import { purgeAnonymousFiles } from '~/use/api';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import GenericConfirmationModal from '~/components/modals/GenericConfirmationModal.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const route = useRoute();
 const filesStore = useFilesStore();
-const modalStore = useModalStore();
 const publicOnly = ref(false);
 
 const doPurgeAnonymousFiles = async () => {

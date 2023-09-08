@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-6 mobile:pb-12">
 			<Breadcrumbs
 				:pages="[
@@ -46,7 +46,7 @@
 							v-model="setting.value"
 							class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0 border-gray-600"
 							:class="[setting.value ? 'bg-blue-400' : 'bg-gray-200']"
-							@update:modelValue="(value: any) => setting.value = value"
+							@update:modelValue="(value: any) => (setting.value = value)"
 						>
 							<span class="sr-only">{{ setting.name }}</span>
 							<span
@@ -108,7 +108,7 @@
 				</button>
 			</div>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
@@ -117,7 +117,7 @@ import { getAdminSettings, setAdminSettings } from '~/use/api';
 import { useSettingsStore } from '~/store';
 import { Switch } from '@headlessui/vue';
 import Input from '~/components/forms/Input.vue';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const settingsStore = useSettingsStore();

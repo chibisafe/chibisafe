@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -50,7 +50,7 @@
 				</template>
 			</div>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
@@ -60,7 +60,7 @@ import { useToastStore } from '~/store/toast';
 import { changePassword, changeApiKey } from '~/use/api';
 import { formatBytes } from '~/use/file';
 
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import Button from '~/components/buttons/Button.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';

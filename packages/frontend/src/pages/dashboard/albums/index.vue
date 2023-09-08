@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 desktop:px-6 mobile:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -51,7 +51,7 @@
 				</ul>
 			</div>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 	<NewAlbumModal />
 	<AlbumSettingsModal />
 </template>
@@ -61,7 +61,7 @@ import { computed } from 'vue';
 import { useAlbumsStore, useModalStore } from '~/store';
 import type { Album } from '~/types';
 
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Button from '~/components/buttons/Button.vue';
 import { Settings2Icon } from 'lucide-vue-next';
 

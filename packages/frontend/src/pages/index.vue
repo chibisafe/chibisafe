@@ -34,7 +34,7 @@
 				appear
 				:show="files.length > 0"
 				as="template"
-				enter="transform transition duration-[400ms]"
+				enter="transform transition duration-200"
 				enter-from="opacity-0"
 				enter-to="opacity-100"
 				leave="transform duration-200 transition ease-in-out"
@@ -89,9 +89,7 @@
 				<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
 				<h5 class="text-blue-400">Did we mention that extending it is super easy?</h5>
 
-				<dl
-					class="mt-8 space-y-10 desktop:grid desktop:grid-cols-2 desktop:gap-x-6 desktop:gap-y-4 desktop:space-y-0 mobile:grid-cols-4 mobile:gap-x-8"
-				>
+				<dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 space-y-0 mobile:grid-cols-4 mobile:gap-x-8">
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
 							<CheckIcon class="absolute h-6 w-6 text-green-500" aria-hidden="true" />

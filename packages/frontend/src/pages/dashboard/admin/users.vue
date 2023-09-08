@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-6">
 			<Breadcrumbs
 				:pages="[
@@ -33,13 +33,13 @@
 			</SwitchGroup>
 			<Table v-if="filteredUsers" :users="filteredUsers" class="mt-12 bg-dark-110" />
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { getUsersAdmin } from '~/use/api';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Table from '~/components/table/UsersTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';

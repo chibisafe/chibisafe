@@ -1,145 +1,27 @@
 <template>
-	<div>
-		<TransitionRoot as="template" :show="sidebarOpen">
-			<Dialog as="div" class="relative z-40 desktop:hidden" @close="sidebarOpen = false">
-				<TransitionChild
-					as="template"
-					enter="transition-opacity ease-linear duration-300"
-					enter-from="opacity-0"
-					enter-to="opacity-100"
-					leave="transition-opacity ease-linear duration-300"
-					leave-from="opacity-100"
-					leave-to="opacity-0"
-				>
-					<div class="fixed inset-0 bg-gray-600 bg-opacity-75" />
-				</TransitionChild>
-
-				<div class="fixed inset-0 z-40 flex">
-					<TransitionChild
-						as="template"
-						enter="transition ease-in-out duration-300 transform"
-						enter-from="-translate-x-full"
-						enter-to="translate-x-0"
-						leave="transition ease-in-out duration-300 transform"
-						leave-from="translate-x-0"
-						leave-to="-translate-x-full"
-					>
-						<DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-dark-110">
-							<TransitionChild
-								as="template"
-								enter="ease-in-out duration-300"
-								enter-from="opacity-0"
-								enter-to="opacity-100"
-								leave="ease-in-out duration-300"
-								leave-from="opacity-100"
-								leave-to="opacity-0"
-							>
-								<div class="absolute top-0 right-0 -mr-12 pt-2">
-									<button
-										type="button"
-										class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-										@click="sidebarOpen = false"
-									>
-										<span class="sr-only">Close sidebar</span>
-										<XIcon class="h-6 w-6 text-white" aria-hidden="true" />
-									</button>
-								</div>
-							</TransitionChild>
-							<div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
-								<div class="flex flex-shrink-0 items-center px-4 justify-center">
-									<router-link to="/">
-										<img
-											v-if="settingsStore.logoURL"
-											:src="settingsStore.logoURL"
-											alt="chibisafe logo"
-											class="w-24"
-										/>
-										<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
-									</router-link>
-								</div>
-								<nav class="mt-5 space-y-1 px-8 mb-8">
-									<router-link
-										v-for="item in mainNavigation"
-										:key="item.name"
-										:to="item.href"
-										class="group flex items-center px-2 py-2 text-base font-medium rounded-md"
-										:class="[
-											item.current
-												? 'bg-dark-100 text-white'
-												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
-										]"
-									>
-										<!-- @vue-ignore -->
-										<component
-											:is="item.icon"
-											class="mr-4 flex-shrink-0 h-6 w-6"
-											:class="[
-												item.current
-													? 'text-gray-300'
-													: 'text-gray-400 group-hover:text-gray-300'
-											]"
-											aria-hidden="true"
-										/>
-										{{ item.name }}
-									</router-link>
-								</nav>
-								<nav class="flex-1 space-y-1 px-8">
-									<h3 id="projects-headline" class="px-3 text-sm font-medium text-gray-500">
-										Admin section
-									</h3>
-									<router-link
-										v-for="item in adminNavigation"
-										:key="item.name"
-										:to="item.href"
-										class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-										:class="[
-											item.current
-												? 'bg-dark-100 text-white'
-												: 'text-gray-300 hover:bg-dark-100 hover:text-white'
-										]"
-									>
-										<!-- @vue-ignore -->
-										<component
-											:is="item.icon"
-											class="mr-3 flex-shrink-0 h-6 w-6"
-											:class="[
-												item.current
-													? 'text-gray-300'
-													: 'text-gray-400 group-hover:text-gray-300'
-											]"
-											aria-hidden="true"
-										/>
-										{{ item.name }}
-									</router-link>
-								</nav>
-								<div class="mt-8 px-8">
-									<div class="mt-1 space-y-1" aria-labelledby="projects-headline">
-										<a
-											v-for="item in secondaryNavigation"
-											:key="item.name"
-											:href="item.href"
-											rel="noopener noreferrer"
-											class="group flex items-center rounded-md px-3 py-1 text-sm font-medium text-light-100 hover:text-white"
-										>
-											<span class="truncate">{{ item.name }}</span>
-										</a>
-									</div>
-								</div>
-							</div>
-						</DialogPanel>
-					</TransitionChild>
-					<div class="w-14 flex-shrink-0">
-						<!-- Force sidebar to shrink to fit close icon -->
-					</div>
-				</div>
-			</Dialog>
-		</TransitionRoot>
-
-		<!-- Static sidebar for desktop -->
-		<div class="hidden desktop:fixed desktop:inset-y-0 desktop:flex desktop:w-48 desktop:flex-col">
-			<!-- Sidebar component, swap this element with another sidebar if you like -->
-			<div class="flex min-h-0 flex-1 flex-col bg-dark-110">
-				<div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
+	<nav>
+		<!-- Mobile sidebar backdrop -->
+		<div
+			v-if="isOpen"
+			class="fixed top-0 left-0 w-screen h-screen bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+			@click="isOpen = false"
+		></div>
+		<!-- Mobile hamburger menu icon -->
+		<div
+			class="hidden mobile:flex fixed top-0 right-0 w-12 h-12 items-center justify-center cursor-pointer"
+			:class="[isOpen ? 'bg-transparent' : 'bg-dark-110']"
+			@click="isOpen = !isOpen"
+		>
+			<XIcon v-if="isOpen" class="h-6 w-6" />
+			<MenuIcon v-else class="h-6 w-6" />
+		</div>
+		<!-- Sidebar navigation -->
+		<div
+			class="bg-dark-110 w-48 min-w-[12rem] mobile:inset-0 mobile:z-40 mobile:flex mobile:w-80"
+			:class="[isOpen ? 'mobile:fixed' : 'mobile:hidden']"
+		>
+			<ScrollArea>
+				<div class="space-y-4 py-4 flex flex-col h-screen">
 					<div class="flex flex-shrink-0 items-center px-4 justify-center">
 						<router-link to="/">
 							<img
@@ -151,140 +33,86 @@
 							<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 						</router-link>
 					</div>
-					<nav class="mt-5 flex-0 mb-8 space-y-1 px-8">
-						<router-link
-							v-for="item in mainNavigation"
-							:key="item.name"
-							:to="item.href"
-							class="group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-							:class="[
-								item.current
-									? 'bg-dark-100 text-white'
-									: 'text-gray-300 hover:bg-dark-100 hover:text-white'
-							]"
-						>
-							<!-- @vue-ignore -->
-							<component
-								:is="item.icon"
-								class="mr-3 flex-shrink-0 h-6 w-6"
-								:class="[item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300']"
-								aria-hidden="true"
-							/>
-							{{ item.name }}
-						</router-link>
-					</nav>
-					<nav class="flex-1 space-y-1 px-8">
-						<template v-if="isAdmin">
-							<h3 id="projects-headline" class="px-3 text-sm font-medium text-gray-500">Admin section</h3>
-							<router-link
-								v-for="item in adminNavigation"
+					<div v-for="(_, name, index) in navigation" :key="index" class="px-3 py-2">
+						<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">{{ name }}</h2>
+						<div class="space-y-1">
+							<Button
+								v-for="item in navigation[name]"
 								:key="item.name"
+								as="router-link"
+								:variant="currentPath === item.href ? 'secondary' : 'ghost'"
 								:to="item.href"
-								class="group flex items-center px-2 py-1 text-sm font-medium rounded-md"
-								:class="[
-									item.current
-										? 'bg-dark-100 text-white'
-										: 'text-gray-300 hover:bg-dark-100 hover:text-white'
-								]"
+								class="w-full justify-start duration-0 h-9"
 							>
-								<!-- @vue-ignore -->
 								<component
 									:is="item.icon"
-									class="mr-3 flex-shrink-0 h-6 w-6"
+									class="mr-2 h-4 w-4"
 									:class="[
-										item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300'
+										currentPath === item.href
+											? 'text-gray-300'
+											: 'text-gray-400 group-hover:text-gray-300'
 									]"
 									aria-hidden="true"
 								/>
 								{{ item.name }}
-							</router-link>
-						</template>
-					</nav>
-					<nav class="mt-8">
-						<div class="mt-1 space-y-1">
-							<a
-								v-for="item in secondaryNavigation"
+							</Button>
+						</div>
+					</div>
+
+					<div class="flex flex-1"></div>
+					<div class="px-3 py-2">
+						<div class="space-y-1">
+							<Button
+								v-for="item in links"
 								:key="item.name"
+								as="a"
+								variant="link"
 								:href="item.href"
-								rel="noopener noreferrer"
 								target="_blank"
-								class="group flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium text-light-100 hover:text-white"
-								@click="item.onClick ? item.onClick() : null"
+								rel="noopener noreferrer"
+								class="w-full text-light-100 hover:text-blue-400 h-8"
 							>
-								<span class="truncate">{{ item.name }}</span>
-							</a>
-						</div>
-						<div
-							v-if="isAdmin && updateCheck?.updateAvailable"
-							class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
-						>
-							<div>
-								New version available
-								<a
-									:href="updateCheck.latestVersionUrl"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="text-blue-400 hover:text-blue-500 cursor-pointer"
-									>v{{ updateCheck.latestVersion }}</a
-								>
+								{{ item.name }}
+							</Button>
+							<div
+								v-if="isAdmin && updateCheck?.updateAvailable"
+								class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
+							>
+								<div>
+									New version available
+									<a
+										:href="updateCheck.latestVersionUrl"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="text-blue-400 hover:text-blue-500 cursor-pointer"
+										>v{{ updateCheck.latestVersion }}</a
+									>
+								</div>
+								<ReleaseNotesDialog :data="updateCheck?.releaseNotes || []">
+									<span class="text-blue-400 hover:text-blue-500 cursor-pointer">
+										See what's new
+									</span>
+								</ReleaseNotesDialog>
 							</div>
-							<div class="text-blue-400 hover:text-blue-500 cursor-pointer" @click="showUpdateModal">
-								See what's new
-							</div>
 						</div>
-					</nav>
-				</div>
-			</div>
-		</div>
-		<div class="flex flex-1 flex-col desktop:pl-48">
-			<div class="sticky top-0 z-10 bg-dark-110 pl-1 pt-1 mobile:pl-3 mobile:pt-3 desktop:hidden">
-				<button
-					type="button"
-					class="-ml-0.5 -mt-0.5 mobile:mb-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-light-100 hover:text-whitefocus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-					@click="sidebarOpen = true"
-				>
-					<span class="sr-only">Open sidebar</span>
-					<MenuIcon class="h-6 w-6" aria-hidden="true" />
-				</button>
-			</div>
-			<main class="flex-1">
-				<div id="dashboard-container" class="overflow-auto h-screen">
-					<div
-						v-if="userStore.user?.username === 'admin' && isAdmin && !userStore.user.passwordEditedAt"
-						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
-					>
-						It seems you are using the admin account but haven't changed the default password yet. Go to the
-						dashboard and change it.
 					</div>
-
-					<div
-						v-if="userStore.user?.storageQuota?.overQuota"
-						class="w-full p-6 flex justify-center items-center text-light-100 bg-red-900"
-					>
-						It seems you've used all your storage quota and won't be able to upload any more files until you
-						free some space.
-					</div>
-					<slot />
 				</div>
-			</main>
+			</ScrollArea>
 		</div>
-
-		<ReleaseNotesModal :data="updateCheck?.releaseNotes || []" />
-	</div>
+	</nav>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRoute, useRouter } from 'vue-router';
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import ReleaseNotesModal from '~/components/modals/ReleaseNotesModal.vue';
-import { useUserStore, useSettingsStore, useModalStore, useUpdateStore } from '~/store';
 import { saveAs } from 'file-saver';
+import { useUserStore, useSettingsStore, useUpdateStore } from '~/store';
 import {
 	HomeIcon,
 	FileUpIcon,
 	LibraryIcon,
-	User2Icon,
 	MenuIcon,
 	XIcon,
 	UserPlusIcon,
@@ -294,19 +122,21 @@ import {
 	BarChart3Icon,
 	CodeIcon
 } from 'lucide-vue-next';
+import ReleaseNotesDialog from '~/components/dialogs/ReleaseNotesDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
-const modalsStore = useModalStore();
 const updateStore = useUpdateStore();
 
+const isOpen = ref(false);
+
 const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
-const isOwner = computed(() => userStore.user.roles?.find(role => role.name === 'owner'));
 const apiKey = computed(() => userStore.user.apiKey);
 
 const updateCheck = computed(() => updateStore.updateCheck);
+const currentPath = computed(() => route.path);
 
 // @ts-ignore
 if (!import.meta.env.DEV) {
@@ -319,9 +149,35 @@ if (!import.meta.env.DEV) {
 	});
 }
 
-const showUpdateModal = () => {
-	modalsStore.releaseNotes.show = true;
+const navigation = {
+	Main: [
+		{ name: 'Home', href: '/', icon: HomeIcon },
+		{ name: 'Uploads', href: '/dashboard/uploads', icon: FileUpIcon },
+		{ name: 'Albums', href: '/dashboard/albums', icon: LibraryIcon },
+		{ name: 'Snippets', href: '/dashboard/snippets', icon: CodeIcon }
+	],
+	Account: [
+		{ name: 'Password', href: '/dashboard/account', icon: HomeIcon },
+		{ name: 'API Key', href: '/dashboard/account', icon: FileUpIcon }
+	],
+	Admin: [
+		{ name: 'Settings', href: '/dashboard/admin/settings', icon: Settings2Icon },
+		{ name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
+		{ name: 'Files', href: '/dashboard/admin/files', icon: FilesIcon },
+		{ name: 'Invites', href: '/dashboard/admin/invites', icon: UserPlusIcon },
+		{ name: 'Statistics', href: '/dashboard/admin/statistics', icon: BarChart3Icon }
+	]
 };
+
+const links = [
+	{ name: 'GitHub', href: 'https://github.com/chibisafe/chibisafe' },
+	{ name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
+	{ name: 'Patreon', href: 'https://www.patreon.com/pitu' },
+	{ name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
+	{ name: 'Documentation', href: '/docs' },
+	{ name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
+	{ name: 'Log out', href: '#', onClick: () => void logout() }
+];
 
 const logout = async () => {
 	await router.push('/');
@@ -351,40 +207,4 @@ const getShareXConfig = async () => {
 	const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 	saveAs(sharexBlob, `${location.hostname}.sxcu`);
 };
-
-const navigationItems = [
-	{ type: 'main', name: 'Home', href: '/', icon: HomeIcon, current: false },
-	{ type: 'main', name: 'Uploads', href: '/dashboard/uploads', icon: FileUpIcon, current: false },
-	{ type: 'main', name: 'Albums', href: '/dashboard/albums', icon: LibraryIcon, current: false },
-	{ type: 'main', name: 'Snippets', href: '/dashboard/snippets', icon: CodeIcon, current: false },
-	// { type: 'main', name: 'Tags', href: '/dashboard/tags', icon: TagsIcon, current: false },
-	{ type: 'main', name: 'My account', href: '/dashboard/account', icon: User2Icon, current: false },
-
-	{ type: 'secondary', name: 'GitHub', href: 'https://github.com/chibisafe/chibisafe' },
-	{ type: 'secondary', name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
-	{ type: 'secondary', name: 'Patreon', href: 'https://www.patreon.com/pitu' },
-	{ type: 'secondary', name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
-	{ type: 'secondary', name: 'Documentation', href: '/docs' },
-	{ type: 'secondary', name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
-	{ type: 'secondary', name: 'Log out', href: '#', onClick: () => void logout() },
-
-	{ type: 'admin', name: 'Files', href: '/dashboard/admin/files', icon: FilesIcon, current: false },
-	{ type: 'admin', name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon, current: false },
-	{ type: 'admin', name: 'Invites', href: '/dashboard/admin/invites', icon: UserPlusIcon, current: false },
-	{ type: 'admin', name: 'Settings', href: '/dashboard/admin/settings', icon: Settings2Icon, current: false },
-	{ type: 'admin', name: 'Statistics', href: '/dashboard/admin/statistics', icon: BarChart3Icon, current: false }
-];
-
-// eslint-disable-next-line unicorn/no-array-for-each
-navigationItems.forEach(item => {
-	if (item.href === route.path) {
-		item.current = true;
-	}
-});
-
-const mainNavigation = computed(() => navigationItems.filter(item => item.type === 'main'));
-const secondaryNavigation = computed(() => navigationItems.filter(item => item.type === 'secondary'));
-const adminNavigation = computed(() => navigationItems.filter(item => item.type === 'admin'));
-
-const sidebarOpen = ref(false);
 </script>

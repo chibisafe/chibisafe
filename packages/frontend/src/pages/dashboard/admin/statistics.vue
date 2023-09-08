@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -56,14 +56,14 @@
 			</template>
 			<span v-else class="text-light-100">Loading...</span>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getStatistics } from '~/use/api';
 import { formatBytes } from '~/use/file';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
 	label: {
 		type: String,
 		default: 'change-me'
