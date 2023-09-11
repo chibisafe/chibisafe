@@ -48,7 +48,9 @@
 				</h3>
 			</template>
 		</div>
-		<AlbumDropdown v-if="isLoggedIn" class="absolute -bottom-12 w-full" />
+		<div class="absolute -bottom-12 w-full">
+			<AlbumDropdown v-if="isLoggedIn" />
+		</div>
 
 		<TextEditorModal title="Create a new text upload" action-text="Upload" :content="pastedText" />
 	</div>
