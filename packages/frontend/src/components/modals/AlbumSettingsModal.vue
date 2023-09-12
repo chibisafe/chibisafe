@@ -300,14 +300,14 @@ import {
 	SwitchGroup,
 	SwitchLabel
 } from '@headlessui/vue';
-import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
+import { useModalStore, useAlbumsStore } from '~/store';
 import { createAlbumLink, updateAlbum, updateAlbumLink } from '~/use/api';
+import { toast } from 'vue-sonner';
 import Button from '~/components/buttons/Button.vue';
 import ManageAlbumModal from '~/components/modals/ManageAlbumModal.vue';
 import type { AlbumLink } from '~/types';
 
 const modalsStore = useModalStore();
-const toastStore = useToastStore();
 const albumsStore = useAlbumsStore();
 
 const isModalOpen = computed(() => modalsStore.albumSettings.show);
@@ -319,7 +319,7 @@ const createLink = async () => {
 	if (!modalsStore.albumSettings.album) return;
 	const newLink = await createAlbumLink(modalsStore.albumSettings.album.uuid);
 	albumsStore.currentAlbumLinks.push(newLink.data);
-	toastStore.create('success', 'Link created');
+	toast.success('Link created');
 };
 
 const setEnabled = async (link: AlbumLink) => {
@@ -361,7 +361,7 @@ const setNewAlbumName = async () => {
 		name: 'name',
 		value: album.value.name
 	});
-	toastStore.create('success', 'Changed album name');
+	toast.success('Changed album name');
 };
 
 const afterDeleteLink = async (link: AlbumLink | undefined) => {

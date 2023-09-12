@@ -60,7 +60,7 @@
 import { ref } from 'vue';
 import { register as Register } from '~/use/api';
 import { useRouter } from 'vue-router';
-import { useToastStore } from '~/store/toast';
+import { toast } from 'vue-sonner';
 import Button from '~/components/buttons/Button.vue';
 import Input from '~/components/forms/Input.vue';
 
@@ -69,7 +69,6 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
-const toastStore = useToastStore();
 
 // Form models
 const username = ref('');
@@ -78,19 +77,19 @@ const repassword = ref('');
 
 const register = async () => {
 	if (!username.value || !password.value || !repassword.value) {
-		toastStore.create('error', 'Username or any of the two passwords are missing');
+		toast.error('Username or any of the two passwords are missing');
 		return;
 	}
 
 	if (password.value !== repassword.value) {
-		toastStore.create('error', 'The passwords need to be the same on both fields');
+		toast.error('The passwords need to be the same on both fields');
 		return;
 	}
 
 	const response = await Register(username.value, password.value, props.code);
 	if (!response) return;
 
-	toastStore.create('success', 'Successfully registered! You can now login.');
+	toast.success('Successfully registered! You can now login.');
 	// eslint-disable-next-line require-atomic-updates
 	password.value = '';
 	// eslint-disable-next-line require-atomic-updates

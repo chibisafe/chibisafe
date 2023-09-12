@@ -1,16 +1,13 @@
 import { request } from './fetch';
-import { useToastStore } from '~/store/toast';
+import { toast } from 'vue-sonner';
 import { debug } from '~/use/log';
-let toastStore: ReturnType<typeof useToastStore>;
 
 const sendErrorToast = (message: string) => {
-	if (!toastStore) toastStore = useToastStore();
-	toastStore.create('error', message);
+	toast.error(message);
 };
 
 const sendSuccessToast = (message: string) => {
-	if (!toastStore) toastStore = useToastStore();
-	toastStore.create('success', message);
+	toast.success(message);
 };
 
 export const login = async (username: string, password: string) => {

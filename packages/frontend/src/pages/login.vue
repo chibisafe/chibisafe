@@ -89,11 +89,11 @@ import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToastStore, useUserStore, useSettingsStore } from '~/store';
+import { useUserStore, useSettingsStore } from '~/store';
+import { toast } from 'vue-sonner';
 import { Loader2Icon } from 'lucide-vue-next';
 
 const router = useRouter();
-const toastStore = useToastStore();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const isLoading = ref(false);
@@ -106,7 +106,7 @@ const loggedIn = computed(() => userStore.user.loggedIn);
 
 const login = async () => {
 	if (!username.value || !password.value) {
-		toastStore.create('error', 'Username or password are missing');
+		toast.error('Username or password are missing');
 		return;
 	}
 

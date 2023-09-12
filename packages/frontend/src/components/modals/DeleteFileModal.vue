@@ -80,11 +80,10 @@ import { computed } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { XIcon } from 'lucide-vue-next';
 import { deleteFile, deleteFileAsAdmin } from '~/use/api';
-
-import { useModalStore, useToastStore, useFilesStore } from '~/store';
+import { toast } from 'vue-sonner';
+import { useModalStore, useFilesStore } from '~/store';
 
 const modalsStore = useModalStore();
-const toastStore = useToastStore();
 const filesStore = useFilesStore();
 
 const isModalOpen = computed(() => modalsStore.deleteFile.show);
@@ -111,7 +110,7 @@ const doDeleteFile = () => {
 	else void deleteFile(file.value.uuid);
 
 	filesStore.removeFile(file.value.uuid);
-	toastStore.create('success', 'File deleted');
+	toast.success('File deleted');
 	closeModal(true);
 };
 </script>

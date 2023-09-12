@@ -11,7 +11,7 @@
 	<div class="flex flex-1 h-full relative" :class="[isInDashboard ? 'flex-row' : 'flex-col']">
 		<Sidebar v-if="isInDashboard" />
 		<router-view />
-		<Toast />
+		<Toaster />
 		<SearchModal />
 	</div>
 </template>
@@ -22,7 +22,7 @@ import { useMeta } from 'vue-meta';
 import { useRoute } from 'vue-router';
 import { useUserStore, useSettingsStore, useModalStore } from './store';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import Toast from './components/toast/Toast.vue';
+import { Toaster } from 'vue-sonner';
 import SearchModal from './components/modals/SearchModal.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
 

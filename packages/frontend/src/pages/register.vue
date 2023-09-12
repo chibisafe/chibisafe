@@ -108,7 +108,8 @@
 import { ref } from 'vue';
 import { register as Register } from '~/use/api';
 import { useRouter } from 'vue-router';
-import { useToastStore, useSettingsStore } from '~/store';
+import { useSettingsStore } from '~/store';
+import { toast } from 'vue-sonner';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -116,7 +117,6 @@ import { Label } from '@/components/ui/label';
 import { Loader2Icon } from 'lucide-vue-next';
 
 const router = useRouter();
-const toastStore = useToastStore();
 const settingsStore = useSettingsStore();
 
 // Form models
@@ -129,12 +129,12 @@ const isLoading = ref(false);
 const register = async () => {
 	if (!settingsStore.userAccounts) return;
 	if (!username.value || !password.value || !repassword.value) {
-		toastStore.create('error', 'Username or any of the two passwords are missing');
+		toast.error('Username or any of the two passwords are missing');
 		return;
 	}
 
 	if (password.value !== repassword.value) {
-		toastStore.create('error', 'The passwords need to be the same on both fields');
+		toast.error('The passwords need to be the same on both fields');
 		return;
 	}
 
@@ -143,7 +143,7 @@ const register = async () => {
 	isLoading.value = false;
 	if (!response) return;
 
-	toastStore.create('success', 'Successfully registered! You can now login.');
+	toast.success('Successfully registered! You can now login.');
 	// eslint-disable-next-line require-atomic-updates
 	password.value = '';
 	// eslint-disable-next-line require-atomic-updates

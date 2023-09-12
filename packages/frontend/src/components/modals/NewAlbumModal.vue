@@ -51,12 +51,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
-import { useModalStore, useToastStore, useAlbumsStore } from '~/store';
+import { useModalStore, useAlbumsStore } from '~/store';
+import { toast } from 'vue-sonner';
 import { createAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 
 const modalsStore = useModalStore();
-const toastStore = useToastStore();
 const albumsStore = useAlbumsStore();
 
 const name = ref('');
@@ -79,7 +79,7 @@ const createNewAlbum = async () => {
 	// Refresh the album list on the store
 	void albumsStore.get(true);
 
-	toastStore.create('success', 'Album created');
+	toast.success('Album created');
 	closeModal();
 };
 </script>

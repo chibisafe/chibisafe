@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useUserStore } from '~/store/user';
-import { useToastStore } from '~/store/toast';
+import { toast } from 'vue-sonner';
 import { changePassword, changeApiKey } from '~/use/api';
 import { formatBytes } from '~/use/file';
 
@@ -74,7 +74,6 @@ import Button from '~/components/buttons/Button.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const userStore = useUserStore();
-const toastStore = useToastStore();
 
 const username = computed(() => userStore.user.username);
 const currentPassword = ref('');
@@ -119,7 +118,7 @@ const doChangePassword = async () => {
 	const response = await changePassword(currentPassword.value, newPassword.value);
 	if (!response) return;
 
-	toastStore.create('success', 'Password changed successfully');
+	toast.success('Password changed successfully');
 
 	error.value = '';
 	// eslint-disable-next-line require-atomic-updates

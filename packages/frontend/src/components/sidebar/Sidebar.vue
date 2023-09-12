@@ -71,6 +71,7 @@
 								target="_blank"
 								rel="noopener noreferrer"
 								class="w-full text-light-100 hover:text-blue-400 h-8"
+								@click="item.onClick"
 							>
 								{{ item.name }}
 							</Button>
@@ -175,16 +176,19 @@ const links = [
 	{ name: 'Patreon', href: 'https://www.patreon.com/pitu' },
 	{ name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
 	{ name: 'Documentation', href: '/docs' },
-	{ name: 'Get ShareX config', href: '#', onClick: () => void getShareXConfig() },
-	{ name: 'Log out', href: '#', onClick: () => void logout() }
+	{ name: 'Get ShareX config', href: '#', onClick: (event: MouseEvent) => void getShareXConfig(event) },
+	{ name: 'Log out', href: '#', onClick: (event: MouseEvent) => void logout(event) }
 ];
 
-const logout = async () => {
+const logout = async (event: MouseEvent) => {
+	console.log('adasd');
+	event.preventDefault();
 	await router.push('/');
 	userStore.logout();
 };
 
-const getShareXConfig = async () => {
+const getShareXConfig = async (event: MouseEvent) => {
+	event.preventDefault();
 	if (!apiKey.value) {
 		// eslint-disable-next-line no-alert
 		window.alert('You need to generate an API key first!');
