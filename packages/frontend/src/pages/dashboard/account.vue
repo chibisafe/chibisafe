@@ -12,24 +12,32 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
 			<div class="mt-8 bg-dark-110 p-8">
 				<span class="text-light-100 block">Your current username. Can't be changed.</span>
-				<InputWithOverlappingLabel v-model="username" class="mt-4" label="Username" readOnly />
+				<InputWithLabel v-model="username" name="username" class="mt-4" label="Username" readOnly />
 
 				<span class="mt-12 text-light-100 block"
 					>If you want to change your password please enter your current one followed by the new password
 					twice.</span
 				>
-				<InputWithOverlappingLabel
+				<InputWithLabel
 					v-model="currentPassword"
 					class="mt-4"
 					label="Current password"
 					type="password"
+					name="currentPassword"
 					:value="currentPassword"
 				/>
-				<InputWithOverlappingLabel v-model="newPassword" class="mt-4" type="password" label="New password" />
-				<InputWithOverlappingLabel
+				<InputWithLabel
+					v-model="newPassword"
+					class="mt-4"
+					type="password"
+					name="paassword"
+					label="New password"
+				/>
+				<InputWithLabel
 					v-model="reNewPassword"
 					class="mt-4"
 					type="password"
+					name="repPassword"
 					label="New password again"
 				/>
 				<Button class="mt-4" @click="doChangePassword">Change password</Button>
@@ -38,7 +46,7 @@
 				<span class="mt-12 text-light-100 block"
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
-				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" blur readOnly />
+				<InputWithLabel v-model="apiKey" class="mt-4" name="apiKey" label="API Key" blur readOnly />
 				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
 
 				<template v-if="userStore.user.storageQuota && showQuotaMessage">
@@ -61,7 +69,7 @@ import { changePassword, changeApiKey } from '~/use/api';
 import { formatBytes } from '~/use/file';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
-import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
+import InputWithLabel from '@/components/input/InputWithLabel.vue';
 import Button from '~/components/buttons/Button.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
