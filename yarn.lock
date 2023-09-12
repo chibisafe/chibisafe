@@ -593,7 +593,7 @@ __metadata:
     postcss: ^8.4.29
     postcss-focus-visible: ^6.0.4
     prettier: ^3.0.3
-    radix-vue: ^0.1.30
+    radix-vue: ^0.1.33
     shadcn-vue: ^0.1.0
     tailwind-merge: ^1.14.0
     tailwindcss: ^3.3.3
@@ -9082,13 +9082,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"radix-vue@npm:^0.1.30":
-  version: 0.1.30
-  resolution: "radix-vue@npm:0.1.30"
+"radix-vue@npm:^0.1.33":
+  version: 0.1.33
+  resolution: "radix-vue@npm:0.1.33"
   dependencies:
     "@floating-ui/dom": ^1.4.2
     "@floating-ui/vue": ^1.0.1
-  checksum: cb5580c6d84a7dd5043c8cc9939d6b67d043f6974738121f6f5367a232a5c05312404669f010f24ff3907ee3fa29cd1cc1dfd4fd2a57e96dde8a5a369a735e25
+  checksum: b1f7e2fcaa53f5a4039e31d3bce126312350b74a057f1388a435a7873af0fb0dc5e8dad12f419c49b7961c12d443df504db6f182cf4872bb7f9e92847a0daa4d
   languageName: node
   linkType: hard
 
