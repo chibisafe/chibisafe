@@ -610,6 +610,7 @@ __metadata:
     vue-demi: ^0.14.6
     vue-meta: ^3.0.0-alpha.10
     vue-router: ^4.2.4
+    vue-sonner: ^0.4.4
     vue-tsc: ^1.8.10
     xss: ^1.0.14
   languageName: unknown
@@ -11376,6 +11377,13 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 9fe1fc11b613c8e020aad5d0850ba5caa971033dfaa4fc117e4595349f2c5f211793a247c30e3c03b0f91c3512b87af929af96b8b20b6b7d4cdccc5af13e5e7f
+  languageName: node
+  linkType: hard
+
+"vue-sonner@npm:^0.4.4":
+  version: 0.4.4
+  resolution: "vue-sonner@npm:0.4.4"
+  checksum: 890c3477e2c03b57e22f119b92a96dedc9dd1e50aacff811554b8d23bcf7b15bdb8fdc24e7fa34e21fcef922e3e068c66d2b99cc4639e8165a6afc2320afdf10
   languageName: node
   linkType: hard
 

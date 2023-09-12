@@ -44,6 +44,7 @@
 		"vue": "^3.3.4",
 		"vue-meta": "^3.0.0-alpha.10",
 		"vue-router": "^4.2.4",
+		"vue-sonner": "^0.4.4",
 		"xss": "^1.0.14"
 	},
 	"devDependencies": {
