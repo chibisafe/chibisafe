@@ -42,10 +42,11 @@
 							</div>
 						</router-link>
 						<div
-							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
-							@click="showEditAlbumModal(album)"
+							class="flex-shrink-0 w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
 						>
-							<Settings2Icon />
+							<AlbumSettingsDialog :album="album">
+								<div class="w-16 h-16 flex items-center justify-center"><Settings2Icon /></div>
+							</AlbumSettingsDialog>
 						</div>
 					</li>
 				</ul>
@@ -53,20 +54,18 @@
 		</div>
 	</ScrollArea>
 	<NewAlbumModal />
-	<AlbumSettingsModal />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAlbumsStore, useModalStore } from '~/store';
-import type { Album } from '~/types';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Button from '~/components/buttons/Button.vue';
 import { Settings2Icon } from 'lucide-vue-next';
 
 import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
-import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
+import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const albumsStore = useAlbumsStore();
@@ -75,12 +74,6 @@ const albums = computed(() => albumsStore.albums);
 
 const showNewAlbumModal = () => {
 	modalsStore.newAlbum.show = true;
-};
-
-const showEditAlbumModal = (album: Album) => {
-	void albumsStore.getAlbumLinks(album.uuid);
-	modalsStore.albumSettings.album = album;
-	modalsStore.albumSettings.show = true;
 };
 
 void albumsStore.get();
