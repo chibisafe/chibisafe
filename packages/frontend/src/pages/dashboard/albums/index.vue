@@ -11,7 +11,16 @@
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
 				You have {{ albums.length }} album{{ albums.length > 1 ? 's' : '' }}
-				<Button class="ml-4 mt-3" @click="showNewAlbumModal">Add new</Button>
+				<div class="ml-4 mt-3">
+					<InputDialog
+						title="Create new album"
+						label="Album name"
+						proceedText="Create"
+						:callback="createNewAlbum"
+					>
+						New album
+					</InputDialog>
+				</div>
 			</h1>
 			<div class="mt-8 pb-16">
 				<ul
@@ -58,22 +67,28 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useAlbumsStore, useModalStore } from '~/store';
-
+import { useAlbumsStore } from '~/store';
+import { createAlbum } from '@/use/api';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Button from '~/components/buttons/Button.vue';
 import { Settings2Icon } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import InputDialog from '@/components/dialogs/InputDialog.vue';
 
 const albumsStore = useAlbumsStore();
-const modalsStore = useModalStore();
 const albums = computed(() => albumsStore.albums);
 
-const showNewAlbumModal = () => {
-	modalsStore.newAlbum.show = true;
+const createNewAlbum = async (name: string) => {
+	if (!name) return;
+	await createAlbum(name);
+
+	// Refresh the album list on the store
+	void albumsStore.get(true);
+
+	toast.success('Album created');
 };
 
 void albumsStore.get();
