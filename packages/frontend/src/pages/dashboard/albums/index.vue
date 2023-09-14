@@ -62,7 +62,6 @@
 			</div>
 		</div>
 	</ScrollArea>
-	<NewAlbumModal />
 </template>
 
 <script setup lang="ts">
@@ -73,7 +72,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Settings2Icon } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 
-import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
 import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import InputDialog from '@/components/dialogs/InputDialog.vue';
