@@ -1,94 +1,60 @@
 <template>
-	<table class="min-w-full divide-y divide-gray-500">
-		<thead class="bg-dark-80">
-			<tr>
-				<th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-light-100 desktop:pl-6">
-					Code
-				</th>
-				<th
-					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				>
-					Status
-				</th>
-				<th
-					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				>
-					Created by
-				</th>
-				<th
-					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				>
-					Created at
-				</th>
-				<th
-					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				>
-					Claimed by
-				</th>
-				<th
-					scope="col"
-					class="hidden px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				>
-					Claimed at
-				</th>
-				<th
-					scope="col"
-					class="px-3 py-3.5 text-left text-sm font-semibold text-light-100 desktop:table-cell"
-				></th>
-			</tr>
-		</thead>
-		<tbody class="divide-y divide-gray-500">
-			<tr
-				v-for="(invite, indexInvite) in invites"
-				:key="invite.code"
-				:class="indexInvite % 2 === 0 ? ' bg-dark-90' : 'bg-dark-80'"
-			>
-				<td
-					class="w-full px-3 max-w-0 py-4 pl-4 pr-3 font-normal text-light-100 desktop:w-auto desktop:max-w-none desktop:pl-6 underline"
-				>
+	<Table>
+		<TableHeader>
+			<TableRow>
+				<TableHead class="text-center">Code</TableHead>
+				<TableHead class="text-center">Status</TableHead>
+				<TableHead class="text-center">Created by</TableHead>
+				<TableHead class="text-center">Created at</TableHead>
+				<TableHead class="text-center">Claimed by</TableHead>
+				<TableHead class="text-center">Claimed at</TableHead>
+				<TableHead class="text-right" />
+			</TableRow>
+		</TableHeader>
+		<TableBody>
+			<TableRow v-for="invite in invites" :key="invite.code">
+				<TableCell>
 					<a :href="`/invite/${invite.code}`" target="_blank" rel="noopener noreferrer">{{ invite.code }}</a>
-				</td>
-				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
+				</TableCell>
+				<TableCell>
 					{{ invite.used ? 'Used' : 'Available' }}
-				</td>
-				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
+				</TableCell>
+				<TableCell>
 					{{ invite.createdBy.username }}
-				</td>
-				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
+				</TableCell>
+				<TableCell>
 					{{ dayjs(invite.createdAt).format('MMMM D, YYYY h:mm A') }}
-				</td>
-				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
+				</TableCell>
+				<TableCell>
 					{{ invite.usedBy ? invite.usedBy.username : 'N/A' }}
-				</td>
-				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
+				</TableCell>
+				<TableCell>
 					{{ invite.editedAt ? dayjs(invite.editedAt).format('MMMM D, YYYY h:mm A') : 'N/A' }}
-				</td>
-				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-light-100">
-					<button v-if="!invite.used" type="button" class="ml-4" @click="doCancelInvite(invite)">
-						Revoke
-					</button>
-				</td>
-			</tr>
-		</tbody>
-		<ManageUserModal />
-	</table>
+				</TableCell>
+				<TableCell class="flex justify-end">
+					<ConfirmationDialog
+						title="Revoke link"
+						message="This action will revoke the link preventing anyone from using it to create an account."
+						:callback="() => cancelInvite(invite.code)"
+					>
+						<Button v-if="!invite.used" variant="destructive"> Revoke </Button>
+					</ConfirmationDialog>
+				</TableCell>
+			</TableRow>
+		</TableBody>
+	</Table>
 </template>
 
 <script setup lang="ts">
 import type { Invite } from '@/types';
 import { cancelInvite } from '~/use/api';
-import ManageUserModal from '~/components/modals/ManageUserModal.vue';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import { Button } from '@/components/ui/button';
+
 import dayjs from 'dayjs';
 
-const props = defineProps<{
+defineProps<{
 	invites: Invite[];
 }>();
-
-const doCancelInvite = async (invite: Invite) => {
-	await cancelInvite(invite.code);
-};
 </script>
