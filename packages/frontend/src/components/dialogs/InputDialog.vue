@@ -5,7 +5,7 @@
 			<DialogHeader>
 				<DialogTitle>{{ title }}</DialogTitle>
 				<DialogDescription v-if="message">
-					Make changes to your profile here. Click save when you're done.
+					{{ message }}
 				</DialogDescription>
 			</DialogHeader>
 			<div class="grid gap-4 py-4">
