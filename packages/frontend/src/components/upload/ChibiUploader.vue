@@ -89,7 +89,7 @@ const isUploadEnabled = computed(() => {
 
 const maxFileSize = computed(() => settingsStore.maxSize);
 const chunkSize = computed(() => settingsStore.chunkSize);
-const isMobile = computed(() => useWindowSize().width.value < 640);
+const isMobile = ref(false);
 
 const triggerFileInput = () => {
 	inputUpload.value?.click();
@@ -223,6 +223,7 @@ const onDragEnd = () => {
 onMounted(() => {
 	// @ts-ignore
 	window.addEventListener('paste', pasteHandler);
+	isMobile.value = useWindowSize().width.value < 640;
 });
 
 onUnmounted(() => {

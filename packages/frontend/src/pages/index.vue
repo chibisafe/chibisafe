@@ -150,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { TransitionRoot } from '@headlessui/vue';
 import { useUploadsStore } from '~/store';
 import { formatBytes } from '~/use/file';
@@ -161,7 +161,11 @@ import ChibiUploader from '~/components/upload/ChibiUploader.vue';
 
 const uploadsStore = useUploadsStore();
 const files = computed(() => uploadsStore.files);
-const isMobile = computed(() => useWindowSize().width.value < 640);
+const isMobile = ref(false);
+
+onMounted(() => {
+	isMobile.value = useWindowSize().width.value < 640;
+});
 
 const features = ref([
 	'Chunked uploads',
