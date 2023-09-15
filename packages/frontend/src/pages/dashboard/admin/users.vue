@@ -31,7 +31,7 @@
 					</Switch>
 				</div>
 			</SwitchGroup>
-			<Table v-if="filteredUsers" :users="filteredUsers" class="mt-12 bg-dark-110" />
+			<Table v-if="filteredUsers" :data="filteredUsers" class="mt-12 bg-dark-110" />
 		</div>
 	</ScrollArea>
 </template>
@@ -40,7 +40,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { getUsersAdmin } from '~/use/api';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Table from '~/components/table/UsersTable.vue';
+// import Table from '~/components/table/UsersTable.vue';
+import Table from '@/components/table/UsersTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
 import type { UserWithCount } from '~/types';

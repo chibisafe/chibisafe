@@ -40,7 +40,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
 	title: 'Are you sure?',
 	message: 'This action cannot be undone.',
-	proceedText: 'Continue',
+	proceedText: 'Confirm',
 	cancelText: 'Cancel',
 	callback: () => {}
 });
