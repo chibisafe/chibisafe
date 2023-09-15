@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label';
 interface Props {
 	label: string;
 	name: string;
-	modelValue: string;
+	modelValue: string | number;
 	readOnly?: boolean;
 	placeholder?: string;
 	type?: string;
