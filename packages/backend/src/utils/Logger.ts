@@ -1,23 +1,7 @@
 import * as FileStreamRotator from 'file-stream-rotator';
 import process from 'node:process';
 import path from 'node:path';
-import type { FastifyRequest, FastifyReply } from 'fastify';
-
-const serializers = {
-	res(reply: FastifyReply) {
-		return {
-			statusCode: reply.statusCode
-		};
-	},
-	req(request: FastifyRequest) {
-		return {
-			method: request.method,
-			url: request.url,
-			parameters: request.params,
-			remoteAddress: request.ip
-		};
-	}
-};
+import pino from 'pino';
 
 export const Logger = {
 	development: {
@@ -32,13 +16,23 @@ export const Logger = {
 		sync: true
 	},
 	production: {
-		serializers,
-		stream: FileStreamRotator.getStream({
-			filename: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-%DATE%'),
-			extension: '.log',
-			date_format: 'YYYY-MM-DD',
-			frequency: 'daily',
-			audit_file: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-audit.json')
-		})
+		redact: {
+			paths: ['hostname'],
+			remove: true
+		},
+		stream: pino.multistream([
+			{
+				stream: process.stdout
+			},
+			{
+				stream: FileStreamRotator.getStream({
+					filename: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-%DATE%'),
+					extension: '.log',
+					date_format: 'YYYY-MM-DD',
+					frequency: 'daily',
+					audit_file: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-audit.json')
+				})
+			}
+		])
 	}
 };
