@@ -15,7 +15,7 @@
 		<TableBody>
 			<TableRow v-for="user in data" :key="user.uuid">
 				<TableCell>
-					<router-link :to="`/dashboard/admin/user/${user.uuid}`">{{ user.username }}</router-link>
+					{{ user.username }}
 				</TableCell>
 				<TableCell>
 					{{ user._count.files }}

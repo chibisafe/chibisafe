@@ -121,7 +121,8 @@ import {
 	UsersIcon,
 	Settings2Icon,
 	BarChart3Icon,
-	CodeIcon
+	CodeIcon,
+	KeyRoundIcon
 } from 'lucide-vue-next';
 import ReleaseNotesDialog from '~/components/dialogs/ReleaseNotesDialog.vue';
 
@@ -157,10 +158,7 @@ const navigation = {
 		{ name: 'Albums', href: '/dashboard/albums', icon: LibraryIcon },
 		{ name: 'Snippets', href: '/dashboard/snippets', icon: CodeIcon }
 	],
-	Account: [
-		{ name: 'Password', href: '/dashboard/account', icon: HomeIcon },
-		{ name: 'API Key', href: '/dashboard/account', icon: FileUpIcon }
-	],
+	Account: [{ name: 'Credentials', href: '/dashboard/account', icon: KeyRoundIcon }],
 	Admin: [
 		{ name: 'Settings', href: '/dashboard/admin/settings', icon: Settings2Icon },
 		{ name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
