@@ -47,7 +47,13 @@
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
 				<InputWithLabel v-model="apiKey" class="mt-4" name="apiKey" label="API Key" blur readOnly />
-				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
+				<ConfirmationDialog
+					title="Request new API key"
+					message="Requesting a new API key will invalidate the old one."
+					:callback="doRequestApiKey"
+				>
+					<Button class="mt-4">Request new API key</Button>
+				</ConfirmationDialog>
 
 				<template v-if="userStore.user.storageQuota && showQuotaMessage">
 					<span class="mt-12 text-light-100 block"> Your storage quota </span>
@@ -70,7 +76,8 @@ import { formatBytes } from '~/use/file';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
-import Button from '~/components/buttons/Button.vue';
+import { Button } from '@/components/ui/button';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const userStore = useUserStore();
