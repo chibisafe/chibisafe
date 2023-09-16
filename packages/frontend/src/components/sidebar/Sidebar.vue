@@ -8,7 +8,7 @@
 		></div>
 		<!-- Mobile hamburger menu icon -->
 		<div
-			class="hidden mobile:flex fixed top-0 right-0 w-12 h-12 items-center justify-center cursor-pointer"
+			class="hidden mobile:flex fixed top-0 right-0 w-12 h-12 items-center justify-center cursor-pointer z-10"
 			:class="[isOpen ? 'bg-transparent' : 'bg-dark-110']"
 			@click="isOpen = !isOpen"
 		>

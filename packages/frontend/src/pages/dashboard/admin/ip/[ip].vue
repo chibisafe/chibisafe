@@ -29,12 +29,7 @@
 						message="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						:callback="doUnbanIP"
 					>
-						<button
-							type="button"
-							class="bg-green-700 hover:bg-green-800 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base"
-						>
-							Unban IP
-						</button>
+						Unban IP
 					</ConfirmationDialog>
 
 					<ConfirmationDialog
@@ -42,26 +37,18 @@
 						title="Ban IP"
 						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
 						:callback="doBanIP"
+						variant="destructive"
 					>
-						<button
-							type="button"
-							class="bg-red-600 hover:bg-red-900 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base"
-						>
-							Ban IP
-						</button>
+						Ban IP
 					</ConfirmationDialog>
 
 					<ConfirmationDialog
 						title="Ban IP"
 						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
 						:callback="doPurgeFiles"
+						variant="destructive"
 					>
-						<button
-							type="button"
-							class="bg-red-600 hover:bg-red-900 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base mt-4"
-						>
-							Purge all files from this IP
-						</button>
+						Purge all files from this IP
 					</ConfirmationDialog>
 				</div>
 			</h1>

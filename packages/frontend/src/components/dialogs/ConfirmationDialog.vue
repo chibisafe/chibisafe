@@ -1,6 +1,6 @@
 <template>
 	<AlertDialog>
-		<AlertDialogTrigger>
+		<AlertDialogTrigger :variant="variant">
 			<slot />
 		</AlertDialogTrigger>
 		<AlertDialogContent>
@@ -28,12 +28,14 @@ import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDesc
 import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
 import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
 import AlertDialogAction from '@/components/ui/alert-dialog/AlertDialogAction.vue';
+import { type buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	title: string;
 	message: string;
 	proceedText?: string;
 	cancelText?: string;
+	variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant'];
 	callback: () => void;
 }
 
@@ -42,6 +44,7 @@ withDefaults(defineProps<Props>(), {
 	message: 'This action cannot be undone.',
 	proceedText: 'Confirm',
 	cancelText: 'Cancel',
+	variant: 'default',
 	callback: () => {}
 });
 </script>

@@ -68,15 +68,17 @@
 				<td class="hidden px-3 py-4 text-sm text-light-100 desktop:table-cell">
 					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
-				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-light-100">
+				<td
+					class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-light-100"
+					@click="prepareDeleteFile(file)"
+				>
 					<ConfirmationDialog
 						title="Delete file"
 						message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
 						proceedText="Delete"
 						:callback="doDeleteFile"
-						><Button variant="destructive" @click="prepareDeleteFile(file)"
-							>Delete</Button
-						></ConfirmationDialog
+						variant="destructive"
+						>Delete</ConfirmationDialog
 					>
 				</td>
 			</tr>
@@ -97,7 +99,6 @@ import { toast } from 'vue-sonner';
 
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';

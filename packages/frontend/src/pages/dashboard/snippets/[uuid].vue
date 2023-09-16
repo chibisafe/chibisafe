@@ -35,7 +35,7 @@
 								:href="snippet.raw"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="text-blue-400 hover:text-blue-500 transition-colors duration-200 ml-4"
+								class="text-blue-400 hover:text-blue-500 transition-colors duration-200 ml-4 mr-4"
 							>
 								Open raw
 							</a>
@@ -43,13 +43,9 @@
 								title="Delete snippet?"
 								message="This will completely remove the snippet and links to it will stop working. Are you sure?"
 								:callback="confirmDeleteSnippet"
+								variant="destructive"
 							>
-								<button
-									type="button"
-									class="text-red-400 hover:text-red-500 transition-colors duration-200 ml-4"
-								>
-									Delete snippet
-								</button>
+								Delete snippet
 							</ConfirmationDialog>
 						</div>
 					</div>
