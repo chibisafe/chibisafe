@@ -1,6 +1,6 @@
 import process from 'node:process';
 import schedule from 'node-schedule';
-import { log } from '@/main';
+import { log } from '@/utils/Logger';
 import { SETTINGS } from '@/structures/settings';
 import { getChibisafeVersion } from '@/utils/Util';
 

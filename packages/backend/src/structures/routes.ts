@@ -7,7 +7,7 @@ import type { RouteOptions } from './interfaces';
 import { addSpaces } from '@/utils/Util';
 import { SETTINGS } from './settings';
 
-const defaultMiddlewares = ['log', 'ban'];
+const defaultMiddlewares = ['ban'];
 
 export default {
 	load: async (server: FastifyInstance) => {

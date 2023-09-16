@@ -3,7 +3,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
 import previewUtil from './videoPreview/FragmentPreview';
-import { log } from '../main';
+import { log } from './Logger';
 
 const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];

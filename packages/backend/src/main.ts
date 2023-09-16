@@ -16,17 +16,16 @@ import { startUpdateCheckSchedule } from './utils/UpdateCheck';
 import { SETTINGS, loadSettings } from './structures/settings';
 import { createAdminUserIfNotExists } from './utils/Util';
 import Docs from './utils/Docs';
-import { Logger } from './utils/Logger';
+import { log } from './utils/Logger';
 
 // Create the Fastify server
 const server = fastify({
 	trustProxy: true,
 	connectionTimeout: 600000,
 	// @ts-ignore-error can't use process.env as its undefined
-	logger: process.env.NODE_ENV === 'production' ? Logger.production : Logger.development
+	logger: log,
+	disableRequestLogging: true
 });
-
-export const log = server.log;
 
 let htmlBuffer: Buffer | null = null;
 
@@ -66,6 +65,23 @@ const start = async () => {
 			server.log.error(error);
 			res.internalServerError('Something went wrong');
 		}
+	});
+
+	server.addHook('onResponse', (request, reply, done) => {
+		if (
+			!['/thumbs/', '/assets/'].some(path => request.url.startsWith(path)) ||
+			process.env.NODE_ENV !== 'production'
+		) {
+			server.log.info({
+				method: request.method,
+				url: request.url,
+				statusCode: reply.statusCode,
+				responseTime: Math.ceil(reply.getResponseTime()),
+				ip: request.ip
+			});
+		}
+
+		done();
 	});
 
 	// Enable form-data parsing
