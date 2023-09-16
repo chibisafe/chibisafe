@@ -46,6 +46,4 @@ withDefaults(defineProps<Props>(), {
 	variant: 'default',
 	callback: () => {}
 });
-
-const emit = defineEmits(['click']);
 </script>
