@@ -28,7 +28,7 @@ import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDesc
 import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
 import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
 import AlertDialogAction from '@/components/ui/alert-dialog/AlertDialogAction.vue';
-import { buttonVariants } from '@/components/ui/button';
+import { type buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	title: string;
