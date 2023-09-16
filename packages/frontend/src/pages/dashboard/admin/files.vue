@@ -19,7 +19,7 @@
 				<div class="flex-1"></div>
 				<div class="flex flex-col">
 					<SwitchGroup>
-						<div class="flex items-center">
+						<div class="flex items-center mb-2">
 							<SwitchLabel class="mr-4 text-light-100">Show anonymous uploads only</SwitchLabel>
 							<Switch
 								v-model="publicOnly"
@@ -38,13 +38,9 @@
 						title="Purge all anonymous files?"
 						message="This action will remove every upload that doesn't belong to a specific user. This is not reversible. Are you sure?"
 						:callback="doPurgeAnonymousFiles"
+						variant="destructive"
 					>
-						<button
-							type="button"
-							class="mt-4 bg-red-900 hover:bg-red-600 text-light-100 font-semibold py-2 px-4 rounded items-center text-center text-base"
-						>
-							Purge all anonymous uploads
-						</button>
+						Purge all anonymous uploads
 					</ConfirmationDialog>
 				</div>
 			</div>

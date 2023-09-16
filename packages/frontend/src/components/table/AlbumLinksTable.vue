@@ -33,8 +33,9 @@
 						title="Delete album link"
 						message="This action will delete the public link associated to this album and prevent people from accessing it. Are you sure?"
 						:callback="() => deleteLink(item.uuid)"
+						variant="destructive"
 					>
-						<Button type="button" variant="destructive">Delete</Button>
+						Delete
 					</ConfirmationDialog>
 				</TableCell>
 			</TableRow>

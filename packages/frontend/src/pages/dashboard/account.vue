@@ -46,13 +46,13 @@
 				<span class="mt-12 text-light-100 block"
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
-				<InputWithLabel v-model="apiKey" class="mt-4" name="apiKey" label="API Key" blur readOnly />
+				<InputWithLabel v-model="apiKey" class="mt-4 mb-2" name="apiKey" label="API Key" blur readOnly />
 				<ConfirmationDialog
 					title="Request new API key"
 					message="Requesting a new API key will invalidate the old one."
 					:callback="doRequestApiKey"
 				>
-					<Button class="mt-4">Request new API key</Button>
+					Request new API key
 				</ConfirmationDialog>
 
 				<template v-if="userStore.user.storageQuota && showQuotaMessage">

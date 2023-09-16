@@ -1,6 +1,6 @@
 <template>
 	<AlertDialog>
-		<AlertDialogTrigger>
+		<AlertDialogTrigger :variant="variant">
 			<slot />
 		</AlertDialogTrigger>
 		<AlertDialogContent>
@@ -34,6 +34,7 @@ interface Props {
 	message: string;
 	proceedText?: string;
 	cancelText?: string;
+	variant?: string;
 	callback: () => void;
 }
 
@@ -42,6 +43,9 @@ withDefaults(defineProps<Props>(), {
 	message: 'This action cannot be undone.',
 	proceedText: 'Confirm',
 	cancelText: 'Cancel',
+	variant: 'default',
 	callback: () => {}
 });
+
+const emit = defineEmits(['click']);
 </script>
