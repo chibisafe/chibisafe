@@ -4,7 +4,7 @@ import type { Settings } from '@/structures/interfaces';
 import randomstring from 'randomstring';
 import prisma from './database';
 import process from 'node:process';
-import { log } from '@/main';
+import { log } from '@/utils/Logger';
 
 export const SETTINGS = {} as Settings;
 export const getSettingsMeta = (key: string) => {

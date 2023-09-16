@@ -4,7 +4,7 @@ import { utc } from 'moment';
 import Zip from 'adm-zip';
 import path from 'node:path';
 import process from 'node:process';
-import { log } from '@/main';
+import { log } from '@/utils/Logger';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
 

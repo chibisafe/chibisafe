@@ -1,7 +1,7 @@
 import process from 'node:process';
 import schedule from 'node-schedule';
 import * as si from 'systeminformation';
-import { log } from '@/main';
+import { log } from '@/utils/Logger';
 
 import prisma from '@/structures/database';
 import { SETTINGS } from '@/structures/settings';

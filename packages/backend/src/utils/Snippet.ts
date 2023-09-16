@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { log } from '@/main';
+import { log } from '@/utils/Logger';
 import randomstring from 'randomstring';
 
 import prisma from '@/structures/database';
