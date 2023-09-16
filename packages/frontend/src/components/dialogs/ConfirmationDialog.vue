@@ -28,13 +28,14 @@ import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDesc
 import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
 import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
 import AlertDialogAction from '@/components/ui/alert-dialog/AlertDialogAction.vue';
+import { buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	title: string;
 	message: string;
 	proceedText?: string;
 	cancelText?: string;
-	variant?: 'default' | 'link' | 'destructive' | 'outline' | 'secondary' | 'ghost' | null | undefined;
+	variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant'];
 	callback: () => void;
 }
 
