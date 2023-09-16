@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 interface ExtendedWithButton extends AlertDialogTriggerProps {
-	variant?: string;
+	variant?: 'default' | 'link' | 'destructive' | 'outline' | 'secondary' | 'ghost' | null | undefined;
 }
 
 const props = defineProps<ExtendedWithButton>();
