@@ -32,9 +32,11 @@
 					{{ formatBytes(maxFileSize) }} max per file.
 					<span
 						class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto"
-						@click="triggerTextInput($event)"
+						@click.stop.prevent="() => {}"
 					>
-						Click here if you rather upload text or try pasting it now.
+						<TextEditorDialog :content="pastedText" :open="isTextEditorOpen"
+							>Click here if you rather upload text or try pasting it now.</TextEditorDialog
+						>
 					</span>
 				</p>
 
@@ -51,20 +53,17 @@
 		<div class="absolute -bottom-12 w-full">
 			<AlbumDropdown v-if="isLoggedIn" />
 		</div>
-
-		<TextEditorModal title="Create a new text upload" action-text="Upload" :content="pastedText" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
-import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore, useModalStore } from '~/store';
+import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
 import { getFileExtension, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
 import { chibiUploader } from '@chibisafe/uploader-client';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
-import TextEditorModal from '~/components/modals/TextEditorModal.vue';
-// import { chibiUploader } from '../../../../../chibisafe-uploader/packages/uploader-client/lib';
+import TextEditorDialog from '../dialogs/TextEditorDialog.vue';
 
 import { UploadCloudIcon } from 'lucide-vue-next';
 import { useWindowSize } from '@vueuse/core';
@@ -73,7 +72,6 @@ const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
 const settingsStore = useSettingsStore();
 const albumsStore = useAlbumsStore();
-const modalStore = useModalStore();
 
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const token = computed(() => userStore.user.token);
@@ -81,6 +79,7 @@ const files = ref<File[] | null>();
 const inputUpload = ref<HTMLInputElement>();
 const isDragging = ref(false);
 const pastedText = ref('');
+const isTextEditorOpen = ref(false);
 
 const isUploadEnabled = computed(() => {
 	if (settingsStore.publicMode) return true;
@@ -93,12 +92,6 @@ const isMobile = ref(false);
 
 const triggerFileInput = () => {
 	inputUpload.value?.click();
-};
-
-const triggerTextInput = (event: MouseEvent) => {
-	event.stopPropagation();
-	event.preventDefault();
-	modalStore.textEditor.show = true;
 };
 
 const dropHandler = (event: DragEvent) => {
@@ -131,16 +124,17 @@ const pasteHandler = (event: ClipboardEvent) => {
 			void processFile(fileData);
 		}
 	} else {
-		// If the modal is already open, don't paste as it would overwrite the current text
-		if (modalStore.textEditor.show) return;
+		// If the dialog is already open, don't paste as it would overwrite the current text
+		if (isTextEditorOpen.value) return;
 
 		// If the clipboard doesn't have text, don't do anything
 		const text = event.clipboardData.getData('text');
 		if (!text) return;
 
-		// If the clipboard has text, open the modal with the text
+		// If the clipboard has text, open the dialog with the text
 		pastedText.value = text;
-		modalStore.textEditor.show = true;
+		event.preventDefault();
+		isTextEditorOpen.value = true;
 	}
 };
 
