@@ -67,19 +67,25 @@
 
 								<!-- File information panel -->
 								<div class="flex flex-col w-1/3 pl-4 mobile:w-full">
-									<div class="flex justify-between mobile:mt-4">
-										<Button class="flex-auto" @click="copyLink">{{
+									<div class="flex justify-between mobile:mt-4 gap-2">
+										<Button class="flex-1" @click="copyLink">{{
 											isCopying ? 'Copied!' : 'Copy link'
 										}}</Button>
-										<a
+										<Button
+											as="a"
 											:href="file.url"
 											target="_blank"
 											rel="noopener noreferrer"
-											class="border focus:ring-0 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center focus:ring-gray-600 bg-dark-110 border-gray-700 text-white hover:bg-dark-100 mr-2 mb-2"
-											>Open</a
+											class="flex-1"
 										>
-										<Button class="flex-auto mr-0" @click="showDeleteFileModal(file)"
-											>Delete</Button
+											Open
+										</Button>
+										<ConfirmationDialog
+											title="Delete file"
+											message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
+											proceedText="Delete"
+											:callback="doDeleteFile"
+											><Button variant="destructive">Delete</Button></ConfirmationDialog
 										>
 									</div>
 
@@ -207,20 +213,20 @@
 			</div>
 		</Dialog>
 	</TransitionRoot>
-	<DeleteFileModal />
 </template>
 
 <script setup lang="ts">
-import type { AlbumWithSelected, FileWithAdditionalData } from '~/types';
+import type { AlbumWithSelected } from '~/types';
 import { ref, computed, watch } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
 import { useClipboard } from '@vueuse/core';
-import { useModalStore, useAlbumsStore } from '~/store';
+import { useModalStore, useAlbumsStore, useFilesStore } from '~/store';
 import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
-import { addFileToAlbum, removeFileFromAlbum } from '~/use/api';
+import { addFileToAlbum, removeFileFromAlbum, deleteFile, deleteFileAsAdmin } from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
-import Button from '~/components/buttons/Button.vue';
-import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
+import { Button } from '@/components/ui/button';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import { toast } from 'vue-sonner';
 import dayjs from 'dayjs';
 
 const props = defineProps<{
@@ -229,6 +235,7 @@ const props = defineProps<{
 
 const modalsStore = useModalStore();
 const albumsStore = useAlbumsStore();
+const filesStore = useFilesStore();
 
 if (props.type !== 'admin') {
 	// We only load the albums if the user is not an admin and the owner of the files
@@ -238,6 +245,7 @@ if (props.type !== 'admin') {
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
 const fileAlbums = computed(() => modalsStore.fileInformation.albums);
+const isAdmin = computed(() => modalsStore.deleteFile.admin);
 
 const albums = computed(() => {
 	if (!fileAlbums.value) return albumsStore.albums as AlbumWithSelected[];
@@ -287,17 +295,6 @@ const copyLink = () => {
 	setTimeout(() => (isCopying.value = false), 1000);
 };
 
-const showDeleteFileModal = (file: FileWithAdditionalData | null) => {
-	if (!file) return;
-	// If the user is an admin we want to delete it through another endpoint
-	if (props.type === 'admin') {
-		modalsStore.deleteFile.admin = true;
-	}
-
-	modalsStore.deleteFile.file = file;
-	modalsStore.deleteFile.show = true;
-};
-
 // Clear the store only after the transition is done to prevent artifacting
 const clearStore = () => {
 	modalsStore.fileInformation.file = null;
@@ -305,5 +302,18 @@ const clearStore = () => {
 
 const closeModal = () => {
 	modalsStore.fileInformation.show = false;
+};
+
+const doDeleteFile = () => {
+	if (!file.value) return;
+
+	// If the user is an admin, we need to use the admin endpoint
+	if (isAdmin.value) void deleteFileAsAdmin(file.value.uuid);
+	// Otherwise, we can use the normal endpoint
+	else void deleteFile(file.value.uuid);
+
+	filesStore.removeFile(file.value.uuid);
+	toast.success('File deleted');
+	closeModal();
 };
 </script>

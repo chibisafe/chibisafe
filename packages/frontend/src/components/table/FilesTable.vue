@@ -69,25 +69,35 @@
 					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</td>
 				<td class="py-4 pl-3 pr-4 text-right text-sm font-medium desktop:pr-6 text-light-100">
-					<button type="button" class="ml-4" @click="showDeleteFileModal(file)">Delete</button>
+					<ConfirmationDialog
+						title="Delete file"
+						message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
+						proceedText="Delete"
+						:callback="doDeleteFile"
+						><Button variant="destructive" @click="prepareDeleteFile(file)"
+							>Delete</Button
+						></ConfirmationDialog
+					>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<FileInformationModal :type="props.type === 'admin' ? 'admin' : null" />
-	<DeleteFileModal />
 </template>
 
 <script setup lang="ts">
 import type { FileWithAdditionalData } from '~/types';
-import { computed } from 'vue';
-import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
+import { computed, ref } from 'vue';
+import { useModalStore, useUserStore, useFilesStore, useAlbumsStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 import dayjs from 'dayjs';
+import { deleteFileAsAdmin, deleteFile } from '~/use/api';
+import { toast } from 'vue-sonner';
 
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
-import DeleteFileModal from '~/components/modals/DeleteFileModal.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';
@@ -95,7 +105,10 @@ const props = defineProps<{
 
 const filesStore = useFilesStore();
 const albumsStore = useAlbumsStore();
+const userStore = useUserStore();
 const modalsStore = useModalStore();
+const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
+const fileToDelete = ref<FileWithAdditionalData | null>(null);
 
 const files = computed(() => {
 	if (props.type === 'uploads' || props.type === 'admin') return filesStore.files;
@@ -103,19 +116,25 @@ const files = computed(() => {
 	else return [];
 });
 
-const showDeleteFileModal = (file: FileWithAdditionalData | null) => {
+const prepareDeleteFile = (file: FileWithAdditionalData) => {
 	if (!file) return;
-	// If the user is an admin we want to delete it through another endpoint
-	if (props.type === 'admin') {
-		modalsStore.deleteFile.admin = true;
-	}
-
-	modalsStore.deleteFile.file = file;
-	modalsStore.deleteFile.show = true;
+	fileToDelete.value = file;
 };
 
 const showModal = (file: FileWithAdditionalData) => {
 	modalsStore.fileInformation.file = file;
 	modalsStore.fileInformation.show = true;
+};
+
+const doDeleteFile = () => {
+	if (!fileToDelete.value) return;
+
+	// If the user is an admin, we need to use the admin endpoint
+	if (isAdmin.value) void deleteFileAsAdmin(fileToDelete.value.uuid);
+	// Otherwise, we can use the normal endpoint
+	else void deleteFile(fileToDelete.value.uuid);
+
+	filesStore.removeFile(fileToDelete.value.uuid);
+	toast.success('File deleted');
 };
 </script>

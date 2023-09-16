@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -12,24 +12,32 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">My account</h1>
 			<div class="mt-8 bg-dark-110 p-8">
 				<span class="text-light-100 block">Your current username. Can't be changed.</span>
-				<InputWithOverlappingLabel v-model="username" class="mt-4" label="Username" readOnly />
+				<InputWithLabel v-model="username" name="username" class="mt-4" label="Username" readOnly />
 
 				<span class="mt-12 text-light-100 block"
 					>If you want to change your password please enter your current one followed by the new password
 					twice.</span
 				>
-				<InputWithOverlappingLabel
+				<InputWithLabel
 					v-model="currentPassword"
 					class="mt-4"
 					label="Current password"
 					type="password"
+					name="currentPassword"
 					:value="currentPassword"
 				/>
-				<InputWithOverlappingLabel v-model="newPassword" class="mt-4" type="password" label="New password" />
-				<InputWithOverlappingLabel
+				<InputWithLabel
+					v-model="newPassword"
+					class="mt-4"
+					type="password"
+					name="paassword"
+					label="New password"
+				/>
+				<InputWithLabel
 					v-model="reNewPassword"
 					class="mt-4"
 					type="password"
+					name="repPassword"
 					label="New password again"
 				/>
 				<Button class="mt-4" @click="doChangePassword">Change password</Button>
@@ -38,8 +46,14 @@
 				<span class="mt-12 text-light-100 block"
 					>You can use the API key for 3rd-party services and scripts to gain access to your account.</span
 				>
-				<InputWithOverlappingLabel v-model="apiKey" class="mt-4" label="API Key" blur readOnly />
-				<Button class="mt-4" @click="doRequestApiKey">Request new API key</Button>
+				<InputWithLabel v-model="apiKey" class="mt-4" name="apiKey" label="API Key" blur readOnly />
+				<ConfirmationDialog
+					title="Request new API key"
+					message="Requesting a new API key will invalidate the old one."
+					:callback="doRequestApiKey"
+				>
+					<Button class="mt-4">Request new API key</Button>
+				</ConfirmationDialog>
 
 				<template v-if="userStore.user.storageQuota && showQuotaMessage">
 					<span class="mt-12 text-light-100 block"> Your storage quota </span>
@@ -50,23 +64,23 @@
 				</template>
 			</div>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useUserStore } from '~/store/user';
-import { useToastStore } from '~/store/toast';
+import { toast } from 'vue-sonner';
 import { changePassword, changeApiKey } from '~/use/api';
 import { formatBytes } from '~/use/file';
 
-import Sidebar from '~/components/sidebar/Sidebar.vue';
-import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
-import Button from '~/components/buttons/Button.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import InputWithLabel from '@/components/input/InputWithLabel.vue';
+import { Button } from '@/components/ui/button';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 
 const userStore = useUserStore();
-const toastStore = useToastStore();
 
 const username = computed(() => userStore.user.username);
 const currentPassword = ref('');
@@ -111,7 +125,7 @@ const doChangePassword = async () => {
 	const response = await changePassword(currentPassword.value, newPassword.value);
 	if (!response) return;
 
-	toastStore.create('success', 'Password changed successfully');
+	toast.success('Password changed successfully');
 
 	error.value = '';
 	// eslint-disable-next-line require-atomic-updates

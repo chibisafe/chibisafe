@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -29,14 +29,14 @@
 			</h1>
 			<Table :invites="invites" class="mt-12 bg-dark-110" />
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getInvites, createInvite } from '~/use/api';
 import { debug } from '~/use/log';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Table from '~/components/table/InvitesTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 

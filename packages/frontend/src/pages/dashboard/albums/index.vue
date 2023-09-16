@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 desktop:px-6 mobile:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -11,7 +11,16 @@
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
 				You have {{ albums.length }} album{{ albums.length > 1 ? 's' : '' }}
-				<Button class="ml-4 mt-3" @click="showNewAlbumModal">Add new</Button>
+				<div class="ml-4 mt-3">
+					<InputDialog
+						title="Create new album"
+						label="Album name"
+						proceedText="Create"
+						:callback="createNewAlbum"
+					>
+						New album
+					</InputDialog>
+				</div>
 			</h1>
 			<div class="mt-8 pb-16">
 				<ul
@@ -42,45 +51,42 @@
 							</div>
 						</router-link>
 						<div
-							class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
-							@click="showEditAlbumModal(album)"
+							class="flex-shrink-0 w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
 						>
-							<Settings2Icon />
+							<AlbumSettingsDialog :album="album">
+								<div class="w-16 h-16 flex items-center justify-center"><Settings2Icon /></div>
+							</AlbumSettingsDialog>
 						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
-	</Sidebar>
-	<NewAlbumModal />
-	<AlbumSettingsModal />
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useAlbumsStore, useModalStore } from '~/store';
-import type { Album } from '~/types';
-
-import Sidebar from '~/components/sidebar/Sidebar.vue';
-import Button from '~/components/buttons/Button.vue';
+import { useAlbumsStore } from '~/store';
+import { createAlbum } from '@/use/api';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Settings2Icon } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
-import NewAlbumModal from '~/components/modals/NewAlbumModal.vue';
-import AlbumSettingsModal from '~/components/modals/AlbumSettingsModal.vue';
+import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import InputDialog from '@/components/dialogs/InputDialog.vue';
 
 const albumsStore = useAlbumsStore();
-const modalsStore = useModalStore();
 const albums = computed(() => albumsStore.albums);
 
-const showNewAlbumModal = () => {
-	modalsStore.newAlbum.show = true;
-};
+const createNewAlbum = async (name: string) => {
+	if (!name) return;
+	await createAlbum(name);
 
-const showEditAlbumModal = (album: Album) => {
-	void albumsStore.getAlbumLinks(album.uuid);
-	modalsStore.albumSettings.album = album;
-	modalsStore.albumSettings.show = true;
+	// Refresh the album list on the store
+	void albumsStore.get(true);
+
+	toast.success('Album created');
 };
 
 void albumsStore.get();

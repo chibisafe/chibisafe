@@ -172,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore, useSettingsStore } from '~/store';
 import { useWindowSize } from '@vueuse/core';
@@ -181,6 +181,10 @@ const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const route = useRoute();
 const loggedIn = computed(() => userStore.user.loggedIn);
-const isMobile = computed(() => useWindowSize().width.value < 640);
+const isMobile = ref(false);
 const isAuthPage = computed(() => route.path === '/login' || route.path === '/register');
+
+onMounted(() => {
+	isMobile.value = useWindowSize().width.value < 640;
+});
 </script>

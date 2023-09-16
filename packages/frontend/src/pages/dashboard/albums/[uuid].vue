@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -16,14 +16,14 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">`{{ albumName }}` uploads</h1>
 			<FilesWrapper type="album" />
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAlbumsStore } from '~/store/albums';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 

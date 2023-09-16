@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 		</div>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
@@ -60,7 +60,7 @@ import { useRoute } from 'vue-router';
 import { useFilesStore } from '~/store/files';
 import { getSnippets } from '~/use/api';
 import type { Snippet } from '~/types';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
 import dayjs from 'dayjs';

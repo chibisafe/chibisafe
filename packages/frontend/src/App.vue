@@ -8,9 +8,10 @@
 		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
 		:style="`background-image: url(${settingsStore.backgroundImageURL});`"
 	></div>
-	<div class="flex flex-col flex-1 h-full relative overflow-auto mobile:overflow-hidden">
+	<div class="flex flex-1 h-full relative" :class="[isInDashboard ? 'flex-row' : 'flex-col']">
+		<Sidebar v-if="isInDashboard" />
 		<router-view />
-		<Toast />
+		<Toaster />
 		<SearchModal />
 	</div>
 </template>
@@ -18,15 +19,18 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useMeta } from 'vue-meta';
+import { useRoute } from 'vue-router';
 import { useUserStore, useSettingsStore, useModalStore } from './store';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import Toast from './components/toast/Toast.vue';
+import { Toaster } from 'vue-sonner';
 import SearchModal from './components/modals/SearchModal.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const modalStore = useModalStore();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
+const isInDashboard = computed(() => useRoute().path.startsWith('/dashboard'));
 
 userStore.checkToken();
 
@@ -67,6 +71,7 @@ useMeta({
 
 console.log(
 	// @ts-ignore
+	// eslint-disable-next-line no-undef
 	`%c chibisafe %c v${PACKAGE_VERSION} %c`,
 	'background:#35495e; padding: 1px; color: #fff',
 	'background:#ff015b; padding: 1px; color: #fff',

@@ -1,55 +1,99 @@
 <template>
-	<div class="h-screen w-full overflow-auto">
-		<div class="flex flex-col items-center w-full self-center text-light-100">
-			<Header />
+	<div
+		class="container relative h-screen flex-col items-center justify-center grid max-w-none grid-cols-2 px-0 bg-dark-110 mobile:flex"
+	>
+		<router-link
+			to="/login"
+			class="text-blue-500"
+			:class="cn(buttonVariants({ variant: 'ghost' }), 'absolute mobile:right-4 mobile:top-4 right-8 top-8')"
+		>
+			Log in
+		</router-link>
+		<div class="relative mobile:hidden h-full flex-col bg-muted p-10 text-white border-background border-r flex">
+			<div
+				class="absolute inset-0 bg-no-repeat bg-scroll bg-center bg-cover"
+				:style="`background-image: url(${settingsStore.backgroundImageURL});`"
+			/>
+			<div class="relative z-20 flex items-center text-lg font-medium">
+				<router-link to="/">
+					<img
+						v-if="settingsStore.logoURL"
+						:src="settingsStore.logoURL"
+						alt="chibisafe logo"
+						class="w-12 mr-2"
+					/>
+					<img v-else src="/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
+				</router-link>
+				<router-link to="/">
+					<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
+				</router-link>
+			</div>
+			<div class="relative z-20 mt-auto">
+				<blockquote class="space-y-2">
+					<p class="text-lg">
+						<strong>chibisafe</strong> simplifies file management with features like upload tracking, album
+						creation, and easy downloads. You can tag and preview files, customize access with unique links,
+						and much more.
+					</p>
+				</blockquote>
+			</div>
 		</div>
-		<div class="flex flex-col items-center h-auto min-h-[900px] w-full text-light-100 justify-center self-center">
-			<div class="flex w-full mt-16 items-center relative max-w-4xl flex-col">
-				<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 w-full">
-					<div class="sm:mx-auto sm:w-full sm:max-w-md">
-						<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-light-100">
-							You've received an invite!
-						</h2>
-						<p class="mt-4 text-center">
-							Someone sent you an invite to create an account on this chibisafe instance. In order to
-							continue please create a username and password below.
-						</p>
+		<div class="p-8 relative">
+			<div class="mx-auto flex mobile:w-full flex-col justify-center space-y-6 w-[350px]">
+				<div class="flex flex-col space-y-2 text-center">
+					<h1 class="text-2xl font-semibold tracking-tight">You've received an invite</h1>
+					<p class="text-sm text-muted-foreground">
+						You got an invite to create an account on this chibisafe instance. In order to continue please
+						create a username and password below.
+					</p>
+				</div>
+				<div class="grid gap-2">
+					<div class="grid gap-1">
+						<Label class="sr-only" for="username"> Username </Label>
+						<Input
+							id="username"
+							v-model="username"
+							placeholder="Username"
+							type="text"
+							auto-capitalize="none"
+							auto-complete="username"
+							auto-correct="off"
+							:disabled="isLoading"
+						/>
 					</div>
 
-					<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-						<div class="bg-dark-110 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-							<form class="space-y-6" action="#" method="POST">
-								<div>
-									<label class="block text-sm font-medium text-light-100">Username</label>
-									<div class="mt-1">
-										<Input v-model="username" type="text" />
-									</div>
-								</div>
-
-								<div>
-									<label for="password" class="block text-sm font-medium text-light-100"
-										>Password</label
-									>
-									<div class="mt-1">
-										<Input v-model="password" type="password" />
-									</div>
-								</div>
-
-								<div>
-									<label for="password" class="block text-sm font-medium text-light-100"
-										>Re-type password</label
-									>
-									<div class="mt-1">
-										<Input v-model="repassword" type="password" />
-									</div>
-								</div>
-
-								<div class="mt-4 justify-end flex gap-1">
-									<Button variant="link" @click="register"> Create account </Button>
-								</div>
-							</form>
-						</div>
+					<div class="grid gap-1">
+						<Label class="sr-only" for="password"> Password </Label>
+						<Input
+							id="password"
+							v-model="password"
+							placeholder="Password"
+							type="password"
+							auto-capitalize="none"
+							auto-complete="password"
+							auto-correct="off"
+							:disabled="isLoading"
+						/>
 					</div>
+
+					<div class="grid gap-1">
+						<Label class="sr-only" for="repassword"> Re-password </Label>
+						<Input
+							id="repassword"
+							v-model="repassword"
+							placeholder="Password again"
+							type="password"
+							auto-capitalize="none"
+							auto-complete="repassword"
+							auto-correct="off"
+							:disabled="isLoading"
+							@keyup.enter="register"
+						/>
+					</div>
+					<Button :disabled="isLoading" @click="register">
+						<Loader2Icon v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+						Create account
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -60,42 +104,51 @@
 import { ref } from 'vue';
 import { register as Register } from '~/use/api';
 import { useRouter } from 'vue-router';
-import { useToastStore } from '~/store/toast';
-import Button from '~/components/buttons/Button.vue';
-import Input from '~/components/forms/Input.vue';
+import { useSettingsStore } from '~/store';
+import { toast } from 'vue-sonner';
+import { cn } from '@/lib/utils';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Loader2Icon } from 'lucide-vue-next';
 
 const props = defineProps<{
 	code: string;
 }>();
 
 const router = useRouter();
-const toastStore = useToastStore();
+const settingsStore = useSettingsStore();
 
 // Form models
 const username = ref('');
 const password = ref('');
 const repassword = ref('');
 
+const isLoading = ref(false);
+
 const register = async () => {
 	if (!username.value || !password.value || !repassword.value) {
-		toastStore.create('error', 'Username or any of the two passwords are missing');
+		toast.error('Username or any of the two passwords are missing');
 		return;
 	}
 
 	if (password.value !== repassword.value) {
-		toastStore.create('error', 'The passwords need to be the same on both fields');
+		toast.error('The passwords need to be the same on both fields');
 		return;
 	}
 
+	isLoading.value = true;
 	const response = await Register(username.value, password.value, props.code);
+	isLoading.value = false;
 	if (!response) return;
 
-	toastStore.create('success', 'Successfully registered! You can now login.');
+	toast.success('Successfully registered! You can now login.');
 	// eslint-disable-next-line require-atomic-updates
 	password.value = '';
 	// eslint-disable-next-line require-atomic-updates
 	repassword.value = '';
 
+	// TODO: Redirect to login page
 	await router.push('/login');
 };
 </script>

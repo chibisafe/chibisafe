@@ -1,5 +1,5 @@
 <template>
-	<Sidebar>
+	<ScrollArea class="w-full">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<Breadcrumbs
 				:pages="[
@@ -39,13 +39,18 @@
 							>
 								Open raw
 							</a>
-							<button
-								type="button"
-								class="text-red-400 hover:text-red-500 transition-colors duration-200 ml-4"
-								@click="showDeleteSnippetModal"
+							<ConfirmationDialog
+								title="Delete snippet?"
+								message="This will completely remove the snippet and links to it will stop working. Are you sure?"
+								:callback="confirmDeleteSnippet"
 							>
-								Delete snippet
-							</button>
+								<button
+									type="button"
+									class="text-red-400 hover:text-red-500 transition-colors duration-200 ml-4"
+								>
+									Delete snippet
+								</button>
+							</ConfirmationDialog>
 						</div>
 					</div>
 					<div class="relative">
@@ -59,44 +64,31 @@
 				</div>
 			</div>
 		</div>
-		<GenericConfirmationModal
-			title="Delete snippet?"
-			message="This will completely remove the snippet, and link to it will stop working. Are you sure?"
-			action-text="Delete"
-			:callback="confirmDeleteSnippet"
-		/>
-	</Sidebar>
+	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { getSnippet, deleteSnippet } from '~/use/api';
 import type { Snippet } from '~/types';
-import GenericConfirmationModal from '~/components/modals/GenericConfirmationModal.vue';
-import Sidebar from '~/components/sidebar/Sidebar.vue';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import Highlight from '~/components/highlight/Highlight.vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import Highlight from '~/components/highlight/Highlight.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-import { useModalStore } from '~/store';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
 	uuid: string;
 }>();
 
-const modalStore = useModalStore();
 const router = useRouter();
 const snippet = ref<Snippet>();
 
-const showDeleteSnippetModal = () => {
-	modalStore.generic.show = true;
-};
-
 const confirmDeleteSnippet = async () => {
 	await deleteSnippet(props.uuid);
-	modalStore.generic.show = false;
 	await router.push('/dashboard/snippets');
 };
 
