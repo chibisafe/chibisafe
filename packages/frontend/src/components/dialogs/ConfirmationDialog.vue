@@ -34,7 +34,7 @@ interface Props {
 	message: string;
 	proceedText?: string;
 	cancelText?: string;
-	variant?: string;
+	variant?: 'default' | 'link' | 'destructive' | 'outline' | 'secondary' | 'ghost' | null | undefined;
 	callback: () => void;
 }
 
