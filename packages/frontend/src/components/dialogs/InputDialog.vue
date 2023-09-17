@@ -1,6 +1,9 @@
 <template>
-	<Dialog :open="isOpen">
-		<Button variant="outline" @click="isOpen = true"><slot /></Button>
+	<Dialog>
+		<DialogTrigger>
+			<Button variant="outline"><slot /></Button>
+		</DialogTrigger>
+
 		<DialogContent class="sm:max-w-[425px]" @escape-key-down.prevent>
 			<DialogHeader>
 				<DialogTitle>{{ title }}</DialogTitle>
@@ -11,11 +14,13 @@
 			<div class="grid gap-4 py-4">
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label v-if="label" for="input" class="text-right"> {{ label }} </Label>
-					<Input id="input" v-model="inputValue" class="col-span-3" @keyup.enter="returnCallback" />
+					<Input id="input" v-model="inputValue" class="col-span-3" />
 				</div>
 			</div>
 			<DialogFooter>
-				<Button type="button" variant="default" @click="returnCallback">{{ proceedText }}</Button>
+				<DialogClose>
+					<Button type="button" variant="default" @click="callback(inputValue)">{{ proceedText }}</Button>
+				</DialogClose>
 			</DialogFooter>
 		</DialogContent>
 	</Dialog>
@@ -26,11 +31,13 @@ import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
-	DialogTitle
+	DialogTitle,
+	DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -44,7 +51,7 @@ interface Props {
 	callback: (value: string) => void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
 	title: 'Are you sure?',
 	message: '',
 	label: '',
@@ -53,11 +60,5 @@ const props = withDefaults(defineProps<Props>(), {
 	callback: (value: string) => {}
 });
 
-const isOpen = ref(false);
 const inputValue = ref('');
-
-const returnCallback = () => {
-	props.callback(inputValue.value);
-	isOpen.value = false;
-};
 </script>
