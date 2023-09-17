@@ -7,9 +7,10 @@
 
 		<a
 			v-if="type === 'link'"
-			class="block w-full border-0 p-0 text-blue-400 hover:text-blue-500 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100"
+			class="block w-full border-0 p-0 text-blue-400 hover:text-blue-500 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100 truncate"
 			rel="noopener noreferrer"
 			target="_blank"
+			:title="href ?? value"
 			:href="href ?? value"
 			>{{ value }}</a
 		>
@@ -17,7 +18,7 @@
 		<input
 			v-else
 			:type="type"
-			class="block w-full border-0 p-0 text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100"
+			class="block w-full border-0 p-0 text-light-100 placeholder-gray-500 focus:ring-0 sm:text-sm bg-dark-100 truncate"
 			:class="[blur ? 'blur-sm hover:blur-none' : '']"
 			:value="value ? value : modelValue"
 			:readonly="readOnly"
