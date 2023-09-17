@@ -33,7 +33,7 @@
 							<img v-else src="/logo.svg" alt="chibisafe logo" class="w-24" />
 						</router-link>
 					</div>
-					<div v-for="(_, name, index) in navigation" :key="index" class="px-3 py-2">
+					<div v-for="(_, name, index) in navigationForUser" :key="index" class="px-3 py-2">
 						<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">{{ name }}</h2>
 						<div class="space-y-1">
 							<Button
@@ -139,6 +139,13 @@ const apiKey = computed(() => userStore.user.apiKey);
 
 const updateCheck = computed(() => updateStore.updateCheck);
 const currentPath = computed(() => route.path);
+const navigationForUser = computed(() => {
+	if (isAdmin.value) return navigation;
+	return {
+		Main: navigation.Main,
+		Account: navigation.Account
+	};
+});
 
 // @ts-ignore
 if (!import.meta.env.DEV) {
