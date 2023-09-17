@@ -59,6 +59,10 @@ export interface File {
 	ip: string;
 	createdAt: Date;
 	editedAt: Date | null;
+	quarantine: boolean;
+	quarantineFile: {
+		name: string;
+	};
 }
 
 export interface FileWithId extends File {

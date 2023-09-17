@@ -10,7 +10,11 @@ export default {
 				description: 'Whether to only get public files.'
 			},
 			page: { $ref: 'QueryPage' },
-			limit: { $ref: 'QueryLimit' }
+			limit: { $ref: 'QueryLimit' },
+			quarantine: {
+				type: 'boolean',
+				description: 'Whether to only get quarantined files.'
+			}
 		}
 	},
 	response: {

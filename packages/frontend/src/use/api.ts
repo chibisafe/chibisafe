@@ -153,9 +153,9 @@ export const getFiles = async (page: number) => {
 	}
 };
 
-export const getFilesAdmin = async (page: number, publicOnly = false) => {
+export const getFilesAdmin = async (page: number, publicOnly = false, quarantine = false) => {
 	try {
-		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}`);
+		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}&quarantine=${quarantine}`);
 		debug('getFilesAdmin', data);
 		return { files: data.files, count: data.count };
 	} catch (error: any) {
@@ -208,6 +208,24 @@ export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const data = await request.delete(`admin/file/${uuid}`);
 		debug('deleteFileAsAdmin', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const quarantineFileAsAdmin = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/file/${uuid}/quarantine`);
+		debug('quarantineFileAsAdmin', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const allowFileAsAdmin = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/file/${uuid}/allow`);
+		debug('allowFileAsAdmin', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

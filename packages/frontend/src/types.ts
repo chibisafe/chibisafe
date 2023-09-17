@@ -61,6 +61,7 @@ export interface FileWithAdditionalData extends File {
 		}[];
 		createdAt: number;
 	};
+	quarantine: boolean;
 }
 
 export interface ApiError {

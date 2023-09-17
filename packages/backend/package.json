@@ -16,6 +16,7 @@
 		"studio": "prisma studio",
 		"generate": "prisma generate",
 		"migrate": "prisma migrate deploy && prisma generate",
+		"migrate:dev": "prisma migrate dev && prisma generate",
 		"setup": "yarn install && yarn migrate",
 		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
 		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts --fix"

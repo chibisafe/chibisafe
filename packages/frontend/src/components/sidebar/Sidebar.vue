@@ -163,6 +163,7 @@ const navigation = {
 		{ name: 'Settings', href: '/dashboard/admin/settings', icon: Settings2Icon },
 		{ name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
 		{ name: 'Files', href: '/dashboard/admin/files', icon: FilesIcon },
+		{ name: 'Quarantined files', href: '/dashboard/admin/files/quarantine', icon: FilesIcon },
 		{ name: 'Invites', href: '/dashboard/admin/invites', icon: UserPlusIcon },
 		{ name: 'Statistics', href: '/dashboard/admin/statistics', icon: BarChart3Icon }
 	]

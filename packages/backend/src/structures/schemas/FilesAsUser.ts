@@ -58,6 +58,11 @@ export default {
 			type: 'string',
 			description: 'The URL of the preview of the file.',
 			example: 'https://example.com/cat.png'
+		},
+		quarantine: {
+			type: 'boolean',
+			description: 'Whether the file is quarantined or not.',
+			example: false
 		}
 	}
 };

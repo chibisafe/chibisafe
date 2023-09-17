@@ -46,6 +46,15 @@ model files {
 	user users? @relation(fields: [userId], references: [id])
 	albums albums[]
 	tags tags[]
+	quarantine Boolean @default(false)
+	quarantineFile quarantineFiles?
+}
+
+model quarantineFiles {
+	fileId String @unique
+	file files @relation(fields: [fileId], references: [uuid])
+	name String
+	reason String?
 }
 
 model snippets {

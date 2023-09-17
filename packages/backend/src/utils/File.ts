@@ -23,6 +23,7 @@ const preserveExtensions = [
 ];
 export const uploadPath = path.join(__dirname, '../../../../', 'uploads');
 export const tmpUploadPath = path.join(__dirname, '../../../../', 'uploads', 'tmp');
+export const quarantinePath = path.join(__dirname, '../../../../', 'uploads', 'quarantine');
 
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && SETTINGS.blockNoExtension) return true;
@@ -69,11 +70,9 @@ export const deleteTmpFile = async (uploadPath: string) => {
 };
 
 export const deleteFile = async (filename: string, deleteFromDB = false) => {
-	const thumbName = getFileThumbnail(filename);
 	try {
 		await jetpack.removeAsync(path.join(uploadPath, filename));
-		if (thumbName) await removeThumbs(thumbName);
-
+		await deleteThumbnails(filename);
 		if (deleteFromDB) {
 			await prisma.files.deleteMany({
 				where: {
@@ -85,6 +84,11 @@ export const deleteFile = async (filename: string, deleteFromDB = false) => {
 		log.error(`There was an error removing the file < ${filename} >`);
 		log.error(error);
 	}
+};
+
+export const deleteThumbnails = async (filename: string) => {
+	const thumbName = getFileThumbnail(filename);
+	if (thumbName) await removeThumbs(thumbName);
 };
 
 export const purgeUserFiles = async (userId: number) => {
@@ -168,10 +172,10 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLink = (req: FastifyRequest, fileName: string) => {
+export const constructFilePublicLink = (req: FastifyRequest, fileName: string, quarantine = false) => {
 	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
-		url: `${host}/${fileName}`,
+		url: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
 		thumb: '',
 		thumbSquare: '',
 		preview: ''
