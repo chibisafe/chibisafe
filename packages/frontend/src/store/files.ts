@@ -9,6 +9,7 @@ interface GetParameters {
 	ip?: string;
 	searchTerm?: string;
 	publicOnly?: boolean;
+	quarantine?: boolean;
 }
 
 export const useFilesStore = defineStore('files', {
@@ -25,7 +26,8 @@ export const useFilesStore = defineStore('files', {
 			userUuid: '',
 			ip: '',
 			searchTerm: '',
-			publicOnly: false
+			publicOnly: false,
+			quarantine: false
 		},
 		isBanned: false
 	}),
@@ -37,7 +39,8 @@ export const useFilesStore = defineStore('files', {
 				userUuid: this.helperData.userUuid,
 				ip: this.helperData.ip,
 				searchTerm: this.helperData.searchTerm,
-				publicOnly: this.helperData.publicOnly
+				publicOnly: this.helperData.publicOnly,
+				quarantine: this.helperData.quarantine
 			});
 		},
 		async getNextPage() {
@@ -47,7 +50,8 @@ export const useFilesStore = defineStore('files', {
 				userUuid: this.helperData.userUuid,
 				ip: this.helperData.ip,
 				searchTerm: this.helperData.searchTerm,
-				publicOnly: this.helperData.publicOnly
+				publicOnly: this.helperData.publicOnly,
+				quarantine: this.helperData.quarantine
 			});
 		},
 		async goToPage(pageNumber: number) {
@@ -57,12 +61,13 @@ export const useFilesStore = defineStore('files', {
 				userUuid: this.helperData.userUuid,
 				ip: this.helperData.ip,
 				searchTerm: this.helperData.searchTerm,
-				publicOnly: this.helperData.publicOnly
+				publicOnly: this.helperData.publicOnly,
+				quarantine: this.helperData.quarantine
 			});
 		},
 
 		async get(params: GetParameters = {}) {
-			const { page, admin, userUuid, ip, searchTerm, publicOnly } = params;
+			const { page, admin, userUuid, ip, searchTerm, publicOnly, quarantine } = params;
 
 			const pageNumber = page ?? 1;
 			if (pageNumber < 1) return;
@@ -72,6 +77,7 @@ export const useFilesStore = defineStore('files', {
 			this.helperData.ip = ip ?? '';
 			this.helperData.searchTerm = searchTerm ?? '';
 			this.helperData.publicOnly = publicOnly ?? false;
+			this.helperData.quarantine = quarantine ?? false;
 
 			let response:
 				| {
@@ -88,7 +94,7 @@ export const useFilesStore = defineStore('files', {
 				} else if (ip && ip !== '') {
 					response = await getFilesFromIP(ip, pageNumber);
 				} else {
-					response = await getFilesAdmin(pageNumber, publicOnly);
+					response = await getFilesAdmin(pageNumber, publicOnly, quarantine);
 				}
 			} else if (searchTerm && searchTerm !== '') {
 				response = await searchFiles(searchTerm, pageNumber);

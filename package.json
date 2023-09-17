@@ -11,6 +11,7 @@
 		"postinstall": "husky install",
 		"generate": "yarn workspace @chibisafe/backend generate",
 		"migrate": "yarn workspace @chibisafe/backend migrate",
+		"migrate:dev": "yarn workspace @chibisafe/backend migrate:dev",
 		"start": "yarn workspace @chibisafe/backend start",
 		"migrate-v4-to-v5": "yarn workspace @chibisafe/migration start",
 		"backend": "yarn workspace @chibisafe/backend dev:reload",

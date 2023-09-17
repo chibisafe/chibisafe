@@ -33,7 +33,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			original: true,
 			size: true,
 			type: true,
-			uuid: true
+			uuid: true,
+			quarantine: true
 		},
 		orderBy: {
 			id: 'desc'

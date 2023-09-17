@@ -2,7 +2,14 @@
 	<div v-if="files?.length" class="masonry mt-8 pb-16">
 		<div v-for="file in files" :key="file.uuid" class="bg-black">
 			<div class="hover:-translate-y-1 hover:translate-x-1 transition-transform duration-100 ease-in-out">
-				<template v-if="isFileImage(file) || isFileVideo(file)">
+				<div
+					v-if="file.quarantine"
+					@click="showModal(file)"
+					class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
+				>
+					<FileWarningIcon class="text-red-500 w-16 h-16" />
+				</div>
+				<template v-else-if="isFileImage(file) || isFileVideo(file)">
 					<a
 						:href="file.url"
 						target="_blank"
@@ -51,7 +58,7 @@
 import type { FileWithAdditionalData } from '~/types';
 import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
-import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
+import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon, FileWarningIcon } from 'lucide-vue-next';
 import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';

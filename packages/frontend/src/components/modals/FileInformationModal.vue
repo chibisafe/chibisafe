@@ -81,6 +81,24 @@
 											Open
 										</Button>
 										<ConfirmationDialog
+											v-if="props.type === 'admin' && !file.quarantine"
+											title="Quarantine file"
+											message="The file will be quarantined and gone temporarily. Are you sure?"
+											proceedText="Quarantine"
+											:callback="doQuarantineFile"
+											variant="destructive"
+											>Quarantine</ConfirmationDialog
+										>
+										<ConfirmationDialog
+											v-if="props.type === 'admin' && file.quarantine"
+											title="Allow file"
+											message="The file will be un-quarantined and be available again. Are you sure?"
+											proceedText="Allow"
+											:callback="doAllowFile"
+											variant="destructive"
+											>Allow</ConfirmationDialog
+										>
+										<ConfirmationDialog
 											title="Delete file"
 											message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
 											proceedText="Delete"
@@ -223,7 +241,14 @@ import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headles
 import { useClipboard } from '@vueuse/core';
 import { useModalStore, useAlbumsStore, useFilesStore } from '~/store';
 import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
-import { addFileToAlbum, removeFileFromAlbum, deleteFile, deleteFileAsAdmin } from '~/use/api';
+import {
+	addFileToAlbum,
+	removeFileFromAlbum,
+	deleteFile,
+	deleteFileAsAdmin,
+	allowFileAsAdmin,
+	quarantineFileAsAdmin
+} from '~/use/api';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import { Button } from '@/components/ui/button';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
@@ -303,6 +328,28 @@ const clearStore = () => {
 
 const closeModal = () => {
 	modalsStore.fileInformation.show = false;
+};
+
+const doQuarantineFile = () => {
+	if (!file.value) return;
+
+	// If the user is an admin, we need to use the admin endpoint
+	void quarantineFileAsAdmin(file.value.uuid);
+
+	filesStore.removeFile(file.value.uuid);
+	toast.success('File quarantined');
+	closeModal();
+};
+
+const doAllowFile = () => {
+	if (!file.value) return;
+
+	// If the user is an admin, we need to use the admin endpoint
+	void allowFileAsAdmin(file.value.uuid);
+
+	filesStore.removeFile(file.value.uuid);
+	toast.success('File allowed');
+	closeModal();
 };
 
 const doDeleteFile = () => {
