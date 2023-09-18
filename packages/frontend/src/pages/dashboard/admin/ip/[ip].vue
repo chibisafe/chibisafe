@@ -8,7 +8,7 @@
 						href: '/dashboard/admin/files'
 					},
 					{
-						name: 'Banned IPs',
+						name: 'IP Management',
 						href: '/dashboard/admin/ip'
 					},
 					{
@@ -22,14 +22,14 @@
 
 				<span class="grow h-1 w-full"></span>
 
-				<div class="items-center my-8">
+				<div class="items-center my-8 flex">
 					<ConfirmationDialog
 						v-if="isBanned"
 						title="Unban IP"
 						message="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						:callback="doUnbanIP"
 					>
-						Unban IP
+						<span class="w-20">Unban IP</span>
 					</ConfirmationDialog>
 
 					<ConfirmationDialog
@@ -39,17 +39,19 @@
 						:callback="doBanIP"
 						variant="destructive"
 					>
-						Ban IP
+						<span class="w-20">Ban IP</span>
 					</ConfirmationDialog>
 
-					<ConfirmationDialog
-						title="Ban IP"
-						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
-						:callback="doPurgeFiles"
-						variant="destructive"
-					>
-						Purge all files from this IP
-					</ConfirmationDialog>
+					<div class="ml-2">
+						<ConfirmationDialog
+							title="Ban IP"
+							message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
+							:callback="doPurgeFiles"
+							variant="destructive"
+						>
+							<span class="w-44">Purge all files from this IP</span>
+						</ConfirmationDialog>
+					</div>
 				</div>
 			</h1>
 			<FilesWrapper type="admin" />

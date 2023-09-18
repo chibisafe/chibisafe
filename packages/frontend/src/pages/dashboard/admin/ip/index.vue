@@ -8,7 +8,7 @@
 						href: '/dashboard/admin/files'
 					},
 					{
-						name: 'Banned IPs',
+						name: 'IP Management',
 						href: '/dashboard/admin/ip'
 					}
 				]"
@@ -16,14 +16,16 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
 				<span class="desktop:whitespace-nowrap">List of banned IPs</span>
 				<span class="grow h-1 w-full"></span>
-				<InputDialog
-					message="The IP you submit in the field below will be denied access to the platform until you remove the ban. Be careful"
-					title="Ban new IP"
-					variant="destructive"
-					:callback="doBanIP"
-				>
-					<span class="block w-20">Ban new IP</span>
-				</InputDialog>
+				<div>
+					<InputDialog
+						message="The IP you submit in the field below will be denied access to the platform until you remove the ban. Be careful"
+						title="Ban new IP"
+						variant="destructive"
+						:callback="doBanIP"
+					>
+						<span class="block w-20">Ban new IP</span>
+					</InputDialog>
+				</div>
 			</h1>
 			<div class="">
 				<Table class="mt-12 bg-dark-110">
