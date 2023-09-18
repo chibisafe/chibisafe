@@ -2,6 +2,7 @@ import jetpack from 'fs-jetpack';
 import path from 'node:path';
 import { inspect } from 'node:util';
 import process from 'node:process';
+import { pathToFileURL } from 'node:url';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import type { RouteOptions } from './interfaces';
 import { addSpaces } from '@/utils/Util';
@@ -27,11 +28,10 @@ export default {
 		});
 
 		for (const schemaFile of baseSchemaFiles) {
-			// Replace slashes if user is on Windows
-			const slash = process.platform === 'win32' ? '\\' : '/';
 			// Replace extension from ts to js if in production
-			const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
-			const schema = await import(schemaFile.replace(replace, `..${slash}`));
+			const replace = process.env.NODE_ENV === 'production' ? `dist/` : `src/`;
+			const fileUrl = pathToFileURL(schemaFile.replace(replace, `../`));
+			const schema = await import(fileUrl.toString());
 			server.addSchema(schema.default);
 		}
 
@@ -49,21 +49,26 @@ export default {
 
 		for (const routeFile of routeFiles) {
 			try {
-				// Replace slashes if user is on Windows
-				const slash = process.platform === 'win32' ? '\\' : '/';
 				// Replace extension from ts to js if in production
-				const replace = process.env.NODE_ENV === 'production' ? `dist${slash}` : `src${slash}`;
-				const route = await import(routeFile.replace(replace, `..${slash}`));
+				const replace = process.env.NODE_ENV === 'production' ? `dist/` : `src/`;
+				const route = await import(routeFile.replace(replace, `../`));
 				const options: RouteOptions = route.options;
 
 				// Try to grab the schema file for the route
-				const routeFileName = routeFile.split(slash).pop();
+				const routeFileName = routeFile.split('/').pop();
 				const schemaFile = schemaFiles.find(file => {
 					if (!routeFileName) return null;
 					return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
 				});
 
-				let schema = schemaFile ? (await import(schemaFile.replace(replace, `..${slash}`))).default : undefined;
+				let schema: any;
+				if (schemaFile) {
+					const fileUrl = pathToFileURL(schemaFile.replace(replace, `../`));
+					schema = (await import(fileUrl.toString())).default;
+				}
+
+				// const schema = await import(fileUrl as unknown as string);
+				// schema = schemaFile ? (await import(schemaFile.replace(replace, `../`))).default : undefined;
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
@@ -82,7 +87,8 @@ export default {
 
 				// Set default middlewares that need to be included
 				for (const middleware of defaultMiddlewares) {
-					const importedMiddleware = await import(path.join(__dirname, '..', 'middlewares', middleware));
+					const fileUrl = pathToFileURL(path.join(__dirname, '..', 'middlewares', middleware));
+					const importedMiddleware = await import(fileUrl.toString());
 					middlewares.push(importedMiddleware.default);
 				}
 
@@ -107,7 +113,8 @@ export default {
 							continue;
 						}
 
-						const importedMiddleware = await import(path.join(__dirname, '..', 'middlewares', name));
+						const fileUrl = pathToFileURL(path.join(__dirname, '..', 'middlewares', name));
+						const importedMiddleware = await import(fileUrl.toString());
 
 						// Init anonymous function, to pass middleware options to the middleware on run, if applicable
 						if (middlewareOptions) {
