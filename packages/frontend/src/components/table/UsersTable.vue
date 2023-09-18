@@ -34,7 +34,7 @@
 				</TableCell>
 				<TableCell>
 					<Tooltip :text="dayjs(user.createdAt).format('MMMM D, YYYY h:mm A')">{{
-						dayjs().from(Number(user.createdAt))
+						dayjs().to(user.createdAt)
 					}}</Tooltip>
 				</TableCell>
 				<TableCell class="flex gap-2 justify-end">
