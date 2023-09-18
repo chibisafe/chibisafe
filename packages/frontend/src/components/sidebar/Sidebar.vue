@@ -122,7 +122,8 @@ import {
 	Settings2Icon,
 	BarChart3Icon,
 	CodeIcon,
-	KeyRoundIcon
+	KeyRoundIcon,
+	NetworkIcon
 } from 'lucide-vue-next';
 import ReleaseNotesDialog from '~/components/dialogs/ReleaseNotesDialog.vue';
 
@@ -171,6 +172,7 @@ const navigation = {
 		{ name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
 		{ name: 'Files', href: '/dashboard/admin/files', icon: FilesIcon },
 		{ name: 'Quarantined files', href: '/dashboard/admin/files/quarantine', icon: FilesIcon },
+		{ name: 'Banned IPs', href: '/dashboard/admin/ip', icon: NetworkIcon },
 		{ name: 'Invites', href: '/dashboard/admin/invites', icon: UserPlusIcon },
 		{ name: 'Statistics', href: '/dashboard/admin/statistics', icon: BarChart3Icon }
 	]

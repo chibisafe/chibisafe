@@ -8,7 +8,7 @@
 						href: '/dashboard/admin/files'
 					},
 					{
-						name: 'IPs',
+						name: 'Banned IPs',
 						href: '/dashboard/admin/ip'
 					},
 					{

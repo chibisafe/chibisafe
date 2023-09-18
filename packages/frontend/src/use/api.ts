@@ -231,6 +231,16 @@ export const allowFileAsAdmin = async (uuid: string) => {
 	}
 };
 
+export const getBannedIPs = async () => {
+	try {
+		const data = await request.get('admin/ip/list');
+		debug('getBannedIPs', data.list);
+		return data.list;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const banIP = async (ip: string) => {
 	try {
 		const data = await request.post(`admin/ip/ban`, { ip });
