@@ -17,6 +17,7 @@
 						label="Album name"
 						proceedText="Create"
 						:callback="createNewAlbum"
+						variant="default"
 					>
 						New album
 					</InputDialog>

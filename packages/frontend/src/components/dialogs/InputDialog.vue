@@ -1,7 +1,7 @@
 <template>
 	<Dialog>
-		<DialogTrigger>
-			<Button variant="outline"><slot /></Button>
+		<DialogTrigger :variant="variant">
+			<slot />
 		</DialogTrigger>
 
 		<DialogContent class="sm:max-w-[425px]" @escape-key-down.prevent>
@@ -41,12 +41,14 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { type buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	title: string;
 	message?: string;
 	label?: string;
 	proceedText?: string;
+	variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant'];
 	// eslint-disable-next-line no-unused-vars
 	callback: (value: string) => void;
 }
@@ -56,6 +58,7 @@ withDefaults(defineProps<Props>(), {
 	message: '',
 	label: '',
 	proceedText: 'Continue',
+	variant: 'default',
 	// eslint-disable-next-line no-unused-vars
 	callback: (value: string) => {}
 });
