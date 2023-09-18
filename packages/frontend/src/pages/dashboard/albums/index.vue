@@ -54,8 +54,8 @@
 						<div
 							class="flex-shrink-0 w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
 						>
-							<AlbumSettingsDialog :album="album">
-								<div class="w-16 h-16 flex items-center justify-center"><Settings2Icon /></div>
+							<AlbumSettingsDialog :album="album" variant="none">
+								<Settings2Icon />
 							</AlbumSettingsDialog>
 						</div>
 					</li>

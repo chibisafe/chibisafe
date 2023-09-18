@@ -52,7 +52,7 @@
 					message="Requesting a new API key will invalidate the old one."
 					:callback="doRequestApiKey"
 				>
-					Request new API key
+					<Button variant="destructive">Request new API key</Button>
 				</ConfirmationDialog>
 
 				<template v-if="userStore.user.storageQuota && showQuotaMessage">

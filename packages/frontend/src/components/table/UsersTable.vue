@@ -24,7 +24,9 @@
 					{{ user.enabled ? 'Enabled' : 'Disabled' }}
 				</TableCell>
 				<TableCell>
-					<Badge v-for="role in user.roles" :key="role.name" class="mr-2">{{ role.name }}</Badge>
+					<div class="flex gap-2 items-center justify-center">
+						<Badge v-for="role in user.roles" :key="role.name">{{ role.name }}</Badge>
+					</div>
 				</TableCell>
 				<TableCell>
 					{{ formatBytes(user.storageQuota.used) }}
@@ -46,44 +48,39 @@
 						title="Disable user"
 						message="This action will disable the user and thus prevent them from logging into chibisafe again until you enable them once more. All uploaded files and albums will remain intact."
 						:callback="() => disableUser(user.uuid)"
-						variant="secondary"
 					>
-						Disable
+						<Button variant="secondary">Disable</Button>
 					</ConfirmationDialog>
 					<ConfirmationDialog
 						v-if="!user.enabled && user.uuid !== ownUser.uuid"
 						title="Enable user"
 						message="This action will enable the user and allow them to log into chibisafe again. They'll be able to access all previous uploads and albums."
 						:callback="() => enableUser(user.uuid)"
-						variant="secondary"
 					>
-						Enable
+						<Button variant="secondary">Enable</Button>
 					</ConfirmationDialog>
 					<ConfirmationDialog
 						v-if="isUserAdmin(user) && user.uuid !== ownUser.uuid"
 						title="Demote user"
 						message="This action will remove the admin role and demote the user back to a normal user."
 						:callback="() => demoteUser(user.uuid)"
-						variant="secondary"
 					>
-						Demote
+						<Button variant="secondary">Demote</Button>
 					</ConfirmationDialog>
 					<ConfirmationDialog
 						v-if="!isUserAdmin(user) && user.uuid !== ownUser.uuid"
 						title="Promote user"
 						message="This action will promote the user to admin. They'll be able to do everything you can do. Be careful before promoting anyone to understand the risks."
 						:callback="() => promoteUser(user.uuid)"
-						variant="secondary"
 					>
-						Promote
+						<Button variant="secondary">Promote</Button>
 					</ConfirmationDialog>
 					<ConfirmationDialog
 						title="Purge user"
 						message="This action will delete ALL files and albums uploaded by the user. This action is not reversible."
 						:callback="() => purgeUser(user.uuid)"
-						variant="destructive"
 					>
-						Purge
+						<Button variant="destructive">Purge</Button>
 					</ConfirmationDialog>
 				</TableCell>
 			</TableRow>

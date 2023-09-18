@@ -86,8 +86,7 @@
 											message="The file will be quarantined and gone temporarily. Are you sure?"
 											proceedText="Quarantine"
 											:callback="doQuarantineFile"
-											variant="destructive"
-											>Quarantine</ConfirmationDialog
+											><Button>Quarantine</Button></ConfirmationDialog
 										>
 										<ConfirmationDialog
 											v-if="props.type === 'admin' && file.quarantine"
@@ -95,16 +94,14 @@
 											message="The file will be un-quarantined and be available again. Are you sure?"
 											proceedText="Allow"
 											:callback="doAllowFile"
-											variant="destructive"
-											>Allow</ConfirmationDialog
+											><Button>Allow</Button></ConfirmationDialog
 										>
 										<ConfirmationDialog
 											title="Delete file"
 											message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
 											proceedText="Delete"
 											:callback="doDeleteFile"
-											variant="destructive"
-											>Delete</ConfirmationDialog
+											><Button>Delete</Button></ConfirmationDialog
 										>
 									</div>
 

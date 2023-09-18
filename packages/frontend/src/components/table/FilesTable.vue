@@ -77,8 +77,7 @@
 						message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
 						proceedText="Delete"
 						:callback="doDeleteFile"
-						variant="destructive"
-						>Delete</ConfirmationDialog
+						><Button variant="destructive">Delete</Button></ConfirmationDialog
 					>
 				</td>
 			</tr>
@@ -96,6 +95,7 @@ import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 import dayjs from 'dayjs';
 import { deleteFileAsAdmin, deleteFile } from '~/use/api';
 import { toast } from 'vue-sonner';
+import { Button } from '@/components/ui/button';
 
 import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';

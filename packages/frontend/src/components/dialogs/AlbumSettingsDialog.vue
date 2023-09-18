@@ -35,17 +35,15 @@
 					title="Delete album"
 					message="This action will delete the album and every public link associated with it. All uploaded files will remain intact. Are you sure?"
 					:callback="() => doDeleteAlbum()"
-					variant="destructive"
 				>
-					Delete album
+					<Button>Delete album</Button>
 				</ConfirmationDialog>
 				<ConfirmationDialog
 					title="Delete album"
 					message="This action will delete the album and ALL files associated with it, even if they are part of other albums so this action is not reversible. Are you sure?"
 					:callback="() => doPurgeAlbum()"
-					variant="destructive"
 				>
-					Delete album and all files
+					<Button>Delete album and all files</Button>
 				</ConfirmationDialog>
 			</DialogFooter>
 		</DialogContent>

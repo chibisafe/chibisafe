@@ -37,8 +37,7 @@
 						title="Revoke link"
 						message="This action will revoke the link preventing anyone from using it to create an account."
 						:callback="() => cancelInvite(invite.code)"
-						variant="destructive"
-						>Revoke</ConfirmationDialog
+						><Button variant="destructive">Revoke</Button></ConfirmationDialog
 					>
 				</TableCell>
 			</TableRow>
@@ -51,6 +50,7 @@ import type { Invite } from '@/types';
 import { cancelInvite } from '~/use/api';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import { Button } from '@/components/ui/button';
 
 import dayjs from 'dayjs';
 

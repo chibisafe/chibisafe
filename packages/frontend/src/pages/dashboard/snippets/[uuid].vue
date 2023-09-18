@@ -43,9 +43,8 @@
 								title="Delete snippet?"
 								message="This will completely remove the snippet and links to it will stop working. Are you sure?"
 								:callback="confirmDeleteSnippet"
-								variant="destructive"
 							>
-								Delete snippet
+								<Button variant="destructive">Delete snippet</Button>
 							</ConfirmationDialog>
 						</div>
 					</div>
@@ -73,6 +72,7 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 
 import { useRouter } from 'vue-router';
 

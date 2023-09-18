@@ -13,20 +13,12 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
-				Invites
-				<span class="grow h-1 w-full"></span>
-
+			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
+				<h1 class="text-2xl desktop:whitespace-nowrap">Invites</h1>
 				<div class="items-center my-8">
-					<button
-						type="button"
-						class="bg-green-700 hover:bg-green-800 text-light-100 font-semibold py-2 px-4 rounded items-center w-64 text-center text-base"
-						@click="doCreateInvite"
-					>
-						Create invite
-					</button>
+					<Button @click="doCreateInvite">Create invite</Button>
 				</div>
-			</h1>
+			</div>
 			<Table :invites="invites" class="mt-12 bg-dark-110" />
 		</div>
 	</ScrollArea>
@@ -36,6 +28,7 @@
 import { ref, onMounted } from 'vue';
 import { getInvites, createInvite } from '~/use/api';
 import { debug } from '~/use/log';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Table from '~/components/table/InvitesTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';

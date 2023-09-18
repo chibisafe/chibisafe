@@ -1,6 +1,6 @@
 <template>
 	<Dialog>
-		<DialogTrigger :variant="variant">
+		<DialogTrigger as-child>
 			<slot />
 		</DialogTrigger>
 

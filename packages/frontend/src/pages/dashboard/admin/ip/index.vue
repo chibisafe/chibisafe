@@ -13,20 +13,16 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
-				<span class="desktop:whitespace-nowrap">List of banned IPs</span>
-				<span class="grow h-1 w-full"></span>
-				<div>
-					<InputDialog
-						message="The IP you submit in the field below will be denied access to the platform until you remove the ban. Be careful"
-						title="Ban new IP"
-						variant="destructive"
-						:callback="doBanIP"
-					>
-						<span class="block w-20">Ban new IP</span>
-					</InputDialog>
-				</div>
-			</h1>
+			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
+				<h1 class="text-2xl desktop:whitespace-nowrap">List of banned IPs</h1>
+				<InputDialog
+					message="The IP you submit in the field below will be denied access to the platform until you remove the ban. Be careful"
+					title="Ban new IP"
+					:callback="doBanIP"
+				>
+					<Button variant="destructive" class="shrink-0">Ban new IP</Button>
+				</InputDialog>
+			</div>
 			<div class="">
 				<Table class="mt-12 bg-dark-110">
 					<TableHeader>
@@ -59,10 +55,9 @@
 								<ConfirmationDialog
 									title="Unban IP"
 									message="This will let the affected IP interact with chibisafe services again. Are you sure?"
-									variant="destructive"
 									:callback="() => doUnbanIP(ip.ip)"
 								>
-									Unban IP
+									<Button variant="destructive">Unban IP</Button>
 								</ConfirmationDialog>
 							</TableCell>
 						</TableRow>
@@ -75,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { banIP, unbanIP, purgeFilesFromIP, getBannedIPs } from '@/use/api';
+import { banIP, unbanIP, getBannedIPs } from '@/use/api';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';

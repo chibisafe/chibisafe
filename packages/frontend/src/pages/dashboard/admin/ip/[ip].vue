@@ -17,10 +17,8 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
-				<span class="desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ totalFiles }} files)</span>
-
-				<span class="grow h-1 w-full"></span>
+			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
+				<h1 class="text-2xl desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ totalFiles }} files)</h1>
 
 				<div class="items-center my-8 flex">
 					<ConfirmationDialog
@@ -29,7 +27,7 @@
 						message="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						:callback="doUnbanIP"
 					>
-						<span class="w-20">Unban IP</span>
+						<Button variant="destructive">Unban IP</Button>
 					</ConfirmationDialog>
 
 					<ConfirmationDialog
@@ -37,9 +35,8 @@
 						title="Ban IP"
 						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
 						:callback="doBanIP"
-						variant="destructive"
 					>
-						<span class="w-20">Ban IP</span>
+						<Button variant="destructive">Ban IP</Button>
 					</ConfirmationDialog>
 
 					<div class="ml-2">
@@ -47,13 +44,12 @@
 							title="Ban IP"
 							message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
 							:callback="doPurgeFiles"
-							variant="destructive"
 						>
-							<span class="w-44">Purge all files from this IP</span>
+							<Button variant="destructive">Purge all files from this IP</Button>
 						</ConfirmationDialog>
 					</div>
 				</div>
-			</h1>
+			</div>
 			<FilesWrapper type="admin" />
 		</div>
 	</ScrollArea>
@@ -68,6 +64,7 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
 	ip: string;
