@@ -8,9 +8,11 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const record = await prisma.bans.findMany();
-
-	return res.send({
-		list: record
+	const list = await prisma.bans.findMany({
+		select: {
+			ip: true,
+			createdAt: true
+		}
 	});
+	return res.send(list);
 };

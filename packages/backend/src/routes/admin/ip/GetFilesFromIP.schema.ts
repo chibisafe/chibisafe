@@ -1,7 +1,7 @@
 export default {
 	summary: 'Get files',
 	description: 'Gets all files from a specific IP',
-	tags: ['Files'],
+	tags: ['Files', 'IP Management'],
 	query: {
 		type: 'object',
 		properties: {
