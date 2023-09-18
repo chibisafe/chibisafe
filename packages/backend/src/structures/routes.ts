@@ -67,9 +67,6 @@ export default {
 					schema = (await import(fileUrl.toString())).default;
 				}
 
-				// const schema = await import(fileUrl as unknown as string);
-				// schema = schemaFile ? (await import(schemaFile.replace(replace, `../`))).default : undefined;
-
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
 					continue;
