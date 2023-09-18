@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import Masonry from '~/components/masonry/Masonry.vue';
+import Masonry from '~/components/masonry/NewMasonry.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import { useUserStore } from '~/store/user';

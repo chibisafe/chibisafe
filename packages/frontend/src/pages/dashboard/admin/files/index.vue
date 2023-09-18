@@ -38,9 +38,8 @@
 						title="Purge all anonymous files?"
 						message="This action will remove every upload that doesn't belong to a specific user. This is not reversible. Are you sure?"
 						:callback="doPurgeAnonymousFiles"
-						variant="destructive"
 					>
-						Purge all anonymous uploads
+						<Button variant="destructive">Purge all anonymous uploads</Button>
 					</ConfirmationDialog>
 				</div>
 			</div>
@@ -60,6 +59,7 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 
 const route = useRoute();
 const filesStore = useFilesStore();

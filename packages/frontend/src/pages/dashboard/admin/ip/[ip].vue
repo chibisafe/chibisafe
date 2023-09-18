@@ -8,7 +8,7 @@
 						href: '/dashboard/admin/files'
 					},
 					{
-						name: 'IPs',
+						name: 'IP Management',
 						href: '/dashboard/admin/ip'
 					},
 					{
@@ -17,19 +17,17 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
-				<span class="desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ totalFiles }} files)</span>
+			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
+				<h1 class="text-2xl desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ totalFiles }} files)</h1>
 
-				<span class="grow h-1 w-full"></span>
-
-				<div class="items-center my-8">
+				<div class="items-center my-8 flex">
 					<ConfirmationDialog
 						v-if="isBanned"
 						title="Unban IP"
 						message="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						:callback="doUnbanIP"
 					>
-						Unban IP
+						<Button variant="destructive">Unban IP</Button>
 					</ConfirmationDialog>
 
 					<ConfirmationDialog
@@ -37,21 +35,21 @@
 						title="Ban IP"
 						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
 						:callback="doBanIP"
-						variant="destructive"
 					>
-						Ban IP
+						<Button variant="destructive">Ban IP</Button>
 					</ConfirmationDialog>
 
-					<ConfirmationDialog
-						title="Ban IP"
-						message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
-						:callback="doPurgeFiles"
-						variant="destructive"
-					>
-						Purge all files from this IP
-					</ConfirmationDialog>
+					<div class="ml-2">
+						<ConfirmationDialog
+							title="Ban IP"
+							message="Are you sure you want to ban this IP? Once confirmed, said IP won't be able to interact with chibisafe in any way until you unban it."
+							:callback="doPurgeFiles"
+						>
+							<Button variant="destructive">Purge all files from this IP</Button>
+						</ConfirmationDialog>
+					</div>
 				</div>
-			</h1>
+			</div>
 			<FilesWrapper type="admin" />
 		</div>
 	</ScrollArea>
@@ -66,6 +64,7 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
 	ip: string;

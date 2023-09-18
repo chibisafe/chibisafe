@@ -588,11 +588,12 @@ __metadata:
     lucide-vue-next: ^0.256.0
     marked: ^5.1.2
     media-chrome: ^0.16.3
+    minimasonry: ^1.3.2
     pinia: ^2.1.6
     postcss: ^8.4.29
     postcss-focus-visible: ^6.0.4
     prettier: ^3.0.3
-    radix-vue: ^0.1.33
+    radix-vue: ^0.2.2
     shadcn-vue: ^0.1.0
     tailwind-merge: ^1.14.0
     tailwindcss: ^3.3.3
@@ -7743,6 +7744,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimasonry@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "minimasonry@npm:1.3.2"
+  checksum: 8bb7c9d443476dcbb2ac55c0698a5555b7a9daece6d2e1d3896bc51bb35abe336641a816a042686a2ca064a98bfa0893ebc0077c04d59793a283f49e378a8d35
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -9064,13 +9072,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"radix-vue@npm:^0.1.32, radix-vue@npm:^0.1.33":
+"radix-vue@npm:^0.1.32":
   version: 0.1.34
   resolution: "radix-vue@npm:0.1.34"
   dependencies:
     "@floating-ui/dom": ^1.4.2
     "@floating-ui/vue": ^1.0.1
   checksum: 3f2d6032e846d90b713633920281c1360c78fde1093fb1827f739c323e4b2081e3d0d7e59115021cfa92ae87b43e76e943635fdc8353c94b552d1298bcd583ff
+  languageName: node
+  linkType: hard
+
+"radix-vue@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "radix-vue@npm:0.2.2"
+  dependencies:
+    "@floating-ui/dom": ^1.4.2
+    "@floating-ui/vue": ^1.0.1
+  checksum: ecfbc47bcc005a7ddb42e5b9bfca5fa5832fc11b7888880235871068d8a87be9f28e5fcb1333d177fc3b6519c3e7954638bc9d24fc9d2f2ff03e4add3ad2b72e
   languageName: node
   linkType: hard
 

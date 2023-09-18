@@ -26,7 +26,6 @@ export const useUserStore = defineStore('user', {
 		async loginWithToken() {
 			const response = await getMe();
 			if (!response) {
-				this.logout();
 				return;
 			}
 
