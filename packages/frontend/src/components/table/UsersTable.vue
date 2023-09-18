@@ -24,7 +24,7 @@
 					{{ user.enabled ? 'Enabled' : 'Disabled' }}
 				</TableCell>
 				<TableCell>
-					<Badge v-for="role in user.roles" :key="role.name">{{ role.name }}</Badge>
+					<Badge v-for="role in user.roles" :key="role.name" class="mr-2">{{ role.name }}</Badge>
 				</TableCell>
 				<TableCell>
 					{{ formatBytes(user.storageQuota.used) }}
