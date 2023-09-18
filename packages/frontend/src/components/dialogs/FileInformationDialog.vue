@@ -219,6 +219,7 @@ const fileAlbums = ref<Album[]>([]);
 
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
+	void albumsStore.get();
 	void getFileAlbums();
 };
 
