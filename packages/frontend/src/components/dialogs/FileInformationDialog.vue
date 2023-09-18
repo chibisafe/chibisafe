@@ -6,6 +6,7 @@
 			:href="file?.url"
 			target="_blank"
 			rel="noopener noreferrer"
+			variant="none"
 			@click.left.stop="event => event.preventDefault()"
 		/>
 		<DialogContent class="max-w-6xl max-h-[calc(100vh-8rem)]">

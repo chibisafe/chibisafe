@@ -4,43 +4,45 @@
 		class="mt-8 pb-16 relative"
 		:class="[hasLayoutBeenRefreshed ? 'visible' : 'invisible']"
 	>
-		<div v-for="file in files" :key="file.uuid" class="bg-black mb-4 absolute min-w-[255px]">
+		<div
+			v-for="file in files"
+			:key="file.uuid"
+			v-element-hover="(value: boolean) => onHover(value, file.uuid)"
+			class="bg-black mb-4 absolute min-w-[255px]"
+		>
 			<FileInformationDialog :file="file" />
-			<div class="hover:-translate-y-1 hover:translate-x-1 transition-transform duration-100 ease-in-out">
-				<div
-					v-if="file.quarantine"
-					class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
+			<div
+				v-if="file.quarantine"
+				class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
+			>
+				<FileWarningIcon class="text-red-500 w-16 h-16" />
+			</div>
+			<template v-else-if="isFileImage(file) || isFileVideo(file)">
+				<img
+					:src="file.thumb"
+					class="cursor-pointer w-full min-w-[160px]"
+					onerror="this.classList.add('min-h-[160px]');"
+				/>
+
+				<video
+					v-if="isFileVideo(file) && isHovered[file.uuid]"
+					class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
+					autoplay
+					loop
+					muted
 				>
-					<FileWarningIcon class="text-red-500 w-16 h-16" />
-				</div>
-				<template v-else-if="isFileImage(file) || isFileVideo(file)">
-					<img
-						v-element-hover="(value: boolean) => onHover(value, file.uuid)"
-						:src="file.thumb"
-						class="cursor-pointer w-full min-w-[160px]"
-						onerror="this.classList.add('min-h-[160px]');"
-					/>
+					<source :src="file.preview" type="video/mp4" />
+				</video>
 
-					<video
-						v-if="isFileVideo(file) && isHovered[file.uuid]"
-						class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
-						autoplay
-						loop
-						muted
-					>
-						<source :src="file.preview" type="video/mp4" />
-					</video>
-
-					<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
-				</template>
-				<div v-else class="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
-					<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
-					<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
-					<FileIcon v-else class="text-light-100 w-16 h-16" />
-					<span class="text-light-100 mt-4 text-lg text-center">{{
-						file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
-					}}</span>
-				</div>
+				<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
+			</template>
+			<div v-else class="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
+				<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
+				<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
+				<FileIcon v-else class="text-light-100 w-16 h-16" />
+				<span class="text-light-100 mt-4 text-lg text-center">{{
+					file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
+				}}</span>
 			</div>
 		</div>
 	</div>
