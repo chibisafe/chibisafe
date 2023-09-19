@@ -86,18 +86,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getAdminSettings, setAdminSettings } from '~/use/api';
-import { useSettingsStore } from '~/store';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
-
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { useSettingsStore } from '~/store';
+import { getAdminSettings, setAdminSettings } from '~/use/api';
 
 const settingsStore = useSettingsStore();
 const settings = ref(null) as any;

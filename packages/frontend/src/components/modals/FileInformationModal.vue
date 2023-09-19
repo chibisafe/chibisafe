@@ -232,12 +232,17 @@
 </template>
 
 <script setup lang="ts">
-import type { AlbumWithSelected } from '~/types';
-import { ref, computed, watch } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogOverlay } from '@headlessui/vue';
+import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import { useClipboard } from '@vueuse/core';
+import dayjs from 'dayjs';
+import { ref, computed, watch } from 'vue';
+import { toast } from 'vue-sonner';
+import { Button } from '@/components/ui/button';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import { useModalStore, useAlbumsStore, useFilesStore } from '~/store';
-import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
+import type { AlbumWithSelected } from '~/types';
 import {
 	addFileToAlbum,
 	removeFileFromAlbum,
@@ -246,11 +251,7 @@ import {
 	allowFileAsAdmin,
 	quarantineFileAsAdmin
 } from '~/use/api';
-import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
-import { Button } from '@/components/ui/button';
-import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { toast } from 'vue-sonner';
-import dayjs from 'dayjs';
+import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
 const props = defineProps<{
 	type: 'admin' | null;
@@ -260,6 +261,12 @@ const modalsStore = useModalStore();
 const albumsStore = useAlbumsStore();
 const filesStore = useFilesStore();
 
+const queryClient = useQueryClient();
+
+const { mutate: mutateDeleteFile } = useMutation({
+	mutationFn: (uuid: string) => (isAdmin ? deleteFileAsAdmin(uuid) : deleteFile(uuid))
+});
+
 if (props.type !== 'admin') {
 	// We only load the albums if the user is not an admin and the owner of the files
 	void albumsStore.get();
@@ -268,7 +275,7 @@ if (props.type !== 'admin') {
 const isModalOpen = computed(() => modalsStore.fileInformation.show);
 const file = computed(() => modalsStore.fileInformation.file);
 const fileAlbums = computed(() => modalsStore.fileInformation.albums);
-const isAdmin = computed(() => modalsStore.deleteFile.admin);
+const isAdmin = props.type === 'admin';
 
 const albums = computed(() => {
 	if (!fileAlbums.value) return albumsStore.albums as AlbumWithSelected[];
@@ -352,13 +359,12 @@ const doAllowFile = () => {
 const doDeleteFile = () => {
 	if (!file.value) return;
 
-	// If the user is an admin, we need to use the admin endpoint
-	if (isAdmin.value) void deleteFileAsAdmin(file.value.uuid);
-	// Otherwise, we can use the normal endpoint
-	else void deleteFile(file.value.uuid);
-
-	filesStore.removeFile(file.value.uuid);
-	toast.success('File deleted');
-	closeModal();
+	mutateDeleteFile(file.value.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['files']);
+			toast.success('File deleted');
+			closeModal();
+		}
+	});
 };
 </script>

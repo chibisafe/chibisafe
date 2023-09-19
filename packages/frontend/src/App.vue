@@ -17,14 +17,14 @@
 </template>
 
 <script setup lang="ts">
+import { useMagicKeys, whenever } from '@vueuse/core';
 import { computed } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useRoute } from 'vue-router';
-import { useUserStore, useSettingsStore, useModalStore } from './store';
-import { useMagicKeys, whenever } from '@vueuse/core';
 import { Toaster } from 'vue-sonner';
 import SearchModal from './components/modals/SearchModal.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
+import { useUserStore, useSettingsStore, useModalStore } from './store';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
@@ -43,7 +43,7 @@ const { ctrl_k } = useMagicKeys({
 	}
 });
 
-whenever(ctrl_k, () => {
+whenever(ctrl_k!, () => {
 	if (!isLoggedIn.value) return;
 	modalStore.search.show = true;
 });

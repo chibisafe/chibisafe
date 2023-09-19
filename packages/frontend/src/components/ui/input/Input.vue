@@ -8,9 +8,11 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits<{
+	// eslint-disable-next-line no-unused-vars
 	(e: 'update:modelValue', payload: string | number): void;
 }>();
 
+// eslint-disable-next-line vue/no-setup-props-destructure
 const modelValue = useVModel(props, 'modelValue', emits, {
 	passive: true,
 	defaultValue: props.defaultValue

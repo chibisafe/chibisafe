@@ -104,12 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRoute, useRouter } from 'vue-router';
 import { saveAs } from 'file-saver';
-import { useUserStore, useSettingsStore, useUpdateStore } from '~/store';
 import {
 	HomeIcon,
 	FileUpIcon,
@@ -125,7 +120,12 @@ import {
 	KeyRoundIcon,
 	NetworkIcon
 } from 'lucide-vue-next';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import ReleaseNotesDialog from '~/components/dialogs/ReleaseNotesDialog.vue';
+import { useUserStore, useSettingsStore, useUpdateStore } from '~/store';
 
 const route = useRoute();
 const router = useRouter();

@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue';
-import { useAlbumsStore } from '~/store';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useAlbumsStore } from '~/store';
 
 const albumsStore = useAlbumsStore();
 

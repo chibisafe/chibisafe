@@ -1,12 +1,7 @@
-import { SETTINGS } from '@/structures/settings';
 import JWT from 'jsonwebtoken';
-import prisma from '@/structures/database';
-import type { RequestUser } from '@/structures/interfaces';
-
-interface Decoded {
-	sub: number;
-	iat: number;
-}
+import prisma from '@/structures/database.js';
+import type { RequestUser } from '@/structures/interfaces.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 export const authUser = async (authorization?: string | null) => {
 	if (!authorization) return null;

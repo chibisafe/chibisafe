@@ -1,12 +1,10 @@
 import process from 'node:process';
-import { log } from '@/utils/Logger';
-import randomstring from 'randomstring';
-
-import prisma from '@/structures/database';
-import { getHost } from './Util';
-import { SETTINGS } from '@/structures/settings';
-
 import type { FastifyRequest } from 'fastify';
+import randomstring from 'randomstring';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { log } from '@/utils/Logger.js';
+import { getHost } from './Util.js';
 
 const fileIdentifierMaxTries = 5;
 

@@ -1,10 +1,10 @@
 /* eslint-disable require-atomic-updates */
 
-import type { Settings } from '@/structures/interfaces';
-import randomstring from 'randomstring';
-import prisma from './database';
 import process from 'node:process';
-import { log } from '@/utils/Logger';
+import randomstring from 'randomstring';
+import type { Settings } from '@/structures/interfaces.js';
+import { log } from '@/utils/Logger.js';
+import prisma from './database.js';
 
 export const SETTINGS = {} as Settings;
 export const getSettingsMeta = (key: string) => {
@@ -14,6 +14,7 @@ export const getSettingsMeta = (key: string) => {
 	}
 };
 
+// @ts-ignore
 export const loadSettings = async (force = false) => {
 	log.debug('Loading settings...');
 	// if SETTINGS is not empty, return it

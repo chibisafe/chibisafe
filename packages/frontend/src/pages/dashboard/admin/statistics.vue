@@ -60,15 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getStatistics } from '~/use/api';
-import { formatBytes } from '~/use/file';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { RepeatIcon } from 'lucide-vue-next';
+import { ref, onMounted } from 'vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { getStatistics } from '~/use/api';
+import { formatBytes } from '~/use/file';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 

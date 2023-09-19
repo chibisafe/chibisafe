@@ -172,10 +172,10 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core';
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore, useSettingsStore } from '~/store';
-import { useWindowSize } from '@vueuse/core';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();

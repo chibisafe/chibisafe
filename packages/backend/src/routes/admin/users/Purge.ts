@@ -1,6 +1,6 @@
-import prisma from '@/structures/database';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { purgeUserFiles } from '@/utils/File';
+import prisma from '@/structures/database.js';
+import { purgeUserFiles } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/user/:uuid/purge',

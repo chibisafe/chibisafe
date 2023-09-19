@@ -27,10 +27,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useFilesStore } from '~/store/files';
-import { getFilesFromPublicAlbum } from '~/use/api';
 import Button from '~/components/buttons/Button.vue';
 import Masonry from '~/components/masonry/MasonryPublic.vue';
+import { useFilesStore } from '~/store/files';
+import { getFilesFromPublicAlbum } from '~/use/api';
 
 const props = defineProps<{
 	identifier: string;

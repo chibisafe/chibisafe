@@ -55,16 +55,16 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { watch, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore } from '~/store/files';
-import { getSnippets } from '~/use/api';
-import type { Snippet } from '~/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { useFilesStore } from '~/store/files';
+import type { Snippet } from '~/types';
+import { getSnippets } from '~/use/api';
 dayjs.extend(relativeTime);
 
 const route = useRoute();

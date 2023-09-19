@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { User, ExtendedFile } from '@/structures/interfaces';
-import { getUsedQuota } from '@/utils/User';
+import prisma from '@/structures/database.js';
+import type { User } from '@/structures/interfaces.js';
+import { getUsedQuota } from '@/utils/User.js';
 
 export const options = {
 	url: '/admin/users',
@@ -9,7 +9,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: FastifyRequest, res: FastifyReply) => {
+export const run = async (_: FastifyRequest, res: FastifyReply) => {
 	const users = await prisma.users.findMany({
 		select: {
 			id: true,

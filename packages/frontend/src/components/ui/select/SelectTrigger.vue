@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { SelectIcon, SelectTrigger, type SelectTriggerProps } from 'radix-vue';
 import { ChevronDown } from 'lucide-vue-next';
+import { SelectIcon, SelectTrigger, type SelectTriggerProps } from 'radix-vue';
 import { cn } from '@/lib/utils';
 
 const props = withDefaults(defineProps<SelectTriggerProps & { class?: string; invalid?: boolean }>(), {
-	class: '',
-	invalid: false
+	class: ''
 });
 </script>
 

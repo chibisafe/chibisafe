@@ -45,12 +45,12 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { deleteAlbumLink, updateAlbumLink } from '~/use/api';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useAlbumsStore } from '~/store';
 import type { AlbumLink } from '~/types';
+import { deleteAlbumLink, updateAlbumLink } from '~/use/api';
 
 const props = defineProps<{
 	albumUuid: string;

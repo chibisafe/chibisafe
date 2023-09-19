@@ -87,18 +87,17 @@
 </template>
 
 <script setup lang="ts">
-import type { FileWithAdditionalData } from '~/types';
-import { computed, ref } from 'vue';
-import { useModalStore, useUserStore, useFilesStore, useAlbumsStore } from '~/store';
-import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
-import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 import dayjs from 'dayjs';
-import { deleteFileAsAdmin, deleteFile } from '~/use/api';
+import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
-
-import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import FileInformationModal from '~/components/modals/FileInformationModal.vue';
+import { useModalStore, useUserStore, useFilesStore, useAlbumsStore } from '~/store';
+import type { FileWithAdditionalData } from '~/types';
+import { deleteFileAsAdmin, deleteFile } from '~/use/api';
+import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 
 const props = defineProps<{
 	type: 'admin' | 'album' | 'uploads';

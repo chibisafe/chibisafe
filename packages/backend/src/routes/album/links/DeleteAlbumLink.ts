@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/album/:uuid/link/:linkUuid',
@@ -9,7 +9,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid, linkUuid } = req.params as { uuid: string; linkUuid: string };
+	const { uuid, linkUuid } = req.params as { linkUuid: string; uuid: string };
 
 	const album = await prisma.albums.findFirst({
 		where: {

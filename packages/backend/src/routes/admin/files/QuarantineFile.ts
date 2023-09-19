@@ -1,9 +1,9 @@
-import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { deleteThumbnails, getUniqueFileIdentifier, quarantinePath, uploadPath } from '@/utils/File';
-import jetpack from 'fs-jetpack';
 import path from 'node:path';
+import type { FastifyReply } from 'fastify';
+import jetpack from 'fs-jetpack';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { deleteThumbnails, getUniqueFileIdentifier, quarantinePath, uploadPath } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/file/:uuid/quarantine',

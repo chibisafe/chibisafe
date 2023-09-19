@@ -66,16 +66,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useAlbumsStore } from '~/store';
-import { createAlbum } from '@/use/api';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Settings2Icon } from 'lucide-vue-next';
+import { computed } from 'vue';
 import { toast } from 'vue-sonner';
-
 import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import InputDialog from '@/components/dialogs/InputDialog.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { createAlbum } from '@/use/api';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { useAlbumsStore } from '~/store';
 
 const albumsStore = useAlbumsStore();
 const albums = computed(() => albumsStore.albums);

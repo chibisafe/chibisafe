@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
-import type { File } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { File } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/album/:identifier/view',
@@ -9,10 +9,10 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const { identifier } = req.params as { identifier?: string };
+	const { identifier } = req.params as { identifier: string };
 
 	// Set up pagination options
-	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
 	const options = {
 		take: limit,
 		skip: (page - 1) * limit

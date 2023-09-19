@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { purgeIpFiles } from '@/utils/File';
+import { purgeIpFiles } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/ip/files/purge',

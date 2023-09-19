@@ -1,14 +1,14 @@
 import type { FastifyRequest } from 'fastify';
 
 export interface RequestUser {
+	apiKey?: string | null | undefined;
 	id: number;
-	uuid: string;
-	username: string;
+	passwordEditedAt: Date | null;
 	roles: {
 		name: string;
 	}[];
-	apiKey?: string | null | undefined;
-	passwordEditedAt: Date | null;
+	username: string;
+	uuid: string;
 }
 
 export interface RequestWithUser extends FastifyRequest {
@@ -20,49 +20,49 @@ export interface RequestWithOptionalUser extends FastifyRequest {
 }
 
 export interface User {
-	id: number;
-	uuid: string;
-	username: string;
-	password: string;
-	enabled: boolean;
-	roles: {
-		name: string;
-	}[];
 	apiKey: string;
-	passwordEditedAt: string;
 	apiKeyEditedAt: string;
 	createdAt: string;
 	editedAt: string;
+	enabled: boolean;
+	id: number;
+	password: string;
+	passwordEditedAt: string;
+	roles: {
+		name: string;
+	}[];
+	username: string;
+	uuid: string;
 }
 
 export interface FileInProgress {
-	name: string;
 	extension: string;
-	path: string;
-	original: string;
-	type: string;
-	size: string;
+	field?: string;
 	hash: string;
 	ip: string;
-	field?: string;
+	name: string;
+	original: string;
+	path: string;
+	size: string;
+	type: string;
 }
 
 export interface File {
-	// id: number;
-	uuid: string;
-	userId?: number | null;
-	name: string;
-	original: string;
-	type: string;
-	size: number;
-	hash: string;
-	ip: string;
 	createdAt: Date;
 	editedAt: Date | null;
+	hash: string;
+	ip: string;
+	name: string;
+	original: string;
 	quarantine: boolean;
 	quarantineFile: {
 		name: string;
 	};
+	size: number;
+	type: string;
+	userId?: number | null;
+	// id: number;
+	uuid: string;
 }
 
 export interface FileWithId extends File {
@@ -70,93 +70,93 @@ export interface FileWithId extends File {
 }
 
 export interface ExtendedFile extends File {
-	url?: string;
+	preview?: string;
 	thumb?: string;
 	thumbSquare?: string;
-	preview?: string;
+	url?: string;
 }
 
 export interface ExtendedFileWithData extends ExtendedFile {
 	data: {
-		hash: string;
-		size: number;
 		filename: string;
-		originalName: string;
+		hash: string;
 		mimeType: string;
+		originalName: string;
+		size: number;
 	};
 }
 
 export interface Album {
-	id: number;
-	uuid: string;
-	userId: number;
-	name: string;
-	zippedAt: Date | null;
+	_count?: any;
+	cover?: string;
 	createdAt: Date;
 	editedAt: Date | null;
-	nsfw: boolean;
 	files?: File[];
-	cover?: string;
-	_count?: any;
+	id: number;
+	name: string;
+	nsfw: boolean;
+	userId: number;
+	uuid: string;
+	zippedAt: Date | null;
 }
 
 export interface Settings {
-	port: number;
-	metaDomain: string;
-	rateLimitWindow: number;
-	rateLimitMax: number;
-	secret: string;
-	serviceName: string;
-	chunkSize: number;
-	chunkedUploadsTimeout: number;
-	maxSize: number;
-	generateZips: boolean;
-	generatedFilenameLength: number;
-	generatedAlbumLength: number;
-	blockedExtensions: string[];
-	blockNoExtension: boolean;
-	publicMode: boolean;
-	userAccounts: boolean;
-	metaDescription: string;
-	metaKeywords: string;
-	metaTwitterHandle: string;
-	backgroundImageURL: string;
-	logoURL: string;
-	statisticsCron: string;
-	disableStatisticsCron: boolean;
-	updateCheckCron: string;
-	disableUpdateCheck: boolean;
-	enabledStatistics: string[];
-	serveUploadsFrom: string;
-	enableMixedCaseFilenames: boolean;
-	usersStorageQuota: number;
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
+	backgroundImageURL: string;
+	blockNoExtension: boolean;
+	blockedExtensions: string[];
+	chunkSize: number;
+	chunkedUploadsTimeout: number;
+	disableStatisticsCron: boolean;
+	disableUpdateCheck: boolean;
+	enableMixedCaseFilenames: boolean;
+	enabledStatistics: string[];
+	generateZips: boolean;
+	generatedAlbumLength: number;
+	generatedFilenameLength: number;
+	logoURL: string;
+	maxSize: number;
+	metaDescription: string;
+	metaDomain: string;
+	metaKeywords: string;
+	metaTwitterHandle: string;
+	port: number;
+	publicMode: boolean;
+	rateLimitMax: number;
+	rateLimitWindow: number;
+	secret: string;
+	serveUploadsFrom: string;
+	serviceName: string;
+	statisticsCron: string;
+	updateCheckCron: string;
+	userAccounts: boolean;
+	usersStorageQuota: number;
 }
 
 export interface RouteOptions {
-	url: string;
+	debug?: boolean;
 	method: string;
+	middlewares?: (string | { [index: number | string]: any })[];
 	// options?: { [index: number | string]: any };
 	options?: {
+		[index: number | string]: any;
 		rateLimit?: {
 			max: number;
 			timeWindow: number;
 		};
-		[index: number | string]: any;
 	};
-	middlewares?: (string | { [index: number | string]: any })[];
-	debug?: boolean;
 	schema?: any;
+	url: string;
 }
 
 export interface UploadResult {
-	uuid: string;
-	name?: string;
-	hash?: string;
-	size?: number;
-	url?: string;
-	thumb?: string;
 	deleteUrl?: string;
+	hash?: string;
+	name?: string;
 	repeated?: boolean;
+	size?: number;
+	thumb?: string;
+	url?: string;
+	uuid: string;
 }

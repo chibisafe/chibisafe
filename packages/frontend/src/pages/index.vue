@@ -150,14 +150,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
 import { TransitionRoot } from '@headlessui/vue';
-import { useUploadsStore } from '~/store';
-import { formatBytes } from '~/use/file';
 import { useWindowSize } from '@vueuse/core';
 import { CheckIcon } from 'lucide-vue-next';
+import { ref, computed, onMounted } from 'vue';
 import Header from '~/components/header/Header.vue';
 import ChibiUploader from '~/components/upload/ChibiUploader.vue';
+import { useUploadsStore } from '~/store';
+import { formatBytes } from '~/use/file';
 
 const uploadsStore = useUploadsStore();
 const files = computed(() => uploadsStore.files);

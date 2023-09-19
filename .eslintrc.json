@@ -1,30 +1,18 @@
 {
 	"root": true,
-	"extends": [
-		"neon/common",
-		"neon/browser",
-		"neon/node",
-		"neon/typescript",
-		"neon/vue",
-		"neon/vue-typescript",
-		"neon/prettier"
-	],
+	"extends": ["neon/common", "neon/browser", "neon/node", "neon/typescript", "neon/prettier"],
 	"parserOptions": {
-		"project": ["tsconfig.json", "./packages/*/tsconfig.json"],
-		"parser": "@typescript-eslint/parser"
+		"project": ["tsconfig.json", "./packages/*/tsconfig.json"]
 	},
 	"rules": {
 		"comma-dangle": ["error", "never"],
 		"id-length": "off",
 		"import/newline-after-import": "off",
-		"n/prefer-global/process": "off",
-		"import/order": "off",
 		"import/extensions": "off",
 		"no-warning-comments": "off",
 		"no-use-before-define": "off",
 		"unicorn/prefer-math-trunc": "off",
 		"unicorn/numeric-separators-style": "off",
-		"typescript-sort-keys/interface": "off",
 		"@typescript-eslint/consistent-type-definitions": "off",
 		"@typescript-eslint/lines-between-class-members": "off",
 		"@typescript-eslint/no-unsafe-assignment": "off",
@@ -34,21 +22,7 @@
 		"@typescript-eslint/no-unsafe-return": "off",
 		"@typescript-eslint/prefer-ts-expect-error": "off",
 		"@typescript-eslint/consistent-type-assertions": "off",
-		"@typescript-eslint/no-use-before-define": "off",
-		"vue/multi-word-component-names": "off",
-		"vue/v-on-event-hyphenation": "off",
-		"vue/sort-keys": "off",
-		"vue/no-multiple-template-root": "off",
-		"vue/first-attribute-linebreak": "off",
-		"vue/require-emit-validator": "off",
-		"vue/attribute-hyphenation": "off",
-		"vue/html-self-closing": "off",
-		"vue/comma-dangle": "off",
-		"vue/operator-linebreak": "off",
-		"vue/max-attributes-per-line": "off",
-		"vue/multiline-html-element-content-newline": "off",
-		"vue/html-indent": "off",
-		"vue/html-closing-bracket-newline": "off"
+		"@typescript-eslint/no-use-before-define": "off"
 	},
 	"globals": {
 		"defineProps": "readonly",

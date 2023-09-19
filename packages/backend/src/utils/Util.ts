@@ -1,14 +1,14 @@
-import type { FastifyRequest } from 'fastify';
-import { SETTINGS } from '@/structures/settings';
-import randomstring from 'randomstring';
-import { log } from '@/utils/Logger';
-import prisma from '@/structures/database';
-import bcrypt from 'bcryptjs';
-import { v4 as uuidv4 } from 'uuid';
 import { readFileSync } from 'node:fs';
-import path from 'node:path';
+import { URL, fileURLToPath } from 'node:url';
+import bcrypt from 'bcryptjs';
+import type { FastifyRequest } from 'fastify';
+import randomstring from 'randomstring';
+import { v4 as uuidv4 } from 'uuid';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { log } from '@/utils/Logger.js';
 
-const basePackageJson = path.join(__dirname, '..', '..', '..', '..', 'package.json');
+const basePackageJson = fileURLToPath(new URL('../../../../package.json', import.meta.url));
 const VERSION = JSON.parse(readFileSync(basePackageJson, 'utf8')).version;
 
 export const getHost = (req: FastifyRequest) => `${req.protocol}://${req.headers.host}`;

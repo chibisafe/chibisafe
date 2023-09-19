@@ -22,11 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getPublicSnippet } from '~/use/api';
-import type { Snippet } from '~/types';
-import Highlight from '~/components/highlight/Highlight.vue';
 import { useClipboard } from '@vueuse/core';
+import { onMounted, ref } from 'vue';
+import Highlight from '~/components/highlight/Highlight.vue';
+import type { Snippet } from '~/types';
+import { getPublicSnippet } from '~/use/api';
 
 const props = defineProps<{
 	identifier: string;

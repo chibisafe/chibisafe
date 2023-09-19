@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
 
 export const options = {
 	url: '/admin/ip/ban',

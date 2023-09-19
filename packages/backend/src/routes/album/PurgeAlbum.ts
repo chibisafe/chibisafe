@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/album/:uuid/purge',
@@ -44,7 +44,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		});
 
-		const fileIds = albumFiles?.files.map((file: any) => file.id);
+		const fileIds = albumFiles?.files.map((file: any) => file.id) ?? [];
 
 		await prisma.files.deleteMany({
 			where: {

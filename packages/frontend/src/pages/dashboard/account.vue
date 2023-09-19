@@ -69,16 +69,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useUserStore } from '~/store/user';
 import { toast } from 'vue-sonner';
-import { changePassword, changeApiKey } from '~/use/api';
-import { formatBytes } from '~/use/file';
-
-import { ScrollArea } from '@/components/ui/scroll-area';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
 import { Button } from '@/components/ui/button';
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { useUserStore } from '~/store/user';
+import { changePassword, changeApiKey } from '~/use/api';
+import { formatBytes } from '~/use/file';
 
 const userStore = useUserStore();
 

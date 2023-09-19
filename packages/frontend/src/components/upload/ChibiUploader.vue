@@ -57,16 +57,15 @@
 </template>
 
 <script setup lang="ts">
+import { chibiUploader } from '@chibisafe/uploader-client';
+import { useWindowSize } from '@vueuse/core';
+import { UploadCloudIcon } from 'lucide-vue-next';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
 import { getFileExtension, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
-import { chibiUploader } from '@chibisafe/uploader-client';
-import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import TextEditorDialog from '../dialogs/TextEditorDialog.vue';
-
-import { UploadCloudIcon } from 'lucide-vue-next';
-import { useWindowSize } from '@vueuse/core';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
@@ -182,7 +181,7 @@ const processFile = async (file: File) => {
 		onProgress: (uuid: string, progress: any) => {
 			uploadsStore.updateProgess(uuid, progress, 0);
 		},
-		onRetry: (uuid: string, reason: any) => {
+		onRetry: (_, reason: any) => {
 			console.log('onRetry', reason);
 		},
 		onFinish: (uuid: string, response: any) => {
@@ -201,7 +200,7 @@ const onFileChanged = ($event: Event) => {
 	if (target?.files) {
 		// eslint-disable-next-line @typescript-eslint/prefer-for-of
 		for (let i = 0; i < target.files.length; i++) {
-			void processFile(target.files[i]);
+			void processFile(target.files[i] as File);
 		}
 	}
 };

@@ -1,8 +1,8 @@
-import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 import JWT from 'jsonwebtoken';
-import { SETTINGS } from '@/structures/settings';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 export const options = {
 	url: '/auth/login',
@@ -16,7 +16,7 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const { username, password } = req.body as { username?: string; password?: string };
+	const { username, password } = req.body as { password?: string; username?: string };
 	if (!username || !password) {
 		res.unauthorized('No username or password provided');
 		return;

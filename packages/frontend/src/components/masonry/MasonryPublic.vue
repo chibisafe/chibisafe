@@ -35,11 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
+import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 import { useFilesStore } from '~/store/files';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
-import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
 
 const filesStore = useFilesStore();
 const files = computed(() => filesStore.files);

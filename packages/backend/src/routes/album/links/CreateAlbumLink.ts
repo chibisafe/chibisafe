@@ -1,8 +1,8 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { getUniqueAlbumIdentifier } from '@/utils/Util';
 import { v4 as uuidv4 } from 'uuid';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { getUniqueAlbumIdentifier } from '@/utils/Util.js';
 
 export const options = {
 	url: '/album/:uuid/link',

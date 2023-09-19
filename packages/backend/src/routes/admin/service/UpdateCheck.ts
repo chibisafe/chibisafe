@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { updateCheck } from '@/utils/UpdateCheck';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { updateCheck } from '@/utils/UpdateCheck.js';
 
 export const options = {
 	url: '/admin/service/updateCheck',
@@ -8,6 +8,6 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: FastifyReply) => {
+export const run = async (_: RequestWithUser, res: FastifyReply) => {
 	return res.send(updateCheck);
 };

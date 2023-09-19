@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { buttonVariants } from '.';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '.';
 
 interface Props {
+	// eslint-disable-next-line vue/require-default-prop
 	variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant'];
+	// eslint-disable-next-line vue/require-default-prop
 	size?: NonNullable<Parameters<typeof buttonVariants>[0]>['size'];
 	as?: string;
 }

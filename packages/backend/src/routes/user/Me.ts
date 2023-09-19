@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { getUsedQuota } from '@/utils/User';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { getUsedQuota } from '@/utils/User.js';
 
 export const options = {
 	url: '/user/me',

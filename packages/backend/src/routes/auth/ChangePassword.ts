@@ -1,8 +1,8 @@
-import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
-import { utc } from 'moment';
+import type { FastifyReply } from 'fastify';
+import moment from 'moment';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/auth/password/change',
@@ -11,7 +11,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { password, newPassword } = req.body as { password?: string; newPassword?: string };
+	const { password, newPassword } = req.body as { newPassword?: string; password?: string };
 
 	if (!password || !newPassword) {
 		res.badRequest('Invalid password or newPassword supplied');
@@ -52,7 +52,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return;
 	}
 
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 	await prisma.users.update({
 		where: {
 			id: req.user.id

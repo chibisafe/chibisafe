@@ -26,12 +26,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getInvites, createInvite } from '~/use/api';
-import { debug } from '~/use/log';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Table from '~/components/table/InvitesTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import Table from '~/components/table/InvitesTable.vue';
+import { getInvites, createInvite } from '~/use/api';
+import { debug } from '~/use/log';
 
 const invites = ref([]);
 onMounted(async () => {

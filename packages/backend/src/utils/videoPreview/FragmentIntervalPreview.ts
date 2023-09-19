@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
-import ffmpeg from 'fluent-ffmpeg';
 // @ts-ignore - no typings for this package
 import probe from 'ffmpeg-probe';
+import ffmpeg from 'fluent-ffmpeg';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};

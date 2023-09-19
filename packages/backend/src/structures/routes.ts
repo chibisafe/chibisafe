@@ -1,12 +1,11 @@
-import jetpack from 'fs-jetpack';
-import path from 'node:path';
-import { inspect } from 'node:util';
 import process from 'node:process';
-import { pathToFileURL } from 'node:url';
+import { URL, fileURLToPath, pathToFileURL } from 'node:url';
+import { inspect } from 'node:util';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import type { RouteOptions } from './interfaces';
-import { addSpaces } from '@/utils/Util';
-import { SETTINGS } from './settings';
+import jetpack from 'fs-jetpack';
+import { addSpaces } from '@/utils/Util.js';
+import type { RouteOptions } from './interfaces.js';
+import { SETTINGS } from './settings.js';
 
 const defaultMiddlewares = ['ban'];
 
@@ -23,15 +22,12 @@ export default {
 		const extension = `${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
 
 		// Load the base schemas to extend from
-		const baseSchemaFiles = await jetpack.findAsync(path.join(__dirname, '..', 'structures', 'schemas'), {
+		const baseSchemaFiles = await jetpack.findAsync(fileURLToPath(new URL('schemas', import.meta.url)), {
 			matching: `*.${extension}`
 		});
 
 		for (const schemaFile of baseSchemaFiles) {
-			// Replace extension from ts to js if in production
-			const replace = process.env.NODE_ENV === 'production' ? `dist/` : `src/`;
-			const fileUrl = pathToFileURL(schemaFile.replace(replace, `../`));
-			const schema = await import(fileUrl.toString());
+			const schema = await import(pathToFileURL(schemaFile).href);
 			server.addSchema(schema.default);
 		}
 
@@ -40,7 +36,7 @@ export default {
 			we need to change it to javascript files since they will be compiled.
 		*/
 
-		const allRouteFiles = await jetpack.findAsync(path.join(__dirname, '..', 'routes'), {
+		const allRouteFiles = await jetpack.findAsync(fileURLToPath(new URL('../routes', import.meta.url)), {
 			matching: `*.${extension}`
 		});
 
@@ -49,9 +45,7 @@ export default {
 
 		for (const routeFile of routeFiles) {
 			try {
-				// Replace extension from ts to js if in production
-				const replace = process.env.NODE_ENV === 'production' ? `dist/` : `src/`;
-				const route = await import(routeFile.replace(replace, `../`));
+				const route = await import(pathToFileURL(routeFile).href);
 				const options: RouteOptions = route.options;
 
 				// Try to grab the schema file for the route
@@ -63,8 +57,7 @@ export default {
 
 				let schema: any;
 				if (schemaFile) {
-					const fileUrl = pathToFileURL(schemaFile.replace(replace, `../`));
-					schema = (await import(fileUrl.toString())).default;
+					schema = (await import(pathToFileURL(schemaFile).href)).default;
 				}
 
 				if (!options.url || !options.method) {
@@ -84,8 +77,9 @@ export default {
 
 				// Set default middlewares that need to be included
 				for (const middleware of defaultMiddlewares) {
-					const fileUrl = pathToFileURL(path.join(__dirname, '..', 'middlewares', middleware));
-					const importedMiddleware = await import(fileUrl.toString());
+					const importedMiddleware = await import(
+						pathToFileURL(fileURLToPath(new URL(`../middlewares/${middleware}.js`, import.meta.url))).href
+					);
 					middlewares.push(importedMiddleware.default);
 				}
 
@@ -110,8 +104,9 @@ export default {
 							continue;
 						}
 
-						const fileUrl = pathToFileURL(path.join(__dirname, '..', 'middlewares', name));
-						const importedMiddleware = await import(fileUrl.toString());
+						const importedMiddleware = await import(
+							pathToFileURL(fileURLToPath(new URL(`../middlewares/${name}.js`, import.meta.url))).href
+						);
 
 						// Init anonymous function, to pass middleware options to the middleware on run, if applicable
 						if (middlewareOptions) {

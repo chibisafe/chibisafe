@@ -52,10 +52,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useAlbumsStore } from '~/store';
-import { createAlbumLink, updateAlbum, deleteAlbum, purgeAlbum } from '~/use/api';
 import { toast } from 'vue-sonner';
-import { Album } from '@/types';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import InputWithLabel from '@/components/input/InputWithLabel.vue';
+import AlbumLinksTable from '@/components/table/AlbumLinksTable.vue';
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
@@ -66,12 +67,11 @@ import {
 	DialogTrigger
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import InputWithLabel from '@/components/input/InputWithLabel.vue';
-import AlbumLinksTable from '@/components/table/AlbumLinksTable.vue';
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import { Switch } from '@/components/ui/switch';
+import { Album } from '@/types';
+import { useAlbumsStore } from '~/store';
+import { createAlbumLink, updateAlbum, deleteAlbum, purgeAlbum } from '~/use/api';
 
 const props = defineProps<{
 	album: Album;

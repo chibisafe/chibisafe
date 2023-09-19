@@ -1,7 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-
-import { cachedStats, getStats } from '@/utils/StatsGenerator';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { cachedStats, getStats } from '@/utils/StatsGenerator.js';
 
 export const options = {
 	url: '/admin/service/statistics',

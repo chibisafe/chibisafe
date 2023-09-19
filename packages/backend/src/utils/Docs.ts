@@ -1,4 +1,4 @@
-import { getChibisafeVersion } from './Util';
+import { getChibisafeVersion } from './Util.js';
 
 const readme = `
 ![](/meta.jpg)

@@ -1,11 +1,11 @@
-import type { FastifyReply } from 'fastify';
 import process from 'node:process';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
-import type { SETTINGS } from '@/structures/settings';
-import { loadSettings } from '@/structures/settings';
-import { getHtmlBuffer } from '@/main';
-import { updateCheck, startUpdateCheckSchedule, stopUpdateCheckSchedule } from '@/utils/UpdateCheck';
+import type { FastifyReply } from 'fastify';
+import { getHtmlBuffer } from '@/main.js';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import type { SETTINGS } from '@/structures/settings.js';
+import { loadSettings } from '@/structures/settings.js';
+import { updateCheck, startUpdateCheckSchedule, stopUpdateCheckSchedule } from '@/utils/UpdateCheck.js';
 
 export const options = {
 	url: '/admin/service/settings',
@@ -15,8 +15,8 @@ export const options = {
 
 type incomingSettings = {
 	key: string;
-	value: string;
 	type: string;
+	value: string;
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

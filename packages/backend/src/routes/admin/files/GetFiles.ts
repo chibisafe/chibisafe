@@ -1,8 +1,8 @@
-import type { FastifyReply } from 'fastify';
-import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces';
-import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
 import type { Prisma } from '@prisma/client';
+import type { FastifyReply } from 'fastify';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/files',
@@ -16,7 +16,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		page = 1,
 		limit = 50,
 		quarantine = false
-	} = req.query as { publicOnly: boolean; page?: number; limit?: number; quarantine?: boolean };
+	} = req.query as { limit?: number; page?: number; publicOnly: boolean; quarantine?: boolean };
 
 	const dbSearchObject: Prisma.filesCountArgs = {
 		where: {

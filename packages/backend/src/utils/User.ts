@@ -1,5 +1,5 @@
-import prisma from '@/structures/database';
-import { SETTINGS } from '@/structures/settings';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 export const getUsedQuota = async (userId: number, extraBytes = 0) => {
 	if (!userId) return null;

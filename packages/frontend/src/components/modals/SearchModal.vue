@@ -89,9 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useModalStore } from '~/store';
-import { useRouter } from 'vue-router';
 import {
 	Combobox,
 	ComboboxInput,
@@ -103,6 +100,9 @@ import {
 	TransitionRoot
 } from '@headlessui/vue';
 import { SearchIcon, FileUpIcon, LibraryIcon, User2Icon, CodeIcon } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useModalStore } from '~/store';
 
 const router = useRouter();
 const modalsStore = useModalStore();

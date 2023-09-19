@@ -1,19 +1,20 @@
-import jetpack from 'fs-jetpack';
 import path from 'node:path';
-import sharp from 'sharp';
+import { URL, fileURLToPath } from 'node:url';
 import ffmpeg from 'fluent-ffmpeg';
-import previewUtil from './videoPreview/FragmentPreview';
-import { log } from './Logger';
+import jetpack from 'fs-jetpack';
+import sharp from 'sharp';
+import { log } from './Logger.js';
+import previewUtil from './videoPreview/FragmentPreview.js';
 
 const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
-const thumbPath = path.join(__dirname, '../../../../', 'uploads', 'thumbs');
-const squareThumbPath = path.join(__dirname, '../../../../', 'uploads', 'thumbs', 'square');
-const videoPreviewPath = path.join(__dirname, '../../../../', 'uploads', 'thumbs', 'preview');
+const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
+const squareThumbPath = fileURLToPath(new URL('../../../../uploads/thumbs/square', import.meta.url));
+const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/preview', import.meta.url));
 
 const generateThumbnailForImage = async (filename: string, output: string) => {
-	const filePath = path.join(__dirname, '../../../../', 'uploads', filename);
+	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
 
 	const file = await jetpack.readAsync(filePath, 'buffer');
 	await sharp(file).resize(64, 64).toFormat('webp').toFile(path.join(squareThumbPath, output));
@@ -21,7 +22,7 @@ const generateThumbnailForImage = async (filename: string, output: string) => {
 };
 
 const generateThumbnailForVideo = async (filename: string, output: string) => {
-	const filePath = path.join(__dirname, '../../../../', 'uploads', filename);
+	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
 
 	ffmpeg(filePath)
 		.thumbnail({
@@ -83,7 +84,7 @@ export const getFileThumbnail = (filename: string) => {
 	return null;
 };
 
-export const removeThumbs = async ({ thumb, preview }: { thumb?: string; preview?: string }) => {
+export const removeThumbs = async ({ thumb, preview }: { preview?: string; thumb?: string }) => {
 	if (thumb) {
 		await jetpack.removeAsync(path.join(thumbPath, thumb));
 		await jetpack.removeAsync(path.join(squareThumbPath, thumb));
