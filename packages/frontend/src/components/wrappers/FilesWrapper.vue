@@ -60,14 +60,15 @@ import { useQuery } from '@tanstack/vue-query';
 import { LayoutDashboardIcon, LayoutListIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getFiles } from '@/use/api';
+import { getAlbum, getFiles, getFilesAdmin } from '@/use/api';
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
 import { useUserStore } from '~/store/user';
 
-defineProps<{
-	type: 'admin' | 'album' | 'uploads';
+const props = defineProps<{
+	type: 'admin' | 'quarantine' | 'album' | 'uploads';
+	uuid?: string;
 }>();
 
 const userStore = useUserStore();
@@ -75,9 +76,27 @@ const route = useRoute();
 
 const page = ref(route.query.page ? Number(route.query.page ?? 1) : 1);
 const limit = ref(50);
+
+// @ts-ignore
+// eslint-disable-next-line consistent-return
+const typeToFetch = () => {
+	switch (props.type) {
+		case 'admin':
+			return getFilesAdmin(page.value);
+		case 'quarantine':
+			return getFilesAdmin(page.value, false, true);
+		case 'album':
+			return getAlbum(props.uuid!, page.value);
+		case 'uploads':
+			return getFiles(page.value, limit.value);
+		default:
+			break;
+	}
+};
+
 const { data } = useQuery({
 	queryKey: ['files', page],
-	queryFn: () => getFiles(page.value, limit.value),
+	queryFn: () => typeToFetch(),
 	keepPreviousData: true
 });
 

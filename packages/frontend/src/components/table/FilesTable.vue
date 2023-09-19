@@ -100,7 +100,7 @@ import { deleteFileAsAdmin, deleteFile } from '~/use/api';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 
 const props = defineProps<{
-	type: 'admin' | 'album' | 'uploads';
+	type: 'admin' | 'quarantine' | 'album' | 'uploads';
 }>();
 
 const filesStore = useFilesStore();

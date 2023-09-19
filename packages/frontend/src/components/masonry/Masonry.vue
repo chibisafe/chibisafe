@@ -56,7 +56,7 @@ import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 
 const props = defineProps<{
 	// eslint-disable-next-line vue/no-unused-properties
-	type?: 'admin' | 'album' | 'uploads';
+	type?: 'admin' | 'quarantine' | 'album' | 'uploads';
 	files: FileWithAdditionalData[];
 }>();
 
