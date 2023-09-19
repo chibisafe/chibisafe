@@ -12,19 +12,20 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-light-100">{{ totalFiles }} files</span>
+		<span class="text-light-100">{{ data?.count }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
-			:currentPage="currentPage"
-			:count="totalFiles"
-			:previousPageFn="type === 'album' ? albumsStore.getPreviousPage : filesStore.getPreviousPage"
-			:nextPageFn="type === 'album' ? albumsStore.getNextPage : filesStore.getNextPage"
-			:goToPageFn="type === 'album' ? albumsStore.goToPage : filesStore.goToPage"
+			:currentPage="page"
+			:count="data?.count ?? 0"
+			:limit="limit"
+			:previousPageFn="prevPage"
+			:nextPageFn="nextPage"
+			:goToPageFn="goToPage"
 			class="mobile:basis-full"
 		/>
 	</div>
 
-	<Masonry v-if="preferMasonry" :type="type" />
+	<Masonry v-if="preferMasonry" :type="type" :files="data?.files ?? []" />
 	<FilesTable v-else :type="type" />
 
 	<div class="my-4 bg-dark-90 h-14 mobile:h-auto px-2 mobile:py-2 flex items-center mobile:flex-wrap mobile:mb-20">
@@ -40,51 +41,61 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-light-100">{{ totalFiles }} files</span>
+		<span class="text-light-100">{{ data?.count }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
-			:currentPage="currentPage"
-			:count="totalFiles"
-			:previousPageFn="type === 'album' ? albumsStore.getPreviousPage : filesStore.getPreviousPage"
-			:nextPageFn="type === 'album' ? albumsStore.getNextPage : filesStore.getNextPage"
-			:goToPageFn="type === 'album' ? albumsStore.goToPage : filesStore.goToPage"
+			:currentPage="page"
+			:count="data?.count ?? 0"
+			:limit="limit"
+			:previousPageFn="prevPage"
+			:nextPageFn="nextPage"
+			:goToPageFn="goToPage"
 			class="mobile:basis-full"
 		/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import Masonry from '~/components/masonry/NewMasonry.vue';
-import FilesTable from '~/components/table/FilesTable.vue';
-import Pagination from '~/components/pagination/Pagination.vue';
-import { useUserStore } from '~/store/user';
-import { useFilesStore } from '~/store/files';
-import { useAlbumsStore } from '~/store/albums';
+import { useQuery } from '@tanstack/vue-query';
 import { LayoutDashboardIcon, LayoutListIcon } from 'lucide-vue-next';
-const props = defineProps<{
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { getFiles } from '@/use/api';
+import Masonry from '~/components/masonry/Masonry.vue';
+import Pagination from '~/components/pagination/Pagination.vue';
+import FilesTable from '~/components/table/FilesTable.vue';
+import { useUserStore } from '~/store/user';
+
+defineProps<{
 	type: 'admin' | 'album' | 'uploads';
 }>();
 
 const userStore = useUserStore();
-const filesStore = useFilesStore();
-const albumsStore = useAlbumsStore();
+const route = useRoute();
 
-const totalFiles = computed(() => {
-	if (props.type === 'album') return albumsStore.count;
-	else return filesStore.count;
+const page = ref(route.query.page ? Number(route.query.page ?? 1) : 1);
+const limit = ref(50);
+const { data } = useQuery({
+	queryKey: ['files', page],
+	queryFn: () => getFiles(page.value, limit.value),
+	keepPreviousData: true
 });
 
-const currentPage = computed(() => {
-	if (props.type === 'album') return albumsStore.currentPage;
-	else return filesStore.currentPage;
-});
+const prevPage = () => {
+	page.value = Math.max(page.value - 1, 1);
+};
+
+const nextPage = () => {
+	page.value = Math.min(page.value + 1, data.value.count);
+};
+
+const goToPage = (goTo: number) => {
+	page.value = goTo;
+};
 
 const preferMasonry = computed(() => userStore.preferences.preferMasonry);
 const toggleMasonry = () => {
 	userStore.preferences.preferMasonry = !userStore.preferences.preferMasonry;
 	userStore.savePreferences();
 };
-
-// const nothing = () => {};
 </script>

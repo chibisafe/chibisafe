@@ -50,16 +50,16 @@
 </template>
 
 <script setup lang="ts">
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore } from '~/store';
-import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
-import { purgeAnonymousFiles } from '~/use/api';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
+import { useFilesStore } from '~/store';
+import { purgeAnonymousFiles } from '~/use/api';
 
 const route = useRoute();
 const filesStore = useFilesStore();

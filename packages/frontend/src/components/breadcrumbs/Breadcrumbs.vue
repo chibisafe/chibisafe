@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue';
 import { HomeIcon, ChevronRightIcon } from 'lucide-vue-next';
+import type { PropType } from 'vue';
 
 interface Page {
 	name: string;

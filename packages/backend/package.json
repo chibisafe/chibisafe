@@ -20,6 +20,7 @@
 		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
 		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts --fix"
 	},
+	"type": "module",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/WeebDev/chibisafe"
@@ -87,12 +88,6 @@
 	},
 	"prisma": {
 		"schema": "src/prisma/schema.prisma"
-	},
-	"nodemonConfig": {
-		"watch": [
-			"src/*"
-		],
-		"delay": 2500
 	},
 	"keywords": [
 		"chibisafe",

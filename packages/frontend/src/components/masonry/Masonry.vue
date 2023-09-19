@@ -1,90 +1,99 @@
 <template>
-	<div v-if="files?.length" class="masonry mt-8 pb-16">
-		<div v-for="file in files" :key="file.uuid" class="bg-black">
-			<div class="hover:-translate-y-1 hover:translate-x-1 transition-transform duration-100 ease-in-out">
-				<div
-					v-if="file.quarantine"
-					@click="showModal(file)"
-					class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
-				>
-					<FileWarningIcon class="text-red-500 w-16 h-16" />
-				</div>
-				<template v-else-if="isFileImage(file) || isFileVideo(file)">
-					<a
-						:href="file.url"
-						target="_blank"
-						rel="noopener noreferrer"
-						@click.left.stop="event => showModal(file, event)"
+	<div ref="MasonryContainer" class="mt-8 pb-16 flex justify-center">
+		<div v-for="(column, i) in fileColumns" :key="i">
+			<div v-for="file in column" :key="file.uuid" class="bg-black mb-4 m-2 relative">
+				<FileInformationDialog :file="file" />
+				<div class="hover:-translate-y-1 hover:translate-x-1 transition-transform duration-100 ease-in-out">
+					<div
+						v-if="file.quarantine"
+						class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
 					>
+						<FileWarningIcon class="text-red-500 w-16 h-16" />
+					</div>
+					<template v-else-if="isFileImage(file) || isFileVideo(file)">
 						<img
 							v-element-hover="(value: boolean) => onHover(value, file.uuid)"
 							:src="file.thumb"
 							class="cursor-pointer w-full min-w-[160px]"
 							onerror="this.classList.add('min-h-[160px]');"
 						/>
-					</a>
 
-					<video
-						v-if="isFileVideo(file) && isHovered[file.uuid]"
-						class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
-						autoplay
-						loop
-						muted
-					>
-						<source :src="file.preview" type="video/mp4" />
-					</video>
+						<video
+							v-if="isFileVideo(file) && isHovered[file.uuid]"
+							class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
+							autoplay
+							loop
+							muted
+						>
+							<source :src="file.preview" type="video/mp4" />
+						</video>
 
-					<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
-				</template>
-				<div
-					v-else
-					class="w-full h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer"
-					@click="showModal(file)"
-				>
-					<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
-					<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
-					<FileIcon v-else class="text-light-100 w-16 h-16" />
-					<span class="text-light-100 mt-4 text-lg text-center">{{
-						file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
-					}}</span>
+						<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
+					</template>
+
+					<div v-else class="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
+						<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
+						<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
+						<FileIcon v-else class="text-light-100 w-16 h-16" />
+						<span class="text-light-100 mt-4 text-lg text-center break-all w-[160px]">{{
+							file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
+						}}</span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<FileInformationModal :type="props.type === 'admin' ? 'admin' : null" />
 </template>
 
 <script setup lang="ts">
-import type { FileWithAdditionalData } from '~/types';
-import { computed, ref } from 'vue';
 import { vElementHover } from '@vueuse/components';
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon, FileWarningIcon } from 'lucide-vue-next';
-import { useFilesStore, useAlbumsStore, useModalStore } from '~/store';
+import { computed, ref, watch } from 'vue';
+import FileInformationDialog from '@/components/dialogs/FileInformationDialog.vue';
+import { FileWithAdditionalData } from '@/types';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
-import FileInformationModal from '~/components/modals/FileInformationModal.vue';
 
 const props = defineProps<{
+	// eslint-disable-next-line vue/no-unused-properties
 	type?: 'admin' | 'album' | 'uploads';
+	files: FileWithAdditionalData[];
 }>();
 
-const filesStore = useFilesStore();
-const albumsStore = useAlbumsStore();
-const modalsStore = useModalStore();
+const MasonryContainer = ref();
+const numberOfColumns = ref(5);
 
-const files = computed(() => {
-	if (props.type === 'uploads' || props.type === 'admin') return filesStore.files;
-	else if (props.type === 'album') return albumsStore.album?.files;
-	else return [];
+const fileColumns = computed(() => {
+	const columns: FileWithAdditionalData[][] = Array.from({ length: numberOfColumns.value }).map(() => []);
+	for (const [i, file] of props.files.entries()) {
+		columns[i % numberOfColumns.value]?.push(file);
+	}
+
+	return columns;
 });
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+
+watch(
+	[breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
+	() => {
+		if (breakpoints.isSmallerOrEqual('sm')) {
+			numberOfColumns.value = 1;
+		} else if (breakpoints.isInBetween('md', 'lg')) {
+			numberOfColumns.value = 2;
+		} else if (breakpoints.isInBetween('lg', 'xl')) {
+			numberOfColumns.value = 3;
+		} else if (breakpoints.isInBetween('xl', '2xl')) {
+			numberOfColumns.value = 4;
+		} else if (breakpoints.isGreaterOrEqual('2xl')) {
+			numberOfColumns.value = 5;
+		}
+	},
+	{ immediate: true }
+);
 
 const isHovered = ref<any>({});
 function onHover(state: boolean, uuid: string) {
 	isHovered.value[uuid] = state;
 }
-
-const showModal = (file: FileWithAdditionalData, event?: MouseEvent) => {
-	event?.preventDefault();
-	modalsStore.fileInformation.file = file;
-	modalsStore.fileInformation.show = true;
-};
 </script>

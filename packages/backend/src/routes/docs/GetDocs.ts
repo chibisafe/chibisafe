@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { rawHTML } from '@/utils/Docs';
+import { rawHTML } from '@/utils/Docs.js';
 
 export const options = {
 	url: '/docs',
@@ -10,6 +10,6 @@ export const options = {
 	}
 };
 
-export const run = (req: FastifyRequest, res: FastifyReply) => {
+export const run = (_: FastifyRequest, res: FastifyReply) => {
 	void res.type('text/html').send(rawHTML);
 };

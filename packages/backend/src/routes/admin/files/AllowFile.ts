@@ -1,10 +1,10 @@
-import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { deleteThumbnails, quarantinePath, uploadPath } from '@/utils/File';
-import jetpack from 'fs-jetpack';
 import path from 'node:path';
-import { generateThumbnails } from '@/utils/Thumbnails';
+import type { FastifyReply } from 'fastify';
+import jetpack from 'fs-jetpack';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { quarantinePath, uploadPath } from '@/utils/File.js';
+import { generateThumbnails } from '@/utils/Thumbnails.js';
 
 export const options = {
 	url: '/admin/file/:uuid/allow',

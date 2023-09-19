@@ -1,10 +1,10 @@
+import { URL, fileURLToPath } from 'node:url';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
 import jetpack from 'fs-jetpack';
-import path from 'node:path';
-import { SETTINGS } from '@/structures/settings';
-import { createZip } from '@/utils/File';
-import { utc } from 'moment';
+import moment from 'moment';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { createZip } from '@/utils/File.js';
 
 export const options = {
 	// url: '/album/:identifier/zip',
@@ -56,7 +56,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	// If the date the album was zipped is greater than the date the album was last updated, send the zip
 	if (album.zippedAt && album.editedAt && album.zippedAt > album.editedAt) {
-		const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.uuid}.zip`);
+		const filePath = fileURLToPath(new URL(`../../../../../uploads/zips/${album.uuid}.zip`, import.meta.url));
 		const exists = await jetpack.existsAsync(filePath);
 
 		if (exists) {
@@ -75,11 +75,11 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 				uuid: album.uuid
 			},
 			data: {
-				zippedAt: utc().toDate()
+				zippedAt: moment.utc().toDate()
 			}
 		});
 
-		const filePath = path.join(__dirname, '../../../../uploads', 'zips', `${album.uuid}.zip`);
+		const filePath = fileURLToPath(new URL(`../../../../../uploads/zips/${album.uuid}.zip`, import.meta.url));
 		const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
 		await res.download(filePath, fileName);
 	} catch (error) {

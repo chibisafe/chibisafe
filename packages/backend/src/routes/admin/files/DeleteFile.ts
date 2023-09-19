@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { deleteFile } from '@/utils/File';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { deleteFile } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/file/:uuid',

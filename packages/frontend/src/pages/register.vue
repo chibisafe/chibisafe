@@ -105,16 +105,16 @@
 </template>
 
 <script setup lang="ts">
+import { Loader2Icon } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { register as Register } from '~/use/api';
 import { useRouter } from 'vue-router';
-import { useSettingsStore } from '~/store';
 import { toast } from 'vue-sonner';
-import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2Icon } from 'lucide-vue-next';
+import { cn } from '@/lib/utils';
+import { useSettingsStore } from '~/store';
+import { register as Register } from '~/use/api';
 
 const router = useRouter();
 const settingsStore = useSettingsStore();

@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/file/:uuid/album/:albumUuid',
@@ -9,7 +9,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid, albumUuid } = req.params as { uuid?: string; albumUuid?: string };
+	const { uuid, albumUuid } = req.params as { albumUuid: string; uuid: string };
 
 	const fileExists = await prisma.files.findFirst({
 		where: {

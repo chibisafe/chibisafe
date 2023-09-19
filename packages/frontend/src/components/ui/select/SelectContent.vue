@@ -8,6 +8,7 @@ import {
 } from 'radix-vue';
 import { cn, useEmitAsProps } from '@/lib/utils';
 
+// eslint-disable-next-line vue/require-default-prop
 const props = withDefaults(defineProps<SelectContentProps & { class?: string }>(), {
 	position: 'popper',
 	sideOffset: 4
@@ -18,6 +19,7 @@ const emitsAsProps = useEmitAsProps(emits);
 
 <template>
 	<SelectPortal>
+		<!-- eslint-disable vue/no-duplicate-attr-inheritance -->
 		<SelectContent
 			v-bind="{ ...props, ...emitsAsProps, ...$attrs }"
 			:class="

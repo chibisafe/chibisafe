@@ -1,8 +1,8 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { utc } from 'moment';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/tag/create',
@@ -25,7 +25,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return;
 	}
 
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 	const newTag = await prisma.tags.create({
 		data: {
 			name,

@@ -1,6 +1,6 @@
-import { request } from './fetch';
 import { toast } from 'vue-sonner';
 import { debug } from '~/use/log';
+import { request } from './fetch';
 
 const sendErrorToast = (message: string) => {
 	toast.error(message);
@@ -93,7 +93,7 @@ export const getUsersAdmin = async () => {
 	try {
 		const data = await request.get(`admin/users`);
 		debug('getUsersAdmin', data);
-		return { users: data.users };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -137,17 +137,17 @@ export const getUserAdmin = async (uuid: string) => {
 	try {
 		const data = await request.get(`admin/user/${uuid}`);
 		debug('getUserAdmin', data);
-		return { user: data.user };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
 };
 
-export const getFiles = async (page: number) => {
+export const getFiles = async (page: number, limit = 50) => {
 	try {
-		const data = await request.get(`files?page=${page}`);
+		const data = await request.get(`files?page=${page}&limit=${limit}`);
 		debug('getFiles', data);
-		return { files: data.files, count: data.count };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -157,7 +157,7 @@ export const getFilesAdmin = async (page: number, publicOnly = false, quarantine
 	try {
 		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}&quarantine=${quarantine}`);
 		debug('getFilesAdmin', data);
-		return { files: data.files, count: data.count };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -167,7 +167,7 @@ export const getFilesFromUser = async (uuid: string, page: number) => {
 	try {
 		const data = await request.get(`admin/user/${uuid}/files?page=${page}`);
 		debug('getFilesFromUser', data);
-		return { user: data.user, files: data.files, count: data.count };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -179,7 +179,7 @@ export const getFilesFromIP = async (ip: string, page: number) => {
 			ip
 		});
 		debug('getFilesFromIP', data);
-		return { files: data.files, count: data.count, banned: data.banned };
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -453,12 +453,7 @@ export const getFilesFromPublicAlbum = async (identifier: string, page: number) 
 	try {
 		const data = await request.get(`album/${identifier}/view?page=${page}`);
 		debug('getFilesFromPublicAlbum', data);
-		return {
-			name: data.album.name,
-			files: data.album.files,
-			count: data.album.count,
-			isNsfw: data.album.isNsfw
-		};
+		return data.album;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -484,7 +479,7 @@ export const checkForUpdate = async () => {
 	}
 };
 
-export const getAdminSettings = async (force: boolean = false) => {
+export const getAdminSettings = async (_: boolean = false) => {
 	try {
 		const data = await request.get('admin/service/settings');
 		debug('geAdminSettings', data);
@@ -515,6 +510,7 @@ export const setUserStorageQuota = async (uuid: string, space: number) => {
 	}
 };
 
+// @ts-ignore
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });
@@ -556,10 +552,7 @@ export const createSnippet = async (name: string, content: string, language: str
 		const data = await request.post('snippet/create', { name, content, language });
 		debug('createSnippet', data);
 		if (data.message) sendSuccessToast(data.message);
-		return {
-			message: data.message,
-			snippet: data.snippet
-		};
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

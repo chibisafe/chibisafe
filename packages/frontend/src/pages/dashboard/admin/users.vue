@@ -37,14 +37,14 @@
 </template>
 
 <script setup lang="ts">
+import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
 import { ref, computed, onMounted } from 'vue';
-import { getUsersAdmin } from '~/use/api';
+import Table from '@/components/table/UsersTable.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 // import Table from '~/components/table/UsersTable.vue';
-import Table from '@/components/table/UsersTable.vue';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import { Switch, SwitchLabel, SwitchGroup } from '@headlessui/vue';
 import type { UserWithCount } from '~/types';
+import { getUsersAdmin } from '~/use/api';
 
 const hideDisabledUsers = ref(false);
 const users = ref<UserWithCount[]>();

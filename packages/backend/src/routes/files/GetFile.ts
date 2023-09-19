@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
-import type { ExtendedFile, RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { ExtendedFile, RequestWithUser } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/file/:uuid',
@@ -10,7 +10,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid } = req.params as { uuid?: string };
+	const { uuid } = req.params as { uuid: string };
 
 	// Make sure the file exists and belongs to the user
 	const file = (await prisma.files.findFirst({

@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
 import { v4 as uuidv4 } from 'uuid';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/admin/invite/create',

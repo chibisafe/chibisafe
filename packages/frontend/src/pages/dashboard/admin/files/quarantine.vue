@@ -46,13 +46,13 @@
 </template>
 
 <script setup lang="ts">
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore } from '~/store';
-import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { useFilesStore } from '~/store';
 
 const route = useRoute();
 const filesStore = useFilesStore();

@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/snippet/public/:identifier',
@@ -8,7 +8,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { identifier } = req.params as { identifier?: string };
+	const { identifier } = req.params as { identifier: string };
 
 	const snippet = await prisma.snippets.findFirst({
 		where: {

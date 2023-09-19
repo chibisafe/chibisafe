@@ -28,10 +28,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFilesStore } from '~/store/files';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
+import { useFilesStore } from '~/store/files';
 
 const props = defineProps<{
 	uuid: string;

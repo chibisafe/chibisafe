@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
 
 export const options = {
 	url: '/snippet/:identifier/raw',
@@ -7,7 +7,7 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const { identifier } = req.params as { identifier?: string };
+	const { identifier } = req.params as { identifier: string };
 
 	const snippet = await prisma.snippets.findFirst({
 		where: {

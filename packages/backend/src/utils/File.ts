@@ -1,29 +1,28 @@
-import * as blake3 from 'blake3';
-import jetpack from 'fs-jetpack';
-import { utc } from 'moment';
-import Zip from 'adm-zip';
 import path from 'node:path';
 import process from 'node:process';
-import { log } from '@/utils/Logger';
+import { URL, fileURLToPath } from 'node:url';
+import Zip from 'adm-zip';
+import * as blake3 from 'blake3';
+import type { FastifyRequest } from 'fastify';
+import jetpack from 'fs-jetpack';
+import moment from 'moment';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
-
-import prisma from '@/structures/database';
-import { getFileThumbnail, removeThumbs } from './Thumbnails';
-import { getHost } from './Util';
-import { SETTINGS } from '@/structures/settings';
-
-import type { ExtendedFile, File, FileInProgress, RequestUser, User } from '@/structures/interfaces';
-import type { FastifyRequest } from 'fastify';
+import prisma from '@/structures/database.js';
+import type { FileInProgress, RequestUser, User } from '@/structures/interfaces.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { log } from '@/utils/Logger.js';
+import { getFileThumbnail, removeThumbs } from './Thumbnails.js';
+import { getHost } from './Util.js';
 
 const fileIdentifierMaxTries = 5;
 
 const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
-export const uploadPath = path.join(__dirname, '../../../../', 'uploads');
-export const tmpUploadPath = path.join(__dirname, '../../../../', 'uploads', 'tmp');
-export const quarantinePath = path.join(__dirname, '../../../../', 'uploads', 'quarantine');
+export const uploadPath = fileURLToPath(new URL('../../../../uploads', import.meta.url));
+export const tmpUploadPath = fileURLToPath(new URL('../../../../uploads/tmp', import.meta.url));
+export const quarantinePath = fileURLToPath(new URL('../../../../uploads/quarantine', import.meta.url));
 
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && SETTINGS.blockNoExtension) return true;
@@ -166,7 +165,7 @@ export const createZip = (files: string[], albumUuid: string) => {
 			zip.addLocalFile(path.join(uploadPath, file));
 		}
 
-		zip.writeZip(path.join(__dirname, '../../../../', 'uploads', 'zips', `${albumUuid}.zip`));
+		zip.writeZip(fileURLToPath(new URL(`../../../../uploads/zips/${albumUuid}.zip`, import.meta.url)));
 	} catch (error) {
 		log.error(error);
 	}
@@ -200,9 +199,11 @@ export const checkFileHashOnDB = async (user: RequestUser | User | undefined, fi
 			size: file.size,
 			// Must be null for guest uploads,
 			// to ensure guests uploads will only be matched against other guest uploads
-			user: {
-				id: user ? user.id : undefined
-			}
+			user: user
+				? {
+						id: user.id
+				  }
+				: {}
 		}
 	});
 
@@ -214,6 +215,8 @@ export const checkFileHashOnDB = async (user: RequestUser | User | undefined, fi
 			repeated: true
 		};
 	}
+
+	return null;
 };
 
 export const storeFileToDb = async (
@@ -221,10 +224,10 @@ export const storeFileToDb = async (
 	file: FileInProgress,
 	albumId?: number | null
 ) => {
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 
 	const data = {
-		userId: user?.id ?? undefined,
+		userId: user?.id ?? undefined!,
 		uuid: uuidv4(),
 		name: file.name,
 		original: file.original,
@@ -269,7 +272,7 @@ export const storeFileToDb = async (
 };
 
 export const saveFileToAlbum = async (albumId: number, fileId: number) => {
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 	await prisma.files.update({
 		where: {
 			id: fileId

@@ -12,9 +12,9 @@
 import { ref, computed } from 'vue';
 import { useTagsStore } from '~/store/tags';
 
-const props = defineProps<{ fileUuid: string | null }>();
+// const props = defineProps<{ fileUuid: string | null }>();
 
-const isLoading = ref(false);
+// const isLoading = ref(false);
 const enteredTag = ref('');
 const tagsStore = useTagsStore();
 

@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
 
 export const options = {
 	url: '/admin/ip/list',
@@ -7,7 +7,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: FastifyRequest, res: FastifyReply) => {
+export const run = async (_: FastifyRequest, res: FastifyReply) => {
 	const list = await prisma.bans.findMany({
 		select: {
 			ip: true,

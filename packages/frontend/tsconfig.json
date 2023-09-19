@@ -1,17 +1,18 @@
 {
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
+		"exactOptionalPropertyTypes": false,
+
 		"rootDir": "./",
 		"outDir": "./dist",
 		"sourceRoot": "./",
 		"baseUrl": ".",
-		"module": "ESNext",
 		"types": ["node", "vite/client"],
 		"paths": {
 			"@/*": ["./src/*"],
 			"~/*": ["./src/*"]
 		}
 	},
-	"include": ["**/*.ts", "**/*.js", "**/*.vue", "**/*.test.ts", "**/*.test.js", "**/*.spec.ts", "**/*.spec.js"],
-	"exlude": ["node_modules", "dist", "public"]
+	"include": ["src/**/*.ts", "src/**/*.vue"],
+	"exlude": ["node_modules"]
 }

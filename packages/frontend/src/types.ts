@@ -1,21 +1,21 @@
 export interface User {
+	apiKey: string;
+	createdAt?: string;
+	enabled?: string;
 	id: number;
 	loggedIn: boolean;
-	username: string;
-	uuid: string;
+	passwordEditedAt?: Date;
 	roles: {
 		name: string;
 	}[];
-	apiKey: string;
-	token: string;
-	enabled?: string;
-	createdAt?: string;
-	passwordEditedAt?: Date;
 	storageQuota: {
-		used: number;
-		quota: number;
 		overQuota: boolean;
+		quota: number;
+		used: number;
 	};
+	token: string;
+	username: string;
+	uuid: string;
 }
 
 export interface UserWithCount extends User {
@@ -26,42 +26,42 @@ export interface UserWithCount extends User {
 }
 
 export interface Toast {
-	type: 'error' | 'success' | 'warning';
-	message: string;
 	id: number;
+	message: string;
+	type: 'error' | 'success' | 'warning';
 }
 
 export interface File {
-	uuid: string;
-	name: string;
-	type: string;
-	processing: boolean;
-	status: string;
 	bytesSent: number;
 	bytesTotal: number;
-	progress: number;
 	error?: string;
+	name: string;
+	processing: boolean;
+	progress: number;
+	status: string;
+	type: string;
 	url: string | undefined;
+	uuid: string;
 }
 
 export interface FileWithAdditionalData extends File {
-	original: string;
-	thumb: string;
-	ip: string;
-	size: number;
-	hash: string;
 	createdAt: string;
+	hash: string;
+	ip: string;
+	original: string;
 	preview?: string;
+	quarantine: boolean;
+	size: number;
+	thumb: string;
 	user?: {
-		uuid: string;
-		username: string;
+		createdAt: number;
 		enabled: boolean;
 		roles: {
 			name: string;
 		}[];
-		createdAt: number;
+		username: string;
+		uuid: string;
 	};
-	quarantine: boolean;
 }
 
 export interface ApiError {
@@ -69,32 +69,32 @@ export interface ApiError {
 }
 
 export interface Album {
-	uuid: string;
-	name: string;
-	nsfw: boolean;
-	zippedAt: string;
+	count?: number;
+	cover?: string;
 	createdAt: string;
 	editedAt: string;
-	cover?: string;
-	count?: number;
 	files?: FileWithAdditionalData[];
+	name: string;
+	nsfw: boolean;
+	uuid: string;
+	zippedAt: string;
 }
 
 export interface AlbumForMasonry {
-	uuid: string;
-	name: string;
-	isNsfw: boolean;
 	count: number;
 	files: FileWithAdditionalData[];
+	isNsfw: boolean;
+	name: string;
+	uuid: string;
 }
 
 export interface AlbumLink {
-	uuid: string;
-	identifier: string;
-	views: number;
-	enabled: boolean;
 	enableDownload: boolean;
+	enabled: boolean;
 	expiresAt: string;
+	identifier: string;
+	uuid: string;
+	views: number;
 }
 
 export interface AlbumWithSelected extends Album {
@@ -102,8 +102,8 @@ export interface AlbumWithSelected extends Album {
 }
 
 export interface Tag {
-	uuid: string;
 	name: string;
+	uuid: string;
 }
 
 export interface Invite {
@@ -122,24 +122,24 @@ export interface Invite {
 }
 
 export interface UpdateCheck {
-	updateAvailable: boolean;
 	latestVersion: string;
 	latestVersionUrl: string;
 	releaseNotes: {
-		version: string;
-		url: string;
-		name: string;
 		body: string;
+		name: string;
+		url: string;
+		version: string;
 	}[];
+	updateAvailable: boolean;
 }
 
 export interface Snippet {
-	uuid: string;
-	parentUuid: string;
-	name: string;
 	content: string;
-	language: string;
 	createdAt: string;
-	raw: string;
+	language: string;
 	link: string;
+	name: string;
+	parentUuid: string;
+	raw: string;
+	uuid: string;
 }

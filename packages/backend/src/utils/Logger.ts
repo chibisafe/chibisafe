@@ -1,6 +1,7 @@
-import * as FileStreamRotator from 'file-stream-rotator';
-import process from 'node:process';
 import path from 'node:path';
+import process from 'node:process';
+import { URL, fileURLToPath } from 'node:url';
+import * as FileStreamRotator from 'file-stream-rotator';
 import pino from 'pino';
 import pretty from 'pino-pretty';
 
@@ -27,7 +28,7 @@ const logger = {
 
 const loggerDestination = pino.multistream([
 	{
-		stream: pretty({
+		stream: pretty.default({
 			hideObject: true,
 			messageFormat: (log, messageKey) => {
 				const message = log[messageKey] as string;
@@ -45,14 +46,16 @@ const loggerDestination = pino.multistream([
 	},
 	{
 		stream: FileStreamRotator.getStream({
-			filename: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-%DATE%'),
+			filename: path.join(fileURLToPath(new URL('../../../../logs', import.meta.url)), 'chibisafe-%DATE%'),
 			extension: '.log',
 			date_format: 'YYYY-MM-DD',
 			frequency: 'daily',
-			audit_file: path.join(__dirname, '..', '..', '..', '..', 'logs', 'chibisafe-audit.json')
+			audit_file: fileURLToPath(new URL('../../../../logs/chibisafe-audit.json', import.meta.url))
 		})
 	}
 ]);
 
 export const log =
-	process.env.NODE_ENV === 'production' ? pino(logger.production, loggerDestination) : pino(logger.development);
+	process.env.NODE_ENV === 'production'
+		? pino.default(logger.production, loggerDestination)
+		: pino.default(logger.development);

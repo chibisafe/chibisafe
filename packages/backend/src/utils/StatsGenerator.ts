@@ -1,10 +1,9 @@
 import process from 'node:process';
 import schedule from 'node-schedule';
 import * as si from 'systeminformation';
-import { log } from '@/utils/Logger';
-
-import prisma from '@/structures/database';
-import { SETTINGS } from '@/structures/settings';
+import prisma from '@/structures/database.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { log } from '@/utils/Logger.js';
 
 interface StatGeneratorOptions {
 	funct(): Promise<{ [index: string]: any }>;
@@ -15,8 +14,8 @@ interface StatGeneratorOptions {
 
 interface CachedStatsEntry {
 	cache?: any;
-	generating: boolean;
 	generatedOn: number;
+	generating: boolean;
 }
 
 // NOTE: Currently uses in-memory caching because storing to database is a tad too elaborate for me
@@ -118,8 +117,8 @@ export const getFileSystemsInfo = async () => {
 	const fsSize = await si.fsSize();
 	for (const fs of fsSize) {
 		const obj: {
-			value: { total: number; used: number; available?: number };
 			type: string;
+			value: { available?: number; total: number; used: number };
 		} = {
 			value: {
 				total: fs.size,
@@ -290,13 +289,13 @@ export const getStats = async (categories?: string[], force = false) => {
 			}
 
 			// Skip if somehow still generating (e.g. by scheduler, or other requests)
-			if (cachedStats[name].generating) return;
+			if (cachedStats[name]?.generating) return;
 
 			// Skip if cache already exists, and satisfies the following...
-			if (cachedStats[name].cache) {
-				if (typeof opts.maxAge === 'number') {
+			if (cachedStats[name]?.cache) {
+				if (typeof opts?.maxAge === 'number') {
 					// maxAge is configured, is not forced to re-generated, and cache still satisfies it
-					if (!force && Date.now() - cachedStats[name].generatedOn <= opts.maxAge) {
+					if (!force && Date.now() - (cachedStats[name]?.generatedOn ?? 0) <= opts.maxAge) {
 						return;
 					}
 				} else if (!force) {
@@ -305,13 +304,18 @@ export const getStats = async (categories?: string[], force = false) => {
 				}
 			}
 
-			cachedStats[name].generating = true;
+			if (cachedStats[name]) {
+				cachedStats[name]!.generating = true;
+			}
 
-			return opts.funct().then(result => {
-				cachedStats[name].cache = result;
+			return opts?.funct().then(result => {
+				if (cachedStats[name]) {
+					cachedStats[name]!.cache = result;
 
-				cachedStats[name].generatedOn = Date.now();
-				cachedStats[name].generating = false;
+					cachedStats[name]!.generatedOn = Date.now();
+					cachedStats[name]!.generating = false;
+				}
+
 				log.debug(`StatsGenerator.getStats(): ${name}: OK`);
 			});
 		})

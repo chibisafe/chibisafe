@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser, Album } from '@/structures/interfaces';
-import { constructFilePublicLink } from '@/utils/File';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser, Album } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/albums',

@@ -58,13 +58,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 import { useFilesStore } from '~/store';
 import { banIP, unbanIP, purgeFilesFromIP } from '~/use/api';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
 	ip: string;

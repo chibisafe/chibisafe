@@ -79,14 +79,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { whenever } from '@vueuse/core';
-import { hljs, supportedLanguages } from '~/use/highlight';
-import { createSnippet } from '~/use/api';
+import { computed, ref } from 'vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { createSnippet } from '~/use/api';
+import { hljs, supportedLanguages } from '~/use/highlight';
 
 const props = defineProps<{
 	content: string;

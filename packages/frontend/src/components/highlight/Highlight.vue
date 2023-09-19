@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
+import hljs from 'highlight.js/lib/core';
 import { computed } from 'vue';
 import 'highlight.js/styles/github-dark.css';
-import hljs from 'highlight.js/lib/core';
 
 const props = defineProps<{
 	language: string;

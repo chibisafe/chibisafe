@@ -6,14 +6,12 @@
 		"outDir": "./dist",
 		"sourceRoot": "./",
 		"baseUrl": ".",
-		"module": "CommonJS",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src/**/*.ts"],
-	"exlude": ["node_modules"],
-	"ts-node": {
-		"require": ["tsconfig-paths/register"]
-	}
+	"exlude": ["node_modules"]
 }

@@ -1,11 +1,12 @@
-import jetpack from 'fs-jetpack';
 import path from 'node:path';
-
+import process from 'node:process';
+import { URL, fileURLToPath } from 'node:url';
 import { processFile } from '@chibisafe/uploader-module';
+import type { FastifyReply } from 'fastify';
+import jetpack from 'fs-jetpack';
 // import { processFile } from '../../../../../../chibisafe-uploader/packages/uploader-module/lib';
-import { validateAlbum } from '@/utils/UploadHelpers';
-import { generateThumbnails } from '@/utils/Thumbnails';
-import { SETTINGS } from '@/structures/settings';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { SETTINGS } from '@/structures/settings.js';
 import {
 	getUniqueFileIdentifier,
 	storeFileToDb,
@@ -13,12 +14,10 @@ import {
 	hashFile,
 	checkFileHashOnDB,
 	deleteTmpFile
-} from '@/utils/File';
-import { getUsedQuota } from '@/utils/User';
-import process from 'node:process';
-
-import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
+} from '@/utils/File.js';
+import { generateThumbnails } from '@/utils/Thumbnails.js';
+import { validateAlbum } from '@/utils/UploadHelpers.js';
+import { getUsedQuota } from '@/utils/User.js';
 
 export const options = {
 	url: '/upload',
@@ -35,7 +34,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const tmpDir = path.join(__dirname, '..', '..', '..', '..', '..', 'uploads', 'tmp');
+	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
 	const maxChunkSize = SETTINGS.chunkSize;
 	const maxFileSize = SETTINGS.maxSize;
 
@@ -76,11 +75,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		// Assign a unique identifier to the file
 		const uniqueIdentifier = await getUniqueFileIdentifier();
 		if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
-		const newFileName = String(uniqueIdentifier) + path.extname(upload.metadata.name);
+		const newFileName = String(uniqueIdentifier) + path.extname(upload.metadata.name!);
 		req.log.debug(`> Name for upload: ${newFileName}`);
 
 		// Move file to permanent location
-		const newPath = path.join(__dirname, '..', '..', '..', '..', '..', 'uploads', newFileName);
+		const newPath = fileURLToPath(new URL(`../../../../../uploads/${newFileName}`, import.meta.url));
 		const file = {
 			name: newFileName,
 			// @ts-ignore

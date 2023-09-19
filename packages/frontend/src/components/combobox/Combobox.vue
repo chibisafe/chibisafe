@@ -40,7 +40,6 @@
 
 <script setup lang="ts">
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-vue-next';
-import { ref, nextTick } from 'vue';
 import {
 	ComboboxContent,
 	ComboboxEmpty,
@@ -53,6 +52,7 @@ import {
 	ComboboxTrigger,
 	ComboboxViewport
 } from 'radix-vue';
+import { ref, nextTick } from 'vue';
 
 const props = defineProps<{
 	data: {

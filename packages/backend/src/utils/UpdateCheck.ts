@@ -1,14 +1,14 @@
 import process from 'node:process';
 import schedule from 'node-schedule';
-import { log } from '@/utils/Logger';
-import { SETTINGS } from '@/structures/settings';
-import { getChibisafeVersion } from '@/utils/Util';
+import { SETTINGS } from '@/structures/settings.js';
+import { log } from '@/utils/Logger.js';
+import { getChibisafeVersion } from '@/utils/Util.js';
 
 interface ReleaseNote {
-	version: string;
-	url: string;
-	name: string;
 	body: string;
+	name: string;
+	url: string;
+	version: string;
 }
 
 export const updateCheck = {

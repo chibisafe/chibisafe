@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { X } from 'lucide-vue-next';
 import {
 	DialogClose,
 	DialogContent,
@@ -7,7 +8,6 @@ import {
 	DialogOverlay,
 	DialogPortal
 } from 'radix-vue';
-import { X } from 'lucide-vue-next';
 import { cn, useEmitAsProps } from '@/lib/utils';
 
 const props = defineProps<DialogContentProps & { class?: string }>();

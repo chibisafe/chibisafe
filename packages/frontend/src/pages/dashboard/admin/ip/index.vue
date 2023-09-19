@@ -69,17 +69,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { banIP, unbanIP, getBannedIPs } from '@/use/api';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
-import InputDialog from '@/components/dialogs/InputDialog.vue';
-import Breadcrumbs from '@/components/breadcrumbs/Breadcrumbs.vue';
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
-import Tooltip from '@/components/tooltip/Tooltip.vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { ref, onMounted } from 'vue';
+import Breadcrumbs from '@/components/breadcrumbs/Breadcrumbs.vue';
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import InputDialog from '@/components/dialogs/InputDialog.vue';
+import Tooltip from '@/components/tooltip/Tooltip.vue';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { banIP, unbanIP, getBannedIPs } from '@/use/api';
 
 dayjs.extend(relativeTime);
 const IPs = ref<any>([]);

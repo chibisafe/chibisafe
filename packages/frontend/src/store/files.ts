@@ -3,13 +3,13 @@ import { getFiles, getFilesAdmin, getFilesFromUser, getFilesFromIP, searchFiles 
 import type { FileWithAdditionalData, User } from '../types';
 
 interface GetParameters {
-	page?: number;
 	admin?: boolean;
-	userUuid?: string;
 	ip?: string;
-	searchTerm?: string;
+	page?: number;
 	publicOnly?: boolean;
 	quarantine?: boolean;
+	searchTerm?: string;
+	userUuid?: string;
 }
 
 export const useFilesStore = defineStore('files', {
@@ -81,10 +81,10 @@ export const useFilesStore = defineStore('files', {
 
 			let response:
 				| {
-						files: FileWithAdditionalData[];
-						count: number;
-						user?: User;
 						banned?: boolean;
+						count: number;
+						files: FileWithAdditionalData[];
+						user?: User;
 				  }
 				| undefined;
 

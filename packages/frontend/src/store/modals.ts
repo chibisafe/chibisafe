@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { FileWithAdditionalData, Album, Tag, User, AlbumLink } from '~/types';
-import { getFile, getUserAdmin } from '~/use/api';
+import { getFile } from '~/use/api';
 
 export const useModalStore = defineStore('modals', {
 	state: () => ({

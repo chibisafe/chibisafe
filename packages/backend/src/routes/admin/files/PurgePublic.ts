@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { purgePublicFiles } from '@/utils/File';
+import { purgePublicFiles } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/files/purge/public',
@@ -7,7 +7,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: FastifyRequest, res: FastifyReply) => {
+export const run = async (_: FastifyRequest, res: FastifyReply) => {
 	await purgePublicFiles();
 
 	return res.send({

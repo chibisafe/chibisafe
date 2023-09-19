@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/admin/invites',
@@ -8,7 +8,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: FastifyReply) => {
+export const run = async (_: RequestWithUser, res: FastifyReply) => {
 	const invites = await prisma.invites.findMany();
 
 	const response = [];

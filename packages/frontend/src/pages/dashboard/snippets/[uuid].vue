@@ -63,18 +63,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getSnippet, deleteSnippet } from '~/use/api';
-import type { Snippet } from '~/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import Highlight from '~/components/highlight/Highlight.vue';
-import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
-
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import Highlight from '~/components/highlight/Highlight.vue';
+import type { Snippet } from '~/types';
+import { getSnippet, deleteSnippet } from '~/use/api';
 
 const props = defineProps<{
 	uuid: string;

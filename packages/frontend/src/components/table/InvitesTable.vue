@@ -46,13 +46,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Invite } from '@/types';
-import { cancelInvite } from '~/use/api';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import dayjs from 'dayjs';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
 import { Button } from '@/components/ui/button';
-
-import dayjs from 'dayjs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import type { Invite } from '@/types';
+import { cancelInvite } from '~/use/api';
 
 defineProps<{
 	invites: Invite[];

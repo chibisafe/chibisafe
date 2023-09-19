@@ -1,7 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-
-import { SETTINGS, getSettingsMeta } from '@/structures/settings';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { SETTINGS, getSettingsMeta } from '@/structures/settings.js';
 
 export const options = {
 	url: '/admin/service/settings',
@@ -9,7 +8,7 @@ export const options = {
 	middlewares: ['auth', 'admin']
 };
 
-export const run = async (req: RequestWithUser, res: FastifyReply) => {
+export const run = async (_: RequestWithUser, res: FastifyReply) => {
 	const settings: Partial<typeof SETTINGS> = SETTINGS;
 	// These 2 will never be changed from the panel as they can prevent access to the panel
 	delete settings.port;

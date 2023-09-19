@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces';
-import { constructFilePublicLink } from '@/utils/File';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/files/search',
@@ -10,8 +10,8 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
-	const { text } = req.body as { text?: string };
+	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { text } = req.body as { text: string };
 
 	const count = await prisma.files.count({
 		where: {

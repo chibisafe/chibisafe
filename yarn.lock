@@ -568,6 +568,7 @@ __metadata:
     "@headlessui/vue": ^1.7.16
     "@tailwindcss/forms": ^0.5.6
     "@tailwindcss/typography": ^0.5.10
+    "@tanstack/vue-query": ^4.35.3
     "@tanstack/vue-table": ^8.9.7
     "@types/file-saver": ^2.0.5
     "@types/marked": ^5.0.1
@@ -590,7 +591,6 @@ __metadata:
     lucide-vue-next: ^0.256.0
     marked: ^5.1.2
     media-chrome: ^0.16.3
-    minimasonry: ^1.3.2
     pinia: ^2.1.6
     postcss: ^8.4.29
     postcss-focus-visible: ^6.0.4
@@ -1372,10 +1372,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/match-sorter-utils@npm:^8.1.1":
+  version: 8.8.4
+  resolution: "@tanstack/match-sorter-utils@npm:8.8.4"
+  dependencies:
+    remove-accents: 0.4.2
+  checksum: d005f500754f52ef94966cbbe4217f26e7e3c07291faa2578b06bca9a5abe01689569994c37a1d01c6e783addf5ffbb28fa82eba7961d36eabf43ec43d1e496b
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:4.35.3":
+  version: 4.35.3
+  resolution: "@tanstack/query-core@npm:4.35.3"
+  checksum: 0184cd19a26c4f96d05bbebd7966866741d46e5be19ac99d8cd6e5bbeb6550f257e7b52b674fb2673190696e113dd601422d196bf4870b58b4d2e2edf4307e92
+  languageName: node
+  linkType: hard
+
 "@tanstack/table-core@npm:8.9.11":
   version: 8.9.11
   resolution: "@tanstack/table-core@npm:8.9.11"
   checksum: 627a60aa47d0d81e2aa609255d64390df698f8e88cd6970fbea3310871768002af7a176a17d9caed6e7abf1dcd1490c48d4b80c4dbfcb2aec4f363d4c59af571
+  languageName: node
+  linkType: hard
+
+"@tanstack/vue-query@npm:^4.35.3":
+  version: 4.35.3
+  resolution: "@tanstack/vue-query@npm:4.35.3"
+  dependencies:
+    "@tanstack/match-sorter-utils": ^8.1.1
+    "@tanstack/query-core": 4.35.3
+    "@vue/devtools-api": ^6.4.2
+    vue-demi: ^0.13.11
+  peerDependencies:
+    "@vue/composition-api": ^1.1.2
+    vue: ^2.5.0 || ^3.0.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  checksum: ca06255328d2449bcbb284e553ef60679857623d278a2de5df18297f70a4ba7a8b5a932524a52b53b1c9cb2262e937ab47a4483f562f49a844bf28c939378f6a
   languageName: node
   linkType: hard
 
@@ -2005,7 +2039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.5.0":
+"@vue/devtools-api@npm:^6.4.2, @vue/devtools-api@npm:^6.5.0":
   version: 6.5.0
   resolution: "@vue/devtools-api@npm:6.5.0"
   checksum: ec819ef3a426e91d09e9cfefd2827e9ed8ec9d62bb3b3e0674f3da8c7e92a4b879c3b777dc7329172ca6fe2670b62dd5580d23160339208f0f5ae038f2e504ad
@@ -7746,13 +7780,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimasonry@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "minimasonry@npm:1.3.2"
-  checksum: 8bb7c9d443476dcbb2ac55c0698a5555b7a9daece6d2e1d3896bc51bb35abe336641a816a042686a2ca064a98bfa0893ebc0077c04d59793a283f49e378a8d35
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -9349,6 +9376,13 @@ __metadata:
     mdast-util-to-markdown: ^1.0.0
     unified: ^10.0.0
   checksum: 6004e204fba672ee322c3cf0bef090e95802feedf7ef875f88b120c5e6208f1eb09c014486d5ca42a1e199c0a17ce0ed165fb248c66608458afed4bdca51dd3a
+  languageName: node
+  linkType: hard
+
+"remove-accents@npm:0.4.2":
+  version: 0.4.2
+  resolution: "remove-accents@npm:0.4.2"
+  checksum: 84a6988555dea24115e2d1954db99509588d43fe55a1590f0b5894802776f7b488b3151c37ceb9e4f4b646f26b80b7325dcea2fae58bc3865df146e1fa606711
   languageName: node
   linkType: hard
 
@@ -11342,6 +11376,22 @@ __metadata:
     vue-demi-fix: bin/vue-demi-fix.js
     vue-demi-switch: bin/vue-demi-switch.js
   checksum: 424b1f340d5111fc4d4a0f8042c14ae836ba983bc968773a6d955d6846202d7e6f951993ac1525be8732b0cfe0c81d94ab88f427c97bfa86ead08db06491279b
+  languageName: node
+  linkType: hard
+
+"vue-demi@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "vue-demi@npm:0.13.11"
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^3.0.0-0 || ^2.6.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  bin:
+    vue-demi-fix: bin/vue-demi-fix.js
+    vue-demi-switch: bin/vue-demi-switch.js
+  checksum: 0fbe9bf8ab7fe498ffa2bbd0cfc8f6f43a6bbaa5eda3e20ef1b70dca7c8b0ddb216a7ff2f632b694fe0735805638975abb441c621ec0bd2e6d4656353f316c15
   languageName: node
   linkType: hard
 

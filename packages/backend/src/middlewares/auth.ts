@@ -1,12 +1,12 @@
 import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import type { RequestWithOptionalUser } from '@/structures/interfaces';
-import { SETTINGS } from '@/structures/settings';
 import JWT from 'jsonwebtoken';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
+import type { RequestWithOptionalUser } from '@/structures/interfaces.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 interface Decoded {
-	sub: number;
 	iat: number;
+	sub: number;
 }
 
 export default (

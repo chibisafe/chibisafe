@@ -1,8 +1,8 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
-import { utc } from 'moment';
+import moment from 'moment';
 import randomstring from 'randomstring';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/auth/apikey/change',
@@ -11,7 +11,7 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 	const apiKey = randomstring.generate(64);
 
 	await prisma.users.update({

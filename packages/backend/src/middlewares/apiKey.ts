@@ -1,8 +1,8 @@
-import type { FastifyReply, HookHandlerDoneFunction } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
+import type { FastifyReply } from 'fastify';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
-export default async (req: RequestWithUser, res: FastifyReply, next: HookHandlerDoneFunction) => {
+export default async (req: RequestWithUser, res: FastifyReply) => {
 	const apiKey = req.headers['x-api-key'] as string;
 
 	if (!apiKey) return;

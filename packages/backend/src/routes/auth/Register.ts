@@ -1,10 +1,10 @@
-import type { FastifyRequest, FastifyReply } from 'fastify';
-import type { RouteOptions } from '@/structures/interfaces';
-import prisma from '@/structures/database';
 import bcrypt from 'bcryptjs';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { SETTINGS } from '@/structures/settings';
-import { utc } from 'moment';
+import prisma from '@/structures/database.js';
+import type { RouteOptions } from '@/structures/interfaces.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 export const options = {
 	url: '/auth/register',
@@ -44,7 +44,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	}
 
-	const { username, password } = req.body as { username?: string; password?: string };
+	const { username, password } = req.body as { password?: string; username?: string };
 	if (!username || !password) {
 		res.badRequest('No username or password provided');
 		return;
@@ -104,7 +104,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			data: {
 				used: true,
 				usedBy: userUuid,
-				editedAt: utc().toDate()
+				editedAt: moment.utc().toDate()
 			}
 		});
 	}

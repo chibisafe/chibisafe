@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { checkForUpdate } from '~/use/api';
 import type { UpdateCheck } from '@/types';
+import { checkForUpdate } from '~/use/api';
 
 export const useUpdateStore = defineStore('updateCheck', {
 	state: () => ({

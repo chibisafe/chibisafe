@@ -37,17 +37,17 @@
 </template>
 
 <script setup lang="ts">
-import AlertDialog from '@/components/ui/alert-dialog/AlertDialog.vue';
-import AlertDialogTrigger from '@/components/ui/alert-dialog/AlertDialogTrigger.vue';
-import AlertDialogContent from '@/components/ui/alert-dialog/AlertDialogContent.vue';
-import AlertDialogHeader from '@/components/ui/alert-dialog/AlertDialogHeader.vue';
-import AlertDialogTitle from '@/components/ui/alert-dialog/AlertDialogTitle.vue';
-import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue';
-import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
-import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
-import type { UpdateCheck } from '@/types';
 import { marked } from 'marked';
 import xss from 'xss';
+import AlertDialog from '@/components/ui/alert-dialog/AlertDialog.vue';
+import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
+import AlertDialogContent from '@/components/ui/alert-dialog/AlertDialogContent.vue';
+import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue';
+import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
+import AlertDialogHeader from '@/components/ui/alert-dialog/AlertDialogHeader.vue';
+import AlertDialogTitle from '@/components/ui/alert-dialog/AlertDialogTitle.vue';
+import AlertDialogTrigger from '@/components/ui/alert-dialog/AlertDialogTrigger.vue';
+import type { UpdateCheck } from '@/types';
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{
@@ -63,10 +63,10 @@ marked.use({
 		listitem(text: string) {
 			return `<li class="text-sm text-light-100">${text}</li>`;
 		},
-		link(href: string, title: string, text: string) {
+		link(href: string, _, text: string) {
 			return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-400 hover:text-blue-500">${text}</a>`;
 		},
-		image(href: string, title: string, text: string) {
+		image(href: string, _, text: string) {
 			return `<img src="${href}" alt="${text}" class="my-2" />`;
 		}
 	}

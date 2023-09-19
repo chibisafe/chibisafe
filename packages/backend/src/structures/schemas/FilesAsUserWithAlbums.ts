@@ -1,4 +1,4 @@
-import FilesAsUser from './FilesAsUser';
+import FilesAsUser from './FilesAsUser.js';
 
 export default {
 	$id: 'FilesAsUserWithAlbums',

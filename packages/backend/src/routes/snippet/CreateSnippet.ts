@@ -1,9 +1,9 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { utc } from 'moment';
-import { constructSnippetPublicLink, getUniqueSnippetIdentifier } from '@/utils/Snippet';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { constructSnippetPublicLink, getUniqueSnippetIdentifier } from '@/utils/Snippet.js';
 
 export const options = {
 	url: '/snippet/create',
@@ -20,9 +20,9 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { name, content, language } = req.body as { name: string; content: string; language: string };
+	const { name, content, language } = req.body as { content: string; language: string; name: string };
 
-	const now = utc().toDate();
+	const now = moment.utc().toDate();
 	const uniqueIdentifier = await getUniqueSnippetIdentifier();
 	if (!uniqueIdentifier) {
 		res.internalServerError('Couldnt allocate identifier for snippet');

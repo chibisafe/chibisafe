@@ -177,12 +177,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
+import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import { useClipboard } from '@vueuse/core';
-import { useUserStore } from '~/store';
+import dayjs from 'dayjs';
+import { ref, computed } from 'vue';
+import { toast } from 'vue-sonner';
+import Combobox from '@/components/combobox/Combobox.vue';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { useAlbumsStore } from '@/store';
+import { Album, FileWithAdditionalData } from '@/types';
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
+import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import {
 	deleteFile,
 	deleteFileAsAdmin,
@@ -192,14 +199,7 @@ import {
 	removeFileFromAlbum,
 	getFile
 } from '~/use/api';
-import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
-import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import { toast } from 'vue-sonner';
-import dayjs from 'dayjs';
-import { Album, FileWithAdditionalData } from '@/types';
-import Combobox from '@/components/combobox/Combobox.vue';
-import { useAlbumsStore } from '@/store';
-import { Badge } from '@/components/ui/badge';
+import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
 interface Props {
 	file: FileWithAdditionalData;
@@ -212,9 +212,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const albumsStore = useAlbumsStore();
-const userStore = useUserStore();
-const isAdmin = computed(() => userStore.user.loggedIn);
+const isAdmin = props.type === 'admin';
 const fileAlbums = ref<Album[]>([]);
+
+const queryClient = useQueryClient();
+
+const { mutate: mutateDeleteFile } = useMutation({
+	mutationFn: (uuid: string) => (isAdmin ? deleteFileAsAdmin(uuid) : deleteFile(uuid))
+});
 
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
@@ -284,13 +289,12 @@ const doAllowFile = () => {
 const doDeleteFile = () => {
 	if (!props.file) return;
 
-	// If the user is an admin, we need to use the admin endpoint
-	if (isAdmin.value) void deleteFileAsAdmin(props.file.uuid);
-	// Otherwise, we can use the normal endpoint
-	else void deleteFile(props.file.uuid);
-
-	// filesStore.removeFile(file.value.uuid);
-	toast.success('File deleted');
-	// closeModal();
+	mutateDeleteFile(props.file.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['files']);
+			toast.success('File deleted');
+			// closeModal();
+		}
+	});
 };
 </script>

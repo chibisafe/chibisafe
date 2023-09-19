@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import type { ExtendedFile } from '@/structures/interfaces';
-import prisma from '@/structures/database';
-import { constructFilePublicLink } from '@/utils/File';
+import prisma from '@/structures/database.js';
+import type { ExtendedFile } from '@/structures/interfaces.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const options = {
 	url: '/admin/user/:uuid/files',
@@ -16,7 +16,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		return;
 	}
 
-	const { page = 1, limit = 50 } = req.query as { page?: number; limit?: number };
+	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
 
 	const user = await prisma.users.findUnique({
 		where: {

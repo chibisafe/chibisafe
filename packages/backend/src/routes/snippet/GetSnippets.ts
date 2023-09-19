@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
-import prisma from '@/structures/database';
-import type { RequestWithUser } from '@/structures/interfaces';
-import { constructSnippetPublicLink } from '@/utils/Snippet';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
+import { constructSnippetPublicLink } from '@/utils/Snippet.js';
 
 export const options = {
 	url: '/snippets',

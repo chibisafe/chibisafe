@@ -1,22 +1,20 @@
-import fastify from 'fastify';
-import helmet from '@fastify/helmet';
-import cors from '@fastify/cors';
-import fstatic from '@fastify/static';
-import LiveDirectory from 'live-directory';
-import jetpack from 'fs-jetpack';
-import process from 'node:process';
-import path from 'node:path';
 import { Buffer } from 'node:buffer';
-
-import Routes from './structures/routes';
-import Requirements from './utils/Requirements';
-
-import { jumpstartStatistics } from './utils/StatsGenerator';
-import { startUpdateCheckSchedule } from './utils/UpdateCheck';
-import { SETTINGS, loadSettings } from './structures/settings';
-import { createAdminUserIfNotExists } from './utils/Util';
-import Docs from './utils/Docs';
-import { log } from './utils/Logger';
+import process from 'node:process';
+import { URL, fileURLToPath } from 'node:url';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
+import fstatic from '@fastify/static';
+import fastify from 'fastify';
+import jetpack from 'fs-jetpack';
+import LiveDirectory from 'live-directory';
+import Routes from './structures/routes.js';
+import { SETTINGS, loadSettings } from './structures/settings.js';
+import Docs from './utils/Docs.js';
+import { log } from './utils/Logger.js';
+import Requirements from './utils/Requirements.js';
+import { jumpstartStatistics } from './utils/StatsGenerator.js';
+import { startUpdateCheckSchedule } from './utils/UpdateCheck.js';
+import { createAdminUserIfNotExists } from './utils/Util.js';
 
 // Create the Fastify server
 const server = fastify({
@@ -57,8 +55,9 @@ const start = async () => {
 	await server.register(import('@fastify/swagger'), Docs);
 
 	// Route error handler
+	// @ts-ignore
 	// eslint-disable-next-line promise/prefer-await-to-callbacks
-	server.setErrorHandler((error, req, res) => {
+	server.setErrorHandler((error, _, res) => {
 		if (error.statusCode) {
 			return res.send(error);
 		} else {
@@ -85,7 +84,7 @@ const start = async () => {
 	});
 
 	// Enable form-data parsing
-	server.addContentTypeParser('multipart/form-data', (request, payload, done) => done(null));
+	server.addContentTypeParser('multipart/form-data', (_, __, done) => done(null));
 
 	// Add decorator for the user object to use with FastifyRequest
 	server.decorateRequest('user', '');
@@ -117,10 +116,10 @@ const start = async () => {
 
 	// Create the neccessary folders
 
-	jetpack.dir(path.join(__dirname, '..', '..', '..', 'uploads', 'tmp'));
-	jetpack.dir(path.join(__dirname, '..', '..', '..', 'uploads', 'zips'));
-	jetpack.dir(path.join(__dirname, '..', '..', '..', 'uploads', 'thumbs', 'square'));
-	jetpack.dir(path.join(__dirname, '..', '..', '..', 'uploads', 'thumbs', 'preview'));
+	jetpack.dir(fileURLToPath(new URL('../../../uploads/tmp', import.meta.url)));
+	jetpack.dir(fileURLToPath(new URL('../../../uploads/zips', import.meta.url)));
+	jetpack.dir(fileURLToPath(new URL('../../../uploads/thumbs/square', import.meta.url)));
+	jetpack.dir(fileURLToPath(new URL('../../../uploads/thumbs/preview', import.meta.url)));
 
 	server.log.debug('Chibisafe is starting with the following configuration:');
 	server.log.debug('');
@@ -136,19 +135,19 @@ const start = async () => {
 
 	// Creating an scoped server instance to pass to the routes in
 	// order to limit the rate-limit plugin to only the routes.
-	await server.register(async (instance, opts) => {
+	await server.register(async instance => {
 		// Scan and load routes into fastify
 		await Routes.load(instance);
 	});
 
 	if (process.env.NODE_ENV === 'production') {
-		if (!jetpack.exists(path.join(__dirname, '..', 'dist', 'site', 'index.html'))) {
+		if (!jetpack.exists(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)))) {
 			server.log.error('Frontend build not found, please run `npm run build` in the frontend directory first');
 			process.exit(1);
 		}
 
 		// @ts-ignore
-		const LiveAssets = new LiveDirectory(path.join(__dirname, '..', 'dist', 'site'), {
+		const LiveAssets = new LiveDirectory(fileURLToPath(new URL('../dist/site', import.meta.url)), {
 			static: true,
 			cache: {
 				max_file_count: 50,
@@ -219,7 +218,7 @@ const start = async () => {
 	// Serve uploads only if the user didn't change the default value
 	if (!SETTINGS.serveUploadsFrom) {
 		await server.register(fstatic, {
-			root: path.join(__dirname, '..', '..', '..', 'uploads')
+			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
 		});
 	}
 
@@ -236,7 +235,7 @@ const start = async () => {
 };
 
 export const getHtmlBuffer = async () => {
-	let indexHTML = jetpack.read(path.join(__dirname, '..', 'dist', 'site', 'index.html'), 'utf8');
+	let indexHTML = jetpack.read(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)), 'utf8');
 	if (!indexHTML) {
 		server.log.error('There was a problem parsing the frontend');
 		process.exit(1);

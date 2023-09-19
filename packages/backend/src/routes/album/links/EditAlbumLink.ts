@@ -1,6 +1,6 @@
 import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces';
-import prisma from '@/structures/database';
+import prisma from '@/structures/database.js';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/album/:uuid/link/:linkUuid/edit',
@@ -9,11 +9,11 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { uuid, linkUuid } = req.params as { uuid: string; linkUuid: string };
+	const { uuid, linkUuid } = req.params as { linkUuid: string; uuid: string };
 
 	const { enabled, enableDownload, expiresAt } = req.body as {
-		enabled?: boolean;
 		enableDownload?: boolean;
+		enabled?: boolean;
 		expiresAt?: Date;
 	};
 
@@ -45,7 +45,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const updateObj = {
 		enabled: enabled === true ? true : enabled === false ? false : link.enabled,
 		enableDownload: enableDownload === true ? true : enableDownload === false ? false : link.enableDownload,
-		expiresAt
+		expiresAt: expiresAt!
 	};
 
 	await prisma.links.update({
