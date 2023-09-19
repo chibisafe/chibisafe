@@ -9,11 +9,22 @@
 			variant="none"
 			@click.left.stop="event => event.preventDefault()"
 		/>
-		<DialogContent class="max-w-6xl max-h-[calc(100vh-8rem)]">
-			<div v-if="file" class="flex h-full max-h-[calc(100vh-11rem)]">
-				<div class="flex flex-1 justify-center items-center">
-					<img v-if="isFileImage(file)" :src="file.url" class="max-h-full" />
-
+		<DialogContent
+			class="max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)]"
+			:class="[isVerticalImage ? '!w-fit' : '!w-max']"
+		>
+			<div class="grid grid-cols-[1fr,300px] gap-4">
+				<div
+					class="w-full"
+					:class="[isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto']"
+				>
+					<img
+						v-if="isFileImage(file)"
+						ref="fileElement"
+						:src="file.url"
+						class="h-full"
+						@load="onImageLoad"
+					/>
 					<media-controller v-else-if="isFileVideo(file)">
 						<!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
 						<video slot="media" :src="file.url" crossorigin=""></video>
@@ -40,11 +51,13 @@
 						</media-control-bar>
 					</media-controller>
 
-					<span v-else class="text-light-100">Sorry but this file can't be previewd at this time.</span>
+					<span v-else class="text-light-100 flex h-full items-center"
+						>Sorry but this file can't be previewd at this time.</span
+					>
 				</div>
 
 				<!-- File information panel -->
-				<div class="flex flex-col w-1/3 pl-4 mobile:w-full pt-4">
+				<div class="max-w-[300px]">
 					<div class="flex justify-between mobile:mt-4 gap-2">
 						<Button class="flex-1" @click="copyLink">{{ isCopying ? 'Copied!' : 'Copy link' }}</Button>
 						<Button as="a" :href="file.url" target="_blank" rel="noopener noreferrer" class="flex-1">
@@ -180,7 +193,7 @@
 import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { toast } from 'vue-sonner';
 import Combobox from '@/components/combobox/Combobox.vue';
 import { Badge } from '@/components/ui/badge';
@@ -213,6 +226,14 @@ const props = withDefaults(defineProps<Props>(), {
 const albumsStore = useAlbumsStore();
 const isAdmin = props.type === 'admin';
 const fileAlbums = ref<Album[]>([]);
+const fileElement = ref<HTMLElement | null>(null);
+const isVerticalImage = ref(false);
+
+const onImageLoad = async () => {
+	if (!fileElement.value) return;
+	await nextTick();
+	isVerticalImage.value = fileElement.value.clientHeight > fileElement.value.clientWidth;
+};
 
 const queryClient = useQueryClient();
 
