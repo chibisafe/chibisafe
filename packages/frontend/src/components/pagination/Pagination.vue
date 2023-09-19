@@ -44,7 +44,7 @@ const route = useRoute();
 const router = useRouter();
 
 const page = computed(() => props.currentPage);
-const total = computed(() => props.count);
+const total = computed(() => props.count || 1);
 const totalPages = computed(() => Math.ceil(total.value / props.limit));
 const isFirstPage = computed(() => props.currentPage === 1);
 const isLastPage = computed(() => props.currentPage === totalPages.value);

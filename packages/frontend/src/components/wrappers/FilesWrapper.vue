@@ -25,8 +25,8 @@
 		/>
 	</div>
 
-	<Masonry v-if="preferMasonry" :type="type" :files="data?.files ?? []" />
-	<FilesTable v-else :type="type" />
+	<Masonry v-if="preferMasonry" :type="type" :files="files" />
+	<FilesTable v-else :type="type" :files="files" />
 
 	<div class="my-4 bg-dark-90 h-14 mobile:h-auto px-2 mobile:py-2 flex items-center mobile:flex-wrap mobile:mb-20">
 		<button
@@ -58,17 +58,28 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { LayoutDashboardIcon, LayoutListIcon } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getAlbum, getFiles, getFilesAdmin } from '@/use/api';
+import {
+	getAlbum,
+	getFiles,
+	getFilesAdmin,
+	getFilesFromIP,
+	getFilesFromPublicAlbum,
+	getFilesFromUser
+} from '@/use/api';
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
+import { publicOnly } from '~/store/files';
 import { useUserStore } from '~/store/user';
 
 const props = defineProps<{
-	type: 'admin' | 'quarantine' | 'album' | 'uploads';
+	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
 	uuid?: string;
+	identifier?: string;
+	userId?: string;
+	ip?: string;
 }>();
 
 const userStore = useUserStore();
@@ -76,27 +87,70 @@ const route = useRoute();
 
 const page = ref(route.query.page ? Number(route.query.page ?? 1) : 1);
 const limit = ref(50);
+const anon = computed(() => publicOnly.value);
+
+const fetchKey = computed(() => {
+	const key = [];
+	if (props.type === 'admin') {
+		key.push('admin');
+
+		if (props.userId) {
+			key.push('user', props.userId);
+		} else if (props.ip) {
+			key.push('ip', props.ip);
+		}
+	}
+
+	if (props.type === 'album') {
+		key.push('album');
+	} else if (props.type === 'publicAlbum') {
+		key.push('publicAlbum', props.identifier);
+	} else {
+		key.push('files');
+	}
+
+	key.push(page.value, limit.value, anon.value);
+	return key;
+});
+
+const files = computed(() => {
+	if (props.type === 'album') {
+		return data.value?.album?.files ?? [];
+	}
+
+	return data.value?.files ?? [];
+});
 
 // @ts-ignore
 // eslint-disable-next-line consistent-return
-const typeToFetch = () => {
+const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonymous: Ref<boolean>) => {
 	switch (props.type) {
-		case 'admin':
-			return getFilesAdmin(page.value);
+		case 'admin': {
+			if (props.userId) {
+				return getFilesFromUser(props.userId, currentPage.value, currentLimit.value);
+			} else if (props.ip) {
+				return getFilesFromIP(props.ip, currentPage.value, currentLimit.value);
+			} else {
+				return getFilesAdmin(currentPage.value, currentLimit.value, anonymous.value);
+			}
+		}
+
 		case 'quarantine':
-			return getFilesAdmin(page.value, false, true);
+			return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 		case 'album':
-			return getAlbum(props.uuid!, page.value);
+			return getAlbum(props.uuid!, currentPage.value);
+		case 'publicAlbum':
+			return getFilesFromPublicAlbum(props.identifier!, currentPage.value, currentLimit.value);
 		case 'uploads':
-			return getFiles(page.value, limit.value);
+			return getFiles(currentPage.value, currentLimit.value);
 		default:
 			break;
 	}
 };
 
 const { data } = useQuery({
-	queryKey: ['files', page],
-	queryFn: () => typeToFetch(),
+	queryKey: fetchKey,
+	queryFn: () => typeToFetch(page, limit, anon),
 	keepPreviousData: true
 });
 
