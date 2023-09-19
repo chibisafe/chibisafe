@@ -295,6 +295,7 @@ export const createAlbum = async (name: string) => {
 	try {
 		const data = await request.post('album/create', { name });
 		debug('createAlbum', data);
+		toast.success('Album created');
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

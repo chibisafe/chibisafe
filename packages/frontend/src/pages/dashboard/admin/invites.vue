@@ -15,7 +15,7 @@
 			/>
 			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
 				<h1 class="text-2xl desktop:whitespace-nowrap">Invites</h1>
-				<div class="items-center my-8">
+				<div class="items-center">
 					<Button @click="doCreateInvite">Create invite</Button>
 				</div>
 			</div>
