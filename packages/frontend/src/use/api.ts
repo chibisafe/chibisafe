@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner';
-import { request } from './fetch';
 import { debug } from '~/use/log';
+import { request } from './fetch';
 
 const sendErrorToast = (message: string) => {
 	toast.error(message);
