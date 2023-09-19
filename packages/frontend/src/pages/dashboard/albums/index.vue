@@ -9,9 +9,9 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
-				You have {{ albums.length }} album{{ albums.length > 1 ? 's' : '' }}
-				<div class="ml-4 mt-3">
+			<div class="text-2xl mt-8 font-semibold text-light-100 flex items-center">
+				<h1>You have {{ albums.length }} album{{ albums.length > 1 ? 's' : '' }}</h1>
+				<div class="ml-4">
 					<InputDialog
 						title="Create new album"
 						label="Album name"
@@ -21,7 +21,7 @@
 						<Button class="shrink-0">New album</Button>
 					</InputDialog>
 				</div>
-			</h1>
+			</div>
 			<div class="mt-8 pb-16">
 				<ul
 					role="list"
@@ -30,31 +30,33 @@
 					<li
 						v-for="album in albums"
 						:key="album.uuid"
-						class="col-span-1 flex rounded-md shadow-sm hover:shadow-lg cursor-pointer h-16 w-72"
+						class="col-span-1 flex rounded-md shadow-sm hover:shadow-lg cursor-pointer h-16 w-full"
 					>
-						<router-link :to="`/dashboard/albums/${album.uuid}`" class="flex w-full">
+						<router-link :to="`/dashboard/albums/${album.uuid}`" class="flex w-full truncate">
 							<div
 								class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md border-t border-l border-b bg-dark-90 border-dark-90"
 								:style="album.cover ? `background: url(${album.cover})` : ''"
 							/>
 							<div
-								class="flex flex-1 items-center justify-between truncate border-t border-r border-b bg-dark-110 border-dark-90"
+								class="flex flex-1 items-center truncate border-t border-r border-b bg-dark-110 border-dark-90"
 							>
-								<div class="flex-1 truncate px-4 py-2 text-sm">
-									<p class="font-medium hover:text-white text-light-100">
+								<div class="flex-1 flex-row px-4 py-2 text-sm w-full overflow-hidden truncate">
+									<span class="font-medium hover:text-white text-light-100 truncate block">
 										{{ album.name }}
-									</p>
-									<p v-if="album.count" class="text-gray-400">
+									</span>
+									<span v-if="album.count" class="text-gray-400 block">
 										{{ album.count }} file{{ album.count > 1 ? 's' : '' }}
-									</p>
+									</span>
 								</div>
 							</div>
 						</router-link>
 						<div
 							class="flex-shrink-0 w-16 text-white text-sm font-medium rounded-r-md border-t border-r border-b bg-dark-110 border-dark-90"
 						>
-							<AlbumSettingsDialog :album="album" variant="none">
-								<Settings2Icon />
+							<AlbumSettingsDialog :album="album">
+								<div class="w-full h-full flex items-center justify-center">
+									<Settings2Icon />
+								</div>
 							</AlbumSettingsDialog>
 						</div>
 					</li>
@@ -67,7 +69,6 @@
 <script setup lang="ts">
 import { Settings2Icon } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { toast } from 'vue-sonner';
 import AlbumSettingsDialog from '@/components/dialogs/AlbumSettingsDialog.vue';
 import InputDialog from '@/components/dialogs/InputDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -85,8 +86,6 @@ const createNewAlbum = async (name: string) => {
 
 	// Refresh the album list on the store
 	void albumsStore.get(true);
-
-	toast.success('Album created');
 };
 
 void albumsStore.get();

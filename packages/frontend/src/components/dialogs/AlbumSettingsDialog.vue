@@ -1,6 +1,6 @@
 <template>
 	<Dialog @update:open="onOpen">
-		<DialogTrigger><slot /></DialogTrigger>
+		<DialogTrigger as-child><slot /></DialogTrigger>
 		<DialogContent>
 			<DialogHeader>
 				<DialogTitle>Album settings</DialogTitle>

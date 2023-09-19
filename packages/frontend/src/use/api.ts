@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner';
-import { debug } from '~/use/log';
 import { request } from './fetch';
+import { debug } from '~/use/log';
 
 const sendErrorToast = (message: string) => {
 	toast.error(message);
@@ -295,6 +295,7 @@ export const createAlbum = async (name: string) => {
 	try {
 		const data = await request.post('album/create', { name });
 		debug('createAlbum', data);
+		toast.success('Album created');
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

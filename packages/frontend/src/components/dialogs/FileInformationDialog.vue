@@ -13,7 +13,7 @@
 			class="max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)]"
 			:class="[isVerticalImage ? '!w-fit' : '!w-max']"
 		>
-			<div class="grid grid-cols-[1fr,300px] gap-4">
+			<div class="grid grid-cols-[1fr,400px] gap-4">
 				<div
 					class="w-full"
 					:class="[isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto']"
@@ -22,7 +22,7 @@
 						v-if="isFileImage(file)"
 						ref="fileElement"
 						:src="file.url"
-						class="h-full"
+						class="h-full object-contain"
 						@load="onImageLoad"
 					/>
 					<media-controller v-else-if="isFileVideo(file)">
@@ -57,76 +57,81 @@
 				</div>
 
 				<!-- File information panel -->
-				<div class="max-w-[300px]">
-					<div class="flex justify-between mobile:mt-4 gap-2">
-						<Button class="flex-1" @click="copyLink">{{ isCopying ? 'Copied!' : 'Copy link' }}</Button>
-						<Button as="a" :href="file.url" target="_blank" rel="noopener noreferrer" class="flex-1">
-							Open
-						</Button>
-						<ConfirmationDialog
-							v-if="props.type === 'admin' && !file.quarantine"
-							title="Quarantine file"
-							message="The file will be quarantined and gone temporarily. Are you sure?"
-							proceedText="Quarantine"
-							:callback="doQuarantineFile"
-						>
-							<Button variant="destructive">Quarantine</Button></ConfirmationDialog
-						>
-						<ConfirmationDialog
-							v-if="props.type === 'admin' && file.quarantine"
-							title="Allow file"
-							message="The file will be un-quarantined and be available again. Are you sure?"
-							proceedText="Allow"
-							:callback="doAllowFile"
-							><Button variant="destructive">Allow</Button></ConfirmationDialog
-						>
-						<ConfirmationDialog
-							title="Delete file"
-							message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
-							proceedText="Delete"
-							:callback="doDeleteFile"
-							><Button variant="destructive">Delete</Button></ConfirmationDialog
-						>
+				<div class="max-w-[400px] flex flex-col gap-8">
+					<div>
+						<h2 class="text-light-100 mb-2">Actions</h2>
+						<div class="flex justify-between gap-2">
+							<Button class="flex-1" @click="copyLink">{{ isCopying ? 'Copied!' : 'Copy link' }}</Button>
+							<Button as="a" :href="file.url" target="_blank" rel="noopener noreferrer" class="flex-1">
+								Open
+							</Button>
+							<ConfirmationDialog
+								v-if="type === 'admin' && !file.quarantine"
+								title="Quarantine file"
+								message="The file will be quarantined and gone temporarily. Are you sure?"
+								proceedText="Quarantine"
+								:callback="doQuarantineFile"
+							>
+								<Button variant="destructive">Quarantine</Button></ConfirmationDialog
+							>
+							<ConfirmationDialog
+								v-if="type === 'admin' && file.quarantine"
+								title="Allow file"
+								message="The file will be un-quarantined and be available again. Are you sure?"
+								proceedText="Allow"
+								:callback="doAllowFile"
+								><Button variant="destructive">Allow</Button></ConfirmationDialog
+							>
+							<ConfirmationDialog
+								title="Delete file"
+								message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
+								proceedText="Delete"
+								:callback="doDeleteFile"
+								><Button variant="destructive">Delete</Button></ConfirmationDialog
+							>
+						</div>
 					</div>
 
-					<h2 class="text-light-100 mt-1">File info</h2>
+					<div>
+						<h2 class="text-light-100">File info</h2>
 
-					<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
-					<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
-					<InputWithOverlappingLabel :value="file.original" class="mt-4" label="Original Name" readOnly />
-					<InputWithOverlappingLabel
-						:value="file.ip"
-						class="mt-4"
-						label="IP"
-						type="link"
-						:href="`/dashboard/admin/ip/${file.ip}`"
-						readOnly
-					/>
-					<InputWithOverlappingLabel
-						:value="file.url"
-						class="mt-4"
-						label="Link"
-						type="link"
-						:href="file.url"
-						readOnly
-					/>
-					<InputWithOverlappingLabel
-						:value="String(formatBytes(file.size))"
-						class="mt-4"
-						label="Size"
-						readOnly
-					/>
-					<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
-					<InputWithOverlappingLabel
-						:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
-						class="mt-4"
-						label="Uploaded"
-						readOnly
-					/>
+						<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
+						<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
+						<InputWithOverlappingLabel :value="file.original" class="mt-4" label="Original Name" readOnly />
+						<InputWithOverlappingLabel
+							:value="file.ip"
+							class="mt-4"
+							label="IP"
+							type="link"
+							:href="`/dashboard/admin/ip/${file.ip}`"
+							readOnly
+						/>
+						<InputWithOverlappingLabel
+							:value="file.url"
+							class="mt-4"
+							label="Link"
+							type="link"
+							:href="file.url"
+							readOnly
+						/>
+						<InputWithOverlappingLabel
+							:value="String(formatBytes(file.size))"
+							class="mt-4"
+							label="Size"
+							readOnly
+						/>
+						<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
+						<InputWithOverlappingLabel
+							:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
+							class="mt-4"
+							label="Uploaded"
+							readOnly
+						/>
+					</div>
 
 					<!-- Albums and Tags information section -->
-					<template v-if="type === 'album' || type === 'uploads'">
-						<h2 class="text-light-100 mt-8 mb-4">Albums</h2>
+					<div v-if="type === 'album' || type === 'uploads'">
+						<h2 class="text-light-100">Albums</h2>
 						<Combobox
 							:data="albumsForCombobox"
 							placeholder="Select album..."
@@ -148,11 +153,11 @@
 								</span>
 							</Badge>
 						</div>
-					</template>
+					</div>
 
 					<!-- User information section -->
-					<template v-else>
-						<h2 class="text-light-100 mt-8">User info</h2>
+					<div v-else>
+						<h2 class="text-light-100">User info</h2>
 						<InputWithOverlappingLabel
 							:value="file.user?.username"
 							class="mt-4"
@@ -180,7 +185,7 @@
 							label="Created at"
 							readOnly
 						/>
-					</template>
+					</div>
 					<!-- User information section -->
 				</div>
 				<!-- File information panel -->
@@ -216,7 +221,7 @@ import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
 interface Props {
 	file: FileWithAdditionalData;
-	type?: 'admin' | 'album' | 'uploads';
+	type?: 'admin' | 'album' | 'uploads' | 'quarantine';
 }
 
 const props = withDefaults(defineProps<Props>(), {
