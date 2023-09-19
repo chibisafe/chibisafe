@@ -21,10 +21,8 @@ import { useRoute } from 'vue-router';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import { useFilesStore } from '~/store/files';
 
 const route = useRoute();
-const filesStore = useFilesStore();
 
 const processRouteQuery = () => {
 	const searchTerm = route.query.search;
@@ -38,8 +36,6 @@ const processRouteQuery = () => {
 	if (pageNum && !Number.isNaN(pageNum)) {
 		objToPass.page = pageNum;
 	}
-
-	void filesStore.get(objToPass);
 };
 
 processRouteQuery();

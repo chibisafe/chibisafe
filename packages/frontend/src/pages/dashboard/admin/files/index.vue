@@ -51,8 +51,7 @@
 
 <script setup lang="ts">
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
@@ -61,7 +60,6 @@ import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
 import { useFilesStore } from '~/store';
 import { purgeAnonymousFiles } from '~/use/api';
 
-const route = useRoute();
 const filesStore = useFilesStore();
 const publicOnly = ref(false);
 
@@ -69,28 +67,4 @@ const doPurgeAnonymousFiles = async () => {
 	await purgeAnonymousFiles();
 	void filesStore.get({ admin: true, publicOnly: publicOnly.value });
 };
-
-watch(
-	() => publicOnly.value,
-	() => {
-		void filesStore.get({ admin: true, publicOnly: publicOnly.value });
-	},
-	{ immediate: true }
-);
-
-const checkRouteQuery = () => {
-	if (route.query.page) {
-		const pageNum = Number(route.query.page);
-		if (!Number.isNaN(pageNum)) {
-			void filesStore.get({ admin: true, page: pageNum });
-			return;
-		}
-
-		void filesStore.get({ admin: true });
-	}
-
-	void filesStore.get({ admin: true });
-};
-
-checkRouteQuery();
 </script>

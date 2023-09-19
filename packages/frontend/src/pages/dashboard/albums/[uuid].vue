@@ -14,7 +14,7 @@
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">`{{ albumName }}` uploads</h1>
-			<FilesWrapper type="album" />
+			<FilesWrapper type="album" :uuid="uuid" />
 		</div>
 	</ScrollArea>
 </template>

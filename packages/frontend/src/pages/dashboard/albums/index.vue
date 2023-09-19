@@ -17,9 +17,8 @@
 						label="Album name"
 						proceedText="Create"
 						:callback="createNewAlbum"
-						variant="default"
 					>
-						New album
+						<Button class="shrink-0">New album</Button>
 					</InputDialog>
 				</div>
 			</h1>
@@ -74,6 +73,7 @@ import InputDialog from '@/components/dialogs/InputDialog.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { createAlbum } from '@/use/api';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
+import { Button } from '~/components/ui/button';
 import { useAlbumsStore } from '~/store';
 
 const albumsStore = useAlbumsStore();

@@ -207,7 +207,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	file: undefined,
 	type: 'uploads'
 });
 
@@ -228,7 +227,6 @@ const onOpen = async (isOpen: boolean) => {
 };
 
 const getFileAlbums = async () => {
-	if (!props.file) return;
 	const file = await getFile(props.file.uuid);
 	fileAlbums.value = file.albums;
 };
@@ -265,8 +263,6 @@ const copyLink = () => {
 };
 
 const doQuarantineFile = () => {
-	if (!props.file) return;
-
 	// If the user is an admin, we need to use the admin endpoint
 	void quarantineFileAsAdmin(props.file.uuid);
 
@@ -276,8 +272,6 @@ const doQuarantineFile = () => {
 };
 
 const doAllowFile = () => {
-	if (!props.file) return;
-
 	// If the user is an admin, we need to use the admin endpoint
 	void allowFileAsAdmin(props.file.uuid);
 
@@ -287,8 +281,6 @@ const doAllowFile = () => {
 };
 
 const doDeleteFile = () => {
-	if (!props.file) return;
-
 	mutateDeleteFile(props.file.uuid, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(['files']);

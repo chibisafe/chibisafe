@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { getAlbums, getAlbum, getAlbumLinks } from '~/use/api';
 import type { Album, AlbumForMasonry, AlbumLink } from '../types';
+import { getAlbums, getAlbum, getAlbumLinks } from '~/use/api';
 
 export const useAlbumsStore = defineStore('albums', {
 	state: () => ({
