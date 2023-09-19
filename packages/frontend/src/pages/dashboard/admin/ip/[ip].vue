@@ -18,11 +18,11 @@
 				]"
 			/>
 			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
-				<h1 class="text-2xl desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ totalFiles }} files)</h1>
+				<h1 class="text-2xl desktop:whitespace-nowrap">{{ props.ip }} uploads ({{ data?.count }} files)</h1>
 
 				<div class="items-center my-8 flex">
 					<ConfirmationDialog
-						v-if="isBanned"
+						v-if="data?.banned"
 						title="Unban IP"
 						message="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						:callback="doUnbanIP"
@@ -50,59 +50,72 @@
 					</div>
 				</div>
 			</div>
-			<FilesWrapper type="admin" />
+			<FilesWrapper type="admin" :ip="ip" />
 		</div>
 	</ScrollArea>
 </template>
 
 <script setup lang="ts">
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import { useFilesStore } from '~/store';
-import { banIP, unbanIP, purgeFilesFromIP } from '~/use/api';
+import { banIP, unbanIP, purgeFilesFromIP, getFilesFromIP } from '~/use/api';
 
 const props = defineProps<{
 	ip: string;
 }>();
 
-const route = useRoute();
-const filesStore = useFilesStore();
-const totalFiles = computed(() => filesStore.count);
-const isBanned = computed(() => filesStore.isBanned);
+const userIp = computed(() => props.ip);
 
-const checkRouteQuery = () => {
-	if (route.query.page) {
-		const pageNum = Number(route.query.page);
-		if (!Number.isNaN(pageNum)) {
-			void filesStore.get({ admin: true, ip: props.ip, page: pageNum });
-			return;
-		}
+const queryClient = useQueryClient();
 
-		void filesStore.get({ admin: true, ip: props.ip, page: pageNum });
-	}
+const { data } = useQuery({
+	queryKey: ['admin', 'ip', userIp, 'files'],
+	queryFn: () => getFilesFromIP(userIp.value, 1, 1),
+	keepPreviousData: true
+});
 
-	void filesStore.get({ admin: true, ip: props.ip });
-};
+const { mutate: mutatePurgeFiles } = useMutation({
+	mutationFn: (ip: string) => purgeFilesFromIP(ip)
+});
+
+const { mutate: mutateBanIp } = useMutation({
+	mutationFn: (ip: string) => banIP(ip)
+});
+
+const { mutate: mutateUnbanIp } = useMutation({
+	mutationFn: (ip: string) => unbanIP(ip)
+});
 
 const doPurgeFiles = async () => {
-	await purgeFilesFromIP(props.ip);
-	checkRouteQuery();
+	mutatePurgeFiles(props.ip, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			toast.success('Purged files from this IP');
+		}
+	});
 };
 
 const doBanIP = async () => {
-	await banIP(props.ip);
-	filesStore.isBanned = true;
+	mutateBanIp(props.ip, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			toast.success('Banned this IP');
+		}
+	});
 };
 
 const doUnbanIP = async () => {
-	await unbanIP(props.ip);
-	filesStore.isBanned = false;
+	mutateUnbanIp(props.ip, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			toast.success('Unbanned this IP');
+		}
+	});
 };
-
-checkRouteQuery();
 </script>

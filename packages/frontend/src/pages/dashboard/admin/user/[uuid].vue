@@ -12,13 +12,13 @@
 						href: '/dashboard/admin/users'
 					},
 					{
-						name: user.username,
+						name: data?.files?.[0]?.user.username,
 						href: '/dashboard/admin/user/' + props.uuid
 					}
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">
-				{{ user.username }} uploads ({{ totalFiles }} files)
+				{{ data?.files?.[0]?.user.username }} uploads ({{ data?.count }} files)
 			</h1>
 			<FilesWrapper type="admin" />
 		</div>
@@ -26,35 +26,22 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { getFilesFromUser } from '@/use/api';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import { useFilesStore } from '~/store/files';
 
 const props = defineProps<{
 	uuid: string;
 }>();
 
-const route = useRoute();
-const filesStore = useFilesStore();
-const totalFiles = computed(() => filesStore.count);
-const user = computed(() => filesStore.owner);
+const userId = computed(() => props.uuid);
 
-const checkRouteQuery = () => {
-	if (route.query.page) {
-		const pageNum = Number(route.query.page);
-		if (!Number.isNaN(pageNum)) {
-			void filesStore.get({ admin: true, userUuid: props.uuid, page: pageNum });
-			return;
-		}
-
-		void filesStore.get({ admin: true, page: pageNum });
-	}
-
-	void filesStore.get({ admin: true, userUuid: props.uuid });
-};
-
-checkRouteQuery();
+const { data } = useQuery({
+	queryKey: ['admin', 'user', userId, 'files'],
+	queryFn: () => getFilesFromUser(props.uuid, 1, 1),
+	keepPreviousData: true
+});
 </script>

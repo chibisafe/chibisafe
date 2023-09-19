@@ -83,58 +83,53 @@
 			</tr>
 		</tbody>
 	</table>
-	<FileInformationModal :type="props.type === 'admin' ? 'admin' : null" />
+	<!-- <FileInformationModal :type="type" :file="fileRef" /> -->
 </template>
 
 <script setup lang="ts">
+import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
 import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
-import FileInformationModal from '~/components/modals/FileInformationModal.vue';
-import { useModalStore, useUserStore, useFilesStore, useAlbumsStore } from '~/store';
+// import FileInformationModal from '~/components/dialogs/FileInformationDialog.vue';
 import type { FileWithAdditionalData } from '~/types';
 import { deleteFileAsAdmin, deleteFile } from '~/use/api';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 
 const props = defineProps<{
-	type: 'admin' | 'quarantine' | 'album' | 'uploads';
+	files: FileWithAdditionalData[];
+	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
 }>();
 
-const filesStore = useFilesStore();
-const albumsStore = useAlbumsStore();
-const userStore = useUserStore();
-const modalsStore = useModalStore();
-const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
+const isAdmin = props.type === 'admin';
+const fileRef = ref<FileWithAdditionalData | null>(null);
 const fileToDelete = ref<FileWithAdditionalData | null>(null);
 
-const files = computed(() => {
-	if (props.type === 'uploads' || props.type === 'admin') return filesStore.files;
-	else if (props.type === 'album') return albumsStore.album?.files;
-	else return [];
+const queryClient = useQueryClient();
+
+const { mutate: mutateDeleteFile } = useMutation({
+	mutationFn: (uuid: string) => (isAdmin ? deleteFileAsAdmin(uuid) : deleteFile(uuid))
 });
 
 const prepareDeleteFile = (file: FileWithAdditionalData) => {
-	if (!file) return;
 	fileToDelete.value = file;
 };
 
 const showModal = (file: FileWithAdditionalData) => {
-	modalsStore.fileInformation.file = file;
-	modalsStore.fileInformation.show = true;
+	fileRef.value = file;
 };
 
 const doDeleteFile = () => {
 	if (!fileToDelete.value) return;
 
-	// If the user is an admin, we need to use the admin endpoint
-	if (isAdmin.value) void deleteFileAsAdmin(fileToDelete.value.uuid);
-	// Otherwise, we can use the normal endpoint
-	else void deleteFile(fileToDelete.value.uuid);
-
-	filesStore.removeFile(fileToDelete.value.uuid);
-	toast.success('File deleted');
+	mutateDeleteFile(fileToDelete.value.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['', 'files']);
+			toast.success('File deleted');
+		}
+	});
 };
 </script>

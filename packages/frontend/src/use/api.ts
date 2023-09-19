@@ -153,9 +153,11 @@ export const getFiles = async (page: number, limit = 50) => {
 	}
 };
 
-export const getFilesAdmin = async (page: number, publicOnly = false, quarantine = false) => {
+export const getFilesAdmin = async (page: number, limit = 50, publicOnly = false, quarantine = false) => {
 	try {
-		const data = await request.get(`admin/files?page=${page}&publicOnly=${publicOnly}&quarantine=${quarantine}`);
+		const data = await request.get(
+			`admin/files?page=${page}&limit=${limit}&publicOnly=${publicOnly}&quarantine=${quarantine}`
+		);
 		debug('getFilesAdmin', data);
 		return data;
 	} catch (error: any) {
@@ -163,9 +165,9 @@ export const getFilesAdmin = async (page: number, publicOnly = false, quarantine
 	}
 };
 
-export const getFilesFromUser = async (uuid: string, page: number) => {
+export const getFilesFromUser = async (uuid: string, page: number, limit = 50) => {
 	try {
-		const data = await request.get(`admin/user/${uuid}/files?page=${page}`);
+		const data = await request.get(`admin/user/${uuid}/files?page=${page}&limit=${limit}`);
 		debug('getFilesFromUser', data);
 		return data;
 	} catch (error: any) {
@@ -173,9 +175,9 @@ export const getFilesFromUser = async (uuid: string, page: number) => {
 	}
 };
 
-export const getFilesFromIP = async (ip: string, page: number) => {
+export const getFilesFromIP = async (ip: string, page: number, limit = 50) => {
 	try {
-		const data = await request.post(`admin/ip/files?page=${page}`, {
+		const data = await request.post(`admin/ip/files?page=${page}&limit=${limit}`, {
 			ip
 		});
 		debug('getFilesFromIP', data);
@@ -449,9 +451,9 @@ export const purgeAlbum = async (uuid: string) => {
 	}
 };
 
-export const getFilesFromPublicAlbum = async (identifier: string, page: number) => {
+export const getFilesFromPublicAlbum = async (identifier: string, page: number, limit = 50) => {
 	try {
-		const data = await request.get(`album/${identifier}/view?page=${page}`);
+		const data = await request.get(`album/${identifier}/view?page=${page}&limit=${limit}`);
 		debug('getFilesFromPublicAlbum', data);
 		return data.album;
 	} catch (error: any) {

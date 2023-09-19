@@ -241,6 +241,14 @@ const { mutate: mutateDeleteFile } = useMutation({
 	mutationFn: (uuid: string) => (isAdmin ? deleteFileAsAdmin(uuid) : deleteFile(uuid))
 });
 
+const { mutate: mutateQuarantineFile } = useMutation({
+	mutationFn: (uuid: string) => quarantineFileAsAdmin(uuid)
+});
+
+const { mutate: mutateAllowFile } = useMutation({
+	mutationFn: (uuid: string) => allowFileAsAdmin(uuid)
+});
+
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
 	void albumsStore.get();
@@ -284,29 +292,28 @@ const copyLink = () => {
 };
 
 const doQuarantineFile = () => {
-	// If the user is an admin, we need to use the admin endpoint
-	void quarantineFileAsAdmin(props.file.uuid);
-
-	// filesStore.removeFile(props.file.uuid);
-	toast.success('File quarantined');
-	// closeModal();
+	mutateQuarantineFile(props.file.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['', 'files']);
+			toast.success('File quarantined');
+		}
+	});
 };
 
 const doAllowFile = () => {
-	// If the user is an admin, we need to use the admin endpoint
-	void allowFileAsAdmin(props.file.uuid);
-
-	// filesStore.removeFile(props.file.uuid);
-	toast.success('File allowed');
-	// closeModal();
+	mutateAllowFile(props.file.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['', 'files']);
+			toast.success('File allowed');
+		}
+	});
 };
 
 const doDeleteFile = () => {
 	mutateDeleteFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['files']);
+			queryClient.invalidateQueries(['', 'files']);
 			toast.success('File deleted');
-			// closeModal();
 		}
 	});
 };

@@ -2,7 +2,7 @@
 	<div ref="MasonryContainer" class="mt-8 pb-16 flex justify-center">
 		<div v-for="(column, i) in fileColumns" :key="i">
 			<div v-for="file in column" :key="file.uuid" class="bg-black mb-4 m-2 relative">
-				<FileInformationDialog :file="file" />
+				<FileInformationDialog v-if="type !== 'publicAlbum'" :file="file" />
 				<div class="hover:-translate-y-1 hover:translate-x-1 transition-transform duration-100 ease-in-out">
 					<div
 						v-if="file.quarantine"
@@ -56,7 +56,7 @@ import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 
 const props = defineProps<{
 	// eslint-disable-next-line vue/no-unused-properties
-	type?: 'admin' | 'quarantine' | 'album' | 'uploads';
+	type?: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
 	files: FileWithAdditionalData[];
 }>();
 

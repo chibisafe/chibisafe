@@ -57,18 +57,14 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { watch, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
-import { useFilesStore } from '~/store/files';
 import type { Snippet } from '~/types';
 import { getSnippets } from '~/use/api';
 dayjs.extend(relativeTime);
 
-const route = useRoute();
-const filesStore = useFilesStore();
 const snippets = ref<Snippet[]>([]);
 
 onMounted(async () => {
@@ -79,29 +75,4 @@ onMounted(async () => {
 		content: snippet.content.split('\n').slice(0, 10).join('\n')
 	}));
 });
-
-const processRouteQuery = () => {
-	const searchTerm = route.query.search;
-	const pageNum = Number(route.query.page);
-
-	const objToPass: Record<string, unknown> = {};
-	if (searchTerm) {
-		objToPass.searchTerm = String(searchTerm);
-	}
-
-	if (pageNum && !Number.isNaN(pageNum)) {
-		objToPass.page = pageNum;
-	}
-
-	void filesStore.get(objToPass);
-};
-
-processRouteQuery();
-
-watch(
-	() => route.query.search,
-	() => {
-		processRouteQuery();
-	}
-);
 </script>

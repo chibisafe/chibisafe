@@ -51,20 +51,28 @@
 
 <script setup lang="ts">
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
-import { ref } from 'vue';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-import { useFilesStore } from '~/store';
+import { publicOnly } from '~/store/files';
 import { purgeAnonymousFiles } from '~/use/api';
 
-const filesStore = useFilesStore();
-const publicOnly = ref(false);
+const queryClient = useQueryClient();
+
+const { mutate: mutatePurgeAnonymousFiles } = useMutation({
+	mutationFn: () => purgeAnonymousFiles()
+});
 
 const doPurgeAnonymousFiles = async () => {
-	await purgeAnonymousFiles();
-	void filesStore.get({ admin: true, publicOnly: publicOnly.value });
+	mutatePurgeAnonymousFiles(undefined, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['admin', 'files']);
+			toast.success('Anonymous files purged');
+		}
+	});
 };
 </script>

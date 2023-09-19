@@ -16,34 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useRoute } from 'vue-router';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
-
-const route = useRoute();
-
-const processRouteQuery = () => {
-	const searchTerm = route.query.search;
-	const pageNum = Number(route.query.page);
-
-	const objToPass: Record<string, unknown> = {};
-	if (searchTerm) {
-		objToPass.searchTerm = String(searchTerm);
-	}
-
-	if (pageNum && !Number.isNaN(pageNum)) {
-		objToPass.page = pageNum;
-	}
-};
-
-processRouteQuery();
-
-watch(
-	() => route.query.search,
-	() => {
-		processRouteQuery();
-	}
-);
 </script>
