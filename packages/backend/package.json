@@ -31,7 +31,7 @@
 		"node": ">=18.0.0"
 	},
 	"dependencies": {
-		"@chibisafe/uploader-module": "1.0.9",
+		"@chibisafe/uploader-module": "1.0.10",
 		"@fastify/cors": "^8.3.0",
 		"@fastify/helmet": "^11.0.0",
 		"@fastify/rate-limit": "^8.0.3",
