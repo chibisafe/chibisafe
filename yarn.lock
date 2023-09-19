@@ -466,7 +466,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/backend@workspace:packages/backend"
   dependencies:
-    "@chibisafe/uploader-module": 1.0.9
+    "@chibisafe/uploader-module": 1.0.10
     "@fastify/cors": ^8.3.0
     "@fastify/helmet": ^11.0.0
     "@fastify/rate-limit": ^8.0.3
@@ -540,21 +540,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@chibisafe/uploader-client@npm:1.0.9":
-  version: 1.0.9
-  resolution: "@chibisafe/uploader-client@npm:1.0.9"
-  checksum: 460b57045befcba85b2b8fea9434a6654a1c337ddf055b6af521301190c0b406416799574e2e5aa6f4f69731510831cc7c9dc914e53974b2faf7d4380df0f571
+"@chibisafe/uploader-client@npm:1.0.10":
+  version: 1.0.10
+  resolution: "@chibisafe/uploader-client@npm:1.0.10"
+  dependencies:
+    uuid: ^9.0.1
+  checksum: b001199ec35f3c1b871f0296728e0919e23a21126a4dad1fc3c19a3baf7090d519a1a13c35632971abff74b952ffb66188ead9c18d825d224cd139365dfb7e41
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@npm:1.0.9":
-  version: 1.0.9
-  resolution: "@chibisafe/uploader-module@npm:1.0.9"
+"@chibisafe/uploader-module@npm:1.0.10":
+  version: 1.0.10
+  resolution: "@chibisafe/uploader-module@npm:1.0.10"
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
-  checksum: d822160e548fbc89cb63690ff8ce01687bd2e137461bfc7b0664d8fdc889a82532e51d4ce45299890f3c6938cbf201be48855b0bc9fd83f9fed3154b7542c747
+  checksum: d036d9bb126f24d8694019483fb4557784208678d85873d57bc2fcc6abdb7f0e3d947974ef6bf3a534d74858eed79e63f918e927a52a6367fb8fb03a81c65509
   languageName: node
   linkType: hard
 
@@ -562,7 +564,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/website@workspace:packages/frontend"
   dependencies:
-    "@chibisafe/uploader-client": 1.0.9
+    "@chibisafe/uploader-client": 1.0.10
     "@headlessui/vue": ^1.7.16
     "@tailwindcss/forms": ^0.5.6
     "@tailwindcss/typography": ^0.5.10
@@ -11106,7 +11108,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0.0":
+"uuid@npm:^9.0.0, uuid@npm:^9.0.1":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
