@@ -3,7 +3,7 @@
 		<!-- Mobile sidebar backdrop -->
 		<div
 			v-if="isOpen"
-			class="fixed top-0 left-0 w-screen h-screen bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+			class="fixed top-0 left-0 w-screen h-screen bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 z-10"
 			@click="isOpen = false"
 		></div>
 		<!-- Mobile hamburger menu icon -->

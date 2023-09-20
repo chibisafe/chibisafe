@@ -4,7 +4,7 @@
 			<slot />
 		</DialogTrigger>
 
-		<DialogContent class="sm:max-w-[425px]" @escape-key-down.prevent>
+		<DialogContent class="sm:max-w-[425px]">
 			<DialogHeader>
 				<DialogTitle>{{ title }}</DialogTitle>
 				<DialogDescription v-if="message">
