@@ -1,6 +1,10 @@
 <template>
 	<Dialog @update:open="onOpen">
+		<DialogTrigger v-if="hasDefaultSlot">
+			<slot />
+		</DialogTrigger>
 		<DialogTrigger
+			v-else
 			class="w-full h-full absolute"
 			as="a"
 			:href="file?.url"
@@ -198,7 +202,7 @@
 import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, useSlots } from 'vue';
 import { toast } from 'vue-sonner';
 import Combobox from '@/components/combobox/Combobox.vue';
 import { Badge } from '@/components/ui/badge';
@@ -227,6 +231,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
 	type: 'uploads'
 });
+
+const slots = useSlots();
+const hasDefaultSlot = computed(() => Boolean(slots.default));
 
 const albumsStore = useAlbumsStore();
 const isAdmin = props.type === 'admin';
