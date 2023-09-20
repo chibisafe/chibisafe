@@ -15,12 +15,13 @@
 				<TableCell>
 					<FileInformationDialog v-if="type !== 'publicAlbum' && !file.quarantine" :file="file" :type="type">
 						<template v-if="isFileImage(file) || isFileVideo(file)">
-							<img :src="file.thumb" class="h-10" />
+							<img :src="file.thumb" class="h-16" />
 						</template>
 						<FileAudioIcon v-else-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
 						<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
 						<FileIcon v-else class="text-light-100 w-16 h-16" />
 					</FileInformationDialog>
+					<FileWarningIcon v-if="file.quarantine" class="text-red-500 w-16 h-16" />
 				</TableCell>
 				<TableCell>
 					<a :href="file.url" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400">{{
@@ -51,7 +52,7 @@
 <script setup lang="ts">
 import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
-import { FileIcon, FileTextIcon, FileAudioIcon } from 'lucide-vue-next';
+import { FileIcon, FileTextIcon, FileAudioIcon, FileWarningIcon } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
