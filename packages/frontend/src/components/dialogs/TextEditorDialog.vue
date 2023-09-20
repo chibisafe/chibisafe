@@ -1,7 +1,7 @@
 <template>
 	<Dialog @update:open="onOpen">
 		<DialogTrigger><slot /></DialogTrigger>
-		<DialogContent class="max-w-6xl" @escape-key-down.prevent>
+		<DialogContent class="max-w-6xl" @escapeKeyDown="event => event.preventDefault()">
 			<DialogHeader>
 				<DialogTitle>Create a new snippet</DialogTitle>
 			</DialogHeader>
