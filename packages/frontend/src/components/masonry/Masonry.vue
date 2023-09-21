@@ -2,7 +2,14 @@
 	<div ref="MasonryContainer" class="mt-8 flex justify-center">
 		<div v-for="(column, i) in fileColumns" :key="i">
 			<div v-for="file in column" :key="file.uuid" class="mb-4 m-2 relative">
-				<FileInformationDialog v-if="type !== 'publicAlbum' && !file.quarantine" :file="file" :type="type" />
+				<FileInformationDialog
+					v-if="
+						(type !== 'publicAlbum' && !file.quarantine) ||
+						((type === 'admin' || type === 'quarantine') && file.quarantine)
+					"
+					:file="file"
+					:type="type"
+				/>
 				<div
 					v-if="file.quarantine"
 					class="w-[225px] h-40 bg-dark-90 flex flex-col justify-center items-center cursor-not-allowed"
