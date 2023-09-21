@@ -61,146 +61,161 @@
 				</div>
 
 				<!-- File information panel -->
-				<div class="max-w-[400px] flex flex-col gap-8">
-					<div>
-						<h2 class="text-light-100 mb-2">Actions</h2>
-						<div class="flex justify-between gap-2 flex-wrap">
-							<Button class="flex-1" @click="copyLink">{{ isCopying ? 'Copied!' : 'Copy link' }}</Button>
-							<Button as="a" :href="file.url" target="_blank" rel="noopener noreferrer" class="flex-1">
-								Open
-							</Button>
-							<ConfirmationDialog
-								title="Delete file"
-								message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
-								proceedText="Delete"
-								:callback="doDeleteFile"
-								><Button variant="destructive">Delete</Button></ConfirmationDialog
-							>
-							<div class="basis-full h-0"></div>
-							<ConfirmationDialog
-								v-if="isFileImage(file) || isFileVideo(file)"
-								title="Regenerate thumbnail"
-								message="If the file has a broken thumbnail this will try to fix that. Are you sure?"
-								proceedText="Continue"
-								:callback="doRegenerateThumbnail"
-							>
-								<Button>Regenerate thumbnail</Button></ConfirmationDialog
-							>
-							<ConfirmationDialog
-								v-if="isAdmin && !file.quarantine"
-								title="Quarantine file"
-								message="The file will be quarantined and gone temporarily. Are you sure?"
-								proceedText="Quarantine"
-								:callback="doQuarantineFile"
-							>
-								<Button variant="destructive">Quarantine</Button></ConfirmationDialog
-							>
-							<ConfirmationDialog
-								v-if="isAdmin && file.quarantine"
-								title="Allow file"
-								message="The file will be un-quarantined and be available again. Are you sure?"
-								proceedText="Allow"
-								:callback="doAllowFile"
-								><Button variant="destructive">Allow</Button></ConfirmationDialog
-							>
+				<div class="max-w-[400px] flex flex-col">
+					<ScrollArea class="h-full inline-table">
+						<div class="mb-8">
+							<h2 class="text-light-100 mb-2">Actions</h2>
+							<div class="flex justify-between gap-2 flex-wrap">
+								<Button class="flex-1" @click="copyLink">{{
+									isCopying ? 'Copied!' : 'Copy link'
+								}}</Button>
+								<Button
+									as="a"
+									:href="file.url"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="flex-1"
+								>
+									Open
+								</Button>
+								<ConfirmationDialog
+									title="Delete file"
+									message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
+									proceedText="Delete"
+									:callback="doDeleteFile"
+									><Button variant="destructive">Delete</Button></ConfirmationDialog
+								>
+								<div class="basis-full h-0"></div>
+								<ConfirmationDialog
+									v-if="isFileImage(file) || isFileVideo(file)"
+									title="Regenerate thumbnail"
+									message="If the file has a broken thumbnail this will try to fix that. Are you sure?"
+									proceedText="Continue"
+									:callback="doRegenerateThumbnail"
+								>
+									<Button>Regenerate thumbnail</Button></ConfirmationDialog
+								>
+								<ConfirmationDialog
+									v-if="isAdmin && !file.quarantine"
+									title="Quarantine file"
+									message="The file will be quarantined and gone temporarily. Are you sure?"
+									proceedText="Quarantine"
+									:callback="doQuarantineFile"
+								>
+									<Button variant="destructive">Quarantine</Button></ConfirmationDialog
+								>
+								<ConfirmationDialog
+									v-if="isAdmin && file.quarantine"
+									title="Allow file"
+									message="The file will be un-quarantined and be available again. Are you sure?"
+									proceedText="Allow"
+									:callback="doAllowFile"
+									><Button variant="destructive">Allow</Button></ConfirmationDialog
+								>
+							</div>
 						</div>
-					</div>
 
-					<div>
-						<h2 class="text-light-100">File info</h2>
+						<div class="mb-8">
+							<h2 class="text-light-100">File info</h2>
 
-						<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
-						<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
-						<InputWithOverlappingLabel :value="file.original" class="mt-4" label="Original Name" readOnly />
-						<InputWithOverlappingLabel
-							:value="file.ip"
-							class="mt-4"
-							label="IP"
-							type="link"
-							:href="`/dashboard/admin/ip/${file.ip}`"
-							readOnly
-						/>
-						<InputWithOverlappingLabel
-							:value="file.url"
-							class="mt-4"
-							label="Link"
-							type="link"
-							:href="file.url"
-							readOnly
-						/>
-						<InputWithOverlappingLabel
-							:value="String(formatBytes(file.size))"
-							class="mt-4"
-							label="Size"
-							readOnly
-						/>
-						<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
-						<InputWithOverlappingLabel
-							:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
-							class="mt-4"
-							label="Uploaded"
-							readOnly
-						/>
-					</div>
-
-					<!-- Albums and Tags information section -->
-					<div v-if="type === 'album' || type === 'uploads'">
-						<h2 class="text-light-100">Albums</h2>
-						<Combobox
-							:data="albumsForCombobox"
-							placeholder="Select album..."
-							@selected="doAddFileToAlbum"
-						></Combobox>
-
-						<div>
-							<Badge
-								v-for="album in fileAlbums"
-								:key="album.uuid"
-								variant="default"
-								class="text-sm mr-2 mt-2 bg-dark-100"
-							>
-								{{ album.name }}
-								<span class="ml-2 cursor-pointer" @click="doRemoveFileFromAlbum(album.uuid)">
-									<svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-white">
-										<path d="M4 4l6 6m0-6l-6 6" />
-									</svg>
-								</span>
-							</Badge>
+							<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
+							<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
+							<InputWithOverlappingLabel
+								:value="file.original"
+								class="mt-4"
+								label="Original Name"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
+								:value="file.ip"
+								class="mt-4"
+								label="IP"
+								type="link"
+								:href="`/dashboard/admin/ip/${file.ip}`"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
+								:value="file.url"
+								class="mt-4"
+								label="Link"
+								type="link"
+								:href="file.url"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
+								:value="String(formatBytes(file.size))"
+								class="mt-4"
+								label="Size"
+								readOnly
+							/>
+							<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
+							<InputWithOverlappingLabel
+								:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
+								class="mt-4"
+								label="Uploaded"
+								readOnly
+							/>
 						</div>
-					</div>
 
-					<!-- User information section -->
-					<div v-else>
-						<h2 class="text-light-100">User info</h2>
-						<InputWithOverlappingLabel
-							:value="file.user?.username"
-							class="mt-4"
-							label="Username"
-							readOnly
-							type="link"
-							:href="`/dashboard/admin/user/${file.user?.uuid}`"
-						/>
-						<InputWithOverlappingLabel :value="file.user?.uuid" class="mt-4" label="UUID" readOnly />
-						<InputWithOverlappingLabel
-							:value="String(file.user?.enabled)"
-							class="mt-4"
-							label="Enabled"
-							readOnly
-						/>
-						<InputWithOverlappingLabel
-							:value="String(file.user?.roles.map((role: any) => role.name).join(', '))"
-							class="mt-4"
-							label="Roles"
-							readOnly
-						/>
-						<InputWithOverlappingLabel
-							:value="dayjs(file.user?.createdAt).format('MMMM D, YYYY h:mm A')"
-							class="mt-4"
-							label="Created at"
-							readOnly
-						/>
-					</div>
-					<!-- User information section -->
+						<!-- Albums and Tags information section -->
+						<div v-if="type === 'album' || type === 'uploads'" class="mb-8">
+							<h2 class="text-light-100">Albums</h2>
+							<Combobox
+								:data="albumsForCombobox"
+								placeholder="Select album..."
+								@selected="doAddFileToAlbum"
+							></Combobox>
+
+							<div>
+								<Badge
+									v-for="album in fileAlbums"
+									:key="album.uuid"
+									variant="default"
+									class="text-sm mr-2 mt-2 bg-dark-100"
+								>
+									{{ album.name }}
+									<span class="ml-2 cursor-pointer" @click="doRemoveFileFromAlbum(album.uuid)">
+										<svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-white">
+											<path d="M4 4l6 6m0-6l-6 6" />
+										</svg>
+									</span>
+								</Badge>
+							</div>
+						</div>
+
+						<!-- User information section -->
+						<div v-else class="mb-8">
+							<h2 class="text-light-100">User info</h2>
+							<InputWithOverlappingLabel
+								:value="file.user?.username"
+								class="mt-4"
+								label="Username"
+								readOnly
+								type="link"
+								:href="`/dashboard/admin/user/${file.user?.uuid}`"
+							/>
+							<InputWithOverlappingLabel :value="file.user?.uuid" class="mt-4" label="UUID" readOnly />
+							<InputWithOverlappingLabel
+								:value="String(file.user?.enabled)"
+								class="mt-4"
+								label="Enabled"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
+								:value="String(file.user?.roles.map((role: any) => role.name).join(', '))"
+								class="mt-4"
+								label="Roles"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
+								:value="dayjs(file.user?.createdAt).format('MMMM D, YYYY h:mm A')"
+								class="mt-4"
+								label="Created at"
+								readOnly
+							/>
+						</div>
+						<!-- User information section -->
+					</ScrollArea>
 				</div>
 				<!-- File information panel -->
 			</div>
@@ -218,6 +233,7 @@ import Combobox from '@/components/combobox/Combobox.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAlbumsStore } from '@/store';
 import { Album, FileWithAdditionalData } from '@/types';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
