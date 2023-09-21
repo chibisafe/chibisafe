@@ -8,12 +8,12 @@ import jetpack from 'fs-jetpack';
 import moment from 'moment';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
+import { getFileThumbnail, removeThumbs } from './Thumbnails.js';
+import { getHost } from './Util.js';
 import prisma from '@/structures/database.js';
 import type { FileInProgress, RequestUser, User } from '@/structures/interfaces.js';
 import { SETTINGS } from '@/structures/settings.js';
 import { log } from '@/utils/Logger.js';
-import { getFileThumbnail, removeThumbs } from './Thumbnails.js';
-import { getHost } from './Util.js';
 
 const fileIdentifierMaxTries = 5;
 

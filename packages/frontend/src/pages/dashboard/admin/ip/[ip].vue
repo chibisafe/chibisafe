@@ -58,7 +58,6 @@
 <script setup lang="ts">
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
-import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
@@ -96,7 +95,6 @@ const doPurgeFiles = async () => {
 	mutatePurgeFiles(props.ip, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
-			toast.success('Purged files from this IP');
 		}
 	});
 };
@@ -105,7 +103,6 @@ const doBanIP = async () => {
 	mutateBanIp(props.ip, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
-			toast.success('Banned this IP');
 		}
 	});
 };
@@ -114,7 +111,6 @@ const doUnbanIP = async () => {
 	mutateUnbanIp(props.ip, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
-			toast.success('Unbanned this IP');
 		}
 	});
 };

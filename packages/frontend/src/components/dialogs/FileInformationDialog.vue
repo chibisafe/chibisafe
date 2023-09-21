@@ -64,11 +64,28 @@
 				<div class="max-w-[400px] flex flex-col gap-8">
 					<div>
 						<h2 class="text-light-100 mb-2">Actions</h2>
-						<div class="flex justify-between gap-2">
+						<div class="flex justify-between gap-2 flex-wrap">
 							<Button class="flex-1" @click="copyLink">{{ isCopying ? 'Copied!' : 'Copy link' }}</Button>
 							<Button as="a" :href="file.url" target="_blank" rel="noopener noreferrer" class="flex-1">
 								Open
 							</Button>
+							<ConfirmationDialog
+								title="Delete file"
+								message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
+								proceedText="Delete"
+								:callback="doDeleteFile"
+								><Button variant="destructive">Delete</Button></ConfirmationDialog
+							>
+							<div class="basis-full h-0"></div>
+							<ConfirmationDialog
+								v-if="isFileImage(file) || isFileVideo(file)"
+								title="Regenerate thumbnail"
+								message="If the file has a broken thumbnail this will try to fix that. Are you sure?"
+								proceedText="Continue"
+								:callback="doRegenerateThumbnail"
+							>
+								<Button>Regenerate thumbnail</Button></ConfirmationDialog
+							>
 							<ConfirmationDialog
 								v-if="isAdmin && !file.quarantine"
 								title="Quarantine file"
@@ -85,13 +102,6 @@
 								proceedText="Allow"
 								:callback="doAllowFile"
 								><Button variant="destructive">Allow</Button></ConfirmationDialog
-							>
-							<ConfirmationDialog
-								title="Delete file"
-								message="The file will be deleted and gone forever with no way to recover it. It will also remove it from any albums that you added it to. Are you sure?"
-								proceedText="Delete"
-								:callback="doDeleteFile"
-								><Button variant="destructive">Delete</Button></ConfirmationDialog
 							>
 						</div>
 					</div>
@@ -219,7 +229,8 @@ import {
 	quarantineFileAsAdmin,
 	addFileToAlbum,
 	removeFileFromAlbum,
-	getFile
+	getFile,
+	regenerateThumbnail
 } from '~/use/api';
 import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
@@ -259,6 +270,10 @@ const { mutate: mutateQuarantineFile } = useMutation({
 
 const { mutate: mutateAllowFile } = useMutation({
 	mutationFn: (uuid: string) => allowFileAsAdmin(uuid)
+});
+
+const { mutate: mutateRegenerateThumbnail } = useMutation({
+	mutationFn: (uuid: string) => regenerateThumbnail(uuid)
 });
 
 const onOpen = async (isOpen: boolean) => {
@@ -326,6 +341,15 @@ const doDeleteFile = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
 			toast.success('File deleted');
+		}
+	});
+};
+
+const doRegenerateThumbnail = () => {
+	mutateRegenerateThumbnail(props.file.uuid, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			toast.success('Thumbnail regenerated');
 		}
 	});
 };
