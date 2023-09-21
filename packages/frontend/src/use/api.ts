@@ -206,6 +206,15 @@ export const deleteFile = async (uuid: string) => {
 	}
 };
 
+export const regenerateThumbnail = async (uuid: string) => {
+	try {
+		const data = await request.post(`file/${uuid}/thumbnail/regenerate`);
+		debug('regenerateThumbnail', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const data = await request.delete(`admin/file/${uuid}`);
