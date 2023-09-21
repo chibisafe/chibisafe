@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
 
-const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp'];
+const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'];
 const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
