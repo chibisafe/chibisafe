@@ -36,7 +36,7 @@
 						v-if="!invite.used"
 						title="Revoke link"
 						message="This action will revoke the link preventing anyone from using it to create an account."
-						:callback="() => cancelInvite(invite.code)"
+						:callback="() => doCancelInvite(invite.code)"
 						><Button variant="destructive">Revoke</Button></ConfirmationDialog
 					>
 				</TableCell>
@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { useQueryClient, useMutation } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
 import { Button } from '@/components/ui/button';
@@ -56,4 +57,18 @@ import { cancelInvite } from '~/use/api';
 defineProps<{
 	invites: Invite[];
 }>();
+
+const queryClient = useQueryClient();
+
+const { mutate: mutateCancelInvite } = useMutation({
+	mutationFn: (code: string) => cancelInvite(code)
+});
+
+const doCancelInvite = async (code: string) => {
+	mutateCancelInvite(code, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['invites']);
+		}
+	});
+};
 </script>
