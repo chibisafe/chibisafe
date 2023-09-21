@@ -109,7 +109,7 @@ const fetchKey = computed(() => {
 		key.push('files');
 	}
 
-	key.push(page.value, limit.value, anon.value);
+	key.push({ page: page.value, limit: limit.value, anon: anon.value });
 	return key;
 });
 
