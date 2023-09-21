@@ -25,7 +25,7 @@ const props = defineProps<{
 const id = computed(() => props.identifier);
 
 const { data } = useQuery({
-	queryKey: ['publicAlbum', id, 'files'],
+	queryKey: ['publicAlbum', id],
 	queryFn: () => getFilesFromPublicAlbum(id.value, 1, 1),
 	keepPreviousData: true
 });
