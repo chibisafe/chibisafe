@@ -13,15 +13,26 @@
 		<TableBody>
 			<TableRow v-for="file in files" :key="file.uuid">
 				<TableCell>
-					<FileInformationDialog v-if="type !== 'publicAlbum' && !file.quarantine" :file="file" :type="type">
-						<template v-if="isFileImage(file) || isFileVideo(file)">
+					<FileInformationDialog
+						v-if="
+							(type !== 'publicAlbum' && !file.quarantine) ||
+							((type === 'admin' || type === 'quarantine') && file.quarantine)
+						"
+						:file="file"
+						:type="type"
+					>
+						<template v-if="(isFileImage(file) || isFileVideo(file)) && !file.quarantine">
 							<img :src="file.thumb" class="h-16" />
 						</template>
+						<FileWarningIcon v-else-if="file.quarantine" class="text-red-500 w-16 h-16" />
 						<FileAudioIcon v-else-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
 						<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
 						<FileIcon v-else class="text-light-100 w-16 h-16" />
 					</FileInformationDialog>
-					<FileWarningIcon v-if="file.quarantine" class="text-red-500 w-16 h-16" />
+					<FileWarningIcon
+						v-if="file.quarantine && type !== 'admin' && type !== 'quarantine'"
+						class="text-red-500 w-16 h-16"
+					/>
 				</TableCell>
 				<TableCell>
 					<a :href="file.url" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400">{{
@@ -31,7 +42,7 @@
 				<TableCell>
 					{{ formatBytes(Number(file.size)) }}
 				</TableCell>
-				<TableCell v-if="type === 'admin' || type === 'quarantine'"> Uploader name </TableCell>
+				<TableCell v-if="type === 'admin' || type === 'quarantine'">{{ file.user?.username }}</TableCell>
 				<TableCell>
 					{{ dayjs(file.createdAt).format('MMMM D, YYYY h:mm A') }}
 				</TableCell>

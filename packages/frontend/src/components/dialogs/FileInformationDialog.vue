@@ -70,7 +70,7 @@
 								Open
 							</Button>
 							<ConfirmationDialog
-								v-if="type === 'admin' && !file.quarantine"
+								v-if="isAdmin && !file.quarantine"
 								title="Quarantine file"
 								message="The file will be quarantined and gone temporarily. Are you sure?"
 								proceedText="Quarantine"
@@ -79,7 +79,7 @@
 								<Button variant="destructive">Quarantine</Button></ConfirmationDialog
 							>
 							<ConfirmationDialog
-								v-if="type === 'admin' && file.quarantine"
+								v-if="isAdmin && file.quarantine"
 								title="Allow file"
 								message="The file will be un-quarantined and be available again. Are you sure?"
 								proceedText="Allow"

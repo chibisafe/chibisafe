@@ -79,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+import { useQueryClient } from '@tanstack/vue-query';
 import { whenever } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
@@ -100,6 +101,7 @@ const textarea = ref<HTMLTextAreaElement>();
 const showPostCreate = ref(false);
 const createdSnippet = ref({ uuid: '', raw: '', link: '' });
 const timer = ref<any>();
+const queryClient = useQueryClient();
 
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
@@ -155,5 +157,6 @@ const doCreateSnippet = async () => {
 	);
 	showPostCreate.value = true;
 	createdSnippet.value = snippet?.snippet;
+	queryClient.invalidateQueries(['snippets']);
 };
 </script>

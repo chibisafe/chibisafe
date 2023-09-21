@@ -61,11 +61,11 @@ import { chibiUploader } from '@chibisafe/uploader-client';
 import { useWindowSize } from '@vueuse/core';
 import { UploadCloudIcon } from 'lucide-vue-next';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
 import { getFileExtension, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
-import TextEditorDialog from '../dialogs/TextEditorDialog.vue';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();

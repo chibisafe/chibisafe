@@ -9,8 +9,14 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 font-semibold text-light-100">Snippets</h1>
-			<div class="my-4 h-automobile:py-2 flex mobile:flex-wrap flex-col">
+			<div class="mt-8 font-semibold text-light-100 flex items-center justify-between">
+				<h1 class="text-2xl desktop:whitespace-nowrap">Snippets</h1>
+				<TextEditorDialog content="">
+					<Button class="shrink-0">Create new snippet</Button>
+				</TextEditorDialog>
+			</div>
+
+			<div class="mt-12 mb-4 h-automobile:py-2 flex mobile:flex-wrap flex-col">
 				<div v-for="snippet in snippets" :key="snippet.uuid" class="w-full flex-1 mb-4">
 					<div class="flex items-center">
 						<div class="mb-2">
@@ -55,9 +61,12 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { onMounted, ref } from 'vue';
+import { computed } from 'vue';
+import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import Highlight from '~/components/highlight/Highlight.vue';
@@ -65,14 +74,18 @@ import type { Snippet } from '~/types';
 import { getSnippets } from '~/use/api';
 dayjs.extend(relativeTime);
 
-const snippets = ref<Snippet[]>([]);
+const snippets = computed(() => data.value);
 
-onMounted(async () => {
-	const response = await getSnippets();
-	snippets.value = response.map((snippet: Snippet) => ({
-		...snippet,
-		// Grab only the first 10 lines of the snippet
-		content: snippet.content.split('\n').slice(0, 10).join('\n')
-	}));
+const { data } = useQuery({
+	queryKey: ['snippets'],
+	queryFn: async () => {
+		const response = await getSnippets();
+		return response.map((snippet: Snippet) => ({
+			...snippet,
+			// Grab only the first 10 lines of the snippet
+			content: snippet.content.split('\n').slice(0, 10).join('\n')
+		}));
+	},
+	keepPreviousData: true
 });
 </script>

@@ -19,36 +19,38 @@
 					<Button @click="doCreateInvite">Create invite</Button>
 				</div>
 			</div>
-			<Table :invites="invites" class="mt-12 bg-dark-110" />
+			<InvitesTable :invites="invites" class="mt-12 bg-dark-110" />
 		</div>
 	</ScrollArea>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/vue-query';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import Table from '~/components/table/InvitesTable.vue';
+import InvitesTable from '~/components/table/InvitesTable.vue';
 import { getInvites, createInvite } from '~/use/api';
-import { debug } from '~/use/log';
 
-const invites = ref([]);
-onMounted(async () => {
-	void loadInvites();
+const queryClient = useQueryClient();
+const { mutate: mutateCreateFile } = useMutation({
+	mutationFn: () => createInvite()
 });
 
-const loadInvites = async () => {
-	const response = await getInvites();
-	if (!response) return;
-	invites.value = response.invites;
-};
+const invites = computed(() => data.value?.invites ?? []);
+
+const { data } = useQuery({
+	queryKey: ['invites'],
+	queryFn: () => getInvites(),
+	keepPreviousData: true
+});
 
 const doCreateInvite = async () => {
-	const response = await createInvite();
-	if (!response) return;
-	debug(response);
-	void loadInvites();
-	// invites.value = response.users;
+	mutateCreateFile(undefined, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(['invites']);
+		}
+	});
 };
 </script>
