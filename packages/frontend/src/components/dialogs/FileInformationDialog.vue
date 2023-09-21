@@ -236,7 +236,7 @@ const slots = useSlots();
 const hasDefaultSlot = computed(() => Boolean(slots.default));
 
 const albumsStore = useAlbumsStore();
-const isAdmin = props.type === 'admin';
+const isAdmin = props.type === 'admin' || props.type === 'quarantine';
 const fileAlbums = ref<Album[]>([]);
 const fileElement = ref<HTMLElement | null>(null);
 const isVerticalImage = ref(false);
@@ -306,7 +306,7 @@ const copyLink = () => {
 const doQuarantineFile = () => {
 	mutateQuarantineFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['', 'files']);
+			queryClient.invalidateQueries(['admin', 'files']);
 			toast.success('File quarantined');
 		}
 	});
@@ -315,7 +315,7 @@ const doQuarantineFile = () => {
 const doAllowFile = () => {
 	mutateAllowFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['', 'files']);
+			queryClient.invalidateQueries(['admin', 'files']);
 			toast.success('File allowed');
 		}
 	});
@@ -324,7 +324,7 @@ const doAllowFile = () => {
 const doDeleteFile = () => {
 	mutateDeleteFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['', 'files']);
+			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
 			toast.success('File deleted');
 		}
 	});

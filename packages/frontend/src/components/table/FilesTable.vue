@@ -78,7 +78,7 @@ const props = defineProps<{
 	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
 }>();
 
-const isAdmin = props.type === 'admin';
+const isAdmin = props.type === 'admin' || props.type === 'quarantine';
 const queryClient = useQueryClient();
 
 const { mutate: mutateDeleteFile } = useMutation({
@@ -90,7 +90,7 @@ const doDeleteFile = (file: FileWithAdditionalData) => {
 
 	mutateDeleteFile(file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['', 'files']);
+			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
 			toast.success('File deleted');
 		}
 	});
