@@ -1,0 +1,30 @@
+{
+	"extends": ["../../.eslintrc.json", "neon/vue", "neon/vue-typescript", "neon/prettier"],
+	"parserOptions": {
+		"parser": "@typescript-eslint/parser"
+	},
+	"rules": {
+		"import/no-extraneous-dependencies": "off",
+		"n/prefer-global/process": "off",
+		"vue/multi-word-component-names": "off",
+		"vue/v-on-event-hyphenation": "off",
+		"vue/no-multiple-template-root": "off",
+		"vue/first-attribute-linebreak": "off",
+		"vue/require-emit-validator": "off",
+		"vue/attribute-hyphenation": "off",
+		"vue/html-self-closing": "off",
+		"vue/comma-dangle": "off",
+		"vue/operator-linebreak": "off",
+		"vue/max-attributes-per-line": "off",
+		"vue/multiline-html-element-content-newline": "off",
+		"vue/html-indent": "off",
+		"vue/html-closing-bracket-newline": "off",
+		"vue/sort-keys": "off"
+	},
+	"globals": {
+		"useI18n": true,
+		"vue": true,
+		"useHead": true,
+		"useColorMode": true
+	}
+}
