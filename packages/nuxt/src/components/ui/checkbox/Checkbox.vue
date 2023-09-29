@@ -7,7 +7,7 @@
 	>
 		<CheckboxLabel><slot /></CheckboxLabel>
 		<CheckboxControl
-			class="h-6 w-6 flex justify-center items-center border-[2px] rounded cursor-pointer"
+			class="h-6 w-6 flex justify-center items-center border-[2px] rounded cursor-pointer text-theme-100"
 			:class="[inverted ? 'mr-2' : 'ml-2', checked ? 'bg-blue-500 border-blue-500' : 'bg-none border-gray-600']"
 		>
 			<CheckIcon v-if="checked" class="h-4 w-4" />
