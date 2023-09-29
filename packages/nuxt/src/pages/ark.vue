@@ -20,10 +20,16 @@
 		<Button class="mt-8" disabled>This is a disabled button</Button>
 		<Button class="mt-2" disabled variant="success">This is a disabled success button</Button>
 		<Button class="mt-2" disabled variant="destructive">This is a disabled destructive button</Button>
+
+		<Button class="mt-8"><HomeIcon /></Button>
+		<Button class="mt-2" variant="destructive"><Trash2Icon /></Button>
+		<Button class="mt-2"><HomeIcon class="mr-2" />with text</Button>
+		<Button class="mt-2" variant="success" disabled><CheckIcon /></Button>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { HomeIcon, Trash2Icon, CheckIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import Accordion from '@/components/ui/accordion/Accordion.vue';
 import Button from '@/components/ui/button/Button.vue';

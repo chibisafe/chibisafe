@@ -3,7 +3,7 @@
 		<template v-if="loading">
 			<Loader2Icon class="animate-spin mr-2 absolute" />
 		</template>
-		<span :class="[loading ? 'opacity-0' : 'opacity-100']">
+		<span class="flex text-inherit" :class="[loading ? 'opacity-0' : 'opacity-100']">
 			<slot />
 		</span>
 	</button>
