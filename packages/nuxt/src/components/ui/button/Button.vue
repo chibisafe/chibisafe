@@ -1,9 +1,11 @@
 <template>
 	<button type="button" :class="button({ color: variant, disabled: disabled || loading })" @click="$emit('click')">
 		<template v-if="loading">
-			<Loader2Icon class="animate-spin mr-2" />
+			<Loader2Icon class="animate-spin mr-2 absolute" />
 		</template>
-		<slot />
+		<span :class="[loading ? 'opacity-0' : 'opacity-100']">
+			<slot />
+		</span>
 	</button>
 </template>
 
@@ -24,7 +26,7 @@ withDefaults(defineProps<Props>(), {
 defineEmits(['click']);
 
 const button = tv({
-	base: 'text-theme-1000 dark:text-theme-100 border font-medium inline-flex justify-center items-center leading-6 px-4 py-2 rounded-md shadow-sm focus:shadow-none text-base w-fit whitespace-no-wrap focus:outline-none',
+	base: 'text-theme-1000 dark:text-theme-100 border font-medium inline-flex justify-center items-center leading-6 px-4 py-2 rounded-md shadow-sm focus:shadow-none text-base w-fit whitespace-no-wrap focus:outline-none relative',
 	variants: {
 		color: {
 			primary:
