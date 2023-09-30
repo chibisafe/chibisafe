@@ -14,7 +14,7 @@ import { Loader2Icon } from 'lucide-vue-next';
 import { tv } from 'tailwind-variants';
 
 interface Props {
-	variant?: 'primary' | 'success' | 'destructive';
+	variant?: 'primary' | 'success' | 'destructive' | 'none';
 	loading?: boolean;
 	disabled?: boolean;
 }
@@ -33,7 +33,8 @@ const button = tv({
 				'bg-white dark:bg-theme-500 hover:bg-gray-50 hover:dark:bg-theme-600 dark:border-theme-400 border-gray-200',
 			success:
 				'bg-green-600 hover:bg-green-700 text-theme-100 dark:bg-green-700 dark:hover:bg-green-800 dark:border-green-700',
-			destructive: 'bg-red-500 hover:bg-red-600 text-theme-100 border-red-700 dark:border-red-500'
+			destructive: 'bg-red-500 hover:bg-red-600 text-theme-100 border-red-700 dark:border-red-500',
+			none: 'bg-transparent border-transparent p-0'
 		},
 		disabled: {
 			true: 'opacity-70 pointer-events-none'
