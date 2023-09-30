@@ -3,11 +3,15 @@
 
 	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300">
 		<Checkbox v-model="checkbox1">This is a checkbox</Checkbox>
-		<Checkbox v-model="checkbox2" inverted>This is an inverted checkbox</Checkbox>
+		<Checkbox v-model="checkbox2" inverted class="mt-4">This is an inverted checkbox</Checkbox>
 	</div>
 
 	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300">
 		<Input v-model="inputText" label="This is a label" placeholder="This is a placeholder" />
+	</div>
+
+	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300 max-w-md">
+		<Combobox />
 	</div>
 
 	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300 flex flex-col">
@@ -34,6 +38,7 @@ import { ref } from 'vue';
 import Accordion from '@/components/ui/accordion/Accordion.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Checkbox from '@/components/ui/checkbox/Checkbox.vue';
+import Combobox from '@/components/ui/combobox/Combobox.vue';
 import Input from '@/components/ui/input/Input.vue';
 
 const accordionData = ref([
