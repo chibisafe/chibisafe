@@ -25,6 +25,7 @@
 		"useI18n": true,
 		"vue": true,
 		"useHead": true,
-		"useColorMode": true
+		"useColorMode": true,
+		"debug": true
 	}
 }

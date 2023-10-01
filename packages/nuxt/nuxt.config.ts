@@ -38,5 +38,17 @@ export default defineNuxtConfig({
 	},
 	build: {
 		transpile: ['vue-sonnar']
+	},
+	vite: {
+		esbuild: {
+			drop: process.env.NODE_ENV === 'production' ? ['console'] : []
+		}
+	},
+	nitro: {
+		esbuild: {
+			options: {
+				drop: process.env.NODE_ENV === 'production' ? ['console'] : []
+			}
+		}
 	}
 });
