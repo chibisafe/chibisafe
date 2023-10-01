@@ -12560,6 +12560,7 @@ __metadata:
     nuxt: ^3.7.3
     pinia: ^2.1.6
     postcss-custom-properties: ^13.3.2
+    radix-vue: ^0.4.1
     tailwind-variants: ^0.1.14
     tailwindcss-animate: ^1.0.7
     vue-sonner: ^0.4.4
@@ -14177,6 +14178,16 @@ __metadata:
     "@floating-ui/dom": ^1.4.2
     "@floating-ui/vue": ^1.0.1
   checksum: ecfbc47bcc005a7ddb42e5b9bfca5fa5832fc11b7888880235871068d8a87be9f28e5fcb1333d177fc3b6519c3e7954638bc9d24fc9d2f2ff03e4add3ad2b72e
+  languageName: node
+  linkType: hard
+
+"radix-vue@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "radix-vue@npm:0.4.1"
+  dependencies:
+    "@floating-ui/dom": ^1.4.2
+    "@floating-ui/vue": ^1.0.1
+  checksum: 947f762e549101d8e3996b927116d6545596b744269d9a9c89b2d48d473eaf7cc07062d998199d70d7a58be3d3e0538b7d50b97324a0878ba9f79165d32ebb56
   languageName: node
   linkType: hard
 

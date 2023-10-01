@@ -28,6 +28,7 @@
 		"@vueuse/core": "^10.4.1",
 		"lucide-vue-next": "^0.279.0",
 		"pinia": "^2.1.6",
+		"radix-vue": "^0.4.1",
 		"vue-sonner": "^0.4.4"
 	}
 }

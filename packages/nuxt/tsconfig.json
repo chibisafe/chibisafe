@@ -1,4 +1,7 @@
 {
 	// https://nuxt.com/docs/guide/concepts/typescript
-	"extends": ["../../tsconfig.json", "./.nuxt/tsconfig.json"]
+	"extends": ["../../tsconfig.json", "./.nuxt/tsconfig.json"],
+	"compilerOptions": {
+		"exactOptionalPropertyTypes": false
+	}
 }

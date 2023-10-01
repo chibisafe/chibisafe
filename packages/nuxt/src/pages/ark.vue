@@ -7,11 +7,17 @@
 	</div>
 
 	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300">
+		<Switch v-model="switch1">This is a switch</Switch>
+		<Switch v-model="switch2" inverted class="mt-4">This is an inverted switch</Switch>
+		<Switch v-model="switch3" inverted class="mt-4"></Switch>
+	</div>
+
+	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300">
 		<Input v-model="inputText" label="This is a label" placeholder="This is a placeholder" />
 	</div>
 
-	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300 max-w-md">
-		<Combobox />
+	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300">
+		<Combobox :data="comboboxData" @change="$toast?.success" />
 	</div>
 
 	<div class="mt-6 pt-6 border-t-[1px] border-theme-600 dark:border-theme-300 flex flex-col">
@@ -34,14 +40,15 @@
 
 <script setup lang="ts">
 import { HomeIcon, Trash2Icon, CheckIcon } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Accordion from '@/components/ui/accordion/Accordion.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Checkbox from '@/components/ui/checkbox/Checkbox.vue';
-import Combobox from '@/components/ui/combobox/Combobox.vue';
 import Input from '@/components/ui/input/Input.vue';
+import Switch from '@/components/ui/switch/Switch.vue';
+import Combobox from '~/components/ui/combobox/Combobox.vue';
 
-const accordionData = ref([
+const accordionData = [
 	{
 		title: 'React',
 		content: 'React content'
@@ -54,12 +61,18 @@ const accordionData = ref([
 		title: 'Vue',
 		content: 'Vue content'
 	}
-]);
+];
 
 const checkbox1 = ref(false);
 const checkbox2 = ref(false);
+const switch1 = ref(false);
+const switch2 = ref(false);
+const switch3 = ref(false);
+
 const inputText = ref('');
 const isButtonLoading = ref(false);
+
+const comboboxData = ['React', 'Solid', 'Vue'];
 
 const setButtonLoading = () => {
 	isButtonLoading.value = true;
@@ -68,4 +81,8 @@ const setButtonLoading = () => {
 		isButtonLoading.value = false;
 	}, 2000);
 };
+
+onMounted(() => {
+	debug('mounted');
+});
 </script>

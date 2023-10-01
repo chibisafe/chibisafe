@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 @layer base {
-	html, body {
-		@apply h-screen w-screen;
-		@apply bg-theme-100 dark:bg-theme-900;
+	html {
+		height: -webkit-fill-available;
+		@apply bg-theme-100;
+	}
+
+	html.dark {
+		@apply bg-theme-1000;
+	}
+
+	body, #__nuxt {
+		@apply bg-theme-100 dark:bg-theme-1000;
 	}
 
 	h1, h2, h3, h4, h5, h6, p, span, a, li, label, input, textarea, button {
