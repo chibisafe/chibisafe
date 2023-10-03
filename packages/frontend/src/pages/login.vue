@@ -31,9 +31,7 @@
 			<div class="relative z-20 mt-auto">
 				<blockquote class="space-y-2">
 					<p class="text-lg">
-						<strong>chibisafe</strong> is a modern and self-hosted take on file uploading services that can
-						handle anything you throw at it thanks to it's robust and fast API, chunked uploads support and
-						more.
+						If you have a login then enter it here, if not you can go somewhere else. I aint your mom.
 					</p>
 				</blockquote>
 			</div>

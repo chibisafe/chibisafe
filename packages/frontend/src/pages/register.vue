@@ -30,11 +30,7 @@
 			</div>
 			<div class="relative z-20 mt-auto">
 				<blockquote class="space-y-2">
-					<p class="text-lg">
-						<strong>chibisafe</strong> simplifies file management with features like upload tracking, album
-						creation, and easy downloads. You can tag and preview files, customize access with unique links,
-						and much more.
-					</p>
+					<p class="text-lg">Not every bit of text on this website is funny. This is one of those bits.</p>
 				</blockquote>
 			</div>
 		</div>
@@ -43,8 +39,7 @@
 				v-if="!settingsStore.userAccounts"
 				class="p-4 text-center mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md self-center"
 			>
-				This instance is currently running in invite-only mode, therefore you can't register an account at this
-				time.
+				This aint a public service, go away.
 			</div>
 			<div v-else class="mx-auto flex mobile:w-full flex-col justify-center space-y-6 w-[350px]">
 				<div class="flex flex-col space-y-2 text-center">

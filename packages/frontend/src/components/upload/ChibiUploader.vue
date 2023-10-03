@@ -46,7 +46,7 @@
 				<h3
 					class="text-center mt-4 mobile:mt-0 mobile:w-full mobile:h-full mobile:flex mobile:justify-center mobile:items-center w-3/4 pointer-events-none"
 				>
-					Upload is disabled without an account
+					Not only do you not have cookies, you also can't upload files.
 				</h3>
 			</template>
 		</div>
@@ -60,11 +60,11 @@
 import { chibiUploader } from '@chibisafe/uploader-client';
 import { useWindowSize } from '@vueuse/core';
 import { UploadCloudIcon } from 'lucide-vue-next';
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
-import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
-import { getFileExtension, formatBytes } from '~/use/file';
+import { useAlbumsStore, useSettingsStore, useUploadsStore, useUserStore } from '~/store';
+import { formatBytes, getFileExtension } from '~/use/file';
 import { debug } from '~/use/log';
 
 const userStore = useUserStore();

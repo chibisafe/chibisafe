@@ -179,10 +179,7 @@ const navigation = {
 };
 
 const links = [
-	{ name: 'GitHub', href: 'https://github.com/chibisafe/chibisafe' },
-	{ name: 'Discord', href: 'https://discord.gg/5g6vgwn' },
-	{ name: 'Patreon', href: 'https://www.patreon.com/pitu' },
-	{ name: 'Browser extension', href: 'https://github.com/chibisafe/chibisafe-extension' },
+	{ name: 'GitHub', href: 'https://github.com/LostAndDead/chibisafe' },
 	{ name: 'Documentation', href: '/docs' },
 	{ name: 'Get ShareX config', href: '#', onClick: (event: MouseEvent) => void getShareXConfig(event) },
 	{ name: 'Log out', href: '#', onClick: (event: MouseEvent) => void logout(event) }

@@ -30,11 +30,7 @@
 			</div>
 			<div class="relative z-20 mt-auto">
 				<blockquote class="space-y-2">
-					<p class="text-lg">
-						<strong>chibisafe</strong> simplifies file management with features like upload tracking, album
-						creation, and easy downloads. You can tag and preview files, customize access with unique links,
-						and much more.
-					</p>
+					<p class="text-lg">Just because you have an account doesnt mean im going to share my cookies.</p>
 				</blockquote>
 			</div>
 		</div>
@@ -43,8 +39,8 @@
 				<div class="flex flex-col space-y-2 text-center">
 					<h1 class="text-2xl font-semibold tracking-tight">You've received an invite</h1>
 					<p class="text-sm text-muted-foreground">
-						You got an invite to create an account on this chibisafe instance. In order to continue please
-						create a username and password below.
+						You got an invite to create an account on my instance. In order to continue please create a
+						username and password below.
 					</p>
 				</div>
 				<div class="grid gap-2">
