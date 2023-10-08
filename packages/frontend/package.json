@@ -62,7 +62,7 @@
 		"cpy-cli": "^4.2.0",
 		"eslint": "^8.48.0",
 		"eslint-config-neon": "^0.1.56",
-		"postcss": "^8.4.29",
+		"postcss": "^8.4.31",
 		"postcss-focus-visible": "^6.0.4",
 		"prettier": "^3.0.3",
 		"radix-vue": "^0.2.2",
