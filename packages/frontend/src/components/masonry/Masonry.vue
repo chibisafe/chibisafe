@@ -1,7 +1,12 @@
 <template>
 	<div ref="MasonryContainer" class="mt-8 flex justify-center">
 		<div v-for="(column, i) in fileColumns" :key="i">
-			<div v-for="file in column" :key="file.uuid" class="mb-4 m-2 relative">
+			<div
+				v-for="file in column"
+				:key="file.uuid"
+				v-element-hover="(value: boolean) => onHover(value, file.uuid)"
+				class="mb-4 m-2 relative"
+			>
 				<FileInformationDialog
 					v-if="
 						(type !== 'publicAlbum' && !file.quarantine) ||
@@ -18,7 +23,6 @@
 				</div>
 				<template v-else-if="isFileImage(file) || isFileVideo(file)">
 					<img
-						v-element-hover="(value: boolean) => onHover(value, file.uuid)"
 						:src="file.thumb"
 						class="cursor-pointer w-full min-w-[160px]"
 						onerror="this.classList.add('min-h-[160px]');"
@@ -34,7 +38,10 @@
 						<source :src="file.preview" type="video/mp4" />
 					</video>
 
-					<VideoIcon v-if="isFileVideo(file)" class="absolute bottom-1 right-1 w-6 h-6 text-light-100" />
+					<VideoIcon
+						v-if="isFileVideo(file)"
+						class="absolute bottom-1 right-1 w-6 h-6 text-light-100 pointer-events-none"
+					/>
 				</template>
 
 				<div v-else class="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">

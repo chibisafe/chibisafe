@@ -11,7 +11,7 @@ const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
 const squareThumbPath = fileURLToPath(new URL('../../../../uploads/thumbs/square', import.meta.url));
-const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/preview', import.meta.url));
+const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/thumbs/preview', import.meta.url));
 
 const generateThumbnailForImage = async (filename: string, output: string) => {
 	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
