@@ -25,8 +25,8 @@
 			/>
 		</div>
 		<div v-if="suggestions?.length">
-			<ScrollArea class="h-52">
-				<div class="mt-2 bg-dark-85 w-full flex flex-wrap gap-2 p-2 rounded-md border">
+			<ScrollArea>
+				<div class="mt-2 bg-dark-85 w-full flex flex-wrap gap-2 p-2 rounded-md border h-52">
 					<Button
 						v-for="tag in suggestions"
 						:key="tag.uuid"
