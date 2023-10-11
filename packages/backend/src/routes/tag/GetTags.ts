@@ -12,6 +12,10 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const tags = await prisma.tags.findMany({
 		where: {
 			userId: req.user.id
+		},
+		select: {
+			uuid: true,
+			name: true
 		}
 	});
 
