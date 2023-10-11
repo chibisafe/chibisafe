@@ -13,42 +13,25 @@ export default {
 					items: {
 						type: 'object',
 						properties: {
-							id: {
-								type: 'number',
-								description: 'The ID of the tag.',
-								example: 1
-							},
 							uuid: {
 								type: 'string',
 								description: 'The UUID of the tag.',
 								example: '1453821d-aaf9-435c-8a51-e3f16f7d2ee5'
-							},
-							userId: {
-								type: 'number',
-								description: 'The ID of the user that owns the tag.',
-								example: 1
 							},
 							name: {
 								type: 'string',
 								description: 'The name of the tag.',
 								example: 'Good Stuff'
 							},
-							createdAt: {
-								type: 'string',
-								description: 'The date the tag was created.',
-								example: '2021-01-01T00:00:00.000Z'
-							},
-							editedAt: {
-								type: 'string',
-								description: 'The date the tag was last edited.',
-								example: '2021-01-01T00:00:00.000Z'
-							},
-							files: {
-								type: 'array',
-								description: 'An array of files belonging to the tag.',
-								items: {
-									// TODO: Add file schema
-									type: 'object'
+							_count: {
+								type: 'object',
+								description: 'The number of files belonging to the tag.',
+								properties: {
+									files: {
+										type: 'number',
+										description: 'The number of files belonging to the tag.',
+										example: 3
+									}
 								}
 							}
 						}

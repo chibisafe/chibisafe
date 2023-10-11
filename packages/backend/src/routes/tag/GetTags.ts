@@ -15,7 +15,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		},
 		select: {
 			uuid: true,
-			name: true
+			name: true,
+			_count: {
+				select: {
+					files: true
+				}
+			}
 		}
 	});
 
