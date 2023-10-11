@@ -12,11 +12,11 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-light-100">{{ data?.count }} files</span>
+		<span class="text-light-100">{{ filesCount }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="page"
-			:count="data?.count ?? 0"
+			:count="filesCount ?? 0"
 			:limit="limit"
 			:previousPageFn="prevPage"
 			:nextPageFn="nextPage"
@@ -41,7 +41,7 @@
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
-		<span class="text-light-100">{{ data?.count }} files</span>
+		<span class="text-light-100">{{ filesCount }} files</span>
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="page"
@@ -119,6 +119,14 @@ const files = computed(() => {
 	}
 
 	return data.value?.files ?? [];
+});
+
+const filesCount = computed(() => {
+	if (props.type === 'album') {
+		return data.value?.album?.filesCount ?? 0;
+	}
+
+	return data.value?.count ?? 0;
 });
 
 // @ts-ignore
