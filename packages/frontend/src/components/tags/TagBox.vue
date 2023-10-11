@@ -24,9 +24,9 @@
 				@click="showAllTags"
 			/>
 		</div>
-		<div v-if="suggestions?.length">
+		<div v-if="suggestions?.length" class="mt-2 bg-dark-85 pb-2">
 			<ScrollArea>
-				<div class="mt-2 bg-dark-85 w-full flex flex-wrap gap-2 p-2 rounded-md border h-52">
+				<div class="w-full flex flex-wrap gap-2 p-2 rounded-md border h-52">
 					<Button
 						v-for="tag in suggestions"
 						:key="tag.uuid"
@@ -75,7 +75,8 @@ onClickOutside(inputElement, () => {
 });
 
 const showAllTags = () => {
-	suggestions.value = props.tags;
+	// Show all tags that are not already added to the file
+	suggestions.value = props.tags.filter(tag => !props.fileTags.some(t => t.name === tag.name));
 };
 
 const suggestTags = (event: Event) => {

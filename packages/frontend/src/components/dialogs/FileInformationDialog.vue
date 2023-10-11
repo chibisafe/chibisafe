@@ -401,7 +401,10 @@ const doRegenerateThumbnail = () => {
 const { data: tags } = useQuery({
 	queryKey: ['tags'],
 	queryFn: async () => {
-		return getTags();
+		const data = await getTags();
+		return data.sort((a: any, b: any) => {
+			return b._count.files - a._count.files;
+		});
 	},
 	keepPreviousData: true
 });
