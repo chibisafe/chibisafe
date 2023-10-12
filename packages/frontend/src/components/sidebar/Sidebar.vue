@@ -79,7 +79,7 @@
 								v-if="isAdmin && updateCheck?.updateAvailable"
 								class="mt-1 space-y-1 p-2 flex flex-col justify-center items-center text-light-100 bg-dark-85 text-xs"
 							>
-								<div>
+								<div class="text-center">
 									New version available
 									<a
 										:href="updateCheck.latestVersionUrl"
@@ -95,6 +95,9 @@
 									</span>
 								</ReleaseNotesDialog>
 							</div>
+							<span class="text-light-100 justify-center flex !mt-4 text-sm pointer-events-none"
+								>chibisafe v{{ VERSION }}</span
+							>
 						</div>
 					</div>
 				</div>
@@ -135,6 +138,9 @@ const settingsStore = useSettingsStore();
 const updateStore = useUpdateStore();
 
 const isOpen = ref(false);
+// @ts-ignore
+// eslint-disable-next-line no-undef
+const VERSION = PACKAGE_VERSION;
 
 const isAdmin = computed(() => userStore.user.roles?.find(role => role.name === 'admin'));
 const apiKey = computed(() => userStore.user.apiKey);
@@ -191,7 +197,6 @@ const links = [
 ];
 
 const logout = async (event: MouseEvent) => {
-	console.log('adasd');
 	event.preventDefault();
 	await router.push('/');
 	userStore.logout();
