@@ -3,8 +3,8 @@
 		<div v-for="(column, i) in fileColumns" :key="i">
 			<div
 				v-for="file in column"
-				:key="file.uuid"
-				v-element-hover="(value: boolean) => onHover(value, file.uuid)"
+				:key="file.uuid ?? file.name"
+				v-element-hover="(value: boolean) => onHover(value, file.uuid ?? file.name)"
 				class="mb-4 m-2 relative"
 			>
 				<FileInformationDialog
@@ -22,6 +22,14 @@
 					<FileWarningIcon class="text-red-500 w-16 h-16" />
 				</div>
 				<template v-else-if="isFileImage(file) || isFileVideo(file)">
+					<a
+						v-if="type === 'publicAlbum'"
+						class="w-full h-full absolute"
+						:href="file?.url"
+						target="_blank"
+						rel="noopener noreferrer"
+						variant="none"
+					/>
 					<img
 						:src="file.thumb"
 						class="cursor-pointer w-full min-w-[160px]"
@@ -29,7 +37,7 @@
 					/>
 
 					<video
-						v-if="isFileVideo(file) && isHovered[file.uuid]"
+						v-if="isFileVideo(file) && isHovered[file.uuid ?? file.name]"
 						class="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
 						autoplay
 						loop
@@ -48,8 +56,11 @@
 					<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
 					<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
 					<FileIcon v-else class="text-light-100 w-16 h-16" />
-					<span class="text-light-100 mt-4 text-lg text-center break-all w-[160px]">{{
+					<span v-if="file.original" class="text-light-100 mt-4 text-lg text-center break-all w-[160px]">{{
 						file.original.length > 60 ? `${file.original.substring(0, 40)}...` : file.original
+					}}</span>
+					<span v-else class="text-light-100 mt-4 text-lg text-center break-all w-[160px]">{{
+						file.name.length > 60 ? `${file.name.substring(0, 40)}...` : file.name
 					}}</span>
 				</div>
 			</div>
