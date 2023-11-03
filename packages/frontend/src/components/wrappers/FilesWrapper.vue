@@ -71,8 +71,8 @@ import {
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
+import { useUserStore, useAlbumsStore } from '~/store';
 import { publicOnly } from '~/store/files';
-import { useUserStore } from '~/store/user';
 
 const props = defineProps<{
 	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
@@ -82,6 +82,7 @@ const props = defineProps<{
 	ip?: string;
 }>();
 
+const albumStore = useAlbumsStore();
 const userStore = useUserStore();
 const route = useRoute();
 
@@ -158,7 +159,14 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 
 const { data } = useQuery({
 	queryKey: fetchKey,
-	queryFn: () => typeToFetch(page, limit, anon),
+	queryFn: async () => {
+		const response = await typeToFetch(page, limit, anon);
+		if (props.type === 'publicAlbum') {
+			albumStore.publicAlbumInfo = response;
+		}
+
+		return response;
+	},
 	keepPreviousData: true
 });
 
