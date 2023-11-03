@@ -45,7 +45,7 @@
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="page"
-			:count="data?.count ?? 0"
+			:count="filesCount ?? 0"
 			:limit="limit"
 			:previousPageFn="prevPage"
 			:nextPageFn="nextPage"
