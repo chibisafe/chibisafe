@@ -175,7 +175,7 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(page.value + 1, data.value.count);
+	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
 };
 
 const goToPage = (goTo: number) => {
