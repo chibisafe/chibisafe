@@ -78,7 +78,7 @@ const props = defineProps<{
 	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
 	uuid?: string;
 	identifier?: string;
-	userId?: string;
+	userUuid?: string;
 	ip?: string;
 }>();
 
@@ -95,8 +95,8 @@ const fetchKey = computed(() => {
 	if (props.type === 'admin') {
 		key.push('admin');
 
-		if (props.userId) {
-			key.push('user', props.userId);
+		if (props.userUuid) {
+			key.push('user', props.userUuid);
 		} else if (props.ip) {
 			key.push('ip', props.ip);
 		}
@@ -135,8 +135,8 @@ const filesCount = computed(() => {
 const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonymous: Ref<boolean>) => {
 	switch (props.type) {
 		case 'admin': {
-			if (props.userId) {
-				return getFilesFromUser(props.userId, currentPage.value, currentLimit.value);
+			if (props.userUuid) {
+				return getFilesFromUser(props.userUuid, currentPage.value, currentLimit.value);
 			} else if (props.ip) {
 				return getFilesFromIP(props.ip, currentPage.value, currentLimit.value);
 			} else {
