@@ -76,7 +76,7 @@ import { publicOnly } from '~/store/files';
 
 const props = defineProps<{
 	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
-	uuid?: string;
+	albumUuid?: string;
 	identifier?: string;
 	userUuid?: string;
 	ip?: string;
@@ -103,7 +103,7 @@ const fetchKey = computed(() => {
 	}
 
 	if (props.type === 'album') {
-		key.push('album');
+		key.push('album', props.albumUuid);
 	} else if (props.type === 'publicAlbum') {
 		key.push('publicAlbum', props.identifier);
 	} else {
@@ -147,7 +147,7 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 		case 'quarantine':
 			return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 		case 'album':
-			return getAlbum(props.uuid!, currentPage.value);
+			return getAlbum(props.albumUuid!, currentPage.value);
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage.value, currentLimit.value);
 		case 'uploads':
