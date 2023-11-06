@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { getAlbums, getAlbum, getAlbumLinks } from '~/use/api';
 import type { Album, AlbumForMasonry, AlbumLink } from '../types';
+import { getAlbums, getAlbum, getAlbumLinks } from '~/use/api';
 
 export const useAlbumsStore = defineStore('albums', {
 	state: () => ({
@@ -10,7 +10,8 @@ export const useAlbumsStore = defineStore('albums', {
 		currentPage: 1,
 		// Total amount of files for pagination
 		count: 0,
-		selectedAlbumForUpload: null as string | null
+		selectedAlbumForUpload: null as string | null,
+		publicAlbumInfo: null as AlbumForMasonry | null
 	}),
 	actions: {
 		async getPreviousPage() {

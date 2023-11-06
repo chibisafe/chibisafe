@@ -10,6 +10,9 @@ packages/frontend/dist/
 # Env files
 packages/backend/.env
 
+# Ignore nuxt rewrite for now
+packages/nuxt
+
 # Database
 database.sqlite
 database.sqlite-journal
