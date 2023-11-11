@@ -52,7 +52,7 @@
 						>
 							{{ snippet.language }}
 						</span>
-						<Highlight :language="snippet.language" :code="snippet.content" />
+						<Highlight :language="snippet.language" :code="snippet.content" isPreview />
 					</router-link>
 				</div>
 			</div>
