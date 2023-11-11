@@ -1,5 +1,5 @@
 <template>
-	<div class="flex">
+	<div class="flex" :class="[isPreview ? 'overflow-hidden' : 'overflow-auto']">
 		<pre
 			class="select-none"
 		><code class="hljs text-right !pr-0"><div v-for="line in lines" :key="line">{{ line }}</div></code></pre>
@@ -16,6 +16,7 @@ import 'highlight.js/styles/github-dark.css';
 const props = defineProps<{
 	language: string;
 	code: string;
+	isPreview?: boolean;
 }>();
 
 const className = computed(() => `hljs ${props.language}`);
