@@ -20,7 +20,7 @@
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">
 				{{ data?.files?.[0]?.user.username }} uploads ({{ data?.count }} files)
 			</h1>
-			<FilesWrapper type="admin" />
+			<FilesWrapper type="admin" :userUuid="userUuid" />
 		</div>
 	</ScrollArea>
 </template>
@@ -37,10 +37,10 @@ const props = defineProps<{
 	uuid: string;
 }>();
 
-const userId = computed(() => props.uuid);
+const userUuid = computed(() => props.uuid);
 
 const { data } = useQuery({
-	queryKey: ['admin', 'user', userId, 'files'],
+	queryKey: ['admin', 'user', userUuid, 'files'],
 	queryFn: () => getFilesFromUser(props.uuid, 1, 1),
 	keepPreviousData: true
 });

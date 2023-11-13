@@ -14,7 +14,7 @@
 			@click.left.stop="event => event.preventDefault()"
 		/>
 		<DialogContent
-			class="max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)]"
+			class="max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)]"
 			:class="[isVerticalImage ? '!w-fit' : '!w-max']"
 		>
 			<div class="grid grid-cols-[1fr,400px] gap-4">
@@ -29,9 +29,9 @@
 						class="h-full object-contain"
 						@load="onImageLoad"
 					/>
-					<media-controller v-else-if="isFileVideo(file)">
+					<media-controller v-else-if="isFileVideo(file)" class="h-full">
 						<!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
-						<video slot="media" :src="file.url" crossorigin=""></video>
+						<video slot="media" :src="file.url" crossorigin="" class="h-full"></video>
 						<media-control-bar>
 							<media-play-button></media-play-button>
 							<media-mute-button></media-mute-button>
@@ -56,7 +56,7 @@
 					</media-controller>
 
 					<span v-else class="text-light-100 flex h-full items-center"
-						>Sorry but this file can't be previewd at this time.</span
+						>Sorry but this file can't be previewed at this time.</span
 					>
 				</div>
 

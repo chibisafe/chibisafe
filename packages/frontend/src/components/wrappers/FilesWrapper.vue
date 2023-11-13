@@ -45,7 +45,7 @@
 		<div class="desktop:flex-grow mobile:basis-full mobile:h-2" />
 		<Pagination
 			:currentPage="page"
-			:count="data?.count ?? 0"
+			:count="filesCount ?? 0"
 			:limit="limit"
 			:previousPageFn="prevPage"
 			:nextPageFn="nextPage"
@@ -71,17 +71,18 @@ import {
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
+import { useUserStore, useAlbumsStore } from '~/store';
 import { publicOnly } from '~/store/files';
-import { useUserStore } from '~/store/user';
 
 const props = defineProps<{
 	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
-	uuid?: string;
+	albumUuid?: string;
 	identifier?: string;
-	userId?: string;
+	userUuid?: string;
 	ip?: string;
 }>();
 
+const albumStore = useAlbumsStore();
 const userStore = useUserStore();
 const route = useRoute();
 
@@ -94,15 +95,15 @@ const fetchKey = computed(() => {
 	if (props.type === 'admin') {
 		key.push('admin');
 
-		if (props.userId) {
-			key.push('user', props.userId);
+		if (props.userUuid) {
+			key.push('user', props.userUuid);
 		} else if (props.ip) {
 			key.push('ip', props.ip);
 		}
 	}
 
 	if (props.type === 'album') {
-		key.push('album');
+		key.push('album', props.albumUuid);
 	} else if (props.type === 'publicAlbum') {
 		key.push('publicAlbum', props.identifier);
 	} else {
@@ -134,8 +135,8 @@ const filesCount = computed(() => {
 const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonymous: Ref<boolean>) => {
 	switch (props.type) {
 		case 'admin': {
-			if (props.userId) {
-				return getFilesFromUser(props.userId, currentPage.value, currentLimit.value);
+			if (props.userUuid) {
+				return getFilesFromUser(props.userUuid, currentPage.value, currentLimit.value);
 			} else if (props.ip) {
 				return getFilesFromIP(props.ip, currentPage.value, currentLimit.value);
 			} else {
@@ -146,7 +147,7 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 		case 'quarantine':
 			return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 		case 'album':
-			return getAlbum(props.uuid!, currentPage.value);
+			return getAlbum(props.albumUuid!, currentPage.value);
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage.value, currentLimit.value);
 		case 'uploads':
@@ -158,7 +159,14 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 
 const { data } = useQuery({
 	queryKey: fetchKey,
-	queryFn: () => typeToFetch(page, limit, anon),
+	queryFn: async () => {
+		const response = await typeToFetch(page, limit, anon);
+		if (props.type === 'publicAlbum') {
+			albumStore.publicAlbumInfo = response;
+		}
+
+		return response;
+	},
 	keepPreviousData: true
 });
 
@@ -167,7 +175,7 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(page.value + 1, data.value.count);
+	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
 };
 
 const goToPage = (goTo: number) => {
