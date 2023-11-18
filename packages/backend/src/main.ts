@@ -253,7 +253,8 @@ export const getHtmlBuffer = async () => {
 		maxSize: SETTINGS.maxSize,
 		serviceName: SETTINGS.serviceName,
 		publicMode: SETTINGS.publicMode,
-		userAccounts: SETTINGS.userAccounts
+		userAccounts: SETTINGS.userAccounts,
+		blockedExtensions: SETTINGS.blockedExtensions
 	};
 
 	indexHTML = indexHTML.replaceAll(
