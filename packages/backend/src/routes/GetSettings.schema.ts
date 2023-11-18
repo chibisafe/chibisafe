@@ -40,6 +40,14 @@ export default {
 					type: 'boolean',
 					description: 'Whether or not user accounts are enabled.',
 					example: false
+				},
+				blockedExtensions: {
+					type: 'array',
+					description: 'The list of blocked extensions.',
+					items: {
+						type: 'string',
+						example: 'exe'
+					}
 				}
 			}
 		}

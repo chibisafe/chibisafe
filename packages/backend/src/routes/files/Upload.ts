@@ -50,16 +50,33 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			return;
 		}
 
+		// @ts-expect-error we have an issue with typings here
+		const blockedExtensions = SETTINGS.blockedExtensions.split(',').map((ext: string) => ext.trim());
+
 		const upload = await processFile(req.raw, {
 			destination: tmpDir,
 			maxFileSize,
 			maxChunkSize,
-			blockedExtensions: SETTINGS.blockedExtensions,
 			debug: process.env.NODE_ENV !== 'production'
 		});
 
 		if (upload.isChunkedUpload && !upload.ready) {
 			return await res.code(204).send();
+		}
+
+		if (!upload.metadata.name) {
+			await deleteTmpFile(upload.path as string);
+			res.badRequest('Missing file name.');
+			return;
+		}
+
+		const fileExtension = `.${upload.metadata.name.split('.').pop()!}`.toLowerCase();
+		req.log.info('fileExtension', fileExtension);
+
+		if (blockedExtensions.includes(fileExtension)) {
+			await deleteTmpFile(upload.path as string);
+			res.badRequest('File type is not allowed.');
+			return;
 		}
 
 		// Check if the new uploaded file sends the user over the quota
