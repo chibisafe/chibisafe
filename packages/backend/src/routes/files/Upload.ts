@@ -71,8 +71,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 
 		const fileExtension = `.${upload.metadata.name.split('.').pop()!}`.toLowerCase();
-		req.log.info('fileExtension', fileExtension);
-
 		if (blockedExtensions.includes(fileExtension)) {
 			await deleteTmpFile(upload.path as string);
 			res.badRequest('File type is not allowed.');
