@@ -75,7 +75,7 @@ import { useUserStore, useAlbumsStore } from '~/store';
 import { publicOnly } from '~/store/files';
 
 const props = defineProps<{
-	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
+	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads' | 'tag';
 	albumUuid?: string;
 	identifier?: string;
 	userUuid?: string;
