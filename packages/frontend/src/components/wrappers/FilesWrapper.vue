@@ -73,9 +73,10 @@ import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
 import { useUserStore, useAlbumsStore } from '~/store';
 import { publicOnly } from '~/store/files';
+import type { FilePropsType } from '~/types';
 
 const props = defineProps<{
-	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads' | 'tag';
+	type: FilePropsType;
 	albumUuid?: string;
 	identifier?: string;
 	userUuid?: string;

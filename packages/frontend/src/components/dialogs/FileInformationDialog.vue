@@ -247,7 +247,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAlbumsStore } from '@/store';
-import { Album, FileWithAdditionalData, Tag } from '@/types';
+import { Album, FileWithAdditionalData, Tag, FilePropsType } from '@/types';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import {
@@ -267,7 +267,7 @@ import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
 interface Props {
 	file: FileWithAdditionalData;
-	type?: 'admin' | 'album' | 'uploads' | 'quarantine';
+	type?: FilePropsType;
 }
 
 const props = withDefaults(defineProps<Props>(), {
