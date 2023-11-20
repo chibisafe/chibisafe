@@ -225,6 +225,10 @@ const start = async () => {
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
 
+	// Uncomment this to generate a swagger.yml file with the OpenAPI documentation
+	// const yaml = server.swagger({ yaml: true });
+	// await jetpack.writeAsync('./swagger.yml', yaml);
+
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 
