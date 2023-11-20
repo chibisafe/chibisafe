@@ -143,3 +143,5 @@ export interface Snippet {
 	raw: string;
 	uuid: string;
 }
+
+export type FilePropsType = 'admin' | 'album' | 'publicAlbum' | 'quarantine' | 'tag' | 'uploads';

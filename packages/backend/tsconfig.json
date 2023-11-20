@@ -9,7 +9,8 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"~/*": ["./src/*"]
 		}
 	},
 	"include": ["src/**/*.ts"],

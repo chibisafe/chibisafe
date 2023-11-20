@@ -40,7 +40,7 @@
 		</div>
 		<div class="p-8 relative">
 			<div
-				v-if="settingsStore.userAccounts"
+				v-if="!settingsStore.userAccounts"
 				class="p-4 text-center mt-8 desktop:mx-auto desktop:w-full desktop:max-w-md self-center"
 			>
 				This instance is currently running in invite-only mode, therefore you can't register an account at this

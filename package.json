@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "5.2.4",
+	"version": "5.3.8",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"private": true,
 	"scripts": {

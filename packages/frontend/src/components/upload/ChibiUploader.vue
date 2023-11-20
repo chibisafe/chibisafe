@@ -61,6 +61,7 @@ import { chibiUploader } from '@chibisafe/uploader-client';
 import { useWindowSize } from '@vueuse/core';
 import { UploadCloudIcon } from 'lucide-vue-next';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { toast } from 'vue-sonner';
 import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
@@ -139,6 +140,17 @@ const pasteHandler = (event: ClipboardEvent) => {
 
 const processFile = async (file: File) => {
 	files.value?.push(file);
+
+	const blockedExtensions = settingsStore.blockedExtensions;
+	if (blockedExtensions.length) {
+		const extension = getFileExtension(file);
+		if (!extension) return;
+		if (blockedExtensions.includes(`.${extension}`)) {
+			toast.error(`File extension .${extension} is blocked`);
+			return;
+		}
+	}
+
 	await chibiUploader({
 		// @ts-ignore
 		debug: !import.meta.env.PROD,

@@ -4,26 +4,26 @@
 			<Breadcrumbs
 				:pages="[
 					{
-						name: 'Albums',
-						href: '/dashboard/albums'
+						name: 'Tags',
+						href: '/dashboard/tags'
 					},
 					{
 						name,
-						href: '/dashboard/albums/' + props.uuid
+						href: '/dashboard/tags/' + props.uuid
 					}
 				]"
 			/>
 			<h1 class="text-2xl mt-8 font-semibold text-light-100">`{{ name }}` uploads</h1>
-			<FilesWrapper type="album" :albumUuid="uuid" :callback="onLoaded" />
+			<FilesWrapper type="tag" :tagUuid="uuid" :callback="onLoaded" />
 		</div>
 	</ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import Breadcrumbs from '@/components/breadcrumbs/Breadcrumbs.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
-import FilesWrapper from '~/components/wrappers/FilesWrapper.vue';
+import FilesWrapper from '@/components/wrappers/FilesWrapper.vue';
 
 const props = defineProps<{
 	uuid: string;

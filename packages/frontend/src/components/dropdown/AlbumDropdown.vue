@@ -4,17 +4,20 @@
 			<SelectValue placeholder="Select an album" />
 		</SelectTrigger>
 		<SelectContent>
-			<SelectGroup>
-				<SelectItem v-for="album in albums" :key="album.name" :value="album.name">
-					{{ album.name }}
-				</SelectItem>
-			</SelectGroup>
+			<ScrollArea>
+				<SelectGroup class="max-h-[480px]">
+					<SelectItem v-for="album in albums" :key="album.name" :value="album.name">
+						{{ album.name }}
+					</SelectItem>
+				</SelectGroup>
+			</ScrollArea>
 		</SelectContent>
 	</Select>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAlbumsStore } from '~/store';
 

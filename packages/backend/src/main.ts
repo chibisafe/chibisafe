@@ -224,8 +224,11 @@ const start = async () => {
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
-	if (process.env.NODE_ENV === 'production')
-		console.log(`Chibisafe is listening on ${SETTINGS.host}:${SETTINGS.port}`);
+
+	// Uncomment this to generate a swagger.yml file with the OpenAPI documentation
+	// const yaml = server.swagger({ yaml: true });
+	// await jetpack.writeAsync('./swagger.yml', yaml);
+
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 
@@ -254,7 +257,8 @@ export const getHtmlBuffer = async () => {
 		maxSize: SETTINGS.maxSize,
 		serviceName: SETTINGS.serviceName,
 		publicMode: SETTINGS.publicMode,
-		userAccounts: SETTINGS.userAccounts
+		userAccounts: SETTINGS.userAccounts,
+		blockedExtensions: SETTINGS.blockedExtensions
 	};
 
 	indexHTML = indexHTML.replaceAll(

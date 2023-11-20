@@ -1,6 +1,6 @@
 <template>
-	<div class="bg-[#0d1117] w-full h-full relative">
-		<div class="absolute top-2 right-2">
+	<div class="bg-[#0d1117] w-full h-full relative overflow-auto">
+		<div class="absolute top-2 right-2 overflow-auto">
 			<button
 				type="button"
 				class="inline-flex justify-center rounded-md bg-dark-90 px-4 py-2 font-medium text-white shadow-sm hover:bg-green-800 focus:outline-none focus:ring-0 focus:ring-red-500 focus:ring-offset-2 ml-2 w-auto text-sm"

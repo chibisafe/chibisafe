@@ -2,8 +2,8 @@
 
 import process from 'node:process';
 import randomstring from 'randomstring';
-import type { Settings } from '@/structures/interfaces.js';
-import { log } from '@/utils/Logger.js';
+import type { Settings } from '~/structures/interfaces.js';
+import { log } from '~/utils/Logger.js';
 import prisma from './database.js';
 
 export const SETTINGS = {} as Settings;
@@ -49,7 +49,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.enableMixedCaseFilenames = settingsTable.enableMixedCaseFilenames;
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
-		SETTINGS.blockedExtensions = JSON.parse(settingsTable.blockedExtensions);
+		SETTINGS.blockedExtensions = settingsTable.blockedExtensions.split(',');
 		SETTINGS.blockNoExtension = settingsTable.blockNoExtension;
 		SETTINGS.publicMode = settingsTable.publicMode;
 		SETTINGS.userAccounts = settingsTable.userAccounts;
@@ -80,7 +80,7 @@ export const loadSettings = async (force = false) => {
 		enableMixedCaseFilenames: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
-		blockedExtensions: JSON.stringify(['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh']),
+		blockedExtensions: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'].join(','),
 		blockNoExtension: true,
 		publicMode: false,
 		userAccounts: false,

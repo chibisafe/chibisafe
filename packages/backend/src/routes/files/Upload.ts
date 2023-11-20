@@ -54,12 +54,24 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			destination: tmpDir,
 			maxFileSize,
 			maxChunkSize,
-			blockedExtensions: SETTINGS.blockedExtensions,
 			debug: process.env.NODE_ENV !== 'production'
 		});
 
 		if (upload.isChunkedUpload && !upload.ready) {
 			return await res.code(204).send();
+		}
+
+		if (!upload.metadata.name) {
+			await deleteTmpFile(upload.path as string);
+			res.badRequest('Missing file name.');
+			return;
+		}
+
+		const fileExtension = `.${upload.metadata.name.split('.').pop()!}`.toLowerCase();
+		if (SETTINGS.blockedExtensions.includes(fileExtension)) {
+			await deleteTmpFile(upload.path as string);
+			res.badRequest('File type is not allowed.');
+			return;
 		}
 
 		// Check if the new uploaded file sends the user over the quota

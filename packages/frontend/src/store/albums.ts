@@ -10,7 +10,8 @@ export const useAlbumsStore = defineStore('albums', {
 		currentPage: 1,
 		// Total amount of files for pagination
 		count: 0,
-		selectedAlbumForUpload: null as string | null
+		selectedAlbumForUpload: null as string | null,
+		publicAlbumInfo: null as AlbumForMasonry | null
 	}),
 	actions: {
 		async getPreviousPage() {
@@ -39,14 +40,14 @@ export const useAlbumsStore = defineStore('albums', {
 			if (!response) return;
 
 			this.currentPage = page;
-			this.count = response.album.filesCount;
+			this.count = response.count;
 
 			this.album = {
 				uuid,
-				name: response.album.name,
-				files: response.album.files,
-				isNsfw: response.album.isNsfw,
-				count: response.album.filesCount
+				name: response.name,
+				files: response.files,
+				isNsfw: response.isNsfw,
+				count: response.count
 			};
 		},
 		async getAlbumLinks(uuid: string) {

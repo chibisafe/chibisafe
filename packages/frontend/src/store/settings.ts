@@ -9,7 +9,8 @@ export const useSettingsStore = defineStore('settings', {
 		logoURL: '',
 		backgroundImageURL: '',
 		publicMode: false,
-		userAccounts: false
+		userAccounts: false,
+		blockedExtensions: ['']
 	}),
 	actions: {
 		async get() {
@@ -23,6 +24,7 @@ export const useSettingsStore = defineStore('settings', {
 			this.backgroundImageURL = response.backgroundImageURL;
 			this.publicMode = response.publicMode;
 			this.userAccounts = response.userAccounts;
+			this.blockedExtensions = response.blockedExtensions;
 		}
 	}
 });

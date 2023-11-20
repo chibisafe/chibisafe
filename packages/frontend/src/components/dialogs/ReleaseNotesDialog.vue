@@ -15,7 +15,7 @@
 								rel="noopener noreferrer"
 								class="hover:text-blue-500"
 							>
-								v{{ release.version }} - {{ release.name }}
+								{{ release.name }}
 							</a>
 							<span
 								v-if="i === 0 || i === data.length - 1"

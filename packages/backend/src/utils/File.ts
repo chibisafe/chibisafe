@@ -95,11 +95,30 @@ export const purgeUserFiles = async (userId: number) => {
 		const files = await prisma.files.findMany({
 			where: {
 				userId
+			},
+			include: {
+				quarantineFile: true
 			}
 		});
 
 		for (const file of files) {
 			await deleteFile(file.name);
+
+			if (file.quarantine) {
+				await prisma.files.update({
+					where: {
+						uuid: file.uuid
+					},
+					data: {
+						quarantine: false,
+						quarantineFile: {
+							delete: true
+						}
+					}
+				});
+
+				await deleteFile(file.quarantineFile!.name);
+			}
 		}
 
 		await prisma.files.deleteMany({
