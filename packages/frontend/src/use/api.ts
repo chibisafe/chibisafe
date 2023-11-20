@@ -553,6 +553,16 @@ export const deleteTag = async (uuid: string) => {
 	}
 };
 
+export const getTag = async (uuid: string, page: number) => {
+	try {
+		const data = await request.get(`tag/${uuid}?page=${page}`);
+		debug('getTag', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const searchFiles = async (text: string, page: number) => {
 	try {
 		const data = await request.post(`files/search?page=${page}`, { text });

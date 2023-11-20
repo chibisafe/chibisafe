@@ -66,7 +66,8 @@ import {
 	getFilesAdmin,
 	getFilesFromIP,
 	getFilesFromPublicAlbum,
-	getFilesFromUser
+	getFilesFromUser,
+	getTag
 } from '@/use/api';
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
@@ -80,6 +81,7 @@ const props = defineProps<{
 	albumUuid?: string;
 	identifier?: string;
 	userUuid?: string;
+	tagUuid?: string;
 	ip?: string;
 }>();
 
@@ -107,6 +109,8 @@ const fetchKey = computed(() => {
 		key.push('album', props.albumUuid);
 	} else if (props.type === 'publicAlbum') {
 		key.push('publicAlbum', props.identifier);
+	} else if (props.type === 'tag') {
+		key.push('tag', props.tagUuid);
 	} else {
 		key.push('files');
 	}
@@ -149,6 +153,8 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 			return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 		case 'album':
 			return getAlbum(props.albumUuid!, currentPage.value);
+		case 'tag':
+			return getTag(props.tagUuid!, currentPage.value);
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage.value, currentLimit.value);
 		case 'uploads':
@@ -176,7 +182,10 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
+	page.value = Math.min(
+		page.value + 1,
+		props.type === 'album' || props.type === 'tag' ? data.value?.album?.filesCount : data.value.count
+	);
 };
 
 const goToPage = (goTo: number) => {
