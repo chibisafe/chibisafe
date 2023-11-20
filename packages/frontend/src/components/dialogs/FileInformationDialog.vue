@@ -299,6 +299,7 @@ const onOpen = async (isOpen: boolean) => {
 };
 
 const getFileAlbums = async () => {
+	if (props.type === 'admin') return;
 	const file = await getFile(props.file.uuid);
 	fileAlbums.value = file.albums;
 };
