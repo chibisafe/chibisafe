@@ -16,7 +16,6 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		backgroundImageURL: SETTINGS.backgroundImageURL,
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts,
-		// @ts-expect-error we have an issue with typings here
-		blockedExtensions: SETTINGS.blockedExtensions.split(',')
+		blockedExtensions: SETTINGS.blockedExtensions
 	});
 };
