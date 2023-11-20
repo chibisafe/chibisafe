@@ -13,22 +13,10 @@
 			"persistent": true
 		},
 		"lint": {
-			"inputs": [
-				"src/**/*.ts",
-				"**/.eslintrc.json",
-				"**/.prettierignore",
-				"**/.prettierrc.json",
-				"vite.config.ts"
-			]
+			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs", "vite.config.ts"]
 		},
 		"format": {
-			"inputs": [
-				"src/**/*.ts",
-				"**/.eslintrc.json",
-				"**/.prettierignore",
-				"**/.prettierrc.json",
-				"vite.config.ts"
-			]
+			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs", "vite.config.ts"]
 		}
 	}
 }
