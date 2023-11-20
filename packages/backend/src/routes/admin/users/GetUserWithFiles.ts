@@ -54,6 +54,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			size: true,
 			type: true,
 			uuid: true,
+			quarantine: true,
+			quarantineFile: {
+				select: {
+					name: true
+				}
+			},
 			user: {
 				select: {
 					uuid: true,
