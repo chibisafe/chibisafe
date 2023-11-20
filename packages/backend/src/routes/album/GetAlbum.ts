@@ -65,11 +65,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved album',
-		album: {
-			name: album.name,
-			files,
-			isNsfw: album.nsfw,
-			filesCount: album._count.files
-		}
+		name: album.name,
+		files,
+		isNsfw: album.nsfw,
+		count: album._count.files
 	});
 };

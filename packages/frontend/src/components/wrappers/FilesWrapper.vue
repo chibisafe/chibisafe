@@ -122,18 +122,10 @@ const fetchKey = computed(() => {
 });
 
 const files = computed(() => {
-	if (props.type === 'album') {
-		return data.value?.album?.files ?? [];
-	}
-
 	return data.value?.files ?? [];
 });
 
 const filesCount = computed(() => {
-	if (props.type === 'album') {
-		return data.value?.album?.filesCount ?? 0;
-	}
-
 	return data.value?.count ?? 0;
 });
 
@@ -185,7 +177,7 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
+	page.value = Math.min(page.value + 1, data.value.count);
 };
 
 const goToPage = (goTo: number) => {

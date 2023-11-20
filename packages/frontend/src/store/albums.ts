@@ -40,14 +40,14 @@ export const useAlbumsStore = defineStore('albums', {
 			if (!response) return;
 
 			this.currentPage = page;
-			this.count = response.album.filesCount;
+			this.count = response.count;
 
 			this.album = {
 				uuid,
-				name: response.album.name,
-				files: response.album.files,
-				isNsfw: response.album.isNsfw,
-				count: response.album.filesCount
+				name: response.name,
+				files: response.files,
+				isNsfw: response.isNsfw,
+				count: response.count
 			};
 		},
 		async getAlbumLinks(uuid: string) {
