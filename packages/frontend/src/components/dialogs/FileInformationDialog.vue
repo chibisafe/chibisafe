@@ -158,7 +158,7 @@
 						</div>
 
 						<!-- Albums section -->
-						<div v-if="type === 'album' || type === 'uploads'" class="mb-8">
+						<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8">
 							<h2 class="text-light-100">Albums</h2>
 							<Combobox
 								:data="albumsForCombobox"
@@ -184,7 +184,7 @@
 						</div>
 
 						<!-- Tags -->
-						<div v-if="type === 'album' || type === 'uploads'" class="mb-8">
+						<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8">
 							<h2 class="text-light-100">Tags</h2>
 							<TagBox
 								:tags="tags"

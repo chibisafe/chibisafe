@@ -83,6 +83,8 @@ const props = defineProps<{
 	userUuid?: string;
 	tagUuid?: string;
 	ip?: string;
+	// eslint-disable-next-line no-unused-vars
+	callback?: (name: string) => void;
 }>();
 
 const albumStore = useAlbumsStore();
@@ -172,6 +174,7 @@ const { data } = useQuery({
 			albumStore.publicAlbumInfo = response;
 		}
 
+		props.callback?.(response.name);
 		return response;
 	},
 	keepPreviousData: true
@@ -182,10 +185,7 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(
-		page.value + 1,
-		props.type === 'album' || props.type === 'tag' ? data.value?.album?.filesCount : data.value.count
-	);
+	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
 };
 
 const goToPage = (goTo: number) => {
