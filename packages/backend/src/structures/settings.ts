@@ -2,9 +2,9 @@
 
 import process from 'node:process';
 import randomstring from 'randomstring';
+import type { Settings } from '~/structures/interfaces.js';
+import { log } from '~/utils/Logger.js';
 import prisma from './database.js';
-import type { Settings } from '@/structures/interfaces.js';
-import { log } from '@/utils/Logger.js';
 
 export const SETTINGS = {} as Settings;
 export const getSettingsMeta = (key: string) => {

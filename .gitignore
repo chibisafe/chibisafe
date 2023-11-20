@@ -40,3 +40,4 @@ logs/
 
 /docker-compose.yml
 chibisafe.moe.conf
+.idea/

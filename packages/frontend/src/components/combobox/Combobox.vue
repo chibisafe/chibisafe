@@ -17,22 +17,23 @@
 		>
 			<ComboboxViewport class="p-[5px]">
 				<ComboboxEmpty class="text-mauve8 text-sm font-medium text-center py-2" />
-
-				<ComboboxGroup>
-					<ComboboxItem
-						v-for="(option, index) in data"
-						:key="index"
-						class="text-sm leading-none text-grass11 rounded-[3px] flex items-center h-8 pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-dark-80 data-[highlighted]:text-grass1"
-						:value="option.label"
-					>
-						<ComboboxItemIndicator class="absolute left-1 w-4 inline-flex items-center justify-center">
-							<CheckIcon />
-						</ComboboxItemIndicator>
-						<span>
-							{{ option.label }}
-						</span>
-					</ComboboxItem>
-				</ComboboxGroup>
+				<ScrollArea>
+					<ComboboxGroup class="max-h-[300px]">
+						<ComboboxItem
+							v-for="(option, index) in data"
+							:key="index"
+							class="text-sm leading-none text-grass11 rounded-[3px] flex items-center h-8 pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-dark-80 data-[highlighted]:text-grass1"
+							:value="option.label"
+						>
+							<ComboboxItemIndicator class="absolute left-1 w-4 inline-flex items-center justify-center">
+								<CheckIcon />
+							</ComboboxItemIndicator>
+							<span>
+								{{ option.label }}
+							</span>
+						</ComboboxItem>
+					</ComboboxGroup>
+				</ScrollArea>
 			</ComboboxViewport>
 		</ComboboxContent>
 	</ComboboxRoot>
@@ -53,6 +54,7 @@ import {
 	ComboboxViewport
 } from 'radix-vue';
 import { ref, nextTick } from 'vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const props = defineProps<{
 	data: {

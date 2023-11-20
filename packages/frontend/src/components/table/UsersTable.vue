@@ -77,7 +77,7 @@
 					</ConfirmationDialog>
 					<ConfirmationDialog
 						title="Purge user"
-						message="This action will delete ALL files and albums uploaded by the user. This action is not reversible."
+						message="This action will delete ALL files, albums, tags and snippets created by the user. This action is not reversible."
 						:callback="() => purgeUser(user.uuid)"
 					>
 						<Button variant="destructive">Purge</Button>

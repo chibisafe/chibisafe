@@ -69,13 +69,13 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import FileInformationDialog from '~/components/dialogs/FileInformationDialog.vue';
-import type { FileWithAdditionalData } from '~/types';
+import type { FileWithAdditionalData, FilePropsType } from '~/types';
 import { deleteFileAsAdmin, deleteFile } from '~/use/api';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 
 const props = defineProps<{
 	files: FileWithAdditionalData[];
-	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
+	type: FilePropsType;
 }>();
 
 const isAdmin = props.type === 'admin' || props.type === 'quarantine';

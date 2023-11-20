@@ -74,12 +74,12 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { VideoIcon, FileIcon, FileTextIcon, FileAudioIcon, FileWarningIcon } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 import FileInformationDialog from '@/components/dialogs/FileInformationDialog.vue';
-import { FileWithAdditionalData } from '@/types';
+import { FileWithAdditionalData, FilePropsType } from '@/types';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF } from '~/use/file';
 
 const props = defineProps<{
 	// eslint-disable-next-line vue/no-unused-properties
-	type?: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
+	type?: FilePropsType;
 	files: FileWithAdditionalData[];
 }>();
 

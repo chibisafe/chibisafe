@@ -33,12 +33,12 @@ export default {
 				properties: {
 					uuid: {
 						type: 'string',
-						description: 'The uuid of the album.',
+						description: 'The uuid of the tag.',
 						example: '1453821d-aaf9-435c-8a51-e3f16f7d2ee5'
 					},
 					name: {
 						type: 'string',
-						description: 'The name of the album.',
+						description: 'The name of the tag.',
 						example: 'Cats'
 					}
 				}

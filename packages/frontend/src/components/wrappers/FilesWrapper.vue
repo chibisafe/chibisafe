@@ -66,20 +66,25 @@ import {
 	getFilesAdmin,
 	getFilesFromIP,
 	getFilesFromPublicAlbum,
-	getFilesFromUser
+	getFilesFromUser,
+	getTag
 } from '@/use/api';
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
 import { useUserStore, useAlbumsStore } from '~/store';
 import { publicOnly } from '~/store/files';
+import type { FilePropsType } from '~/types';
 
 const props = defineProps<{
-	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
+	type: FilePropsType;
 	albumUuid?: string;
 	identifier?: string;
 	userUuid?: string;
+	tagUuid?: string;
 	ip?: string;
+	// eslint-disable-next-line no-unused-vars
+	callback?: (name: string) => void;
 }>();
 
 const albumStore = useAlbumsStore();
@@ -106,6 +111,8 @@ const fetchKey = computed(() => {
 		key.push('album', props.albumUuid);
 	} else if (props.type === 'publicAlbum') {
 		key.push('publicAlbum', props.identifier);
+	} else if (props.type === 'tag') {
+		key.push('tag', props.tagUuid);
 	} else {
 		key.push('files');
 	}
@@ -115,18 +122,10 @@ const fetchKey = computed(() => {
 });
 
 const files = computed(() => {
-	if (props.type === 'album') {
-		return data.value?.album?.files ?? [];
-	}
-
 	return data.value?.files ?? [];
 });
 
 const filesCount = computed(() => {
-	if (props.type === 'album') {
-		return data.value?.album?.filesCount ?? 0;
-	}
-
 	return data.value?.count ?? 0;
 });
 
@@ -148,6 +147,8 @@ const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonym
 			return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 		case 'album':
 			return getAlbum(props.albumUuid!, currentPage.value);
+		case 'tag':
+			return getTag(props.tagUuid!, currentPage.value);
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage.value, currentLimit.value);
 		case 'uploads':
@@ -165,6 +166,7 @@ const { data } = useQuery({
 			albumStore.publicAlbumInfo = response;
 		}
 
+		props.callback?.(response.name);
 		return response;
 	},
 	keepPreviousData: true
@@ -175,7 +177,7 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
-	page.value = Math.min(page.value + 1, props.type === 'album' ? data.value?.album?.filesCount : data.value.count);
+	page.value = Math.min(page.value + 1, data.value.count);
 };
 
 const goToPage = (goTo: number) => {
