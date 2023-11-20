@@ -50,9 +50,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			return;
 		}
 
-		// @ts-expect-error we have an issue with typings here
-		const blockedExtensions = SETTINGS.blockedExtensions.split(',').map((ext: string) => ext.trim());
-
 		const upload = await processFile(req.raw, {
 			destination: tmpDir,
 			maxFileSize,
@@ -71,7 +68,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 
 		const fileExtension = `.${upload.metadata.name.split('.').pop()!}`.toLowerCase();
-		if (blockedExtensions.includes(fileExtension)) {
+		if (SETTINGS.blockedExtensions.includes(fileExtension)) {
 			await deleteTmpFile(upload.path as string);
 			res.badRequest('File type is not allowed.');
 			return;
