@@ -4,6 +4,7 @@
 			<TableRow>
 				<TableHead>Thumbnail</TableHead>
 				<TableHead>Link</TableHead>
+				<TableHead>Original</TableHead>
 				<TableHead>Size</TableHead>
 				<TableHead v-if="type === 'admin' || type === 'quarantine'">Uploader</TableHead>
 				<TableHead>Created on</TableHead>
@@ -38,6 +39,9 @@
 					<a :href="file.url" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400">{{
 						file.name
 					}}</a>
+				</TableCell>
+				<TableCell>
+					{{ file.original }}
 				</TableCell>
 				<TableCell>
 					{{ formatBytes(Number(file.size)) }}
