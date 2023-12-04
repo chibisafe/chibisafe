@@ -9,6 +9,14 @@
 			<LayoutListIcon v-if="preferMasonry" />
 			<LayoutDashboardIcon v-else />
 		</button>
+		<button
+			type="button"
+			class="bg-dark-80 text-light-100 p-2 h-10 mr-2"
+			title="Search..."
+			@click="modalStore.search.show = true"
+		>
+			<SearchIcon />
+		</button>
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
@@ -38,6 +46,14 @@
 			<LayoutListIcon v-if="preferMasonry" />
 			<LayoutDashboardIcon v-else />
 		</button>
+		<button
+			type="button"
+			class="bg-dark-80 text-light-100 p-2 h-10 mr-2"
+			title="Search..."
+			@click="modalStore.search.show = true"
+		>
+			<SearchIcon />
+		</button>
 		<!-- <button type="button" class="bg-dark-80 text-light-100 p-2 h-10" @click="nothing">Bulk actions</button> -->
 		<!-- Pagination -->
 		<div class="flex-grow" />
@@ -57,8 +73,8 @@
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
-import { LayoutDashboardIcon, LayoutListIcon } from 'lucide-vue-next';
-import { computed, ref, type Ref } from 'vue';
+import { LayoutDashboardIcon, LayoutListIcon, SearchIcon } from 'lucide-vue-next';
+import { computed, ref, type Ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import {
 	getAlbum,
@@ -67,12 +83,13 @@ import {
 	getFilesFromIP,
 	getFilesFromPublicAlbum,
 	getFilesFromUser,
-	getTag
+	getTag,
+	searchFiles
 } from '@/use/api';
 import Masonry from '~/components/masonry/Masonry.vue';
 import Pagination from '~/components/pagination/Pagination.vue';
 import FilesTable from '~/components/table/FilesTable.vue';
-import { useUserStore, useAlbumsStore } from '~/store';
+import { useUserStore, useAlbumsStore, useModalStore } from '~/store';
 import { publicOnly } from '~/store/files';
 import type { FilePropsType } from '~/types';
 
@@ -90,8 +107,10 @@ const props = defineProps<{
 const albumStore = useAlbumsStore();
 const userStore = useUserStore();
 const route = useRoute();
+const modalStore = useModalStore();
 
 const page = ref(route.query.page ? Number(route.query.page ?? 1) : 1);
+const search = computed(() => (route.query.search ? String(route.query.search) : ''));
 const limit = ref(50);
 const anon = computed(() => publicOnly.value);
 
@@ -117,7 +136,7 @@ const fetchKey = computed(() => {
 		key.push('files');
 	}
 
-	key.push({ page: page.value, limit: limit.value, anon: anon.value });
+	key.push({ page: page.value, limit: limit.value, anon: anon.value, search: search.value });
 	return key;
 });
 
@@ -132,6 +151,10 @@ const filesCount = computed(() => {
 // @ts-ignore
 // eslint-disable-next-line consistent-return
 const typeToFetch = (currentPage: Ref<number>, currentLimit: Ref<number>, anonymous: Ref<boolean>) => {
+	if (search.value) {
+		return searchFiles(search.value, currentPage.value, currentLimit.value);
+	}
+
 	switch (props.type) {
 		case 'admin': {
 			if (props.userUuid) {
@@ -189,4 +212,12 @@ const toggleMasonry = () => {
 	userStore.preferences.preferMasonry = !userStore.preferences.preferMasonry;
 	userStore.savePreferences();
 };
+
+watch(
+	search,
+	() => {
+		void typeToFetch(page, limit, anon);
+	},
+	{ immediate: true }
+);
 </script>

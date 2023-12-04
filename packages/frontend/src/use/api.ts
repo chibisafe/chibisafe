@@ -563,9 +563,9 @@ export const getTag = async (uuid: string, page: number) => {
 	}
 };
 
-export const searchFiles = async (text: string, page: number) => {
+export const searchFiles = async (text: string, page: number, limit = 50) => {
 	try {
-		const data = await request.post(`files/search?page=${page}`, { text });
+		const data = await request.post(`files/search?page=${page}&limit=${limit}`, { text });
 		debug('searchFiles', data);
 		return data;
 	} catch (error: any) {
