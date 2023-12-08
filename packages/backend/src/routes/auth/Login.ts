@@ -36,13 +36,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!user) {
-		res.unauthorized("User doesn't exist");
+		res.unauthorized('Wrong Username or Password');
 		return;
 	}
 
 	const comparePassword = await bcrypt.compare(password, user.password);
 	if (!comparePassword) {
-		res.unauthorized('Wrong password');
+		res.unauthorized('Wrong Username or Password');
 		return;
 	}
 

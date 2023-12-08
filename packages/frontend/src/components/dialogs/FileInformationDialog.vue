@@ -95,6 +95,14 @@
 								>
 									<Button>Regenerate thumbnail</Button></ConfirmationDialog
 								>
+								<Button
+									as="a" 
+									:href="file.url" 
+									:download="file.original"
+									class="flex-1"
+								>
+									Download
+								</Button>
 								<ConfirmationDialog
 									v-if="isAdmin && !file.quarantine"
 									title="Quarantine file"
