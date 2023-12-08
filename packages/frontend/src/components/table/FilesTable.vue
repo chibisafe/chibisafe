@@ -41,7 +41,14 @@
 					}}</a>
 				</TableCell>
 				<TableCell>
-					{{ file.original }}
+					<a
+						:href="file.url"
+						:download="file.original"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hover:text-blue-400"
+						>{{ file.original }}</a
+					>
 				</TableCell>
 				<TableCell>
 					{{ formatBytes(Number(file.size)) }}
