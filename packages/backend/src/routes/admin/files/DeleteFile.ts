@@ -8,7 +8,7 @@ import { deleteFile, quarantinePath, uploadPath } from '@/utils/File.js';
 export const options = {
 	url: '/admin/file/:uuid',
 	method: 'delete',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

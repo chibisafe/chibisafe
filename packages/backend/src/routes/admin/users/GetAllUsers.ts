@@ -6,7 +6,7 @@ import { getUsedQuota } from '@/utils/User.js';
 export const options = {
 	url: '/admin/users',
 	method: 'get',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (_: FastifyRequest, res: FastifyReply) => {

@@ -6,7 +6,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 export const options = {
 	url: '/admin/invite/create',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

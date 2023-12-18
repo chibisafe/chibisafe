@@ -5,7 +5,7 @@ import { updateCheck } from '@/utils/UpdateCheck.js';
 export const options = {
 	url: '/admin/service/updateCheck',
 	method: 'get',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (_: RequestWithUser, res: FastifyReply) => {
