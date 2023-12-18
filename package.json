@@ -25,7 +25,8 @@
 	},
 	"license": "MIT",
 	"volta": {
-		"node": "18.9.0"
+		"node": "18.9.0",
+		"yarn": "3.6.0"
 	},
 	"packageManager": "yarn@3.6.0",
 	"workspaces": [
