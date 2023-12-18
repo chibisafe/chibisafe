@@ -10,7 +10,7 @@ import { updateCheck, startUpdateCheckSchedule, stopUpdateCheckSchedule } from '
 export const options = {
 	url: '/admin/service/settings',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 type incomingSettings = {

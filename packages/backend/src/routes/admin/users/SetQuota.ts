@@ -5,7 +5,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 export const options = {
 	url: '/admin/user/:uuid/quota',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
