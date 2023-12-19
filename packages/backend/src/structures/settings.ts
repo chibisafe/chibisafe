@@ -114,12 +114,14 @@ const SETTINGS_META = {
 	port: {
 		type: 'number',
 		description: 'The port the server will listen on.',
-		name: 'Port'
+		name: 'Port',
+		category: 'service'
 	},
 	host: {
 		type: 'string',
 		description: 'The host the server will listen on.',
-		name: 'Host'
+		name: 'Host',
+		category: 'service'
 	},
 	serveUploadsFrom: {
 		type: 'string',
@@ -127,145 +129,170 @@ const SETTINGS_META = {
 			"Enabling this option shifts file hosting control to you. Chibisafe will no longer serve your files, and you'll manage the /uploads folder using nginx/caddy or a similar solution.",
 		name: 'Serve Uploads From',
 		example: 'https://cdn.chibisafe.moe',
-		notice: 'For this setting to take effect, you need to restart the server.'
+		notice: 'For this setting to take effect, you need to restart the server.',
+		category: 'service'
 	},
 	rateLimitWindow: {
 		type: 'number',
 		description: 'The window in milliseconds for rate limiting.',
 		name: 'Rate Limit Window',
 		notice: 'For this setting to take effect, you need to restart the server.',
-		example: '1000'
+		example: '1000',
+		category: 'service'
 	},
 	rateLimitMax: {
 		type: 'number',
 		description: 'The maximum amount of requests per window for rate limiting.',
 		name: 'Rate Limit Max',
 		notice: 'For this setting to take effect, you need to restart the server.',
-		example: '100'
+		example: '100',
+		category: 'service'
 	},
 	secret: {
 		type: 'string',
 		description: 'A secret string used for signing JWT tokens. Keep this secret!',
 		name: 'Secret',
-		notice: 'If you change this setting every user will be asked to log back in. Make sure this setting is random and at least 64 characters long.'
+		notice: 'If you change this setting every user will be asked to log back in. Make sure this setting is random and at least 64 characters long.',
+		category: 'service'
 	},
 	serviceName: {
 		type: 'string',
 		description: 'The name of the service.',
 		name: 'Service Name',
-		example: 'Chibisafe'
+		example: 'Chibisafe',
+		category: 'customization'
 	},
 	chunkSize: {
 		type: 'number',
 		description:
 			'The size of each chunk in bytes. This setting is useful if you want to upload big files, splitting them into smaller chunks.',
 		name: 'Chunk Size',
-		example: '9000000'
+		example: '9000000',
+		category: 'uploads'
 	},
 	chunkedUploadsTimeout: {
 		type: 'number',
 		description: 'The timeout in milliseconds for chunked uploads.',
-		name: 'Chunked Uploads Timeout'
+		name: 'Chunked Uploads Timeout',
+		category: 'uploads'
 	},
 	maxSize: {
 		type: 'number',
 		description: 'The maximum size of an upload in bytes.',
 		name: 'Max Size',
-		example: '1000000000'
+		example: '1000000000',
+		category: 'uploads'
 	},
 	generateZips: {
 		type: 'boolean',
 		description: 'Whether or not to allow users to generate zips from public albums.',
-		name: 'Generate Zips'
+		name: 'Generate Zips',
+		category: 'other'
 	},
 	enableMixedCaseFilenames: {
 		type: 'boolean',
 		description: 'Whether to allow mixed case filenames.',
-		name: 'Enable Mixed Case Filenames'
+		name: 'Enable Mixed Case Filenames',
+		category: 'uploads'
 	},
 	generatedFilenameLength: {
 		type: 'number',
 		description: 'The length of the generated filenames.',
 		name: 'Generated Filename Length',
-		notice: 'This setting should at least be 8 characters long to avoid collisions.'
+		notice: 'This setting should at least be 8 characters long to avoid collisions.',
+		category: 'uploads'
 	},
 	generatedAlbumLength: {
 		type: 'number',
 		description: 'The length of the generated album names.',
 		name: 'Generated Album Length',
-		notice: 'This setting should at least be 4 characters long to avoid collisions.'
+		notice: 'This setting should at least be 4 characters long to avoid collisions.',
+		category: 'other'
 	},
 	blockedExtensions: {
 		type: 'object',
 		description:
 			'The blocked extensions for uploads. When adding a new one, make sure you don\'t include the "." dot.',
-		name: 'Blocked Extensions'
+		name: 'Blocked Extensions',
+		category: 'uploads'
 	},
 	blockNoExtension: {
 		type: 'boolean',
 		description: 'Whether or not to block uploads without an extension.',
-		name: 'Block No Extension'
+		name: 'Block No Extension',
+		category: 'uploads'
 	},
 	publicMode: {
 		type: 'boolean',
 		description:
 			'Whether or not to enable public mode. If enabled, users will be able to upload files without an account.',
-		name: 'Public Mode'
+		name: 'Public Mode',
+		category: 'users'
 	},
 	userAccounts: {
 		type: 'boolean',
 		description:
 			'Whether or not to enable user accounts. If disabled, users will not be able to register new accounts.',
-		name: 'User Accounts'
+		name: 'User Accounts',
+		category: 'users'
 	},
 	disableStatisticsCron: {
 		type: 'boolean',
 		description: 'Whether or not to disable the statistics cron.',
-		name: 'Disable Statistics Cron'
+		name: 'Disable Statistics Cron',
+		category: 'service'
 	},
 	disableUpdateCheck: {
 		type: 'boolean',
 		description: 'Whether or not to disable the update check.',
-		name: 'Disable Update Check'
+		name: 'Disable Update Check',
+		category: 'service'
 	},
 	backgroundImageURL: {
 		type: 'string',
 		description: 'The URL for the background image of the instance.',
-		name: 'Background Image URL'
+		name: 'Background Image URL',
+		category: 'customization'
 	},
 	logoURL: {
 		type: 'string',
 		description: 'The URL for the logo.',
-		name: 'Logo URL'
+		name: 'Logo URL',
+		category: 'customization'
 	},
 	metaDomain: {
 		type: 'string',
 		description: 'The meta domain used for the website SEO.',
 		name: 'Meta Domain',
-		example: 'https://chibisafe.moe'
+		example: 'https://chibisafe.moe',
+		category: 'customization'
 	},
 	metaDescription: {
 		type: 'string',
 		description: 'The meta description for the website SEO.',
 		name: 'Meta Description',
-		example: 'A simple and easy to use file hosting service.'
+		example: 'A simple and easy to use file hosting service.',
+		category: 'customization'
 	},
 	metaKeywords: {
 		type: 'string',
 		description: 'The meta keywords for the website SEO.',
 		name: 'Meta Keywords',
-		example: 'file, hosting, service'
+		example: 'file, hosting, service',
+		category: 'customization'
 	},
 	metaTwitterHandle: {
 		type: 'string',
 		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
-		example: '@chibisafe'
+		example: '@chibisafe',
+		category: 'customization'
 	},
 	usersStorageQuota: {
 		type: 'number',
 		description: 'The storage quota for each user in bytes. 0 for unlimited.',
 		name: 'Users Storage Quota',
-		notice: "You can override this setting by changing it on a user's profile."
+		notice: "You can override this setting by changing it on a user's profile.",
+		category: 'users'
 	}
 };
