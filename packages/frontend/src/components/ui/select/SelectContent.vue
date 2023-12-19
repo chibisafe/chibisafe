@@ -9,12 +9,16 @@ import {
 } from 'radix-vue';
 import { cn } from '@/lib/utils';
 
+// eslint-disable-next-line vue/require-default-prop
 const props = withDefaults(defineProps<SelectContentProps & { class?: string }>(), {
 	position: 'popper',
 	sideOffset: 4
 });
 const emits = defineEmits<SelectContentEmits>();
 
+defineOptions({
+	inheritAttrs: false
+});
 const forwarded = useForwardPropsEmits(props, emits);
 </script>
 
