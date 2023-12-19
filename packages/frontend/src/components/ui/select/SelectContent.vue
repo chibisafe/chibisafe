@@ -4,9 +4,10 @@ import {
 	type SelectContentEmits,
 	type SelectContentProps,
 	SelectPortal,
-	SelectViewport
+	SelectViewport,
+	useForwardPropsEmits
 } from 'radix-vue';
-import { cn, useEmitAsProps } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 // eslint-disable-next-line vue/require-default-prop
 const props = withDefaults(defineProps<SelectContentProps & { class?: string }>(), {
@@ -14,17 +15,20 @@ const props = withDefaults(defineProps<SelectContentProps & { class?: string }>(
 	sideOffset: 4
 });
 const emits = defineEmits<SelectContentEmits>();
-const emitsAsProps = useEmitAsProps(emits);
+
+defineOptions({
+	inheritAttrs: false
+});
+const forwarded = useForwardPropsEmits(props, emits);
 </script>
 
 <template>
 	<SelectPortal>
-		<!-- eslint-disable vue/no-duplicate-attr-inheritance -->
 		<SelectContent
-			v-bind="{ ...props, ...emitsAsProps, ...$attrs }"
+			v-bind="{ ...forwarded, ...$attrs }"
 			:class="
 				cn(
-					'relative z-50 min-w-[10rem] overflow-hidden rounded-md bg-dark-110 border border-border text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+					'relative z-50 min-w-[10rem] overflow-hidden rounded-md bg-background border border-border text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
 					position === 'popper' &&
 						'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
 					props.class

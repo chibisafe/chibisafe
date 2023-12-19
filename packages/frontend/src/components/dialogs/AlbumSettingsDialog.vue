@@ -7,7 +7,7 @@
 			</DialogHeader>
 
 			<div class="flex items-center space-x-2 mt-4">
-				<Switch id="nsfw" :checked="album.nsfw" @click="setNsfw" />
+				<Switch id="nsfw" :checked="isNsfw" @click="setNsfw" />
 				<Label for="nsfw">NSFW album</Label>
 			</div>
 			<div class="flex w-full max-w-sm items-end space-x-2">

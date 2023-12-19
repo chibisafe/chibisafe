@@ -145,3 +145,14 @@ export interface Snippet {
 }
 
 export type FilePropsType = 'admin' | 'album' | 'publicAlbum' | 'quarantine' | 'tag' | 'uploads';
+
+export interface Setting {
+	category: string;
+	description: string;
+	example?: string;
+	key: string;
+	name: string;
+	notice?: string;
+	type: string;
+	value: boolean | number | string;
+}
