@@ -4,7 +4,7 @@ import prisma from '@/structures/database.js';
 export const options = {
 	url: '/admin/ip/ban',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {

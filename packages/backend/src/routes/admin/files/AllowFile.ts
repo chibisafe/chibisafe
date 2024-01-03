@@ -9,7 +9,7 @@ import { generateThumbnails } from '@/utils/Thumbnails.js';
 export const options = {
 	url: '/admin/file/:uuid/allow',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

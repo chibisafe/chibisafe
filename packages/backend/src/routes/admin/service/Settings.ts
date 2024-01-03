@@ -5,7 +5,7 @@ import { SETTINGS, getSettingsMeta } from '@/structures/settings.js';
 export const options = {
 	url: '/admin/service/settings',
 	method: 'get',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (_: RequestWithUser, res: FastifyReply) => {

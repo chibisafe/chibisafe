@@ -8,7 +8,7 @@ import { deleteThumbnails, getUniqueFileIdentifier, quarantinePath, uploadPath }
 export const options = {
 	url: '/admin/file/:uuid/quarantine',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

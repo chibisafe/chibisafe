@@ -5,7 +5,7 @@ import { cachedStats, getStats } from '@/utils/StatsGenerator.js';
 export const options = {
 	url: '/admin/service/statistics',
 	method: 'get',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

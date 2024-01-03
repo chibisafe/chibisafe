@@ -5,7 +5,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 export const options = {
 	url: '/admin/user/:uuid/demote',
 	method: 'post',
-	middlewares: ['auth', 'owner']
+	middlewares: ['apiKey', 'auth', 'owner']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {

@@ -4,7 +4,7 @@ import { purgeIpFiles } from '@/utils/File.js';
 export const options = {
 	url: '/admin/ip/files/purge',
 	method: 'post',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {

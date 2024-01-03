@@ -6,7 +6,7 @@ import { constructFilePublicLink } from '@/utils/File.js';
 export const options = {
 	url: '/admin/user/:uuid/files',
 	method: 'get',
-	middlewares: ['auth', 'admin']
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {

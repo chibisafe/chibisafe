@@ -21,7 +21,8 @@ export default {
 							type: { type: 'string', description: 'The type of the setting.' },
 							description: { type: 'string', description: 'The description of the setting.' },
 							notice: { type: 'string', description: 'The notice of the setting, if any.' },
-							example: { type: 'string', description: 'An example value of the setting.' }
+							example: { type: 'string', description: 'An example value of the setting.' },
+							category: { type: 'string', description: 'The category of the setting.' }
 						}
 					}
 				}
