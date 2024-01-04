@@ -221,7 +221,7 @@ export const checkFileHashOnDB = async (user: RequestUser | User | undefined, fi
 			user: user
 				? {
 						id: user.id
-				  }
+					}
 				: {}
 		}
 	});

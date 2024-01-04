@@ -43,13 +43,13 @@ const invites = computed(() => data.value?.invites ?? []);
 const { data } = useQuery({
 	queryKey: ['invites'],
 	queryFn: () => getInvites(),
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 
 const doCreateInvite = async () => {
 	mutateCreateFile(undefined, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['invites']);
+			queryClient.invalidateQueries({ queryKey: ['invites'] });
 		}
 	});
 };

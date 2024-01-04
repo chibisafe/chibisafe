@@ -11,7 +11,7 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
 	if (!uuid) {
-		res.badRequest('No uuid provided');
+		void res.badRequest('No uuid provided');
 		return;
 	}
 
@@ -23,7 +23,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!tag) {
-		res.notFound("The tag doesn't exist or doesn't belong to the user");
+		void res.notFound("The tag doesn't exist or doesn't belong to the user");
 		return;
 	}
 

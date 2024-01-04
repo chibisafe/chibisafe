@@ -81,7 +81,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const files = (await prisma.files.findMany(dbObject)) as ExtendedFile[] | [];
 
 	if (!files) {
-		res.notFound('No files exist');
+		void res.notFound('No files exist');
 		return;
 	}
 

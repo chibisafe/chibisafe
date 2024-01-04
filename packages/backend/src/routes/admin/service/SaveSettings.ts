@@ -63,6 +63,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	} catch (error) {
 		req.log.error(error);
-		res.internalServerError(error as string);
+		void res.internalServerError(error as string);
 	}
 };

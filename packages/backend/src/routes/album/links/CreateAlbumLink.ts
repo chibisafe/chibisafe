@@ -21,19 +21,19 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!exists) {
-		res.badRequest("Album doesn't exist or doesn't belong to the user");
+		void res.badRequest("Album doesn't exist or doesn't belong to the user");
 		return;
 	}
 
 	let { identifier } = req.body as { identifier?: string };
 	if (identifier) {
 		if (!req.user?.roles.some(role => role.name === 'admin')) {
-			res.unauthorized('Only administrators can create custom links');
+			void res.unauthorized('Only administrators can create custom links');
 			return;
 		}
 
 		if (!/^[\w-]+$/.test(identifier)) {
-			res.badRequest('Only alphanumeric, dashes, and underscore characters are allowed');
+			void res.badRequest('Only alphanumeric, dashes, and underscore characters are allowed');
 			return;
 		}
 
@@ -43,13 +43,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		});
 		if (identifierExists) {
-			res.conflict('Album with this identifier already exists');
+			void res.conflict('Album with this identifier already exists');
 			return;
 		}
 	} else {
 		identifier = await getUniqueAlbumIdentifier();
 		if (!identifier) {
-			res.internalServerError('There was a problem allocating a link for your album');
+			void res.internalServerError('There was a problem allocating a link for your album');
 			return;
 		}
 	}

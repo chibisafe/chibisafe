@@ -11,7 +11,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { ip }: { ip: string } = req.body as { ip: string };
 
 	if (!ip) {
-		res.badRequest('No ip provided');
+		void res.badRequest('No ip provided');
 		return;
 	}
 
@@ -22,7 +22,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (found) {
-		res.badRequest('IP is already banned');
+		void res.badRequest('IP is already banned');
 		return;
 	}
 

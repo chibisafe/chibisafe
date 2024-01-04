@@ -10,7 +10,7 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { ip }: { ip: string } = req.body as { ip: string };
 	if (!ip) {
-		res.badRequest('No ip provided');
+		void res.badRequest('No ip provided');
 		return;
 	}
 

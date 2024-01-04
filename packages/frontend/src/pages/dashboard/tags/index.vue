@@ -67,7 +67,7 @@ const queryClient = useQueryClient();
 
 const onDeleteTag = async (uuid: string) => {
 	await deleteTag(uuid);
-	queryClient.invalidateQueries(['tags']);
+	queryClient.invalidateQueries({ queryKey: ['tags'] });
 };
 
 const { data: tags } = useQuery({
@@ -78,6 +78,6 @@ const { data: tags } = useQuery({
 			return b._count.files - a._count.files;
 		});
 	},
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 </script>

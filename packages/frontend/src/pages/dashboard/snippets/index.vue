@@ -86,6 +86,6 @@ const { data } = useQuery({
 			content: snippet.content.split('\n').slice(0, 10).join('\n')
 		}));
 	},
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 </script>

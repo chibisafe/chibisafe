@@ -157,6 +157,6 @@ const doCreateSnippet = async () => {
 	);
 	showPostCreate.value = true;
 	createdSnippet.value = snippet?.snippet;
-	queryClient.invalidateQueries(['snippets']);
+	queryClient.invalidateQueries({ queryKey: ['snippets'] });
 };
 </script>

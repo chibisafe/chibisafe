@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!fileExists) {
-		res.notFound("File doesn't exist or doesn't belong to the user");
+		void res.notFound("File doesn't exist or doesn't belong to the user");
 		return;
 	}
 
@@ -34,7 +34,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!tagExists) {
-		res.notFound("Tag doesn't exist or doesn't belong to the user");
+		void res.notFound("Tag doesn't exist or doesn't belong to the user");
 		return;
 	}
 

@@ -40,13 +40,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const quota = await getUsedQuota(req.user?.id as number);
 	if (quota?.overQuota) {
-		res.forbidden('You are over your storage quota');
+		void res.forbidden('You are over your storage quota');
 		return;
 	}
 
 	try {
 		if (!SETTINGS.publicMode && !req.user) {
-			res.unauthorized('Only registered users are allowed to upload files.');
+			void res.unauthorized('Only registered users are allowed to upload files.');
 			return;
 		}
 
@@ -63,14 +63,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 		if (!upload.metadata.name) {
 			await deleteTmpFile(upload.path as string);
-			res.badRequest('Missing file name.');
+			void res.badRequest('Missing file name.');
 			return;
 		}
 
 		const fileExtension = `.${upload.metadata.name.split('.').pop()!}`.toLowerCase();
 		if (SETTINGS.blockedExtensions.includes(fileExtension)) {
 			await deleteTmpFile(upload.path as string);
-			res.badRequest('File type is not allowed.');
+			void res.badRequest('File type is not allowed.');
 			return;
 		}
 
@@ -78,7 +78,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const quotaAfterUpload = await getUsedQuota(req.user?.id as number, Number(upload.metadata.size));
 		if (quotaAfterUpload?.overQuota) {
 			await deleteTmpFile(upload.path as string);
-			res.forbidden('You are over your storage quota');
+			void res.forbidden('You are over your storage quota');
 			return;
 		}
 
@@ -137,7 +137,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			case 'Chunked upload is above size limit':
 			case 'Chunk is too big':
 			case 'File is too big':
-				res.payloadTooLarge(error.message);
+				void res.payloadTooLarge(error.message);
 				break;
 			case 'Missing chibi-* headers':
 			case 'chibi-uuid is not a string':
@@ -145,7 +145,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			case 'chibi-uuid is not a valid uuid':
 			case 'Chunk is out of range':
 			case 'Invalid headers':
-				res.badRequest(error.message);
+				void res.badRequest(error.message);
 				break;
 		}
 

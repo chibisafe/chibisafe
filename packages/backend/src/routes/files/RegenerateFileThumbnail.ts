@@ -24,7 +24,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!file) {
-		res.notFound('The file could not be found');
+		void res.notFound('The file could not be found');
 		return;
 	}
 
