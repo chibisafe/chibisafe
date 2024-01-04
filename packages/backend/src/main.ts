@@ -14,7 +14,7 @@ import { log } from './utils/Logger.js';
 import Requirements from './utils/Requirements.js';
 import { jumpstartStatistics } from './utils/StatsGenerator.js';
 import { startUpdateCheckSchedule } from './utils/UpdateCheck.js';
-import { createAdminUserIfNotExists } from './utils/Util.js';
+import { createAdminUserIfNotExists, VERSION } from './utils/Util.js';
 
 // Create the Fastify server
 const server = fastify({
@@ -39,6 +39,7 @@ process.on('unhandledRejection', error => {
 });
 
 const start = async () => {
+	server.log.info(`Running Chibisafe v${VERSION}`);
 	// Check the environment has all the requirements before running chibisafe
 	await Requirements(server.log);
 
@@ -62,7 +63,7 @@ const start = async () => {
 			return res.send(error);
 		} else {
 			server.log.error(error);
-			res.internalServerError('Something went wrong');
+			return res.internalServerError('Something went wrong');
 		}
 	});
 
@@ -236,6 +237,8 @@ const start = async () => {
 		await startUpdateCheckSchedule();
 	}
 };
+
+await startUpdateCheckSchedule();
 
 export const getHtmlBuffer = async () => {
 	let indexHTML = jetpack.read(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)), 'utf8');

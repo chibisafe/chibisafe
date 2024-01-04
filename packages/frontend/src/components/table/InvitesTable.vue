@@ -67,7 +67,7 @@ const { mutate: mutateCancelInvite } = useMutation({
 const doCancelInvite = async (code: string) => {
 	mutateCancelInvite(code, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['invites']);
+			queryClient.invalidateQueries({ queryKey: ['invites'] });
 		}
 	});
 };

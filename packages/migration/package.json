@@ -22,18 +22,18 @@
 		"node": ">=18.0.0"
 	},
 	"devDependencies": {
-		"@clack/prompts": "^0.6.3",
-		"@prisma/client": "^4.16.2",
-		"@types/better-sqlite3": "^7.6.4",
-		"@types/node": "^20.5.9",
-		"@types/uuid": "^8.3.4",
-		"better-sqlite3": "^8.6.0",
-		"eslint": "^8.48.0",
-		"eslint-config-neon": "^0.1.56",
-		"prisma": "^4.16.2",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.2.2",
-		"uuid": "^9.0.0"
+		"@clack/prompts": "^0.7.0",
+		"@prisma/client": "^5.7.1",
+		"@types/better-sqlite3": "^7.6.8",
+		"@types/node": "^20.10.6",
+		"@types/uuid": "^9.0.7",
+		"better-sqlite3": "^9.2.2",
+		"eslint": "^8.56.0",
+		"eslint-config-neon": "^0.1.57",
+		"prisma": "^5.7.1",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.3.3",
+		"uuid": "^9.0.1"
 	},
 	"prisma": {
 		"schema": "../backend/src/prisma/schema.prisma"

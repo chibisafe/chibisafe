@@ -72,24 +72,20 @@ marked.use({
 	}
 });
 
-const renderMarkdown = (markdown: string) => {
-	return xss(
-		marked.parse(markdown, {
-			mangle: false,
-			headerIds: false
-		}),
-		{
-			whiteList: {
-				ol: ['class'],
-				ul: ['class'],
-				li: ['class'],
-				a: ['href', 'title', 'target', 'rel', 'class'],
-				img: ['src', 'alt', 'class'],
-				code: ['class']
-			},
-			stripIgnoreTag: true,
-			stripIgnoreTagBody: ['script']
-		}
-	);
+const renderMarkdown = async (markdown: string) => {
+	const parsed = await marked.parse(markdown);
+
+	return xss(parsed, {
+		whiteList: {
+			ol: ['class'],
+			ul: ['class'],
+			li: ['class'],
+			a: ['href', 'title', 'target', 'rel', 'class'],
+			img: ['src', 'alt', 'class'],
+			code: ['class']
+		},
+		stripIgnoreTag: true,
+		stripIgnoreTagBody: ['script']
+	});
 };
 </script>
