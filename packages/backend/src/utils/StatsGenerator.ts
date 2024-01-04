@@ -65,7 +65,7 @@ export const getSystemInfo = async () => {
 						value: cpuTemperature.main,
 						// Temperature value from this library is hard-coded to Celsius
 						type: Type.TEMP_CELSIUS
-				  }
+					}
 				: { value: null, type: Type.UNAVAILABLE },
 		Memory: {
 			value: {
@@ -86,7 +86,7 @@ export const getSystemInfo = async () => {
 							total: mem.swaptotal
 						},
 						type: Type.BYTE_USAGE
-				  }
+					}
 				: { value: null, type: Type.UNAVAILABLE },
 		Uptime: {
 			value: time.uptime,

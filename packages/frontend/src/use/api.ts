@@ -35,7 +35,7 @@ export const register = async (username: string, password: string, invite?: stri
 			invite
 				? {
 						invite
-				  }
+					}
 				: undefined
 		);
 
