@@ -13,7 +13,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const { name, nsfw } = req.body as { name?: string; nsfw?: boolean };
 	if (!name && nsfw === undefined) {
-		res.badRequest('No data supplied');
+		void res.badRequest('No data supplied');
 		return;
 	}
 
@@ -26,7 +26,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.notFound("The album doesn't exist or doesn't belong to the user");
+		void res.notFound("The album doesn't exist or doesn't belong to the user");
 		return;
 	}
 

@@ -11,12 +11,12 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
 	if (!uuid) {
-		res.badRequest('Invalid uuid supplied');
+		void res.badRequest('Invalid uuid supplied');
 		return;
 	}
 
 	if (uuid === req.user.uuid) {
-		res.badRequest("You can't apply this action to yourself");
+		void res.badRequest("You can't apply this action to yourself");
 		return;
 	}
 
@@ -37,12 +37,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		user?.roles.some(role => role.name === 'admin' || role.name === 'owner') &&
 		!req.user.roles.some(role => role.name === 'owner')
 	) {
-		res.badRequest('You cannot enable another admin or owner');
+		void res.badRequest('You cannot enable another admin or owner');
 		return;
 	}
 
 	if (user?.enabled) {
-		res.badRequest('User is already enabled');
+		void res.badRequest('User is already enabled');
 		return;
 	}
 

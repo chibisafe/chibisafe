@@ -49,7 +49,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.notFound('The album could not be found');
+		void res.notFound('The album could not be found');
 		return;
 	}
 

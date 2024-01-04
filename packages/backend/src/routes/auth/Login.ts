@@ -18,7 +18,7 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { username, password } = req.body as { password?: string; username?: string };
 	if (!username || !password) {
-		res.unauthorized('No username or password provided');
+		void res.unauthorized('No username or password provided');
 		return;
 	}
 
@@ -36,13 +36,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!user) {
-		res.unauthorized('Wrong Username or Password');
+		void res.unauthorized('Wrong Username or Password');
 		return;
 	}
 
 	const comparePassword = await bcrypt.compare(password, user.password);
 	if (!comparePassword) {
-		res.unauthorized('Wrong Username or Password');
+		void res.unauthorized('Wrong Username or Password');
 		return;
 	}
 

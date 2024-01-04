@@ -14,7 +14,7 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { identifier } = req.params as { identifier: string };
 	if (!identifier) {
-		res.badRequest('No identifier provided');
+		void res.badRequest('No identifier provided');
 		return;
 	}
 
@@ -28,7 +28,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!link) {
-		res.notFound('No identifier could be found');
+		void res.notFound('No identifier could be found');
 		return;
 	}
 
@@ -50,7 +50,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.notFound('No album could be found');
+		void res.notFound('No album could be found');
 		return;
 	}
 
@@ -84,6 +84,6 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		await res.download(filePath, fileName);
 	} catch (error) {
 		res.log.error(error);
-		res.internalServerError('There was a problem downloading the album');
+		void res.internalServerError('There was a problem downloading the album');
 	}
 };

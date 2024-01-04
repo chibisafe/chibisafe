@@ -12,7 +12,7 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
 	if (!uuid) {
-		res.badRequest('Invalid uuid supplied');
+		void res.badRequest('Invalid uuid supplied');
 		return;
 	}
 
@@ -28,7 +28,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!user) {
-		res.notFound('User not found');
+		void res.notFound('User not found');
 		return;
 	}
 

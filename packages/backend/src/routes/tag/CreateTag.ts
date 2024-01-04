@@ -21,7 +21,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (exists) {
-		res.badRequest("There's already a tag with that name");
+		void res.badRequest("There's already a tag with that name");
 		return;
 	}
 

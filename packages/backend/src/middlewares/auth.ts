@@ -27,7 +27,7 @@ export default (
 			return;
 		}
 
-		res.unauthorized('No authorization header provided');
+		void res.unauthorized('No authorization header provided');
 		return;
 	}
 
@@ -38,21 +38,21 @@ export default (
 			return;
 		}
 
-		res.unauthorized('No authorization header provided');
+		void res.unauthorized('No authorization header provided');
 		return;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises, promise/prefer-await-to-callbacks
 	JWT.verify(token, SETTINGS.secret ?? '', async (error, decoded) => {
 		if (error) {
-			res.unauthorized('Invalid token');
+			void res.unauthorized('Invalid token');
 			return;
 		}
 
 		const id = (decoded as Decoded | undefined)?.sub ?? null;
 		const dateSigned = (decoded as Decoded | undefined)?.iat ?? null;
 		if (!id) {
-			res.unauthorized('Invalid authorization');
+			void res.unauthorized('Invalid authorization');
 			return;
 		}
 
@@ -76,17 +76,17 @@ export default (
 		});
 
 		if (dateSigned && Number(user?.passwordEditedAt) > dateSigned) {
-			res.unauthorized('Token expired');
+			void res.unauthorized('Token expired');
 			return;
 		}
 
 		if (!user) {
-			res.unauthorized("User doesn't exist");
+			void res.unauthorized("User doesn't exist");
 			return;
 		}
 
 		if (!user.enabled) {
-			res.forbidden('User is disabled');
+			void res.forbidden('User is disabled');
 			return;
 		}
 
