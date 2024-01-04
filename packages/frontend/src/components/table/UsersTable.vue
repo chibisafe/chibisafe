@@ -42,7 +42,15 @@
 				<TableCell class="flex gap-2 justify-end">
 					<Button as="router-link" :to="`/dashboard/admin/user/${user.uuid}`">Files</Button>
 
-					<Button @click="() => {}">Quota</Button>
+					<InputQuotaDialog
+						title="Set quota"
+						message="This action will set the user's quota to the specified value. The user won't be able to use more space than the quota allows."
+						label="Quota in bytes"
+						proceedText="Confirm"
+						:callback="quota => setUserStorageQuota(user.uuid, Number(quota))"
+					>
+						<Button variant="secondary">Quota</Button>
+					</InputQuotaDialog>
 					<ConfirmationDialog
 						v-if="user.enabled && user.uuid !== ownUser.uuid"
 						title="Disable user"
@@ -93,13 +101,14 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { computed } from 'vue';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import InputQuotaDialog from '@/components/dialogs/InputQuotaDialog.vue';
 import Tooltip from '@/components/tooltip/Tooltip.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { UserWithCount } from '@/types';
 import { useUserStore } from '~/store';
-import { enableUser, disableUser, purgeUser, promoteUser, demoteUser } from '~/use/api';
+import { enableUser, disableUser, purgeUser, promoteUser, demoteUser, setUserStorageQuota } from '~/use/api';
 import { formatBytes } from '~/use/file';
 
 defineProps<{
