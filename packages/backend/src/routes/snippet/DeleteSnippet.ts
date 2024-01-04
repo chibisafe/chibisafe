@@ -22,7 +22,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!snippet) {
-		res.badRequest("The snippet doesn't exist or doesn't belong to the user");
+		void res.badRequest("The snippet doesn't exist or doesn't belong to the user");
 		return;
 	}
 

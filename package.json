@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "5.3.10",
+	"version": "5.3.11",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"private": true,
 	"scripts": {
@@ -35,7 +35,7 @@
 	"devDependencies": {
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
-		"turbo": "^1.10.13",
-		"typescript": "^5.2.2"
+		"turbo": "^1.11.2",
+		"typescript": "^5.3.3"
 	}
 }

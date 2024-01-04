@@ -192,7 +192,7 @@ const { data } = useQuery({
 		props.callback?.(response.name);
 		return response;
 	},
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 
 const prevPage = () => {

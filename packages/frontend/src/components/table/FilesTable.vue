@@ -101,7 +101,7 @@ const doDeleteFile = (file: FileWithAdditionalData) => {
 
 	mutateDeleteFile(file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('File deleted');
 		}
 	});

@@ -22,7 +22,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!snippet) {
-		res.notFound('The snippet could not be found');
+		void res.notFound('The snippet could not be found');
 		return;
 	}
 

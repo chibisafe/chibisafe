@@ -375,7 +375,7 @@ const doRemoveFileFromAlbum = async (uuid: string) => {
 
 const doAddFileToTag = async ({ uuid, name }: { uuid: string; name: string }) => {
 	await addFileToTag(props.file.uuid, uuid);
-	queryClient.invalidateQueries(['tags']);
+	queryClient.invalidateQueries({ queryKey: ['tags'] });
 	fileTags.value.push({ uuid, name });
 };
 
@@ -396,7 +396,7 @@ const copyLink = () => {
 const doQuarantineFile = () => {
 	mutateQuarantineFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'files'] });
 			toast.success('File quarantined');
 		}
 	});
@@ -405,7 +405,7 @@ const doQuarantineFile = () => {
 const doAllowFile = () => {
 	mutateAllowFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'files'] });
 			toast.success('File allowed');
 		}
 	});
@@ -414,7 +414,7 @@ const doAllowFile = () => {
 const doDeleteFile = () => {
 	mutateDeleteFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('File deleted');
 		}
 	});
@@ -423,7 +423,7 @@ const doDeleteFile = () => {
 const doRegenerateThumbnail = () => {
 	mutateRegenerateThumbnail(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('Thumbnail regenerated');
 		}
 	});
@@ -437,6 +437,6 @@ const { data: tags } = useQuery({
 			return b._count.files - a._count.files;
 		});
 	},
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 </script>

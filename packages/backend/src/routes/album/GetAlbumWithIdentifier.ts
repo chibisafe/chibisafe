@@ -30,12 +30,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!link) {
-		res.notFound("The link is disabled or it doesn't exist");
+		void res.notFound("The link is disabled or it doesn't exist");
 		return;
 	}
 
 	if (link.expiresAt && link.expiresAt < new Date()) {
-		res.notFound('The link has expired');
+		void res.notFound('The link has expired');
 		return;
 	}
 
@@ -62,7 +62,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.notFound('The album could not be found');
+		void res.notFound('The album could not be found');
 		return;
 	}
 

@@ -9,7 +9,7 @@ import { SETTINGS } from '@/structures/settings.js';
 import { log } from '@/utils/Logger.js';
 
 const basePackageJson = fileURLToPath(new URL('../../../../package.json', import.meta.url));
-const VERSION = JSON.parse(readFileSync(basePackageJson, 'utf8')).version;
+export const VERSION = JSON.parse(readFileSync(basePackageJson, 'utf8')).version;
 
 export const getHost = (req: FastifyRequest) => `${req.protocol}://${req.headers.host}`;
 export const getChibisafeVersion = () => VERSION;

@@ -11,7 +11,7 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { code }: { code: string } = req.body as { code: string };
 	if (!code) {
-		res.badRequest('No code provided');
+		void res.badRequest('No code provided');
 		return;
 	}
 
@@ -22,7 +22,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (invite?.used) {
-		res.notFound('Invite has already been used');
+		void res.notFound('Invite has already been used');
 		return;
 	}
 

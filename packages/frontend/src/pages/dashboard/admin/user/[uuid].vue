@@ -42,6 +42,6 @@ const userUuid = computed(() => props.uuid);
 const { data } = useQuery({
 	queryKey: ['admin', 'user', userUuid, 'files'],
 	queryFn: () => getFilesFromUser(props.uuid, 1, 1),
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 </script>

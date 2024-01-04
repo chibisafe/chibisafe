@@ -21,7 +21,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (exists) {
-		res.badRequest("There's already an album with that name");
+		void res.badRequest("There's already an album with that name");
 		return;
 	}
 

@@ -16,7 +16,7 @@ interface UserWithFileCount extends User {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid?: string };
 	if (!uuid) {
-		res.badRequest('Invalid uuid supplied');
+		void res.badRequest('Invalid uuid supplied');
 		return;
 	}
 
@@ -27,7 +27,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	})) as ExtendedFile | null;
 
 	if (!file) {
-		res.notFound("File doesn't exist");
+		void res.notFound("File doesn't exist");
 		return;
 	}
 

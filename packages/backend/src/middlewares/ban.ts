@@ -9,6 +9,6 @@ export default async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (banned) {
-		res.forbidden('This IP has been banned');
+		void res.forbidden('This IP has been banned');
 	}
 };

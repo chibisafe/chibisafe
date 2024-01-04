@@ -20,7 +20,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!file) {
-		res.notFound("The file doesn't exist or doesn't belong to the user");
+		void res.notFound("The file doesn't exist or doesn't belong to the user");
 		return;
 	}
 

@@ -19,7 +19,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.badRequest("The album doesn't exist or doesn't belong to the user");
+		void res.badRequest("The album doesn't exist or doesn't belong to the user");
 		return;
 	}
 
@@ -40,6 +40,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			message: 'Successfully deleted the album'
 		});
 	} catch {
-		res.internalServerError('An error occurred while deleting the album');
+		void res.internalServerError('An error occurred while deleting the album');
 	}
 };

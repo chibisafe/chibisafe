@@ -48,7 +48,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!tag) {
-		res.notFound('The tag could not be found');
+		void res.notFound('The tag could not be found');
 		return;
 	}
 

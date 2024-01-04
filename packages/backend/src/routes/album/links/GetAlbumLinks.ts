@@ -11,7 +11,7 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
 	if (!uuid) {
-		res.badRequest('Invalid uuid supplied');
+		void res.badRequest('Invalid uuid supplied');
 		return;
 	}
 
@@ -26,7 +26,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.badRequest("Album doesn't exist or doesn't belong to the user");
+		void res.badRequest("Album doesn't exist or doesn't belong to the user");
 		return;
 	}
 

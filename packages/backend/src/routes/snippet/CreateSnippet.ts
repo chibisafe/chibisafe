@@ -25,7 +25,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const now = moment.utc().toDate();
 	const uniqueIdentifier = await getUniqueSnippetIdentifier();
 	if (!uniqueIdentifier) {
-		res.internalServerError('Couldnt allocate identifier for snippet');
+		void res.internalServerError('Couldnt allocate identifier for snippet');
 		return;
 	}
 

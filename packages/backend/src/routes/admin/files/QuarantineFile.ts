@@ -23,7 +23,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!file) {
-		res.notFound("The file doesn't exist");
+		void res.notFound("The file doesn't exist");
 		return;
 	}
 

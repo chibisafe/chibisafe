@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
 import { readFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import vue from '@vitejs/plugin-vue';
+import * as dotenv from 'dotenv';
 import { defineConfig } from 'vite';
-import Pages from 'vite-plugin-pages';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import Pages from 'vite-plugin-pages';
 
 // Since we're using the same .env file for both the frontend and backend, we need to specify the path
 dotenv.config({
