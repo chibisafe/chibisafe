@@ -2,7 +2,6 @@ import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import ffmpeg from 'fluent-ffmpeg';
 import jetpack from 'fs-jetpack';
-import sharp from 'sharp';
 import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
 
@@ -16,9 +15,19 @@ const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/thumbs/previ
 const generateThumbnailForImage = async (filename: string, output: string) => {
 	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
 
-	const file = await jetpack.readAsync(filePath, 'buffer');
-	await sharp(file).resize(64, 64).toFormat('webp').toFile(path.join(squareThumbPath, output));
-	await sharp(file).resize(225, null).toFormat('webp').toFile(path.join(thumbPath, output));
+	ffmpeg(filePath)
+		.size('64x64')
+		.format('webp')
+		.output(path.join(squareThumbPath, output))
+		.on('error', error => log.error(error.message))
+		.run();
+
+	ffmpeg(filePath)
+		.size('255x?')
+		.format('webp')
+		.output(path.join(thumbPath, output))
+		.on('error', error => log.error(error.message))
+		.run();
 };
 
 const generateThumbnailForVideo = async (filename: string, output: string) => {

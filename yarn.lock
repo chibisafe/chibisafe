@@ -302,7 +302,6 @@ __metadata:
     proxy-addr: ^2.0.7
     randomstring: ^1.3.0
     rimraf: ^5.0.5
-    sharp: ^0.33.1
     systeminformation: ^5.21.22
     tsc-alias: ^1.8.8
     tsconfig-paths: ^4.2.0
@@ -9635,7 +9634,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:*, sharp@npm:^0.33.1":
+"sharp@npm:*":
   version: 0.33.1
   resolution: "sharp@npm:0.33.1"
   dependencies:
