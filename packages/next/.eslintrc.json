@@ -1,0 +1,23 @@
+{
+	"extends": [
+		"../../.eslintrc.json", 
+		"neon/react",
+		"neon/next",
+		"neon/edge"
+	],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"parserOptions": {
+		"parser": "@typescript-eslint/parser"
+	},
+	"ignorePatterns": ["**/dist/*"],
+	"rules": {
+		"n/prefer-global/process": "off",
+		"react/react-in-jsx-scope": 0,
+		"react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+		"import/order": "off"
+	}
+}

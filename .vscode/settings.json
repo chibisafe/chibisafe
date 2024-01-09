@@ -7,7 +7,7 @@
 	"files.eol": "\n",
 	"eslint.alwaysShowStatus": true,
 	"eslint.format.enable": true,
-	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "tsx"],
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": "never",
 		"source.fixAll": "always",
@@ -29,6 +29,9 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"git.ignoreLimitWarning": true
