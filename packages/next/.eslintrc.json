@@ -3,8 +3,7 @@
 		"../../.eslintrc.json", 
 		"neon/react",
 		"neon/next",
-		"neon/edge",
-		"neon/prettier"
+		"neon/edge"
 	],
 	"settings": {
 		"react": {
