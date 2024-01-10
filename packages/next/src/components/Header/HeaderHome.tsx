@@ -1,25 +1,9 @@
 import Link from 'next/link';
 
 import { siteConfig } from '@/config/site';
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { NavigationHome } from '@/components/Header/NavigationHome';
 import { Icons } from '@/components/Icons';
-
-const navigation = [
-	{
-		title: 'Home',
-		href: '/'
-	},
-	{
-		title: 'About',
-		href: '/about'
-	},
-	{
-		title: 'Docs',
-		href: '/docs'
-	}
-];
 
 const links = [
 	{
@@ -50,23 +34,6 @@ export function HeaderHome() {
 					</Link>
 
 					<NavigationHome />
-
-					<nav className="flex gap-6">
-						{navigation?.map((item, index) =>
-							item.href ? (
-								<Link
-									key={index}
-									href={item.href}
-									className={cn(
-										'flex items-center text-sm font-medium text-muted-foreground',
-										item.disabled && 'cursor-not-allowed opacity-80'
-									)}
-								>
-									{item.title}
-								</Link>
-							) : null
-						)}
-					</nav>
 				</div>
 
 				<div className="flex flex-1 items-center justify-end space-x-4">
