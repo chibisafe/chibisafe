@@ -1,24 +1,61 @@
 import '@/styles/globals.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import { siteConfig } from '@/config/site';
-import { fontSans } from '@/lib/fonts';
+import { fontHeading, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { HeaderHome } from '@/components/Header/HeaderHome';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	minimumScale: 1,
+	maximumScale: 1,
+	themeColor: [
+		{ media: '(prefers-color-scheme: light)', color: 'black' },
+		{ media: '(prefers-color-scheme: dark)', color: 'black' }
+	]
+};
+
 export const metadata: Metadata = {
+	metadataBase: new URL(siteConfig.url),
 	title: {
 		default: siteConfig.name,
 		template: `%s - ${siteConfig.name}`
 	},
 	description: siteConfig.description,
+	keywords: ['chibisafe', 'file uploader', 'vault', 'react', 'free', 'open source', 'pitu', 'kana', 'kana.dev'],
+	authors: [
+		{
+			name: 'Pitu',
+			url: 'https://kana.dev'
+		}
+	],
+	creator: 'Pitu',
+
+	openGraph: {
+		type: 'website',
+		locale: 'en_US',
+		url: siteConfig.url,
+		title: siteConfig.name,
+		description: siteConfig.description,
+		siteName: siteConfig.name,
+		images: [`/meta.jpg`]
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: siteConfig.name,
+		description: siteConfig.description,
+		images: [`/meta.jpg`],
+		creator: '@its_pitu'
+	},
 	icons: {
 		icon: '/favicon.ico',
 		shortcut: '/favicon-16x16.png',
 		apple: '/apple-touch-icon.png'
-	}
+	},
+	manifest: `/site.webmanifest`
 };
 
 interface RootLayoutProps {
@@ -27,19 +64,20 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
 	return (
-		<>
-			<html lang="en" suppressHydrationWarning>
-				<head />
-				<body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-						<div className="relative flex min-h-screen flex-col">
-							<HeaderHome />
-							<div className="flex-1">{children}</div>
-						</div>
-						<TailwindIndicator />
-					</ThemeProvider>
-				</body>
-			</html>
-		</>
+		<html lang="en" suppressHydrationWarning>
+			<head />
+			<body
+				className={cn(
+					'min-h-screen bg-background font-sans antialiased',
+					fontSans.variable,
+					fontHeading.variable
+				)}
+			>
+				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+					{children}
+					<TailwindIndicator />
+				</ThemeProvider>
+			</body>
+		</html>
 	);
 }
