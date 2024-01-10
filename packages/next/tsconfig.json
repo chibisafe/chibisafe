@@ -1,28 +1,30 @@
 {
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["dom", "dom.iterable", "esnext"],
+		// Next.js
+		"jsx": "preserve",
+		"baseUrl": ".",
+		"noEmit": true,
 		"allowJs": true,
+		"incremental": true,
 		"skipLibCheck": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"paths": {
+			"~/*": ["./src/*"],
+			"@/*": ["./src/*"]
+		},
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"incremental": true,
 		"esModuleInterop": true,
 		"module": "esnext",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"jsx": "preserve",
-		"baseUrl": ".",
-		"paths": {
-		"@/*": ["./src/*"]
-		},
-		"plugins": [
-		{
-			"name": "next"
-		}
-		],
 		"strictNullChecks": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
