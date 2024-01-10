@@ -10,9 +10,9 @@ import {
 	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 
-export default function NavigationHome() {
+export function NavigationHome() {
 	return (
-		<NavigationMenu className="bg-red-500">
+		<NavigationMenu>
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<NavigationMenuTrigger>Item One</NavigationMenuTrigger>
