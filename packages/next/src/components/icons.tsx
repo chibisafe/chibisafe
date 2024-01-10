@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Moon, SunMedium, Twitter, type Icon as LucideIcon, type LucideProps } from 'lucide-react';
+import { Moon, Star, SunMedium, Twitter, type Icon as LucideIcon, type LucideProps } from 'lucide-react';
 
 import chibisafeLogo from '../../public/logo.svg';
 
@@ -9,6 +9,7 @@ export const Icons = {
 	sun: SunMedium,
 	moon: Moon,
 	twitter: Twitter,
+	star: Star,
 	logo: (props: LucideProps) => <Image priority src={chibisafeLogo} alt="chibisafe" {...props} />,
 	github: (props: LucideProps) => (
 		<svg viewBox="0 0 438.549 438.549" {...props}>

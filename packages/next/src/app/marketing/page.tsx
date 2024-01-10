@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { Star } from 'lucide-react';
 
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/styles/button';
+import { buttonVariants } from '@/components/ui/button';
+import { Icons } from '@/components/Icons';
 
 async function getGitHubStars(): Promise<string | null> {
 	try {
@@ -35,7 +36,7 @@ export default async function IndexPage() {
 			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
 				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
 					<h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-						Beautiful and performant vault to save all your files in the cloud.
+						{siteConfig.description}
 					</h1>
 					<p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
 						I&apos;m building a web app with Next.js 13 and open sourcing everything. Follow along as we
@@ -46,7 +47,7 @@ export default async function IndexPage() {
 							Get Started
 						</Link>
 						<Link
-							href="https://github.com/chibisafe/chibisafe"
+							href={siteConfig.links.github}
 							target="_blank"
 							rel="noreferrer"
 							className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
@@ -54,7 +55,7 @@ export default async function IndexPage() {
 							{stars ? (
 								<>
 									{stars}
-									<Star className="h-4 w-4 mx-1" />
+									<Icons.star className="h-4 w-4 mx-1" />
 								</>
 							) : null}
 							GitHub
@@ -170,7 +171,7 @@ export default async function IndexPage() {
 					<p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
 						Taxonomy is open source and powered by open source software. <br /> The code is available on{' '}
 						<Link
-							href="https://github.com/chibisafe/chibisafe"
+							href={siteConfig.links.github}
 							target="_blank"
 							rel="noreferrer"
 							className="underline underline-offset-4"

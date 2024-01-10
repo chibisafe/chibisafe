@@ -1,6 +1,10 @@
-import type { PropsWithChildren } from 'react';
+import '@/styles/globals.css';
 
-export default function MarketingLayout({ children }: PropsWithChildren) {
+interface MarketingLayoutProps {
+	readonly children: React.ReactNode;
+}
+
+export default function MarketingLayout({ children }: MarketingLayoutProps) {
 	return (
 		<div className="flex min-h-screen flex-col">
 			<main className="flex-1">{children}</main>
