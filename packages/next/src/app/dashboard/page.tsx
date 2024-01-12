@@ -1,15 +1,21 @@
-import { redirect } from 'next/navigation';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
+import { Icons } from '~/components/Icons';
+import { Button } from '~/components/ui/button';
 
 export const metadata = {
-	title: 'Dashboard'
+	title: 'Dashboard - Uploads'
 };
 
 export default async function DashboardPage() {
-	// const user = await getCurrentUser();
-
-	// if (!user) {
-	// 	redirect(authOptions?.pages?.signIn || '/login');
-	// }
-
-	return <div>sup dog</div>;
+	return (
+		<DashboardShell>
+			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
+				<Button>
+					<Icons.add className="mr-2 h-4 w-4" />
+					Upload file
+				</Button>
+			</DashboardHeader>
+		</DashboardShell>
+	);
 }

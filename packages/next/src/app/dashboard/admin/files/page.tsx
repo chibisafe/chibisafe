@@ -1,33 +1,14 @@
-import type { Metadata } from 'next';
-import type { PageQuery } from '@/types';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
 
-import { fetchEndpoint } from '@/lib/fileFetching';
-import { DashboardHeader } from '@/components/DashboardHeader';
-import { FilesList } from '@/components/FilesList';
-
-export const metadata: Metadata = {
-	title: 'Dashboard - Admin - Files'
+export const metadata = {
+	title: 'Dashboard - Admin'
 };
 
-export default async function AdminFilesPage({ searchParams }: { readonly searchParams: PageQuery }) {
-	const currentPage = searchParams.page ?? 1;
-	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
-	const search = searchParams.search ?? '';
-
-	const response = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search);
+export default async function DashboardPage() {
 	return (
-		<>
-			<DashboardHeader
-				title="Everyone's files"
-				subtitle="Manage all of chibisafe files, no matter who owns them."
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'All files', url: '/dashboard/admin/files' }
-				]}
-			/>
-			<div className="px-2">
-				<FilesList type="admin" files={response.files} count={response.count} />
-			</div>
-		</>
+		<DashboardShell>
+			<DashboardHeader title="Files" subtitle="Manage all of chibisafe files" />
+		</DashboardShell>
 	);
 }

@@ -1,43 +1,14 @@
-import type { Metadata } from 'next';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
 
-import { DashboardHeader } from '@/components/DashboardHeader';
-import { UserTable } from '@/components/tables/user-table/UserTable';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import request from '@/lib/request';
-
-export const metadata: Metadata = {
-	title: 'Dashboard - Admin - Users'
+export const metadata = {
+	title: 'Dashboard - Admin'
 };
 
-export default async function DashboardAdminUsersPage() {
-	const cookiesStore = cookies();
-	const token = cookiesStore.get('token')?.value;
-	if (!token) redirect('/');
-
-	const authorization = {
-		authorization: `Bearer ${token}`
-	};
-
-	const response = await request.get(`admin/users`, {}, authorization, {
-		next: {
-			tags: ['users']
-		}
-	});
-
+export default async function DashboardPage() {
 	return (
-		<>
-			<DashboardHeader
-				title="Users"
-				subtitle="Manage all users"
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Users', url: '/dashboard/admin/users' }
-				]}
-			/>
-			<div className="px-2">
-				<UserTable data={response.users} />
-			</div>
-		</>
+		<DashboardShell>
+			<DashboardHeader title="Users" subtitle="Manage all users" />
+		</DashboardShell>
 	);
 }
