@@ -1318,6 +1318,7 @@ __metadata:
     react-dom: ^18.2.0
     remark-gfm: ^4.0.0
     sharp: ^0.31.3
+    sonner: ^1.3.1
     tailwind-merge: ^1.13.2
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
@@ -13577,13 +13578,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sonner@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "sonner@npm:1.4.3"
+"sonner@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "sonner@npm:1.3.1"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: d08efed615e7f70cce3ebe7c0789f78ce98ae6130077d8e50d58735f19545ecb6b222ace62a55f84c6f9fc7be44b525a3bf07fcdd7643c318eaef0cb6f68c3cd
+  checksum: c92e584ae331dc21d58f6ea6670da5383c2543c9aa64804952f3c31a3a2fa64789b1f0f83217a55d50a032c19cd9a599ced91acd61e722a1de82169308253d3b
   languageName: node
   linkType: hard
 
