@@ -51,7 +51,7 @@ const components: { description: string; href: string; title: string }[] = [
 	}
 ];
 
-export function NavigationHome() {
+export function Navigation() {
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>

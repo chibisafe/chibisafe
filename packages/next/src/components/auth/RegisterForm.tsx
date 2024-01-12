@@ -1,59 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, debug } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { buttonVariants } from '@/styles/button';
-import { useRouter } from 'next/navigation';
-import request from '@/lib/request';
-import { toast } from 'sonner';
+import { Icons } from '@/components/Icons';
 
-export const RegisterForm = ({ code }: { readonly code?: string }) => {
-	const router = useRouter();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+export const RegisterForm = () => {
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
-
-		const username = String(data.get('username'));
-		const password = String(data.get('password'));
-		const repassword = String(data.get('repassword'));
-
-		if (password !== repassword) {
-			toast.error('Passwords do not match');
-			setIsLoading(false);
-			return;
-		}
-
-		try {
-			await request.post(
-				'auth/register',
-				{
-					username,
-					password
-				},
-				code
-					? {
-							invite: code
-						}
-					: undefined
-			);
-
-			router.push('/login');
-		} catch (error: any) {
-			toast.error(error.message);
-		} finally {
-			setIsLoading(false);
-		}
+		// TODO: Actually receive data as it's not working rn
+		debug(data);
 	}
 
 	return (
 		<div className={cn('grid gap-6')}>
 			<form action={onSubmit}>
-				{code ? <input type="hidden" name="code" value={code} /> : null}
 				<div className="grid gap-2">
 					<div className="grid gap-1">
 						<Label className="sr-only" htmlFor="username">
@@ -61,7 +27,6 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 						</Label>
 						<Input
 							id="username"
-							name="username"
 							placeholder="Username"
 							type="text"
 							autoCapitalize="none"
@@ -76,7 +41,6 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 						</Label>
 						<Input
 							id="password"
-							name="password"
 							placeholder="Password"
 							type="password"
 							autoCapitalize="none"
@@ -91,7 +55,6 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 						</Label>
 						<Input
 							id="repassword"
-							name="repassword"
 							placeholder="Repeat password"
 							type="password"
 							autoCapitalize="none"
@@ -101,7 +64,7 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>
-						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
 						Register
 					</button>
 				</div>

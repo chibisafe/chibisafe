@@ -1,39 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSetAtom } from 'jotai';
-import { Loader2 } from 'lucide-react';
+import * as React from 'react';
 
-import { login } from '@/lib/api';
-import { currentUserAtom } from '@/lib/atoms/currentUser';
-import { cn } from '@/lib/utils';
+import { cn, debug } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { buttonVariants } from '@/styles/button';
+import { Icons } from '@/components/Icons';
 
 export const LoginForm = () => {
-	const router = useRouter();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const setCurrentUser = useSetAtom(currentUserAtom);
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
-
-		try {
-			const response = await login({
-				username: String(data.get('username')),
-				password: String(data.get('password'))
-			});
-
-			setCurrentUser(response.user);
-
-			router.push('/dashboard');
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setIsLoading(false);
-		}
+		// TODO: Actually receive data as it's not working rn
+		debug(data);
 	}
 
 	return (
@@ -46,7 +27,6 @@ export const LoginForm = () => {
 						</Label>
 						<Input
 							id="username"
-							name="username"
 							placeholder="Username"
 							type="text"
 							autoCapitalize="none"
@@ -61,7 +41,6 @@ export const LoginForm = () => {
 						</Label>
 						<Input
 							id="password"
-							name="password"
 							placeholder="Password"
 							type="password"
 							autoCapitalize="none"
@@ -71,7 +50,7 @@ export const LoginForm = () => {
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>
-						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
 						Sign In
 					</button>
 				</div>

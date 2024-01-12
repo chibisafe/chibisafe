@@ -1,18 +1,18 @@
-import { cn } from '@/lib/utils';
-import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
+import * as React from 'react';
+import { siteConfig } from '~/config/site';
 
-export function SiteFooter({ className = '' }: { readonly className?: string }) {
+import { Icons } from '@/components/Icons';
+
+export function SiteFooter() {
 	return (
-		<footer className={cn(className)}>
+		<footer>
 			<div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
 				<div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-					<a href="/" aria-label="chibisafe">
-						<ChibisafeLogo className="w-6 h-6" />
-					</a>
+					<Icons.logo className="w-6 h-6" />
 					<p className="text-center text-sm leading-loose md:text-left">
 						Built by{' '}
 						<a
-							href="https://kana.dev"
+							href={siteConfig.links.pitu}
 							target="_blank"
 							rel="noreferrer"
 							className="font-medium underline underline-offset-4"
@@ -21,14 +21,14 @@ export function SiteFooter({ className = '' }: { readonly className?: string }) 
 						</a>
 						. The source code is available on{' '}
 						<a
-							href="https://github.com/chibisafe/chibisafe"
+							href={siteConfig.links.github}
 							target="_blank"
 							rel="noreferrer"
 							className="font-medium underline underline-offset-4"
 						>
 							GitHub
 						</a>
-						. <span className="text-slate-400 text-xs">v{process.env.NEXT_PUBLIC_VERSION}</span>
+						.
 					</p>
 				</div>
 			</div>

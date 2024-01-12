@@ -1269,6 +1269,7 @@ __metadata:
   resolution: "@chibisafe/website-next@workspace:packages/next"
   dependencies:
     "@ianvs/prettier-plugin-sort-imports": ^3.7.2
+    "@radix-ui/react-label": ^2.0.2
     "@radix-ui/react-navigation-menu": ^1.1.4
     "@radix-ui/react-slot": ^1.0.2
     "@types/node": ^17.0.45
@@ -1280,6 +1281,8 @@ __metadata:
     clsx: ^1.2.1
     eslint: ^8.44.0
     eslint-config-neon: ^0.1.57
+    framer-motion: ^10.18.0
+    jotai: ^2.6.1
     lucide-react: 0.105.0-alpha.4
     next: ^14.0.4
     next-themes: ^0.2.1
@@ -1291,7 +1294,7 @@ __metadata:
     tailwind-merge: ^1.13.2
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
-    typescript: 5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -1386,9 +1389,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:~0.42.0":
-  version: 0.42.0
-  resolution: "@es-joy/jsdoccomment@npm:0.42.0"
+"@es-joy/jsdoccomment@npm:~0.41.0":
+  version: 0.41.0
+  resolution: "@es-joy/jsdoccomment@npm:0.41.0"
   dependencies:
     comment-parser: 1.4.1
     esquery: ^1.5.0
@@ -2584,6 +2587,26 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 446a453d799cc790dd2a1583ff8328da88271bff64530b5a17c102fa7fb35eece3cf8985359d416f65e330cd81aa7b8fe984ea125fc4f4eaf4b3801d698e49fe
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-label@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@radix-ui/react-label@npm:2.0.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-primitive": 1.0.3
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: fe3bd8902bc523fb5125fa96167a13b8a60d007413787eae9573e4b00b0edff0487c4c0620ea5dc37e6da13833ebc4f8d7e00b6c846f2a5686e7f173672b8dde
   languageName: node
   linkType: hard
 
@@ -7608,9 +7631,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.0.8":
-  version: 11.0.8
-  resolution: "framer-motion@npm:11.0.8"
+"framer-motion@npm:^10.18.0":
+  version: 10.18.0
+  resolution: "framer-motion@npm:10.18.0"
   dependencies:
     "@emotion/is-prop-valid": ^0.8.2
     tslib: ^2.4.0
@@ -7625,7 +7648,14 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 5009b748045c3bd4e123925de493cee0e754269f5fc43fe1a6cba7e53f4024f286cbfba78b85b024bfcbbd3b87a777e70d09e7cafcefd8ada80743037e429c30
+  checksum: b43f1edcfc8c2226e3325517612d2abb7455455c4d2232d62499d70a603a51ffdd6a810aa7b5e783a25860856ec6c6e5b3bcf749846facedc54a063f9a548f0b
+  languageName: node
+  linkType: hard
+
+"fs-constants@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "fs-constants@npm:1.0.0"
+  checksum: 18f5b718371816155849475ac36c7d0b24d39a11d91348cfcb308b4494824413e03572c403c86d3a260e049465518c4f0d5bd00f0371cdfcad6d4f30a85b350d
   languageName: node
   linkType: hard
 
@@ -8832,20 +8862,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai-immer@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "jotai-immer@npm:0.3.0"
-  peerDependencies:
-    immer: "*"
-    jotai: ">=2.0.0"
-    react: ">=17.0.0"
-  checksum: 0e61b1f7d2f35ebe50e0c9fc055142aaecaa653070c1c47628eaa7587957fcdf9b5d988bef2edcedc998efbd36f4348eb076b2f6db1939d1f000a53b0b302583
-  languageName: node
-  linkType: hard
-
-"jotai@npm:^2.7.0":
-  version: 2.7.0
-  resolution: "jotai@npm:2.7.0"
+"jotai@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "jotai@npm:2.6.1"
   peerDependencies:
     "@types/react": ">=17.0.0"
     react: ">=17.0.0"
@@ -8854,7 +8873,7 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: 04bf13ca05ad6a0d51ed067c4e926d3965c02feff2f3f96ec9a786fba1c9e53b951648edd775b418c420f5ac1680b09a953972d39d9c40e0f83b3040926862fc
+  checksum: 26ddf7243023e8252904a76f5b37e6ec517982fac4e2f80ba2cbb0ed1bf15060065ecd8a5ca56fe1cc8c2cc88ecb5e64d35f81e5e662550dd33415cc9689577d
   languageName: node
   linkType: hard
 
@@ -13480,7 +13499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5, typescript@npm:5.3.3, typescript@npm:^5.3.3":
+"typescript@npm:5.3.3, typescript@npm:^5.3.3":
   version: 5.3.3
   resolution: "typescript@npm:5.3.3"
   bin:
@@ -13490,7 +13509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5#~builtin<compat/typescript>, typescript@patch:typescript@5.3.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.3.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=5da071"
   bin:
