@@ -1,11 +1,21 @@
-import type { PropsWithChildren } from 'react';
+import * as React from 'react';
 import Link from 'next/link';
-import type { NavItem } from '@/types';
+import type { NavItem } from '~/types';
 
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
+// import { useLockBody } from '@/hooks/use-lock-body';
+import { Icons } from '@/components/Icons';
 
-export function NavigationMobile({ items, children }: PropsWithChildren<{ readonly items: NavItem[] }>) {
+export function NavigationMobile({
+	items,
+	children
+}: {
+	readonly children?: React.ReactNode;
+	readonly items: NavItem[];
+}) {
+	// useLockBody();
+
 	return (
 		<div
 			className={cn(
@@ -14,8 +24,8 @@ export function NavigationMobile({ items, children }: PropsWithChildren<{ readon
 		>
 			<div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
 				<Link href="/" className="flex items-center space-x-2">
-					<ChibisafeLogo />
-					<span className="font-bold">chibisafe</span>
+					<Icons.logo />
+					<span className="font-bold">{siteConfig.name}</span>
 				</Link>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
 					{items.map((item, index) => (

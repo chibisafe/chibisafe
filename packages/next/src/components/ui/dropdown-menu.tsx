@@ -1,6 +1,3 @@
-'use client';
-
-/* eslint-disable react/prop-types */
 import * as React from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
@@ -95,7 +92,6 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
 	React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
 >(({ className, children, checked, ...props }, ref) => (
-	// @ts-expect-error types no idea
 	<DropdownMenuPrimitive.CheckboxItem
 		ref={ref}
 		className={cn(
