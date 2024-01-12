@@ -1288,6 +1288,7 @@ __metadata:
   resolution: "@chibisafe/website-next@workspace:packages/next"
   dependencies:
     "@ianvs/prettier-plugin-sort-imports": ^3.7.2
+    "@radix-ui/react-label": ^2.0.2
     "@radix-ui/react-navigation-menu": ^1.1.4
     "@radix-ui/react-slot": ^1.0.2
     "@types/node": ^17.0.45
@@ -1299,6 +1300,8 @@ __metadata:
     clsx: ^1.2.1
     eslint: ^8.44.0
     eslint-config-neon: ^0.1.57
+    framer-motion: ^10.18.0
+    jotai: ^2.6.1
     lucide-react: 0.105.0-alpha.4
     next: ^14.0.4
     next-themes: ^0.2.1
@@ -1310,7 +1313,7 @@ __metadata:
     tailwind-merge: ^1.13.2
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
-    typescript: 5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -1411,9 +1414,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:~0.42.0":
-  version: 0.42.0
-  resolution: "@es-joy/jsdoccomment@npm:0.42.0"
+"@emotion/is-prop-valid@npm:^0.8.2":
+  version: 0.8.8
+  resolution: "@emotion/is-prop-valid@npm:0.8.8"
+  dependencies:
+    "@emotion/memoize": 0.7.4
+  checksum: bb7ec6d48c572c540e24e47cc94fc2f8dec2d6a342ae97bc9c8b6388d9b8d283862672172a1bb62d335c02662afe6291e10c71e9b8642664a8b43416cdceffac
+  languageName: node
+  linkType: hard
+
+"@emotion/memoize@npm:0.7.4":
+  version: 0.7.4
+  resolution: "@emotion/memoize@npm:0.7.4"
+  checksum: 4e3920d4ec95995657a37beb43d3f4b7d89fed6caa2b173a4c04d10482d089d5c3ea50bbc96618d918b020f26ed6e9c4026bbd45433566576c1f7b056c3271dc
+  languageName: node
+  linkType: hard
+
+"@es-joy/jsdoccomment@npm:~0.41.0":
+  version: 0.41.0
+  resolution: "@es-joy/jsdoccomment@npm:0.41.0"
   dependencies:
     comment-parser: 1.4.1
     esquery: ^1.5.0
@@ -2537,6 +2556,26 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 446a453d799cc790dd2a1583ff8328da88271bff64530b5a17c102fa7fb35eece3cf8985359d416f65e330cd81aa7b8fe984ea125fc4f4eaf4b3801d698e49fe
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-label@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@radix-ui/react-label@npm:2.0.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-primitive": 1.0.3
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: fe3bd8902bc523fb5125fa96167a13b8a60d007413787eae9573e4b00b0edff0487c4c0620ea5dc37e6da13833ebc4f8d7e00b6c846f2a5686e7f173672b8dde
   languageName: node
   linkType: hard
 
@@ -7521,6 +7560,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^10.18.0":
+  version: 10.18.0
+  resolution: "framer-motion@npm:10.18.0"
+  dependencies:
+    "@emotion/is-prop-valid": ^0.8.2
+    tslib: ^2.4.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  dependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: b43f1edcfc8c2226e3325517612d2abb7455455c4d2232d62499d70a603a51ffdd6a810aa7b5e783a25860856ec6c6e5b3bcf749846facedc54a063f9a548f0b
+  languageName: node
+  linkType: hard
+
 "fs-constants@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs-constants@npm:1.0.0"
@@ -8672,6 +8732,21 @@ __metadata:
   version: 1.4.0
   resolution: "jju@npm:1.4.0"
   checksum: 3790481bd2b7827dd6336e6e3dc2dcc6d425679ba7ebde7b679f61dceb4457ea0cda330972494de608571f4973c6dfb5f70fab6f3c5037dbab19ac449a60424f
+  languageName: node
+  linkType: hard
+
+"jotai@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "jotai@npm:2.6.1"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 26ddf7243023e8252904a76f5b37e6ec517982fac4e2f80ba2cbb0ed1bf15060065ecd8a5ca56fe1cc8c2cc88ecb5e64d35f81e5e662550dd33415cc9689577d
   languageName: node
   linkType: hard
 
@@ -13037,7 +13112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5, typescript@npm:5.3.3, typescript@npm:^5.3.3":
+"typescript@npm:5.3.3, typescript@npm:^5.3.3":
   version: 5.3.3
   resolution: "typescript@npm:5.3.3"
   bin:
@@ -13047,7 +13122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5#~builtin<compat/typescript>, typescript@patch:typescript@5.3.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.3.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=5da071"
   bin:
