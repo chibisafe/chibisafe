@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
+import { Toaster } from 'sonner';
 
 import { siteConfig } from '@/config/site';
 import { fontHeading, fontSans } from '@/lib/fonts';
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 			>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					{children}
+					<Toaster />
 					<TailwindIndicator />
 				</ThemeProvider>
 			</body>
