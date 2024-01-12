@@ -12,3 +12,8 @@ export interface NavigationProps {
 	children?: React.ReactNode;
 	items?: NavItem[];
 }
+
+export interface User {
+	admin?: boolean;
+	name: string;
+}

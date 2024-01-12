@@ -3,17 +3,17 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import { MobileNavigation } from '~/components/Header/Home/MobileNavigation';
+import { NavigationMobile } from '~/components/NavigationMobile';
 
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/Icons';
 
-export function Header({ children }: { readonly children?: React.ReactNode }) {
+export function Navigation() {
 	const segment = useSelectedLayoutSegment();
 	const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 	return (
-		<header className="flex gap-6 md:gap-10">
+		<div className="flex gap-6 md:gap-10">
 			<Link href="/" className="hidden items-center space-x-2 md:flex">
 				<Icons.logo className="h-6 w-6" />
 				<span className="hidden font-bold sm:inline-block">{siteConfig.name}</span>
@@ -40,7 +40,7 @@ export function Header({ children }: { readonly children?: React.ReactNode }) {
 				{showMobileMenu ? <Icons.close /> : <Icons.logo className="h-6 w-6" />}
 				<span className="font-bold">Menu</span>
 			</button>
-			{showMobileMenu ? <MobileNavigation items={siteConfig.navigation.home}>{children}</MobileNavigation> : null}
-		</header>
+			{showMobileMenu ? <NavigationMobile items={siteConfig.navigation.home} /> : null}
+		</div>
 	);
 }

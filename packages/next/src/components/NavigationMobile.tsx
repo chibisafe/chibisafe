@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 // import { useLockBody } from '@/hooks/use-lock-body';
 import { Icons } from '@/components/Icons';
 
-export function MobileNavigation({
+export function NavigationMobile({
 	items,
 	children
 }: {

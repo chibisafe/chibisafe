@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { signIn } from 'next-auth/react';
 
 import { cn, debug } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -13,8 +14,14 @@ export const LoginForm = () => {
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
-		// TODO: Actually receive data as it's not working rn
-		debug(data);
+
+		const doSignIn = await signIn('credentials', {
+			redirect: false,
+			username: data.get('username'),
+			password: data.get('password')
+		});
+
+		debug(doSignIn);
 	}
 
 	return (
@@ -27,6 +34,7 @@ export const LoginForm = () => {
 						</Label>
 						<Input
 							id="username"
+							name="username"
 							placeholder="Username"
 							type="text"
 							autoCapitalize="none"
@@ -41,6 +49,7 @@ export const LoginForm = () => {
 						</Label>
 						<Input
 							id="password"
+							name="password"
 							placeholder="Password"
 							type="password"
 							autoCapitalize="none"
