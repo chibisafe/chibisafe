@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { fileListAtom, uploadStore } from '@/store/upload';
+import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -73,6 +74,9 @@ export default function Home() {
 							>
 								GitHub
 							</Link>
+							<button type="button" onClick={() => toast.success('Hello world!')}>
+								Toast
+							</button>
 						</div>
 					</section>
 				</div>
