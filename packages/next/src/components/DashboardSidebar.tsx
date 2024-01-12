@@ -13,7 +13,7 @@ export function DashboardSidebar({ user }: { readonly user: User }) {
 
 	return (
 		<>
-			<nav className="grid items-start gap-0">
+			<nav className="grid items-start gap-1">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Main</h3>
 				{siteConfig.sidebar.main.map((item, index) => {
 					const Icon = Icons[item.icon];
@@ -34,7 +34,7 @@ export function DashboardSidebar({ user }: { readonly user: User }) {
 					);
 				})}
 			</nav>
-			<nav className="grid items-start gap-0 mt-4">
+			<nav className="grid items-start gap-1 mt-4">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>
 				{siteConfig.sidebar.account.map((item, index) => {
 					const Icon = Icons[item.icon];
@@ -56,7 +56,7 @@ export function DashboardSidebar({ user }: { readonly user: User }) {
 				})}
 			</nav>
 			{user.admin ? (
-				<nav className="grid items-start gap-0 mt-4">
+				<nav className="grid items-start gap-1 mt-4">
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					{siteConfig.sidebar.admin.map((item, index) => {
 						const Icon = Icons[item.icon];

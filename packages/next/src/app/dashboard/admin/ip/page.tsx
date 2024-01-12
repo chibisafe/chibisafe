@@ -4,16 +4,16 @@ import { Icons } from '~/components/Icons';
 import { Button } from '~/components/ui/button';
 
 export const metadata = {
-	title: 'Dashboard - Uploads'
+	title: 'Dashboard - Admin'
 };
 
 export default async function DashboardPage() {
 	return (
 		<DashboardShell>
-			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
+			<DashboardHeader title="Banned IPs" subtitle="Manage banned IPs">
 				<Button>
 					<Icons.add className="mr-2 h-4 w-4" />
-					Upload file
+					Ban new IP
 				</Button>
 			</DashboardHeader>
 		</DashboardShell>

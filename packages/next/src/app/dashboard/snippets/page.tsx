@@ -4,16 +4,16 @@ import { Icons } from '~/components/Icons';
 import { Button } from '~/components/ui/button';
 
 export const metadata = {
-	title: 'Dashboard - Uploads'
+	title: 'Dashboard - Snippets'
 };
 
 export default async function DashboardPage() {
 	return (
 		<DashboardShell>
-			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
+			<DashboardHeader title="Snippets" subtitle="Manage and create snippets">
 				<Button>
 					<Icons.add className="mr-2 h-4 w-4" />
-					Upload file
+					New snippet
 				</Button>
 			</DashboardHeader>
 		</DashboardShell>
