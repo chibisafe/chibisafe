@@ -1,37 +1,81 @@
 'use client';
 
-import { useAtomValue } from 'jotai';
-import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags, UserPlus, Users } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type { User } from '~/types';
 
-import { currentUserAtom } from '@/lib/atoms/currentUser';
-import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
+import { siteConfig } from '@/config/site';
+import { cn } from '@/lib/utils';
+import { Icons } from '@/components/Icons';
 
-export function DashboardSidebar() {
-	const currentUser = useAtomValue(currentUserAtom);
+export function DashboardSidebar({ user }: { readonly user: User }) {
+	const path = usePathname();
 
 	return (
 		<>
-			<nav className="grid items-start gap-1">
+			<nav className="grid items-start gap-0">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Main</h3>
-				<DashboardSidebarItem href="/dashboard" name="Uploads" Icon={FileUp} />
-				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
-				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
-				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
+				{siteConfig.sidebar.main.map((item, index) => {
+					const Icon = Icons[item.icon];
+					return (
+						item.href && (
+							<Link key={index} href={item.href}>
+								<span
+									className={cn(
+										'group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+										path === item.href ? 'bg-accent' : 'transparent'
+									)}
+								>
+									<Icon className="mr-2 h-4 w-4" />
+									<span>{item.name}</span>
+								</span>
+							</Link>
+						)
+					);
+				})}
 			</nav>
-			<nav className="grid items-start gap-1 mt-4">
+			<nav className="grid items-start gap-0 mt-4">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>
-				<DashboardSidebarItem href="/dashboard/account" name="Credentials" Icon={Key} />
+				{siteConfig.sidebar.account.map((item, index) => {
+					const Icon = Icons[item.icon];
+					return (
+						item.href && (
+							<Link key={index} href={item.href}>
+								<span
+									className={cn(
+										'group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+										path === item.href ? 'bg-accent' : 'transparent'
+									)}
+								>
+									<Icon className="mr-2 h-4 w-4" />
+									<span>{item.name}</span>
+								</span>
+							</Link>
+						)
+					);
+				})}
 			</nav>
-			{currentUser?.roles.find(role => role.name === 'admin') ? (
-				<nav className="grid items-start gap-1 mt-4">
+			{user.admin ? (
+				<nav className="grid items-start gap-0 mt-4">
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
-					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />
-					<DashboardSidebarItem href="/dashboard/admin/users" name="Users" Icon={Users} />
-					<DashboardSidebarItem href="/dashboard/admin/files" name="All files" Icon={Files} />
-					<DashboardSidebarItem href="/dashboard/admin/quarantine" name="Quarantined files" Icon={Files} />
-					<DashboardSidebarItem href="/dashboard/admin/ip" name="Banned IPs" Icon={Network} />
-					<DashboardSidebarItem href="/dashboard/admin/invites" name="Invites" Icon={UserPlus} />
-					<DashboardSidebarItem href="/dashboard/admin/statistics" name="Statistics" Icon={BarChart3} />
+					{siteConfig.sidebar.admin.map((item, index) => {
+						const Icon = Icons[item.icon];
+						return (
+							item.href && (
+								<Link key={index} href={item.href}>
+									<span
+										className={cn(
+											'group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+											path === item.href ? 'bg-accent' : 'transparent'
+										)}
+									>
+										<Icon className="mr-2 h-4 w-4" />
+										<span>{item.name}</span>
+									</span>
+								</Link>
+							)
+						);
+					})}
 				</nav>
 			) : null}
 		</>

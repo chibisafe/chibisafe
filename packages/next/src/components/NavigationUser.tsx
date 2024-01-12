@@ -1,49 +1,55 @@
 'use client';
 
-import Link from 'next/link';
-import { useAtom } from 'jotai';
+import { signOut } from 'next-auth/react';
+import type { User } from '~/types';
 
-import { currentUserAtom } from '@/lib/atoms/currentUser';
-import { logout } from '@/lib/logout';
-import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { buttonVariants } from '@/styles/button';
 
-export function NavigationUser() {
-	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
-
-	return currentUser?.uuid ? (
+export function NavigationUser({ user }: { readonly user: User }) {
+	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="ml-4 text-lg font-medium sm:text-sm">
-				{currentUser.username}
+			<DropdownMenuTrigger>
+				<Avatar>
+					<AvatarImage src="https://github.com/pitu.png" />
+					<AvatarFallback>KA</AvatarFallback>
+				</Avatar>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
+				<div className="flex items-center justify-start gap-2 p-2">
+					<div className="flex flex-col space-y-1 leading-none">
+						<p className="font-medium">{user.name}</p>
+					</div>
+				</div>
+				<DropdownMenuSeparator />
+				{/* <DropdownMenuItem asChild>
+					<Link href="/dashboard">Dashboard</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem asChild>
+					<Link href="/dashboard/billing">Billing</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem asChild>
+					<Link href="/dashboard/settings">Settings</Link>
+				</DropdownMenuItem>
+				<DropdownMenuSeparator /> */}
 				<DropdownMenuItem
 					className="cursor-pointer"
-					onSelect={async event => {
+					onSelect={event => {
 						event.preventDefault();
-						await logout();
-						setCurrentUser(null);
+						void signOut({
+							callbackUrl: `${window.location.origin}/`
+						});
 					}}
 				>
 					Sign out
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	) : (
-		<Link
-			href="/login"
-			className={cn(
-				buttonVariants({ variant: 'secondary', size: 'sm' }),
-				'px-4 ml-4 items-center text-lg font-medium sm:text-sm'
-			)}
-		>
-			Login
-		</Link>
 	);
 }
