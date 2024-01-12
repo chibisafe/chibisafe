@@ -18,7 +18,7 @@ export const siteConfig = {
 	},
 	sidebar: {
 		main: [
-			{ name: 'Uploads', href: '/dashboard/uploads', icon: 'fileUp' },
+			{ name: 'Uploads', href: '/dashboard', icon: 'fileUp' },
 			{ name: 'Albums', href: '/dashboard/albums', icon: 'library' },
 			{ name: 'Tags', href: '/dashboard/tags', icon: 'tags' },
 			{ name: 'Snippets', href: '/dashboard/snippets', icon: 'code' }
@@ -28,7 +28,7 @@ export const siteConfig = {
 			{ name: 'Settings', href: '/dashboard/admin/settings', icon: 'settings' },
 			{ name: 'Users', href: '/dashboard/admin/users', icon: 'users' },
 			{ name: 'Files', href: '/dashboard/admin/files', icon: 'files' },
-			{ name: 'Quarantined files', href: '/dashboard/admin/files/quarantine', icon: 'files' },
+			{ name: 'Quarantined files', href: '/dashboard/admin/quarantine', icon: 'files' },
 			{ name: 'Banned IPs', href: '/dashboard/admin/ip', icon: 'network' },
 			{ name: 'Invites', href: '/dashboard/admin/invites', icon: 'userPlus' },
 			{ name: 'Statistics', href: '/dashboard/admin/statistics', icon: 'barChart3' }

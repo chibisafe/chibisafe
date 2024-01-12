@@ -1,51 +1,21 @@
-import type { Metadata } from 'next';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
+import { Icons } from '~/components/Icons';
+import { Button } from '~/components/ui/button';
 
-import { DashboardHeader } from '@/components/DashboardHeader';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import request from '@/lib/request';
-import { InvitesTable } from '@/components/tables/invites-table/InvitesTable';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { createInvite } from '@/actions/InviteActions';
-export const metadata: Metadata = {
-	title: 'Dashboard - Admin - Invites'
+export const metadata = {
+	title: 'Dashboard - Admin'
 };
 
 export default async function DashboardPage() {
-	const cookiesStore = cookies();
-	const token = cookiesStore.get('token')?.value;
-	if (!token) redirect('/');
-
-	const authorization = {
-		authorization: `Bearer ${token}`
-	};
-
-	const response = await request.get(`admin/invites`, {}, authorization, {
-		next: {
-			tags: ['invites']
-		}
-	});
 	return (
-		<>
-			<DashboardHeader
-				title="Invites"
-				subtitle="Manage and create new invites"
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Invites', url: '/dashboard/admin/invites' }
-				]}
-			>
-				<form action={createInvite}>
-					<Button type="submit">
-						<Plus className="mr-2 h-4 w-4" />
-						Create new invite
-					</Button>
-				</form>
+		<DashboardShell>
+			<DashboardHeader title="Invites" subtitle="Manage and create new invites">
+				<Button>
+					<Icons.add className="mr-2 h-4 w-4" />
+					New invite
+				</Button>
 			</DashboardHeader>
-			<div className="px-2">
-				<InvitesTable data={response.invites} />
-			</div>
-		</>
+		</DashboardShell>
 	);
 }

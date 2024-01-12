@@ -1,19 +1,14 @@
-import type { Metadata } from 'next';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
 
-import { DashboardHeader } from '@/components/DashboardHeader';
-
-export const metadata: Metadata = {
+export const metadata = {
 	title: 'Dashboard - Credentials'
 };
 
 export default async function DashboardPage() {
 	return (
-		<>
-			<DashboardHeader
-				title="Credentials"
-				subtitle="Manage your credentials"
-				breadcrumbs={[{ name: 'Credentials', url: '/dashboard/account' }]}
-			/>
-		</>
+		<DashboardShell>
+			<DashboardHeader title="Credentials" subtitle="Manage your credentials" />
+		</DashboardShell>
 	);
 }

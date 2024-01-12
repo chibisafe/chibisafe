@@ -1,22 +1,14 @@
-import type { Metadata } from 'next';
+import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardShell } from '~/components/DashboardShell';
 
-import { DashboardHeader } from '@/components/DashboardHeader';
-
-export const metadata: Metadata = {
-	title: 'Dashboard - Admin - Stats'
+export const metadata = {
+	title: 'Dashboard - Admin'
 };
 
-export default async function DashboardAdminStatsPage() {
+export default async function DashboardPage() {
 	return (
-		<>
-			<DashboardHeader
-				title="Statistics"
-				subtitle="Your chibisafe instance stats"
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Statistics', url: '/dashboard/admin/statistics' }
-				]}
-			/>
-		</>
+		<DashboardShell>
+			<DashboardHeader title="Statistics" subtitle="Your chibisafe instance stats" />
+		</DashboardShell>
 	);
 }

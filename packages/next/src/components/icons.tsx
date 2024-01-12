@@ -11,6 +11,7 @@ import {
 	Loader2,
 	Moon,
 	Network,
+	Plus,
 	Settings2,
 	Star,
 	SunMedium,
@@ -47,6 +48,7 @@ export const Icons = {
 	network: Network,
 	userPlus: UserPlus,
 	barChart3: BarChart3,
+	add: Plus,
 	logo: (props: LucideProps) => <Image priority src={chibisafeLogo} alt="chibisafe" {...props} />,
 	github: (props: LucideProps) => (
 		<svg viewBox="0 0 438.549 438.549" {...props}>
