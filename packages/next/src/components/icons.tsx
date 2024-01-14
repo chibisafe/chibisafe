@@ -17,6 +17,7 @@ import {
 	SunMedium,
 	Tags,
 	Twitter,
+	UploadCloud,
 	UserPlus,
 	Users,
 	X,
@@ -48,6 +49,7 @@ export const Icons = {
 	network: Network,
 	userPlus: UserPlus,
 	barChart3: BarChart3,
+	uploadCloud: UploadCloud,
 	add: Plus,
 	logo: (props: LucideProps) => <Image priority src={chibisafeLogo} alt="chibisafe" {...props} />,
 	github: (props: LucideProps) => (
