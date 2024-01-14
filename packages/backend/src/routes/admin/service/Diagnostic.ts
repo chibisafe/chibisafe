@@ -1,8 +1,8 @@
-import type { FastifyReply } from 'fastify';
-import type { RequestWithUser } from '@/structures/interfaces.js';
-import envinfo from 'envinfo';
-import jetpack from 'fs-jetpack';
 import { URL, fileURLToPath } from 'node:url';
+import envinfo from 'envinfo';
+import type { FastifyReply } from 'fastify';
+import jetpack from 'fs-jetpack';
+import type { RequestWithUser } from '@/structures/interfaces.js';
 
 export const options = {
 	url: '/admin/service/diagnostic',
