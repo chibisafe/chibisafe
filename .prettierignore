@@ -4,3 +4,4 @@ dist
 components.d.ts
 packages/backend/dist
 packages/frontend/dist
+packages/next

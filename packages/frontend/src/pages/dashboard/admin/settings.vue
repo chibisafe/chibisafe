@@ -13,7 +13,11 @@
 					}
 				]"
 			/>
-			<h1 class="text-2xl mt-8 mb-8 font-semibold text-light-100 flex items-center mobile:flex-col"></h1>
+			<h1 class="text-base mt-8 mb-8 font-semibold text-light-100 flex items-left flex-col mobile:flex-col">
+				If you are having issues with your instance, you can generate a diagnostic file that will help us to
+				identify the problem.
+				<Button class="w-64 mt-2" @click="() => downloadDiagnosticsFile()">Download diagnostic file</Button>
+			</h1>
 
 			<Tabs v-if="categorizedSettings" default-value="service" class="w-full">
 				<TabsList class="grid w-full grid-cols-5 border border-accent">
@@ -113,6 +117,7 @@
 </template>
 
 <script setup lang="ts">
+import { saveAs } from 'file-saver';
 import { ref, onMounted, computed } from 'vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
 import { Badge } from '@/components/ui/badge';
@@ -125,7 +130,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Setting } from '@/types';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs.vue';
 import { useSettingsStore } from '~/store';
-import { getAdminSettings, setAdminSettings } from '~/use/api';
+import { getAdminSettings, setAdminSettings, getDiagnosticFile } from '~/use/api';
 
 const settingsStore = useSettingsStore();
 const settings = ref<Setting[]>([]);
@@ -142,7 +147,6 @@ const categorizedSettings = computed(() => {
 	};
 	for (const setting of settings.value) {
 		if (setting.category) {
-			console.log(setting.category);
 			// @ts-expect-error TODO
 			categorized[setting.category].push(setting);
 		} else {
@@ -176,6 +180,13 @@ const saveSettings = async () => {
 	await setAdminSettings(settings.value);
 	// After saving settings we should call the settings API again to refresh possible values
 	await settingsStore.get();
+};
+
+const downloadDiagnosticsFile = async () => {
+	const diagnosticFile = await getDiagnosticFile();
+	console.log(diagnosticFile);
+	const sharexBlob = new Blob([diagnosticFile.diagnostics], { type: 'text/plain' });
+	saveAs(sharexBlob, `${location.hostname}-diagnostics.log`);
 };
 
 onMounted(async () => {

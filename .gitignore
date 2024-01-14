@@ -10,8 +10,8 @@ packages/frontend/dist/
 # Env files
 packages/backend/.env
 
-# Ignore nuxt rewrite for now
-packages/nuxt
+# Ignore next rewrite for now
+packages/next
 
 # Database
 database.sqlite
