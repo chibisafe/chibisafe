@@ -1,56 +1,62 @@
 'use client';
 
-import { fileListAtom, uploadStore } from '@/store/upload';
-import { motion } from 'framer-motion';
+import { useCallback, useRef } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { toast } from 'sonner';
 
 import { formatBytes } from '@/lib/file';
 import { cn, debug } from '@/lib/utils';
+import { Icons } from '@/components/Icons';
 
-const watchFileList = uploadStore.sub(fileListAtom, () => {
-	for (const file of uploadStore.get(fileListAtom)) {
-		debug(`Added ${file.name} (${formatBytes(file.size)})`);
-	}
-});
+export function FileUploader() {
+	const isUploadEnabled = true;
+	const maxFileSize = 1000 * 1000 * 1000; // 1GB
 
-export interface ProcessFiles {
-	processFiles(): void;
-}
+	const fileInput = useRef<HTMLInputElement>(null);
 
-export function FileUploader({ isDragging }: { readonly isDragging: boolean }) {
-	const variants = {
-		open: {
-			clipPath: 'inset(0% 0% 0% 0% round 10px)',
-			transition: {
-				type: 'spring',
-				bounce: 0,
-				duration: 0.3
-			}
-		},
-		closed: {
-			clipPath: 'inset(10% 50% 90% 50% round 10px)',
-			transition: {
-				type: 'spring',
-				bounce: 0,
-				duration: 0.3
-			}
-		}
-	};
+	const onFileAdded = useCallback((acceptedFiles: File[]) => {
+		debug(acceptedFiles);
+	}, []);
 
+	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: onFileAdded });
 	return (
-		<motion.div
-			animate={isDragging ? 'open' : 'closed'}
-			variants={variants}
-			className={cn({
-				'absolute top-0 left-0 w-full h-full p-4 z-50': true,
-				'pointer-events-none': true
-			})}
+		<div
+			className="w-80 md:h-80 max-h-[320px] max-w-[320px] absolute md:relative right-0 top-0 h-16"
+			{...getRootProps()}
 		>
-			<div className="bg-sky-700/80 w-full h-full p-4 rounded-md">
-				<div className="w-full h-full border rounded-md border-dashed border-slate-400" />
+			<div
+				className={cn([
+					'absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all',
+					isDragActive ? 'border-blue-400' : 'border-[#303436]'
+				])}
+			>
+				{isUploadEnabled ? (
+					<>
+						<Icons.uploadCloud className="h-12 w-12 pointer-events-none mobile:hidden" />
+						<h3 className="font-bold text-center mt-4 pointer-events-none">
+							<p className="text-blue-400 inline-block sm:hidden">
+								TAP TO UPLOAD{' '}
+								<span className="text-light-100 ml-2">({formatBytes(maxFileSize)} max)</span>
+							</p>
+							<p className="hidden sm:inline-block">
+								{' '}
+								DROP FILES OR <br />
+								<span className="text-blue-400">CLICK HERE</span>{' '}
+							</p>
+						</h3>
+						<p className="text-center mt-4 w-3/4 pointer-events-none mobile:hidden">
+							{formatBytes(maxFileSize)} max per file
+						</p>
+
+						<input ref={fileInput} type="file" className="hidden" multiple {...getInputProps()} />
+					</>
+				) : (
+					<h3 className="text-center mt-4 mobile:mt-0 mobile:w-full mobile:h-full mobile:flex mobile:justify-center mobile:items-center w-3/4 pointer-events-none">
+						Anonymous upload is disabled. <br />
+						Please log in.
+					</h3>
+				)}
 			</div>
-			<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-				<h2 className="font-heading text-3xl">Drop your files here to start uploading them</h2>
-			</div>
-		</motion.div>
+		</div>
 	);
 }
