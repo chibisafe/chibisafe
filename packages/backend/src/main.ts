@@ -238,8 +238,6 @@ const start = async () => {
 	}
 };
 
-await startUpdateCheckSchedule();
-
 export const getHtmlBuffer = async () => {
 	let indexHTML = jetpack.read(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)), 'utf8');
 	if (!indexHTML) {

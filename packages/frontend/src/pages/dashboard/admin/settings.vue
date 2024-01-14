@@ -147,7 +147,6 @@ const categorizedSettings = computed(() => {
 	};
 	for (const setting of settings.value) {
 		if (setting.category) {
-			console.log(setting.category);
 			// @ts-expect-error TODO
 			categorized[setting.category].push(setting);
 		} else {
