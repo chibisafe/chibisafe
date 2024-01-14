@@ -269,6 +269,7 @@ __metadata:
     "@types/adm-zip": ^0.5.5
     "@types/bcryptjs": ^2.4.6
     "@types/cors": ^2.8.17
+    "@types/envinfo": ^7.8.3
     "@types/fancy-log": ^2.0.2
     "@types/fluent-ffmpeg": ^2.1.24
     "@types/jsonwebtoken": ^9.0.5
@@ -283,6 +284,7 @@ __metadata:
     blake3: ^2.1.7
     cross-env: ^7.0.3
     dotenv: ^16.3.1
+    envinfo: ^7.11.0
     eslint: ^8.56.0
     eslint-config-neon: ^0.1.57
     fastify: ^4.25.2
@@ -1597,6 +1599,13 @@ __metadata:
   dependencies:
     "@types/ms": "*"
   checksum: 47876a852de8240bfdaf7481357af2b88cb660d30c72e73789abf00c499d6bc7cd5e52f41c915d1b9cd8ec9fef5b05688d7b7aef17f7f272c2d04679508d1053
+  languageName: node
+  linkType: hard
+
+"@types/envinfo@npm:^7.8.3":
+  version: 7.8.3
+  resolution: "@types/envinfo@npm:7.8.3"
+  checksum: 7382a3d94999c728b4f128a986bea2ad7bb995f70daead5276bb1a07e694e9e94788ff959963a512619542132645ce2ad164c653d149b768846c1fe617c4a601
   languageName: node
   linkType: hard
 
@@ -4015,6 +4024,15 @@ __metadata:
   version: 2.2.1
   resolution: "env-paths@npm:2.2.1"
   checksum: 65b5df55a8bab92229ab2b40dad3b387fad24613263d103a97f91c9fe43ceb21965cd3392b1ccb5d77088021e525c4e0481adb309625d0cb94ade1d1fb8dc17e
+  languageName: node
+  linkType: hard
+
+"envinfo@npm:^7.11.0":
+  version: 7.11.0
+  resolution: "envinfo@npm:7.11.0"
+  bin:
+    envinfo: dist/cli.js
+  checksum: c45a7d20409d5f4cda72483b150d3816b15b434f2944d72c1495d8838bd7c4e7b2f32c12128ffb9b92b5f66f436237b8a525eb3a9a5da2d20013bc4effa28aef
   languageName: node
   linkType: hard
 
