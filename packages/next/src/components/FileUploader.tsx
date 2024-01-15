@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { formatBytes } from '@/lib/file';
 import { cn, debug } from '@/lib/utils';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export function FileUploader() {
 	const isUploadEnabled = true;

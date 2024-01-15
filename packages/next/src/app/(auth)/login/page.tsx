@@ -5,7 +5,7 @@ import { LoginForm } from '~/components/auth/LoginForm';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export const metadata: Metadata = {
 	title: 'Login',

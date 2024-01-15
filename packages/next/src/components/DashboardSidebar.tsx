@@ -6,7 +6,7 @@ import type { User } from '~/types';
 
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export function DashboardSidebar({ user }: { readonly user: User }) {
 	const path = usePathname();

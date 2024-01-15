@@ -6,7 +6,7 @@ import { cn, debug } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export const RegisterForm = () => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
