@@ -17,3 +17,15 @@ export interface User {
 	admin?: boolean;
 	name: string;
 }
+
+interface Roles {
+	name: string;
+}
+
+export interface LocalStorageUser {
+	apiKey: string;
+	roles: Roles[];
+	token: string;
+	username: string;
+	uuid: string;
+}

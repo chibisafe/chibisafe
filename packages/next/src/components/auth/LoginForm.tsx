@@ -1,27 +1,31 @@
 'use client';
 
 import * as React from 'react';
-import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '~/lib/useAuth';
 
-import { cn, debug } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export const LoginForm = () => {
+	const router = useRouter();
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const { login } = useAuth();
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
 
-		const doSignIn = await signIn('credentials', {
-			redirect: false,
-			username: data.get('username'),
-			password: data.get('password')
+		const doSignIn = await login({
+			username: String(data.get('username')),
+			password: String(data.get('password'))
 		});
 
-		debug(doSignIn);
+		setIsLoading(false);
+
+		if (doSignIn) router.push('/dashboard');
 	}
 
 	return (
