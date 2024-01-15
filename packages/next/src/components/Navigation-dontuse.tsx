@@ -14,7 +14,7 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 const components: { description: string; href: string; title: string }[] = [
 	{

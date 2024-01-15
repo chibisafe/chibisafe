@@ -5,7 +5,7 @@ import type { NavItem } from '~/types';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 // import { useLockBody } from '@/hooks/use-lock-body';
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 export function NavigationMobile({
 	items,
