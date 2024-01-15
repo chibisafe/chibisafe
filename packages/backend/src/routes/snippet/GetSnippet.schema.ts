@@ -25,6 +25,11 @@ export default {
 							description: 'The name of the snippet.',
 							example: 'HelloWorld.ts'
 						},
+						description: {
+							type: 'string',
+							description: 'The description of the snippet.',
+							example: 'A simple hello world snippet.'
+						},
 						content: {
 							type: 'string',
 							description: 'The content of the snippet.',

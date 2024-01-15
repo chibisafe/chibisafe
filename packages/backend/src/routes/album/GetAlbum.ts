@@ -27,6 +27,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		},
 		select: {
 			name: true,
+			description: true,
 			nsfw: true,
 			files: {
 				select: {
@@ -66,6 +67,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	return res.send({
 		message: 'Successfully retrieved album',
 		name: album.name,
+		description: album.description,
 		files,
 		isNsfw: album.nsfw,
 		count: album._count.files

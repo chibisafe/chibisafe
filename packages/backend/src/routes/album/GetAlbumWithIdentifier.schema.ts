@@ -28,6 +28,11 @@ export default {
 					type: 'object',
 					properties: {
 						name: { type: 'string', description: 'The name of the album.', example: 'My Album' },
+						description: {
+							type: 'string',
+							description: 'The description of the album.',
+							example: 'My great album about dogs.'
+						},
 						isNsfw: { type: 'boolean', description: 'Whether or not the album is NSFW.', example: false },
 						count: { type: 'number', description: 'The amount of files in the album.', example: 5 },
 						files: {

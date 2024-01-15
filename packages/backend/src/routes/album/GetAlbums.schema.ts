@@ -18,6 +18,11 @@ export default {
 								example: '1453821d-aaf9-435c-8a51-e3f16f7d2ee5'
 							},
 							name: { type: 'string', description: 'The name of the album.', example: 'My Album' },
+							description: {
+								type: 'string',
+								description: 'The description of the album.',
+								example: 'My album description.'
+							},
 							nsfw: { type: 'boolean', description: 'Whether or not the album is NSFW.', example: false },
 							zippedAt: {
 								type: 'string',

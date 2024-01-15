@@ -17,6 +17,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		select: {
 			uuid: true,
 			name: true,
+			description: true,
 			nsfw: true,
 			zippedAt: true,
 			createdAt: true,

@@ -16,6 +16,16 @@
 			</div>
 
 			<DialogHeader class="mt-4">
+				<DialogTitle>Album description</DialogTitle>
+				<DialogDescription>
+					{{ album.description || 'No description set' }}
+				</DialogDescription>
+				<InputDialog message="Add an album description" title="Description" :callback="setDescription">
+					<Button class="shrink-0">Set description</Button>
+				</InputDialog>
+			</DialogHeader>
+
+			<DialogHeader class="mt-4">
 				<DialogTitle>Album links</DialogTitle>
 				<DialogDescription>
 					A list of all the links created for this album. Each link is unique and will remain private unless
@@ -54,6 +64,7 @@
 import { ref, computed } from 'vue';
 import { toast } from 'vue-sonner';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import InputDialog from '@/components/dialogs/InputDialog.vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
 import AlbumLinksTable from '@/components/table/AlbumLinksTable.vue';
 import { Button } from '@/components/ui/button';
@@ -107,6 +118,14 @@ const createLink = async () => {
 	const newLink = await createAlbumLink(props.album.uuid);
 	albumsStore.currentAlbumLinks.push(newLink.data);
 	toast.success('New link created');
+};
+
+const setDescription = async (description: string) => {
+	await updateAlbum(props.album.uuid, {
+		name: 'description',
+		value: description
+	});
+	toast.success('Changed album description');
 };
 
 const setNewAlbumName = async () => {

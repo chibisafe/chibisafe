@@ -11,8 +11,8 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
 
-	const { name, nsfw } = req.body as { name?: string; nsfw?: boolean };
-	if (!name && nsfw === undefined) {
+	const { name, nsfw, description } = req.body as { description?: string; name?: string; nsfw?: boolean };
+	if (!name && nsfw === undefined && !description) {
 		void res.badRequest('No data supplied');
 		return;
 	}
@@ -32,7 +32,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const updateObj = {
 		name: name ?? album.name,
-		nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw
+		nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw,
+		description: description ?? album.description
 	};
 
 	await prisma.albums.update({

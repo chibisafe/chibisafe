@@ -19,6 +19,10 @@ export default {
 				type: 'string',
 				description: 'The name of the album.'
 			},
+			description: {
+				type: 'string',
+				description: 'The description of the album.'
+			},
 			nsfw: {
 				type: 'boolean',
 				description: 'Whether the album is nsfw or not.'
@@ -26,7 +30,7 @@ export default {
 		},
 		minProperties: 1,
 		additionalProperties: false,
-		anyOf: [{ required: ['name'] }, { required: ['nsfw'] }]
+		anyOf: [{ required: ['name'] }, { required: ['nsfw'] }, { required: ['description'] }]
 	},
 	response: {
 		200: {

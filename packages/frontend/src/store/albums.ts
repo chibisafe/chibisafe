@@ -45,6 +45,7 @@ export const useAlbumsStore = defineStore('albums', {
 			this.album = {
 				uuid,
 				name: response.name,
+				description: response.description,
 				files: response.files,
 				isNsfw: response.isNsfw,
 				count: response.count
