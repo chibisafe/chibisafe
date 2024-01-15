@@ -97,14 +97,5 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		},
 		token: jwt,
 		expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 30
-	};
-
-	// Support both JSON response and cookies
-	return res
-		.setCookie('token', jwt, {
-			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-			httpOnly: true,
-			path: '/'
-		})
-		.send(response);
+	});
 };
