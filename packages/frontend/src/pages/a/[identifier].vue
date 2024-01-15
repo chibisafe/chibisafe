@@ -11,7 +11,7 @@
 			</div>
 			<template v-else>
 				<FilesWrapper type="publicAlbum" :identifier="identifier" />
-				EMIT AN EVENT ON THE FILESWRAPPER WITH THE ALBUM INFO
+				<!-- EMIT AN EVENT ON THE FILESWRAPPER WITH THE ALBUM INFO -->
 			</template>
 		</div>
 	</ScrollArea>

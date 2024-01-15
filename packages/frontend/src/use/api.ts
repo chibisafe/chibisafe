@@ -641,3 +641,13 @@ export const removeFileFromTag = async (fileUuid: string, tagUuid: string) => {
 		sendErrorToast(error.message);
 	}
 };
+
+export const getDiagnosticFile = async () => {
+	try {
+		const data = await request.get('admin/service/diagnostic');
+		debug('getDiagnosticFile', data);
+		return data;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
