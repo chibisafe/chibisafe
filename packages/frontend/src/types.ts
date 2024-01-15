@@ -72,6 +72,7 @@ export interface Album {
 	count?: number;
 	cover?: string;
 	createdAt: string;
+	description: string;
 	editedAt: string;
 	files?: FileWithAdditionalData[];
 	name: string;
@@ -82,6 +83,7 @@ export interface Album {
 
 export interface AlbumForMasonry {
 	count: number;
+	description: string;
 	files: FileWithAdditionalData[];
 	isNsfw: boolean;
 	name: string;
@@ -136,6 +138,7 @@ export interface UpdateCheck {
 export interface Snippet {
 	content: string;
 	createdAt: string;
+	description: string;
 	language: string;
 	link: string;
 	name: string;

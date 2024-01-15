@@ -21,6 +21,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			content: true,
 			language: true,
 			name: true,
+			description: true,
 			parentUuid: true,
 			uuid: true,
 			identifier: true,

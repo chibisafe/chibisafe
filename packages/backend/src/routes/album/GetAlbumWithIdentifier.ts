@@ -46,6 +46,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		},
 		select: {
 			name: true,
+			description: true,
 			nsfw: true,
 			files: {
 				select: {
@@ -91,6 +92,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		message: 'Successfully retrieved album',
 		album: {
 			name: album.name,
+			description: album.description,
 			files,
 			isNsfw: album.nsfw,
 			count: album._count.files
