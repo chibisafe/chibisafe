@@ -10,14 +10,14 @@ export const useUserStore = defineStore('user', {
 		}
 	}),
 	actions: {
-		checkToken() {
+		async checkToken() {
 			const user = localStorage.getItem('chibisafe-user');
 			if (user) {
 				const { token } = JSON.parse(user);
 				if (!token) return;
 				this.user.token = token;
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				void this.loginWithToken();
+				await this.loginWithToken();
 
 				// Let's assume there are preferences saved
 				this.loadPreferences();

@@ -28,7 +28,7 @@ const route = useRoute();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
 const isInDashboard = computed(() => route.path.startsWith('/dashboard'));
 
-userStore.checkToken();
+void userStore.checkToken();
 
 const { ctrl_k } = useMagicKeys({
 	passive: false,

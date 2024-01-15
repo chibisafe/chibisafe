@@ -13,7 +13,8 @@
 		"build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build && cpy ./ ../../../backend/dist/site --parents --cwd=dist",
 		"lint": "prettier --check . && cross-env TIMING=1 eslint src --ext .ts",
 		"format": "prettier --write . && cross-env TIMING=1 eslint src --ext .ts,.vue --fix",
-		"update:shadcn": "shadcn-vue add --overwrite"
+		"test:e2e": "playwright test --headed",
+		"test:e2e:ui": "playwright test --ui"
 	},
 	"type": "module",
 	"repository": {
@@ -49,6 +50,7 @@
 		"xss": "^1.0.14"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.40.1",
 		"@tailwindcss/forms": "^0.5.7",
 		"@tailwindcss/typography": "^0.5.10",
 		"@tanstack/vue-table": "^8.11.3",
