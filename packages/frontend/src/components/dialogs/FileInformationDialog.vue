@@ -96,12 +96,7 @@
 									>
 										<Button>Regenerate thumbnail</Button></ConfirmationDialog
 									>
-									<Button
-										as="a" 
-										:href="file.url" 
-										:download="file.original"
-										class="flex-1"
-									>
+									<Button as="a" :href="file.url" :download="file.original" class="flex-1">
 										Download
 									</Button>
 									<ConfirmationDialog
@@ -123,22 +118,12 @@
 									>
 								</div>
 							</div>
-							
+
 							<div class="mb-8 max-w-[calc(100vw-12rem)]">
 								<h2 class="text-light-100">File info</h2>
 
-								<InputWithOverlappingLabel 
-									:value="file.uuid"
-									class="mt-4"
-									label="UUID" 
-									readOnly 
-								/>
-								<InputWithOverlappingLabel 
-									:value="file.name"
-									class="mt-4"
-									label="Name" 
-									readOnly
-								/>
+								<InputWithOverlappingLabel :value="file.uuid" class="mt-4" label="UUID" readOnly />
+								<InputWithOverlappingLabel :value="file.name" class="mt-4" label="Name" readOnly />
 								<InputWithOverlappingLabel
 									:value="file.original"
 									class="mt-4"
@@ -167,12 +152,7 @@
 									label="Size"
 									readOnly
 								/>
-								<InputWithOverlappingLabel
-									:value="file.hash"
-									class="mt-4"
-									label="Hash"
-									readOnly
-								/>
+								<InputWithOverlappingLabel :value="file.hash" class="mt-4" label="Hash" readOnly />
 								<InputWithOverlappingLabel
 									:value="dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')"
 									class="mt-4"
@@ -182,7 +162,10 @@
 							</div>
 
 							<!-- Albums section -->
-							<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8 max-w-[calc(100vw-12rem)]">
+							<div
+								v-if="type === 'album' || type === 'uploads' || type === 'tag'"
+								class="mb-8 max-w-[calc(100vw-12rem)]"
+							>
 								<h2 class="text-light-100">Albums</h2>
 								<Combobox
 									:data="albumsForCombobox"
@@ -208,7 +191,10 @@
 							</div>
 
 							<!-- Tags -->
-							<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8 max-w-[calc(100vw-12rem)]">
+							<div
+								v-if="type === 'album' || type === 'uploads' || type === 'tag'"
+								class="mb-8 max-w-[calc(100vw-12rem)]"
+							>
 								<h2 class="text-light-100">Tags</h2>
 								<TagBox
 									:tags="tags"
@@ -229,7 +215,7 @@
 									type="link"
 									:href="`/dashboard/admin/user/${file.user?.uuid}`"
 								/>
-								<InputWithOverlappingLabel 
+								<InputWithOverlappingLabel
 									:value="file.user?.uuid"
 									class="mt-4"
 									label="UUID"
