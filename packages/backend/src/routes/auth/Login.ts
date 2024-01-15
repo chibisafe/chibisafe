@@ -95,6 +95,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			apiKey: user.apiKey,
 			passwordEditedAt: user.passwordEditedAt
 		},
-		token: jwt
+		token: jwt,
+		expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 30
 	});
 };

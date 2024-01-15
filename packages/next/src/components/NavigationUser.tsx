@@ -1,34 +1,33 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
-import type { User } from '~/types';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '~/lib/useAuth';
+import { useCurrentUser } from '~/lib/useCurrentUser';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
+	// DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-export function NavigationUser({ user }: { readonly user: User }) {
+export function NavigationUser() {
+	const { logout } = useAuth();
+	const router = useRouter();
+	const user = useCurrentUser();
+
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger>
-				<Avatar>
-					<AvatarImage src="https://github.com/pitu.png" />
-					<AvatarFallback>KA</AvatarFallback>
-				</Avatar>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger>{user?.username}</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<div className="flex items-center justify-start gap-2 p-2">
+				{/* <div className="flex items-center justify-start gap-2 p-2">
 					<div className="flex flex-col space-y-1 leading-none">
-						<p className="font-medium">{user.name}</p>
+						<p className="font-medium">{user?.username}</p>
 					</div>
 				</div>
 				<DropdownMenuSeparator />
-				{/* <DropdownMenuItem asChild>
+				<DropdownMenuItem asChild>
 					<Link href="/dashboard">Dashboard</Link>
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild>
@@ -42,9 +41,8 @@ export function NavigationUser({ user }: { readonly user: User }) {
 					className="cursor-pointer"
 					onSelect={event => {
 						event.preventDefault();
-						void signOut({
-							callbackUrl: `${window.location.origin}/`
-						});
+						void logout();
+						router.push('/');
 					}}
 				>
 					Sign out

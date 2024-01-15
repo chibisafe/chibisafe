@@ -18,6 +18,7 @@ import {
 	Tags,
 	Twitter,
 	UploadCloud,
+	User,
 	UserPlus,
 	Users,
 	X,
@@ -51,6 +52,7 @@ export const Icons = {
 	barChart3: BarChart3,
 	uploadCloud: UploadCloud,
 	add: Plus,
+	user: User,
 	logo: (props: LucideProps) => <Image priority src={chibisafeLogo} alt="chibisafe" {...props} />,
 	github: (props: LucideProps) => (
 		<svg viewBox="0 0 438.549 438.549" {...props}>
