@@ -89,7 +89,7 @@
 				<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
 				<h5 class="text-blue-400">Did we mention that extending it is super easy?</h5>
 
-				<dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 space-y-0 mobile:grid-cols-4 mobile:gap-x-8">
+				<dl class="mt-8 grid grid-cols-4 gap-x-6 gap-y-4 space-y-0 mobile:grid-cols-2 mobile:gap-x-8">
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
 							<CheckIcon class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
