@@ -102,15 +102,12 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { useUserStore, useSettingsStore } from '~/store';
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
-const route = useRoute();
 const loggedIn = computed(() => userStore.user.loggedIn);
 const isMobile = ref(false);
-const isAuthPage = computed(() => route.path === '/login' || route.path === '/register');
 
 onMounted(() => {
 	isMobile.value = useWindowSize().width.value < 640;
