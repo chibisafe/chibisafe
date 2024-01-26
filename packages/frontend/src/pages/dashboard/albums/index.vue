@@ -25,7 +25,7 @@
 			<div class="mt-8 pb-16">
 				<ul
 					role="list"
-					class="mt-3 grid grid-cols-1 gap-5 desktop:grid-cols-3 desktop:gap-6 mobile:grid-cols-1"
+					class="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 xl:gap-6 mobile:grid-cols-1"
 				>
 					<li
 						v-for="album in albums"

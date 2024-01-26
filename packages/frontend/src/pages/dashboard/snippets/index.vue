@@ -43,16 +43,17 @@
 							</a>
 						</div>
 					</div>
-					<router-link
-						:to="`/dashboard/snippets/${snippet.uuid}`"
-						class="relative after:hidden hover:after:flex after:content-['View'] after:absolute after:w-full after:h-full after:top-0 after:left-0 after:bg-dark-110 after:opacity-80 after:text-white after:text-4xl after:text-center after:items-center after:justify-center"
-					>
-						<span
-							class="bg-black/30 absolute top-0 right-0 uppercase font-bold text-xs rounded-bl-md px-2 py-1 text-light-100"
+					<router-link :to="`/dashboard/snippets/${snippet.uuid}`">
+						<div
+							class="relative after:hidden hover:after:flex after:content-['View'] after:absolute after:w-full after:h-full after:top-0 after:left-0 after:bg-dark-110 after:opacity-80 after:text-white after:text-4xl after:text-center after:items-center after:justify-center"
 						>
-							{{ snippet.language }}
-						</span>
-						<Highlight :language="snippet.language" :code="snippet.content" isPreview />
+							<span
+								class="bg-black/30 absolute top-0 right-0 uppercase font-bold text-xs rounded-bl-md px-2 py-1 text-light-100"
+							>
+								{{ snippet.language }}
+							</span>
+							<Highlight :language="snippet.language" :code="snippet.content" isPreview />
+						</div>
 					</router-link>
 				</div>
 			</div>
