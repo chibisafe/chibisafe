@@ -17,7 +17,9 @@ export default async function DashboardPage() {
 					Upload file
 				</Button>
 			</DashboardHeader>
-			<FilesList type="uploads" />
+			<div className="px-2">
+				<FilesList type="uploads" />
+			</div>
 		</DashboardShell>
 	);
 }

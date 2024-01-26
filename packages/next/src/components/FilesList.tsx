@@ -1,17 +1,8 @@
-'use client';
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+import type { FileProps } from '~/types';
 
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { toast } from 'sonner';
-
-type FilePropsType = 'admin' | 'album' | 'publicAlbum' | 'quarantine' | 'tag' | 'uploads';
-type FileProps = {
-	albumUuid?: string;
-	identifier?: string;
-	ip?: string;
-	tagUuid?: string;
-	type: FilePropsType;
-	userUuid?: string;
-};
+import { getFiles } from '@/lib/api';
+import { Masonry } from '@/components/Masonry';
 
 const fetchKey = (props: FileProps) => {
 	const key = [];
@@ -39,21 +30,20 @@ const fetchKey = (props: FileProps) => {
 	return key;
 };
 
-const getFiles = async (page?: 1, limit?: 50) => {
-	try {
-		const response = await fetch(`files?page=${page}&limit=${limit}`);
-		return await response.json();
-	} catch (error: any) {
-		toast.error(error.message);
-		return null;
-	}
-};
+// const getFiles = async (page?: 1, limit?: 50) => {
+// 	try {
+// 		const response = await fetch(`files?page=${page}&limit=${limit}`);
+// 		return await response.json();
+// 	} catch (error: any) {
+// 		toast.error(error.message);
+// 		return null;
+// 	}
+// };
 
 const fetchEndpoint = async (props: FileProps) => {
 	// if (search.value) {
 	// 	return searchFiles(search.value, currentPage.value, currentLimit.value);
 	// }
-
 	// switch (props.type) {
 	// 	case 'admin': {
 	// 		if (props.userUuid) {
@@ -64,7 +54,6 @@ const fetchEndpoint = async (props: FileProps) => {
 	// 			return getFilesAdmin(currentPage.value, currentLimit.value, anonymous.value);
 	// 		}
 	// 	}
-
 	// 	case 'quarantine':
 	// 		return getFilesAdmin(currentPage.value, currentLimit.value, false, true);
 	// 	case 'album':
@@ -78,28 +67,17 @@ const fetchEndpoint = async (props: FileProps) => {
 	// 	default:
 	// 		break;
 	// }
-
-	return getFiles();
+	// return getFiles;
 };
 
 export async function FilesList(props: FileProps) {
-	const { isPending, error, data } = useQuery({
-		queryKey: fetchKey(props),
-		queryFn: async () => {
-			return fetchEndpoint(props);
-		},
-		placeholderData: (previousData: any) => previousData
+	const keys = fetchKey(props);
+	const queryClient = new QueryClient();
+
+	await queryClient.prefetchQuery({
+		queryKey: keys,
+		queryFn: () => getFiles()
 	});
 
-	if (isPending) return 'Loading...';
-
-	if (error) return 'An error has occurred: ' + error.message;
-
-	return (
-		<>
-			{data.map((file: any) => (
-				<div key={file.id}>{file.name}</div>
-			))}
-		</>
-	);
+	return <HydrationBoundary state={dehydrate(queryClient)}>{<Masonry keys={keys} />}</HydrationBoundary>;
 }
