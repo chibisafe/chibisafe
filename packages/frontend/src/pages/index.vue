@@ -17,9 +17,6 @@
 					</p>
 				</div>
 
-				<!-- Dummy to keep the flexbox layout -->
-				<!-- <div class="w-80 h-80 max-w-[320px] mobile:hidden" /> -->
-
 				<ChibiUploader />
 			</div>
 
