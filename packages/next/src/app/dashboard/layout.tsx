@@ -1,6 +1,3 @@
-import { notFound } from 'next/navigation';
-import type { User } from '~/types';
-
 import { DashboardSidebar } from '@/components/DashboardSidebar';
 import { SiteFooter } from '@/components/Footer';
 // import { getCurrentUser } from '@/lib/session';
@@ -12,24 +9,17 @@ interface DashboardLayoutProps {
 }
 
 export default async function DashboardLayout({ children }: DashboardLayoutProps) {
-	// const user = await getCurrentUser();
-	const user: User = { name: 'Kana', admin: true };
-
-	if (!user) {
-		return notFound();
-	}
-
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
 			<header className="sticky top-0 z-40 border-b bg-background">
 				<div className="container flex h-16 items-center justify-between py-4">
 					<Navigation />
-					<NavigationUser user={user} />
+					<NavigationUser />
 				</div>
 			</header>
 			<div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
 				<aside className="hidden w-[200px] flex-col md:flex">
-					<DashboardSidebar user={user} />
+					<DashboardSidebar />
 				</aside>
 				<main className="flex w-full flex-1 flex-col overflow-hidden">{children}</main>
 			</div>

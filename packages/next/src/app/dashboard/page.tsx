@@ -1,5 +1,6 @@
 import { DashboardHeader } from '~/components/DashboardHeader';
 import { DashboardShell } from '~/components/DashboardShell';
+import { FilesList } from '~/components/FilesList';
 import { Icons } from '~/components/icons';
 import { Button } from '~/components/ui/button';
 
@@ -16,6 +17,7 @@ export default async function DashboardPage() {
 					Upload file
 				</Button>
 			</DashboardHeader>
+			<FilesList type="uploads" />
 		</DashboardShell>
 	);
 }

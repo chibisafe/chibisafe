@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import type { LocalStorageUser } from '~/types';
 
+import { debug } from '@/lib/utils';
+
 export const useCurrentUser = () => {
 	const [user, setUser] = useState<LocalStorageUser | null>(null);
 
@@ -10,6 +12,7 @@ export const useCurrentUser = () => {
 
 		if (userCookie) {
 			setUser(JSON.parse(userCookie));
+			debug('user', JSON.parse(userCookie));
 		}
 	}, []);
 
