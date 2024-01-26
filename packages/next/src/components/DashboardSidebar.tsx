@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { User } from '~/types';
+import { useCurrentUser } from '~/lib/useCurrentUser';
 
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 
-export function DashboardSidebar({ user }: { readonly user: User }) {
+export function DashboardSidebar() {
 	const path = usePathname();
+	const user = useCurrentUser();
 
 	return (
 		<>
@@ -55,7 +56,7 @@ export function DashboardSidebar({ user }: { readonly user: User }) {
 					);
 				})}
 			</nav>
-			{user.admin ? (
+			{user?.roles.find(role => role.name === 'admin') ? (
 				<nav className="grid items-start gap-1 mt-4">
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					{siteConfig.sidebar.admin.map((item, index) => {
