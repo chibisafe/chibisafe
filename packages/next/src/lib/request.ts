@@ -1,21 +1,34 @@
 const request = {
+	authorizationToken: '',
+	checkForToken: () => {
+		if (request.authorizationToken) return request.authorizationToken;
+
+		const user = localStorage.getItem('chibisafe-user');
+		if (user) {
+			const { token } = JSON.parse(user);
+			request.authorizationToken = `Bearer ${token}`;
+		}
+
+		return request.authorizationToken;
+	},
+
 	parseResponse: async (response: Response) => {
-		if (!response.ok) {
+		if (response.status !== 200) {
 			const error = await response.json();
 			throw new Error(error.message);
 		}
 
-		// if (process.env.NODE_ENV !== 'production') console.log(parsed);
 		return response.json();
 	},
 
-	get: async (url = '', query = {}, headers?: {}, options?: {}) => {
+	get: async (url = '', data = {}) => {
 		try {
-			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
+			let queryUrl = `/api/${url}`;
 
 			// Check if we are passing any arguments and parse them if so
-			if (Object.keys(query).length) {
-				queryUrl += `?${new URLSearchParams(query)}`;
+			if (Object.keys(data).length) {
+				// eslint-disable-next-line n/prefer-global/url-search-params
+				queryUrl += `?${new URLSearchParams(data)}`;
 			}
 
 			const response = await fetch(queryUrl, {
@@ -23,55 +36,13 @@ const request = {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					...headers
-				},
-				...options
+					Authorization: request.checkForToken()
+					// 'Content-Type': 'application/x-www-form-urlencoded',
+				}
 			});
 			return await request.parseResponse(response);
-		} catch {
-			// throw new Error(error.message);
-		}
-	},
-
-	post: async (url = '', data = {}, headers?: {}, options?: {}) => {
-		try {
-			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
-
-			// This is needed for the set cookies to work with the client apparently
-			if (typeof window !== 'undefined') queryUrl = `/api/${url}`;
-
-			const response = await fetch(queryUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					// Authorization: request.checkForToken(),
-					...headers
-				},
-				...options,
-				body: JSON.stringify(data)
-			});
-			return await request.parseResponse(response);
-		} catch {
-			// throw new Error(error.message);
-		}
-	},
-
-	delete: async (url = '', data = {}, headers?: {}, options?: {}) => {
-		try {
-			const queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
-			const response = await fetch(queryUrl, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					// Authorization: request.checkForToken(),
-					...headers
-				},
-				...options,
-				body: JSON.stringify(data)
-			});
-			return await request.parseResponse(response);
-		} catch {
-			// throw new Error(error.message);
+		} catch (error: any) {
+			throw new Error(error.message);
 		}
 	}
 };

@@ -29,3 +29,29 @@ export interface LocalStorageUser {
 	username: string;
 	uuid: string;
 }
+
+export type FilePropsType = 'admin' | 'album' | 'publicAlbum' | 'quarantine' | 'tag' | 'uploads';
+export type FileProps = {
+	albumUuid?: string;
+	identifier?: string;
+	ip?: string;
+	tagUuid?: string;
+	type: FilePropsType;
+	userUuid?: string;
+};
+
+export type File = {
+	createdAt: string;
+	hash: string;
+	ip: string;
+	name: string;
+	original: string;
+	preview: string;
+	quarantine: boolean;
+	size: number;
+	thumb: string;
+	thumbSquare: string;
+	type: string;
+	url: string;
+	uuid: string;
+};
