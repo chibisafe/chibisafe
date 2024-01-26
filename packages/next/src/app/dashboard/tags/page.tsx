@@ -1,6 +1,6 @@
 import { DashboardHeader } from '~/components/DashboardHeader';
 import { DashboardShell } from '~/components/DashboardShell';
-import { Icons } from '~/components/Icons';
+import { Icons } from '~/components/icons';
 import { Button } from '~/components/ui/button';
 
 export const metadata = {

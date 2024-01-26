@@ -2,23 +2,25 @@ import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 import type { LocalStorageUser } from '~/types';
 
-import { request } from './fetch';
+// import { request } from './useFetch';
 
 export const useAuth = () => {
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const login = async ({ username, password }: { password: string; username: string }) => {
 		try {
-			const response = await request.post('auth/login', {
-				username,
-				password
+			const response = await fetch('/api/auth/login', {
+				body: JSON.stringify({ username, password }),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
 			});
 
-			Cookies.set(
-				'user',
-				JSON.stringify({ ...response.user, token: response.token, expiresAt: response.expiresAt })
-			);
+			const data = await response.json();
 
-			return response.user as LocalStorageUser;
+			Cookies.set('user', JSON.stringify({ ...data.user, token: data.token, expiresAt: data.expiresAt }));
+
+			return data.user as LocalStorageUser;
 		} catch (error: any) {
 			toast.error(error.message);
 			return null;
