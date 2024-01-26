@@ -1319,6 +1319,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-dropzone: ^14.2.3
+    react-plock: ^3.0.2
     remark-gfm: ^4.0.0
     sharp: ^0.31.3
     sonner: ^1.3.1
@@ -12687,6 +12688,15 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
+  languageName: node
+  linkType: hard
+
+"react-plock@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-plock@npm:3.0.2"
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 98af7557c5fb0af981542a018e13142112464e73e922a47a5ce1b8a026a2b2ff0897b5f8afe771a58d3898c747e4e6b7351f88555d7e7f010b0c925bb7374866
   languageName: node
   linkType: hard
 

@@ -2,7 +2,6 @@
 
 import { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { toast } from 'sonner';
 
 import { formatBytes } from '@/lib/file';
 import { cn, debug } from '@/lib/utils';

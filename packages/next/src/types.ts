@@ -18,13 +18,13 @@ export interface User {
 	name: string;
 }
 
-interface Roles {
+export interface Role {
 	name: string;
 }
 
 export interface LocalStorageUser {
 	apiKey: string;
-	roles: Roles[];
+	roles: Role[];
 	token: string;
 	username: string;
 	uuid: string;
