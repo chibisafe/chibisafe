@@ -35,6 +35,7 @@ export type FileProps = {
 	albumUuid?: string;
 	identifier?: string;
 	ip?: string;
+	query: PageQuery;
 	tagUuid?: string;
 	type: FilePropsType;
 	userUuid?: string;
@@ -54,4 +55,10 @@ export type File = {
 	type: string;
 	url: string;
 	uuid: string;
+};
+
+export type PageQuery = {
+	limit?: number;
+	page?: number;
+	search?: string;
 };
