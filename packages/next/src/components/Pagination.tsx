@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import {
 	Pagination as PaginationBase,
@@ -10,22 +10,17 @@ import {
 	PaginationPrevious
 } from '@/components/ui/pagination';
 import { Select, type Item } from '@/components/Select';
-import { Input } from './ui/input';
-import { useCallback, useState } from 'react';
-import { Button } from './ui/button';
-import { SearchIcon } from 'lucide-react';
 
-export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) {
+export async function Pagination({
+	currentPage,
+	perPage,
+	itemsTotal
+}: {
+	readonly currentPage: number;
+	readonly itemsTotal: number;
+	readonly perPage: number;
+}) {
 	const router = useRouter();
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-
-	const currentPage = searchParams.get('page') ? Number.parseInt(searchParams.get('page')!, 10) : 1;
-	const perPage = searchParams.get('limit')
-		? Number.parseInt(searchParams.get('limit')!, 10) > 50
-			? 50
-			: Number.parseInt(searchParams.get('limit')!, 10)
-		: 50;
 
 	const totalPages = Math.ceil(itemsTotal / perPage);
 	// eslint-disable-next-line unicorn/new-for-builtins
@@ -34,49 +29,17 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 		value: i + 1
 	}));
 
-	const [search, setSearch] = useState(searchParams.get('search') ?? '');
-
-	const createSearchString = useCallback(() => {
-		const params = new URLSearchParams(searchParams.toString());
-		params.set('search', search);
-		params.delete('page');
-		params.delete('limit');
-
-		router.push(`${pathname}?${params.toString()}`);
-	}, [pathname, router, search, searchParams]);
-
 	const onSelectChange = (value: string) => {
-		router.push(`${pathname}?page=${value}&limit=${perPage}`);
+		router.push(`/dashboard?page=${value}&limit=${perPage}`);
 	};
 
 	return (
 		<>
-			<PaginationBase className="justify-between">
-				<div className="flex w-full max-w-xs items-center space-x-2">
-					<Input
-						placeholder={`Search...`}
-						defaultValue={search}
-						onChange={event => setSearch(event.target.value)}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								createSearchString();
-							}
-						}}
-					/>
-					<Button
-						type="button"
-						size={'icon'}
-						variant={'outline'}
-						className="min-w-10 min-h-10"
-						onClick={() => createSearchString()}
-					>
-						<SearchIcon className="h-4 w-4" />
-					</Button>
-				</div>
+			<PaginationBase>
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationPrevious
-							href={`${pathname}?page=${
+							href={`/dashboard?page=${
 								currentPage > 1 ? Number(currentPage) - 1 : currentPage
 							}&limit=${perPage}`}
 						/>
@@ -92,7 +55,7 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationNext
-							href={`${pathname}?page=${
+							href={`/dashboard?page=${
 								currentPage < totalPages ? Number(currentPage) + 1 : currentPage
 							}&limit=${perPage}`}
 						/>

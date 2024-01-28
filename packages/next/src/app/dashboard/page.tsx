@@ -3,12 +3,13 @@ import { DashboardShell } from '~/components/DashboardShell';
 import { FilesList } from '~/components/FilesList';
 import { Icons } from '~/components/icons';
 import { Button } from '~/components/ui/button';
+import type { PageQuery } from '~/types';
 
 export const metadata = {
 	title: 'Dashboard - Uploads'
 };
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: PageQuery }) {
 	return (
 		<DashboardShell>
 			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
@@ -18,7 +19,7 @@ export default async function DashboardPage() {
 				</Button>
 			</DashboardHeader>
 			<div className="px-2">
-				<FilesList type="uploads" />
+				<FilesList type="uploads" query={searchParams} />
 			</div>
 		</DashboardShell>
 	);
