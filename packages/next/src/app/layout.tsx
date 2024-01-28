@@ -8,7 +8,6 @@ import { fontHeading, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
-import Providers from '@/app/providers';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -77,7 +76,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 				)}
 			>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-					<Providers>{children}</Providers>
+					{children}
 					<Toaster />
 					<TailwindIndicator />
 				</ThemeProvider>
