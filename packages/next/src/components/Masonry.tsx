@@ -1,22 +1,13 @@
 'use client';
 
 import type { File } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { Masonry as Plock } from 'react-plock';
+import { debug } from '~/lib/utils';
 
-import { getFiles } from '@/lib/api';
+import { Masonry as Plock } from '@/components/ui/plock';
 
-export function Masonry({ keys }: { readonly keys: (string | undefined)[] }) {
-	const { isPending, error, data } = useQuery({
-		queryKey: keys,
-		queryFn: () => getFiles(),
-		placeholderData: (previousData: any) => previousData
-	});
-
-	const fileUrls = data?.files.map((file: File) => file.thumb);
-
-	if (isPending) return 'Loading...';
-	if (error) return 'An error has occurred: ' + error.message;
+export function Masonry({ files, total }: { readonly files: File[]; readonly total: number }) {
+	debug(files);
+	const fileUrls = files?.map((file: File) => file.thumb);
 	return (
 		<>
 			<Plock
