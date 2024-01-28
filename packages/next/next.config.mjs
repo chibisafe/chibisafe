@@ -10,6 +10,9 @@ const withMDX = createMDX({
 	}
 });
 
+const baseApiUrl = 'http://127.0.0.1:8000/api/';
+process.env.BASEAPIURL = baseApiUrl;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
@@ -18,7 +21,7 @@ const nextConfig = {
 		return [
 			{
 				source: '/api/:path*',
-				destination: 'http://127.0.0.1:8000/api/:path*'
+				destination: `${baseApiUrl}:path*`
 			}
 		];
 	}
