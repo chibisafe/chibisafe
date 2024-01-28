@@ -1,15 +1,16 @@
-const request = {
-	authorizationToken: '',
-	checkForToken: () => {
-		if (request.authorizationToken) return request.authorizationToken;
+import { cookies } from 'next/headers';
 
-		const user = localStorage.getItem('chibisafe-user');
-		if (user) {
-			const { token } = JSON.parse(user);
-			request.authorizationToken = `Bearer ${token}`;
+const request = {
+	checkForToken: () => {
+		const cookieStore = cookies();
+		const cookie = cookieStore.get('user');
+
+		if (!cookie) {
+			return '';
 		}
 
-		return request.authorizationToken;
+		const { token } = JSON.parse(cookie.value);
+		return `Bearer ${token}`;
 	},
 
 	parseResponse: async (response: Response) => {
@@ -23,11 +24,10 @@ const request = {
 
 	get: async (url = '', data = {}) => {
 		try {
-			let queryUrl = `/api/${url}`;
+			let queryUrl = `${process.env.BASEAPIURL}${url}`;
 
 			// Check if we are passing any arguments and parse them if so
 			if (Object.keys(data).length) {
-				// eslint-disable-next-line n/prefer-global/url-search-params
 				queryUrl += `?${new URLSearchParams(data)}`;
 			}
 
@@ -39,6 +39,40 @@ const request = {
 					Authorization: request.checkForToken()
 					// 'Content-Type': 'application/x-www-form-urlencoded',
 				}
+			});
+			return await request.parseResponse(response);
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	},
+
+	post: async (url = '', data = {}, headers?: {}) => {
+		try {
+			const response = await fetch(`/api/${url}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: request.checkForToken(),
+					...headers
+				},
+				body: JSON.stringify(data)
+			});
+			return await request.parseResponse(response);
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	},
+
+	delete: async (url = '', data = {}, headers?: {}) => {
+		try {
+			const response = await fetch(`/api/${url}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: request.checkForToken(),
+					...headers
+				},
+				body: JSON.stringify(data)
 			});
 			return await request.parseResponse(response);
 		} catch (error: any) {
