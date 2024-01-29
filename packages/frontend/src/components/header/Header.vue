@@ -1,9 +1,9 @@
 <template>
 	<div class="flex w-full h-auto items-center mt-8 max-w-4xl mobile:flex-col">
-		<router-link to="/" class="mobile:flex mobile:items-center">
+		<router-link to="/" class="mobile:items-center flex">
 			<img v-if="settingsStore.logoURL" :src="settingsStore.logoURL" alt="chibisafe logo" class="w-12 mr-2" />
 			<img v-else src="/logo.svg" alt="chibisafe logo" class="w-12 mr-2" />
-			<span class="font-bold text-3xl">{{ settingsStore.serviceName }}</span>
+			<span class="font-bold text-3xl place-self-center">{{ settingsStore.serviceName }}</span>
 		</router-link>
 		<span class="flex-1" />
 
