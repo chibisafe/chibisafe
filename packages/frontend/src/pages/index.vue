@@ -6,13 +6,15 @@
 		<div class="flex flex-col items-center h-auto min-h-[900px] w-full text-light-100 justify-center self-center">
 			<div class="flex w-full mt-16 mobile:mt-6 items-center max-w-4xl mobile:flex-col-reverse">
 				<div class="flex flex-1 justify-center flex-col mobile:mt-8 mobile:p-6">
-					<h4 class="font-bold text-7xl mobile:text-center">Seriously fast file uploader</h4>
-					<p class="mt-10 text-lg pr-16 mobile:pr-0">
+					<h4 class="font-bold text-7xl mobile:text-center md:pr-8 mobile:pr-0">
+						Seriously fast file uploader
+					</h4>
+					<p class="mt-10 text-lg pr-8 md:pr-16 mobile:pr-0">
 						<strong>chibisafe</strong> is a modern and self-hosted take on file uploading services that can
 						handle anything you throw at it thanks to it's robust and fast API, chunked uploads support and
 						more.
 					</p>
-					<p class="mt-4 text-lg pr-16 mobile:pr-0">
+					<p class="mt-4 text-lg pr-8 md:pr-16 mobile:pr-0">
 						It's easily customizable and deploying your own instance is a breeze.
 					</p>
 				</div>
