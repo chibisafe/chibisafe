@@ -20,37 +20,33 @@ export function FileUploader() {
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: onFileAdded });
 	return (
 		<div
-			className="w-80 md:h-80 max-h-[320px] max-w-[320px] absolute md:relative right-0 top-0 h-16"
+			className="w-80 h-fit max-h-[320px] flex-col right-0 top-0 space-y-2"
 			{...getRootProps()}
 		>
 			<div
 				className={cn([
-					'absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all',
+					'w-80 h-80 right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all',
 					isDragActive ? 'border-blue-400' : 'border-[#303436]'
 				])}
 			>
 				{isUploadEnabled ? (
 					<>
-						<Icons.uploadCloud className="h-12 w-12 pointer-events-none mobile:hidden" />
+						<Icons.uploadCloud className="h-12 w-12 pointer-events-none " />
 						<h3 className="font-bold text-center mt-4 pointer-events-none">
-							<p className="text-blue-400 inline-block sm:hidden">
-								TAP TO UPLOAD{' '}
-								<span className="text-light-100 ml-2">({formatBytes(maxFileSize)} max)</span>
-							</p>
-							<p className="hidden sm:inline-block">
+							<p className="">
 								{' '}
 								DROP FILES OR <br />
 								<span className="text-blue-400">CLICK HERE</span>{' '}
 							</p>
 						</h3>
-						<p className="text-center mt-4 w-3/4 pointer-events-none mobile:hidden">
+						<p className="text-center mt-4 w-3/4 pointer-events-none inline-block">
 							{formatBytes(maxFileSize)} max per file
 						</p>
 
 						<input ref={fileInput} type="file" className="hidden" multiple {...getInputProps()} />
 					</>
 				) : (
-					<h3 className="text-center mt-4 mobile:mt-0 mobile:w-full mobile:h-full mobile:flex mobile:justify-center mobile:items-center w-3/4 pointer-events-none">
+					<h3 className="text-center mt-4  w-3/4 pointer-events-none">
 						Anonymous upload is disabled. <br />
 						Please log in.
 					</h3>
