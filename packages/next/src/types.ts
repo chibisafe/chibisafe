@@ -47,7 +47,7 @@ export type File = {
 	ip: string;
 	name: string;
 	original: string;
-	preview: string;
+	preview?: string;
 	quarantine: boolean;
 	size: number;
 	thumb: string;
@@ -62,3 +62,23 @@ export type PageQuery = {
 	page?: number;
 	search?: string;
 };
+
+export interface FileWithAdditionalData extends File {
+	createdAt: string;
+	hash: string;
+	ip: string;
+	original: string;
+	preview?: string;
+	quarantine: boolean;
+	size: number;
+	thumb: string;
+	user?: {
+		createdAt: number;
+		enabled: boolean;
+		roles: {
+			name: string;
+		}[];
+		username: string;
+		uuid: string;
+	};
+}
