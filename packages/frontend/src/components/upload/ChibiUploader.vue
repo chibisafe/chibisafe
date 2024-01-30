@@ -1,11 +1,8 @@
 <template>
-	<div
-		class="w-80 h-80 max-h-[320px] max-w-[320px] absolute mobile:relative right-0 top-0 mobile:h-16"
-		:class="[isUploadEnabled && isMobile ? 'mb-12' : '']"
-	>
+	<div class="w-80 h-fit max-h-[320px] flex-col mobile:relative right-0 top-0 space-y-2 mobile:mb-4">
 		<div
 			id="upload"
-			class="absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl mobile:rounded-lg border-4 shadow-lg flex items-center justify-center mobile:justify-start blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
+			class="w-80 h-80 mobile:h-16 right-0 top-0 bg-[#181a1b] rounded-3xl mobile:rounded-lg border-4 shadow-lg flex items-center justify-center mobile:justify-start blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
 			:class="{
 				'border-blue-400': isDragging,
 				'border-[#303436]': !isDragging
@@ -21,14 +18,12 @@
 			<template v-if="isUploadEnabled">
 				<UploadCloudIcon class="h-12 w-12 pointer-events-none mobile:hidden" />
 				<h3 class="font-bold text-center mt-4 pointer-events-none">
-					<template v-if="isMobile">
-						<p class="text-blue-400">
-							TAP TO UPLOAD <span class="text-light-100 ml-2">({{ formatBytes(maxFileSize) }} max)</span>
-						</p>
-					</template>
-					<template v-else> DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span> </template>
+					<p class="text-blue-400 mobile:visible invisible h-0 mobile:h-12">
+						TAP TO UPLOAD <span class="text-light-100 ml-2">({{ formatBytes(maxFileSize) }} max)</span>
+					</p>
+					<p class="mobile:invisible">DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span></p>
 				</h3>
-				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden">
+				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden mobile:h-0">
 					{{ formatBytes(maxFileSize) }} max per file.
 					<span
 						class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto"
@@ -50,9 +45,7 @@
 				</h3>
 			</template>
 		</div>
-		<div class="absolute -bottom-12 w-full">
-			<AlbumDropdown v-if="isLoggedIn" />
-		</div>
+		<AlbumDropdown v-if="isLoggedIn" />
 	</div>
 </template>
 

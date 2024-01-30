@@ -1,14 +1,8 @@
 <template>
 	<nav>
-		<!-- Mobile sidebar backdrop -->
-		<div
-			v-if="isOpen"
-			class="fixed top-0 left-0 w-screen h-screen bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 z-10"
-			@click="isOpen = false"
-		></div>
 		<!-- Mobile hamburger menu icon -->
 		<div
-			class="hidden mobile:flex fixed top-0 right-0 w-12 h-12 items-center justify-center cursor-pointer z-10"
+			class="hidden mobile:flex fixed top-0 right-0 w-12 h-12 items-center justify-center cursor-pointer z-10 mobile:z-50"
 			:class="[isOpen ? 'bg-transparent' : 'bg-dark-110']"
 			@click="isOpen = !isOpen"
 		>
@@ -17,7 +11,7 @@
 		</div>
 		<!-- Sidebar navigation -->
 		<div
-			class="bg-dark-110 w-48 min-w-[12rem] mobile:inset-0 mobile:z-40 mobile:flex mobile:w-80"
+			class="bg-dark-110 w-48 min-w-[12rem] mobile:inset-0 mobile:z-40 mobile:flex mobile:w-full"
 			:class="[isOpen ? 'mobile:fixed' : 'mobile:hidden']"
 		>
 			<ScrollArea>
@@ -43,6 +37,7 @@
 								:variant="currentPath === item.href ? 'secondary' : 'ghost'"
 								:to="item.href"
 								class="w-full justify-start duration-0 h-9"
+								@click="isOpen = false"
 							>
 								<component
 									:is="item.icon"

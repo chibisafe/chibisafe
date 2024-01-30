@@ -1,6 +1,6 @@
 <template>
 	<ScrollArea class="w-full">
-		<div class="mx-auto max-w-7xl px-6">
+		<div class="mx-auto max-w-7xl px-6 mobile:px-4">
 			<Breadcrumbs
 				:pages="[
 					{

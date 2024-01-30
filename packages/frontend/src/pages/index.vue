@@ -4,28 +4,20 @@
 			<Header />
 		</div>
 		<div class="flex flex-col items-center h-auto min-h-[900px] w-full text-light-100 justify-center self-center">
-			<div
-				class="flex w-full mt-16 mobile:mt-6 items-center relative max-w-4xl mobile:flex-col-reverse mobile:p-6"
-			>
-				<div
-					v-if="!isMobile || (isMobile && !files.length)"
-					class="flex flex-1 justify-center flex-col mobile:mt-8"
-				>
-					<h4 class="font-bold text-7xl mobile:text-center">
-						Seriously fast <br v-if="!isMobile" />file uploader
+			<div class="flex w-full mt-16 mobile:mt-6 items-center max-w-4xl mobile:flex-col-reverse">
+				<div class="flex flex-1 justify-center flex-col mobile:mt-8 mobile:p-6">
+					<h4 class="font-bold text-7xl mobile:text-center md:pr-8 mobile:pr-0">
+						Seriously fast file uploader
 					</h4>
-					<p class="mt-10 text-lg pr-16 mobile:pr-0">
+					<p class="mt-10 text-lg pr-8 md:pr-16 mobile:pr-0">
 						<strong>chibisafe</strong> is a modern and self-hosted take on file uploading services that can
 						handle anything you throw at it thanks to it's robust and fast API, chunked uploads support and
 						more.
 					</p>
-					<p class="mt-4 text-lg pr-16 mobile:pr-0">
+					<p class="mt-4 text-lg pr-8 md:pr-16 mobile:pr-0">
 						It's easily customizable and deploying your own instance is a breeze.
 					</p>
 				</div>
-
-				<!-- Dummy to keep the flexbox layout -->
-				<div class="w-80 h-80 max-w-[320px] mobile:hidden" />
 
 				<ChibiUploader />
 			</div>
@@ -89,7 +81,9 @@
 				<h3 class="font-bold text-4xl">Some of chibisafe's features</h3>
 				<h5 class="text-blue-400">Did we mention that extending it is super easy?</h5>
 
-				<dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 space-y-0 mobile:grid-cols-4 mobile:gap-x-8">
+				<dl
+					class="mt-8 grid mobile:grid-cols-2 grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-4 space-y-0 mobile:gap-x-8"
+				>
 					<div v-for="feature in features" :key="feature" class="relative">
 						<dt>
 							<CheckIcon class="absolute h-6 w-6 text-green-500" aria-hidden="true" />
