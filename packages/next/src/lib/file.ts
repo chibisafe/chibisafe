@@ -1,4 +1,4 @@
-// import type { FileWithAdditionalData } from '~/types';
+import type { FileWithAdditionalData } from '~/types';
 
 export const formatBytes = (bytes: number, decimals = 2) => {
 	if (bytes === 0) return '0 Bytes';
@@ -18,25 +18,25 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 	return `${Number.parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
-// export const isFileVideo = (file: FileWithAdditionalData) => {
-// 	const { type } = file;
-// 	return type.startsWith('video/');
-// };
+export const isFileVideo = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('video/');
+};
 
-// export const isFileImage = (file: FileWithAdditionalData) => {
-// 	const { type } = file;
-// 	return type.startsWith('image/');
-// };
+export const isFileImage = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('image/');
+};
 
-// export const isFileAudio = (file: FileWithAdditionalData) => {
-// 	const { type } = file;
-// 	return type.startsWith('audio/');
-// };
+export const isFileAudio = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type.startsWith('audio/');
+};
 
-// export const isFilePDF = (file: FileWithAdditionalData) => {
-// 	const { type } = file;
-// 	return type === 'application/pdf';
-// };
+export const isFilePDF = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type === 'application/pdf';
+};
 
 export const getFileExtension = (file: File) => {
 	const { name } = file;

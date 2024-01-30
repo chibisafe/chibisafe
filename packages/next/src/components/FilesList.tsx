@@ -55,7 +55,7 @@ export async function FilesList(props: FileProps) {
 	return (
 		<div className="grid gap-8">
 			<Pagination currentPage={currentPage} perPage={perPage} itemsTotal={response.count} />
-			<Masonry files={response.files} total={response.count} />
+			<Masonry files={response.files} total={response.count} type={props.type} />
 		</div>
 	);
 }
