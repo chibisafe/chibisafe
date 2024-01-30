@@ -1294,6 +1294,7 @@ __metadata:
     jotai: ^2.6.1
     js-cookie: ^3.0.5
     lucide-react: 0.105.0-alpha.4
+    media-chrome: ^2.1.0
     next: ^14.0.4
     next-themes: ^0.2.1
     postcss: ^8.4.24
@@ -10344,6 +10345,13 @@ __metadata:
   version: 2.0.1
   resolution: "media-chrome@npm:2.0.1"
   checksum: 57cf10d40c72c6f0abae98708c36329c00b12412de90b5a671514960ddcd02836400742c1d955cfb51c9f08b75d08589f21012c599a3dd05f56bf7ab893ccec3
+  languageName: node
+  linkType: hard
+
+"media-chrome@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "media-chrome@npm:2.1.0"
+  checksum: 9a7039940d2c29f0d1979b2652b03d5a2f15d3395f81e29440ccbfe620f48a87cb9a046887629f3c30bd1976cad75a8927ec9651a84c3673ff8b2912d7158445
   languageName: node
   linkType: hard
 
