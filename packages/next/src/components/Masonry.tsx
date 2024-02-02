@@ -47,8 +47,8 @@ export function Masonry({
 					<div
 						className="relative w-full h-auto"
 						key={idx}
-						onMouseEnter={() => addToHoveredList(file)}
-						onMouseLeave={() => removeFromHoveredList(file)}
+						onMouseEnter={() => isFileVideo(file) ? addToHoveredList(file) : null}
+						onMouseLeave={() => isFileVideo(file) ? removeFromHoveredList(file) : null}
 					>
 						{/* TODO: No clue whatsoever why this assertion doesn't work when it works in vue,
 						so I'm removing the publicAlbum stuff for now because of it

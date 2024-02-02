@@ -12,10 +12,15 @@ import {
 } from '@/lib/api';
 import { Masonry } from '@/components/Masonry';
 import { Pagination } from '@/components/Pagination';
+import { cookies } from 'next/headers';
 
 const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: number) => {
 	console.log('Fetching files', props);
 	const anonymous = false;
+
+	const cookiesStore = cookies();
+	const token = cookiesStore.get('token')?.value;
+	// TODO: Handle failure of not having a cookie
 
 	if (props.query?.search) {
 		return searchFiles(props.query?.search, currentPage, currentLimit);
@@ -40,10 +45,10 @@ const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: numb
 			return getTag(props.tagUuid!, currentPage);
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage, currentLimit);
-		case 'uploads':
-			return getFiles(currentPage, currentLimit);
 		default:
-			return getFiles(currentPage, currentLimit);
+			return getFiles({ page: currentPage, limit: currentLimit, headers: {
+				authorization: `Bearer ${token}`
+			} });
 	}
 };
 

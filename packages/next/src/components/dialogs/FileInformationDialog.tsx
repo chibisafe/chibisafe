@@ -2,14 +2,23 @@
 
 import { useRef, useState } from 'react';
 import type { FilePropsType, FileWithAdditionalData } from '@/types';
-import { MediaController, MediaControlBar, MediaPlayButton, MediaMuteButton, MediaVolumeRange, MediaTimeRange, MediaPipButton, MediaFullscreenButton, MediaTimeDisplay, MediaPlaybackRateButton } from 'media-chrome/dist/react'
 import {
-	Dialog,
-	DialogContent,
-	DialogTrigger
-} from '@/components/ui/dialog';
+	MediaControlBar,
+	MediaController,
+	MediaFullscreenButton,
+	MediaMuteButton,
+	MediaPipButton,
+	MediaPlayButton,
+	MediaPlaybackRateButton,
+	MediaTimeDisplay,
+	MediaTimeRange,
+	MediaVolumeRange
+} from 'media-chrome/dist/react';
 import { isFileAudio, isFileImage, isFileVideo } from '~/lib/file';
 import { cn } from '~/lib/utils';
+
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 
 export function FileInformationDialog({
 	file,
@@ -27,7 +36,7 @@ export function FileInformationDialog({
 		setIsVerticalImage(image.current.naturalHeight > image.current.naturalWidth);
 		// TODO: We already know if the image is vertical or not thanks to the thumbnail
 		// so we can just use that instead of checking the naturalHeight and naturalWidth
-	}
+	};
 
 	return (
 		<Dialog>
@@ -44,12 +53,27 @@ export function FileInformationDialog({
 					}}
 				/>
 			</DialogTrigger>
-			<DialogContent className={cn(isVerticalImage ? '!w-fit' : '!w-max', 'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)]')}>
+			<DialogContent
+				className={cn(
+					isVerticalImage ? '!w-fit' : '!w-max',
+					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)]'
+				)}
+			>
 				<div className="grid grid-cols-[1fr,400px] gap-4">
-					<div className={cn(isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto', 'w-full')}>
+					<div
+						className={cn(
+							isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto',
+							'w-full'
+						)}
+					>
 						{isFileImage(file) ? (
 							// eslint-disable-next-line @next/next/no-img-element
-							<img src={file.url} className="h-full object-contain hidden md:block" ref={image} onLoad={() => onImageLoad} />
+							<img
+								src={file.url}
+								className="h-full object-contain hidden md:block"
+								ref={image}
+								onLoad={() => onImageLoad}
+							/>
 						) : isFileVideo(file) ? (
 							<MediaController className="h-full hidden md:block">
 								<video slot="media" src={file.url} crossOrigin="" className="h-full" />
@@ -80,6 +104,9 @@ export function FileInformationDialog({
 							</span>
 						)}
 					</div>
+				</div>
+				<div>
+					<FileInformationDialogActions />
 				</div>
 			</DialogContent>
 		</Dialog>
