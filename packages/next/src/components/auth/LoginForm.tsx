@@ -2,30 +2,38 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '~/lib/useAuth';
-
+// import { login } from '~/lib/useAuth';
+import { login } from '~/lib/api';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
+import { useSetAtom } from 'jotai';
+import { currentUserAtom } from '~/lib/useCurrentUser';
 
 export const LoginForm = () => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
-	const { login } = useAuth();
+	const setCurrentUser = useSetAtom(currentUserAtom);
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
 
-		const doSignIn = await login({
-			username: String(data.get('username')),
-			password: String(data.get('password'))
-		});
+		try {
+			const response = await login({
+				username: String(data.get('username')),
+				password: String(data.get('password'))
+			});
 
-		setIsLoading(false);
+			setCurrentUser(response.user);
 
-		if (doSignIn) router.push('/dashboard');
+			router.push('/dashboard');
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}	
 	}
 
 	return (

@@ -1,17 +1,17 @@
 import { cookies } from 'next/headers';
-
+// 
 const request = {
-	checkForToken: () => {
-		const cookieStore = cookies();
-		const cookie = cookieStore.get('user');
+	// checkForToken: () => {
+	// 	const cookieStore = cookies();
+	// 	const cookie = cookieStore.get('user');
 
-		if (!cookie) {
-			return '';
-		}
+	// 	if (!cookie) {
+	// 		return '';
+	// 	}
 
-		const { token } = JSON.parse(cookie.value);
-		return `Bearer ${token}`;
-	},
+	// 	const { token } = JSON.parse(cookie.value);
+	// 	return `Bearer ${token}`;
+	// },
 
 	parseResponse: async (response: Response) => {
 		if (response.status !== 200) {
@@ -22,13 +22,13 @@ const request = {
 		return response.json();
 	},
 
-	get: async (url = '', data = {}) => {
+	get: async (url = '', query = {}, headers?: {}) => {
 		try {
-			let queryUrl = `${process.env.BASEAPIURL}${url}`;
+			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 
 			// Check if we are passing any arguments and parse them if so
-			if (Object.keys(data).length) {
-				queryUrl += `?${new URLSearchParams(data)}`;
+			if (Object.keys(query).length) {
+				queryUrl += `?${new URLSearchParams(query)}`;
 			}
 
 			const response = await fetch(queryUrl, {
@@ -36,7 +36,8 @@ const request = {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: request.checkForToken()
+					...headers
+					// Authorization: request.checkForToken()
 					// 'Content-Type': 'application/x-www-form-urlencoded',
 				}
 			});
@@ -52,7 +53,7 @@ const request = {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: request.checkForToken(),
+					// Authorization: request.checkForToken(),
 					...headers
 				},
 				body: JSON.stringify(data)
@@ -69,7 +70,7 @@ const request = {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: request.checkForToken(),
+					// Authorization: request.checkForToken(),
 					...headers
 				},
 				body: JSON.stringify(data)

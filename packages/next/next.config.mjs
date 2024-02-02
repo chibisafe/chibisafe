@@ -10,13 +10,15 @@ const withMDX = createMDX({
 	}
 });
 
-const baseApiUrl = 'http://127.0.0.1:8000/api/';
-process.env.BASEAPIURL = baseApiUrl;
+const baseApiUrl = 'http://localhost:8000/api/';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
 	pageExtensions: ['mdx', 'ts', 'tsx'],
+	env: {
+		NEXT_PUBLIC_BASEAPIURL: baseApiUrl
+	},
 	async rewrites() {
 		return [
 			{

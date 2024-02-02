@@ -1,6 +1,7 @@
 import { Buffer } from 'node:buffer';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
+import { fastifyCookie } from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fstatic from '@fastify/static';
@@ -82,6 +83,13 @@ const start = async () => {
 		}
 	});
 
+	// Enable cookie parsing
+	await server.register(fastifyCookie, {
+		secret: SETTINGS.secret,
+		hook: 'onRequest',
+		parseOptions: {}
+	});
+
 	// Route error handler
 	// @ts-ignore
 	// eslint-disable-next-line promise/prefer-await-to-callbacks
@@ -124,7 +132,8 @@ const start = async () => {
 	});
 
 	await server.register(cors, {
-		preflightContinue: true,
+		origin: true,
+		credentials: true,
 		allowedHeaders: [
 			'Accept',
 			'Authorization',
@@ -134,7 +143,6 @@ const start = async () => {
 			'Content-Type',
 			'albumUuid',
 			'X-API-KEY',
-			'application/vnd.chibisafe.json', // I'm deprecating this header but will remain here for compatibility reasons
 			// @chibisafe/uploarder headers
 			'chibi-chunk-number',
 			'chibi-chunks-total',
