@@ -29,11 +29,9 @@
 		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.529.1",
-		"@aws-sdk/s3-request-presigner": "^3.529.1",
-		"@chibisafe/uploader-module": "1.0.11",
+		"@chibisafe/uploader-module": "1.0.10",
 		"@fastify/cookie": "^9.3.1",
-		"@fastify/cors": "^9.0.1",
+		"@fastify/cors": "^8.5.0",
 		"@fastify/helmet": "^11.1.1",
 		"@fastify/rate-limit": "^9.1.0",
 		"@fastify/sensible": "^5.5.0",
