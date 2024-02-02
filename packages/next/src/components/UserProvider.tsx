@@ -1,25 +1,22 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { useAtom } from 'jotai';
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { getMe } from "~/lib/api";
+import { currentUserAtom } from "~/lib/useCurrentUser";
 
-import { getMe } from '@/lib/api';
-import { currentUserAtom } from '@/lib/atoms/currentUser';
-
-export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: boolean }) {
+export function UserProvider() {
 	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
 
 	useEffect(() => {
-		if (!currentUser && shouldFetch) {
-			getMe()
-				// eslint-disable-next-line promise/prefer-await-to-then
-				.then(response => {
-					setCurrentUser(response.user);
-				})
-				// eslint-disable-next-line promise/prefer-await-to-then
-				.catch(() => {});
+		if (!currentUser) {
+			// eslint-disable-next-line promise/prefer-await-to-then
+			getMe().then(response => {
+				setCurrentUser(response.user);
+			// eslint-disable-next-line promise/prefer-await-to-then
+			}).catch(() => {});
 		}
-	}, [currentUser, setCurrentUser, shouldFetch]);
+	}, [currentUser, setCurrentUser]);
 
-	return null;
+  	return null;
 }

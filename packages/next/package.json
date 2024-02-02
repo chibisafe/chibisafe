@@ -24,7 +24,7 @@
 		"class-variance-authority": "^0.4.0",
 		"clsx": "^1.2.1",
 		"framer-motion": "^10.18.0",
-		"jotai": "^2.6.1",
+		"jotai": "^2.6.4",
 		"js-cookie": "^3.0.5",
 		"lucide-react": "0.105.0-alpha.4",
 		"media-chrome": "^2.1.0",

@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useAuth } from '~/lib/useAuth';
-import { useCurrentUser } from '~/lib/useCurrentUser';
+import { logout } from '~/lib/logout';
 
 import {
 	DropdownMenu,
@@ -11,15 +10,16 @@ import {
 	// DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useAtomValue } from 'jotai';
+import { currentUserAtom } from '~/lib/useCurrentUser';
 
 export function NavigationUser() {
-	const { logout } = useAuth();
 	const router = useRouter();
-	const user = useCurrentUser();
+	const currentUser = useAtomValue(currentUserAtom);
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger>{user?.username}</DropdownMenuTrigger>
+			<DropdownMenuTrigger>{currentUser?.username}</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				{/* <div className="flex items-center justify-start gap-2 p-2">
 					<div className="flex flex-col space-y-1 leading-none">
@@ -41,7 +41,7 @@ export function NavigationUser() {
 					className="cursor-pointer"
 					onSelect={event => {
 						event.preventDefault();
-						void logout();
+						logout();
 						router.push('/');
 					}}
 				>
