@@ -48,6 +48,11 @@ export default {
 						type: 'string',
 						example: 'exe'
 					}
+				},
+				useNetworkStorage: {
+					type: 'boolean',
+					description: 'Whether or not network storage is enabled.',
+					example: false
 				}
 			}
 		}

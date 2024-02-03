@@ -44,7 +44,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				select: {
 					name: true
 				}
-			}
+			},
+			isS3: true
 		},
 		orderBy: {
 			id: 'desc'
@@ -89,7 +90,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	for (const file of files) {
 		readyFiles.push({
 			...file,
-			...constructFilePublicLink(req, quarantine ? file.quarantineFile.name : file.name, quarantine)
+			...constructFilePublicLink({
+				req,
+				fileName: quarantine ? file.quarantineFile.name : file.name,
+				quarantine,
+				isS3: file.isS3
+			})
 		});
 	}
 

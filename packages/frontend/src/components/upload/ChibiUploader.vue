@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { chibiUploader } from '@chibisafe/uploader-client';
+import { chibiUploader, type UploaderOptions } from '@chibisafe/uploader-client';
 import { useWindowSize } from '@vueuse/core';
 import { UploadCloudIcon } from 'lucide-vue-next';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
@@ -60,6 +60,7 @@ import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
 import { getFileExtension, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
+// import { chibiUploader, type UploaderOptions } from '../../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
@@ -131,40 +132,58 @@ const pasteHandler = (event: ClipboardEvent) => {
 	}
 };
 
-const processFile = async (file: File) => {
-	files.value?.push(file);
-
-	const blockedExtensions = settingsStore.blockedExtensions;
-	if (blockedExtensions.length) {
-		const extension = getFileExtension(file);
-		if (!extension) return;
-		if (blockedExtensions.includes(`.${extension}`)) {
-			toast.error(`File extension .${extension} is blocked`);
-			return;
-		}
-	}
-
-	await chibiUploader({
+const uploadFile = async ({
+	file,
+	endpoint,
+	isNetworkStored,
+	method = 'POST',
+	identifier = '',
+	publicUrl = ''
+}: {
+	file: File;
+	endpoint: string;
+	isNetworkStored: boolean;
+	method: 'POST' | 'PUT';
+	identifier?: string;
+	publicUrl?: string;
+}) => {
+	const options: UploaderOptions = {
 		// @ts-ignore
 		debug: !import.meta.env.PROD,
-		endpoint: '/api/upload',
+		endpoint,
 		file,
+		method,
 		maxFileSize: maxFileSize.value,
-		chunkSize: chunkSize.value,
-		postParams: {
+		// If we're storing in s3, we don't want to chunk the file
+		chunkSize: isNetworkStored ? maxFileSize.value : chunkSize.value,
+		autoStart: true,
+		maxParallelUploads: 1
+	};
+
+	if (isNetworkStored) {
+		options.headers = {
+			'Content-Type': file.type
+		};
+	} else {
+		options.postParams = {
 			name: file.name,
 			type: file.type,
 			// @ts-ignore
 			size: file.size
-		},
-		headers: {
+		};
+
+		options.headers = {
 			authorization: token.value ? `Bearer ${token.value}` : '',
 			albumuuid: isLoggedIn.value
 				? albumsStore.selectedAlbumForUpload
 					? albumsStore.selectedAlbumForUpload
 					: ''
 				: ''
-		},
+		};
+	}
+
+	await chibiUploader({
+		...options,
 		onStart: (uuid: string, totalChunks: number) => {
 			debug(`Started uploading ${file.name} with uuid ${uuid} and ${totalChunks} chunks`);
 			uploadsStore.addFile({
@@ -189,15 +208,103 @@ const processFile = async (file: File) => {
 		onRetry: (_, reason: any) => {
 			console.log('onRetry', reason);
 		},
-		onFinish: (uuid: string, response: any) => {
+		onFinish: async (uuid: string, response: any) => {
+			if (isNetworkStored) {
+				debug('Finished uploading file to S3 storage', {
+					name: file.name,
+					uuid,
+					url: publicUrl
+				});
+
+				uploadsStore.setCompleted(uuid, publicUrl);
+
+				return fetch('/api/upload/process', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						authorization: token.value ? `Bearer ${token.value}` : '',
+						albumuuid: isLoggedIn.value
+							? albumsStore.selectedAlbumForUpload
+								? albumsStore.selectedAlbumForUpload
+								: ''
+							: ''
+					},
+					body: JSON.stringify({ identifier, name: file.name, type: file.type })
+				})
+					.then(async res => {
+						if (!res.ok) {
+							const error = await res.json();
+							throw new Error(error.message);
+						}
+
+						return res.json();
+					})
+					.then(res => {
+						uploadsStore.setCompleted(uuid, res.url);
+						debug('Finished processing file', {
+							name: file.name,
+							uuid,
+							url: res.url
+						});
+					})
+					.catch(error => {
+						uploadsStore.setError(uuid, error.message);
+						toast.error(error.message);
+					});
+			}
+
 			debug('Finished uploading file', {
 				name: file.name,
 				uuid,
 				url: response.url
 			});
+
 			uploadsStore.setCompleted(uuid, response.url);
+			return null;
 		}
 	});
+};
+
+const processFile = async (file: File) => {
+	files.value?.push(file);
+
+	const blockedExtensions = settingsStore.blockedExtensions;
+	if (blockedExtensions.length) {
+		const extension = getFileExtension(file);
+		if (!extension) return;
+		if (blockedExtensions.includes(`.${extension}`)) {
+			toast.error(`File extension .${extension} is blocked`);
+			return;
+		}
+	}
+
+	if (!settingsStore.useNetworkStorage) {
+		await uploadFile({ file, endpoint: '/api/upload', isNetworkStored: false, method: 'POST' });
+		return;
+	}
+
+	const getSignedUrl = await fetch('/api/upload', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			authorization: token.value ? `Bearer ${token.value}` : ''
+		},
+		body: JSON.stringify({
+			contentType: file.type,
+			name: file.name,
+			size: file.size
+		})
+	});
+
+	if (!getSignedUrl.ok) {
+		const error = await getSignedUrl.json();
+		toast.error(error.message);
+		return;
+	}
+
+	const { url, identifier, publicUrl } = await getSignedUrl.json();
+
+	await uploadFile({ file, endpoint: url, isNetworkStored: true, method: 'PUT', identifier, publicUrl });
 };
 
 const onFileChanged = ($event: Event) => {

@@ -51,7 +51,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			files: {
 				select: {
 					name: true,
-					type: true
+					type: true,
+					isS3: true
 				},
 				orderBy: {
 					id: 'desc'
@@ -73,7 +74,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		const modifiedFile = file as File;
 		files.push({
 			...modifiedFile,
-			...constructFilePublicLink(req, modifiedFile.name)
+			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3: file.isS3 })
 		});
 	}
 

@@ -38,7 +38,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					original: true,
 					size: true,
 					type: true,
-					uuid: true
+					uuid: true,
+					isS3: true
 				},
 				orderBy: {
 					id: 'desc'
@@ -60,7 +61,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const modifiedFile = file as unknown as File;
 		files.push({
 			...modifiedFile,
-			...constructFilePublicLink(req, modifiedFile.name)
+			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3: file.isS3 })
 		});
 	}
 

@@ -25,10 +25,10 @@
 		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"engines": {
-		"node": ">=16.0.0"
+		"node": ">=18.9.0"
 	},
 	"dependencies": {
-		"@chibisafe/uploader-client": "1.0.10",
+		"@chibisafe/uploader-client": "1.0.11",
 		"@headlessui/vue": "^1.7.16",
 		"@tanstack/vue-query": "^5.17.1",
 		"@types/marked": "^6.0.0",
@@ -92,9 +92,6 @@
 		"file uploader",
 		"images"
 	],
-	"volta": {
-		"node": "18.9.0"
-	},
 	"eslintIgnore": [
 		"components.d.ts"
 	]

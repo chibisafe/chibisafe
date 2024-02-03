@@ -16,6 +16,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		backgroundImageURL: SETTINGS.backgroundImageURL,
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts,
-		blockedExtensions: SETTINGS.blockedExtensions
+		blockedExtensions: SETTINGS.blockedExtensions,
+		useNetworkStorage: SETTINGS.useNetworkStorage
 	});
 };

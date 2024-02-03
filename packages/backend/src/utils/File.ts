@@ -1,6 +1,7 @@
 import path from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
+import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import Zip from 'adm-zip';
 import * as blake3 from 'blake3';
 import type { FastifyRequest } from 'fastify';
@@ -68,9 +69,30 @@ export const deleteTmpFile = async (uploadPath: string) => {
 	}
 };
 
-export const deleteFile = async (filename: string, deleteFromDB = false) => {
+export const deleteFile = async ({
+	filename,
+	deleteFromDB = false,
+	isS3 = false
+}: {
+	deleteFromDB?: boolean;
+	filename: string;
+	isS3?: boolean;
+}) => {
 	try {
-		await jetpack.removeAsync(path.join(uploadPath, filename));
+		if (isS3) {
+			const { createS3Client } = await import('@/structures/s3.js');
+			const S3Client = createS3Client();
+
+			const command = new DeleteObjectCommand({
+				Bucket: SETTINGS.S3Bucket,
+				Key: filename
+			});
+
+			await S3Client.send(command);
+		} else {
+			await jetpack.removeAsync(path.join(uploadPath, filename));
+		}
+
 		await deleteThumbnails(filename);
 		if (deleteFromDB) {
 			await prisma.files.deleteMany({
@@ -102,7 +124,7 @@ export const purgeUserFiles = async (userId: number) => {
 		});
 
 		for (const file of files) {
-			await deleteFile(file.name);
+			await deleteFile({ filename: file.name, isS3: file.isS3 });
 
 			if (file.quarantine) {
 				await prisma.files.update({
@@ -117,7 +139,7 @@ export const purgeUserFiles = async (userId: number) => {
 					}
 				});
 
-				await deleteFile(file.quarantineFile!.name);
+				await deleteFile({ filename: file.quarantineFile!.name, isS3: file.isS3 });
 			}
 		}
 
@@ -140,7 +162,7 @@ export const purgePublicFiles = async () => {
 		});
 
 		for (const file of files) {
-			await deleteFile(file.name);
+			await deleteFile({ filename: file.name, isS3: file.isS3 });
 		}
 
 		await prisma.files.deleteMany({
@@ -162,7 +184,7 @@ export const purgeIpFiles = async (ip: string) => {
 		});
 
 		for (const file of files) {
-			await deleteFile(file.name);
+			await deleteFile({ filename: file.name, isS3: file.isS3 });
 		}
 
 		await prisma.files.deleteMany({
@@ -190,10 +212,22 @@ export const createZip = (files: string[], albumUuid: string) => {
 	}
 };
 
-export const constructFilePublicLink = (req: FastifyRequest, fileName: string, quarantine = false) => {
+export const constructFilePublicLink = ({
+	req,
+	fileName,
+	quarantine = false,
+	isS3 = false
+}: {
+	fileName: string;
+	isS3?: boolean;
+	quarantine?: boolean;
+	req: FastifyRequest;
+}) => {
 	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
-		url: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
+		url: isS3
+			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${fileName}`
+			: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
 		thumb: '',
 		thumbSquare: '',
 		preview: ''
@@ -254,6 +288,7 @@ export const storeFileToDb = async (
 		size: file.size,
 		hash: file.hash,
 		ip: file.ip,
+		isS3: file.isS3,
 		createdAt: now,
 		editedAt: now
 	};

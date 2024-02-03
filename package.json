@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "5.4.0",
+	"version": "5.5.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"private": true,
 	"scripts": {
@@ -24,9 +24,8 @@
 		"url": "https://github.com/Pitu"
 	},
 	"license": "MIT",
-	"volta": {
-		"node": "18.9.0",
-		"yarn": "3.6.0"
+	"engines": {
+		"node": ">=18.9.0"
 	},
 	"packageManager": "yarn@3.6.0",
 	"workspaces": [
