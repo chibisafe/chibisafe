@@ -62,6 +62,13 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaTwitterHandle = settingsTable.metaTwitterHandle;
 		SETTINGS.metaDomain = settingsTable.metaDomain;
 		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
+		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
+		SETTINGS.S3Region = settingsTable.S3Region;
+		SETTINGS.S3Bucket = settingsTable.S3Bucket;
+		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
+		SETTINGS.S3SecretKey = settingsTable.S3SecretKey;
+		SETTINGS.S3Endpoint = settingsTable.S3Endpoint;
+		SETTINGS.S3PublicUrl = settingsTable.S3PublicUrl;
 		return;
 	}
 
@@ -92,7 +99,14 @@ export const loadSettings = async (force = false) => {
 		metaDescription: 'description for please-change-me.com 🚀',
 		metaKeywords: 'comma, separated, keywords, that, describe, this, website',
 		metaTwitterHandle: '@your-twitter-handle',
-		usersStorageQuota: 0
+		usersStorageQuota: 0,
+		useNetworkStorage: false,
+		S3Region: '',
+		S3Bucket: '',
+		S3AccessKey: '',
+		S3SecretKey: '',
+		S3Endpoint: '',
+		S3PublicUrl: ''
 	};
 
 	await prisma.settings.create({
@@ -294,5 +308,48 @@ const SETTINGS_META = {
 		name: 'Users Storage Quota',
 		notice: "You can override this setting by changing it on a user's profile.",
 		category: 'users'
+	},
+	useNetworkStorage: {
+		type: 'boolean',
+		description: 'Whether or not to use network storage like S3/Backblaze/Wasabi.',
+		name: 'Use Network Storage',
+		category: 'uploads'
+	},
+	S3Region: {
+		type: 'string',
+		description: 'The region for the S3 bucket.',
+		name: 'S3 Region',
+		category: 'uploads'
+	},
+	S3Bucket: {
+		type: 'string',
+		description: 'The name of the S3 bucket.',
+		name: 'S3 Bucket',
+		category: 'uploads'
+	},
+	S3AccessKey: {
+		type: 'string',
+		description: 'The accesss key for the S3 bucket.',
+		name: 'S3 Access Key',
+		category: 'uploads'
+	},
+	S3SecretKey: {
+		type: 'string',
+		description: 'The secret key for the S3 bucket.',
+		name: 'S3 Secret Key',
+		category: 'uploads'
+	},
+	S3Endpoint: {
+		type: 'string',
+		description: 'The endpoint for the S3 bucket.',
+		name: 'S3 Endpoint',
+		category: 'uploads'
+	},
+	S3PublicUrl: {
+		type: 'string',
+		description: 'The public URL for the S3 bucket. Only provide it for AWS S3.',
+		name: 'S3 Public URL',
+		example: 'https://s3.amazonaws.com',
+		category: 'uploads'
 	}
 };

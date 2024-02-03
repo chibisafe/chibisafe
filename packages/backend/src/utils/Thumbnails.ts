@@ -2,76 +2,123 @@ import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import ffmpeg from 'fluent-ffmpeg';
 import jetpack from 'fs-jetpack';
+import { deleteTmpFile } from './File.js';
 import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
 
-const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'];
-const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
+export const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'];
+export const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
 const squareThumbPath = fileURLToPath(new URL('../../../../uploads/thumbs/square', import.meta.url));
 const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/thumbs/preview', import.meta.url));
 
-const generateThumbnailForImage = async (filename: string, output: string) => {
-	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
+const generateThumbnailForImage = async ({
+	filename,
+	output,
+	tmp = false
+}: {
+	filename: string;
+	output: string;
+	tmp?: boolean;
+}) => {
+	const filePath = fileURLToPath(new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${filename}`, import.meta.url));
 
-	ffmpeg(filePath)
-		.size('64x64')
-		.format('webp')
-		.output(path.join(squareThumbPath, output))
-		.on('error', error => log.error(error.message))
-		.run();
+	await new Promise((resolve, reject) => {
+		ffmpeg(filePath)
+			.size('64x64')
+			.format('webp')
+			.output(path.join(squareThumbPath, output))
+			.on('error', error => {
+				log.error(error.message);
+				return reject;
+			})
+			.on('end', resolve)
+			.run();
+	});
 
-	ffmpeg(filePath)
-		.size('255x?')
-		.format('webp')
-		.output(path.join(thumbPath, output))
-		.on('error', error => log.error(error.message))
-		.run();
+	await new Promise((resolve, reject) => {
+		ffmpeg(filePath)
+			.size('256x?')
+			.format('webp')
+			.output(path.join(thumbPath, output))
+			.on('error', error => {
+				log.error(error.message);
+				return reject;
+			})
+			.on('end', resolve)
+			.run();
+	});
+
+	if (tmp) await deleteTmpFile(filePath);
 };
 
-const generateThumbnailForVideo = async (filename: string, output: string) => {
-	const filePath = fileURLToPath(new URL(`../../../../uploads/${filename}`, import.meta.url));
+const generateThumbnailForVideo = async ({
+	filename,
+	output,
+	tmp = false
+}: {
+	filename: string;
+	output: string;
+	tmp?: boolean;
+}) => {
+	const filePath = fileURLToPath(new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${filename}`, import.meta.url));
 
-	ffmpeg(filePath)
-		.thumbnail({
-			timestamps: [0],
-			filename: '%b.webp',
-			folder: squareThumbPath,
-			size: '64x64'
-		})
-		.on('error', error => log.error(error.message));
+	await new Promise((resolve, reject) => {
+		ffmpeg(filePath)
+			.thumbnail({
+				timestamps: [0],
+				filename: '%b.webp',
+				folder: squareThumbPath,
+				size: '64x64'
+			})
+			.on('error', error => {
+				log.error(error.message);
+				return reject;
+			})
+			.on('end', resolve);
+	});
 
-	ffmpeg(filePath)
-		.thumbnail({
-			timestamps: [0],
-			filename: '%b.webp',
-			folder: thumbPath,
-			size: '150x?'
-		})
-		.on('error', error => log.error(error.message));
+	await new Promise((resolve, reject) => {
+		ffmpeg(filePath)
+			.thumbnail({
+				timestamps: [0],
+				filename: '%b.webp',
+				folder: thumbPath,
+				size: '256x?'
+			})
+			.on('error', error => {
+				log.error(error.message);
+				return reject;
+			})
+			.on('end', resolve);
+	});
 
 	try {
 		await previewUtil({
 			input: filePath,
-			width: 150,
+			width: 256,
 			output: path.join(videoPreviewPath, output)
 		});
+
+		if (tmp) await deleteTmpFile(filePath);
 	} catch (error) {
 		log.error(error);
 	}
 };
 
-export const generateThumbnails = async (filename: string) => {
+export const generateThumbnails = async (filename: string, tmp = false) => {
 	if (!filename) return;
 	const ext = path.extname(filename).toLowerCase();
 	const output = `${filename.slice(0, -ext.length)}.webp`;
 	const previewOutput = `${filename.slice(0, -ext.length)}.webm`;
 
+	log.debug(`Generating thumbnails for ${filename}`);
+
 	// eslint-disable-next-line max-len
-	if (imageExtensions.includes(ext)) return generateThumbnailForImage(filename, output);
+	if (imageExtensions.includes(ext)) return generateThumbnailForImage({ filename, output, tmp });
 	// eslint-disable-next-line max-len
-	if (videoExtensions.includes(ext)) return generateThumbnailForVideo(filename, previewOutput);
+	if (videoExtensions.includes(ext)) return generateThumbnailForVideo({ filename, output: previewOutput, tmp });
 	return null;
 };
 

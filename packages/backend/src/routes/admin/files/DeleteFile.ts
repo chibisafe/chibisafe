@@ -22,7 +22,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		select: {
 			name: true,
 			quarantine: true,
-			quarantineFile: true
+			quarantineFile: true,
+			isS3: true
 		}
 	});
 
@@ -55,7 +56,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	// Remove the file from disk
-	await deleteFile(file.name);
+	await deleteFile({ filename: file.name, isS3: file.isS3 });
 
 	return res.send({
 		message: 'Successfully deleted the file'

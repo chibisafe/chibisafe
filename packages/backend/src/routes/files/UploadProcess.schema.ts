@@ -1,15 +1,30 @@
 export default {
-	summary: 'Upload file',
-	description: 'Uploads a file',
+	summary: 'Process uploaded file',
+	description: 'Processes an uploaded file',
 	tags: ['Files'],
 	headers: {
 		type: 'object',
 		properties: {
-			albumuuid: { type: 'string' },
-			'chibi-chunk-number': { type: 'number' },
-			'chibi-chunks-total': { type: 'number' },
-			'chibi-uuid': { type: 'string' }
+			albumuuid: { type: 'string' }
 		}
+	},
+	body: {
+		type: 'object',
+		properties: {
+			identifier: {
+				type: 'string',
+				description: 'The identifier of the file.'
+			},
+			name: {
+				type: 'string',
+				description: 'The name of the file.'
+			},
+			type: {
+				type: 'string',
+				description: 'The type of the file.'
+			}
+		},
+		required: ['identifier', 'name', 'type']
 	},
 	response: {
 		200: {
@@ -28,24 +43,14 @@ export default {
 				url: {
 					type: 'string',
 					description: 'The URL of the file.',
-					example: 'https://chibisafe.moe/ks2vjph2hkc.png'
+					example: 'https://s3.amazonaws.com/chibisafe/ks2vjph2hkc.jpg'
 				},
 				identifier: {
 					type: 'string',
 					description: 'The identifier of the file.',
 					example: 'ks2vjph2hkc.jpg'
-				},
-				publicUrl: {
-					type: 'string',
-					description: 'The public URL of the file.',
-					example: 'https://s3.amazonaws.com/chibisafe/ks2vjph2hkc.jpg'
 				}
 			}
-		},
-		204: {
-			title: '204',
-			type: 'object',
-			properties: {}
 		},
 		'4xx': { $ref: 'HTTP4xxError' },
 		'5xx': { $ref: 'HTTP5xxError' }

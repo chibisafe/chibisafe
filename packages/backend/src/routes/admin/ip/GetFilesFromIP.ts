@@ -34,7 +34,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	for (const file of files) {
 		readyFiles.push({
 			...file,
-			...constructFilePublicLink(req, file.name)
+			...constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3 })
 		});
 	}
 

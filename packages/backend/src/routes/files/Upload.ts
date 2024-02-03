@@ -1,6 +1,8 @@
 import path from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { processFile } from '@chibisafe/uploader-module';
 import type { FastifyReply } from 'fastify';
 import jetpack from 'fs-jetpack';
@@ -33,7 +35,62 @@ export const options = {
 	]
 };
 
+export const uploadToNetworkStorage = async (req: RequestWithUser, res: FastifyReply) => {
+	const { contentType, size, name } = req.body as { contentType: string; name: string; size: number };
+	if (!contentType || !size || !name) {
+		void res.badRequest('Missing file information');
+		return;
+	}
+
+	const quota = await getUsedQuota(req.user?.id as number);
+	if (quota?.overQuota) {
+		void res.forbidden('You are over your storage quota');
+		return;
+	}
+
+	if (!SETTINGS.publicMode && !req.user) {
+		void res.unauthorized('Only registered users are allowed to upload files.');
+		return;
+	}
+
+	const fileExtension = `.${name.split('.').pop()!}`.toLowerCase();
+	if (SETTINGS.blockedExtensions.includes(fileExtension)) {
+		void res.badRequest('File type is not allowed.');
+		return;
+	}
+
+	// Assign a unique identifier to the file
+	const uniqueIdentifier = await getUniqueFileIdentifier();
+	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
+
+	try {
+		const { createS3Client } = await import('@/structures/s3.js');
+		const identifier = `${uniqueIdentifier}${fileExtension}`;
+		const url = await getSignedUrl(
+			createS3Client(),
+			new PutObjectCommand({
+				Bucket: SETTINGS.S3Bucket,
+				Key: identifier,
+				ContentType: contentType,
+				ContentLength: size
+			}),
+			{ expiresIn: 3600 }
+		);
+
+		await res.code(200).send({
+			url,
+			identifier,
+			publicUrl: `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${identifier}`
+		});
+	} catch (error) {
+		req.log.error(error);
+		void res.internalServerError('Could not generate signed URL');
+	}
+};
+
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	if (SETTINGS.useNetworkStorage) return uploadToNetworkStorage(req, res);
+
 	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
 	const maxChunkSize = SETTINGS.chunkSize;
 	const maxFileSize = SETTINGS.maxSize;
@@ -105,7 +162,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			size: String(upload.metadata.size),
 			hash: await hashFile(upload.path as string),
 			// @ts-ignore
-			ip: req.ip
+			ip: req.ip,
+			isS3: false
 		};
 
 		let uploadedFile;
@@ -124,7 +182,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			void generateThumbnails(savedFile.file.name);
 		}
 
-		const linkData = constructFilePublicLink(req, uploadedFile.name);
+		const linkData = constructFilePublicLink({ req, fileName: uploadedFile.name });
 		// Construct public link
 		const fileWithLink = {
 			...uploadedFile,
