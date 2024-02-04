@@ -1,7 +1,7 @@
 import path from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
-import { DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import Zip from 'adm-zip';
 import * as blake3 from 'blake3';
 import type { FastifyRequest } from 'fastify';
@@ -69,40 +69,80 @@ export const deleteTmpFile = async (uploadPath: string) => {
 	}
 };
 
-export const deleteFile = async ({
-	filename,
-	deleteFromDB = false,
-	isS3 = false
+export const deleteFiles = async ({
+	files,
+	deleteFromDB = false
 }: {
 	deleteFromDB?: boolean;
-	filename: string;
-	isS3?: boolean;
+	files: {
+		isS3: boolean;
+		name: string;
+		quarantine: boolean;
+		quarantineFile: { name: string } | null;
+		uuid: string;
+	}[];
 }) => {
+	const s3Files = files.filter(file => file.isS3);
+	const localFiles = files.filter(file => !file.isS3);
+
 	try {
-		if (isS3) {
+		if (s3Files.length) {
 			const { createS3Client } = await import('@/structures/s3.js');
 			const S3Client = createS3Client();
 
-			const command = new DeleteObjectCommand({
+			const command = new DeleteObjectsCommand({
 				Bucket: SETTINGS.S3Bucket,
-				Key: filename
+				Delete: {
+					Objects: s3Files.map(file => ({
+						Key: file.quarantine ? `quarantine/${file.quarantineFile?.name}` ?? file.name : file.name
+					})),
+					Quiet: true
+				}
 			});
 
 			await S3Client.send(command);
-		} else {
-			await jetpack.removeAsync(path.join(uploadPath, filename));
 		}
 
-		await deleteThumbnails(filename);
+		if (localFiles.length) {
+			for (const file of localFiles) {
+				if (file.quarantine) {
+					await prisma.files.update({
+						where: {
+							uuid: file.uuid
+						},
+						data: {
+							quarantine: false,
+							quarantineFile: {
+								delete: true
+							}
+						}
+					});
+				}
+
+				await jetpack.removeAsync(
+					path.join(
+						file.quarantine ? quarantinePath : uploadPath,
+						file.quarantine ? file.quarantineFile?.name ?? file.name : file.name
+					)
+				);
+			}
+		}
+
+		for (const file of files) {
+			await deleteThumbnails(file.name);
+		}
+
 		if (deleteFromDB) {
 			await prisma.files.deleteMany({
 				where: {
-					name: filename
+					uuid: {
+						in: files.map(file => file.uuid)
+					}
 				}
 			});
 		}
 	} catch (error) {
-		log.error(`There was an error removing the file < ${filename} >`);
+		log.error(`There was an error removing one/all of the files < [${files.map(file => file.name).join(', ')}] >`);
 		log.error(error);
 	}
 };
@@ -123,25 +163,7 @@ export const purgeUserFiles = async (userId: number) => {
 			}
 		});
 
-		for (const file of files) {
-			await deleteFile({ filename: file.name, isS3: file.isS3 });
-
-			if (file.quarantine) {
-				await prisma.files.update({
-					where: {
-						uuid: file.uuid
-					},
-					data: {
-						quarantine: false,
-						quarantineFile: {
-							delete: true
-						}
-					}
-				});
-
-				await deleteFile({ filename: file.quarantineFile!.name, isS3: file.isS3 });
-			}
-		}
+		await deleteFiles({ files });
 
 		await prisma.files.deleteMany({
 			where: {
@@ -158,12 +180,13 @@ export const purgePublicFiles = async () => {
 		const files = await prisma.files.findMany({
 			where: {
 				userId: null
+			},
+			include: {
+				quarantineFile: true
 			}
 		});
 
-		for (const file of files) {
-			await deleteFile({ filename: file.name, isS3: file.isS3 });
-		}
+		await deleteFiles({ files });
 
 		await prisma.files.deleteMany({
 			where: {
@@ -180,12 +203,13 @@ export const purgeIpFiles = async (ip: string) => {
 		const files = await prisma.files.findMany({
 			where: {
 				ip
+			},
+			include: {
+				quarantineFile: true
 			}
 		});
 
-		for (const file of files) {
-			await deleteFile({ filename: file.name, isS3: file.isS3 });
-		}
+		await deleteFiles({ files });
 
 		await prisma.files.deleteMany({
 			where: {
@@ -226,7 +250,9 @@ export const constructFilePublicLink = ({
 	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
 		url: isS3
-			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${fileName}`
+			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}${
+					quarantine ? '/quarantine' : ''
+				}/${fileName}`
 			: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
 		thumb: '',
 		thumbSquare: '',
