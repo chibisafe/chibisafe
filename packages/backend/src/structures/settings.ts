@@ -341,7 +341,7 @@ const SETTINGS_META = {
 	},
 	S3Endpoint: {
 		type: 'string',
-		description: 'The endpoint for the S3 bucket.',
+		description: 'The endpoint for the S3 bucket. Leave empty for AWS S3.',
 		name: 'S3 Endpoint',
 		category: 'uploads'
 	},
