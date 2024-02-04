@@ -80,7 +80,7 @@ export const uploadToNetworkStorage = async (req: RequestWithUser, res: FastifyR
 		await res.code(200).send({
 			url,
 			identifier,
-			publicUrl: `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${identifier}`
+			publicUrl: `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${identifier}`
 		});
 	} catch (error) {
 		req.log.error(error);

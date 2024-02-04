@@ -38,7 +38,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	}
 
 	if (file.isS3) {
-		const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${file.name}`;
+		const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${file.name}`;
 
 		const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
 		const newPath = `${tmpDir}/${file.name}`;

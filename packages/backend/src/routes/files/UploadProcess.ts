@@ -35,7 +35,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const S3Client = createS3Client();
 
 	const album = await validateAlbum(req.headers.albumuuid as string, req.user ? req.user : undefined);
-	const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}/${identifier}`;
+	const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${identifier}`;
 
 	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
 	const newPath = `${tmpDir}/${identifier}`;
