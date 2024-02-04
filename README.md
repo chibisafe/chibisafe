@@ -85,6 +85,7 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 
 ### Features
 - [Beautiful docs](https://chibisafe.moe/docs)
+- [S3 Storage Support](https://github.com/chibisafe/chibisafe/blob/master/docs/s3.md)
 - Chunked uploads
 - Share direct links to uploaded files
 - Albums/Folders with direct links to share
