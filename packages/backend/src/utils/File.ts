@@ -250,9 +250,7 @@ export const constructFilePublicLink = ({
 	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
 		url: isS3
-			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${SETTINGS.S3Bucket}${
-					quarantine ? '/quarantine' : ''
-				}/${fileName}`
+			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${quarantine ? '/quarantine' : ''}/${fileName}`
 			: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
 		thumb: '',
 		thumbSquare: '',

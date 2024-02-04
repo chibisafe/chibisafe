@@ -347,9 +347,9 @@ const SETTINGS_META = {
 	},
 	S3PublicUrl: {
 		type: 'string',
-		description: 'The public URL for the S3 bucket. Only provide it for AWS S3.',
+		description: 'The public URL for the S3 bucket. Needed for AWS S3, not sure for others.',
 		name: 'S3 Public URL',
-		example: 'https://s3.amazonaws.com',
+		example: 'https://chibisafe.s3.us-east-1.amazonaws.com',
 		category: 'uploads'
 	}
 };
