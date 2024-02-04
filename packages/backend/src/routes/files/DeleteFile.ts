@@ -1,7 +1,7 @@
 import type { FastifyReply } from 'fastify';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
-import { deleteFile } from '@/utils/File.js';
+import { deleteFiles } from '@/utils/File.js';
 
 export const options = {
 	url: '/file/:uuid',
@@ -16,6 +16,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		where: {
 			userId: req.user.id,
 			uuid
+		},
+		select: {
+			uuid: true,
+			name: true,
+			quarantine: true,
+			quarantineFile: true,
+			isS3: true
 		}
 	});
 
@@ -32,7 +39,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	// Remove the file from disk
-	await deleteFile({ filename: file.name, isS3: file.isS3 });
+	await deleteFiles({ files: [file] });
 
 	return res.send({
 		message: 'Successfully deleted the file'
