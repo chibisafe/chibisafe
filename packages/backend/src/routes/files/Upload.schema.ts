@@ -11,6 +11,23 @@ export default {
 			'chibi-uuid': { type: 'string' }
 		}
 	},
+	body: {
+		type: ['object', 'null'],
+		properties: {
+			size: {
+				type: 'number',
+				description: 'The size of the file.'
+			},
+			name: {
+				type: 'string',
+				description: 'The name of the file.'
+			},
+			contentType: {
+				type: 'string',
+				description: 'The content type of the file.'
+			}
+		}
+	},
 	response: {
 		200: {
 			type: 'object',
