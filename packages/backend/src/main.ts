@@ -259,7 +259,8 @@ export const getHtmlBuffer = async () => {
 		serviceName: SETTINGS.serviceName,
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts,
-		blockedExtensions: SETTINGS.blockedExtensions
+		blockedExtensions: SETTINGS.blockedExtensions,
+		useNetworkStorage: SETTINGS.useNetworkStorage
 	};
 
 	indexHTML = indexHTML.replaceAll(
