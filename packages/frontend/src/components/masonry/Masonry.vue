@@ -53,6 +53,14 @@
 				</template>
 
 				<div v-else class="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
+					<a
+						v-if="type === 'publicAlbum'"
+						class="w-full h-full absolute"
+						:href="file?.url"
+						target="_blank"
+						rel="noopener noreferrer"
+						variant="none"
+					/>
 					<FileAudioIcon v-if="isFileAudio(file)" class="text-light-100 w-16 h-16" />
 					<FileTextIcon v-else-if="isFilePDF(file)" class="text-light-100 w-16 h-16" />
 					<FileIcon v-else class="text-light-100 w-16 h-16" />
