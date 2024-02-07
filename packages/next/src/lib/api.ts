@@ -13,9 +13,9 @@ const sendSuccessToast = (message: string) => {
 
 export const login = async ({ username, password }: { password: string; username: string }) => {
 	try {
-		const data = await request.post('auth/login', { username, password })
+		const data = await request.post('auth/login', { username, password });
 		debug('login', data);
-		return data
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -95,7 +95,15 @@ export const getUserAdmin = async (uuid: string) => {
 	}
 };
 
-export const getFiles = async ({ page, limit = 50, headers = {} } : { headers?: Record<string, any>, limit: number, page: number }) => {
+export const getFiles = async ({
+	page,
+	limit = 50,
+	headers = {}
+}: {
+	headers?: Record<string, any>;
+	limit: number;
+	page: number;
+}) => {
 	try {
 		const data = await request.get(`files?page=${page}&limit=${limit}`, {}, headers);
 		debug('getFiles', data);
