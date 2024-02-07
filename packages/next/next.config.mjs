@@ -19,6 +19,11 @@ const nextConfig = {
 	env: {
 		NEXT_PUBLIC_BASEAPIURL: baseApiUrl
 	},
+	logging: {
+		fetches: {
+			fullUrl: true
+		}
+	},
 	async rewrites() {
 		return [
 			{
