@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { logout } from '~/lib/logout';
+import { useAtomValue } from 'jotai';
 
+import { logout } from '@/lib/logout';
+import { currentUserAtom } from '@/lib/useCurrentUser';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,8 +12,6 @@ import {
 	// DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAtomValue } from 'jotai';
-import { currentUserAtom } from '~/lib/useCurrentUser';
 
 export function NavigationUser() {
 	const router = useRouter();

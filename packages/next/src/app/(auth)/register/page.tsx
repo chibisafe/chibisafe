@@ -1,10 +1,10 @@
 import * as React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { RegisterForm } from '~/components/auth/RegisterForm';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { RegisterForm } from '@/components/auth/RegisterForm';
 import { Icons } from '@/components/icons';
 
 export const metadata: Metadata = {

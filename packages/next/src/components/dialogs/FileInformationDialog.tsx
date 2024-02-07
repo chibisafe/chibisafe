@@ -14,9 +14,9 @@ import {
 	MediaTimeRange,
 	MediaVolumeRange
 } from 'media-chrome/dist/react';
-import { isFileAudio, isFileImage, isFileVideo } from '~/lib/file';
-import { cn } from '~/lib/utils';
 
+import { isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
+import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 
