@@ -1,10 +1,10 @@
 'use client';
 
-import type { PropsWithChildren } from "react";
-import { ThemeProvider } from "next-themes"
-import { Provider as JotaiProvider } from "jotai";
+import type { PropsWithChildren } from 'react';
+import { Provider as JotaiProvider } from 'jotai';
+import { ThemeProvider } from 'next-themes';
 
-export function Providers({ children } : PropsWithChildren) {
+export function Providers({ children }: PropsWithChildren) {
 	return (
 		<JotaiProvider>
 			<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -12,4 +12,4 @@ export function Providers({ children } : PropsWithChildren) {
 			</ThemeProvider>
 		</JotaiProvider>
 	);
-} 
+}

@@ -3,10 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
 	const currentUser = request.cookies.get('token')?.value;
 
-	if (
-		request.nextUrl.pathname.startsWith('/dashboard') &&
-		!currentUser
-	) {
+	if (request.nextUrl.pathname.startsWith('/dashboard') && !currentUser) {
 		return NextResponse.redirect(new URL('/login', request.url));
 	}
 
@@ -17,4 +14,4 @@ export function middleware(request: NextRequest) {
 	return NextResponse.next();
 }
 
-var asd: number = 'asd';
+const asd: number = 'asd';
