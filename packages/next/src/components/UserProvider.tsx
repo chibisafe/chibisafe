@@ -11,12 +11,12 @@ export function UserProvider() {
 
 	useEffect(() => {
 		if (!currentUser) {
-			// eslint-disable-next-line promise/prefer-await-to-then
 			getMe()
+				// eslint-disable-next-line promise/prefer-await-to-then
 				.then(response => {
 					setCurrentUser(response.user);
-					// eslint-disable-next-line promise/prefer-await-to-then
 				})
+				// eslint-disable-next-line promise/prefer-await-to-then
 				.catch(() => {});
 		}
 	}, [currentUser, setCurrentUser]);
