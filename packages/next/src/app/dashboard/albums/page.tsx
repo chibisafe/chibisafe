@@ -1,6 +1,7 @@
+import { Plus } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { Icons } from '@/components/icons';
 
 export const metadata = {
 	title: 'Dashboard - Albums'
@@ -11,7 +12,7 @@ export default async function DashboardPage() {
 		<>
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">
 				<Button>
-					<Icons.add className="mr-2 h-4 w-4" />
+					<Plus className="mr-2 h-4 w-4" />
 					New album
 				</Button>
 			</DashboardHeader>

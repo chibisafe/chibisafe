@@ -3,12 +3,11 @@
 
 import { useState } from 'react';
 import type { File, FilePropsType } from '@/types';
+import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
 
 import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
-import { debug } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
-import { Icons } from '@/components/icons';
 
 export function Masonry({
 	files,
@@ -58,7 +57,7 @@ export function Masonry({
 
 						{file.quarantine ? (
 							<div className="w-[225px] h-40 bg-dark-90 flex flex-col justify-center items-center cursor-not-allowed">
-								<Icons.warning className="text-red-500 w-16 h-16" />
+								<FileWarning className="text-red-500 w-16 h-16" />
 							</div>
 						) : (
 							<FileInformationDialog file={file} type={type} />
@@ -89,14 +88,14 @@ export function Masonry({
 								)}
 
 								{isFileVideo(file) && (
-									<Icons.video className="absolute bottom-1 right-1 w-6 h-6 pointer-events-none" />
+									<Video className="absolute bottom-1 right-1 w-6 h-6 pointer-events-none" />
 								)}
 							</>
 						) : (
 							<div className="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
-								{isFileAudio(file) && <Icons.audio className=" w-16 h-16" />}
-								{isFilePDF(file) && <Icons.text className=" w-16 h-16" />}
-								{!isFileAudio(file) && !isFilePDF(file) && <Icons.file className=" w-16 h-16" />}
+								{isFileAudio(file) && <FileAudio className=" w-16 h-16" />}
+								{isFilePDF(file) && <FileText className=" w-16 h-16" />}
+								{!isFileAudio(file) && !isFilePDF(file) && <FileIcon className=" w-16 h-16" />}
 								{file.original ? (
 									<span className=" mt-4 text-lg text-center break-all w-[160px]">
 										{file.original.length > 60 ? `${file.original.slice(0, 40)}...` : file.original}

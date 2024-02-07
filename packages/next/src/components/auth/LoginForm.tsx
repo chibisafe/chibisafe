@@ -3,15 +3,14 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 
-// import { login } from '@/lib/useAuth';
 import { login } from '@/lib/api';
 import { currentUserAtom } from '@/lib/useCurrentUser';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/icons';
 
 export const LoginForm = () => {
 	const router = useRouter();
@@ -72,7 +71,7 @@ export const LoginForm = () => {
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>
-						{isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 						Sign In
 					</button>
 				</div>
