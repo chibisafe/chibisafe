@@ -3,9 +3,9 @@
 
 import { useState } from 'react';
 import type { File, FilePropsType } from '@/types';
-import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '~/lib/file';
-import { debug } from '~/lib/utils';
 
+import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
+import { debug } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 import { Icons } from '@/components/icons';
@@ -47,8 +47,8 @@ export function Masonry({
 					<div
 						className="relative w-full h-auto"
 						key={idx}
-						onMouseEnter={() => isFileVideo(file) ? addToHoveredList(file) : null}
-						onMouseLeave={() => isFileVideo(file) ? removeFromHoveredList(file) : null}
+						onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
+						onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
 					>
 						{/* TODO: No clue whatsoever why this assertion doesn't work when it works in vue,
 						so I'm removing the publicAlbum stuff for now because of it

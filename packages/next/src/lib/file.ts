@@ -1,4 +1,4 @@
-import type { FileWithAdditionalData } from '~/types';
+import type { FileWithAdditionalData } from '@/types';
 
 export const formatBytes = (bytes: number, decimals = 2) => {
 	if (bytes === 0) return '0 Bytes';

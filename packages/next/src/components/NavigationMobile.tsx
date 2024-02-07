@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
-import type { NavItem } from '~/types';
+import type { NavItem } from '@/types';
 
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';

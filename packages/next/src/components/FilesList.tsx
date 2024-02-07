@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import type { FileProps } from '~/types';
+import type { FileProps } from '@/types';
 
 import {
 	getAlbum,

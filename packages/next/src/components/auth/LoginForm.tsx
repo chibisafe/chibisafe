@@ -2,15 +2,16 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-// import { login } from '~/lib/useAuth';
-import { login } from '~/lib/api';
+import { useSetAtom } from 'jotai';
+
+// import { login } from '@/lib/useAuth';
+import { login } from '@/lib/api';
+import { currentUserAtom } from '@/lib/useCurrentUser';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/icons';
-import { useSetAtom } from 'jotai';
-import { currentUserAtom } from '~/lib/useCurrentUser';
 
 export const LoginForm = () => {
 	const router = useRouter();
@@ -33,7 +34,7 @@ export const LoginForm = () => {
 			console.error(error);
 		} finally {
 			setIsLoading(false);
-		}	
+		}
 	}
 
 	return (

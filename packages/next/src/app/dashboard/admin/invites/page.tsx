@@ -1,6 +1,6 @@
-import { DashboardHeader } from '~/components/DashboardHeader';
-import { Icons } from '~/components/icons';
-import { Button } from '~/components/ui/button';
+import { Button } from '@/components/ui/button';
+import { DashboardHeader } from '@/components/DashboardHeader';
+import { Icons } from '@/components/icons';
 
 export const metadata = {
 	title: 'Dashboard - Admin'
