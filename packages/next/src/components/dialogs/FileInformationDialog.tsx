@@ -59,7 +59,7 @@ export function FileInformationDialog({
 					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)]'
 				)}
 			>
-				<div className="grid grid-cols-[1fr] gap-4">
+				<div className="grid grid-cols-[1fr,400px] gap-4">
 					<div
 						className={cn(
 							isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto',
