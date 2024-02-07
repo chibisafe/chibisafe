@@ -1,9 +1,9 @@
 import type { PageQuery } from '@/types';
+import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
-import { Icons } from '@/components/icons';
 
 export const metadata = {
 	title: 'Dashboard - Uploads'
@@ -14,7 +14,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pa
 		<>
 			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
 				<Button>
-					<Icons.add className="mr-2 h-4 w-4" />
+					<Plus className="mr-2 h-4 w-4" />
 					Upload file
 				</Button>
 			</DashboardHeader>

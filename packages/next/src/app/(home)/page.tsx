@@ -1,4 +1,3 @@
-import { siteConfig } from '@/config/site';
 import { FileUploader } from '@/components/FileUploader';
 
 export default function Home() {
@@ -8,7 +7,7 @@ export default function Home() {
 				<div className="lg:mb-10 lg:w-1/2">
 					<div className="lg:mx-auto lg:max-w-2xl">
 						<h1 className="text-3xl font-extrabold leading-tight tracking-tighter xs:text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl">
-							{siteConfig.description}
+							Beautiful and performant vault to save all your files in the cloud.
 						</h1>
 						<p className="xs:text-lg lg:text-xl xl:max-w-xl text-muted-foreground mt-6">
 							<span className="text-white">chibisafe</span> is a modern and self-hosted take on file
