@@ -1,12 +1,12 @@
 'use client';
 
 import * as React from 'react';
+import { Loader2 } from 'lucide-react';
 
 import { cn, debug } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/icons';
 
 export const RegisterForm = () => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -64,7 +64,7 @@ export const RegisterForm = () => {
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>
-						{isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 						Register
 					</button>
 				</div>

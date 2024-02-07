@@ -1,11 +1,11 @@
 'use client';
 
 import { useCallback, useRef } from 'react';
+import { UploadCloud } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 
 import { formatBytes } from '@/lib/file';
 import { cn, debug } from '@/lib/utils';
-import { Icons } from '@/components/icons';
 
 export function FileUploader() {
 	const isUploadEnabled = true;
@@ -19,10 +19,7 @@ export function FileUploader() {
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: onFileAdded });
 	return (
-		<div
-			className="w-80 h-fit max-h-[320px] flex-col right-0 top-0 space-y-2"
-			{...getRootProps()}
-		>
+		<div className="w-80 h-fit max-h-[320px] flex-col right-0 top-0 space-y-2" {...getRootProps()}>
 			<div
 				className={cn([
 					'w-80 h-80 right-0 top-0 bg-[#181a1b] rounded-3xl border-4 shadow-lg flex items-center justify-center blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all',
@@ -31,7 +28,7 @@ export function FileUploader() {
 			>
 				{isUploadEnabled ? (
 					<>
-						<Icons.uploadCloud className="h-12 w-12 pointer-events-none " />
+						<UploadCloud className="h-12 w-12 pointer-events-none " />
 						<h3 className="font-bold text-center mt-4 pointer-events-none">
 							<p className="">
 								{' '}
