@@ -3,12 +3,12 @@ import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Toaster } from 'sonner';
 
-import { siteConfig } from '@/config/site';
 import { fontHeading, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { TailwindIndicator } from '@/components/tailwind-indicator';
-import { Providers } from './providers';
 import { UserProvider } from '@/components/UserProvider';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
+
+import { Providers } from './providers';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -21,13 +21,19 @@ export const viewport: Viewport = {
 	]
 };
 
+const meta = {
+	url: 'https://chibisafe.moe',
+	name: 'chibisafe',
+	description: 'Beautiful and performant vault to save all your files in the cloud.'
+};
+
 export const metadata: Metadata = {
-	metadataBase: new URL(siteConfig.url),
+	metadataBase: new URL(meta.url),
 	title: {
-		default: siteConfig.name,
-		template: `%s - ${siteConfig.name}`
+		default: meta.name,
+		template: `%s - ${meta.name}`
 	},
-	description: siteConfig.description,
+	description: meta.description,
 	keywords: ['chibisafe', 'file uploader', 'vault', 'react', 'free', 'open source', 'pitu', 'kana', 'kana.dev'],
 	authors: [
 		{
@@ -40,16 +46,16 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
-		url: siteConfig.url,
-		title: siteConfig.name,
-		description: siteConfig.description,
-		siteName: siteConfig.name,
+		url: meta.url,
+		title: meta.name,
+		description: meta.description,
+		siteName: meta.name,
 		images: [`/meta.jpg`]
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: siteConfig.name,
-		description: siteConfig.description,
+		title: meta.name,
+		description: meta.description,
 		images: [`/meta.jpg`],
 		creator: '@its_pitu'
 	},

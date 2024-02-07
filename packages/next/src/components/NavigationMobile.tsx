@@ -2,10 +2,8 @@ import * as React from 'react';
 import Link from 'next/link';
 import type { NavItem } from '@/types';
 
-import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-// import { useLockBody } from '@/hooks/use-lock-body';
-import { Icons } from '@/components/icons';
+import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
 export function NavigationMobile({
 	items,
@@ -24,8 +22,8 @@ export function NavigationMobile({
 		>
 			<div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
 				<Link href="/" className="flex items-center space-x-2">
-					<Icons.logo />
-					<span className="font-bold">{siteConfig.name}</span>
+					<ChibisafeLogo />
+					<span className="font-bold">chibisafe</span>
 				</Link>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
 					{items.map((item, index) => (
