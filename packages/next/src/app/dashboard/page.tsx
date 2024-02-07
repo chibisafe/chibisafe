@@ -1,5 +1,4 @@
 import { DashboardHeader } from '~/components/DashboardHeader';
-import { DashboardShell } from '~/components/DashboardShell';
 import { FilesList } from '~/components/FilesList';
 import { Icons } from '~/components/icons';
 import { Button } from '~/components/ui/button';
@@ -11,7 +10,7 @@ export const metadata = {
 
 export default async function DashboardPage({ searchParams }: { searchParams: PageQuery }) {
 	return (
-		<DashboardShell>
+		<>
 			<DashboardHeader title="Uploads" subtitle="Manage your uploads">
 				<Button>
 					<Icons.add className="mr-2 h-4 w-4" />
@@ -21,6 +20,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pa
 			<div className="px-2">
 				<FilesList type="uploads" query={searchParams} />
 			</div>
-		</DashboardShell>
+		</>
 	);
 }

@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import type { FileProps } from '~/types';
 
 import {
@@ -12,7 +13,6 @@ import {
 } from '@/lib/api';
 import { Masonry } from '@/components/Masonry';
 import { Pagination } from '@/components/Pagination';
-import { cookies } from 'next/headers';
 
 const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: number) => {
 	console.log('Fetching files', props);
@@ -46,9 +46,13 @@ const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: numb
 		case 'publicAlbum':
 			return getFilesFromPublicAlbum(props.identifier!, currentPage, currentLimit);
 		default:
-			return getFiles({ page: currentPage, limit: currentLimit, headers: {
-				authorization: `Bearer ${token}`
-			} });
+			return getFiles({
+				page: currentPage,
+				limit: currentLimit,
+				headers: {
+					authorization: `Bearer ${token}`
+				}
+			});
 	}
 };
 
