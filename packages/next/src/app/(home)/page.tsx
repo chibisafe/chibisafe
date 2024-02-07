@@ -1,6 +1,5 @@
-import { FileUploader } from '~/components/FileUploader';
-
 import { siteConfig } from '@/config/site';
+import { FileUploader } from '@/components/FileUploader';
 
 export default function Home() {
 	return (
