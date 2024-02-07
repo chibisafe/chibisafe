@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { Navigation } from '~/components/Navigation';
-import { siteConfig } from '~/config/site';
 
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { SiteFooter } from '@/components/Footer';
+import { Navigation } from '@/components/Navigation';
 import { Icons } from '@/components/icons';
 
 interface MarketingLayoutProps {

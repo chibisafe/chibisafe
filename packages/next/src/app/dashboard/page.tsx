@@ -1,8 +1,9 @@
-import { DashboardHeader } from '~/components/DashboardHeader';
-import { FilesList } from '~/components/FilesList';
-import { Icons } from '~/components/icons';
-import { Button } from '~/components/ui/button';
-import type { PageQuery } from '~/types';
+import type { PageQuery } from '@/types';
+
+import { Button } from '@/components/ui/button';
+import { DashboardHeader } from '@/components/DashboardHeader';
+import { FilesList } from '@/components/FilesList';
+import { Icons } from '@/components/icons';
 
 export const metadata = {
 	title: 'Dashboard - Uploads'

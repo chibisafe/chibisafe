@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAtomValue } from 'jotai';
-import { currentUserAtom } from '~/lib/useCurrentUser';
 
 import { siteConfig } from '@/config/site';
+import { currentUserAtom } from '@/lib/useCurrentUser';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 

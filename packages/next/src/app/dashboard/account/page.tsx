@@ -1,4 +1,4 @@
-import { DashboardHeader } from '~/components/DashboardHeader';
+import { DashboardHeader } from '@/components/DashboardHeader';
 
 export const metadata = {
 	title: 'Dashboard - Credentials'
