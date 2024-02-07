@@ -14,7 +14,7 @@ import {
 import { Masonry } from '@/components/Masonry';
 import { Pagination } from '@/components/Pagination';
 
-const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: number) => {
+const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number) => {
 	console.log('Fetching files', props);
 	const anonymous = false;
 
@@ -57,7 +57,7 @@ const fetchEndpoint = (props: FileProps, currentPage: number, currentLimit: numb
 };
 
 export async function FilesList(props: FileProps) {
-	const currentPage = props.query?.page || 1;
+	const currentPage = props.query?.page ?? 1;
 	const perPage = props.query?.limit ? (props.query.limit > 50 ? 50 : props.query.limit) : 50;
 
 	const response = await fetchEndpoint(props, currentPage, perPage);
