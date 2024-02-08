@@ -10,7 +10,7 @@ const request = {
 		return parsed;
 	},
 
-	get: async (url = '', query = {}, headers?: {}) => {
+	get: async (url = '', query = {}, headers?: {}, options?: {}) => {
 		try {
 			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 
@@ -25,7 +25,8 @@ const request = {
 				headers: {
 					'Content-Type': 'application/json',
 					...headers
-				}
+				},
+				...options
 			});
 			return await request.parseResponse(response);
 		} catch (error: any) {
@@ -35,7 +36,12 @@ const request = {
 
 	post: async (url = '', data = {}, headers?: {}) => {
 		try {
-			const response = await fetch(`/api/${url}`, {
+			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
+
+			// This is needed for the set cookies to work with the client apparently
+			if (typeof window !== 'undefined') queryUrl = `/api/${url}`;
+
+			const response = await fetch(queryUrl, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -52,7 +58,8 @@ const request = {
 
 	delete: async (url = '', data = {}, headers?: {}) => {
 		try {
-			const response = await fetch(`/api/${url}`, {
+			const queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
+			const response = await fetch(queryUrl, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',

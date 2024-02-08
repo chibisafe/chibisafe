@@ -15,7 +15,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
 					<DashboardSidebar />
 				</aside>
 				<main className="flex w-full flex-1 flex-col overflow-hidden">
-					<div className="grid items-start gap-8">{children}</div>
+					<div className="grid items-start gap-8 pb-8">{children}</div>
 				</main>
 			</div>
 			<SiteFooter className="border-t" />
