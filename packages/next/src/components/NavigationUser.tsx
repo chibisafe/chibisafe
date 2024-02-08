@@ -1,10 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useAtomValue } from 'jotai';
+import Link from 'next/link';
+import { useAtom } from 'jotai';
 
+import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { logout } from '@/lib/logout';
-import { currentUserAtom } from '@/lib/useCurrentUser';
+import { cn } from '@/lib/utils';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,13 +14,14 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-export function NavigationUser() {
-	const router = useRouter();
-	const currentUser = useAtomValue(currentUserAtom);
+import { buttonVariants } from './ui/button';
 
-	return (
+export function NavigationUser() {
+	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+
+	return currentUser?.uuid ? (
 		<DropdownMenu>
-			<DropdownMenuTrigger>{currentUser?.username}</DropdownMenuTrigger>
+			<DropdownMenuTrigger className="ml-4">{currentUser.username}</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				{/* <div className="flex items-center justify-start gap-2 p-2">
 					<div className="flex flex-col space-y-1 leading-none">
@@ -39,15 +41,22 @@ export function NavigationUser() {
 				<DropdownMenuSeparator /> */}
 				<DropdownMenuItem
 					className="cursor-pointer"
-					onSelect={event => {
+					onSelect={async event => {
 						event.preventDefault();
-						logout();
-						router.push('/');
+						await logout();
+						setCurrentUser(null);
 					}}
 				>
 					Sign out
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
+	) : (
+		<Link
+			href="/login"
+			className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'px-4 ml-4 items-center')}
+		>
+			Login
+		</Link>
 	);
 }

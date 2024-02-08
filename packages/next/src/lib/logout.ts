@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 
-export const logout = () => {
+export const logout = async () => {
 	const cookieStore = cookies();
 	cookieStore.delete('token');
 };

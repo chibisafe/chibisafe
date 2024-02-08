@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
 	Pagination as PaginationBase,
@@ -11,16 +11,16 @@ import {
 } from '@/components/ui/pagination';
 import { Select, type Item } from '@/components/Select';
 
-export async function Pagination({
-	currentPage,
-	perPage,
-	itemsTotal
-}: {
-	readonly currentPage: number;
-	readonly itemsTotal: number;
-	readonly perPage: number;
-}) {
+export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) {
 	const router = useRouter();
+	const searchParams = useSearchParams();
+
+	const currentPage = searchParams.get('page') ? Number.parseInt(searchParams.get('page')!, 10) : 1;
+	const perPage = searchParams.get('limit')
+		? Number.parseInt(searchParams.get('limit')!, 10) > 50
+			? 50
+			: Number.parseInt(searchParams.get('limit')!, 10)
+		: 50;
 
 	const totalPages = Math.ceil(itemsTotal / perPage);
 	// eslint-disable-next-line unicorn/new-for-builtins

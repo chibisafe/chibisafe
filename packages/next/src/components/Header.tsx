@@ -1,19 +1,17 @@
 import Link from 'next/link';
 
+import { buttonVariants } from '@/components/ui/button';
 import { Navigation } from '@/components/Navigation';
 import { NavigationUser } from '@/components/NavigationUser';
 import { DiscordLogo } from '@/components/svg/DiscordLogo';
 import { GitHubLogo } from '@/components/svg/GitHubLogo';
 import { PatreonLogo } from '@/components/svg/PatreonLogo';
-import { UploadProgress } from '@/components/UploadProgress';
-import { buttonVariants } from '@/styles/button';
 
 export const Header = () => {
 	return (
 		<header className="container z-40 bg-background">
 			<div className="flex h-20 items-center justify-between py-6">
 				<Navigation />
-				<UploadProgress />
 				<nav className="flex items-center">
 					<Link href="https://discord.gg/5g6vgwn" target="_blank" rel="noreferrer">
 						<div

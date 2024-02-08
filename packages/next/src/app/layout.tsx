@@ -1,10 +1,12 @@
 import '@/styles/globals.css';
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
+import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
 
 import { fontHeading, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
+import { SettingsProvider } from '@/components/SettingsProvider';
 import { UserProvider } from '@/components/UserProvider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 
@@ -72,6 +74,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+	const hasTokenCookie = cookies().has('token');
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
@@ -86,7 +89,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
 					{children}
 					<Toaster />
 					<TailwindIndicator />
-					<UserProvider />
+					<UserProvider shouldFetch={hasTokenCookie} />
+					<SettingsProvider />
 				</Providers>
 			</body>
 		</html>
