@@ -1262,7 +1262,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@chibisafe/uploader-client@npm:1.0.11":
+"@chibisafe/uploader-client@npm:1.0.11, @chibisafe/uploader-client@npm:^1.0.11":
   version: 1.0.11
   resolution: "@chibisafe/uploader-client@npm:1.0.11"
   dependencies:
@@ -1286,6 +1286,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@chibisafe/website-next@workspace:packages/next"
   dependencies:
+    "@chibisafe/uploader-client": ^1.0.11
     "@ianvs/prettier-plugin-sort-imports": ^3.7.2
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
@@ -1309,7 +1310,9 @@ __metadata:
     eslint: ^8.44.0
     eslint-config-neon: ^0.1.57
     framer-motion: ^10.18.0
+    immer: ^10.0.3
     jotai: ^2.6.4
+    jotai-immer: ^0.3.0
     js-cookie: ^3.0.5
     lucide-react: 0.105.0-alpha.4
     media-chrome: ^2.1.0
@@ -1328,6 +1331,7 @@ __metadata:
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
     typescript: ^5.3.3
+    usehooks-ts: ^2.13.0
   languageName: unknown
   linkType: soft
 
@@ -9053,6 +9057,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "immer@npm:10.0.3"
+  checksum: 76acabe6f40e752028313762ba477a5d901e57b669f3b8fb406b87b9bb9b14e663a6fbbf5a6d1ab323737dd38f4b2494a4e28002045b88948da8dbf482309f28
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^3.2.1":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
@@ -9649,6 +9660,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai-immer@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "jotai-immer@npm:0.3.0"
+  peerDependencies:
+    immer: "*"
+    jotai: ">=2.0.0"
+    react: ">=17.0.0"
+  checksum: 0e61b1f7d2f35ebe50e0c9fc055142aaecaa653070c1c47628eaa7587957fcdf9b5d988bef2edcedc998efbd36f4348eb076b2f6db1939d1f000a53b0b302583
+  languageName: node
+  linkType: hard
+
 "jotai@npm:^2.6.4":
   version: 2.6.4
   resolution: "jotai@npm:2.6.4"
@@ -10046,6 +10068,13 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.clone@npm:4.5.0"
   checksum: 5839f22acf3a43c026ac4325f7bcd378f34967415cd0b9fd7efa9bbbf38dc665900d36e040944c5afab94a51ff8a24f6cfc3781fe439705cbad5c722e9506b16
+  languageName: node
+  linkType: hard
+
+"lodash.debounce@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "lodash.debounce@npm:4.0.8"
+  checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
   languageName: node
   linkType: hard
 
@@ -15363,6 +15392,17 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 925d1922f9853e516eaad526b6fed1be38008073067274f0ecc3f56b17bb8ab63480140dd7c271f94150027c996cea4efe83d3e3525e8f3eda22055f6a39220b
+  languageName: node
+  linkType: hard
+
+"usehooks-ts@npm:^2.13.0":
+  version: 2.13.0
+  resolution: "usehooks-ts@npm:2.13.0"
+  dependencies:
+    lodash.debounce: ^4.0.8
+  peerDependencies:
+    react: ^16.8.0  || ^17 || ^18
+  checksum: ad07930e1b5c70392603eb8b3f199f44349c75406fe31013f79b0fb7fdece59f47f8dba09b6f1fafaa00d68f43240dbb13cdc1afb89b647f1d53504599a51ca0
   languageName: node
   linkType: hard
 

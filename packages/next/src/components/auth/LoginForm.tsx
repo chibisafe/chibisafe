@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
 
 import { login } from '@/lib/api';
-import { currentUserAtom } from '@/lib/useCurrentUser';
+import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

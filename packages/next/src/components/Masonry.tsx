@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { File, FilePropsType } from '@/types';
 import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
 
@@ -18,7 +18,9 @@ export function Masonry({
 	readonly total: number;
 	readonly type: FilePropsType;
 }) {
-	// debug(files);
+	// const ref = useRef<Record<string, HTMLImageElement | null>>({});
+	const [modalOpen, setModalOpen] = useState(false);
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 
 	const addToHoveredList = (file: File) => {
@@ -32,6 +34,20 @@ export function Masonry({
 		if (!hoveredFiles.includes(identifierToUse)) return;
 		setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
 	};
+
+	// const [imageDimensions, setImageDimensions] = useState<Record<string, { isVertical: boolean }>>({});
+
+	// const onImageLoad = useCallback((uuid: string) => {
+	// 	const image = ref.current[uuid];
+	// 	if (!image) return;
+
+	// 	setImageDimensions(previousState => ({
+	// 		...previousState,
+	// 		[uuid]: {
+	// 			isVertical: image.naturalHeight > image.naturalWidth
+	// 		}
+	// 	}));
+	// }, []);
 
 	return (
 		<>
@@ -60,21 +76,39 @@ export function Masonry({
 								<FileWarning className="text-red-500 w-16 h-16" />
 							</div>
 						) : (
-							<FileInformationDialog file={file} type={type} />
+							<a
+								className="w-full h-full absolute top-0 left-0 pointer-events-auto"
+								href={file.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								onClick={e => {
+									e.preventDefault();
+									e.stopPropagation();
+									setSelectedFile(file);
+									setModalOpen(true);
+								}}
+							/>
 						)}
 
 						{isFileImage(file) || isFileVideo(file) ? (
 							<>
-								{type === 'publicAlbum' && (
+								{/* {type === 'publicAlbum' && (
 									<a
 										className="w-full h-full absolute"
 										href={file?.url}
 										target="_blank"
 										rel="noopener noreferrer"
 									/>
-								)}
+								)} */}
 
-								<img src={file.thumb} className="cursor-pointer w-full min-w-[160px]" />
+								<img
+									src={file.thumb}
+									// ref={el => {
+									// 	ref.current[file.uuid] = el;
+									// }}
+									// onLoad={() => onImageLoad(file.uuid)}
+									className="cursor-pointer w-full min-w-[160px]"
+								/>
 
 								{isFileVideo(file) && hoveredFiles.includes(file.uuid ?? file.name) && (
 									<video
@@ -110,6 +144,20 @@ export function Masonry({
 					</div>
 				)}
 			/>
+
+			{selectedFile ? (
+				<FileInformationDialog
+					file={selectedFile}
+					type={type}
+					// isVertical={imageDimensions[selectedFile.uuid]?.isVertical}
+					onOpenChange={(open: boolean) => {
+						if (open) return;
+						setModalOpen(open);
+						setSelectedFile(null);
+					}}
+					isOpen={modalOpen}
+				/>
+			) : null}
 		</>
 	);
 }

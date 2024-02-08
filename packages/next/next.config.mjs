@@ -24,6 +24,16 @@ const nextConfig = {
 			fullUrl: true
 		}
 	},
+	images: {
+		// TODO: Enable from anywhere or find a better way to configure it
+		// this is used to be able to use <Image> with external URLs
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'localhost'
+			}
+		]
+	},
 	async rewrites() {
 		return [
 			{
