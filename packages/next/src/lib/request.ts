@@ -1,26 +1,13 @@
-import { cookies } from 'next/headers';
-
-//
 const request = {
-	// checkForToken: () => {
-	// 	const cookieStore = cookies();
-	// 	const cookie = cookieStore.get('user');
-
-	// 	if (!cookie) {
-	// 		return '';
-	// 	}
-
-	// 	const { token } = JSON.parse(cookie.value);
-	// 	return `Bearer ${token}`;
-	// },
-
 	parseResponse: async (response: Response) => {
-		if (response.status !== 200) {
+		if (!response.ok) {
 			const error = await response.json();
 			throw new Error(error.message);
 		}
 
-		return response.json();
+		const parsed = await response.json();
+		if (process.env.NODE_ENV !== 'production') console.log(parsed);
+		return parsed;
 	},
 
 	get: async (url = '', query = {}, headers?: {}) => {
@@ -38,8 +25,6 @@ const request = {
 				headers: {
 					'Content-Type': 'application/json',
 					...headers
-					// Authorization: request.checkForToken()
-					// 'Content-Type': 'application/x-www-form-urlencoded',
 				}
 			});
 			return await request.parseResponse(response);

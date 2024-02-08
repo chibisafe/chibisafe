@@ -35,7 +35,7 @@ export type FileProps = {
 	albumUuid?: string;
 	identifier?: string;
 	ip?: string;
-	query: PageQuery;
+	query?: PageQuery;
 	tagUuid?: string;
 	type: FilePropsType;
 	userUuid?: string;
@@ -56,6 +56,19 @@ export type File = {
 	url: string;
 	uuid: string;
 };
+
+export interface UploadFile {
+	bytesSent: number;
+	bytesTotal: number;
+	error?: string;
+	name: string;
+	processing: boolean;
+	progress: number;
+	status: string;
+	type: string;
+	url: string | undefined;
+	uuid: string;
+}
 
 export type PageQuery = {
 	limit?: number;
@@ -81,4 +94,29 @@ export interface FileWithAdditionalData extends File {
 		username: string;
 		uuid: string;
 	};
+}
+
+export interface Settings {
+	backgroundImageURL: string;
+	blockedExtensions: string[];
+	chunkSize: number;
+	logoURL: string;
+	maxSize: number;
+	publicMode: boolean;
+	serviceName: string;
+	useNetworkStorage: boolean;
+	userAccounts: boolean;
+}
+
+export interface Album {
+	count?: number;
+	cover?: string;
+	createdAt: string;
+	description: string;
+	editedAt: string;
+	files?: FileWithAdditionalData[];
+	name: string;
+	nsfw: boolean;
+	uuid: string;
+	zippedAt: string;
 }
