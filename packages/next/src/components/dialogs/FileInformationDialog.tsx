@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactEventHandler, useRef, useState, type PropsWithChildren } from 'react';
 import type { FilePropsType, FileWithAdditionalData } from '@/types';
 import type { DialogProps } from '@radix-ui/react-dialog';

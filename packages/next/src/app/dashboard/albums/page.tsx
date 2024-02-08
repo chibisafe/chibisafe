@@ -19,6 +19,11 @@ export default async function AlbumsPage({ searchParams }: { searchParams: PageQ
 		{},
 		{
 			authorization: `Bearer ${token}`
+		},
+		{
+			next: {
+				tags: ['albums']
+			}
 		}
 	);
 

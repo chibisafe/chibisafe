@@ -120,3 +120,9 @@ export interface Album {
 	uuid: string;
 	zippedAt: string;
 }
+
+export const enum MessageType {
+	Uninitialized = -1,
+	Success,
+	Error
+}
