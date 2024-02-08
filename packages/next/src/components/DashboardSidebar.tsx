@@ -1,7 +1,9 @@
+'use client';
+
 import { useAtomValue } from 'jotai';
 import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags, UserPlus, Users } from 'lucide-react';
 
-import { currentUserAtom } from '@/lib/useCurrentUser';
+import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
 
 export function DashboardSidebar() {

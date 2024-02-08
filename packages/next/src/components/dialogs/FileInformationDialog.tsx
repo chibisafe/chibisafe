@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { ReactEventHandler, useRef, useState, type PropsWithChildren } from 'react';
 import type { FilePropsType, FileWithAdditionalData } from '@/types';
+import type { DialogProps } from '@radix-ui/react-dialog';
 import {
 	MediaControlBar,
 	MediaController,
@@ -21,26 +22,23 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 
 export function FileInformationDialog({
+	// children,
 	file,
-	type
-}: {
+	type,
+	// isVertical = false,
+	isOpen = false,
+	onOpenChange = () => {}
+}: PropsWithChildren<{
 	readonly file: FileWithAdditionalData;
+	readonly isOpen: DialogProps['open'];
+	// readonly isVertical?: boolean | undefined;
+	readonly onOpenChange: DialogProps['onOpenChange'];
 	readonly type: FilePropsType;
-}) {
-	const ref = useRef<HTMLButtonElement>(null);
-	const image = useRef<HTMLImageElement>(null);
-	const [isVerticalImage, setIsVerticalImage] = useState(false);
-
-	const onImageLoad = () => {
-		if (!image.current) return;
-		setIsVerticalImage(image.current.naturalHeight > image.current.naturalWidth);
-		// TODO: We already know if the image is vertical or not thanks to the thumbnail
-		// so we can just use that instead of checking the naturalHeight and naturalWidth
-	};
-
+}>) {
+	// const ref = useRef<HTMLButtonElement>(null);
 	return (
-		<Dialog>
-			<DialogTrigger ref={ref} className="w-full h-full absolute pointer-events-none">
+		<Dialog open={isOpen} onOpenChange={onOpenChange}>
+			{/* <DialogTrigger ref={ref} className="w-full h-full absolute pointer-events-none">
 				<a
 					className="w-full h-full absolute top-0 left-0 pointer-events-auto"
 					href={file.url}
@@ -52,11 +50,12 @@ export function FileInformationDialog({
 						ref.current?.click();
 					}}
 				/>
-			</DialogTrigger>
+			</DialogTrigger> */}
+			{/* {children} */}
 			<DialogContent
 				className={cn(
-					isVerticalImage ? '!w-fit' : '!w-max',
-					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)]'
+					// isVertical ? '!w-fit' : '!w-max',
+					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)] !w-max'
 				)}
 			>
 				<div className="grid grid-cols-[1fr,400px] gap-4">
@@ -68,12 +67,7 @@ export function FileInformationDialog({
 					>
 						{isFileImage(file) ? (
 							// eslint-disable-next-line @next/next/no-img-element
-							<img
-								src={file.url}
-								className="h-full object-contain hidden md:block"
-								ref={image}
-								onLoad={() => onImageLoad}
-							/>
+							<img src={file.url} className="h-full object-contain hidden md:block" />
 						) : isFileVideo(file) ? (
 							<MediaController className="h-full hidden md:block">
 								<video slot="media" src={file.url} crossOrigin="" className="h-full" />

@@ -5,7 +5,7 @@ import type { FileProps } from '@/types';
 import { searchFiles } from './api';
 import request from './request';
 
-export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number, search = '') => {
+export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number) => {
 	const publicOnly = false;
 
 	const cookiesStore = cookies();
@@ -27,28 +27,19 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					`admin/user/${props.userUuid}/files`,
 					{
 						page: currentPage,
-						limit: currentLimit,
-						search
+						limit: currentLimit
 					},
-					authorization,
-					{
-						next: {
-							tags: ['files']
-						}
-					}
+					authorization
 				);
 			} else if (props.ip) {
-				return request.post(
-					`admin/ip/files?page=${currentPage}&limit=${currentLimit}&search=${search}`,
+				// TODO: Update backend to accept this URL type
+				return request.get(
+					`admin/files/ip/${props.ip}`,
 					{
-						ip: props.ip
+						page: currentPage,
+						limit: currentLimit
 					},
-					authorization,
-					{
-						next: {
-							tags: ['files']
-						}
-					}
+					authorization
 				);
 			} else {
 				return request.get(
@@ -57,15 +48,9 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						page: currentPage,
 						limit: currentLimit,
 						publicOnly,
-						quarantine: false,
-						search
+						quarantine: false
 					},
-					authorization,
-					{
-						next: {
-							tags: ['files']
-						}
-					}
+					authorization
 				);
 			}
 		}
@@ -77,75 +62,45 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit,
 					publicOnly,
-					quarantine: true,
-					search
+					quarantine: true
 				},
-				authorization,
-				{
-					next: {
-						tags: ['files']
-					}
-				}
+				authorization
 			);
 		case 'album':
 			return request.get(
 				`album/${props.albumUuid!}`,
 				{
 					page: currentPage,
-					limit: currentLimit,
-					search
+					limit: currentLimit
 				},
-				authorization,
-				{
-					next: {
-						tags: ['files']
-					}
-				}
+				authorization
 			);
 		case 'tag':
 			return request.get(
 				`tag/${props.tagUuid}`,
 				{
 					page: currentPage,
-					limit: currentLimit,
-					search
+					limit: currentLimit
 				},
-				authorization,
-				{
-					next: {
-						tags: ['files']
-					}
-				}
+				authorization
 			);
 		case 'publicAlbum':
 			return request.get(
 				`album/${props.identifier}/view`,
 				{
 					page: currentPage,
-					limit: currentLimit,
-					search
+					limit: currentLimit
 				},
-				authorization,
-				{
-					next: {
-						tags: ['files']
-					}
-				}
+				authorization
 			);
 		default:
 			return request.get(
 				'files',
 				{
 					page: currentPage,
-					limit: currentLimit,
-					search
+					limit: currentLimit
 				},
-				authorization,
-				{
-					next: {
-						tags: ['files']
-					}
-				}
+				authorization
 			);
 	}
 };

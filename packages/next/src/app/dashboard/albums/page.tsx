@@ -1,21 +1,41 @@
-import { Plus } from 'lucide-react';
+import { cookies } from 'next/headers';
+import type { Album as AlbumType, PageQuery } from '@/types';
 
-import { Button } from '@/components/ui/button';
+import request from '@/lib/request';
+import { Album } from '@/components/Album';
 import { DashboardHeader } from '@/components/DashboardHeader';
+import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
 
 export const metadata = {
 	title: 'Dashboard - Albums'
 };
 
-export default async function DashboardPage() {
+export default async function AlbumsPage({ searchParams }: { searchParams: PageQuery }) {
+	const cookiesStore = cookies();
+	const token = cookiesStore.get('token')?.value;
+
+	const response = await request.get(
+		`albums`,
+		{},
+		{
+			authorization: `Bearer ${token}`
+		}
+	);
+
+	const albums = response.albums;
+
 	return (
 		<>
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					New album
-				</Button>
+				<CreateAlbumDialog />
 			</DashboardHeader>
+			<div className="px-2">
+				<div className="flex flex-wrap gap-6 px-4">
+					{albums.map((album: AlbumType) => (
+						<Album key={album.uuid} album={album} />
+					))}
+				</div>
+			</div>
 		</>
 	);
 }
