@@ -1,6 +1,37 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+
+export const schema = {
+	summary: 'Update album',
+	description: 'Updates an album',
+	tags: ['Albums'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the album.')
+		})
+		.required(),
+	body: z.union([
+		z.object({
+			name: z.string().describe('The name of the album.')
+		}),
+		z.object({ description: z.string().describe('The description of the album.') }),
+		z.object({
+			nsfw: z.boolean().describe('Whether the album is nsfw or not.')
+		})
+	]),
+	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/album/:uuid/edit',

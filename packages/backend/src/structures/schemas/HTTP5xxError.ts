@@ -1,18 +1,8 @@
-export default {
-	$id: 'HTTP5xxError',
-	type: 'object',
-	description: 'An error response.',
-	properties: {
-		statusCode: {
-			type: 'number',
-			description: 'HTTP status code',
-			example: 500
-		},
-		error: {
-			type: 'string',
-			description: 'HTTP status description',
-			example: 'Internal Server Error'
-		},
-		message: { $ref: 'ResponseMessage' }
-	}
-};
+import { z } from 'zod';
+import { responseMessageSchema } from './ResponseMessage.js';
+
+export const http5xxErrorSchema = z.object({
+	statusCode: z.number().describe('HTTP status code.'),
+	error: z.string().describe('HTTP status description.'),
+	message: responseMessageSchema
+});

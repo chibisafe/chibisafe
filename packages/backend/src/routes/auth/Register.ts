@@ -2,9 +2,35 @@ import bcrypt from 'bcryptjs';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RouteOptions } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { SETTINGS } from '@/structures/settings.js';
+
+export const schema = {
+	summary: 'Register',
+	description: 'Create a new user account',
+	tags: ['Auth'],
+	headers: z.object({
+		invite: z.string().optional().describe('The invite code to use.')
+	}),
+	body: z
+		.object({
+			username: z.string().describe('The username of the user.'),
+			password: z.string().describe('The password of the user.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/auth/register',

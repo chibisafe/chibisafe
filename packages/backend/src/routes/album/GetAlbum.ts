@@ -1,7 +1,30 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { File, RequestWithUser } from '@/structures/interfaces.js';
+import { fileAsUserSchema } from '@/structures/schemas/FileAsUser.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get album',
+	description: 'Gets the content of an album',
+	tags: ['Albums'],
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			name: z.string().describe('The name of the album.'),
+			description: z.string().describe('The description of the album.'),
+			isNsfw: z.boolean().describe('Whether or not the album is nsfw.'),
+			count: z.number().describe('The number of files in the album.'),
+			files: z.array(fileAsUserSchema)
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/album/:uuid',

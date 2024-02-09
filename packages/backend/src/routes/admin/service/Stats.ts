@@ -1,6 +1,22 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { cachedStats, getStats } from '@/utils/StatsGenerator.js';
+
+export const schema = {
+	summary: 'Get stats',
+	description: 'Returns the current system stats',
+	tags: ['Server'],
+	response: {
+		200: z.object({
+			statistics: z.array(z.any()).describe('The statistics array.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/service/statistics',

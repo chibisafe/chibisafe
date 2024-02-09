@@ -5,6 +5,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fstatic from '@fastify/static';
 import fastify from 'fastify';
+import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import jetpack from 'fs-jetpack';
 import LiveDirectory from 'live-directory';
 import Routes from './structures/routes.js';
@@ -53,7 +54,15 @@ const start = async () => {
 	await server.register(import('@fastify/sensible'));
 
 	// Create the OpenAPI documentation
-	await server.register(import('@fastify/swagger'), Docs);
+	await server.register(import('@fastify/swagger'), { ...Docs, transform: jsonSchemaTransform });
+	await server.register(import('@scalar/fastify-api-reference'), {
+		routePrefix: '/docs',
+		configuration: {
+			spec: {
+				content: () => server.swagger()
+			}
+		}
+	});
 
 	// Route error handler
 	// @ts-ignore
@@ -76,7 +85,7 @@ const start = async () => {
 				method: request.method,
 				url: request.url,
 				statusCode: reply.statusCode,
-				responseTime: Math.ceil(reply.getResponseTime()),
+				responseTime: Math.ceil(reply.elapsedTime),
 				ip: request.ip
 			});
 		}

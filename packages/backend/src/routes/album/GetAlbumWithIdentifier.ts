@@ -1,7 +1,51 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { File } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get public album',
+	description: 'Gets a public album link with its contents',
+	tags: ['Albums'],
+	params: z
+		.object({
+			identifier: z.string().describe('The identifier of the link used to access the album.')
+		})
+		.required(),
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			album: z.object({
+				name: z.string().describe('The name of the album.'),
+				description: z.string().describe('The description of the album.'),
+				isNsfw: z.boolean().describe('Whether or not the album is NSFW.'),
+				count: z.number().describe('The amount of files in the album.'),
+				files: z.array(
+					z.object({
+						name: z.string().describe('The name of the file.'),
+						type: z.string().describe('The type of the file.'),
+						url: z.string().describe('The URL of the file.'),
+						thumb: z.string().describe('The URL of the thumbnail of the file.'),
+						thumbSquare: z.string().describe('The URL of the square thumbnail of the file.'),
+						preview: z.string().describe('The URL of the preview of the file.')
+					})
+				)
+			})
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/album/:identifier/view',

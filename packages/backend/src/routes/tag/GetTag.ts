@@ -1,7 +1,39 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { File, RequestWithUser } from '@/structures/interfaces.js';
+import { fileAsUserSchema } from '@/structures/schemas/FileAsUser.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get tag',
+	description: 'Gets the content of an tag',
+	tags: ['Tags'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the tag.')
+		})
+		.required(),
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			name: z.string().describe('The name of the tag.'),
+			count: z.number().describe('The number of files in the tag.'),
+			files: z.array(fileAsUserSchema)
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/tag/:uuid',

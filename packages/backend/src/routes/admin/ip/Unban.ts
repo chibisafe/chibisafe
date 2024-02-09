@@ -1,5 +1,26 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+
+export const schema = {
+	summary: 'Unban IP',
+	description: 'Unban an IP address',
+	tags: ['IP Management'],
+	body: z
+		.object({
+			ip: z.string().describe('The IP address.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: z.string().describe('The response message.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/ip/unban',

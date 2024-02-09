@@ -2,7 +2,23 @@ import { URL, fileURLToPath } from 'node:url';
 import envinfo from 'envinfo';
 import type { FastifyReply } from 'fastify';
 import jetpack from 'fs-jetpack';
+import { z } from 'zod';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+
+export const schema = {
+	summary: 'Save settings',
+	description: 'Save the chibisafe instance settings',
+	tags: ['Server'],
+	response: {
+		200: z.object({
+			diagnostics: z.string().describe('The diagnostics string.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/service/diagnostic',
