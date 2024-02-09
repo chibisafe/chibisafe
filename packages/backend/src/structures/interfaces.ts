@@ -41,6 +41,7 @@ export interface FileInProgress {
 	hash: string;
 	ip: string;
 	isS3: boolean;
+	isWatched: boolean;
 	name: string;
 	original: string;
 	path: string;
@@ -54,6 +55,7 @@ export interface File {
 	hash: string;
 	ip: string;
 	isS3: boolean;
+	isWatched: boolean;
 	name: string;
 	original: string;
 	quarantine: boolean;

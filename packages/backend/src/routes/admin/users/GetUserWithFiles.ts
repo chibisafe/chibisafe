@@ -91,6 +91,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 				}
 			},
 			isS3: true,
+			isWatched: true,
 			user: {
 				select: {
 					uuid: true,
@@ -114,7 +115,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	for (const file of files) {
 		readyFiles.push({
 			...file,
-			...constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3 })
+			...constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3, isWatched: file.isWatched })
 		});
 	}
 

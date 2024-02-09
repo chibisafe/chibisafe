@@ -41,6 +41,7 @@ model files {
 	hash String
 	ip String
 	isS3 Boolean @default(false)
+	isWatched Boolean @default(false)
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	user users? @relation(fields: [userId], references: [id])

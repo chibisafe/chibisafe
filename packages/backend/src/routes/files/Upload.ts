@@ -197,7 +197,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			hash: await hashFile(upload.path as string),
 			// @ts-ignore
 			ip: req.ip,
-			isS3: false
+			isS3: false,
+			isWatched: false
 		};
 
 		let uploadedFile;
@@ -213,7 +214,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uploadedFile = savedFile.file;
 
 			// Generate thumbnails
-			void generateThumbnails(savedFile.file.name);
+			void generateThumbnails({ filename: savedFile.file.name });
 		}
 
 		const linkData = constructFilePublicLink({ req, fileName: uploadedFile.name });
