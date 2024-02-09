@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
-import { Loader2 } from 'lucide-react';
+import { ExternalLink, Loader2 } from 'lucide-react';
 
 import { uploadsAtom } from '@/lib/atoms/uploads';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -43,14 +43,24 @@ export const UploadProgress = () => {
 							<div className="flex flex-row w-full justify-between">
 								<div className="text-sm font-medium">
 									{file.status === 'success' ? (
-										<a href={file.url} target="_blank" rel="noreferrer">
-											{file.name}
-										</a>
+										<>
+											<a
+												href={file.url}
+												target="_blank"
+												rel="noreferrer"
+												className="flex items-center gap-1"
+											>
+												{file.name}
+												<ExternalLink className="h-4 w-4 ml-1" />
+											</a>
+										</>
 									) : (
 										file.name
 									)}
 								</div>
-								<div className="text-xs text-muted-foreground">{file.status}</div>
+								<div className="text-xs text-muted-foreground">
+									{file.status === 'error' ? file.error : file.status}
+								</div>
 							</div>
 							<Progress value={file.progress} className="w-full mt-2 h-2" />
 						</li>
