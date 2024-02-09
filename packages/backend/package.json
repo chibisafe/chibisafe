@@ -31,7 +31,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.504.0",
 		"@aws-sdk/s3-request-presigner": "^3.504.0",
-		"@chibisafe/uploader-module": "1.0.10",
+		"@chibisafe/uploader-module": "1.0.11",
 		"@fastify/cors": "^8.5.0",
 		"@fastify/helmet": "^11.1.1",
 		"@fastify/rate-limit": "^9.1.0",
