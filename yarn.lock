@@ -988,7 +988,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-s3": ^3.504.0
     "@aws-sdk/s3-request-presigner": ^3.504.0
-    "@chibisafe/uploader-module": 1.0.10
+    "@chibisafe/uploader-module": 1.0.11
     "@fastify/cors": ^8.5.0
     "@fastify/helmet": ^11.1.1
     "@fastify/rate-limit": ^9.1.0
@@ -1072,14 +1072,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chibisafe/uploader-module@npm:1.0.10":
-  version: 1.0.10
-  resolution: "@chibisafe/uploader-module@npm:1.0.10"
+"@chibisafe/uploader-module@npm:1.0.11":
+  version: 1.0.11
+  resolution: "@chibisafe/uploader-module@npm:1.0.11"
   dependencies:
     busboy: ^1.6.0
     fs-jetpack: ^5.1.0
     uuid: ^9.0.0
-  checksum: d036d9bb126f24d8694019483fb4557784208678d85873d57bc2fcc6abdb7f0e3d947974ef6bf3a534d74858eed79e63f918e927a52a6367fb8fb03a81c65509
+  checksum: 913b3548e1cb18af9d39b504ce2ad8dc30334b1f6aafb0f6f0888e183a8cb7d69462bf89c213eac59ab576a5e9a3d742123a998069dc144f14ef320d9bd5942e
   languageName: node
   linkType: hard
 
