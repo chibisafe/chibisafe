@@ -18,20 +18,20 @@ export const schema = {
 						code: z.string().describe('The invite code.'),
 						createdBy: z
 							.object({
-								uuid: z.string().describe('The UUID of the user who created the invite'),
+								uuid: z.string().describe('The uuid of the user who created the invite'),
 								username: z.string().describe('The username of the user who created the invite')
 							})
 							.describe('The user who created the invite.'),
 						used: z.boolean().describe('Whether the invite has been used.'),
 						usedBy: z
 							.object({
-								uuid: z.string().describe('The UUID of the user who used the invite'),
-								username: z.string().describe('The username of the user who used the invite')
+								uuid: z.string().optional().describe('The uuid of the user who used the invite'),
+								username: z.string().optional().describe('The username of the user who used the invite')
 							})
-							.nullable()
+							.optional()
 							.describe('The user who used the invite.'),
-						createdAt: z.string().describe('The date the invite was created.'),
-						editedAt: z.string().nullable().describe('The date the invite was edited.')
+						createdAt: z.date().describe('The date the invite was created.'),
+						editedAt: z.date().nullable().describe('The date the invite was edited.')
 					})
 				)
 				.describe('The list of invites.')

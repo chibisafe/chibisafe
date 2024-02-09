@@ -22,13 +22,12 @@ export const schema = {
 				z.object({
 					identifier: z.string().describe('The identifier of the link'),
 					uuid: z.string().describe('The uuid of the link'),
-					albumId: z.string().describe('The album id of the link'),
 					enabled: z.boolean().describe('Whether the link is enabled'),
 					enableDownload: z.boolean().describe('Whether the link allows downloads'),
-					expiresAt: z.string().describe('The expiration date of the link'),
+					expiresAt: z.date().nullable().describe('The expiration date of the link'),
 					views: z.number().describe('The amount of views the link has'),
-					createdAt: z.string().describe('The creation date of the link'),
-					editedAt: z.string().describe('The last edit date of the link')
+					createdAt: z.date().describe('The creation date of the link'),
+					editedAt: z.date().nullable().describe('The last edit date of the link')
 				})
 			)
 		}),

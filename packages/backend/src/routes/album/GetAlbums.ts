@@ -18,11 +18,11 @@ export const schema = {
 				z.object({
 					uuid: z.string().describe('The uuid of the album.'),
 					name: z.string().describe('The name of the album.'),
-					description: z.string().describe('The description of the album.'),
+					description: z.string().nullable().describe('The description of the album.'),
 					nsfw: z.boolean().describe('Whether or not the album is NSFW.'),
-					zippedAt: z.string().describe('The date and time the album was last zipped.'),
-					createdAt: z.string().describe('The date and time the album was created.'),
-					editedAt: z.string().describe('The date and time the album was last edited.'),
+					zippedAt: z.date().nullable().describe('The date and time the album was last zipped.'),
+					createdAt: z.date().describe('The date and time the album was created.'),
+					editedAt: z.date().describe('The date and time the album was last edited.'),
 					cover: z.string().describe('The cover image of the album.'),
 					count: z.number().describe('The amount of images in the album.')
 				})

@@ -20,7 +20,7 @@ export const schema = {
 			.array(
 				z.object({
 					key: z.string().describe('The key of the setting.'),
-					value: z.string().describe('The value of the setting.'),
+					value: z.coerce.string().describe('The value of the setting.'),
 					type: z.string().describe('The type of the setting.')
 				})
 			)

@@ -23,7 +23,7 @@ export const schema = {
 			tag: z.object({
 				uuid: z.string().describe('The uuid of the tag.'),
 				name: z.string().describe('The name of the tag.'),
-				createdAt: z.string().describe('The date the tag was created.')
+				createdAt: z.date().describe('The date the tag was created.')
 			})
 		}),
 		'4xx': http4xxErrorSchema,

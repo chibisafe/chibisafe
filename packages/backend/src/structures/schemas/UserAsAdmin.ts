@@ -12,7 +12,7 @@ export const userAsAdminSchema = z
 			)
 			.describe("The user's roles."),
 		enabled: z.boolean().describe("Whether the user's account is enabled or not."),
-		createdAt: z.string().describe("The user's creation date."),
-		editedAt: z.string().describe("The user's last edit date.")
+		createdAt: z.date().describe("The user's creation date."),
+		editedAt: z.date().optional().describe("The user's last edit date.")
 	})
 	.describe('The user object.');

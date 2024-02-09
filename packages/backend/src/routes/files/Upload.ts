@@ -30,8 +30,8 @@ export const schema = {
 	tags: ['Files'],
 	headers: z.object({
 		albumuuid: z.string().optional().describe('The uuid of the album.'),
-		'chibi-chunk-number': z.number().optional().describe('The chunk number.'),
-		'chibi-chunks-total': z.number().optional().describe('The total number of chunks.'),
+		'chibi-chunk-number': z.coerce.number().optional().describe('The chunk number.'),
+		'chibi-chunks-total': z.coerce.number().optional().describe('The total number of chunks.'),
 		'chibi-uuid': z.string().optional().describe('The uuid of the file.')
 	}),
 	body: z
@@ -46,8 +46,8 @@ export const schema = {
 			name: z.string().describe('The name of the file.'),
 			uuid: z.string().describe('The uuid of the file.'),
 			url: z.string().describe('The URL of the file.'),
-			identifier: z.string().describe('The identifier of the file.'),
-			publicUrl: z.string().describe('The public URL of the file.')
+			identifier: z.string().optional().describe('The identifier of the file.'),
+			publicUrl: z.string().optional().describe('The public URL of the file.')
 		}),
 		204: z.null(),
 		'4xx': http4xxErrorSchema,

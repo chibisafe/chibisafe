@@ -26,7 +26,7 @@ export const schema = {
 				albumId: z.string().describe('The album id of the link'),
 				enabled: z.boolean().describe('Whether the link is enabled'),
 				enableDownload: z.boolean().describe('Whether the link allows downloads'),
-				expiresAt: z.string().describe('The expiration date of the link'),
+				expiresAt: z.date().nullable().describe('The expiration date of the link'),
 				views: z.number().describe('The amount of views the link has')
 			})
 		}),

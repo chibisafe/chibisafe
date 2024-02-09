@@ -23,7 +23,7 @@ export const schema = {
 			album: z.object({
 				uuid: z.string().describe('The uuid of the album.'),
 				name: z.string().describe('The name of the album.'),
-				createdAt: z.string().describe('The date the album was created.')
+				createdAt: z.date().describe('The date the album was created.')
 			})
 		}),
 		'4xx': http4xxErrorSchema,

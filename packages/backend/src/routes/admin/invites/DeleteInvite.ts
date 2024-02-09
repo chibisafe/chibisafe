@@ -9,11 +9,9 @@ export const schema = {
 	summary: 'Delete invite',
 	description: 'Delete an invite',
 	tags: ['Invites'],
-	body: z
-		.object({
-			ip: z.string().describe('The IP address.')
-		})
-		.required(),
+	body: z.object({
+		code: z.string().describe('The code of the invite to delete.')
+	}),
 	response: {
 		200: z.object({
 			message: z.string().describe('The response message.')

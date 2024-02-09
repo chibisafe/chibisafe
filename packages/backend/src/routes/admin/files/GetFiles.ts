@@ -3,6 +3,7 @@ import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
+import { booleanSchema } from '@/structures/schemas/Boolean.js';
 import { fileAsAdminSchema } from '@/structures/schemas/FileAsAdmin.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
@@ -15,10 +16,10 @@ export const schema = {
 	description: 'Gets all files as admin',
 	tags: ['Files'],
 	query: z.object({
-		publicOnly: z.boolean().optional().describe('Whether to only get public files.'),
+		publicOnly: booleanSchema.describe('Whether to only get public files.'),
 		page: queryPageSchema,
 		limit: queryLimitSchema,
-		quarantine: z.boolean().optional().describe('Whether to only get quarantined files.')
+		quarantine: booleanSchema.describe('Whether to only get quarantined files.')
 	}),
 	response: {
 		200: z.object({
@@ -107,11 +108,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const count = await prisma.files.count(dbSearchObject);
 	const files = (await prisma.files.findMany(dbObject)) as ExtendedFile[] | [];
-
-	if (!files) {
-		void res.notFound('No files exist');
-		return;
-	}
 
 	const readyFiles = [];
 	for (const file of files) {

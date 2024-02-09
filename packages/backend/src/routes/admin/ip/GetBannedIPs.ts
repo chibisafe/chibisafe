@@ -13,7 +13,7 @@ export const schema = {
 			.array(
 				z.object({
 					ip: z.string().describe('The IP address.'),
-					createdAt: z.string().describe('The date the IP was banned.')
+					createdAt: z.date().describe('The date the IP was banned.')
 				})
 			)
 			.describe('The list of banned IPs.'),

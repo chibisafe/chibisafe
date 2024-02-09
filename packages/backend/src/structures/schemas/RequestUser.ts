@@ -11,7 +11,7 @@ export const requestUserSchema = z
 				})
 			)
 			.describe("The user's roles."),
-		apiKey: z.string().describe("The user's API key."),
-		passwordEditedAt: z.string().describe("The date and time the user's password was last edited.")
+		apiKey: z.string().nullable().describe("The user's API key."),
+		passwordEditedAt: z.date().nullable().describe("The date and time the user's password was last edited.")
 	})
 	.describe('The user object.');

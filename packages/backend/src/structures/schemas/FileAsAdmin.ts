@@ -15,7 +15,7 @@ const fileAsAdminExtendSchema = z
 						})
 					)
 					.describe("The user's roles."),
-				createdAt: z.string().describe("The user's creation date.")
+				createdAt: z.date().describe("The user's creation date.")
 			})
 			.nullable()
 	})

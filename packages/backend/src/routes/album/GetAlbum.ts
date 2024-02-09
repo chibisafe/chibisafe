@@ -16,7 +16,7 @@ export const schema = {
 		200: z.object({
 			message: responseMessageSchema,
 			name: z.string().describe('The name of the album.'),
-			description: z.string().describe('The description of the album.'),
+			description: z.string().nullable().describe('The description of the album.'),
 			isNsfw: z.boolean().describe('Whether or not the album is nsfw.'),
 			count: z.number().describe('The number of files in the album.'),
 			files: z.array(fileAsUserSchema)

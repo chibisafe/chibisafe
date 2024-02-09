@@ -19,7 +19,7 @@ export const schema = {
 		200: z.object({
 			message: responseMessageSchema,
 			user: userAsAdminSchema.extend({
-				apiKeyEditedAt: z.string().describe('The date the user last edited their API key.')
+				apiKeyEditedAt: z.date().describe('The date the user last edited their API key.')
 			})
 		}),
 		'4xx': http4xxErrorSchema,
