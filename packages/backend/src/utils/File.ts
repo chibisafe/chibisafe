@@ -2,8 +2,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
+import { Blake3Hasher } from '@napi-rs/blake-hash';
 import Zip from 'adm-zip';
-import * as blake3 from 'blake3';
 import type { FastifyRequest } from 'fastify';
 import jetpack from 'fs-jetpack';
 import moment from 'moment';
@@ -407,21 +407,21 @@ export const getExtension = (filename: string, lower = false): string => {
 };
 
 export const hashFile = async (uploadPath: string): Promise<string> => {
-	const hash = blake3.createHash();
+	const hasher = new Blake3Hasher();
 	const stream = jetpack.createReadStream(uploadPath);
 	return new Promise((resolve, reject) => {
 		stream.on('data', data => {
-			hash.update(data);
+			hasher.update(data);
 		});
 
 		stream.on('end', () => {
-			resolve(hash.digest('hex'));
-			hash.dispose();
+			resolve(hasher.digest('hex'));
+			hasher.reset();
 		});
 
 		stream.on('error', error => {
 			reject(error);
-			hash.dispose();
+			hasher.reset();
 		});
 	});
 };

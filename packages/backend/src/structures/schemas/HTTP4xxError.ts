@@ -1,18 +1,8 @@
-export default {
-	$id: 'HTTP4xxError',
-	type: 'object',
-	description: 'An error response.',
-	properties: {
-		statusCode: {
-			type: 'number',
-			description: 'HTTP status code.',
-			example: 401
-		},
-		error: {
-			type: 'string',
-			description: 'HTTP status description.',
-			example: 'Unauthorized'
-		},
-		message: { $ref: 'ResponseMessage' }
-	}
-};
+import { z } from 'zod';
+import { responseMessageSchema } from './ResponseMessage.js';
+
+export const http4xxErrorSchema = z.object({
+	statusCode: z.number().describe('HTTP status code.'),
+	error: z.string().describe('HTTP status description.'),
+	message: responseMessageSchema
+});

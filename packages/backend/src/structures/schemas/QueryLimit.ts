@@ -1,7 +1,3 @@
-export default {
-	$id: 'QueryLimit',
-	type: 'number',
-	description: 'The amount of items per page.',
-	minimum: 1,
-	maximum: 500
-};
+import { z } from 'zod';
+
+export const queryLimitSchema = z.coerce.number().optional().describe('The amount of items per page.');

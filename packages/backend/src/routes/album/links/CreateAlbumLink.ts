@@ -1,8 +1,39 @@
 import type { FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { getUniqueAlbumIdentifier } from '@/utils/Util.js';
+
+export const schema = {
+	summary: 'Create link',
+	description: 'Creates a new album link',
+	tags: ['Albums'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the album.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			data: z.object({
+				identifier: z.string().describe('The identifier of the link'),
+				uuid: z.string().describe('The uuid of the link'),
+				albumId: z.string().describe('The album id of the link'),
+				enabled: z.boolean().describe('Whether the link is enabled'),
+				enableDownload: z.boolean().describe('Whether the link allows downloads'),
+				expiresAt: z.date().nullable().describe('The expiration date of the link'),
+				views: z.number().describe('The amount of views the link has')
+			})
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/album/:uuid/link',

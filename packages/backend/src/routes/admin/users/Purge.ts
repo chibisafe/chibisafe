@@ -1,6 +1,28 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { purgeUserFiles } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Purge user',
+	description: 'Purge a user from the database and delete all their files and albums',
+	tags: ['User Management'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the user.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/user/:uuid/purge',

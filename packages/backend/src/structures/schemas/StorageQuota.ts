@@ -1,22 +1,9 @@
-export default {
-	$id: 'StorageQuota',
-	type: 'object',
-	description: "The user's storage quota.",
-	properties: {
-		used: {
-			type: 'number',
-			description: "The user's used storage space.",
-			example: '14538214'
-		},
-		quota: {
-			type: 'number',
-			description: "The user's storage quota.",
-			example: '100000000'
-		},
-		overQuota: {
-			type: 'boolean',
-			description: 'Whether the user is over quota.',
-			example: 'false'
-		}
-	}
-};
+import { z } from 'zod';
+
+export const storageQuotaSchema = z
+	.object({
+		used: z.number().describe("The user's used storage space."),
+		quota: z.number().describe("The user's storage quota."),
+		overQuota: z.boolean().describe('Whether the user is over quota.')
+	})
+	.describe("The user's storage quota.");

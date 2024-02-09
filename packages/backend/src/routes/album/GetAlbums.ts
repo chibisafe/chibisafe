@@ -1,7 +1,37 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser, Album } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get albums',
+	description: 'Gets all the albums',
+	tags: ['Albums'],
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			albums: z.array(
+				z.object({
+					uuid: z.string().describe('The uuid of the album.'),
+					name: z.string().describe('The name of the album.'),
+					description: z.string().nullable().describe('The description of the album.'),
+					nsfw: z.boolean().describe('Whether or not the album is NSFW.'),
+					zippedAt: z.date().nullable().describe('The date and time the album was last zipped.'),
+					createdAt: z.date().describe('The date and time the album was created.'),
+					editedAt: z.date().describe('The date and time the album was last edited.'),
+					cover: z.string().describe('The cover image of the album.'),
+					count: z.number().describe('The amount of images in the album.')
+				})
+			)
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/albums',

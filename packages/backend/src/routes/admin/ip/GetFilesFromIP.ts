@@ -1,7 +1,38 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
+import { fileAsAdminSchema } from '@/structures/schemas/FileAsAdmin.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get files',
+	description: 'Gets all files from a specific IP',
+	tags: ['Files', 'IP Management'],
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
+	body: z
+		.object({
+			ip: z.string().describe('The IP address.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: z.string().describe('The response message.'),
+			files: z.array(fileAsAdminSchema),
+			count: z.number().describe('The amount of files that exist.'),
+			banned: z.boolean().describe('Whether or not the IP is banned.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/ip/files',

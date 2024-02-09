@@ -1,6 +1,3 @@
-export default {
-	$id: 'QueryPage',
-	type: 'number',
-	description: 'The page number.',
-	minimum: 1
-};
+import { z } from 'zod';
+
+export const queryPageSchema = z.coerce.number().optional().describe('The page number.');

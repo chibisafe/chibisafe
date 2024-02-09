@@ -5,11 +5,40 @@ import { finished } from 'node:stream/promises';
 import { URL, fileURLToPath } from 'node:url';
 import { DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { SETTINGS } from '@/structures/settings.js';
 import { storeFileToDb, constructFilePublicLink, checkFileHashOnDB, deleteTmpFile } from '@/utils/File.js';
 import { generateThumbnails, imageExtensions, videoExtensions } from '@/utils/Thumbnails.js';
 import { validateAlbum } from '@/utils/UploadHelpers.js';
+
+export const schema = {
+	summary: 'Process uploaded file',
+	description: 'Processes an uploaded file',
+	tags: ['Files'],
+	headers: z.object({
+		albumuuid: z.string().optional().describe('The uuid of the album.')
+	}),
+	body: z
+		.object({
+			identifier: z.string().describe('The identifier of the file.'),
+			name: z.string().describe('The name of the file.'),
+			type: z.string().describe('The type of the file.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			name: z.string().describe('The name of the file.'),
+			uuid: z.string().describe('The uuid of the file.'),
+			url: z.string().describe('The URL of the file.'),
+			identifier: z.string().describe('The identifier of the file.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/upload/process',

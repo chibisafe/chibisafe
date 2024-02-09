@@ -2,11 +2,32 @@ import path from 'node:path';
 import { CopyObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import type { FastifyReply } from 'fastify';
 import jetpack from 'fs-jetpack';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { SETTINGS } from '@/structures/settings.js';
 import { quarantinePath, uploadPath } from '@/utils/File.js';
 import { generateThumbnails } from '@/utils/Thumbnails.js';
+
+export const schema = {
+	summary: 'Unquarantine file',
+	description: 'Removes the quarantine status from a file',
+	tags: ['Files'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the file.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: z.string().describe('The response message.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/file/:uuid/allow',

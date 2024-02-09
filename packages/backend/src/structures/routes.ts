@@ -2,6 +2,8 @@ import process from 'node:process';
 import { URL, fileURLToPath, pathToFileURL } from 'node:url';
 import { inspect } from 'node:util';
 import type { FastifyInstance, FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
+import type { ZodTypeProvider } from 'fastify-type-provider-zod';
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
 import jetpack from 'fs-jetpack';
 import { addSpaces } from '@/utils/Util.js';
 import type { RouteOptions } from './interfaces.js';
@@ -22,14 +24,14 @@ export default {
 		const extension = `${process.env.NODE_ENV === 'production' ? 'j' : 't'}s`;
 
 		// Load the base schemas to extend from
-		const baseSchemaFiles = await jetpack.findAsync(fileURLToPath(new URL('schemas', import.meta.url)), {
-			matching: `*.${extension}`
-		});
+		// const baseSchemaFiles = await jetpack.findAsync(fileURLToPath(new URL('schemas', import.meta.url)), {
+		// 	matching: `*.${extension}`
+		// });
 
-		for (const schemaFile of baseSchemaFiles) {
-			const schema = await import(pathToFileURL(schemaFile).href);
-			server.addSchema(schema.default);
-		}
+		// for (const schemaFile of baseSchemaFiles) {
+		// 	const schema = await import(pathToFileURL(schemaFile).href);
+		// 	server.addSchema(schema.default);
+		// }
 
 		/*
 			While in development we only want to match routes written in TypeScript but for production
@@ -41,7 +43,7 @@ export default {
 		});
 
 		const routeFiles = allRouteFiles.filter(file => !file.endsWith(`.schema.${extension}`));
-		const schemaFiles = allRouteFiles.filter(file => file.endsWith(`.schema.${extension}`));
+		// const schemaFiles = allRouteFiles.filter(file => file.endsWith(`.schema.${extension}`));
 
 		for (const routeFile of routeFiles) {
 			try {
@@ -49,16 +51,16 @@ export default {
 				const options: RouteOptions = route.options;
 
 				// Try to grab the schema file for the route
-				const routeFileName = routeFile.split('/').pop();
-				const schemaFile = schemaFiles.find(file => {
-					if (!routeFileName) return null;
-					return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
-				});
+				// const routeFileName = routeFile.split('/').pop();
+				// const schemaFile = schemaFiles.find(file => {
+				// 	if (!routeFileName) return null;
+				// 	return routeFile.replace(routeFileName, routeFileName?.replace('.', '.schema.')) === file;
+				// });
 
-				let schema: any;
-				if (schemaFile) {
-					schema = (await import(pathToFileURL(schemaFile).href)).default;
-				}
+				// let schema: any;
+				// if (schemaFile) {
+				// 	schema = (await import(pathToFileURL(schemaFile).href)).default;
+				// }
 
 				if (!options.url || !options.method) {
 					server.log.warn(`Found route without URL or METHOD - ${routeFile}`);
@@ -125,16 +127,19 @@ export default {
 				}
 
 				// Check one last time if there's a schema attached to the options object
-				if (!schema && options.schema) {
-					schema = options.schema;
-				}
+				// if (!schema && options.schema) {
+				// 	schema = options.schema;
+				// }
+
+				server.setValidatorCompiler(validatorCompiler);
+				server.setSerializerCompiler(serializerCompiler);
 
 				// Register the route in fastify
-				server.route({
+				server.withTypeProvider<ZodTypeProvider>().route({
 					method: options.method.toUpperCase() as any,
 					url: options.url,
 					preHandler: middlewares,
-					schema: schema ?? {},
+					schema: route.schema ?? {},
 					handler: (req: FastifyRequest, res: FastifyReply) => route.run(req, res),
 					config: {
 						rateLimit: {
@@ -146,7 +151,7 @@ export default {
 
 				server.log.debug(
 					// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-					`Found route |${schema ? ' SCHEMA |' : addSpaces('') + ' |'}${addSpaces(
+					`Found route |${route.schema ? ' SCHEMA |' : addSpaces('') + ' |'}${addSpaces(
 						options.method.toUpperCase()
 					)} ${options.url}`
 				);

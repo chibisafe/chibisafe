@@ -1,7 +1,28 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { deleteFiles } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Delete file',
+	description: 'Deletes a file as admin',
+	tags: ['Files'],
+	params: z
+		.object({
+			uuid: z.string().describe('The uuid of the file.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: z.string().describe('The response message.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/file/:uuid',

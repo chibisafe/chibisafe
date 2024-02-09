@@ -1,8 +1,29 @@
 import bcrypt from 'bcryptjs';
 import type { FastifyReply } from 'fastify';
 import moment from 'moment';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+
+export const schema = {
+	summary: 'Change password',
+	description: 'Change the password of the current user',
+	tags: ['Auth'],
+	body: z.object({
+		password: z.string().describe('The current password of the user.'),
+		newPassword: z.string().describe('The new password of the user.')
+	}),
+	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/auth/password/change',

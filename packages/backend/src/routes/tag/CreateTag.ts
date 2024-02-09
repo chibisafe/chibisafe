@@ -1,8 +1,35 @@
 import type { FastifyReply } from 'fastify';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+
+export const schema = {
+	summary: 'Create tag',
+	description: 'Create a new tag',
+	tags: ['Tags'],
+	body: z
+		.object({
+			name: z.string().describe('The name of the tag.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			tag: z.object({
+				uuid: z.string().describe('The uuid of the tag.'),
+				name: z.string().describe('The name of the tag.'),
+				createdAt: z.date().describe('The date the tag was created.')
+			})
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/tag/create',

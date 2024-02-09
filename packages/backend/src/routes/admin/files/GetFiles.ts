@@ -1,8 +1,36 @@
 import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
+import { booleanSchema } from '@/structures/schemas/Boolean.js';
+import { fileAsAdminSchema } from '@/structures/schemas/FileAsAdmin.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get all files',
+	description: 'Gets all files as admin',
+	tags: ['Files'],
+	query: z.object({
+		publicOnly: booleanSchema.describe('Whether to only get public files.'),
+		page: queryPageSchema,
+		limit: queryLimitSchema,
+		quarantine: booleanSchema.describe('Whether to only get quarantined files.')
+	}),
+	response: {
+		200: z.object({
+			message: z.string().describe('The response message.'),
+			files: z.array(fileAsAdminSchema),
+			count: z.number().describe('The total count of files.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/admin/files',
@@ -80,11 +108,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const count = await prisma.files.count(dbSearchObject);
 	const files = (await prisma.files.findMany(dbObject)) as ExtendedFile[] | [];
-
-	if (!files) {
-		void res.notFound('No files exist');
-		return;
-	}
 
 	const readyFiles = [];
 	for (const file of files) {
