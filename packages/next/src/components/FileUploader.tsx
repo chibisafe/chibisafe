@@ -97,6 +97,7 @@ export function FileUploader() {
 						if (upload !== -1) {
 							draft[upload]!.status = 'error';
 							draft[upload]!.error = error.message;
+							draft[upload]!.processing = false;
 						}
 					});
 				},
@@ -105,8 +106,7 @@ export function FileUploader() {
 					setUploads(draft => {
 						const upload = draft.findIndex(u => u.uuid === uuid);
 						if (upload !== -1) {
-							draft[upload]!.bytesSent = progress.bytesSent;
-							draft[upload]!.progress = progress.progress;
+							draft[upload]!.progress = progress;
 						}
 					});
 				},
@@ -126,6 +126,7 @@ export function FileUploader() {
 							if (upload !== -1) {
 								draft[upload]!.status = 'success';
 								draft[upload]!.url = publicUrl;
+								draft[upload]!.processing = false;
 							}
 						});
 
@@ -157,6 +158,7 @@ export function FileUploader() {
 									if (upload !== -1) {
 										draft[upload]!.status = 'success';
 										draft[upload]!.url = res.url;
+										draft[upload]!.processing = false;
 									}
 								});
 
@@ -172,6 +174,7 @@ export function FileUploader() {
 									if (upload !== -1) {
 										draft[upload]!.status = 'error';
 										draft[upload]!.error = error.message;
+										draft[upload]!.processing = false;
 									}
 								});
 								toast.error(error.message);
@@ -189,6 +192,7 @@ export function FileUploader() {
 						if (upload !== -1) {
 							draft[upload]!.status = 'success';
 							draft[upload]!.url = response.url;
+							draft[upload]!.processing = false;
 						}
 					});
 					return null;
