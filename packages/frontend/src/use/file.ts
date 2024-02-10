@@ -38,6 +38,11 @@ export const isFilePDF = (file: FileWithAdditionalData) => {
 	return type === 'application/pdf';
 };
 
+export const isFileZip = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type === 'application/zip' || type === 'application/x-zip-compressed';
+};
+
 export const getFileExtension = (file: File) => {
 	const { name } = file;
 	return name.split('.').pop();

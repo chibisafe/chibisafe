@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path, { extname } from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
@@ -13,7 +13,7 @@ import prisma from '@/structures/database.js';
 import type { FileInProgress, RequestUser, User } from '@/structures/interfaces.js';
 import { SETTINGS } from '@/structures/settings.js';
 import { log } from '@/utils/Logger.js';
-import { getFileThumbnail, removeThumbs } from './Thumbnails.js';
+import { generateThumbnails, getFileThumbnail, removeThumbs } from './Thumbnails.js';
 import { getHost } from './Util.js';
 
 const fileIdentifierMaxTries = 5;
@@ -475,4 +475,55 @@ export const hashFile = async (uploadPath: string): Promise<string> => {
 			hasher.reset();
 		});
 	});
+};
+
+export const handleUploadFile = async ({
+	user,
+	ip,
+	upload,
+	album
+}: {
+	album?: number | null | undefined;
+	ip: string;
+	upload: { name: string; path: string; size: string; type: string };
+	user?: RequestUser | User | undefined;
+}) => {
+	// Assign a unique identifier to the file
+	const uniqueIdentifier = await getUniqueFileIdentifier();
+	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
+	const newFileName = String(uniqueIdentifier) + extname(upload.name);
+	log.debug(`> Name for upload: ${newFileName}`);
+
+	// Move file to permanent location
+	const newPath = fileURLToPath(new URL(`../../../../uploads/${newFileName}`, import.meta.url));
+	const file = {
+		name: newFileName,
+		extension: extname(upload.name),
+		path: newPath,
+		original: upload.name,
+		type: upload.type,
+		size: upload.size,
+		hash: await hashFile(upload.path),
+		ip,
+		isS3: false,
+		isWatched: false
+	};
+
+	let uploadedFile;
+	const fileOnDb = await checkFileHashOnDB(user, file);
+	if (fileOnDb?.repeated) {
+		uploadedFile = fileOnDb.file;
+		await deleteTmpFile(upload.path);
+	} else {
+		await jetpack.moveAsync(upload.path, newPath);
+		// Store file in database
+		const savedFile = await storeFileToDb(user ? user : undefined, file, album ? album : undefined);
+
+		uploadedFile = savedFile.file;
+
+		// Generate thumbnails
+		void generateThumbnails({ filename: savedFile.file.name });
+	}
+
+	return uploadedFile;
 };

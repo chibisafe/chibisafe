@@ -8,6 +8,7 @@ import fastify from 'fastify';
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import jetpack from 'fs-jetpack';
 import LiveDirectory from 'live-directory';
+import { cleanup } from 'unzipit';
 import Routes from './structures/routes.js';
 import { SETTINGS, loadSettings } from './structures/settings.js';
 import Docs from './utils/Docs.js';
@@ -33,12 +34,14 @@ let htmlBuffer: Buffer | null = null;
 
 process.on('SIGINT', async () => {
 	console.log('SIGINT received...');
+	cleanup();
 	await watcher.close();
 	await server.close();
 });
 
 process.on('SIGTERM', async () => {
 	console.log('SIGTERM received...');
+	cleanup();
 	await watcher.close();
 	await server.close();
 });
