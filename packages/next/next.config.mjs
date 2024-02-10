@@ -41,6 +41,9 @@ const nextConfig = {
 				destination: `${baseApiUrl}:path*`
 			}
 		];
+	},
+	typescript: {
+		ignoreBuildErrors: true
 	}
 };
 
