@@ -50,6 +50,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return;
 	}
 
+	if (file.isWatched) {
+		void res.badRequest('You cannot quarantine a watched file');
+		return;
+	}
+
 	const uniqueIdentifier = await getUniqueFileIdentifier();
 	const newFileName = String(uniqueIdentifier) + path.extname(file.name);
 

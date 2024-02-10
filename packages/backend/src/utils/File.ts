@@ -22,6 +22,7 @@ const preserveExtensions = [
 	/\.tar\.\w+/i // tarballs
 ];
 export const uploadPath = fileURLToPath(new URL('../../../../uploads', import.meta.url));
+export const watchPath = fileURLToPath(new URL('../../../../uploads/live', import.meta.url));
 export const tmpUploadPath = fileURLToPath(new URL('../../../../uploads/tmp', import.meta.url));
 export const quarantinePath = fileURLToPath(new URL('../../../../uploads/quarantine', import.meta.url));
 
@@ -76,6 +77,7 @@ export const deleteFiles = async ({
 	deleteFromDB?: boolean;
 	files: {
 		isS3: boolean;
+		isWatched: boolean;
 		name: string;
 		quarantine: boolean;
 		quarantineFile: { name: string } | null;
@@ -121,7 +123,7 @@ export const deleteFiles = async ({
 
 				await jetpack.removeAsync(
 					path.join(
-						file.quarantine ? quarantinePath : uploadPath,
+						file.quarantine ? quarantinePath : file.isWatched ? watchPath : uploadPath,
 						file.quarantine ? file.quarantineFile?.name ?? file.name : file.name
 					)
 				);
@@ -240,10 +242,12 @@ export const constructFilePublicLink = ({
 	req,
 	fileName,
 	quarantine = false,
-	isS3 = false
+	isS3 = false,
+	isWatched = false
 }: {
 	fileName: string;
 	isS3?: boolean;
+	isWatched?: boolean;
 	quarantine?: boolean;
 	req: FastifyRequest;
 }) => {
@@ -251,7 +255,7 @@ export const constructFilePublicLink = ({
 	const data = {
 		url: isS3
 			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}${quarantine ? '/quarantine' : ''}/${fileName}`
-			: `${host}${quarantine ? '/quarantine' : ''}/${fileName}`,
+			: `${host}${quarantine ? '/quarantine' : ''}${isWatched ? '/live' : ''}/${fileName}`,
 		thumb: '',
 		thumbSquare: '',
 		preview: ''
@@ -296,6 +300,29 @@ export const checkFileHashOnDB = async (user: RequestUser | User | undefined, fi
 	return null;
 };
 
+export const checkFileNameOnDB = async (user: RequestUser | User | undefined, fileName: string) => {
+	const dbFile = await prisma.files.findFirst({
+		where: {
+			name: fileName,
+			isWatched: true,
+			user: user
+				? {
+						id: user.id
+					}
+				: {}
+		}
+	});
+
+	if (dbFile) {
+		return {
+			file: dbFile,
+			repeated: true
+		};
+	}
+
+	return null;
+};
+
 export const storeFileToDb = async (
 	user: RequestUser | User | undefined,
 	file: FileInProgress,
@@ -313,6 +340,7 @@ export const storeFileToDb = async (
 		hash: file.hash,
 		ip: file.ip,
 		isS3: file.isS3,
+		isWatched: file.isWatched,
 		createdAt: now,
 		editedAt: now
 	};
@@ -347,6 +375,29 @@ export const storeFileToDb = async (
 			}
 		};
 	}
+};
+
+export const updateFileOnDb = async (user: RequestUser | User | undefined, file: FileInProgress & { uuid: string }) => {
+	const now = moment.utc().toDate();
+
+	const data = {
+		userId: user?.id ?? undefined!,
+		name: file.name,
+		original: file.original,
+		type: file.type,
+		size: file.size,
+		hash: file.hash,
+		ip: file.ip,
+		isS3: file.isS3,
+		isWatched: file.isWatched,
+		createdAt: now,
+		editedAt: now
+	};
+
+	return prisma.files.update({
+		where: { uuid: file.uuid, isWatched: true },
+		data
+	});
 };
 
 export const saveFileToAlbum = async (albumId: number, fileId: number) => {

@@ -47,12 +47,18 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uuid: true,
 			name: true,
 			isS3: true,
+			isWatched: true,
 			quarantineFile: true
 		}
 	});
 
 	if (!file) {
 		void res.notFound("The file doesn't exist");
+		return;
+	}
+
+	if (file.isWatched) {
+		void res.badRequest('You cannot allow a watched file');
 		return;
 	}
 
@@ -90,7 +96,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		await jetpack.moveAsync(path.join(quarantinePath, file.quarantineFile!.name), path.join(uploadPath, file.name));
 	}
 
-	void generateThumbnails(file.name);
+	void generateThumbnails({ filename: file.name });
 
 	return res.send({
 		message: 'Successfully allowed the file'

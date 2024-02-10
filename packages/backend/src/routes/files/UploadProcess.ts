@@ -97,7 +97,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		size: String(fileSize),
 		hash,
 		ip: req.ip,
-		isS3: true
+		isS3: true,
+		isWatched: false
 	};
 
 	let uploadedFile;
@@ -133,7 +134,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				})
 				// eslint-disable-next-line promise/prefer-await-to-then
 				.then(() => {
-					void generateThumbnails(savedFile.file.name, true);
+					void generateThumbnails({ filename: savedFile.file.name, tmp: true });
 				})
 				// eslint-disable-next-line promise/prefer-await-to-callbacks, promise/prefer-await-to-then
 				.catch(error => {

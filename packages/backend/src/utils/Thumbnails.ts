@@ -16,13 +16,17 @@ const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/thumbs/previ
 const generateThumbnailForImage = async ({
 	filename,
 	output,
-	tmp = false
+	tmp = false,
+	watched = false
 }: {
 	filename: string;
 	output: string;
 	tmp?: boolean;
+	watched?: boolean;
 }) => {
-	const filePath = fileURLToPath(new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${filename}`, import.meta.url));
+	const filePath = fileURLToPath(
+		new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${watched ? 'live/' : ''}${filename}`, import.meta.url)
+	);
 
 	await new Promise((resolve, reject) => {
 		ffmpeg(filePath)
@@ -56,13 +60,17 @@ const generateThumbnailForImage = async ({
 const generateThumbnailForVideo = async ({
 	filename,
 	output,
-	tmp = false
+	tmp = false,
+	watched = false
 }: {
 	filename: string;
 	output: string;
 	tmp?: boolean;
+	watched?: boolean;
 }) => {
-	const filePath = fileURLToPath(new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${filename}`, import.meta.url));
+	const filePath = fileURLToPath(
+		new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${watched ? 'live/' : ''}${filename}`, import.meta.url)
+	);
 
 	await new Promise((resolve, reject) => {
 		ffmpeg(filePath)
@@ -107,7 +115,15 @@ const generateThumbnailForVideo = async ({
 	}
 };
 
-export const generateThumbnails = async (filename: string, tmp = false) => {
+export const generateThumbnails = async ({
+	filename,
+	tmp = false,
+	watched = false
+}: {
+	filename: string;
+	tmp?: boolean;
+	watched?: boolean;
+}) => {
 	if (!filename) return;
 	const ext = path.extname(filename).toLowerCase();
 	const output = `${filename.slice(0, -ext.length)}.webp`;
@@ -116,9 +132,10 @@ export const generateThumbnails = async (filename: string, tmp = false) => {
 	log.debug(`Generating thumbnails for ${filename}`);
 
 	// eslint-disable-next-line max-len
-	if (imageExtensions.includes(ext)) return generateThumbnailForImage({ filename, output, tmp });
+	if (imageExtensions.includes(ext)) return generateThumbnailForImage({ filename, output, tmp, watched });
 	// eslint-disable-next-line max-len
-	if (videoExtensions.includes(ext)) return generateThumbnailForVideo({ filename, output: previewOutput, tmp });
+	if (videoExtensions.includes(ext))
+		return generateThumbnailForVideo({ filename, output: previewOutput, tmp, watched });
 	return null;
 };
 
