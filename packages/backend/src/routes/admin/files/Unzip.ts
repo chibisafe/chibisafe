@@ -1,5 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { basename } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import type { FastifyReply } from 'fastify';
@@ -13,8 +14,9 @@ import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { handleUploadFile } from '@/utils/File.js';
 
+const require = createRequire(import.meta.url);
 setOptions({
-	workerURL: fileURLToPath(new URL('../../../../../workers/unzip-worker.js', import.meta.url)),
+	workerURL: require.resolve('unzipit/dist/unzipit-worker.js'),
 	numWorkers: 2
 });
 
