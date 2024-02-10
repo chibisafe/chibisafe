@@ -67,6 +67,7 @@
 		"systeminformation": "^5.21.24",
 		"tsc-alias": "^1.8.8",
 		"tsconfig-paths": "^4.2.0",
+		"unzipit": "^1.4.3",
 		"uuid": "^9.0.1",
 		"zod": "^3.22.4"
 	},

@@ -215,6 +215,15 @@ export const regenerateThumbnail = async (uuid: string) => {
 	}
 };
 
+export const unzipFile = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/file/${uuid}/unzip`);
+		debug('unzipFile', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
 export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const data = await request.delete(`admin/file/${uuid}`);

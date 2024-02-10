@@ -100,6 +100,17 @@
 								<Button as="a" :href="file.url" :download="file.original" class="flex-1">
 									Download
 								</Button>
+								<!--
+								  <ConfirmationDialog
+								  v-if="isAdmin && isFileZip(file)"
+								  title="Unzip"
+								  message="The file will be unzipped and the contents will be added to your uploads. Are you sure?"
+								  proceedText="Unzip"
+								  :callback="doUnzipFile"
+								  >
+								  <Button>Unzip</Button></ConfirmationDialog
+								  >
+								-->
 								<ConfirmationDialog
 									v-if="isAdmin && !file.quarantine"
 									title="Quarantine file"
@@ -313,6 +324,10 @@ const { mutate: mutateRegenerateThumbnail } = useMutation({
 	mutationFn: (uuid: string) => regenerateThumbnail(uuid)
 });
 
+// const { mutate: mutateUnzipFile } = useMutation({
+//	mutationFn: (uuid: string) => unzipFile(uuid)
+// });
+
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
 	void albumsStore.get();
@@ -403,6 +418,15 @@ const doRegenerateThumbnail = () => {
 		}
 	});
 };
+
+// const doUnzipFile = () => {
+//	mutateUnzipFile(props.file.uuid, {
+//		onSuccess: () => {
+//			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
+//			toast.success('File unzipped');
+//		}
+//	});
+// };
 
 const { data: tags } = useQuery({
 	queryKey: ['tags'],
