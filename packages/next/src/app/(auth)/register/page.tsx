@@ -6,7 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { RegisterForm } from '@/components/auth/RegisterForm';
-import { Logo } from '@/components/svg/ChibisafeLogo';
+import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
 export const metadata: Metadata = {
 	title: 'Create an account',
@@ -33,7 +33,7 @@ export default function LoginPage() {
 			</Link>
 			<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 				<div className="flex flex-col space-y-2 text-center">
-					<Logo className="mx-auto h-6 w-6" />
+					<ChibisafeLogo className="mx-auto h-6 w-6" />
 					<h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
 					<p className="text-sm text-muted-foreground">Enter your email below to create an account</p>
 				</div>
