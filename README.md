@@ -138,22 +138,4 @@ This small guide assumes a lot of things including but not limited to you knowin
 4. Run `yarn build`
 5. Run `yarn start`
 6. Chibisafe should now be running at http://localhost:8000
-7. If you want to run chibisafe behind your own domain, we have some [docker guides](docs/docker/docker.md) on how to do this.
-
-## Migration
-
-<details>
-  <summary>Migrating from v3.x (lolisafe) to v4.x (chibisafe)</summary>
-
-If you are upgrading from `v3.x` to `v4.0.0` (lolisafe to chibisafe) and you want to keep your files and relations please read the [migration guide](docs/migrating-v3-to-v4.md). Keep in mind the migration is a best-effort script and it's recommended to start from scratch. That being said the migration does work but it's up to you to make a backup beforehand in case something goes wrong.
-
-`v4.0.1` changed the hashing algorithm for a better, faster one. So if you are currently running v4.0.0 and decide to update to v4.0.1+ it's in your best interest to rehash all the files your instance is serving. To do this go to the chibisafe root folder and run `node src/api/utils/rehashDatabase.js`. Depending on how many files you have it can take a few minutes or hours, there's a progress bar that will give you an idea.
-</details>
-
-<details>
-	<summary>Migrating from v4.x to v5</summary>
-
-If you're upgrading from `v4.x` to `v5` you can run `yarn install && yarn migrate-v4-to-v5` to start the migration process. Depending how many files you have in your old instance it can take up to 30 minutes so be patient. It'll ask you for the absolute path to your v4 sqlite database and then it'll proceed to migrate your data. Once the process is done there is one more thing to do, which is to move the old `./uploads` folder from chibisafe v4 to the root of your v5 folder.
-
-> Note: if your uploads folder is in another location like a different/network drive and you are using symlinks, make sure to update the symlink to point it to the uploads folder in root of the new chibisafe
-</details>
+7. If you want to run chibisafe behind your own domain, we have some [docker guides](docs/docker/docker.md) on how to do this
