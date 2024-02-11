@@ -5,8 +5,10 @@ import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { Blake3Hasher } from '@napi-rs/blake-hash';
 import Zip from 'adm-zip';
 import type { FastifyRequest } from 'fastify';
+import { fileTypeFromFile } from 'file-type';
 import jetpack from 'fs-jetpack';
 import moment from 'moment';
+import fetch from 'node-fetch';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
 import prisma from '@/structures/database.js';
@@ -398,6 +400,79 @@ export const updateFileOnDb = async (user: RequestUser | User | undefined, file:
 		where: { uuid: file.uuid, isWatched: true },
 		data
 	});
+};
+
+export const uploadFilefromURL = async ({
+	url,
+	albumId,
+	user,
+	ip
+}: {
+	albumId?: number | null;
+	ip: string;
+	url: string;
+	user: RequestUser | User | undefined;
+}) => {
+	const uniqueIdentifier = await getUniqueFileIdentifier();
+	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
+	log.debug(`> Name for upload: ${uniqueIdentifier}`);
+	const newFileName = String(uniqueIdentifier) + extname(url);
+	log.debug(`> Name for upload: ${newFileName}`);
+	const tempPath = fileURLToPath(new URL(`../../../../uploads/tmp/${newFileName}`, import.meta.url));
+	const newPath = fileURLToPath(new URL(`../../../../uploads/${newFileName}`, import.meta.url));
+	log.debug(`> Path for upload: ${tempPath}`);
+	await jetpack
+		.writeAsync(tempPath, await (await fetch(url)).buffer())
+		.then(async () => {
+			log.debug(`> File written to disk: ${tempPath}`);
+		})
+		.catch(error => {
+			log.error(`> Error writing file to disk: ${error}`);
+		});
+
+	const fileType = await fileTypeFromFile(tempPath).catch(error => {
+		log.error(`> Error getting file type: ${error}`);
+	});
+
+	log.debug(`> File type: ${fileType?.mime}`);
+
+	// check if user is authenticated
+	if (user !== undefined) {
+		log.debug(`> User authenticated: ${user.id}`);
+	}
+
+	const file = {
+		userId: user?.id,
+		name: newFileName,
+		extension: extname(newFileName),
+		path: tempPath,
+		original: newFileName,
+		type: fileType?.mime ?? 'application/octet-stream',
+		size: String(jetpack.inspect(tempPath)?.size ?? 0),
+		hash: await hashFile(tempPath),
+		ip,
+		isS3: false,
+		isWatched: false
+	};
+
+	let uploadedFile;
+	const fileOnDb = await checkFileHashOnDB(user, file);
+	log.debug(`> File on DB: ${fileOnDb?.repeated}`);
+	if (fileOnDb?.repeated) {
+		log.debug(`> File already exists: ${fileOnDb.file.name}`);
+		uploadedFile = fileOnDb.file;
+		await deleteTmpFile(tempPath);
+		log.debug(`> Temporary file deleted: ${tempPath}`);
+		return uploadedFile;
+	} else {
+		await jetpack.moveAsync(tempPath, newPath);
+		log.debug(`> File moved to permanent location: ${newPath}`);
+		const savedFile = await storeFileToDb(user, file, albumId ? albumId : undefined);
+		log.debug(`> File stored in database: ${savedFile.file.name}`);
+		uploadedFile = savedFile.file;
+		void generateThumbnails({ filename: savedFile.file.name });
+		return uploadedFile;
+	}
 };
 
 export const saveFileToAlbum = async (albumId: number, fileId: number) => {

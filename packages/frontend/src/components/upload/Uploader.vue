@@ -103,6 +103,7 @@ const dropHandler = (event: DragEvent) => {
 	onDragEnd();
 };
 
+/*
 const pasteHandler = (event: ClipboardEvent) => {
 	if (!event.clipboardData) return;
 
@@ -131,7 +132,7 @@ const pasteHandler = (event: ClipboardEvent) => {
 		isTextEditorOpen.value = true;
 	}
 };
-
+*/
 const uploadFile = async ({
 	file,
 	endpoint,
@@ -327,12 +328,12 @@ const onDragEnd = () => {
 
 onMounted(() => {
 	// @ts-ignore
-	window.addEventListener('paste', pasteHandler);
+	// window.addEventListener('paste', pasteHandler);
 	isMobile.value = useWindowSize().width.value < 640;
 });
 
 onUnmounted(() => {
 	// @ts-ignore
-	window.removeEventListener('paste', pasteHandler);
+	// window.removeEventListener('paste', pasteHandler);
 });
 </script>
