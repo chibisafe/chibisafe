@@ -1,29 +1,7 @@
-<p align="center">
-  <img width="234" height="376" src="https://lolisafe.moe/xjoghu.png">
-</p>
+# Harmonyspring
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/chibisafe/chibisafe/master/LICENSE)
-[![Chat / Support](https://img.shields.io/badge/Chat%20%2F%20Support-discord-7289DA.svg?style=flat-square)](https://discord.gg/5g6vgwn)
-[![Support me](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dpitu%26type%3Dpledges&style=flat-square)](https://www.patreon.com/pitu)
-[![Support me](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/kana)
-
-## What is Chibisafe?
-Chibisafe is a file uploader service written in node that aims to to be easy to use and easy to set up. It's easy to use, easy to deploy, free and open source. It accepts files, photos, documents, anything you imagine and gives you back a shareable link for you to send to others.
-
-It supports both public and private mode. Public mode let's anyone sign up and start uploading files to the service, whereas private mode only users with an invite link can do so. During upload, if the file is big it's automatically split into chunks to minimize the chance of network failures enabling you to retry each chunk up to 5 times. Users can also create an API key to use with 3rd party applications to interact directly with their account.
-
-The service also comes with a control panel where you can edit almost every configuration of the instance directly from the UI without having to touch environment or configuration files manually. Control the name, the ratelimit, max file size, accepted extensions, meta descriptions, etc directly from an intuitive panel.
-
-_If you fork/deploy your own instance it would mean a lot if you were to keep either the GitHub logo to our repo or a link to it 💖_
-
----
-
-<details>
-	<summary>What's new in v5</summary>
-
-
-This release marks a new era for Chibisafe! 🚀
-Completely rewritten in TypeScript and fixing most pain-points from the past, this new stable version is faster, easier to setup, easier to use and overall better.
+This project is a fork of the original [chibisafe](https://github.com/chibisafe/chibisafe) project, which is suitable for deployment
+**This project is currently incomplete and not suitable for any deployment.**
 
 - Fully written in TypeScript
 - Better and faster file upload and file chunking logic
@@ -179,19 +157,3 @@ If you're upgrading from `v4.x` to `v5` you can run `yarn install && yarn migrat
 
 > Note: if your uploads folder is in another location like a different/network drive and you are using symlinks, make sure to update the symlink to point it to the uploads folder in root of the new chibisafe
 </details>
-
-### Screenshots
-<p align="center">
-	
-![image](https://github.com/chibisafe/chibisafe/assets/7425261/659068cd-f154-4fe0-860f-4478e0f859d5)
-![image](https://github.com/chibisafe/chibisafe/assets/7425261/83dae9d1-5f71-404a-b79c-19fb4d0dfd62)
-![image](https://github.com/chibisafe/chibisafe/assets/7425261/0dad05a8-f42b-4834-983f-2ca82eedb176)
-	
-</p>
-
-## Author
-
-**Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/chibisafe/blob/master/LICENSE) License.<br>
-Authored and maintained by Pitu.
-
-> [chibisafe.moe](https://chibisafe.moe) · GitHub [@Pitu](https://github.com/Pitu)
