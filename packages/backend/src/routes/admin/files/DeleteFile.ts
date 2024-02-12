@@ -35,8 +35,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const file = await prisma.files.findFirst({
 		where: {
-			uuid,
-			quarantine: true
+			uuid
 		},
 		select: {
 			uuid: true,
