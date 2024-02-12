@@ -104,10 +104,11 @@ const timer = ref<any>();
 const queryClient = useQueryClient();
 
 const onOpen = async (isOpen: boolean) => {
-	if (!isOpen) return;
+	if (!isOpen) return isOpen;
 	snippetTitle.value = '';
 	inputValue.value = '';
 	showPostCreate.value = false;
+	return isOpen;
 };
 
 whenever(passedContent, async () => {

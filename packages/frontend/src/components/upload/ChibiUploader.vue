@@ -25,11 +25,11 @@
 				</h3>
 				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden mobile:h-0">
 					{{ formatBytes(maxFileSize) }} max per file.
-					<span
-						class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto"
-						@click.stop.prevent="() => {}"
-					>
-						<TextEditorDialog :content="pastedText" :open="isTextEditorOpen"
+					<span class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto" @click.stop.prevent>
+						<TextEditorDialog
+							:content="pastedText"
+							:open="isTextEditorOpen"
+							@update:open="isOpen => (isTextEditorOpen = isOpen)"
 							>Click here if you rather upload text or try pasting it now.</TextEditorDialog
 						>
 					</span>
