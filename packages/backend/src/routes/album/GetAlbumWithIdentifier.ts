@@ -1,7 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
-import type { File } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
@@ -27,7 +26,7 @@ export const schema = {
 			message: responseMessageSchema,
 			album: z.object({
 				name: z.string().describe('The name of the album.'),
-				description: z.string().describe('The description of the album.'),
+				description: z.string().nullable().describe('The description of the album.'),
 				isNsfw: z.boolean().describe('Whether or not the album is NSFW.'),
 				count: z.number().describe('The amount of files in the album.'),
 				files: z.array(
@@ -114,12 +113,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	}
 
 	// Construct the public links
-	const files = [] as File[];
+	const files = [];
 	for (const file of album.files) {
-		const modifiedFile = file as File;
+		const { isWatched, isS3, ...modifiedFile } = file;
 		files.push({
 			...modifiedFile,
-			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3: file.isS3, isWatched: file.isWatched })
+			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3, isWatched })
 		});
 	}
 
