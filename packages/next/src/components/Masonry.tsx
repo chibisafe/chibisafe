@@ -55,12 +55,13 @@ export function Masonry({
 				items={files}
 				config={{
 					columns: [1, 2, 3, 4],
-					gap: [24, 12, 8, 8],
+					gap: [24, 12, 12, 12],
 					media: [640, 1024, 1400, 1400]
 				}}
+				className="px-1"
 				render={(file, idx) => (
 					<div
-						className="relative w-full h-auto"
+						className="relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none"
 						key={idx}
 						onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
 						onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
