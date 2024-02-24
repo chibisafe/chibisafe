@@ -80,7 +80,7 @@
 
 									<div>
 										<Badge
-											v-for="(extension, idx) in String(setting.value).split(',')"
+											v-for="(extension, idx) of setting.value"
 											:key="idx"
 											class="mr-2"
 										>
@@ -157,22 +157,22 @@ const categorizedSettings = computed(() => {
 	return categorized;
 });
 
-const addExtension = (setting: any, extension: any) => {
+const addExtension = (setting: Setting, extension: any) => {
 	if (!extension.value) return;
-	const extensions = setting.value.split(',');
-	if (extensions.includes(extension.value)) return;
-	extensions.push(extension.value);
-	setting.value = extensions.join(',');
+	const extensions = setting.value as string[];
+	if (extensions.find(v => v == extension.value)) return;
+	extensions.push(extension.value.match(/^\./) ? extension.value : '.' + extension.value);
+	setting.value = extensions;
 	// @ts-expect-error erh something about the element not being an array
 	blockedExtensionsInput.value[0].value = '';
 };
 
-const removeExtension = (setting: any, extension: string) => {
-	const items = setting.value.split(',');
+const removeExtension = (setting: Setting, extension: string) => {
+	const items = setting.value as string[];
 	const index = items.indexOf(extension);
 	if (index > -1) {
 		items.splice(index, 1);
-		setting.value = items.join(',');
+		setting.value = items;
 	}
 };
 
