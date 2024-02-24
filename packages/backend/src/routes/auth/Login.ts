@@ -1,8 +1,37 @@
 import bcrypt from 'bcryptjs';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import JWT from 'jsonwebtoken';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { requestUserSchema } from '@/structures/schemas/RequestUser.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { SETTINGS } from '@/structures/settings.js';
+
+export const schema = {
+	summary: 'Login',
+	description: 'Login to an existing account',
+	tags: ['Auth'],
+	headers: z.object({
+		invite: z.string().optional().describe('The invite code to use.')
+	}),
+	body: z
+		.object({
+			username: z.string().describe('The username of the user.'),
+			password: z.string().describe('The password of the user.')
+		})
+		.required(),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			user: requestUserSchema,
+			token: z.string().describe('The JWT token.')
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/auth/login',
@@ -18,7 +47,7 @@ export const options = {
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	const { username, password } = req.body as { password?: string; username?: string };
 	if (!username || !password) {
-		res.unauthorized('No username or password provided');
+		void res.unauthorized('No username or password provided');
 		return;
 	}
 
@@ -36,13 +65,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!user) {
-		res.unauthorized("User doesn't exist");
+		void res.unauthorized('Wrong Username or Password');
 		return;
 	}
 
 	const comparePassword = await bcrypt.compare(password, user.password);
 	if (!comparePassword) {
-		res.unauthorized('Wrong password');
+		void res.unauthorized('Wrong Username or Password');
 		return;
 	}
 

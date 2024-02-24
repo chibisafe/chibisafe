@@ -40,6 +40,8 @@ export interface FileInProgress {
 	field?: string;
 	hash: string;
 	ip: string;
+	isS3: boolean;
+	isWatched: boolean;
 	name: string;
 	original: string;
 	path: string;
@@ -52,6 +54,8 @@ export interface File {
 	editedAt: Date | null;
 	hash: string;
 	ip: string;
+	isS3: boolean;
+	isWatched: boolean;
 	name: string;
 	original: string;
 	quarantine: boolean;
@@ -103,6 +107,12 @@ export interface Album {
 export interface Settings {
 	// savedStatistics: string[];
 	[key: string]: string[] | boolean | number | string;
+	S3AccessKey: string;
+	S3Bucket: string;
+	S3Endpoint: string;
+	S3PublicUrl: string;
+	S3Region: string;
+	S3SecretKey: string;
 	backgroundImageURL: string;
 	blockNoExtension: boolean;
 	blockedExtensions: string[];
@@ -130,6 +140,7 @@ export interface Settings {
 	serviceName: string;
 	statisticsCron: string;
 	updateCheckCron: string;
+	useNetworkStorage: boolean;
 	userAccounts: boolean;
 	usersStorageQuota: number;
 }

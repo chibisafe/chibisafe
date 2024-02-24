@@ -1,5 +1,3 @@
-export default {
-	$id: 'ResponseMessage',
-	type: 'string',
-	description: 'A message describing the result of the request.'
-};
+import { z } from 'zod';
+
+export const responseMessageSchema = z.string().describe('A message describing the result of the request.');

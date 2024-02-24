@@ -37,7 +37,7 @@ export const getUniqueSnippetIdentifier = async (): Promise<string | null> => {
 };
 
 export const constructSnippetPublicLink = (req: FastifyRequest, identifier: string) => {
-	const host = getHost(req);
+	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	let frontendHost = host;
 	if (process.env.NODE_ENV !== 'production') {
 		frontendHost = host.replace(String(SETTINGS.port), '8001');

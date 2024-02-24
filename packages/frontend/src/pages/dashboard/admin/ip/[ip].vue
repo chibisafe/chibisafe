@@ -76,7 +76,7 @@ const queryClient = useQueryClient();
 const { data } = useQuery({
 	queryKey: ['admin', 'ip', userIp, 'files'],
 	queryFn: () => getFilesFromIP(userIp.value, 1, 1),
-	keepPreviousData: true
+	placeholderData: (previousData: any) => previousData
 });
 
 const { mutate: mutatePurgeFiles } = useMutation({
@@ -94,7 +94,7 @@ const { mutate: mutateUnbanIp } = useMutation({
 const doPurgeFiles = async () => {
 	mutatePurgeFiles(props.ip, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'ip', userIp, 'files'] });
 		}
 	});
 };
@@ -102,7 +102,7 @@ const doPurgeFiles = async () => {
 const doBanIP = async () => {
 	mutateBanIp(props.ip, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'ip', userIp, 'files'] });
 		}
 	});
 };
@@ -110,7 +110,7 @@ const doBanIP = async () => {
 const doUnbanIP = async () => {
 	mutateUnbanIp(props.ip, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'ip', userIp, 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'ip', userIp, 'files'] });
 		}
 	});
 };

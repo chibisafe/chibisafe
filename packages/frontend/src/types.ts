@@ -72,6 +72,7 @@ export interface Album {
 	count?: number;
 	cover?: string;
 	createdAt: string;
+	description: string;
 	editedAt: string;
 	files?: FileWithAdditionalData[];
 	name: string;
@@ -82,6 +83,7 @@ export interface Album {
 
 export interface AlbumForMasonry {
 	count: number;
+	description: string;
 	files: FileWithAdditionalData[];
 	isNsfw: boolean;
 	name: string;
@@ -136,10 +138,24 @@ export interface UpdateCheck {
 export interface Snippet {
 	content: string;
 	createdAt: string;
+	description: string;
 	language: string;
 	link: string;
 	name: string;
 	parentUuid: string;
 	raw: string;
 	uuid: string;
+}
+
+export type FilePropsType = 'admin' | 'album' | 'publicAlbum' | 'quarantine' | 'tag' | 'uploads';
+
+export interface Setting {
+	category: string;
+	description: string;
+	example?: string;
+	key: string;
+	name: string;
+	notice?: string;
+	type: string;
+	value: boolean | number | string;
 }

@@ -21,12 +21,12 @@ export default async (req: RequestWithUser, res: FastifyReply) => {
 	});
 
 	if (!user) {
-		res.unauthorized('Invalid authorization');
+		void res.unauthorized('Invalid authorization');
 		return;
 	}
 
 	if (!user.enabled) {
-		res.unauthorized('This account has been disabled');
+		void res.unauthorized('This account has been disabled');
 		return;
 	}
 

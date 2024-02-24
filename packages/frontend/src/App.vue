@@ -1,9 +1,4 @@
 <template>
-	<metainfo>
-		<template #title="{ content }">
-			{{ content ? `${content} | ${settingsStore.serviceName}` : settingsStore.serviceName }}
-		</template>
-	</metainfo>
 	<div
 		class="bg-dark-100 fixed top-0 left-0 bg-no-repeat bg-scroll bg-center bg-cover z-[-1] h-screen w-full pointer-events-none"
 		:style="`background-image: url(${settingsStore.backgroundImageURL});`"
@@ -17,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from '@unhead/vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { computed } from 'vue';
-import { useMeta } from 'vue-meta';
 import { useRoute } from 'vue-router';
 import { Toaster } from 'vue-sonner';
 import SearchModal from './components/modals/SearchModal.vue';
@@ -29,10 +24,11 @@ import { useUserStore, useSettingsStore, useModalStore } from './store';
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const modalStore = useModalStore();
+const route = useRoute();
 const isLoggedIn = computed(() => userStore.user.loggedIn);
-const isInDashboard = computed(() => useRoute().path.startsWith('/dashboard'));
+const isInDashboard = computed(() => route.path.startsWith('/dashboard'));
 
-userStore.checkToken();
+void userStore.checkToken();
 
 const { ctrl_k } = useMagicKeys({
 	passive: false,
@@ -61,11 +57,11 @@ if (import.meta.env.DEV) {
 }
 
 // Override meta data
-useMeta({
-	title: '',
+useHead({
+	title: 'Home',
+	titleTemplate: (title?: string) => `${title} - ${settingsStore.serviceName}`,
 	htmlAttrs: {
-		lang: 'en',
-		amp: false
+		lang: 'en'
 	}
 });
 

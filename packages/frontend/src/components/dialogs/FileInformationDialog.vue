@@ -5,7 +5,7 @@
 		</DialogTrigger>
 		<DialogTrigger
 			v-else
-			class="w-full h-full absolute"
+			class="h-full w-full absolute"
 			as="a"
 			:href="file?.url"
 			target="_blank"
@@ -14,7 +14,7 @@
 			@click.left.stop="event => event.preventDefault()"
 		/>
 		<DialogContent
-			class="max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)]"
+			class="max-w-[calc(100vw-8rem)] mobile:max-w-[calc(100vw-2rem)] mobile:h-[calc(100vh-4rem)] h-[calc(100vh-8rem)] min-h-40 duration-100"
 			:class="[isVerticalImage ? '!w-fit' : '!w-max']"
 		>
 			<div class="grid grid-cols-[1fr,400px] gap-4">
@@ -26,12 +26,12 @@
 						v-if="isFileImage(file)"
 						ref="fileElement"
 						:src="file.url"
-						class="h-full object-contain"
+						class="h-full object-contain hidden md:block"
 						@load="onImageLoad"
 					/>
-					<media-controller v-else-if="isFileVideo(file)">
+					<media-controller v-else-if="isFileVideo(file)" class="h-full hidden md:block">
 						<!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
-						<video slot="media" :src="file.url" crossorigin=""></video>
+						<video slot="media" :src="file.url" crossorigin="" class="h-full"></video>
 						<media-control-bar>
 							<media-play-button></media-play-button>
 							<media-mute-button></media-mute-button>
@@ -42,7 +42,7 @@
 						</media-control-bar>
 					</media-controller>
 
-					<media-controller v-else-if="isFileAudio(file)" audio>
+					<media-controller v-else-if="isFileAudio(file)" audio class="hidden md:block">
 						<!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
 						<audio slot="media" :src="file.url"></audio>
 						<media-control-bar>
@@ -55,17 +55,19 @@
 						</media-control-bar>
 					</media-controller>
 
-					<span v-else class="text-light-100 flex h-full items-center"
-						>Sorry but this file can't be previewd at this time.</span
+					<span v-else class="text-light-100 h-full items-center hidden md:flex"
+						>Sorry but this file can't be previewed at this time.</span
 					>
 				</div>
 
 				<!-- File information panel -->
-				<div class="max-w-[400px] flex flex-col">
-					<ScrollArea class="h-full inline-table">
+				<ScrollArea
+					class="max-w-[400px] h-[calc(100vh-11rem)] mobile:max-w-[calc(100vw-7rem)] mobile:h-[calc(100vh-7rem)] min-h-32"
+				>
+					<div class="flex flex-col mobile:max-w-[calc(100vw-7rem)]">
 						<div class="mb-8">
 							<h2 class="text-light-100 mb-2">Actions</h2>
-							<div class="flex justify-between gap-2 flex-wrap">
+							<div class="flex justify-between gap-2 flex-wrap mobile:flex-col">
 								<Button class="flex-1" @click="copyLink">{{
 									isCopying ? 'Copied!' : 'Copy link'
 								}}</Button>
@@ -74,7 +76,7 @@
 									:href="file.url"
 									target="_blank"
 									rel="noopener noreferrer"
-									class="flex-1"
+									class="flex-1 w-full"
 								>
 									Open
 								</Button>
@@ -95,6 +97,20 @@
 								>
 									<Button>Regenerate thumbnail</Button></ConfirmationDialog
 								>
+								<Button as="a" :href="file.url" :download="file.original" class="flex-1">
+									Download
+								</Button>
+								<!--
+								  <ConfirmationDialog
+								  v-if="isAdmin && isFileZip(file)"
+								  title="Unzip"
+								  message="The file will be unzipped and the contents will be added to your uploads. Are you sure?"
+								  proceedText="Unzip"
+								  :callback="doUnzipFile"
+								  >
+								  <Button>Unzip</Button></ConfirmationDialog
+								  >
+								-->
 								<ConfirmationDialog
 									v-if="isAdmin && !file.quarantine"
 									title="Quarantine file"
@@ -157,8 +173,8 @@
 							/>
 						</div>
 
-						<!-- Albums and Tags information section -->
-						<div v-if="type === 'album' || type === 'uploads'" class="mb-8">
+						<!-- Albums section -->
+						<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8">
 							<h2 class="text-light-100">Albums</h2>
 							<Combobox
 								:data="albumsForCombobox"
@@ -181,6 +197,17 @@
 									</span>
 								</Badge>
 							</div>
+						</div>
+
+						<!-- Tags -->
+						<div v-if="type === 'album' || type === 'uploads' || type === 'tag'" class="mb-8">
+							<h2 class="text-light-100">Tags</h2>
+							<TagBox
+								:tags="tags"
+								:fileTags="fileTags"
+								@selected="doAddFileToTag"
+								@tag:clicked="doRemoveFileFromTag"
+							/>
 						</div>
 
 						<!-- User information section -->
@@ -215,8 +242,8 @@
 							/>
 						</div>
 						<!-- User information section -->
-					</ScrollArea>
-				</div>
+					</div>
+				</ScrollArea>
 				<!-- File information panel -->
 			</div>
 		</DialogContent>
@@ -224,18 +251,19 @@
 </template>
 
 <script setup lang="ts">
-import { useQueryClient, useMutation } from '@tanstack/vue-query';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/vue-query';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { ref, computed, nextTick, useSlots } from 'vue';
 import { toast } from 'vue-sonner';
 import Combobox from '@/components/combobox/Combobox.vue';
+import TagBox from '@/components/tags/TagBox.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAlbumsStore } from '@/store';
-import { Album, FileWithAdditionalData } from '@/types';
+import { Album, FileWithAdditionalData, Tag, FilePropsType } from '@/types';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import InputWithOverlappingLabel from '~/components/forms/InputWithOverlappingLabel.vue';
 import {
@@ -246,13 +274,16 @@ import {
 	addFileToAlbum,
 	removeFileFromAlbum,
 	getFile,
-	regenerateThumbnail
+	regenerateThumbnail,
+	getTags,
+	addFileToTag,
+	removeFileFromTag
 } from '~/use/api';
 import { formatBytes, isFileVideo, isFileImage, isFileAudio } from '~/use/file';
 
 interface Props {
 	file: FileWithAdditionalData;
-	type?: 'admin' | 'album' | 'uploads' | 'quarantine';
+	type?: FilePropsType;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -265,6 +296,7 @@ const hasDefaultSlot = computed(() => Boolean(slots.default));
 const albumsStore = useAlbumsStore();
 const isAdmin = props.type === 'admin' || props.type === 'quarantine';
 const fileAlbums = ref<Album[]>([]);
+const fileTags = ref<Tag[]>([]);
 const fileElement = ref<HTMLElement | null>(null);
 const isVerticalImage = ref(false);
 
@@ -292,15 +324,21 @@ const { mutate: mutateRegenerateThumbnail } = useMutation({
 	mutationFn: (uuid: string) => regenerateThumbnail(uuid)
 });
 
+// const { mutate: mutateUnzipFile } = useMutation({
+//	mutationFn: (uuid: string) => unzipFile(uuid)
+// });
+
 const onOpen = async (isOpen: boolean) => {
 	if (!isOpen) return;
 	void albumsStore.get();
-	void getFileAlbums();
+	void getFileInformation();
 };
 
-const getFileAlbums = async () => {
+const getFileInformation = async () => {
+	if (props.type === 'admin') return;
 	const file = await getFile(props.file.uuid);
 	fileAlbums.value = file.albums;
+	fileTags.value = file.tags;
 };
 
 const albumsForCombobox = computed(() => {
@@ -317,12 +355,23 @@ const isCopying = ref(false);
 
 const doAddFileToAlbum = async (uuid: string) => {
 	await addFileToAlbum(props.file.uuid, uuid);
-	await getFileAlbums();
+	await getFileInformation();
 };
 
 const doRemoveFileFromAlbum = async (uuid: string) => {
 	await removeFileFromAlbum(props.file.uuid, uuid);
-	await getFileAlbums();
+	await getFileInformation();
+};
+
+const doAddFileToTag = async ({ uuid, name }: { uuid: string; name: string }) => {
+	await addFileToTag(props.file.uuid, uuid);
+	queryClient.invalidateQueries({ queryKey: ['tags'] });
+	fileTags.value.push({ uuid, name });
+};
+
+const doRemoveFileFromTag = async ({ uuid }: { uuid: string }) => {
+	await removeFileFromTag(props.file.uuid, uuid);
+	fileTags.value = fileTags.value.filter(tag => tag.uuid !== uuid);
 };
 
 const copyLink = () => {
@@ -337,7 +386,7 @@ const copyLink = () => {
 const doQuarantineFile = () => {
 	mutateQuarantineFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'files'] });
 			toast.success('File quarantined');
 		}
 	});
@@ -346,7 +395,7 @@ const doQuarantineFile = () => {
 const doAllowFile = () => {
 	mutateAllowFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'files'] });
 			toast.success('File allowed');
 		}
 	});
@@ -355,7 +404,7 @@ const doAllowFile = () => {
 const doDeleteFile = () => {
 	mutateDeleteFile(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('File deleted');
 		}
 	});
@@ -364,9 +413,29 @@ const doDeleteFile = () => {
 const doRegenerateThumbnail = () => {
 	mutateRegenerateThumbnail(props.file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('Thumbnail regenerated');
 		}
 	});
 };
+
+// const doUnzipFile = () => {
+//	mutateUnzipFile(props.file.uuid, {
+//		onSuccess: () => {
+//			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
+//			toast.success('File unzipped');
+//		}
+//	});
+// };
+
+const { data: tags } = useQuery({
+	queryKey: ['tags'],
+	queryFn: async () => {
+		const data = await getTags();
+		return data.sort((a: any, b: any) => {
+			return b._count.files - a._count.files;
+		});
+	},
+	placeholderData: (previousData: any) => previousData
+});
 </script>

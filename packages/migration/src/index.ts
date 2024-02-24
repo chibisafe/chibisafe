@@ -80,6 +80,7 @@ const start = async () => {
 		validate(value) {
 			if (value.length === 0) return `Value is required!`;
 			if (!value.endsWith('.sqlite')) return `Value must be a .sqlite file!`;
+			return '';
 		}
 	});
 

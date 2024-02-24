@@ -70,7 +70,7 @@ const { mutate: mutatePurgeAnonymousFiles } = useMutation({
 const doPurgeAnonymousFiles = async () => {
 	mutatePurgeAnonymousFiles(undefined, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(['admin', 'files']);
+			queryClient.invalidateQueries({ queryKey: ['admin', 'files'] });
 			toast.success('Anonymous files purged');
 		}
 	});

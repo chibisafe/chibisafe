@@ -1,11 +1,8 @@
 <template>
-	<div
-		class="w-80 h-80 max-h-[320px] max-w-[320px] absolute mobile:relative right-0 top-0 mobile:h-16"
-		:class="[isUploadEnabled && isMobile ? 'mb-12' : '']"
-	>
+	<div class="w-80 h-fit max-h-[320px] flex-col mobile:relative right-0 top-0 space-y-2 mobile:mb-4">
 		<div
 			id="upload"
-			class="absolute w-full h-full right-0 top-0 bg-[#181a1b] rounded-3xl mobile:rounded-lg border-4 shadow-lg flex items-center justify-center mobile:justify-start blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
+			class="w-80 h-80 mobile:h-16 right-0 top-0 bg-[#181a1b] rounded-3xl mobile:rounded-lg border-4 shadow-lg flex items-center justify-center mobile:justify-start blueprint flex-col cursor-pointer hover:border-[#3b3e40] transform-gpu transition-all"
 			:class="{
 				'border-blue-400': isDragging,
 				'border-[#303436]': !isDragging
@@ -21,20 +18,18 @@
 			<template v-if="isUploadEnabled">
 				<UploadCloudIcon class="h-12 w-12 pointer-events-none mobile:hidden" />
 				<h3 class="font-bold text-center mt-4 pointer-events-none">
-					<template v-if="isMobile">
-						<p class="text-blue-400">
-							TAP TO UPLOAD <span class="text-light-100 ml-2">({{ formatBytes(maxFileSize) }} max)</span>
-						</p>
-					</template>
-					<template v-else> DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span> </template>
+					<p class="text-blue-400 mobile:visible invisible h-0 mobile:h-12">
+						TAP TO UPLOAD <span class="text-light-100 ml-2">({{ formatBytes(maxFileSize) }} max)</span>
+					</p>
+					<p class="mobile:invisible">DROP FILES OR <br /><span class="text-blue-400">CLICK HERE</span></p>
 				</h3>
-				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden">
+				<p class="text-center mt-4 w-3/4 pointer-events-none mobile:hidden mobile:h-0">
 					{{ formatBytes(maxFileSize) }} max per file.
-					<span
-						class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto"
-						@click.stop.prevent="() => {}"
-					>
-						<TextEditorDialog :content="pastedText" :open="isTextEditorOpen"
+					<span class="block mt-4 text-blue-400 hover:text-blue-500 pointer-events-auto" @click.stop.prevent>
+						<TextEditorDialog
+							:content="pastedText"
+							:open="isTextEditorOpen"
+							@update:open="isOpen => (isTextEditorOpen = isOpen)"
 							>Click here if you rather upload text or try pasting it now.</TextEditorDialog
 						>
 					</span>
@@ -50,22 +45,22 @@
 				</h3>
 			</template>
 		</div>
-		<div class="absolute -bottom-12 w-full">
-			<AlbumDropdown v-if="isLoggedIn" />
-		</div>
+		<AlbumDropdown v-if="isLoggedIn" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { chibiUploader } from '@chibisafe/uploader-client';
+import { chibiUploader, type UploaderOptions } from '@chibisafe/uploader-client';
 import { useWindowSize } from '@vueuse/core';
 import { UploadCloudIcon } from 'lucide-vue-next';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { toast } from 'vue-sonner';
 import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useAlbumsStore, useSettingsStore, useUploadsStore, useUserStore } from '~/store';
 import { formatBytes, getFileExtension } from '~/use/file';
 import { debug } from '~/use/log';
+// import { chibiUploader, type UploaderOptions } from '../../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
 const userStore = useUserStore();
 const uploadsStore = useUploadsStore();
@@ -137,29 +132,58 @@ const pasteHandler = (event: ClipboardEvent) => {
 	}
 };
 
-const processFile = async (file: File) => {
-	files.value?.push(file);
-	await chibiUploader({
+const uploadFile = async ({
+	file,
+	endpoint,
+	isNetworkStored,
+	method = 'POST',
+	identifier = '',
+	publicUrl = ''
+}: {
+	file: File;
+	endpoint: string;
+	isNetworkStored: boolean;
+	method: 'POST' | 'PUT';
+	identifier?: string;
+	publicUrl?: string;
+}) => {
+	const options: UploaderOptions = {
 		// @ts-ignore
 		debug: !import.meta.env.PROD,
-		endpoint: '/api/upload',
+		endpoint,
 		file,
+		method,
 		maxFileSize: maxFileSize.value,
-		chunkSize: chunkSize.value,
-		postParams: {
+		// If we're storing in s3, we don't want to chunk the file
+		chunkSize: isNetworkStored ? maxFileSize.value : chunkSize.value,
+		autoStart: true,
+		maxParallelUploads: 1
+	};
+
+	if (isNetworkStored) {
+		options.headers = {
+			'Content-Type': file.type
+		};
+	} else {
+		options.postParams = {
 			name: file.name,
 			type: file.type,
 			// @ts-ignore
 			size: file.size
-		},
-		headers: {
+		};
+
+		options.headers = {
 			authorization: token.value ? `Bearer ${token.value}` : '',
 			albumuuid: isLoggedIn.value
 				? albumsStore.selectedAlbumForUpload
 					? albumsStore.selectedAlbumForUpload
 					: ''
 				: ''
-		},
+		};
+	}
+
+	await chibiUploader({
+		...options,
 		onStart: (uuid: string, totalChunks: number) => {
 			debug(`Started uploading ${file.name} with uuid ${uuid} and ${totalChunks} chunks`);
 			uploadsStore.addFile({
@@ -184,15 +208,103 @@ const processFile = async (file: File) => {
 		onRetry: (_, reason: any) => {
 			console.log('onRetry', reason);
 		},
-		onFinish: (uuid: string, response: any) => {
+		onFinish: async (uuid: string, response: any) => {
+			if (isNetworkStored) {
+				debug('Finished uploading file to S3 storage', {
+					name: file.name,
+					uuid,
+					url: publicUrl
+				});
+
+				uploadsStore.setCompleted(uuid, publicUrl);
+
+				return fetch('/api/upload/process', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						authorization: token.value ? `Bearer ${token.value}` : '',
+						albumuuid: isLoggedIn.value
+							? albumsStore.selectedAlbumForUpload
+								? albumsStore.selectedAlbumForUpload
+								: ''
+							: ''
+					},
+					body: JSON.stringify({ identifier, name: file.name, type: file.type })
+				})
+					.then(async res => {
+						if (!res.ok) {
+							const error = await res.json();
+							throw new Error(error.message);
+						}
+
+						return res.json();
+					})
+					.then(res => {
+						uploadsStore.setCompleted(uuid, res.url);
+						debug('Finished processing file', {
+							name: file.name,
+							uuid,
+							url: res.url
+						});
+					})
+					.catch(error => {
+						uploadsStore.setError(uuid, error.message);
+						toast.error(error.message);
+					});
+			}
+
 			debug('Finished uploading file', {
 				name: file.name,
 				uuid,
 				url: response.url
 			});
+
 			uploadsStore.setCompleted(uuid, response.url);
+			return null;
 		}
 	});
+};
+
+const processFile = async (file: File) => {
+	files.value?.push(file);
+
+	const blockedExtensions = settingsStore.blockedExtensions;
+	if (blockedExtensions.length) {
+		const extension = getFileExtension(file);
+		if (!extension) return;
+		if (blockedExtensions.includes(`.${extension}`)) {
+			toast.error(`File extension .${extension} is blocked`);
+			return;
+		}
+	}
+
+	if (!settingsStore.useNetworkStorage) {
+		await uploadFile({ file, endpoint: '/api/upload', isNetworkStored: false, method: 'POST' });
+		return;
+	}
+
+	const getSignedUrl = await fetch('/api/upload', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			authorization: token.value ? `Bearer ${token.value}` : ''
+		},
+		body: JSON.stringify({
+			contentType: file.type,
+			name: file.name,
+			size: file.size
+		})
+	});
+
+	if (!getSignedUrl.ok) {
+		const error = await getSignedUrl.json();
+		toast.error(error.message);
+		return;
+	}
+
+	const { url, identifier, publicUrl } = await getSignedUrl.json();
+
+	await uploadFile({ file, endpoint: url, isNetworkStored: true, method: 'PUT', identifier, publicUrl });
 };
 
 const onFileChanged = ($event: Event) => {

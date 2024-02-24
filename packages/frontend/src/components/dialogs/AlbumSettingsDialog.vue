@@ -7,13 +7,23 @@
 			</DialogHeader>
 
 			<div class="flex items-center space-x-2 mt-4">
-				<Switch id="nsfw" :checked="album.nsfw" @click="setNsfw" />
+				<Switch id="nsfw" :checked="isNsfw" @click="setNsfw" />
 				<Label for="nsfw">NSFW album</Label>
 			</div>
 			<div class="flex w-full max-w-sm items-end space-x-2">
 				<InputWithLabel v-model="albumName" label="Album name" name="name" />
 				<Button type="button" @click="setNewAlbumName">Rename</Button>
 			</div>
+
+			<DialogHeader class="mt-4">
+				<DialogTitle>Album description</DialogTitle>
+				<DialogDescription>
+					{{ album.description || 'No description set' }}
+				</DialogDescription>
+				<InputDialog message="Add an album description" title="Description" :callback="setDescription">
+					<Button class="shrink-0">Set description</Button>
+				</InputDialog>
+			</DialogHeader>
 
 			<DialogHeader class="mt-4">
 				<DialogTitle>Album links</DialogTitle>
@@ -54,6 +64,7 @@
 import { ref, computed } from 'vue';
 import { toast } from 'vue-sonner';
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue';
+import InputDialog from '@/components/dialogs/InputDialog.vue';
 import InputWithLabel from '@/components/input/InputWithLabel.vue';
 import AlbumLinksTable from '@/components/table/AlbumLinksTable.vue';
 import { Button } from '@/components/ui/button';
@@ -107,6 +118,14 @@ const createLink = async () => {
 	const newLink = await createAlbumLink(props.album.uuid);
 	albumsStore.currentAlbumLinks.push(newLink.data);
 	toast.success('New link created');
+};
+
+const setDescription = async (description: string) => {
+	await updateAlbum(props.album.uuid, {
+		name: 'description',
+		value: description
+	});
+	toast.success('Changed album description');
 };
 
 const setNewAlbumName = async () => {

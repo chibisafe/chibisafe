@@ -1,7 +1,50 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
-import type { File } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+
+export const schema = {
+	summary: 'Get public album',
+	description: 'Gets a public album link with its contents',
+	tags: ['Albums'],
+	params: z
+		.object({
+			identifier: z.string().describe('The identifier of the link used to access the album.')
+		})
+		.required(),
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
+	response: {
+		200: z.object({
+			message: responseMessageSchema,
+			album: z.object({
+				name: z.string().describe('The name of the album.'),
+				description: z.string().nullable().describe('The description of the album.'),
+				isNsfw: z.boolean().describe('Whether or not the album is NSFW.'),
+				count: z.number().describe('The amount of files in the album.'),
+				files: z.array(
+					z.object({
+						name: z.string().describe('The name of the file.'),
+						type: z.string().describe('The type of the file.'),
+						url: z.string().describe('The URL of the file.'),
+						thumb: z.string().describe('The URL of the thumbnail of the file.'),
+						thumbSquare: z.string().describe('The URL of the square thumbnail of the file.'),
+						preview: z.string().describe('The URL of the preview of the file.')
+					})
+				)
+			})
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/album/:identifier/view',
@@ -30,12 +73,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!link) {
-		res.notFound("The link is disabled or it doesn't exist");
+		void res.notFound("The link is disabled or it doesn't exist");
 		return;
 	}
 
 	if (link.expiresAt && link.expiresAt < new Date()) {
-		res.notFound('The link has expired');
+		void res.notFound('The link has expired');
 		return;
 	}
 
@@ -46,11 +89,14 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		},
 		select: {
 			name: true,
+			description: true,
 			nsfw: true,
 			files: {
 				select: {
 					name: true,
-					type: true
+					type: true,
+					isS3: true,
+					isWatched: true
 				},
 				orderBy: {
 					id: 'desc'
@@ -62,35 +108,36 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	});
 
 	if (!album) {
-		res.notFound('The album could not be found');
+		void res.notFound('The album could not be found');
 		return;
 	}
 
 	// Construct the public links
-	const files = [] as File[];
+	const files = [];
 	for (const file of album.files) {
-		const modifiedFile = file as File;
+		const { isWatched, isS3, ...modifiedFile } = file;
 		files.push({
 			...modifiedFile,
-			...constructFilePublicLink(req, modifiedFile.name)
+			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3, isWatched })
 		});
 	}
 
-	await prisma.links.update({
-		where: {
-			identifier
-		},
-		data: {
-			views: {
-				increment: 1
-			}
-		}
-	});
+	// await prisma.links.update({
+	// 	where: {
+	// 		identifier
+	// 	},
+	// 	data: {
+	// 		views: {
+	// 			increment: 1
+	// 		}
+	// 	}
+	// });
 
 	return res.send({
 		message: 'Successfully retrieved album',
 		album: {
 			name: album.name,
+			description: album.description,
 			files,
 			isNsfw: album.nsfw,
 			count: album._count.files

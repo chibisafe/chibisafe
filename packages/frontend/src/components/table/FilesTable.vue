@@ -4,6 +4,7 @@
 			<TableRow>
 				<TableHead>Thumbnail</TableHead>
 				<TableHead>Link</TableHead>
+				<TableHead>Original</TableHead>
 				<TableHead>Size</TableHead>
 				<TableHead v-if="type === 'admin' || type === 'quarantine'">Uploader</TableHead>
 				<TableHead>Created on</TableHead>
@@ -40,6 +41,16 @@
 					}}</a>
 				</TableCell>
 				<TableCell>
+					<a
+						:href="file.url"
+						:download="file.original"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hover:text-blue-400"
+						>{{ file.original }}</a
+					>
+				</TableCell>
+				<TableCell>
 					{{ formatBytes(Number(file.size)) }}
 				</TableCell>
 				<TableCell v-if="type === 'admin' || type === 'quarantine'">{{ file.user?.username }}</TableCell>
@@ -69,13 +80,13 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog.vue';
 import FileInformationDialog from '~/components/dialogs/FileInformationDialog.vue';
-import type { FileWithAdditionalData } from '~/types';
+import type { FileWithAdditionalData, FilePropsType } from '~/types';
 import { deleteFileAsAdmin, deleteFile } from '~/use/api';
 import { isFileVideo, isFileImage, isFileAudio, isFilePDF, formatBytes } from '~/use/file';
 
 const props = defineProps<{
 	files: FileWithAdditionalData[];
-	type: 'admin' | 'quarantine' | 'album' | 'publicAlbum' | 'uploads';
+	type: FilePropsType;
 }>();
 
 const isAdmin = props.type === 'admin' || props.type === 'quarantine';
@@ -90,7 +101,7 @@ const doDeleteFile = (file: FileWithAdditionalData) => {
 
 	mutateDeleteFile(file.uuid, {
 		onSuccess: () => {
-			queryClient.invalidateQueries(isAdmin ? ['admin', 'files'] : ['files']);
+			queryClient.invalidateQueries({ queryKey: isAdmin ? ['admin', 'files'] : ['files'] });
 			toast.success('File deleted');
 		}
 	});

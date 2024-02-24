@@ -35,7 +35,7 @@ export const register = async (username: string, password: string, invite?: stri
 			invite
 				? {
 						invite
-				  }
+					}
 				: undefined
 		);
 
@@ -210,6 +210,15 @@ export const regenerateThumbnail = async (uuid: string) => {
 	try {
 		const data = await request.post(`file/${uuid}/thumbnail/regenerate`);
 		debug('regenerateThumbnail', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const unzipFile = async (uuid: string) => {
+	try {
+		const data = await request.post(`admin/file/${uuid}/unzip`);
+		debug('unzipFile', data);
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -522,18 +531,12 @@ export const setUserStorageQuota = async (uuid: string, space: number) => {
 	}
 };
 
-// @ts-ignore
 export const createTag = async (name: string) => {
 	try {
 		const data = await request.post('tag/create', { name });
 		debug('createTag', data);
-		return {
-			message: data.message,
-			tag: {
-				uuid: data.uuid,
-				name: data.name
-			}
-		};
+		toast.success('Tag created');
+		return data.tag;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
@@ -543,15 +546,35 @@ export const getTags = async () => {
 	try {
 		const data = await request.get(`tags`);
 		debug('getTags', data);
+		return data.tags;
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const deleteTag = async (uuid: string) => {
+	try {
+		const data = await request.delete(`tag/${uuid}`);
+		debug('deleteTag', data);
+		toast.success('Tag deleted');
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getTag = async (uuid: string, page: number) => {
+	try {
+		const data = await request.get(`tag/${uuid}?page=${page}`);
+		debug('getTag', data);
 		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}
 };
 
-export const searchFiles = async (text: string, page: number) => {
+export const searchFiles = async (text: string, page: number, limit = 50) => {
 	try {
-		const data = await request.post(`files/search?page=${page}`, { text });
+		const data = await request.post(`files/search?page=${page}&limit=${limit}`, { text });
 		debug('searchFiles', data);
 		return data;
 	} catch (error: any) {
@@ -605,6 +628,34 @@ export const deleteSnippet = async (uuid: string) => {
 		const data = await request.delete(`snippet/${uuid}`);
 		debug('deleteSnippet', data);
 		if (data.message) sendSuccessToast(data.message);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const addFileToTag = async (fileUuid: string, tagUuid: string) => {
+	try {
+		const data = await request.post(`file/${fileUuid}/tag/${tagUuid}`);
+		debug('addFileToTag', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const removeFileFromTag = async (fileUuid: string, tagUuid: string) => {
+	try {
+		const data = await request.delete(`file/${fileUuid}/tag/${tagUuid}`);
+		debug('removeFileFromTag', data);
+	} catch (error: any) {
+		sendErrorToast(error.message);
+	}
+};
+
+export const getDiagnosticFile = async () => {
+	try {
+		const data = await request.get('admin/service/diagnostic');
+		debug('getDiagnosticFile', data);
+		return data;
 	} catch (error: any) {
 		sendErrorToast(error.message);
 	}

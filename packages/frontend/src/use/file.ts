@@ -9,7 +9,7 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 		decimals = 1;
 	}
 
-	const k = 1024;
+	const k = 1000;
 	const dm = decimals < 0 ? 0 : decimals;
 	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
@@ -36,6 +36,11 @@ export const isFileAudio = (file: FileWithAdditionalData) => {
 export const isFilePDF = (file: FileWithAdditionalData) => {
 	const { type } = file;
 	return type === 'application/pdf';
+};
+
+export const isFileZip = (file: FileWithAdditionalData) => {
+	const { type } = file;
+	return type === 'application/zip' || type === 'application/x-zip-compressed';
 };
 
 export const getFileExtension = (file: File) => {

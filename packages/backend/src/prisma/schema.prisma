@@ -1,6 +1,5 @@
 generator client {
 	provider = "prisma-client-js"
-	previewFeatures = ["filteredRelationCount", "jsonProtocol"]
 }
 
 datasource db {
@@ -41,6 +40,8 @@ model files {
 	size String
 	hash String
 	ip String
+	isS3 Boolean @default(false)
+	isWatched Boolean @default(false)
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	user users? @relation(fields: [userId], references: [id])
@@ -63,6 +64,7 @@ model snippets {
 	userId Int?
 	identifier String @unique
 	name String
+	description String?
 	content String
 	language String
 	parentUuid String?
@@ -75,6 +77,7 @@ model albums {
 	uuid String @unique
 	userId Int
 	name String
+	description String?
 	zippedAt DateTime?
 	createdAt DateTime @default(now())
 	editedAt DateTime?
@@ -129,6 +132,13 @@ model settings {
 	serveUploadsFrom String @default("")
 	enableMixedCaseFilenames Boolean @default(true)
 	usersStorageQuota String @default("0")
+	useNetworkStorage Boolean @default(false)
+	S3Region String @default("")
+	S3Bucket String @default("")
+	S3AccessKey String @default("")
+	S3SecretKey String @default("")
+	S3Endpoint String @default("")
+	S3PublicUrl String @default("")
 }
 
 model statistics {

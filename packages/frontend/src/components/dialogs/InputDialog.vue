@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<DialogFooter>
-				<DialogClose>
+				<DialogClose as-child>
 					<Button type="button" variant="default" @click="callback(inputValue)">{{ proceedText }}</Button>
 				</DialogClose>
 			</DialogFooter>

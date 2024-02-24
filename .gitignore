@@ -10,6 +10,9 @@ packages/frontend/dist/
 # Env files
 packages/backend/.env
 
+# Ignore next rewrite for now
+packages/next
+
 # Database
 database.sqlite
 database.sqlite-journal
@@ -37,3 +40,4 @@ logs/
 
 /docker-compose.yml
 chibisafe.moe.conf
+.idea/

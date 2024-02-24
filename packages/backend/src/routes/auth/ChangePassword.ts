@@ -1,8 +1,29 @@
 import bcrypt from 'bcryptjs';
 import type { FastifyReply } from 'fastify';
 import moment from 'moment';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
+import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
+import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+
+export const schema = {
+	summary: 'Change password',
+	description: 'Change the password of the current user',
+	tags: ['Auth'],
+	body: z.object({
+		password: z.string().describe('The current password of the user.'),
+		newPassword: z.string().describe('The new password of the user.')
+	}),
+	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
+		'4xx': http4xxErrorSchema,
+		'5xx': http5xxErrorSchema
+	}
+};
 
 export const options = {
 	url: '/auth/password/change',
@@ -14,12 +35,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { password, newPassword } = req.body as { newPassword?: string; password?: string };
 
 	if (!password || !newPassword) {
-		res.badRequest('Invalid password or newPassword supplied');
+		void res.badRequest('Invalid password or newPassword supplied');
 		return;
 	}
 
 	if (password === newPassword) {
-		res.badRequest('Passwords have to be different');
+		void res.badRequest('Passwords have to be different');
 		return;
 	}
 
@@ -34,12 +55,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const comparePassword = await bcrypt.compare(password, user?.password ?? '');
 	if (!comparePassword) {
-		res.unauthorized('Current password is incorrect');
+		void res.unauthorized('Current password is incorrect');
 		return;
 	}
 
 	if (newPassword.length < 6 || newPassword.length > 64) {
-		res.badRequest('Password must have 6-64 characters');
+		void res.badRequest('Password must have 6-64 characters');
 		return;
 	}
 
@@ -48,7 +69,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		hash = await bcrypt.hash(newPassword, 10);
 	} catch (error) {
 		res.log.error(error);
-		res.internalServerError('There was a problem processing your account');
+		void res.internalServerError('There was a problem processing your account');
 		return;
 	}
 

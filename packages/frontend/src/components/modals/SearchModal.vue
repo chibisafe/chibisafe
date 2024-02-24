@@ -99,7 +99,7 @@ import {
 	TransitionChild,
 	TransitionRoot
 } from '@headlessui/vue';
-import { SearchIcon, FileUpIcon, LibraryIcon, User2Icon, CodeIcon } from 'lucide-vue-next';
+import { SearchIcon, FileUpIcon, LibraryIcon, UserIcon, CodeIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useModalStore } from '~/store';
@@ -155,6 +155,6 @@ const quickActions = [
 	{ name: 'Go to uploads...', icon: FileUpIcon, callback: goToUploads },
 	{ name: 'Go to albums...', icon: LibraryIcon, callback: goToAlbums },
 	{ name: 'Go to snippets...', icon: CodeIcon, callback: goToSnippets },
-	{ name: 'Go to my account...', icon: User2Icon, callback: goToAccount }
+	{ name: 'Go to my account...', icon: UserIcon, callback: goToAccount }
 ];
 </script>
