@@ -1,4 +1,4 @@
-import { toast } from 'vue-sonner';
+import { toast } from 'sonner';
 
 import request from '@/lib/request';
 import { debug } from '@/lib/utils';

@@ -329,7 +329,7 @@ export const jumpstartStatistics = async () => {
 	);
 
 	// Immediately generate stats for the first time
-	log.debug('Generate scheduled stats categories for the first time\u2026');
+	log.debug('Generate scheduled stats categories for the first time');
 	await getStats(scheduledStatsCategories);
 
 	if (!SETTINGS.disableStatisticsCron) {
