@@ -3,8 +3,7 @@ import type { FilePropsType, FileWithAdditionalData } from '@/types';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
-import { Separator } from '@/components/ui/separator';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 
 export function FileInformationDrawerActions({
 	file,
@@ -18,9 +17,6 @@ export function FileInformationDrawerActions({
 				<Button variant="secondary">Actions</Button>
 			</DrawerTrigger>
 			<DrawerContent>
-				<DrawerHeader>
-					<DrawerTitle>File actions</DrawerTitle>
-				</DrawerHeader>
 				<div className="p-4 pb-0 grid gap-2">
 					<Button variant="outline" className="w-full" onClick={() => void copy(file.url)}>
 						Copy link
@@ -38,19 +34,19 @@ export function FileInformationDrawerActions({
 					<Button variant="outline" className="w-full">
 						Regenerate thumbnail
 					</Button>
-					<Separator />
+					{/* <Separator /> */}
 					{type === 'uploads' ? (
 						<>
 							{file.quarantine ? (
-								<Button variant="destructive" className="w-full">
+								<Button variant="destructive" className="w-full mt-2">
 									Allow file
 								</Button>
 							) : (
-								<Button variant="destructive" className="w-full">
+								<Button variant="destructive" className="w-full mt-2">
 									Quarantine
 								</Button>
 							)}
-							<Separator />
+							{/* <Separator /> */}
 						</>
 					) : null}
 					<Button variant="destructive" className="w-full mb-6">
