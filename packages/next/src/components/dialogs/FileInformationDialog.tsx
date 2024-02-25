@@ -22,9 +22,9 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
-
-import { FancyMultiSelect } from '../FancyMultiSelect';
+import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 
 export function FileInformationDialog({
 	file,
@@ -72,8 +72,12 @@ export function FileInformationDialog({
 					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-11rem)] !w-max p-0'
 				)}
 			>
-				<div className="absolute right-0 -bottom-12 z-10">
+				<div className="absolute right-0 -bottom-12 z-10 md:inline-block hidden">
 					<FileInformationDialogActions file={file} type={type} />
+				</div>
+
+				<div className="absolute right-0 -bottom-12 z-10 md:hidden inline-block">
+					<FileInformationDrawerActions file={file} type={type} />
 				</div>
 
 				<Tabs defaultValue="preview" className="relative">
