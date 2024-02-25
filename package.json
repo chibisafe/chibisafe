@@ -29,7 +29,8 @@
 	},
 	"packageManager": "yarn@3.6.0",
 	"workspaces": [
-		"packages/*"
+		"packages/backend",
+		"packages/next"
 	],
 	"devDependencies": {
 		"husky": "^9.0.11",
