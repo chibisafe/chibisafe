@@ -26,6 +26,7 @@
 		"@radix-ui/react-progress": "^1.0.3",
 		"@radix-ui/react-scroll-area": "^1.0.5",
 		"@radix-ui/react-select": "^2.0.0",
+		"@radix-ui/react-separator": "^1.0.3",
 		"@radix-ui/react-slot": "^1.0.2",
 		"@radix-ui/react-tabs": "^1.0.4",
 		"class-variance-authority": "^0.7.0",
@@ -46,10 +47,11 @@
 		"react-dropzone": "^14.2.3",
 		"react-plock": "^3.0.2",
 		"sharp": "^0.33.2",
-		"sonner": "^1.3.1",
-		"tailwind-merge": "^1.13.2",
-		"tailwindcss-animate": "^1.0.6",
-		"usehooks-ts": "^2.13.0"
+		"sonner": "^1.4.0",
+		"tailwind-merge": "^2.2.1",
+		"tailwindcss-animate": "^1.0.7",
+		"usehooks-ts": "^2.14.0",
+		"vaul": "^0.9.0"
 	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^3.7.2",

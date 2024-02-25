@@ -1275,6 +1275,7 @@ __metadata:
     "@radix-ui/react-progress": ^1.0.3
     "@radix-ui/react-scroll-area": ^1.0.5
     "@radix-ui/react-select": ^2.0.0
+    "@radix-ui/react-separator": ^1.0.3
     "@radix-ui/react-slot": ^1.0.2
     "@radix-ui/react-tabs": ^1.0.4
     "@types/js-cookie": ^3.0.6
@@ -1312,7 +1313,8 @@ __metadata:
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
     typescript: ^5.3.3
-    usehooks-ts: ^2.13.0
+    usehooks-ts: ^2.14.0
+    vaul: ^0.9.0
   languageName: unknown
   linkType: soft
 
@@ -2846,7 +2848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:1.0.5, @radix-ui/react-dialog@npm:^1.0.5":
+"@radix-ui/react-dialog@npm:1.0.5, @radix-ui/react-dialog@npm:^1.0.4, @radix-ui/react-dialog@npm:^1.0.5":
   version: 1.0.5
   resolution: "@radix-ui/react-dialog@npm:1.0.5"
   dependencies:
@@ -3420,6 +3422,26 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 9ebf4a3e70fd5f583cf468e432ff04768b3442c44788eaf415e044f19c900b886e92eb46e19e138c4994d8a361f5e31f93d13b5bcf413469f21899bbe1112d1d
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-separator@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@radix-ui/react-separator@npm:1.0.3"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-primitive": 1.0.3
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 42f8c95e404de2ce9387040d78049808a48d423cd4c3bad8cca92c4b0bcbdcb3566b5b52a920d4e939a74b51188697f20a012221f0e630fc7f56de64096c15d2
   languageName: node
   linkType: hard
 
@@ -13840,6 +13862,18 @@ __metadata:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: ae0123222c6df65b437669d63dfa8c36cee20a504101b2fcd97b8bf76f91259c17f9f2b4d70a1e3c6bbcee7f51b28392833adb6b2770b23b01abec84e369660b
+  languageName: node
+  linkType: hard
+
+"vaul@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "vaul@npm:0.9.0"
+  dependencies:
+    "@radix-ui/react-dialog": ^1.0.4
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 12c4ced1a91400abe8d20c0c2108f2ffe7d81172eb08c3d7a24e9f813a034e00a9ddb43bb30a7ec312e71292d7b15b13d0fd9e866646b35e13b6d8bc61974198
   languageName: node
   linkType: hard
 
