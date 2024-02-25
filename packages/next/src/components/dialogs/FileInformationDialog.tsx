@@ -1,6 +1,7 @@
-import { type PropsWithChildren } from 'react';
-import type { FilePropsType, FileWithAdditionalData } from '@/types';
+import { useEffect, useState, type PropsWithChildren } from 'react';
+import type { Album as AlbumType, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
 import type { DialogProps } from '@radix-ui/react-dialog';
+import dayjs from 'dayjs';
 import {
 	MediaControlBar,
 	MediaController,
@@ -14,11 +15,16 @@ import {
 	MediaVolumeRange
 } from 'media-chrome/dist/react';
 
-import { isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
+import { formatBytes, isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
+import request from '@/lib/request';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
+
+import { FancyMultiSelect } from '../FancyMultiSelect';
 
 export function FileInformationDialog({
 	file,
@@ -31,6 +37,32 @@ export function FileInformationDialog({
 	readonly onOpenChange: DialogProps['onOpenChange'];
 	readonly type: FilePropsType;
 }>) {
+	const [albums, setAlbums] = useState<AlbumType[]>([]);
+	const [tags, setTags] = useState<Tag[]>([]);
+	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
+	const [fileTags, setFileTags] = useState<Tag[]>([]);
+
+	const fetchExtraData = async () => {
+		try {
+			const createdAlbums = await request.get('albums');
+			setAlbums(createdAlbums.albums);
+
+			const albumsTags = await request.get('tags');
+			setTags(albumsTags.tags);
+
+			if (type === 'admin') return;
+			const fileInfo = await request.get(`file/${file.uuid}`);
+			setFileAlbums(fileInfo.file.albums);
+			setFileTags(fileInfo.file.tags);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	useEffect(() => {
+		if (isOpen) void fetchExtraData();
+	}, [isOpen]);
+
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent
@@ -92,7 +124,101 @@ export function FileInformationDialog({
 						</div>
 					</TabsContent>
 					<TabsContent value="information">
-						<div className="grid grid-rows-2 gap-4">some settings</div>
+						<div className="grid grid-cols-2 gap-4 p-8">
+							<div className="flex flex-col space-y-1.5 gap-0">
+								<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
+									File information
+								</h2>
+								<div>
+									<Label htmlFor="name">UUID</Label>
+									<Input value={file.uuid} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">Name</Label>
+									<Input value={file.name} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">Original</Label>
+									<Input value={file.original} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">IP</Label>
+									<Input value={file.ip} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">URL</Label>
+									<Input value={file.url} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">Size</Label>
+									<Input value={formatBytes(file.size)} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">Hash</Label>
+									<Input value={file.hash} disabled />
+								</div>
+
+								<div>
+									<Label htmlFor="name">Uploaded</Label>
+									<Input value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')} disabled />
+								</div>
+							</div>
+
+							<div className="max-w-96">
+								<div className="flex flex-col space-y-1.5 gap-0">
+									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">Albums</h2>
+									<div>
+										<Label htmlFor="albums">Add albums</Label>
+										<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
+											A file can be added to multiple albums.
+										</div>
+										<FancyMultiSelect
+											name="albums"
+											placeholder="Select album..."
+											options={
+												albums
+													? albums.map(album => ({
+															value: album.uuid,
+															label: album.name
+														}))
+													: []
+											}
+											initialSelected={fileAlbums.map(album => album.uuid)}
+										/>
+									</div>
+								</div>
+								<div className="flex flex-col space-y-1.5 gap-0 mt-8">
+									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">Tags</h2>
+									<div>
+										<Label htmlFor="tags">Attach tags</Label>
+										<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
+											To create a new tag you can type the name of the tag and press enter and it
+											will be attached to the file automatically.
+										</div>
+
+										<FancyMultiSelect
+											name="tags"
+											placeholder="Select tags..."
+											options={
+												tags
+													? tags.map(tag => ({
+															value: tag.uuid,
+															label: tag.name
+														}))
+													: []
+											}
+											initialSelected={fileTags.map(tag => tag.uuid)}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
 					</TabsContent>
 				</Tabs>
 			</DialogContent>
