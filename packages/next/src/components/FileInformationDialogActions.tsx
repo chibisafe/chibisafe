@@ -21,7 +21,7 @@ export function FileInformationDialogActions({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">File actions</Button>
+				<Button variant="secondary">Actions</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
