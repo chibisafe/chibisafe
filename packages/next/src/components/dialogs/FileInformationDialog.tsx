@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 import type { Album as AlbumType, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
 import type { DialogProps } from '@radix-ui/react-dialog';
 import dayjs from 'dayjs';
@@ -42,26 +42,27 @@ export function FileInformationDialog({
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
 
-	const fetchExtraData = async () => {
+	const fetchExtraData = useCallback(async () => {
 		try {
+			if (type === 'admin') return;
+
 			const createdAlbums = await request.get('albums');
 			setAlbums(createdAlbums.albums);
 
 			const albumsTags = await request.get('tags');
 			setTags(albumsTags.tags);
 
-			if (type === 'admin') return;
 			const fileInfo = await request.get(`file/${file.uuid}`);
 			setFileAlbums(fileInfo.file.albums);
 			setFileTags(fileInfo.file.tags);
 		} catch (error) {
 			console.error(error);
 		}
-	};
+	}, [file.uuid, type]);
 
 	useEffect(() => {
 		if (isOpen) void fetchExtraData();
-	}, [isOpen]);
+	}, [isOpen, fetchExtraData]);
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -131,42 +132,42 @@ export function FileInformationDialog({
 								</h2>
 								<div>
 									<Label htmlFor="name">UUID</Label>
-									<Input value={file.uuid} disabled />
+									<Input value={file.uuid} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">Name</Label>
-									<Input value={file.name} disabled />
+									<Input value={file.name} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">Original</Label>
-									<Input value={file.original} disabled />
+									<Input value={file.original} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">IP</Label>
-									<Input value={file.ip} disabled />
+									<Input value={file.ip} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">URL</Label>
-									<Input value={file.url} disabled />
+									<Input value={file.url} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">Size</Label>
-									<Input value={formatBytes(file.size)} disabled />
+									<Input value={formatBytes(file.size)} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">Hash</Label>
-									<Input value={file.hash} disabled />
+									<Input value={file.hash} readOnly />
 								</div>
 
 								<div>
 									<Label htmlFor="name">Uploaded</Label>
-									<Input value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')} disabled />
+									<Input value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')} readOnly />
 								</div>
 							</div>
 
