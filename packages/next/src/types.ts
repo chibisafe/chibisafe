@@ -126,3 +126,8 @@ export const enum MessageType {
 	Success,
 	Error
 }
+
+export interface Tag {
+	name: string;
+	uuid: string;
+}

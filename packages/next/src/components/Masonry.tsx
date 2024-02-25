@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { File, FilePropsType } from '@/types';
 import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
 
@@ -34,20 +34,6 @@ export function Masonry({
 		if (!hoveredFiles.includes(identifierToUse)) return;
 		setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
 	};
-
-	// const [imageDimensions, setImageDimensions] = useState<Record<string, { isVertical: boolean }>>({});
-
-	// const onImageLoad = useCallback((uuid: string) => {
-	// 	const image = ref.current[uuid];
-	// 	if (!image) return;
-
-	// 	setImageDimensions(previousState => ({
-	// 		...previousState,
-	// 		[uuid]: {
-	// 			isVertical: image.naturalHeight > image.naturalWidth
-	// 		}
-	// 	}));
-	// }, []);
 
 	return (
 		<>
@@ -150,6 +136,8 @@ export function Masonry({
 				<FileInformationDialog
 					file={selectedFile}
 					type={type}
+					// albums={albums}
+					// tags={tags}
 					// isVertical={imageDimensions[selectedFile.uuid]?.isVertical}
 					onOpenChange={(open: boolean) => {
 						if (open) return;
