@@ -36,12 +36,20 @@ export function FileInformationDialog({
 			<DialogContent
 				className={cn(
 					// isVertical ? '!w-fit' : '!w-max',
-					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-8rem)] !w-max p-0'
+					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-11rem)] !w-max p-0'
 				)}
 			>
+				<div className="absolute right-0 -bottom-12 z-10">
+					<FileInformationDialogActions file={file} type={type} />
+				</div>
+
 				<Tabs defaultValue="preview" className="relative">
-					{/* <div className="grid grid-cols-[1fr,400px] gap-4"> */}
-					{/* <div className="grid"> */}
+					<div className="flex justify-center w-full absolute -top-12">
+						<TabsList>
+							<TabsTrigger value="preview">Preview</TabsTrigger>
+							<TabsTrigger value="information">Information</TabsTrigger>
+						</TabsList>
+					</div>
 					<TabsContent value="preview" className="mt-0">
 						<div
 							className={cn(
@@ -83,14 +91,9 @@ export function FileInformationDialog({
 							)}
 						</div>
 					</TabsContent>
-					<TabsContent value="information">some settings</TabsContent>
-					<div className="flex justify-center">
-						{/* <FileInformationDialogActions file={file} type={type} /> */}
-						<TabsList className="mt-1">
-							<TabsTrigger value="preview">Preview</TabsTrigger>
-							<TabsTrigger value="info">Information</TabsTrigger>
-						</TabsList>
-					</div>
+					<TabsContent value="information">
+						<div className="grid grid-rows-2 gap-4">some settings</div>
+					</TabsContent>
 				</Tabs>
 			</DialogContent>
 		</Dialog>
