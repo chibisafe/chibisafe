@@ -17,6 +17,30 @@ The service also comes with a control panel where you can edit almost every conf
 _If you fork/deploy your own instance it would mean a lot if you were to keep either the GitHub logo to our repo or a link to it 💖_
 
 ---
+<p align="center">
+	<img src="https://repobeats.axiom.co/api/embed/ef349e2a33281ebd0e289a666892597deb08ee1a.svg">
+</p>
+
+### Features
+- [Beautiful docs](https://chibisafe.moe/docs)
+- [S3 Storage Support](https://github.com/chibisafe/chibisafe/blob/master/docs/s3.md)
+- Chunked uploads
+- Share direct links to uploaded files
+- Albums/Folders with direct links to share
+- File management
+- File tagging
+- User management
+- User quotas
+- Update checker
+- Public or Private mode (with invite support)
+- ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
+- Browser extension to upload content from websites easily
+- Easily extensible
+- Open source
+- No tracking (except for IP logging of requests)
+- No ads
+
+---
 
 <details>
 	<summary>What's new in v5</summary>
@@ -83,24 +107,6 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 
 ---
 
-### Features
-- [Beautiful docs](https://chibisafe.moe/docs)
-- [S3 Storage Support](https://github.com/chibisafe/chibisafe/blob/master/docs/s3.md)
-- Chunked uploads
-- Share direct links to uploaded files
-- Albums/Folders with direct links to share
-- File management
-- File tagging
-- User management
-- User quotas
-- Update checker
-- Public or Private mode (with invite support)
-- ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
-- Browser extension to upload content from websites easily
-- Easily extensible
-- Open source
-- No tracking (except for IP logging of requests)
-- No ads
 
 ## Installing and running chibisafe
 Whichever method you choose to install chibisafe keep in mind that the installation process creates an account named `admin` with the same password. Once you log in the first time make sure to change it!
@@ -194,4 +200,6 @@ If you're upgrading from `v4.x` to `v5` you can run `yarn install && yarn migrat
 **Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/chibisafe/blob/master/LICENSE) License.<br>
 Authored and maintained by Pitu.
 
-> [chibisafe.moe](https://chibisafe.moe) · GitHub [@Pitu](https://github.com/Pitu)
+<a href="https://github.com/chibisafe/chibisafe/graphs/contributors">
+	<img src="https://contrib.rocks/image?repo=chibisafe/chibisafe" />
+</a>
