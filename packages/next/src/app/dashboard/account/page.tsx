@@ -1,6 +1,8 @@
+import type { Metadata } from 'next';
+
 import { DashboardHeader } from '@/components/DashboardHeader';
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Dashboard - Credentials'
 };
 

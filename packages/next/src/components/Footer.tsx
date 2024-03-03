@@ -1,9 +1,7 @@
-import type { HTMLAttributes } from 'react';
-
 import { cn } from '@/lib/utils';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
-export function SiteFooter({ className }: { readonly className?: HTMLAttributes<HTMLElement> }) {
+export function SiteFooter({ className = '' }: { readonly className?: string }) {
 	return (
 		<footer className={cn(className)}>
 			<div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">

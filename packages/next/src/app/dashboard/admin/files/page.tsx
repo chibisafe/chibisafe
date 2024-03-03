@@ -1,10 +1,11 @@
+import type { Metadata } from 'next';
 import type { PageQuery } from '@/types';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Files'
 };
 

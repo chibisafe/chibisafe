@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import type { Album as AlbumType, PageQuery } from '@/types';
 
@@ -7,7 +8,7 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { AlbumSettingsDialog } from '@/components/dialogs/AlbumSettingsDialog';
 import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
 };
 

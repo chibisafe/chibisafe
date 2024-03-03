@@ -1,9 +1,10 @@
+import type { Metadata } from 'next';
 import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Dashboard - Snippets'
 };
 
