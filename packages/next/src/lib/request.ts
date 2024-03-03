@@ -5,9 +5,8 @@ const request = {
 			throw new Error(error.message);
 		}
 
-		const parsed = await response.json();
-		if (process.env.NODE_ENV !== 'production') console.log(parsed);
-		return parsed;
+		// if (process.env.NODE_ENV !== 'production') console.log(parsed);
+		return response.json();
 	},
 
 	get: async (url = '', query = {}, headers?: {}, options?: {}) => {

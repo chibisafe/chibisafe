@@ -1,13 +1,26 @@
+'use client';
+
 // import Image from 'next/image';
+import { useCallback } from 'react';
 import Link from 'next/link';
 import type { Album as AlbumType } from '@/types';
+import { useSetAtom } from 'jotai';
 
+import { isDialogOpenAtom, selectedAlbumAtom } from '@/lib/atoms/albumSettingsDialog';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
-import { AlbumSettingsDialog } from './dialogs/AlbumSettingsDialog';
-
 export const Album = ({ album }: { readonly album: AlbumType }) => {
+	const selectedAlbum = useSetAtom(selectedAlbumAtom);
+	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
+	const setSelectedAlbum = useCallback(
+		(album: AlbumType) => {
+			selectedAlbum(album);
+			setIsDialogOpen(true);
+		},
+		[selectedAlbum, setIsDialogOpen]
+	);
+
 	return (
 		<div className="group relative h-96 w-60">
 			<div
@@ -31,11 +44,12 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 				href={`/dashboard/albums/${album.uuid}`}
 				className="absolute inset-0 transition-all cursor-pointer duration-100 group-hover:scale-105 group-hover:duration-150"
 			/>
-			<AlbumSettingsDialog>
-				<Button className="absolute -bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100">
-					Settings
-				</Button>
-			</AlbumSettingsDialog>
+			<Button
+				className="absolute -bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100"
+				onClick={() => setSelectedAlbum(album)}
+			>
+				Settings
+			</Button>
 		</div>
 	);
 };

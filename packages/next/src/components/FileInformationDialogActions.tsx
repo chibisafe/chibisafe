@@ -1,5 +1,5 @@
 import { type PropsWithChildren } from 'react';
-import type { FilePropsType, FileWithAdditionalData } from '@/types';
+import { type FilePropsType, type FileWithAdditionalData } from '@/types';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,11 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+
+import { AllowFileInformationAction } from './dialogs/file-information/AllowFileInformationAction';
+import { DeleteFileInformationAction } from './dialogs/file-information/DeleteFileInformationAction';
+import { QuarantineFileInformationAction } from './dialogs/file-information/QuarantineFileInformationAction';
+import { RegenerateThumbnailFileInformationAction } from './dialogs/file-information/RegenerateThumbnailFileInformationAction';
 
 export function FileInformationDialogActions({
 	file,
@@ -32,27 +37,29 @@ export function FileInformationDialogActions({
 							Download
 						</a>
 					</DropdownMenuItem>
-					<DropdownMenuItem>Regenerate thumbnail</DropdownMenuItem>
+					<DropdownMenuItem className="p-0">
+						<RegenerateThumbnailFileInformationAction uuid={file.uuid} />
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				{type === 'uploads' ? (
 					<>
 						<DropdownMenuGroup>
 							{file.quarantine ? (
-								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive">
-									Allow file
+								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+									<AllowFileInformationAction uuid={file.uuid} />
 								</DropdownMenuItem>
 							) : (
-								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive">
-									Quarantine
+								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+									<QuarantineFileInformationAction uuid={file.uuid} />
 								</DropdownMenuItem>
 							)}
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
 					</>
 				) : null}
-				<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive">
-					Delete
+				<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+					<DeleteFileInformationAction uuid={file.uuid} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

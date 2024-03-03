@@ -17,6 +17,11 @@ export const schema = {
 		.required(),
 	body: z.union([
 		z.object({
+			name: z.string().describe('The name of the album.'),
+			description: z.string().describe('The description of the album.'),
+			nsfw: z.boolean().describe('Whether the album is nsfw or not.')
+		}),
+		z.object({
 			name: z.string().describe('The name of the album.')
 		}),
 		z.object({ description: z.string().describe('The description of the album.') }),
