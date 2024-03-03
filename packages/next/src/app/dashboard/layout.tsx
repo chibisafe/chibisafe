@@ -1,12 +1,10 @@
+import type { PropsWithChildren } from 'react';
+
 import { DashboardSidebar } from '@/components/DashboardSidebar';
 import { SiteFooter } from '@/components/Footer';
 import { Header } from '@/components/Header';
 
-interface DashboardLayoutProps {
-	children?: React.ReactNode;
-}
-
-export default async function DashboardLayout({ children }: DashboardLayoutProps) {
+export default async function DashboardLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
 			<Header />
