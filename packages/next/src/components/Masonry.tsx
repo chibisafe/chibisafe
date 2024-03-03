@@ -3,9 +3,12 @@
 
 import { useState } from 'react';
 import type { File, FilePropsType } from '@/types';
+import { useAtom } from 'jotai';
 import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
 
+import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
+import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 
@@ -19,7 +22,7 @@ export function Masonry({
 	readonly type: FilePropsType;
 }) {
 	// const ref = useRef<Record<string, HTMLImageElement | null>>({});
-	const [modalOpen, setModalOpen] = useState(false);
+	const [modalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 
@@ -47,7 +50,12 @@ export function Masonry({
 				className="px-1"
 				render={(file, idx) => (
 					<div
-						className="relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none"
+						className={cn(
+							"relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none",
+							{
+								'cursor-not-allowed': file.quarantine && type !== 'admin'
+							}
+						)}
 						key={idx}
 						onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
 						onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
@@ -58,26 +66,30 @@ export function Masonry({
 							((type === 'admin' || type === 'quarantine') && file.quarantine)) ?? (
 						)} */}
 
+						<a
+							className={cn('w-full h-full absolute top-0 left-0 pointer-events-auto', {
+								'pointer-events-none': file.quarantine && type !== 'admin'
+							})}
+							href={file.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							onClick={e => {
+								e.preventDefault();
+								e.stopPropagation();
+								if (file.quarantine && type !== 'admin') {
+									return;
+								}
+
+								setSelectedFile(file);
+								setModalOpen(true);
+							}}
+						/>
+
 						{file.quarantine ? (
-							<div className="w-[225px] h-40 bg-dark-90 flex flex-col justify-center items-center cursor-not-allowed">
+							<div className="h-40 bg-dark-90 flex flex-col justify-center items-center">
 								<FileWarning className="text-red-500 w-16 h-16" />
 							</div>
-						) : (
-							<a
-								className="w-full h-full absolute top-0 left-0 pointer-events-auto"
-								href={file.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								onClick={e => {
-									e.preventDefault();
-									e.stopPropagation();
-									setSelectedFile(file);
-									setModalOpen(true);
-								}}
-							/>
-						)}
-
-						{isFileImage(file) || isFileVideo(file) ? (
+						) : isFileImage(file) || isFileVideo(file) ? (
 							<>
 								{/* {type === 'publicAlbum' && (
 									<a

@@ -4,6 +4,7 @@ import type { Album as AlbumType, PageQuery } from '@/types';
 import request from '@/lib/request';
 import { Album } from '@/components/Album';
 import { DashboardHeader } from '@/components/DashboardHeader';
+import { AlbumSettingsDialog } from '@/components/dialogs/AlbumSettingsDialog';
 import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
 
 export const metadata = {
@@ -41,6 +42,7 @@ export default async function AlbumsPage({ searchParams }: { searchParams: PageQ
 					))}
 				</div>
 			</div>
+			<AlbumSettingsDialog />
 		</>
 	);
 }

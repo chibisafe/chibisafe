@@ -100,7 +100,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit
 				},
-				authorization
+				authorization,
+				{
+					next: {
+						tags: ['files']
+					}
+				}
 			);
 	}
 };
