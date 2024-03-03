@@ -13,8 +13,7 @@ import {
 	// DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-
-import { buttonVariants } from './ui/button';
+import { buttonVariants } from '@/styles/button';
 
 export function NavigationUser() {
 	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);

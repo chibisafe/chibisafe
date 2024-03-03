@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Star } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/styles/button';
 
 async function getGitHubStars(): Promise<string | null> {
 	try {

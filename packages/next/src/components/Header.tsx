@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
-import { buttonVariants } from '@/components/ui/button';
 import { Navigation } from '@/components/Navigation';
 import { NavigationUser } from '@/components/NavigationUser';
-import { UploadProgress } from '@/components/UploadProgress';
 import { DiscordLogo } from '@/components/svg/DiscordLogo';
 import { GitHubLogo } from '@/components/svg/GitHubLogo';
 import { PatreonLogo } from '@/components/svg/PatreonLogo';
+import { UploadProgress } from '@/components/UploadProgress';
+import { buttonVariants } from '@/styles/button';
 
 export const Header = () => {
 	return (
