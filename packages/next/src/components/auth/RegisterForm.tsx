@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 import { cn, debug } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { buttonVariants } from '@/styles/button';
 
 export const RegisterForm = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
