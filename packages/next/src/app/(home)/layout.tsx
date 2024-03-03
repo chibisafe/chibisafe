@@ -1,11 +1,9 @@
+import type { PropsWithChildren } from 'react';
+
 import { SiteFooter } from '@/components/Footer';
 import { Header } from '@/components/Header';
 
-interface MarketingLayoutProps {
-	children: React.ReactNode;
-}
-
-export default async function MarketingLayout({ children }: MarketingLayoutProps) {
+export default async function MarketingLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Header />
