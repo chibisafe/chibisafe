@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 export const Album = ({ album }: { readonly album: AlbumType }) => {
 	const selectedAlbum = useSetAtom(selectedAlbumAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
+
 	const setSelectedAlbum = useCallback(
 		(album: AlbumType) => {
 			selectedAlbum(album);

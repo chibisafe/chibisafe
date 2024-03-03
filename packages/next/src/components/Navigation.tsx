@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { X } from 'lucide-react';
@@ -9,20 +9,20 @@ import { cn } from '@/lib/utils';
 import { NavigationMobile } from '@/components/NavigationMobile';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
-export function Navigation() {
-	const items = [
-		{
-			title: 'Dashboard',
-			href: '/dashboard'
-		},
-		{
-			title: 'Docs',
-			href: 'https://chibisafe.moe/docs'
-		}
-	];
+const items = [
+	{
+		title: 'Dashboard',
+		href: '/dashboard'
+	},
+	{
+		title: 'Docs',
+		href: 'https://chibisafe.moe/docs'
+	}
+];
 
+export function Navigation() {
 	const segment = useSelectedLayoutSegment();
-	const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
+	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 	return (
 		<div className="flex gap-6 md:gap-10">
 			<Link href="/" className="hidden items-center space-x-2 md:flex">

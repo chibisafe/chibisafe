@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 
 export const LoginForm = () => {
 	const router = useRouter();
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const setCurrentUser = useSetAtom(currentUserAtom);
 
 	async function onSubmit(data: FormData) {
