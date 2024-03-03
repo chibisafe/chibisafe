@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import type { PageQuery } from '@/types';
 import { Plus } from 'lucide-react';
 
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
 };
 
