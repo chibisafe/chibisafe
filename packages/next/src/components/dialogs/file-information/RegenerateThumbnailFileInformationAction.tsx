@@ -5,7 +5,7 @@ export const RegenerateThumbnailFileInformationAction = ({ uuid }: { readonly uu
 
 	return (
 		<form action={regenerateThumbailWithUuid} className="w-full h-full">
-			<button type="submit" className="w-full h-full flex px-2 py-1.5 cursor-default">
+			<button type="submit" className="w-full h-full flex px-2 py-1.5">
 				Regenerate Thumbnail
 			</button>
 		</form>
