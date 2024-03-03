@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
+import { buttonVariants } from '@/styles/button';
 
 export const metadata: Metadata = {
 	title: 'Create an account',

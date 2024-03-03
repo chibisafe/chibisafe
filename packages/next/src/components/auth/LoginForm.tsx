@@ -8,9 +8,9 @@ import { Loader2 } from 'lucide-react';
 import { login } from '@/lib/api';
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { buttonVariants } from '@/styles/button';
 
 export const LoginForm = () => {
 	const router = useRouter();
