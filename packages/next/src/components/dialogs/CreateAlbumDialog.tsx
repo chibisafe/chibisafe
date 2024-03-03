@@ -33,7 +33,14 @@ export function CreateAlbumDialog() {
 			toast.success(state.message);
 			setOpen(false);
 		}
-	}, [state.message, state.type]);
+
+		return () => {
+			if (state.type === MessageType.Success) {
+				state.type = MessageType.Uninitialized;
+				state.message = '';
+			}
+		};
+	}, [state, state.message, state.type]);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

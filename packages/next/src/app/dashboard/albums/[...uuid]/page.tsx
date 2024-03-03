@@ -21,8 +21,6 @@ export default async function AlbumPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
 	const response = await fetchEndpoint({ type: 'album', albumUuid: params.uuid }, currentPage, perPage);
-	console.log(response);
-	// TODO: Modify the response to include the album name and subtitle
 	return (
 		<>
 			<DashboardHeader title={response.name} subtitle={response.description}>
