@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/style-prop-object */
 
-export const ChibisafeLogo = ({ className }: { readonly className: string }) => {
+export const ChibisafeLogo = ({ className = '' }: { readonly className?: string }) => {
 	return (
 		<svg
 			width="234px"

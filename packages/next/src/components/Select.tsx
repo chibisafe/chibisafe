@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { cn } from '@/lib/utils';
 import {
 	SelectContent,
@@ -21,7 +19,7 @@ export function Select({
 	items,
 	onChange,
 	value,
-	className
+	className = ''
 }: {
 	readonly className?: string;
 	readonly items: Item[];

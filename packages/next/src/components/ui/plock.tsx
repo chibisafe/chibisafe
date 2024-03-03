@@ -1,6 +1,7 @@
+'use client';
+
 // Copied from https://github.com/askides/react-plock
 // since it needs patching for SSR so we do it locally
-
 import * as React from 'react';
 
 export function useMediaValues(medias: number[] | undefined, columns: number[], gap: number[]) {

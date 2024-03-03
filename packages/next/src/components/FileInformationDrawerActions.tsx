@@ -1,3 +1,5 @@
+'use client';
+
 import { type PropsWithChildren } from 'react';
 import type { FilePropsType, FileWithAdditionalData } from '@/types';
 import { useCopyToClipboard } from 'usehooks-ts';

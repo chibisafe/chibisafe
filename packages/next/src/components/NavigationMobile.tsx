@@ -1,19 +1,11 @@
-import * as React from 'react';
+import type { PropsWithChildren } from 'react';
 import Link from 'next/link';
 import type { NavItem } from '@/types';
 
 import { cn } from '@/lib/utils';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
-export function NavigationMobile({
-	items,
-	children
-}: {
-	readonly children?: React.ReactNode;
-	readonly items: NavItem[];
-}) {
-	// useLockBody();
-
+export function NavigationMobile({ items, children }: PropsWithChildren<{ readonly items: NavItem[] }>) {
 	return (
 		<div
 			className={cn(

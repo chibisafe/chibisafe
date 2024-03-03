@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 import type { Album as AlbumType, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
 import type { DialogProps } from '@radix-ui/react-dialog';
