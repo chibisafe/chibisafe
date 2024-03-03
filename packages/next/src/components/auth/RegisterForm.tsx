@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 import { cn, debug } from '@/lib/utils';
@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export const RegisterForm = () => {
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
