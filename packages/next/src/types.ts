@@ -131,3 +131,28 @@ export interface Tag {
 	name: string;
 	uuid: string;
 }
+
+export interface ApiUser {
+	apiKey: string;
+	createdAt: string;
+	enabled?: string;
+	id: number;
+	passwordEditedAt?: Date;
+	roles: {
+		name: string;
+	}[];
+	storageQuota: {
+		overQuota: boolean;
+		quota: number;
+		used: number;
+	};
+	username: string;
+	uuid: string;
+}
+
+export interface UserWithCount extends ApiUser {
+	_count: {
+		files: number;
+	};
+	size: Number;
+}

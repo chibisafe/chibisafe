@@ -34,7 +34,7 @@ export const QuarantineFileInformationAction = ({ uuid }: { readonly uuid: strin
 				description="This action will quarantine the file and prevent anyone else from accessing it."
 				callback={() => formRef.current?.requestSubmit()}
 			>
-				<button type="button" className="w-full h-full flex px-2 py-1.5">
+				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
 					Quarantine
 				</button>
 			</ConfirmationDialog>

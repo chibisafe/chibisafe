@@ -36,7 +36,7 @@ export const DeleteAlbumAction = () => {
 				description="This action will delete the album."
 				callback={() => formRef.current?.requestSubmit()}
 			>
-				<button type="button" className="w-full h-full flex px-2 py-1.5">
+				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
 					Delete album
 				</button>
 			</ConfirmationDialog>
