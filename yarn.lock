@@ -1286,6 +1286,7 @@ __metadata:
     "@radix-ui/react-slot": ^1.0.2
     "@radix-ui/react-switch": ^1.0.3
     "@radix-ui/react-tabs": ^1.0.4
+    "@tanstack/react-table": ^8.13.2
     "@types/js-cookie": ^3.0.6
     "@types/mdx": ^2.0.11
     "@types/node": ^20.11.17
@@ -4646,6 +4647,18 @@ __metadata:
   version: 5.24.6
   resolution: "@tanstack/query-core@npm:5.24.6"
   checksum: 57a91fd1d9069ea1e7b367742bddcf865c078265e87d3d66e04be345b795e21f93f97c7d94a096437657fd52fa4d17cbc106521d045851b602f82a6809195e85
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-table@npm:^8.13.2":
+  version: 8.13.2
+  resolution: "@tanstack/react-table@npm:8.13.2"
+  dependencies:
+    "@tanstack/table-core": 8.13.2
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 5a5ae9cf124a19d5b5ba585359fc51e8999d5418df0bdd14acf8e8644355c540d54d7392041ceec514956d54189a1f7bf5a19ec9ae5a27fa93bd556a5b156a75
   languageName: node
   linkType: hard
 

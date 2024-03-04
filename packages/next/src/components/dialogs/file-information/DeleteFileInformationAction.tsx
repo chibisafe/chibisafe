@@ -34,7 +34,7 @@ export const DeleteFileInformationAction = ({ uuid }: { readonly uuid: string })
 				description="This action will delete the file."
 				callback={() => formRef.current?.requestSubmit()}
 			>
-				<button type="button" className="w-full h-full flex px-2 py-1.5">
+				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
 					Delete
 				</button>
 			</ConfirmationDialog>
