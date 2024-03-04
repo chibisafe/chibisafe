@@ -2,7 +2,7 @@
 
 import type { PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
-import { deleteFile } from '@/actions/FileInformationDialogActions';
+import { promoteUser, demoteUser, enableUser, disableUser, purgeUser } from '@/actions/UserTableActions';
 import { MessageType } from '@/types';
 import { useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
@@ -18,7 +18,29 @@ export const ConfirmationAction = ({
 	children
 }: PropsWithChildren<{ readonly description: string; readonly type: string; readonly uuid: string }>) => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
-	const [state, formAction] = useFormState(deleteFile, {
+
+	let actionToPerform;
+	switch (type) {
+		case 'promote':
+			actionToPerform = promoteUser;
+			break;
+		case 'demote':
+			actionToPerform = demoteUser;
+			break;
+		case 'enable':
+			actionToPerform = enableUser;
+			break;
+		case 'disable':
+			actionToPerform = disableUser;
+			break;
+		case 'purge':
+			actionToPerform = purgeUser;
+			break;
+		default:
+			throw new Error('Invalid type');
+	}
+
+	const [state, formAction] = useFormState(actionToPerform, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
