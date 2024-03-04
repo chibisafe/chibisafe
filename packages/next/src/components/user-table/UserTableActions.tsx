@@ -21,7 +21,9 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
+					{/* // TODO: Redirect the user */}
 					<DropdownMenuItem>View files</DropdownMenuItem>
+					{/* // TODO: Prepare a new dialog for input */}
 					<DropdownMenuItem onSelect={e => e.preventDefault()}>Set quota</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
