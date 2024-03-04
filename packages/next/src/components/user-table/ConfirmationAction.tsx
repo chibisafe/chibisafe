@@ -1,18 +1,24 @@
 'use client';
 
+import type { PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
-import { allowFile } from '@/actions/FileInformationDialogActions';
+import { deleteFile } from '@/actions/FileInformationDialogActions';
 import { MessageType } from '@/types';
 import { useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
-import { ConfirmationDialog } from '../ConfirmationDialog';
+import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 
-export const AllowFileInformationAction = ({ uuid }: { readonly uuid: string }) => {
+export const ConfirmationAction = ({
+	uuid,
+	type,
+	description,
+	children
+}: PropsWithChildren<{ readonly description: string; readonly type: string; readonly uuid: string }>) => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
-	const [state, formAction] = useFormState(allowFile, {
+	const [state, formAction] = useFormState(deleteFile, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
@@ -30,12 +36,9 @@ export const AllowFileInformationAction = ({ uuid }: { readonly uuid: string }) 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">
 			<input type="hidden" name="uuid" value={uuid} />
-			<ConfirmationDialog
-				description="This action will remove the file from quarantine and allow anyone with a link to access it."
-				callback={() => formRef.current?.requestSubmit()}
-			>
+			<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
 				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
-					Allow file
+					{children}
 				</button>
 			</ConfirmationDialog>
 		</form>
