@@ -48,11 +48,17 @@ export function FileInformationDialogActions({
 					<>
 						<DropdownMenuGroup>
 							{file.quarantine ? (
-								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+								<DropdownMenuItem
+									className="focus:text-destructive-foreground focus:bg-destructive p-0"
+									onSelect={e => e.preventDefault()}
+								>
 									<AllowFileInformationAction uuid={file.uuid} />
 								</DropdownMenuItem>
 							) : (
-								<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+								<DropdownMenuItem
+									className="focus:text-destructive-foreground focus:bg-destructive p-0"
+									onSelect={e => e.preventDefault()}
+								>
 									<QuarantineFileInformationAction uuid={file.uuid} />
 								</DropdownMenuItem>
 							)}
@@ -60,7 +66,10 @@ export function FileInformationDialogActions({
 						<DropdownMenuSeparator />
 					</>
 				) : null}
-				<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+				<DropdownMenuItem
+					className="focus:text-destructive-foreground focus:bg-destructive p-0"
+					onSelect={e => e.preventDefault()}
+				>
 					<DeleteFileInformationAction uuid={file.uuid} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>

@@ -16,10 +16,16 @@ export function AlbumSettingsDialogActions() {
 				<Button variant="secondary">Actions</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-				<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+				<DropdownMenuItem
+					className="focus:text-destructive-foreground focus:bg-destructive p-0"
+					onSelect={e => e.preventDefault()}
+				>
 					<DeleteAlbumAction />
 				</DropdownMenuItem>
-				<DropdownMenuItem className="focus:text-destructive-foreground focus:bg-destructive p-0">
+				<DropdownMenuItem
+					className="focus:text-destructive-foreground focus:bg-destructive p-0"
+					onSelect={e => e.preventDefault()}
+				>
 					<DeleteAlbumAndFilesAction />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
