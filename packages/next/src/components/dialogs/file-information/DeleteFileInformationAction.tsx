@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { deleteFile } from '@/actions/FileInformationDialogActions';
 import { MessageType } from '@/types';
 import { useSetAtom } from 'jotai';
@@ -8,6 +8,7 @@ import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { ConfirmationDialog } from '../ConfirmationDialog';
 
 export const DeleteFileInformationAction = ({ uuid }: { readonly uuid: string }) => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
@@ -15,6 +16,8 @@ export const DeleteFileInformationAction = ({ uuid }: { readonly uuid: string })
 		message: '',
 		type: MessageType.Uninitialized
 	});
+
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		if (state.type === MessageType.Error) toast.error(state.message);
@@ -25,11 +28,16 @@ export const DeleteFileInformationAction = ({ uuid }: { readonly uuid: string })
 	}, [state.message, state.type, setIsDialogOpen]);
 
 	return (
-		<form action={formAction} className="w-full h-full">
+		<form action={formAction} ref={formRef} className="w-full h-full">
 			<input type="hidden" name="uuid" value={uuid} />
-			<button type="submit" className="w-full h-full flex px-2 py-1.5">
-				Delete
-			</button>
+			<ConfirmationDialog
+				description="This action will delete the file."
+				callback={() => formRef.current?.requestSubmit()}
+			>
+				<button type="button" className="w-full h-full flex px-2 py-1.5">
+					Delete
+				</button>
+			</ConfirmationDialog>
 		</form>
 	);
 };
