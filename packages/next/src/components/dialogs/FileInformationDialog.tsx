@@ -133,104 +133,129 @@ export function FileInformationDialog({
 					</TabsContent>
 					<TabsContent value="information">
 						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
-							<div className="grid md:grid-cols-2 grid-rows-2 gap-4 md:p-8 p-2">
+							<div
+								className={cn(
+									'grid grid-rows-1 gap-4 md:p-8 p-2',
+									type === 'admin' ? 'md:grid-cols-1 min-w-96' : 'md:grid-cols-2'
+								)}
+							>
 								<div className="flex flex-col space-y-1.5 gap-0">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 										File information
 									</h2>
+
+									{type === 'admin' ? (
+										<div>
+											<Label htmlFor="name">Owner</Label>
+											<a
+												href={`/dashboard/users/${file.user?.uuid}`}
+												className="text-blue-500 underline block"
+											>
+												{file.user?.username}
+											</a>
+										</div>
+									) : null}
+
 									<div>
-										<Label htmlFor="name">UUID</Label>
-										<Input value={file.uuid} readOnly />
+										<Label htmlFor="uuid">UUID</Label>
+										<Input value={file.uuid} name="uuid" id="uuid" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="name">Name</Label>
-										<Input value={file.name} readOnly />
+										<Input value={file.name} name="name" id="name" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">Original</Label>
-										<Input value={file.original} readOnly />
+										<Label htmlFor="original">Original</Label>
+										<Input value={file.original} name="original" id="original" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">IP</Label>
-										<Input value={file.ip} readOnly />
+										<Label htmlFor="ip">IP</Label>
+										<Input value={file.ip} name="ip" id="ip" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">URL</Label>
-										<Input value={file.url} readOnly />
+										<Label htmlFor="url">URL</Label>
+										<Input value={file.url} name="url" id="url" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">Size</Label>
-										<Input value={formatBytes(file.size)} readOnly />
+										<Label htmlFor="size">Size</Label>
+										<Input value={formatBytes(file.size)} name="size" id="size" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">Hash</Label>
-										<Input value={file.hash} readOnly />
+										<Label htmlFor="hash">Hash</Label>
+										<Input value={file.hash} name="hash" id="hash" readOnly />
 									</div>
 
 									<div>
-										<Label htmlFor="name">Uploaded</Label>
-										<Input value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')} readOnly />
+										<Label htmlFor="uploaded">Uploaded</Label>
+										<Input
+											value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')}
+											name="uploaded"
+											id="uploaded"
+											readOnly
+										/>
 									</div>
 								</div>
 
-								<div className="max-w-96">
-									<div className="flex flex-col space-y-1.5 gap-0">
-										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
-											Albums
-										</h2>
-										<div>
-											<Label htmlFor="albums">Add albums</Label>
-											<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
-												A file can be added to multiple albums.
+								{type === 'admin' ? null : (
+									<div className="max-w-96">
+										<div className="flex flex-col space-y-1.5 gap-0">
+											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
+												Albums
+											</h2>
+											<div>
+												<Label htmlFor="albums">Add albums</Label>
+												<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
+													A file can be added to multiple albums.
+												</div>
+												<FancyMultiSelect
+													name="albums"
+													placeholder="Select album..."
+													options={
+														albums
+															? albums.map(album => ({
+																	value: album.uuid,
+																	label: album.name
+																}))
+															: []
+													}
+													initialSelected={fileAlbums.map(album => album.uuid)}
+												/>
 											</div>
-											<FancyMultiSelect
-												name="albums"
-												placeholder="Select album..."
-												options={
-													albums
-														? albums.map(album => ({
-																value: album.uuid,
-																label: album.name
-															}))
-														: []
-												}
-												initialSelected={fileAlbums.map(album => album.uuid)}
-											/>
 										</div>
-									</div>
-									<div className="flex flex-col space-y-1.5 gap-0 mt-8">
-										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
-											Tags
-										</h2>
-										<div>
-											<Label htmlFor="tags">Attach tags</Label>
-											<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
-												To create a new tag you can type the name of the tag and press enter and
-												it will be attached to the file automatically.
-											</div>
+										<div className="flex flex-col space-y-1.5 gap-0 mt-8">
+											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
+												Tags
+											</h2>
+											<div>
+												<Label htmlFor="tags">Attach tags</Label>
+												<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
+													To create a new tag you can type the name of the tag and press enter
+													and it will be attached to the file automatically.
+												</div>
 
-											<FancyMultiSelect
-												name="tags"
-												placeholder="Select tags..."
-												options={
-													tags
-														? tags.map(tag => ({
-																value: tag.uuid,
-																label: tag.name
-															}))
-														: []
-												}
-												initialSelected={fileTags.map(tag => tag.uuid)}
-											/>
+												<FancyMultiSelect
+													name="tags"
+													placeholder="Select tags..."
+													options={
+														tags
+															? tags.map(tag => ({
+																	value: tag.uuid,
+																	label: tag.name
+																}))
+															: []
+													}
+													initialSelected={fileTags.map(tag => tag.uuid)}
+												/>
+											</div>
 										</div>
 									</div>
-								</div>
+								)}
 							</div>
 						</ScrollArea>
 					</TabsContent>

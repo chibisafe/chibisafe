@@ -44,7 +44,7 @@ export function FileInformationDialogActions({
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				{type === 'uploads' ? (
+				{type === 'admin' ? (
 					<>
 						<DropdownMenuGroup>
 							{file.quarantine ? (
