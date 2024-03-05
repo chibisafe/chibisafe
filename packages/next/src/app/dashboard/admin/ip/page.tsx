@@ -4,7 +4,7 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import request from '@/lib/request';
-import { IpTable } from '@/components/ip-table/IpTable';
+import { IpTable } from '@/components/tables/ip-table/IpTable';
 import { BanIpDialog } from '@/components/dialogs/BanIpDialog';
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'

@@ -23,7 +23,10 @@ const columns = [
 		id: 'username',
 		header: 'Username',
 		cell: props => (
-			<a href={`/dashboard/admin/user/${props.row.original.uuid}`} className="link inline-flex items-center ml-2">
+			<a
+				href={`/dashboard/admin/user/${props.row.original.uuid}`}
+				className="text-blue-500 underline inline-flex items-center ml-2"
+			>
 				{props.row.original.username}
 			</a>
 		)
@@ -56,7 +59,9 @@ const columns = [
 		cell: props => (
 			<div className="flex gap-2">
 				{props.getValue().map((role: any) => (
-					<Badge key={role.name}>{role.name}</Badge>
+					<Badge key={role.name} className="ml-1">
+						{role.name}
+					</Badge>
 				))}
 			</div>
 		)
