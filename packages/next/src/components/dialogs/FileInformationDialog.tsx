@@ -153,7 +153,7 @@ export function FileInformationDialog({
 							</video>
 						) : null}
 						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
-							<div className={cn('grid grid-rows-1 gap-4 md:p-8 p-2 min-w-96 md:grid-cols-2')}>
+							<div className={cn('grid grid-rows-1 gap-8 md:p-8 p-2 min-w-96 md:grid-cols-2')}>
 								<div className="flex flex-col space-y-1.5 gap-0">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 										File information
@@ -175,18 +175,18 @@ export function FileInformationDialog({
 									</div>
 
 									<div>
-										<Label htmlFor="ip">IP</Label>
-										<div className="flex items-center">
-											<Input value={file.ip} name="ip" id="ip" readOnly />
+										<Label htmlFor="ip">
+											IP{' '}
 											{type === 'admin' ? (
 												<a
 													href={`/dashboard/admin/ip/${file.ip}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 												>
-													view <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 												</a>
 											) : null}
-										</div>
+										</Label>
+										<Input value={file.ip} name="ip" id="ip" readOnly />
 									</div>
 
 									<div>
@@ -222,16 +222,16 @@ export function FileInformationDialog({
 										</h2>
 
 										<div>
-											<Label htmlFor="owner">Owner</Label>
-											<div className="flex items-center">
-												<Input value={file.user.username} name="owner" id="owner" readOnly />
+											<Label htmlFor="owner">
+												Owner
 												<a
 													href={`/dashboard/admin/user/${file.user?.uuid}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 												>
-													view <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 												</a>
-											</div>
+											</Label>
+											<Input value={file.user.username} name="owner" id="owner" readOnly />
 										</div>
 
 										<div>
