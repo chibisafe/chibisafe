@@ -7,10 +7,10 @@ import { redirect } from 'next/navigation';
 import request from '@/lib/request';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin'
+	title: 'Dashboard - Admin - Users'
 };
 
-export default async function DashboardPage() {
+export default async function DashboardAdminUsersPage() {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
@@ -19,7 +19,11 @@ export default async function DashboardPage() {
 		authorization: `Bearer ${token}`
 	};
 
-	const response = await request.get(`admin/users`, {}, authorization);
+	const response = await request.get(`admin/users`, {}, authorization, {
+		next: {
+			tags: ['users']
+		}
+	});
 
 	return (
 		<>

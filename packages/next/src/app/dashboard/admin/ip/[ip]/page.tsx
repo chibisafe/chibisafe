@@ -15,8 +15,8 @@ export default async function DashboardPage({
 	params,
 	searchParams
 }: {
-	readonly params: { ip: string };
-	readonly searchParams: PageQuery;
+	params: { ip: string };
+	searchParams: PageQuery;
 }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
@@ -25,15 +25,7 @@ export default async function DashboardPage({
 	const response = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
 	return (
 		<>
-			<DashboardHeader
-				title={`${params.ip} files`}
-				subtitle="As an admin, you can manage their files"
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Banned IPs', url: '/dashboard/admin/ip' },
-					{ name: params.ip, url: `/dashboard/admin/ip/${params.ip}` }
-				]}
-			>
+			<DashboardHeader title={`${params.ip} files`} subtitle="As an admin, you can manage their files">
 				<Button>
 					<Plus className="mr-2 h-4 w-4" />
 					Ban this IP

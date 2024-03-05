@@ -13,28 +13,17 @@ export default async function DashboardAdminUserPage({
 	params,
 	searchParams
 }: {
-	readonly params: { uuid: string };
-	readonly searchParams: PageQuery;
+	params: { uuid: string };
+	searchParams: PageQuery;
 }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
-	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage, search);
-	// TODO: If the user hasn't uploaded any files, the response will be an empty array
-	// and the username will be undefined
+	const response = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage);
 	const username = response.files[0]?.user?.username;
 	return (
 		<>
-			<DashboardHeader
-				title={`${username}'s files`}
-				subtitle="As an admin, you can manage their files"
-				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Users', url: '/dashboard/admin/users' },
-					{ name: username, url: `/dashboard/admin/user/${params.uuid}` }
-				]}
-			/>
+			<DashboardHeader title={`${username}'s files`} subtitle="As an admin, you can manage their files" />
 			<div className="px-2">
 				<FilesList type="admin" files={response.files} count={response.count} />
 			</div>

@@ -29,7 +29,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						page: currentPage,
 						limit: currentLimit
 					},
-					authorization
+					authorization,
+					{
+						next: {
+							tags: ['files']
+						}
+					}
 				);
 			} else if (props.ip) {
 				// TODO: Update backend to accept this URL type
@@ -39,7 +44,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						page: currentPage,
 						limit: currentLimit
 					},
-					authorization
+					authorization,
+					{
+						next: {
+							tags: ['files']
+						}
+					}
 				);
 			} else {
 				return request.get(
@@ -50,7 +60,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						publicOnly,
 						quarantine: false
 					},
-					authorization
+					authorization,
+					{
+						next: {
+							tags: ['files']
+						}
+					}
 				);
 			}
 		}
@@ -64,7 +79,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					publicOnly,
 					quarantine: true
 				},
-				authorization
+				authorization,
+				{
+					next: {
+						tags: ['files']
+					}
+				}
 			);
 		case 'album':
 			return request.get(
@@ -73,7 +93,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit
 				},
-				authorization
+				authorization,
+				{
+					next: {
+						tags: ['files']
+					}
+				}
 			);
 		case 'tag':
 			return request.get(
@@ -82,7 +107,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit
 				},
-				authorization
+				authorization,
+				{
+					next: {
+						tags: ['files']
+					}
+				}
 			);
 		case 'publicAlbum':
 			return request.get(
@@ -91,7 +121,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit
 				},
-				authorization
+				authorization,
+				{
+					next: {
+						tags: ['files']
+					}
+				}
 			);
 		default:
 			return request.get(
