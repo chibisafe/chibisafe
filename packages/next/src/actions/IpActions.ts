@@ -71,7 +71,7 @@ export const purgeIp = async (_: any, form: FormData) => {
 		);
 
 		revalidateTag('ips');
-		return { message: 'IP purged', type: MessageType.Success };
+		return { message: 'IP files purged', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error.message, type: MessageType.Error };
 	}
