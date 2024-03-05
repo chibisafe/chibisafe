@@ -28,6 +28,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
+import { ArrowUpRightFromSquare } from 'lucide-react';
+import { Badge } from '../ui/badge';
 
 export function FileInformationDialog({
 	file,
@@ -133,28 +135,11 @@ export function FileInformationDialog({
 					</TabsContent>
 					<TabsContent value="information">
 						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
-							<div
-								className={cn(
-									'grid grid-rows-1 gap-4 md:p-8 p-2',
-									type === 'admin' ? 'md:grid-cols-1 min-w-96' : 'md:grid-cols-2'
-								)}
-							>
+							<div className={cn('grid grid-rows-1 gap-4 md:p-8 p-2 min-w-96 md:grid-cols-2')}>
 								<div className="flex flex-col space-y-1.5 gap-0">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 										File information
 									</h2>
-
-									{type === 'admin' ? (
-										<div>
-											<Label htmlFor="name">Owner</Label>
-											<a
-												href={`/dashboard/users/${file.user?.uuid}`}
-												className="text-blue-500 underline block"
-											>
-												{file.user?.username}
-											</a>
-										</div>
-									) : null}
 
 									<div>
 										<Label htmlFor="uuid">UUID</Label>
@@ -173,7 +158,17 @@ export function FileInformationDialog({
 
 									<div>
 										<Label htmlFor="ip">IP</Label>
-										<Input value={file.ip} name="ip" id="ip" readOnly />
+										<div className="flex items-center">
+											<Input value={file.ip} name="ip" id="ip" readOnly />
+											{type === 'admin' ? (
+												<a
+													href={`/dashboard/admin/ip/${file.ip}`}
+													className="text-blue-500 underline inline-flex items-center ml-2"
+												>
+													view <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+												</a>
+											) : null}
+										</div>
 									</div>
 
 									<div>
@@ -202,7 +197,62 @@ export function FileInformationDialog({
 									</div>
 								</div>
 
-								{type === 'admin' ? null : (
+								{type === 'admin' && file.user ? (
+									<div className="flex flex-col space-y-1.5 gap-0">
+										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
+											User information
+										</h2>
+
+										<div>
+											<Label htmlFor="owner">Owner</Label>
+											<div className="flex items-center">
+												<Input value={file.user.username} name="owner" id="owner" readOnly />
+												<a
+													href={`/dashboard/admin/user/${file.user?.uuid}`}
+													className="text-blue-500 underline inline-flex items-center ml-2"
+												>
+													view <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+												</a>
+											</div>
+										</div>
+
+										<div>
+											<Label htmlFor="userUUID">User UUID</Label>
+											<Input value={file.user?.uuid} name="userUUID" id="userUUID" readOnly />
+										</div>
+
+										<div>
+											<Label htmlFor="status">Status</Label>
+											<Input
+												value={file.user.enabled ? 'Enabled' : 'Disabled'}
+												name="status"
+												id="status"
+												readOnly
+											/>
+										</div>
+
+										<div>
+											<Label htmlFor="null">Roles</Label>
+											<div>
+												{file.user.roles.map((role: any) => (
+													<Badge key={role.name} className="mr-1">
+														{role.name}
+													</Badge>
+												))}
+											</div>
+										</div>
+
+										<div>
+											<Label htmlFor="joined">Joined</Label>
+											<Input
+												value={dayjs(file.user.createdAt).format('MMMM D, YYYY h:mm A')}
+												name="joined"
+												id="joined"
+												readOnly
+											/>
+										</div>
+									</div>
+								) : (
 									<div className="max-w-96">
 										<div className="flex flex-col space-y-1.5 gap-0">
 											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
