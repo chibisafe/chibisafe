@@ -24,7 +24,14 @@ export default async function AlbumPage({
 	const response = await fetchEndpoint({ type: 'album', albumUuid: params.uuid }, currentPage, perPage);
 	return (
 		<>
-			<DashboardHeader title={response.name} subtitle={response.description}>
+			<DashboardHeader
+				title={response.name}
+				subtitle={response.description}
+				breadcrumbs={[
+					{ name: 'Albums', url: '/dashboard/albums' },
+					{ name: response.name, url: `/dashboard/albums/${params.uuid}` }
+				]}
+			>
 				<Button>
 					<Plus className="mr-2 h-4 w-4" />
 					Upload file to album

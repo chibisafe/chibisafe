@@ -27,7 +27,14 @@ export default async function DashboardAdminUsersPage() {
 
 	return (
 		<>
-			<DashboardHeader title="Users" subtitle="Manage all users" />
+			<DashboardHeader
+				title="Users"
+				subtitle="Manage all users"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Users', url: '/dashboard/admin/users' }
+				]}
+			/>
 			<div className="px-2">
 				<UserTable data={response.users} />
 			</div>
