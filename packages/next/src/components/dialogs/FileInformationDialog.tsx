@@ -100,8 +100,9 @@ export function FileInformationDialog({
 							)}
 						>
 							{isFileImage(file) ? (
-								// eslint-disable-next-line @next/next/no-img-element
-								<img src={file.url} className="h-full object-contain md:block" />
+								<picture>
+									<img src={file.url} className="h-full object-contain md:block" />
+								</picture>
 							) : isFileVideo(file) ? (
 								<MediaController className="h-full hidden md:block">
 									<video slot="media" src={file.url} crossOrigin="" className="h-full" />
@@ -134,6 +135,23 @@ export function FileInformationDialog({
 						</div>
 					</TabsContent>
 					<TabsContent value="information">
+						{isFileImage(file) ? (
+							<picture>
+								<img
+									src={file.url}
+									className="h-auto hidden absolute -top-px -left-[272px] xl:block border bg-background p-2 shadow-lg sm:rounded-lg max-w-[264px]"
+								/>
+							</picture>
+						) : isFileVideo(file) ? (
+							<video
+								className="h-auto hidden absolute -top-px -left-[272px] xl:block border bg-background p-2 shadow-lg sm:rounded-lg max-w-[264px]"
+								autoPlay
+								loop
+								muted
+							>
+								<source src={file.preview} type="video/mp4" />
+							</video>
+						) : null}
 						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
 							<div className={cn('grid grid-rows-1 gap-4 md:p-8 p-2 min-w-96 md:grid-cols-2')}>
 								<div className="flex flex-col space-y-1.5 gap-0">
