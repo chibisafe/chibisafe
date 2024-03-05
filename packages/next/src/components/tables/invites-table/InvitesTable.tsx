@@ -13,6 +13,7 @@ import { DataTable } from '../DataTable';
 import dayjs from 'dayjs';
 import type { Invite } from '@/types';
 import { Button } from '@/components/ui/button';
+import { InvitesConfirmationAction } from './InvitesConfirmationAction';
 
 const columnHelper = createColumnHelper<Invite>();
 const columns = [
@@ -68,7 +69,12 @@ const columns = [
 		header: '',
 		cell: props => (
 			<div className="flex justify-end">
-				<Button variant="destructive">Revoke</Button>
+				<InvitesConfirmationAction
+					code={props.row.original.code}
+					description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
+				>
+					<Button variant="destructive">Revoke</Button>
+				</InvitesConfirmationAction>
 			</div>
 		)
 	})

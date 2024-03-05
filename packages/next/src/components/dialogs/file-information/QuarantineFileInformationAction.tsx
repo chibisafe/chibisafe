@@ -25,7 +25,14 @@ export const QuarantineFileInformationAction = ({ uuid }: { readonly uuid: strin
 			toast.success(state.message);
 			setIsDialogOpen(false);
 		}
-	}, [state.message, state.type, setIsDialogOpen]);
+
+		return () => {
+			if (state.type === MessageType.Success) {
+				state.type = MessageType.Uninitialized;
+				state.message = '';
+			}
+		};
+	}, [state.message, state.type, setIsDialogOpen, state]);
 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">
