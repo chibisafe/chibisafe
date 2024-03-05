@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin'
+	title: 'Dashboard - Admin - Invites'
 };
 
 export default async function DashboardPage() {
