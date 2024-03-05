@@ -19,6 +19,10 @@ export default async function AdminFilesPage({ searchParams }: { searchParams: P
 			<DashboardHeader
 				title="Everyone's files"
 				subtitle="Manage all of chibisafe files, no matter who owns them."
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'All files', url: '/dashboard/admin/files' }
+				]}
 			/>
 			<div className="px-2">
 				<FilesList type="admin" files={response.files} count={response.count} />

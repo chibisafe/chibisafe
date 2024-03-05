@@ -13,7 +13,7 @@ export function DashboardSidebar() {
 		<>
 			<nav className="grid items-start gap-1">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Main</h3>
-				<DashboardSidebarItem href="/dashboard" name="Dashboard" Icon={FileUp} />
+				<DashboardSidebarItem href="/dashboard" name="Uploads" Icon={FileUp} />
 				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
 				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
 				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
@@ -27,7 +27,7 @@ export function DashboardSidebar() {
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />
 					<DashboardSidebarItem href="/dashboard/admin/users" name="Users" Icon={Users} />
-					<DashboardSidebarItem href="/dashboard/admin/files" name="Files" Icon={Files} />
+					<DashboardSidebarItem href="/dashboard/admin/files" name="All files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/quarantine" name="Quarantined files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/ip" name="Banned IPs" Icon={Network} />
 					<DashboardSidebarItem href="/dashboard/admin/invites" name="Invites" Icon={UserPlus} />

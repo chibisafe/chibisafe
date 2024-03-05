@@ -25,7 +25,15 @@ export default async function DashboardPage({
 	const response = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
 	return (
 		<>
-			<DashboardHeader title={`${params.ip} files`} subtitle="As an admin, you can manage their files">
+			<DashboardHeader
+				title={`${params.ip} files`}
+				subtitle="As an admin, you can manage their files"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Banned IPs', url: '/dashboard/admin/ip' },
+					{ name: params.ip, url: `/dashboard/admin/ip/${params.ip}` }
+				]}
+			>
 				<Button>
 					<Plus className="mr-2 h-4 w-4" />
 					Ban this IP
