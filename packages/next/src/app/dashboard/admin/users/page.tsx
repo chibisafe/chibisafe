@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { UserTable } from '@/components/user-table/UserTable';
+import { UserTable } from '@/components/tables/user-table/UserTable';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import request from '@/lib/request';

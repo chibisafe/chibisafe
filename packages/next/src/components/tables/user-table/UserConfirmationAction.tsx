@@ -4,9 +4,11 @@ import type { PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
 import { promoteUser, demoteUser, enableUser, disableUser, purgeUser } from '@/actions/UserTableActions';
 import { MessageType } from '@/types';
+import { useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
+import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 
 export const ConfirmationAction = ({
@@ -15,6 +17,8 @@ export const ConfirmationAction = ({
 	description,
 	children
 }: PropsWithChildren<{ readonly description: string; readonly type: string; readonly uuid: string }>) => {
+	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
+
 	let actionToPerform;
 	switch (type) {
 		case 'promote':
@@ -47,15 +51,9 @@ export const ConfirmationAction = ({
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
+			setIsDialogOpen(false);
 		}
-
-		return () => {
-			if (state.type === MessageType.Success) {
-				state.type = MessageType.Uninitialized;
-				state.message = '';
-			}
-		};
-	}, [state.message, state.type, state]);
+	}, [state.message, state.type, setIsDialogOpen]);
 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">
