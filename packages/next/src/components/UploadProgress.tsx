@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { Button } from './ui/button';
+import { revalidateTag } from 'next/cache';
 
 export const UploadProgress = () => {
 	const uploads = useAtomValue(uploadsAtom);
@@ -22,6 +23,7 @@ export const UploadProgress = () => {
 		if (filesUploading > 0) {
 			setButtonText(`Uploading ${filesUploading} files`);
 		} else if (uploads.length > 0) {
+			revalidateTag('files');
 			setButtonText('All uploads complete');
 		} else {
 			setButtonText('');
