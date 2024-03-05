@@ -6,6 +6,7 @@ export const ChibisafeLogo = ({ className = '' }: { readonly className?: string 
 		<svg
 			width="234px"
 			height="245px"
+			viewBox="0 0 234 245"
 			className={className}
 			style={{
 				shapeRendering: 'geometricPrecision',
