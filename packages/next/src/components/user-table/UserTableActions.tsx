@@ -10,7 +10,7 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-import { ConfirmationAction } from './ConfirmationAction';
+import { ConfirmationAction } from './UserConfirmationAction';
 import type { UserWithCount } from '@/types';
 
 export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCount }>) {
@@ -19,7 +19,7 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 			<DropdownMenuTrigger asChild>
 				<Button variant="secondary">Actions</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-56">
+			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
 						<a href={`/dashboard/admin/user/${user.uuid}`}>View files</a>

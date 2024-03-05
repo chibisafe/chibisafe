@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Quarantine'
 };
 
-export default async function DashboardPage({ searchParams }: { searchParams: PageQuery }) {
+export default async function DashboardAdminQuarantinePage({ searchParams }: { searchParams: PageQuery }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
