@@ -15,10 +15,12 @@ export const DataTable = ({
 	table,
 	columns,
 	showSearch = false,
-	searchColumn
+	searchColumn,
+	showColumnSelector = false
 }: PropsWithChildren<{
 	readonly columns: any[];
 	readonly searchColumn?: string;
+	readonly showColumnSelector?: boolean;
 	readonly showSearch?: boolean;
 	readonly table: TableType<any>;
 }>) => {
@@ -34,30 +36,32 @@ export const DataTable = ({
 						className="max-w-sm"
 					/>
 				) : null}
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="outline" className="ml-auto">
-							Columns
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						{table
-							.getAllColumns()
-							.filter(column => column.getCanHide())
-							.map(column => {
-								return (
-									<DropdownMenuCheckboxItem
-										key={column.id}
-										className="capitalize"
-										checked={column.getIsVisible()}
-										onCheckedChange={value => column.toggleVisibility(Boolean(value))}
-									>
-										{column.id}
-									</DropdownMenuCheckboxItem>
-								);
-							})}
-					</DropdownMenuContent>
-				</DropdownMenu>
+				{showColumnSelector ? (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="outline" className="ml-auto">
+								Columns
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							{table
+								.getAllColumns()
+								.filter(column => column.getCanHide())
+								.map(column => {
+									return (
+										<DropdownMenuCheckboxItem
+											key={column.id}
+											className="capitalize"
+											checked={column.getIsVisible()}
+											onCheckedChange={value => column.toggleVisibility(Boolean(value))}
+										>
+											{column.id}
+										</DropdownMenuCheckboxItem>
+									);
+								})}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				) : null}
 			</div>
 			<div className="rounded-md border">
 				<Table>

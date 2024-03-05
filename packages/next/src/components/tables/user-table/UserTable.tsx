@@ -10,11 +10,11 @@ import {
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
 import { formatBytes } from '@/lib/file';
-import { Badge } from '../ui/badge';
+import { Badge } from '../../ui/badge';
 import { UserTableActions } from './UserTableActions';
 import type { UserWithCount } from '@/types';
 import { ArrowUpDown } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 
 const columnHelper = createColumnHelper<UserWithCount>();
@@ -120,5 +120,5 @@ export const UserTable = ({ data }: PropsWithChildren<{ readonly data: any }>) =
 		}
 	});
 
-	return <DataTable table={table} columns={columns} showSearch searchColumn="username" />;
+	return <DataTable table={table} columns={columns} showSearch searchColumn="username" showColumnSelector />;
 };

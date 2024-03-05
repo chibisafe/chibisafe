@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
 import { ArrowUpDown } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import dayjs from 'dayjs';
 import { IpTableActions } from './IpTableActions';
