@@ -83,7 +83,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 							<Switch id="nsfw" name="nsfw" defaultChecked={album?.nsfw ?? false} />
 						</div>
 					</div>
-					<DialogFooter>
+					<DialogFooter className="!justify-between">
 						<AlbumSettingsDialogActions />
 						<Button type="submit">Save</Button>
 					</DialogFooter>
