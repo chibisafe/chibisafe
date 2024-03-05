@@ -13,8 +13,6 @@ import { DataTable } from '../DataTable';
 import dayjs from 'dayjs';
 import type { Invite } from '@/types';
 import { Button } from '@/components/ui/button';
-import { InvitesConfirmationAction } from './InvitesConfirmationAction';
-import { Trash2Icon } from 'lucide-react';
 
 const columnHelper = createColumnHelper<Invite>();
 const columns = [
@@ -23,7 +21,7 @@ const columns = [
 		header: 'Code',
 		cell(props) {
 			return (
-				<a href={`/invite/${props.row.original.code}`} className="link">
+				<a href={`/invite/${props.row.original.code}`} className="text-blue-500 underline">
 					{props.row.original.code}
 				</a>
 			);
@@ -38,7 +36,7 @@ const columns = [
 		header: 'Created By',
 		cell(props) {
 			return (
-				<a href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`} className="link">
+				<a href={`/admin/users/${props.row.original.createdBy.uuid}`} className="text-blue-500 underline">
 					{props.row.original.createdBy.username}
 				</a>
 			);
@@ -53,7 +51,7 @@ const columns = [
 		header: 'Claimed By',
 		cell(props) {
 			return props.row.original.usedBy.uuid ? (
-				<a href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="link">
+				<a href={`/admin/users/${props.row.original.usedBy.uuid}`} className="text-blue-500 underline">
 					{props.row.original.usedBy.username}
 				</a>
 			) : (
@@ -68,19 +66,11 @@ const columns = [
 	columnHelper.display({
 		id: 'actions',
 		header: '',
-		cell: props =>
-			props.row.original.used ? null : (
-				<div className="flex justify-end">
-					<InvitesConfirmationAction
-						code={props.row.original.code}
-						description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
-					>
-						<Button variant="outline" size={'icon'}>
-							<Trash2Icon className="h-4 w-4" />
-						</Button>
-					</InvitesConfirmationAction>
-				</div>
-			)
+		cell: props => (
+			<div className="flex justify-end">
+				<Button variant="destructive">Revoke</Button>
+			</div>
+		)
 	})
 ];
 
