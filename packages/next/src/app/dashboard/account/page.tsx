@@ -9,7 +9,11 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
 	return (
 		<>
-			<DashboardHeader title="Credentials" subtitle="Manage your credentials" />
+			<DashboardHeader
+				title="Credentials"
+				subtitle="Manage your credentials"
+				breadcrumbs={[{ name: 'Credentials', url: '/dashboard/account' }]}
+			/>
 		</>
 	);
 }

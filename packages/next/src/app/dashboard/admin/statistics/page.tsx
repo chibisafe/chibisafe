@@ -9,7 +9,14 @@ export const metadata: Metadata = {
 export default async function DashboardAdminStatsPage() {
 	return (
 		<>
-			<DashboardHeader title="Statistics" subtitle="Your chibisafe instance stats" />
+			<DashboardHeader
+				title="Statistics"
+				subtitle="Your chibisafe instance stats"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Statistics', url: '/dashboard/admin/statistics' }
+				]}
+			/>
 		</>
 	);
 }

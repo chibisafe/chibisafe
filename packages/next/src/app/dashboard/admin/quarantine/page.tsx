@@ -17,7 +17,14 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { s
 
 	return (
 		<>
-			<DashboardHeader title="Quarantined files" subtitle="Manage quarantined files" />
+			<DashboardHeader
+				title="Quarantined files"
+				subtitle="Manage quarantined files"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Quarantined files', url: '/dashboard/admin/quarantine' }
+				]}
+			/>
 			<div className="px-2">
 				<FilesList type="quarantine" files={response.files} count={response.count} />
 			</div>

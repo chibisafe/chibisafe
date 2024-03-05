@@ -23,7 +23,15 @@ export default async function DashboardAdminUserPage({
 	const username = response.files[0]?.user?.username;
 	return (
 		<>
-			<DashboardHeader title={`${username}'s files`} subtitle="As an admin, you can manage their files" />
+			<DashboardHeader
+				title={`${username}'s files`}
+				subtitle="As an admin, you can manage their files"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Users', url: '/dashboard/admin/users' },
+					{ name: username, url: `/dashboard/admin/user/${params.uuid}` }
+				]}
+			/>
 			<div className="px-2">
 				<FilesList type="admin" files={response.files} count={response.count} />
 			</div>

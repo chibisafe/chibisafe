@@ -171,3 +171,8 @@ export interface Invite {
 		uuid: string;
 	};
 }
+
+export interface BreadcrumbPage {
+	name: string;
+	url: string;
+}

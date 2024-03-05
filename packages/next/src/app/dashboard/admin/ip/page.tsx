@@ -26,7 +26,14 @@ export default async function DashboardPage() {
 	});
 	return (
 		<>
-			<DashboardHeader title="Banned IPs" subtitle="Manage banned IPs">
+			<DashboardHeader
+				title="Banned IPs"
+				subtitle="Manage banned IPs"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Banned IPs', url: '/dashboard/admin/ip' }
+				]}
+			>
 				<BanIpDialog />
 			</DashboardHeader>
 			<div className="px-2">

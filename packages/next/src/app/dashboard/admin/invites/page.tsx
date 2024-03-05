@@ -28,7 +28,14 @@ export default async function DashboardPage() {
 	});
 	return (
 		<>
-			<DashboardHeader title="Invites" subtitle="Manage and create new invites">
+			<DashboardHeader
+				title="Invites"
+				subtitle="Manage and create new invites"
+				breadcrumbs={[
+					{ name: 'Admin', url: '/dashboard/admin' },
+					{ name: 'Invites', url: '/dashboard/admin/invites' }
+				]}
+			>
 				<form action={createInvite}>
 					<Button type="submit">
 						<Plus className="mr-2 h-4 w-4" />
