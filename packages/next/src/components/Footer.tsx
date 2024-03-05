@@ -26,7 +26,7 @@ export function SiteFooter({ className = '' }: { readonly className?: string }) 
 						>
 							GitHub
 						</a>
-						.
+						. <span className="text-slate-400 text-xs">v{process.env.NEXT_PUBLIC_VERSION}</span>
 					</p>
 				</div>
 			</div>
