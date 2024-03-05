@@ -2,35 +2,19 @@
 
 import type { PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
-import { banIp, purgeIp, unbanIp } from '@/actions/IpActions';
 import { MessageType } from '@/types';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
+import { revokeInvite } from '@/actions/InviteActions';
 
-export const IpConfirmationAction = ({
-	ip,
-	type,
+export const InvitesConfirmationAction = ({
+	code,
 	description,
 	children
-}: PropsWithChildren<{ readonly description: string; readonly ip: string; readonly type: string }>) => {
-	let actionToPerform;
-	switch (type) {
-		case 'ban':
-			actionToPerform = banIp;
-			break;
-		case 'unban':
-			actionToPerform = unbanIp;
-			break;
-		case 'purge':
-			actionToPerform = purgeIp;
-			break;
-		default:
-			throw new Error('Invalid type');
-	}
-
-	const [state, formAction] = useFormState(actionToPerform, {
+}: PropsWithChildren<{ readonly code: string; readonly description: string }>) => {
+	const [state, formAction] = useFormState(revokeInvite, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
@@ -53,11 +37,9 @@ export const IpConfirmationAction = ({
 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">
-			<input type="hidden" name="ip" value={ip} />
+			<input type="hidden" name="code" value={code} />
 			<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
-				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
-					{children}
-				</button>
+				{children}
 			</ConfirmationDialog>
 		</form>
 	);

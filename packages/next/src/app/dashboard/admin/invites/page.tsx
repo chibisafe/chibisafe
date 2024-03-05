@@ -7,6 +7,7 @@ import request from '@/lib/request';
 import { InvitesTable } from '@/components/tables/invites-table/InvitesTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { createInvite } from '@/actions/InviteActions';
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Invites'
 };
@@ -28,10 +29,12 @@ export default async function DashboardPage() {
 	return (
 		<>
 			<DashboardHeader title="Invites" subtitle="Manage and create new invites">
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					Create new invite
-				</Button>
+				<form action={createInvite}>
+					<Button type="submit">
+						<Plus className="mr-2 h-4 w-4" />
+						Create new invite
+					</Button>
+				</form>
 			</DashboardHeader>
 			<div className="px-2">
 				<InvitesTable data={response.invites} />
