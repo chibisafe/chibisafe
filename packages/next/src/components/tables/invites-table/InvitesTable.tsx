@@ -37,7 +37,10 @@ const columns = [
 		header: 'Created By',
 		cell(props) {
 			return (
-				<a href={`/admin/users/${props.row.original.createdBy.uuid}`} className="text-blue-500 underline">
+				<a
+					href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`}
+					className="text-blue-500 underline"
+				>
 					{props.row.original.createdBy.username}
 				</a>
 			);
@@ -52,7 +55,7 @@ const columns = [
 		header: 'Claimed By',
 		cell(props) {
 			return props.row.original.usedBy.uuid ? (
-				<a href={`/admin/users/${props.row.original.usedBy.uuid}`} className="text-blue-500 underline">
+				<a href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="text-blue-500 underline">
 					{props.row.original.usedBy.username}
 				</a>
 			) : (
