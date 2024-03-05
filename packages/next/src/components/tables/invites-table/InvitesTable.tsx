@@ -1,0 +1,98 @@
+'use client';
+
+import type { ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
+import {
+	createColumnHelper,
+	getCoreRowModel,
+	getFilteredRowModel,
+	getSortedRowModel,
+	useReactTable
+} from '@tanstack/react-table';
+import { useState, type PropsWithChildren } from 'react';
+import { DataTable } from '../DataTable';
+import dayjs from 'dayjs';
+import type { Invite } from '@/types';
+import { Button } from '@/components/ui/button';
+
+const columnHelper = createColumnHelper<Invite>();
+const columns = [
+	columnHelper.accessor(row => row.code, {
+		id: 'code',
+		header: 'Code',
+		cell(props) {
+			return (
+				<a href={`/invite/${props.row.original.code}`} className="text-blue-500 underline">
+					{props.row.original.code}
+				</a>
+			);
+		}
+	}),
+	columnHelper.accessor(row => (row.used ? 'Used' : 'Available'), {
+		id: 'status',
+		header: 'Status'
+	}),
+	columnHelper.accessor(row => row.createdBy.username, {
+		id: 'createdBy',
+		header: 'Created By',
+		cell(props) {
+			return (
+				<a href={`/admin/users/${props.row.original.createdBy.uuid}`} className="text-blue-500 underline">
+					{props.row.original.createdBy.username}
+				</a>
+			);
+		}
+	}),
+	columnHelper.accessor(row => dayjs(row.createdAt).format('MMMM D, YYYY h:mm A'), {
+		id: 'createdAt',
+		header: 'Created At'
+	}),
+	columnHelper.accessor(row => row.usedBy.username, {
+		id: 'claimedBy',
+		header: 'Claimed By',
+		cell(props) {
+			return props.row.original.usedBy.uuid ? (
+				<a href={`/admin/users/${props.row.original.usedBy.uuid}`} className="text-blue-500 underline">
+					{props.row.original.usedBy.username}
+				</a>
+			) : (
+				'N/A'
+			);
+		}
+	}),
+	columnHelper.accessor(row => (row.editedAt ? dayjs(row.editedAt).format('MMMM D, YYYY h:mm A') : 'N/A'), {
+		id: 'claimedAt',
+		header: 'Claimed At'
+	}),
+	columnHelper.display({
+		id: 'actions',
+		header: '',
+		cell: props => (
+			<div className="flex justify-end">
+				<Button variant="destructive">Revoke</Button>
+			</div>
+		)
+	})
+];
+
+export const InvitesTable = ({ data }: PropsWithChildren<{ readonly data: any }>) => {
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const table = useReactTable({
+		data,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		onSortingChange: setSorting,
+		getSortedRowModel: getSortedRowModel(),
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
+		onColumnVisibilityChange: setColumnVisibility,
+		state: {
+			sorting,
+			columnFilters,
+			columnVisibility
+		}
+	});
+
+	return <DataTable table={table} columns={columns} />;
+};

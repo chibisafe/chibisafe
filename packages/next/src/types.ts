@@ -156,3 +156,18 @@ export interface UserWithCount extends ApiUser {
 	};
 	size: Number;
 }
+
+export interface Invite {
+	code: string;
+	createdAt: string;
+	createdBy: {
+		username: string;
+		uuid: string;
+	};
+	editedAt: string;
+	used: boolean;
+	usedBy: {
+		username: string;
+		uuid: string;
+	};
+}
