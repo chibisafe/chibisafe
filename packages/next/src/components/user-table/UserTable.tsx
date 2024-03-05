@@ -65,7 +65,9 @@ const columns = [
 		cell: props => (
 			<div className="flex gap-2">
 				{props.getValue().map((role: any) => (
-					<Badge key={role.name}>{role.name}</Badge>
+					<Badge key={role.name} className="ml-1">
+						{role.name}
+					</Badge>
 				))}
 			</div>
 		)
