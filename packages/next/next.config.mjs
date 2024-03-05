@@ -1,6 +1,6 @@
-// const withMDX = require('@next/mdx')();
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
+import { readFileSync } from 'node:fs';
 
 const withMDX = createMDX({
 	// Add markdown plugins here, as desired
@@ -17,7 +17,8 @@ const nextConfig = {
 	reactStrictMode: true,
 	pageExtensions: ['mdx', 'ts', 'tsx'],
 	env: {
-		NEXT_PUBLIC_BASEAPIURL: baseApiUrl
+		NEXT_PUBLIC_BASEAPIURL: baseApiUrl,
+		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version
 	},
 	logging: {
 		fetches: {
