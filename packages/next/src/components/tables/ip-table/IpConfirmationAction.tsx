@@ -4,11 +4,9 @@ import type { PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
 import { banIp, purgeIp, unbanIp } from '@/actions/IpActions';
 import { MessageType } from '@/types';
-import { useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
-import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 
 export const IpConfirmationAction = ({
@@ -17,8 +15,6 @@ export const IpConfirmationAction = ({
 	description,
 	children
 }: PropsWithChildren<{ readonly description: string; readonly ip: string; readonly type: string }>) => {
-	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
-
 	let actionToPerform;
 	switch (type) {
 		case 'ban':
@@ -45,9 +41,15 @@ export const IpConfirmationAction = ({
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
-			setIsDialogOpen(false);
 		}
-	}, [state.message, state.type, setIsDialogOpen]);
+
+		return () => {
+			if (state.type === MessageType.Success) {
+				state.type = MessageType.Uninitialized;
+				state.message = '';
+			}
+		};
+	}, [state.message, state.type, state]);
 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">
