@@ -47,3 +47,17 @@ export const getFileExtension = (file: File) => {
 	const { name } = file;
 	return name.split('.').pop();
 };
+
+export const getUnknownMimeType = (file: File) => {
+	if (file.type) return file.type;
+
+	const { name } = file;
+
+	switch (name.split('.').pop()?.toLowerCase()) {
+		case 'mov':
+			return 'video/quicktime';
+
+		default:
+			return 'application/octet-stream';
+	}
+};

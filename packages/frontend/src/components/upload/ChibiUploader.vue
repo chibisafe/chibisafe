@@ -58,7 +58,7 @@ import { toast } from 'vue-sonner';
 import TextEditorDialog from '@/components/dialogs/TextEditorDialog.vue';
 import AlbumDropdown from '~/components/dropdown/AlbumDropdown.vue';
 import { useUserStore, useUploadsStore, useSettingsStore, useAlbumsStore } from '~/store';
-import { getFileExtension, formatBytes } from '~/use/file';
+import { getFileExtension, getUnknownMimeType, formatBytes } from '~/use/file';
 import { debug } from '~/use/log';
 // import { chibiUploader, type UploaderOptions } from '../../../../../../chibisafe-uploader/packages/uploader-client/lib';
 
@@ -88,16 +88,67 @@ const triggerFileInput = () => {
 	inputUpload.value?.click();
 };
 
-const dropHandler = (event: DragEvent) => {
+async function getAllFileEntries(dataTransferItemList: any) {
+	const fileEntries = [];
+	const queue = [];
+	for (const element of dataTransferItemList) {
+		queue.push(element.webkitGetAsEntry());
+	}
+
+	while (queue.length > 0) {
+		const entry = queue.shift();
+		if (entry.isFile) {
+			fileEntries.push(entry);
+		} else if (entry.isDirectory) {
+			queue.push(...(await readAllDirectoryEntries(entry.createReader())));
+		}
+	}
+
+	return fileEntries;
+}
+
+async function readAllDirectoryEntries(directoryReader: FileSystemDirectoryReader) {
+	const entries = [];
+	let readEntries: any = await readEntriesPromise(directoryReader);
+	while (readEntries.length > 0) {
+		entries.push(...readEntries);
+		readEntries = await readEntriesPromise(directoryReader);
+	}
+
+	return entries;
+}
+
+// @ts-expect-error: Ignore code path error
+// eslint-disable-next-line consistent-return
+async function readEntriesPromise(directoryReader: FileSystemDirectoryReader) {
+	try {
+		return await new Promise((resolve, reject) => {
+			directoryReader.readEntries(resolve, reject);
+		});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+const dropHandler = async (event: DragEvent) => {
 	if (!isUploadEnabled.value) return;
 	if (!event.dataTransfer) return;
-	for (const file of Array.from(event.dataTransfer.files)) {
-		const fileData = new File([file], file.name, {
-			type: file.type
-		});
+	if (!event.dataTransfer.files.length) return;
+	const fileEntries = await getAllFileEntries(event.dataTransfer.items);
+	for (const entry of fileEntries) {
+		entry.file((file: File) => {
+			const reader = new FileReader();
 
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		void processFile(fileData);
+			reader.onload = () => {
+				const fileData = new File([reader.result as unknown as Blob], file.name, {
+					type: getUnknownMimeType(file)
+				});
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				void processFile(fileData);
+			};
+
+			reader.readAsArrayBuffer(file);
+		});
 	}
 
 	onDragEnd();
