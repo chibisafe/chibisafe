@@ -68,7 +68,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		},
 		orderBy: {
-			id: 'desc'
+			name: 'desc'
 		}
 	});
 

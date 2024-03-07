@@ -4,6 +4,8 @@ import prisma from '@/structures/database.js';
 import type { RequestWithUser, Album } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
 
@@ -11,6 +13,10 @@ export const schema = {
 	summary: 'Get albums',
 	description: 'Gets all the albums',
 	tags: ['Albums'],
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
 	response: {
 		200: z.object({
 			message: responseMessageSchema,
@@ -26,7 +32,8 @@ export const schema = {
 					cover: z.string().describe('The cover image of the album.'),
 					count: z.number().describe('The amount of images in the album.')
 				})
-			)
+			),
+			count: z.number().describe('The amount of albums that exist.')
 		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
@@ -40,7 +47,17 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+
+	const count = await prisma.albums.count({
+		where: {
+			userId: req.user.id
+		}
+	});
+
 	const albums = await prisma.albums.findMany({
+		take: limit,
+		skip: (page - 1) * limit,
 		where: {
 			userId: req.user.id
 		},
@@ -94,6 +111,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved albums',
-		albums: fetchedAlbums
+		albums: fetchedAlbums,
+		count
 	});
 };
