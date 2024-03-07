@@ -28,7 +28,7 @@ export default async function TagPage({ searchParams, params }: { params: { uuid
 			>
 				<Button>
 					<Plus className="mr-2 h-4 w-4" />
-					Upload file and add to tag
+					Upload file
 				</Button>
 			</DashboardHeader>
 			<div className="px-2">
