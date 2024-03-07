@@ -11,12 +11,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { IpConfirmationAction } from './IpConfirmationAction';
+import { MoreHorizontalIcon } from 'lucide-react';
 
 export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }>) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="secondary">Actions</Button>
+				<Button variant="ghost" size={'icon'} title="Actions">
+					<MoreHorizontalIcon className="h-4 w-4" />
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>

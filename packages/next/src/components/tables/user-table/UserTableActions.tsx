@@ -12,12 +12,15 @@ import {
 
 import { ConfirmationAction } from './UserConfirmationAction';
 import type { UserWithCount } from '@/types';
+import { MoreHorizontalIcon } from 'lucide-react';
 
 export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCount }>) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="secondary">Actions</Button>
+				<Button variant="ghost" size={'icon'} title="Actions">
+					<MoreHorizontalIcon className="h-4 w-4" />
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>

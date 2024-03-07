@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import type { Invite } from '@/types';
 import { Button } from '@/components/ui/button';
 import { InvitesConfirmationAction } from './InvitesConfirmationAction';
+import { Trash2Icon } from 'lucide-react';
 
 const columnHelper = createColumnHelper<Invite>();
 const columns = [
@@ -77,7 +78,9 @@ const columns = [
 						code={props.row.original.code}
 						description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
 					>
-						<Button variant="destructive">Revoke</Button>
+						<Button variant="outline" size={'icon'}>
+							<Trash2Icon className="h-4 w-4" />
+						</Button>
 					</InvitesConfirmationAction>
 				</div>
 			)
