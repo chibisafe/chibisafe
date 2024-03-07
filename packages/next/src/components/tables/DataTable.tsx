@@ -30,7 +30,7 @@ export const DataTable = ({
 				{/* // TODO: Be able to search on any columns instead of a specific one */}
 				{showSearch && searchColumn ? (
 					<Input
-						placeholder={`Search ${searchColumn}...`}
+						placeholder={`Filter...`}
 						value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
 						onChange={event => table.getColumn(searchColumn)?.setFilterValue(event.target.value)}
 						className="max-w-sm"

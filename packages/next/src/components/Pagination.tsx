@@ -10,6 +10,10 @@ import {
 	PaginationPrevious
 } from '@/components/ui/pagination';
 import { Select, type Item } from '@/components/Select';
+import { Input } from './ui/input';
+import { useCallback, useState } from 'react';
+import { Button } from './ui/button';
+import { SearchIcon } from 'lucide-react';
 
 export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) {
 	const router = useRouter();
@@ -29,13 +33,44 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 		value: i + 1
 	}));
 
+	const [search, setSearch] = useState(searchParams.get('search') ?? '');
+
+	const createSearchString = useCallback(() => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set('search', search);
+
+		const url = new URL(window.location.href);
+		router.push(`${url.pathname}?${params.toString()}`);
+	}, [router, search, searchParams]);
+
 	const onSelectChange = (value: string) => {
 		router.push(`/dashboard?page=${value}&limit=${perPage}`);
 	};
 
 	return (
 		<>
-			<PaginationBase>
+			<PaginationBase className="justify-between">
+				<div className="flex w-full max-w-xs items-center space-x-2">
+					<Input
+						placeholder={`Filter...`}
+						defaultValue={search}
+						onChange={event => setSearch(event.target.value)}
+						onKeyDown={e => {
+							if (e.key === 'Enter') {
+								createSearchString();
+							}
+						}}
+					/>
+					<Button
+						type="button"
+						size={'icon'}
+						variant={'outline'}
+						className="min-w-10 min-h-10"
+						onClick={() => createSearchString()}
+					>
+						<SearchIcon className="h-4 w-4" />
+					</Button>
+				</div>
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationPrevious
