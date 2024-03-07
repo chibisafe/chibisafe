@@ -56,6 +56,38 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		where: {
 			ip
 		},
+		select: {
+			createdAt: true,
+			editedAt: true,
+			hash: true,
+			ip: true,
+			name: true,
+			original: true,
+			size: true,
+			type: true,
+			uuid: true,
+			quarantine: true,
+			quarantineFile: {
+				select: {
+					name: true
+				}
+			},
+			isS3: true,
+			isWatched: true,
+			user: {
+				select: {
+					uuid: true,
+					username: true,
+					enabled: true,
+					createdAt: true,
+					roles: {
+						select: {
+							name: true
+						}
+					}
+				}
+			}
+		},
 		orderBy: {
 			id: 'desc'
 		}
