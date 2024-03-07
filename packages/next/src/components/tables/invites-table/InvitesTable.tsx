@@ -70,16 +70,17 @@ const columns = [
 	columnHelper.display({
 		id: 'actions',
 		header: '',
-		cell: props => (
-			<div className="flex justify-end">
-				<InvitesConfirmationAction
-					code={props.row.original.code}
-					description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
-				>
-					<Button variant="destructive">Revoke</Button>
-				</InvitesConfirmationAction>
-			</div>
-		)
+		cell: props =>
+			props.row.original.used ? null : (
+				<div className="flex justify-end">
+					<InvitesConfirmationAction
+						code={props.row.original.code}
+						description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
+					>
+						<Button variant="destructive">Revoke</Button>
+					</InvitesConfirmationAction>
+				</div>
+			)
 	})
 ];
 
