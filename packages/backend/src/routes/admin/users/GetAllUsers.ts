@@ -35,7 +35,8 @@ export const schema = {
 							.describe('The count object.')
 					})
 				)
-				.describe('The users array.')
+				.describe('The users array.'),
+			count: z.number().describe('The amount of users that exist.')
 		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
