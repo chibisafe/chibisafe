@@ -37,7 +37,6 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					}
 				);
 			} else if (props.ip) {
-				// TODO: Update backend to accept this URL type
 				return request.post(
 					`admin/ip/files?page=${currentPage}&limit=${currentLimit}`,
 					{
