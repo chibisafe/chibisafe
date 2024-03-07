@@ -4,12 +4,18 @@ import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
+import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 
 export const schema = {
 	summary: 'Get tags',
 	description: 'Return a list of tags belonging to the user',
 	tags: ['Tags'],
+	query: z.object({
+		page: queryPageSchema,
+		limit: queryLimitSchema
+	}),
 	response: {
 		200: z.object({
 			message: responseMessageSchema,
@@ -23,7 +29,8 @@ export const schema = {
 						})
 						.describe('The number of files belonging to the tag.')
 				})
-			)
+			),
+			count: z.number().describe('The amount of tags that exist.')
 		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
@@ -37,7 +44,17 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+
+	const count = await prisma.tags.count({
+		where: {
+			userId: req.user.id
+		}
+	});
+
 	const tags = await prisma.tags.findMany({
+		take: limit,
+		skip: (page - 1) * limit,
 		where: {
 			userId: req.user.id
 		},
@@ -49,11 +66,15 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					files: true
 				}
 			}
+		},
+		orderBy: {
+			id: 'desc'
 		}
 	});
 
 	return res.send({
 		message: 'Successfully fetched tags',
-		tags
+		tags,
+		count
 	});
 };
