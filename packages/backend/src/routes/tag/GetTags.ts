@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -14,7 +15,8 @@ export const schema = {
 	tags: ['Tags'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your tags.')
 	}),
 	response: {
 		200: z.object({
@@ -44,20 +46,29 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
+
+	let dbSearchObject: Prisma.tagsCountArgs['where'] = {
+		userId: req.user.id
+	};
+
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			name: {
+				contains: search
+			}
+		};
+	}
 
 	const count = await prisma.tags.count({
-		where: {
-			userId: req.user.id
-		}
+		where: dbSearchObject
 	});
 
 	const tags = await prisma.tags.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
-		where: {
-			userId: req.user.id
-		},
+		where: dbSearchObject,
 		select: {
 			uuid: true,
 			name: true,
