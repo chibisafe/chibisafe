@@ -5,7 +5,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo run build",
-		"dev": "turbo run dev --verbosity=2",
+		"dev": "turbo run dev",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
 		"postinstall": "is-ci || husky",
