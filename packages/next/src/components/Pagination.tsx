@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
 	Pagination as PaginationBase,
@@ -18,6 +18,7 @@ import { SearchIcon } from 'lucide-react';
 export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const pathname = usePathname();
 
 	const currentPage = searchParams.get('page') ? Number.parseInt(searchParams.get('page')!, 10) : 1;
 	const perPage = searchParams.get('limit')
@@ -41,12 +42,11 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 		params.delete('page');
 		params.delete('limit');
 
-		const url = new URL(window.location.href);
-		router.push(`${url.pathname}?${params.toString()}`);
-	}, [router, search, searchParams]);
+		router.push(`${pathname}?${params.toString()}`);
+	}, [pathname, router, search, searchParams]);
 
 	const onSelectChange = (value: string) => {
-		router.push(`/dashboard?page=${value}&limit=${perPage}`);
+		router.push(`${pathname}?page=${value}&limit=${perPage}`);
 	};
 
 	return (
@@ -76,7 +76,7 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationPrevious
-							href={`/dashboard?page=${
+							href={`${pathname}?page=${
 								currentPage > 1 ? Number(currentPage) - 1 : currentPage
 							}&limit=${perPage}`}
 						/>
@@ -92,7 +92,7 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationNext
-							href={`/dashboard?page=${
+							href={`${pathname}?page=${
 								currentPage < totalPages ? Number(currentPage) + 1 : currentPage
 							}&limit=${perPage}`}
 						/>
