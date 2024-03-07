@@ -13,8 +13,7 @@ import { DataTable } from '../DataTable';
 import type { TagWithCount } from '@/types';
 import { Button } from '@/components/ui/button';
 import { TagsConfirmationAction } from './TagsConfirmationAction';
-import { ArrowUpDown, Trash2Icon } from 'lucide-react';
-import { Tooltip } from '@/components/Tooltip';
+import { ArrowUpDown } from 'lucide-react';
 
 const columnHelper = createColumnHelper<TagWithCount>();
 const columns = [
@@ -30,7 +29,7 @@ const columns = [
 		},
 		cell(props) {
 			return (
-				<a href={`/dashboard/tags/${props.row.original.uuid}`} className="link">
+				<a href={`/dashboard/tags/${props.row.original.uuid}`} className="text-blue-500 underline">
 					{props.row.original.name}
 				</a>
 			);
@@ -56,11 +55,7 @@ const columns = [
 					uuid={props.row.original.uuid}
 					description="Are you sure you want to delete this tag? This will not delete any files."
 				>
-					{/* <Tooltip content="Delete tag"> */}
-					<Button variant="outline" size={'icon'}>
-						<Trash2Icon className="h-4 w-4" />
-					</Button>
-					{/* </Tooltip> */}
+					<Button variant="destructive">Delete</Button>
 				</TagsConfirmationAction>
 			</div>
 		)
