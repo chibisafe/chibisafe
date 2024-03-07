@@ -46,10 +46,8 @@ export const deleteTag = async (_: any, form: FormData) => {
 
 	try {
 		await request.delete(
-			'tag',
-			{
-				uuid
-			},
+			`tag/${uuid}`,
+			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			},
@@ -61,7 +59,7 @@ export const deleteTag = async (_: any, form: FormData) => {
 		);
 
 		revalidateTag('tags');
-		return { message: 'Invite revoked', type: MessageType.Success };
+		return { message: 'Tag deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error.message, type: MessageType.Error };
 	}
