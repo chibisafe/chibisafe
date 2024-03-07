@@ -23,7 +23,7 @@ const columns = [
 		header: 'Code',
 		cell(props) {
 			return (
-				<a href={`/invite/${props.row.original.code}`} className="text-blue-500 underline">
+				<a href={`/invite/${props.row.original.code}`} className="link">
 					{props.row.original.code}
 				</a>
 			);
@@ -38,10 +38,7 @@ const columns = [
 		header: 'Created By',
 		cell(props) {
 			return (
-				<a
-					href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`}
-					className="text-blue-500 underline"
-				>
+				<a href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`} className="link">
 					{props.row.original.createdBy.username}
 				</a>
 			);
@@ -56,7 +53,7 @@ const columns = [
 		header: 'Claimed By',
 		cell(props) {
 			return props.row.original.usedBy.uuid ? (
-				<a href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="text-blue-500 underline">
+				<a href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="link">
 					{props.row.original.usedBy.username}
 				</a>
 			) : (

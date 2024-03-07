@@ -23,10 +23,7 @@ const columns = [
 		id: 'username',
 		header: 'Username',
 		cell: props => (
-			<a
-				href={`/dashboard/admin/user/${props.row.original.uuid}`}
-				className="text-blue-500 underline inline-flex items-center ml-2"
-			>
+			<a href={`/dashboard/admin/user/${props.row.original.uuid}`} className="link inline-flex items-center ml-2">
 				{props.row.original.username}
 			</a>
 		)
