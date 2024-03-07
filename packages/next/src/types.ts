@@ -176,3 +176,9 @@ export interface BreadcrumbPage {
 	name: string;
 	url: string;
 }
+
+export interface TagWithCount extends Tag {
+	_count: {
+		files: number;
+	};
+}

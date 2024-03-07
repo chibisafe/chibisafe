@@ -33,7 +33,7 @@ const request = {
 		}
 	},
 
-	post: async (url = '', data = {}, headers?: {}) => {
+	post: async (url = '', data = {}, headers?: {}, options?: {}) => {
 		try {
 			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 
@@ -47,6 +47,7 @@ const request = {
 					// Authorization: request.checkForToken(),
 					...headers
 				},
+				...options,
 				body: JSON.stringify(data)
 			});
 			return await request.parseResponse(response);
@@ -55,7 +56,7 @@ const request = {
 		}
 	},
 
-	delete: async (url = '', data = {}, headers?: {}) => {
+	delete: async (url = '', data = {}, headers?: {}, options?: {}) => {
 		try {
 			const queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 			const response = await fetch(queryUrl, {
@@ -65,6 +66,7 @@ const request = {
 					// Authorization: request.checkForToken(),
 					...headers
 				},
+				...options,
 				body: JSON.stringify(data)
 			});
 			return await request.parseResponse(response);
