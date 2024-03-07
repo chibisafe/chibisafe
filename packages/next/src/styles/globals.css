@@ -58,4 +58,34 @@
 		@apply bg-background text-foreground;
 		font-feature-settings: "rlig" 1, "calt" 1;
 	}
+	
+}
+
+@layer components {
+	.link {
+		@apply text-blue-400 hover:text-blue-500 transition-colors duration-200 hover:underline;
+	}
+}
+
+pre {
+	background: transparent !important;
+}
+
+code {
+	counter-reset: step;
+	counter-increment: step 0;
+}
+
+code .line::before {
+	content: counter(step);
+	counter-increment: step;
+	width: 1rem;
+	margin-right: 1.5rem;
+	display: inline-block;
+	text-align: right;
+	color: white;
+}
+
+code .line {
+	padding: 0 1rem;
 }

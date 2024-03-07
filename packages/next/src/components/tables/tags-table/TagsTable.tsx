@@ -30,7 +30,7 @@ const columns = [
 		},
 		cell(props) {
 			return (
-				<a href={`/dashboard/tags/${props.row.original.uuid}`} className="text-blue-500 underline">
+				<a href={`/dashboard/tags/${props.row.original.uuid}`} className="link">
 					{props.row.original.name}
 				</a>
 			);

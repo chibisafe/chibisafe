@@ -182,3 +182,15 @@ export interface TagWithCount extends Tag {
 		files: number;
 	};
 }
+
+export interface Snippet {
+	content: string;
+	createdAt: string;
+	description: string;
+	language: string;
+	link: string;
+	name: string;
+	parentUuid: string;
+	raw: string;
+	uuid: string;
+}
