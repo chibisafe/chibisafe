@@ -5,7 +5,7 @@ import type { FileProps } from '@/types';
 import { searchFiles } from './api';
 import request from './request';
 
-export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number) => {
+export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number, search = '') => {
 	const publicOnly = false;
 
 	const cookiesStore = cookies();
@@ -27,7 +27,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					`admin/user/${props.userUuid}/files`,
 					{
 						page: currentPage,
-						limit: currentLimit
+						limit: currentLimit,
+						search
 					},
 					authorization,
 					{
@@ -38,7 +39,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				);
 			} else if (props.ip) {
 				return request.post(
-					`admin/ip/files?page=${currentPage}&limit=${currentLimit}`,
+					`admin/ip/files?page=${currentPage}&limit=${currentLimit}&search=${search}`,
 					{
 						ip: props.ip
 					},
@@ -56,7 +57,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						page: currentPage,
 						limit: currentLimit,
 						publicOnly,
-						quarantine: false
+						quarantine: false,
+						search
 					},
 					authorization,
 					{
@@ -75,7 +77,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					page: currentPage,
 					limit: currentLimit,
 					publicOnly,
-					quarantine: true
+					quarantine: true,
+					search
 				},
 				authorization,
 				{
@@ -89,7 +92,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				`album/${props.albumUuid!}`,
 				{
 					page: currentPage,
-					limit: currentLimit
+					limit: currentLimit,
+					search
 				},
 				authorization,
 				{
@@ -103,7 +107,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				`tag/${props.tagUuid}`,
 				{
 					page: currentPage,
-					limit: currentLimit
+					limit: currentLimit,
+					search
 				},
 				authorization,
 				{
@@ -117,7 +122,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				`album/${props.identifier}/view`,
 				{
 					page: currentPage,
-					limit: currentLimit
+					limit: currentLimit,
+					search
 				},
 				authorization,
 				{
@@ -131,7 +137,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				'files',
 				{
 					page: currentPage,
-					limit: currentLimit
+					limit: currentLimit,
+					search
 				},
 				authorization,
 				{
