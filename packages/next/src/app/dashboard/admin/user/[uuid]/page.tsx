@@ -18,8 +18,9 @@ export default async function DashboardAdminUserPage({
 }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
+	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage);
+	const response = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage, search);
 	// TODO: If the user hasn't uploaded any files, the response will be an empty array
 	// and the username will be undefined
 	const username = response.files[0]?.user?.username;
