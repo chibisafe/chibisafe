@@ -38,6 +38,8 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 	const createSearchString = useCallback(() => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set('search', search);
+		params.delete('page');
+		params.delete('limit');
 
 		const url = new URL(window.location.href);
 		router.push(`${url.pathname}?${params.toString()}`);
@@ -52,7 +54,7 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 			<PaginationBase className="justify-between">
 				<div className="flex w-full max-w-xs items-center space-x-2">
 					<Input
-						placeholder={`Filter...`}
+						placeholder={`Search...`}
 						defaultValue={search}
 						onChange={event => setSearch(event.target.value)}
 						onKeyDown={e => {

@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 export default async function AdminFilesPage({ searchParams }: { searchParams: PageQuery }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
+	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint({ type: 'admin' }, currentPage, perPage);
+	const response = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search);
 	return (
 		<>
 			<DashboardHeader
