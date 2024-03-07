@@ -10,7 +10,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ title, subtitle, breadcrumbs, children }: DashboardHeaderProps) {
 	return (
-		<div>
+		<>
 			<Breadcrumbs pages={breadcrumbs ?? []} />
 			<div className="flex items-center justify-between px-2">
 				<div className="grid gap-1">
@@ -19,6 +19,6 @@ export function DashboardHeader({ title, subtitle, breadcrumbs, children }: Dash
 				</div>
 				{children}
 			</div>
-		</div>
+		</>
 	);
 }
