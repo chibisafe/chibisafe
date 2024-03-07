@@ -11,6 +11,9 @@ export async function FilesList({ files, count, type }: { count: number; files: 
 				<Pagination itemsTotal={count} />
 			</Suspense>
 			<Masonry files={files} total={count} type={type} />
+			<Suspense>
+				<Pagination itemsTotal={count} />
+			</Suspense>
 		</div>
 	);
 }
