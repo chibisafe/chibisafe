@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -15,7 +16,8 @@ export const schema = {
 	tags: ['Albums'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your albums.')
 	}),
 	response: {
 		200: z.object({
@@ -47,20 +49,26 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
 
-	const count = await prisma.albums.count({
-		where: {
-			userId: req.user.id
-		}
-	});
+	let dbSearchObject: Prisma.albumsCountArgs['where'] = {
+		userId: req.user.id
+	};
 
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			name: {
+				contains: search
+			}
+		};
+	}
+
+	const count = await prisma.albums.count({ where: dbSearchObject });
 	const albums = await prisma.albums.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
-		where: {
-			userId: req.user.id
-		},
+		where: dbSearchObject,
 		select: {
 			uuid: true,
 			name: true,
@@ -81,12 +89,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			name: 'desc'
 		}
 	});
-
-	if (!albums.length)
-		return res.send({
-			message: 'Successfully retrieved albums',
-			albums: []
-		});
 
 	// TODO: Instead of the first, being able to select a cover picture for an album would
 	// be a neat feature
