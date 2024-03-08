@@ -15,8 +15,8 @@ export default async function AlbumPage({
 	searchParams,
 	params
 }: {
-	params: { uuid: string };
-	searchParams: PageQuery;
+	readonly params: { uuid: string };
+	readonly searchParams: PageQuery;
 }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
