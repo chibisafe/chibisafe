@@ -1,8 +1,9 @@
-import path, { extname } from 'node:path';
+import path, { basename, extname } from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { Blake3Hasher } from '@napi-rs/blake-hash';
+import slugify from '@sindresorhus/slugify';
 import Zip from 'adm-zip';
 import type { FastifyRequest } from 'fastify';
 import jetpack from 'fs-jetpack';
@@ -18,9 +19,9 @@ import { getHost } from './Util.js';
 
 const fileIdentifierMaxTries = 5;
 
-const preserveExtensions = [
-	/\.tar\.\w+/i // tarballs
-];
+// const preserveExtensions = [
+// 	/\.tar\.\w+/i // tarballs
+// ];
 export const uploadPath = fileURLToPath(new URL('../../../../uploads', import.meta.url));
 export const watchPath = fileURLToPath(new URL('../../../../uploads/live', import.meta.url));
 export const tmpUploadPath = fileURLToPath(new URL('../../../../uploads/tmp', import.meta.url));
@@ -425,37 +426,37 @@ export const saveFileToAlbum = async (albumId: number, fileId: number) => {
 	});
 };
 
-export const getExtension = (filename: string, lower = false): string => {
-	// Always return blank string if the filename does not seem to have a valid extension
-	// Files such as .DS_Store (anything that starts with a dot, without any extension after) will still be accepted
-	if (!/\../.test(filename)) return '';
+// export const getExtension = (filename: string, lower = false): string => {
+// 	// Always return blank string if the filename does not seem to have a valid extension
+// 	// Files such as .DS_Store (anything that starts with a dot, without any extension after) will still be accepted
+// 	if (!/\../.test(filename)) return '';
 
-	let multi = '';
-	let extension = '';
+// 	let multi = '';
+// 	let extension = '';
 
-	// check for multi-archive extensions (.001, .002, and so on)
-	if (/\.\d{3}$/.test(filename)) {
-		multi = filename.slice(filename.lastIndexOf('.') - filename.length);
-		// eslint-disable-next-line no-param-reassign
-		filename = filename.slice(0, filename.lastIndexOf('.'));
-	}
+// 	// check for multi-archive extensions (.001, .002, and so on)
+// 	if (/\.\d{3}$/.test(filename)) {
+// 		multi = filename.slice(filename.lastIndexOf('.') - filename.length);
+// 		// eslint-disable-next-line no-param-reassign
+// 		filename = filename.slice(0, filename.lastIndexOf('.'));
+// 	}
 
-	// check against extensions that must be preserved
-	for (const extPreserve of preserveExtensions) {
-		const match = filename.match(extPreserve);
-		if (match?.[0]) {
-			extension = match[0];
-			break;
-		}
-	}
+// 	// check against extensions that must be preserved
+// 	for (const extPreserve of preserveExtensions) {
+// 		const match = filename.match(extPreserve);
+// 		if (match?.[0]) {
+// 			extension = match[0];
+// 			break;
+// 		}
+// 	}
 
-	if (!extension) {
-		extension = filename.slice(filename.lastIndexOf('.') - filename.length); // path.extname(filename)
-	}
+// 	if (!extension) {
+// 		extension = filename.slice(filename.lastIndexOf('.') - filename.length); // path.extname(filename)
+// 	}
 
-	const str = extension + multi;
-	return lower ? str.toLowerCase() : str;
-};
+// 	const str = extension + multi;
+// 	return lower ? str.toLowerCase() : str;
+// };
 
 export const hashFile = async (uploadPath: string): Promise<string> => {
 	const hasher = new Blake3Hasher();
@@ -491,14 +492,21 @@ export const handleUploadFile = async ({
 	// Assign a unique identifier to the file
 	const uniqueIdentifier = await getUniqueFileIdentifier();
 	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
-	const newFileName = String(uniqueIdentifier) + extname(upload.name);
-	log.debug(`> Name for upload: ${newFileName}`);
+	const ext = extname(upload.name);
+	let newFilename = `${uniqueIdentifier}${ext}`;
+	if (SETTINGS.generateOriginalFileNameWithIdentifier) {
+		const isLowerCase = !SETTINGS.enableMixedCaseFilenames || process.platform === 'win32';
+		const originalNameWithoutExt = basename(upload.name, ext);
+		newFilename = `${slugify(originalNameWithoutExt, { separator: '_', lowercase: isLowerCase })}-${uniqueIdentifier}${ext}`;
+	}
+
+	log.debug(`> Name for upload: ${newFilename}`);
 
 	// Move file to permanent location
-	const newPath = fileURLToPath(new URL(`../../../../uploads/${newFileName}`, import.meta.url));
+	const newPath = fileURLToPath(new URL(`../../../../uploads/${newFilename}`, import.meta.url));
 	const file = {
-		name: newFileName,
-		extension: extname(upload.name),
+		name: newFilename,
+		extension: ext,
 		path: newPath,
 		original: upload.name,
 		type: upload.type,

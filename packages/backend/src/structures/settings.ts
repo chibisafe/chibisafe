@@ -46,6 +46,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.chunkedUploadsTimeout = settingsTable.chunkedUploadsTimeout;
 		SETTINGS.maxSize = Number(settingsTable.maxSize);
 		SETTINGS.generateZips = settingsTable.generateZips;
+		SETTINGS.generateOriginalFileNameWithIdentifier = settingsTable.generateOriginalFileNameWithIdentifier;
 		SETTINGS.enableMixedCaseFilenames = settingsTable.enableMixedCaseFilenames;
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
@@ -84,6 +85,7 @@ export const loadSettings = async (force = false) => {
 		chunkedUploadsTimeout: 30 * 60 * 1000, // 30 minutes
 		maxSize: 1 * 1e9, // 1 GB
 		generateZips: true,
+		generateOriginalFileNameWithIdentifier: false,
 		enableMixedCaseFilenames: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
@@ -202,6 +204,12 @@ const SETTINGS_META = {
 		description: 'Whether or not to allow users to generate zips from public albums.',
 		name: 'Generate Zips',
 		category: 'other'
+	},
+	generateOriginalFileNameWithIdentifier: {
+		type: 'boolean',
+		description: 'Whether to generate filenames with the original filename and identifer as a suffix.',
+		name: 'Enable Original Filename with Identifier',
+		category: 'uploads'
 	},
 	enableMixedCaseFilenames: {
 		type: 'boolean',

@@ -1,8 +1,10 @@
+import { basename, extname } from 'node:path';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { processFile } from '@chibisafe/uploader-module';
+import slugify from '@sindresorhus/slugify';
 import type { FastifyReply } from 'fastify';
 // import { processFile } from '../../../../../../chibisafe-uploader/packages/uploader-module/lib';
 import { z } from 'zod';
@@ -87,14 +89,21 @@ export const uploadToNetworkStorage = async (req: RequestWithUser, res: FastifyR
 	const uniqueIdentifier = await getUniqueFileIdentifier();
 	if (!uniqueIdentifier) throw new Error('Could not generate unique identifier.');
 
+	const ext = extname(name);
+	let newFilename = `${uniqueIdentifier}${ext}`;
+	if (SETTINGS.generateOriginalFileNameWithIdentifier) {
+		const isLowerCase = !SETTINGS.enableMixedCaseFilenames || process.platform === 'win32';
+		const originalNameWithoutExt = basename(name, ext);
+		newFilename = `${slugify(originalNameWithoutExt, { separator: '_', lowercase: isLowerCase })}-${uniqueIdentifier}${ext}`;
+	}
+
 	try {
 		const { createS3Client } = await import('@/structures/s3.js');
-		const identifier = `${uniqueIdentifier}${fileExtension}`;
 		const url = await getSignedUrl(
 			createS3Client(),
 			new PutObjectCommand({
 				Bucket: SETTINGS.S3Bucket,
-				Key: identifier,
+				Key: newFilename,
 				ContentType: contentType,
 				ContentLength: size
 			}),
@@ -103,8 +112,8 @@ export const uploadToNetworkStorage = async (req: RequestWithUser, res: FastifyR
 
 		await res.code(200).send({
 			url,
-			identifier,
-			publicUrl: `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${identifier}`
+			identifier: newFilename,
+			publicUrl: `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${newFilename}`
 		});
 	} catch (error) {
 		req.log.error(error);
