@@ -3,12 +3,12 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import request from '@/lib/request';
 import dayjs from 'dayjs';
-import { ArrowUpRightFromSquare, Trash2Icon } from 'lucide-react';
+import { ArrowUpRightFromSquare } from 'lucide-react';
 import { bundledLanguages, getHighlighter } from 'shiki';
 import type { Snippet } from '@/types';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { Button } from '@/components/ui/button';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { DeleteSnippetDialog } from '@/components/dialogs/DeleteSnippetDialog';
 
 dayjs.extend(relativeTime);
 
@@ -43,10 +43,7 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 	return (
 		<>
 			<DashboardHeader title={snippet.name} subtitle={dayjs(snippet.createdAt).fromNow()}>
-				<Button variant="destructive">
-					<Trash2Icon className="mr-2 h-4 w-4" />
-					Delete
-				</Button>
+				<DeleteSnippetDialog uuid={snippet.uuid} />
 			</DashboardHeader>
 			<div className="px-2 flex h-full flex-grow flex-col">
 				<div className="border border-1 border-accent rounded p-4">

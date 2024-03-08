@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import { ArrowUpRightFromSquare, Plus } from 'lucide-react';
+import { ArrowUpRightFromSquare } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { bundledLanguages, getHighlighter } from 'shiki';
 import { cookies } from 'next/headers';
@@ -9,6 +8,7 @@ import request from '@/lib/request';
 import type { Snippet } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { CreateSnippetDialog } from '@/components/dialogs/CreateSnippetDialog';
 
 dayjs.extend(relativeTime);
 
@@ -41,10 +41,7 @@ export default async function DashboardPage() {
 	return (
 		<>
 			<DashboardHeader title="Snippets" subtitle="Manage and create snippets">
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					New snippet
-				</Button>
+				<CreateSnippetDialog />
 			</DashboardHeader>
 			<div className="px-2 flex flex-col gap-6">
 				{response.snippets.map((snippet: Snippet) => {
