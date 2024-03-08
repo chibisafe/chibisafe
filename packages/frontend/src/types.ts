@@ -42,6 +42,7 @@ export interface File {
 	type: string;
 	url: string | undefined;
 	uuid: string;
+	uuidUrl: string;
 }
 
 export interface FileWithAdditionalData extends File {

@@ -241,6 +241,7 @@ export const createZip = (files: string[], albumUuid: string) => {
 
 export const constructFilePublicLink = ({
 	req,
+	uuid,
 	fileName,
 	quarantine = false,
 	isS3 = false,
@@ -251,12 +252,15 @@ export const constructFilePublicLink = ({
 	isWatched?: boolean;
 	quarantine?: boolean;
 	req: FastifyRequest;
+	uuid?: string;
 }) => {
 	const host = SETTINGS.serveUploadsFrom ? SETTINGS.serveUploadsFrom : getHost(req);
 	const data = {
 		url: isS3
 			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}${quarantine ? '/quarantine' : ''}/${fileName}`
 			: `${host}${quarantine ? '/quarantine' : ''}${isWatched ? '/live' : ''}/${fileName}`,
+		// uuid url that accounts for s3
+		uuidUrl: uuid ? `${isS3 ? SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint : host}/file/${uuid}` : '',
 		thumb: '',
 		thumbSquare: '',
 		preview: ''

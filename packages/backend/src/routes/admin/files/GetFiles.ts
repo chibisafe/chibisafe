@@ -116,6 +116,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			...file,
 			...constructFilePublicLink({
 				req,
+				uuid: file.uuid,
 				fileName: quarantine ? file.quarantineFile.name : file.name,
 				quarantine,
 				isS3: file.isS3,

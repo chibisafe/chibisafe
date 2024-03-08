@@ -159,6 +159,14 @@
 								readOnly
 							/>
 							<InputWithOverlappingLabel
+								:value="file.uuidUrl"
+								class="mt-4"
+								label="Link with original filename"
+								type="link"
+								:href="file.uuidUrl"
+								readOnly
+							/>
+							<InputWithOverlappingLabel
 								:value="String(formatBytes(file.size))"
 								class="mt-4"
 								label="Size"

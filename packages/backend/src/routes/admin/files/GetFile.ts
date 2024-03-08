@@ -88,7 +88,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const extendedFile = {
 		...file,
-		...constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3, isWatched: file.isWatched })
+		...constructFilePublicLink({
+			req,
+			uuid: file.uuid,
+			fileName: file.name,
+			isS3: file.isS3,
+			isWatched: file.isWatched
+		})
 	};
 
 	return res.send({

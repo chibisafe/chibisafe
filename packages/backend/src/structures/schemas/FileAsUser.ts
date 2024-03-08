@@ -11,6 +11,7 @@ export const fileAsUserSchema = z
 		size: z.coerce.number().describe('The size of the file in bytes.'),
 		type: z.string().describe('The type of the file.'),
 		url: z.string().describe('The URL of the file.'),
+		uuidUrl: z.string().describe('The uuid URL of the file.'),
 		thumb: z.string().describe('The URL of the thumbnail of the file.'),
 		thumbSquare: z.string().describe('The URL of the square thumbnail of the file.'),
 		preview: z.string().describe('The URL of the preview of the file.'),
