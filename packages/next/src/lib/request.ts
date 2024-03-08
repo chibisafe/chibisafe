@@ -28,8 +28,8 @@ const request = {
 				...options
 			});
 			return await request.parseResponse(response);
-		} catch (error: any) {
-			throw new Error(error.message);
+		} catch {
+			// throw new Error(error.message);
 		}
 	},
 
@@ -51,8 +51,8 @@ const request = {
 				body: JSON.stringify(data)
 			});
 			return await request.parseResponse(response);
-		} catch (error: any) {
-			throw new Error(error.message);
+		} catch {
+			// throw new Error(error.message);
 		}
 	},
 
@@ -70,8 +70,8 @@ const request = {
 				body: JSON.stringify(data)
 			});
 			return await request.parseResponse(response);
-		} catch (error: any) {
-			throw new Error(error.message);
+		} catch {
+			// throw new Error(error.message);
 		}
 	}
 };
