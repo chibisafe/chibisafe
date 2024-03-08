@@ -115,6 +115,7 @@ model settings {
 	chunkedUploadsTimeout Int
 	maxSize String
 	generateZips Boolean
+	generateOriginalFileNameWithIdentifier Boolean @default(false)
 	generatedFilenameLength Int
 	generatedAlbumLength Int
 	blockedExtensions String

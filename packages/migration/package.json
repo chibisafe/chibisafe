@@ -23,16 +23,16 @@
 	},
 	"devDependencies": {
 		"@clack/prompts": "^0.7.0",
-		"@prisma/client": "^5.9.1",
+		"@prisma/client": "^5.10.2",
 		"@types/better-sqlite3": "^7.6.9",
-		"@types/node": "^20.11.17",
+		"@types/node": "^20.11.25",
 		"@types/uuid": "^9.0.8",
-		"better-sqlite3": "^9.4.0",
-		"eslint": "^8.56.0",
-		"eslint-config-neon": "^0.1.58",
-		"prisma": "^5.9.1",
+		"better-sqlite3": "^9.4.3",
+		"eslint": "^8.57.0",
+		"eslint-config-neon": "^0.1.59",
+		"prisma": "^5.10.2",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.3.3",
+		"typescript": "^5.4.2",
 		"uuid": "^9.0.1"
 	},
 	"prisma": {

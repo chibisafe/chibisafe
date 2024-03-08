@@ -79,11 +79,8 @@
 									</div>
 
 									<div>
-										<Badge
-											v-for="(extension, idx) of setting.value"
-											:key="idx"
-											class="mr-2"
-										>
+										<!-- eslint-disable vue/v-for-delimiter-style -->
+										<Badge v-for="(extension, idx) of setting.value" :key="idx" class="mr-2">
 											{{ extension }}
 											<span class="ml-2" @click="removeExtension(setting, extension)">
 												<svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-white">
@@ -160,7 +157,9 @@ const categorizedSettings = computed(() => {
 const addExtension = (setting: Setting, extension: any) => {
 	if (!extension.value) return;
 	const extensions = setting.value as string[];
+	// eslint-disable-next-line unicorn/prefer-array-some, eqeqeq
 	if (extensions.find(v => v == extension.value)) return;
+	// eslint-disable-next-line unicorn/prefer-regexp-test
 	extensions.push(extension.value.match(/^\./) ? extension.value : '.' + extension.value);
 	setting.value = extensions;
 	// @ts-expect-error erh something about the element not being an array

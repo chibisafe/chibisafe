@@ -157,5 +157,5 @@ export interface Setting {
 	name: string;
 	notice?: string;
 	type: string;
-	value: boolean | number | string | string[];
+	value: string[] | boolean | number | string;
 }
