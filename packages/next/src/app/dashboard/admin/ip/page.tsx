@@ -24,6 +24,7 @@ export default async function DashboardPage() {
 			tags: ['ips']
 		}
 	});
+
 	return (
 		<>
 			<DashboardHeader
@@ -37,7 +38,7 @@ export default async function DashboardPage() {
 				<BanIpDialog />
 			</DashboardHeader>
 			<div className="px-2">
-				<IpTable data={response} />
+				<IpTable data={response.ips} />
 			</div>
 		</>
 	);
