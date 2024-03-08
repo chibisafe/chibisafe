@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
 };
 
-export default async function AlbumsPage({ searchParams }: { searchParams: PageQuery }) {
+export default async function AlbumsPage({ searchParams }: { readonly searchParams: PageQuery }) {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Tags'
 };
 
-export default async function TagPage({ searchParams, params }: { params: { uuid: string }; searchParams: PageQuery }) {
+export default async function TagPage({ searchParams, params }: { readonly params: { uuid: string }; readonly searchParams: PageQuery }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 

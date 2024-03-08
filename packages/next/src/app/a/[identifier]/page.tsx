@@ -7,15 +7,15 @@ import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Albums'
+	title: 'Public - Album'
 };
 
-export default async function AlbumPage({
+export default async function PublicAlbumPage({
 	searchParams,
 	params
 }: {
-	params: { identifier: string };
-	searchParams: PageQuery;
+	readonly params: { identifier: string };
+	readonly searchParams: PageQuery;
 }) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
