@@ -6,6 +6,9 @@ import dayjs from 'dayjs';
 import { ArrowUpRightFromSquare } from 'lucide-react';
 import { bundledLanguages, getHighlighter } from 'shiki';
 import type { Snippet } from '@/types';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 export const metadata: Metadata = {
 	title: 'Public - Snippet'
