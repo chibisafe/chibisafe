@@ -63,7 +63,6 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 			}
 		);
 
-		revalidateTag('snippets');
 		return { message: 'Snippet deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error.message, type: MessageType.Error };
