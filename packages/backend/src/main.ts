@@ -12,9 +12,9 @@ import { cleanup } from 'unzipit';
 import Routes from './structures/routes.js';
 import { SETTINGS, loadSettings } from './structures/settings.js';
 import Docs from './utils/Docs.js';
+import { getOriginalFile } from './utils/GetOriginalFile.js';
 import { log } from './utils/Logger.js';
 import Requirements from './utils/Requirements.js';
-import { jumpstartStatistics } from './utils/StatsGenerator.js';
 import { startUpdateCheckSchedule } from './utils/UpdateCheck.js';
 import { createAdminUserIfNotExists, VERSION } from './utils/Util.js';
 import { fileWatcher, getFileWatcher } from './utils/Watcher.js';
@@ -252,17 +252,12 @@ const start = async () => {
 		await server.register(fstatic, {
 			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
 		});
+
+		server.get('/file/:uuid', getOriginalFile);
 	}
 
 	// Start the server
 	await server.listen({ port: Number(SETTINGS.port), host: SETTINGS.host as string });
-
-	// Uncomment this to generate a swagger.yml file with the OpenAPI documentation
-	// const yaml = server.swagger({ yaml: true });
-	// await jetpack.writeAsync('./swagger.yml', yaml);
-
-	// Jumpstart statistics scheduler
-	await jumpstartStatistics();
 
 	if (!SETTINGS.disableUpdateCheck) {
 		await startUpdateCheckSchedule();
