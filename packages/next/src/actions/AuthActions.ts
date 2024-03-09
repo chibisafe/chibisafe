@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
 
 import request from '@/lib/request';
+import { revalidateTag } from 'next/cache';
 
 export const changePassword = async (_: any, form: FormData) => {
 	const cookieStore = cookies();
@@ -32,7 +33,29 @@ export const changePassword = async (_: any, form: FormData) => {
 			}
 		);
 
+		revalidateTag('me');
 		return { message: 'Password changed', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error.message, type: MessageType.Error };
+	}
+};
+
+export const requestNewApiKey = async (_: any, form: FormData) => {
+	const cookieStore = cookies();
+	const token = cookieStore.get('token')?.value;
+	if (!token) redirect('/');
+
+	try {
+		await request.post(
+			'auth/apikey/change',
+			{},
+			{
+				authorization: `Bearer ${token}`
+			}
+		);
+
+		revalidateTag('me');
+		return { message: 'API key regenerated', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error.message, type: MessageType.Error };
 	}

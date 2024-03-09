@@ -4,7 +4,7 @@ import { useFormState } from 'react-dom';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { changePassword } from '@/actions/ChangePassword';
+import { changePassword } from '@/actions/AuthActions';
 import { MessageType } from '@/types';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -67,7 +67,7 @@ export const ChangePassword = () => {
 						required
 					/>
 				</div>
-				<Button type="submit" className="w-max">
+				<Button type="submit" className="w-max mt-3">
 					Change password
 				</Button>
 			</div>
