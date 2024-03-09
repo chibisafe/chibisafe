@@ -194,3 +194,9 @@ export interface Snippet {
 	raw: string;
 	uuid: string;
 }
+
+export interface StorageQuota {
+	overQuota: boolean;
+	quota: number;
+	used: number;
+}
