@@ -5,7 +5,7 @@ import { Command as CommandPrimitive } from 'cmdk';
 import { X } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 
 // https://github.com/mxkaske/mxkaske.dev/blob/main/components/craft/fancy-multi-select.tsx
 type Option = Record<'label' | 'value', string>;
@@ -93,26 +93,28 @@ export function FancyMultiSelect({
 			<div className="relative mt-2">
 				{open && selectables.length > 0 ? (
 					<div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-						<CommandGroup className="h-full overflow-auto">
-							{selectables.map(option => {
-								return (
-									<CommandItem
-										key={option.value}
-										onMouseDown={e => {
-											e.preventDefault();
-											e.stopPropagation();
-										}}
-										onSelect={value => {
-											setInputValue('');
-											setSelected(prev => [...prev, option]);
-										}}
-										className={'cursor-pointer'}
-									>
-										{option.label}
-									</CommandItem>
-								);
-							})}
-						</CommandGroup>
+						<CommandList>
+							<CommandGroup className="h-full overflow-auto">
+								{selectables.map(option => {
+									return (
+										<CommandItem
+											key={option.value}
+											onMouseDown={e => {
+												e.preventDefault();
+												e.stopPropagation();
+											}}
+											onSelect={value => {
+												setInputValue('');
+												setSelected(prev => [...prev, option]);
+											}}
+											className={'cursor-pointer'}
+										>
+											{option.label}
+										</CommandItem>
+									);
+								})}
+							</CommandGroup>
+						</CommandList>
 					</div>
 				) : null}
 			</div>
