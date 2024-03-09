@@ -19,9 +19,9 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 				.then(response => {
 					setCurrentUser(response.user);
 				})
-				.catch((error: any) => {
+				.catch(async (error: any) => {
 					// TODO: If error 401 we need to log out
-					logout();
+					await logout();
 				});
 		}
 	}, [currentUser, setCurrentUser, shouldFetch]);
