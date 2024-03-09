@@ -1,16 +1,11 @@
 import type { Snippet } from '@/types';
 import { ArrowUpRightFromSquare } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
-import { bundledLanguages, getHighlighter } from 'shiki';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { highlighter } from '@/lib/shiki';
 
 dayjs.extend(relativeTime);
-
-const highlighter = await getHighlighter({
-	themes: ['github-dark-dimmed'],
-	langs: Object.keys(bundledLanguages)
-});
 
 export const SnippetViewer = ({
 	snippet,
