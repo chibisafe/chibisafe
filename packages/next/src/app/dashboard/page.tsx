@@ -27,7 +27,7 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 				</Button>
 			</DashboardHeader>
 			<div className="px-2">
-				<FilesList type="uploads" files={response.files} count={response.count} />
+				<FilesList type="uploads" files={response?.files} count={response?.count} />
 			</div>
 		</>
 	);
