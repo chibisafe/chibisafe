@@ -115,7 +115,13 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	for (const file of files) {
 		readyFiles.push({
 			...file,
-			...constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3, isWatched: file.isWatched })
+			...constructFilePublicLink({
+				req,
+				uuid: file.uuid,
+				fileName: file.name,
+				isS3: file.isS3,
+				isWatched: file.isWatched
+			})
 		});
 	}
 
