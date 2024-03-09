@@ -32,6 +32,7 @@
 		"@radix-ui/react-tabs": "^1.0.4",
 		"@radix-ui/react-tooltip": "^1.0.7",
 		"@tanstack/react-table": "^8.13.2",
+		"@tremor/react": "^3.14.1",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"cmdk": "^1.0.0",
