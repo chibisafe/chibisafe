@@ -28,7 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { ArrowUpRightFromSquare } from 'lucide-react';
+import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
 export function FileInformationDialog({
@@ -85,7 +85,12 @@ export function FileInformationDialog({
 					<FileInformationDrawerActions file={file} type={type} />
 				</div>
 
-				<Tabs defaultValue="preview" className="relative">
+				<Tabs
+					defaultValue={
+						isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? 'preview' : 'information'
+					}
+					className="relative"
+				>
 					<div className="flex justify-center w-full absolute -top-12">
 						<TabsList>
 							<TabsTrigger value="preview">Preview</TabsTrigger>
@@ -93,12 +98,7 @@ export function FileInformationDialog({
 						</TabsList>
 					</div>
 					<TabsContent value="preview" className="mt-0">
-						<div
-							className={cn(
-								isFileImage(file) || isFileVideo(file) ? 'h-[calc(100vh-11rem)]' : 'h-auto',
-								'w-full'
-							)}
-						>
+						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
 							{isFileImage(file) ? (
 								<picture>
 									<img src={file.url} className="h-full object-contain md:block" />
@@ -128,8 +128,9 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : (
-								<span className="text-light-100 h-full items-center hidden md:flex">
-									Sorry but this file can't be previewed at this time.
+								<span className="text-light-100 h-full items-center hidden md:flex px-8 flex-col justify-center gap-4">
+									<FileQuestionIcon className="w-16 h-16" />
+									Sorry but this filetype can't be previewed at this time.
 								</span>
 							)}
 						</div>
