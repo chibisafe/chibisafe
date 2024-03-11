@@ -15,6 +15,7 @@ import type { Invite } from '@/types';
 import { Button } from '@/components/ui/button';
 import { InvitesConfirmationAction } from './InvitesConfirmationAction';
 import { Trash2Icon } from 'lucide-react';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<Invite>();
 const columns = [
@@ -23,9 +24,9 @@ const columns = [
 		header: 'Code',
 		cell(props) {
 			return (
-				<a href={`/invite/${props.row.original.code}`} className="link">
+				<Link href={`/invite/${props.row.original.code}`} className="link">
 					{props.row.original.code}
-				</a>
+				</Link>
 			);
 		}
 	}),
@@ -38,9 +39,9 @@ const columns = [
 		header: 'Created By',
 		cell(props) {
 			return (
-				<a href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`} className="link">
+				<Link href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`} className="link">
 					{props.row.original.createdBy.username}
-				</a>
+				</Link>
 			);
 		}
 	}),
@@ -53,9 +54,9 @@ const columns = [
 		header: 'Claimed By',
 		cell(props) {
 			return props.row.original.usedBy.uuid ? (
-				<a href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="link">
+				<Link href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="link">
 					{props.row.original.usedBy.username}
-				</a>
+				</Link>
 			) : (
 				'N/A'
 			);

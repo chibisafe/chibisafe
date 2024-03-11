@@ -1183,6 +1183,8 @@ __metadata:
     "@radix-ui/react-switch": ^1.0.3
     "@radix-ui/react-tabs": ^1.0.4
     "@radix-ui/react-tooltip": ^1.0.7
+    "@tanstack/react-query": ^5.26.3
+    "@tanstack/react-query-devtools": ^5.26.3
     "@tanstack/react-table": ^8.13.2
     "@tremor/react": ^3.14.1
     "@types/js-cookie": ^3.0.6
@@ -4270,6 +4272,43 @@ __metadata:
   version: 5.25.0
   resolution: "@tanstack/query-core@npm:5.25.0"
   checksum: c4a8ddebec1a46da8abaff465190bf133bd6454cd7c641d3c579af10d7514c3eceb61b181fc68564ca2a8e1be65ea28f49a5dea01a9463e23989234b52421008
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.26.3":
+  version: 5.26.3
+  resolution: "@tanstack/query-core@npm:5.26.3"
+  checksum: 0a97cb2abd908ab3cff4ddfd9435e5ad40c05414209eab14125d3af8d22e8835890bf90d971dd7694b3fa7814d0f73eb39770dcd42d7ebbd330f4e55e8ec56a4
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.24.0":
+  version: 5.24.0
+  resolution: "@tanstack/query-devtools@npm:5.24.0"
+  checksum: c557eb09316a95405a459638a00c43de3537c76bcf4c4045e71acf31c8449f8856138712304e9cfce8b54141e5f81b8657bd54d2a768baf26a67e84eea787df9
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.26.3":
+  version: 5.26.3
+  resolution: "@tanstack/react-query-devtools@npm:5.26.3"
+  dependencies:
+    "@tanstack/query-devtools": 5.24.0
+  peerDependencies:
+    "@tanstack/react-query": ^5.26.3
+    react: ^18.0.0
+  checksum: 099d947ca83edb2b39687fe6441abb9186fabd83c8c3f6cbea87d600c30048ccb552efca98e39277cf8298b238a9ddf8c8cc05d0df1185b0568d62616478a81c
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.26.3":
+  version: 5.26.3
+  resolution: "@tanstack/react-query@npm:5.26.3"
+  dependencies:
+    "@tanstack/query-core": 5.26.3
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 64924db11e2f6413cd3afff8c642c65110b1b6dccc308c838cc49a05a1a9dcffeca9ccc329bc0d1a6a13bb33a772faa410409ddc7b2c0e7325a1cf5860d49b0c
   languageName: node
   linkType: hard
 

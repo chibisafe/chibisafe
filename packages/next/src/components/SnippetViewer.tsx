@@ -4,6 +4,7 @@ import type { PropsWithChildren } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { highlighter } from '@/lib/shiki';
+import Link from 'next/link';
 
 dayjs.extend(relativeTime);
 
@@ -33,9 +34,9 @@ export const SnippetViewer = ({
 					{showTitle ? (
 						<h2 className="text-xl font-extrabold leading-tight tracking-tighter md:text-2x">
 							{showTitleLink ? (
-								<a href={`/dashboard/snippets/${snippet.uuid}`} className="link">
+								<Link href={`/dashboard/snippets/${snippet.uuid}`} className="link">
 									{snippet.name}
-								</a>
+								</Link>
 							) : (
 								snippet.name
 							)}
@@ -51,14 +52,14 @@ export const SnippetViewer = ({
 				<div className="flex-1" />
 				<div className="mb-2">
 					{showPublicLink ? (
-						<a
+						<Link
 							href={snippet.link}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="link inline-flex items-center ml-2"
 						>
 							Public link <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-						</a>
+						</Link>
 					) : null}
 					{showRawLink ? (
 						<a

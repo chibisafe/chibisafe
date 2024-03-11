@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { Navigation } from '@/components/Navigation';
 import { NavigationUser } from '@/components/NavigationUser';
 import { DiscordLogo } from '@/components/svg/DiscordLogo';
@@ -15,7 +13,7 @@ export const Header = () => {
 				<Navigation />
 				<UploadProgress />
 				<nav className="flex items-center gap-1">
-					<Link href="https://discord.gg/5g6vgwn" target="_blank" rel="noreferrer">
+					<a href="https://discord.gg/5g6vgwn" target="_blank" rel="noopener noreferrer">
 						<div
 							className={buttonVariants({
 								size: 'icon',
@@ -25,9 +23,9 @@ export const Header = () => {
 							<DiscordLogo className="h-6 w-6" />
 							<span className="sr-only">Discord</span>
 						</div>
-					</Link>
+					</a>
 
-					<Link href="https://github.com/chibisafe/chibisafe" target="_blank" rel="noreferrer">
+					<a href="https://github.com/chibisafe/chibisafe" target="_blank" rel="noopener noreferrer">
 						<div
 							className={buttonVariants({
 								size: 'icon',
@@ -37,9 +35,9 @@ export const Header = () => {
 							<GitHubLogo className="h-6 w-6" />
 							<span className="sr-only">GitHub</span>
 						</div>
-					</Link>
+					</a>
 
-					<Link href="https://patreon.com/pitu" target="_blank" rel="noreferrer">
+					<a href="https://patreon.com/pitu" target="_blank" rel="noopener noreferrer">
 						<div
 							className={buttonVariants({
 								size: 'icon',
@@ -49,7 +47,7 @@ export const Header = () => {
 							<PatreonLogo className="h-6 w-6" />
 							<span className="sr-only">Patreon</span>
 						</div>
-					</Link>
+					</a>
 					<NavigationUser />
 				</nav>
 			</div>

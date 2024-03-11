@@ -22,8 +22,8 @@ export const LoginForm = () => {
 
 		try {
 			const response = await login({
-				username: String(data.get('username')),
-				password: String(data.get('password'))
+				username: data.get('username') as string,
+				password: data.get('password') as string
 			});
 
 			setCurrentUser(response.user);
@@ -52,7 +52,8 @@ export const LoginForm = () => {
 							autoCapitalize="none"
 							autoComplete="username"
 							autoCorrect="off"
-							disabled={isLoading}
+							readOnly={isLoading}
+							required
 						/>
 					</div>
 					<div className="grid gap-1">
@@ -67,7 +68,8 @@ export const LoginForm = () => {
 							autoCapitalize="none"
 							autoComplete="password"
 							autoCorrect="off"
-							disabled={isLoading}
+							readOnly={isLoading}
+							required
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>

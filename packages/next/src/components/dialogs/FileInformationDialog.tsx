@@ -30,6 +30,7 @@ import { FileInformationDialogActions } from '@/components/FileInformationDialog
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import Link from 'next/link';
 
 export function FileInformationDialog({
 	file,
@@ -179,12 +180,12 @@ export function FileInformationDialog({
 										<Label htmlFor="ip">
 											IP{' '}
 											{type === 'admin' ? (
-												<a
+												<Link
 													href={`/dashboard/admin/ip/${file.ip}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 												>
 													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-												</a>
+												</Link>
 											) : null}
 										</Label>
 										<Input value={file.ip} name="ip" id="ip" readOnly />
@@ -225,12 +226,12 @@ export function FileInformationDialog({
 										<div>
 											<Label htmlFor="owner">
 												Owner
-												<a
+												<Link
 													href={`/dashboard/admin/user/${file.user?.uuid}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 												>
 													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-												</a>
+												</Link>
 											</Label>
 											<Input value={file.user.username} name="owner" id="owner" readOnly />
 										</div>

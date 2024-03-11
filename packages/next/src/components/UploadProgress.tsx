@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { ExternalLink, Loader2, XIcon } from 'lucide-react';
 
 import { uploadsAtom } from '@/lib/atoms/uploads';
@@ -12,16 +12,17 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from './ui/button';
 import { ProgressBar } from '@tremor/react';
 import { cn } from '@/lib/utils';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Status = 'complete' | 'idle' | 'uploading';
 
 export const UploadProgress = () => {
 	const [uploads, setUploads] = useAtom(uploadsAtom);
-	// const uploads = useAtomValue(uploadsAtom);
 	const [buttonText, setButtonText] = useState('');
 	const [filesUploading, setFilesUploading] = useState(0);
 	const [totalProgress, setTotalProgress] = useState(0);
 	const [status, setStatus] = useState<Status>('idle');
+	const queryClient = useQueryClient();
 
 	const removeFile = (uuid: string) => {
 		setUploads(uploads.filter(file => file.uuid !== uuid));
@@ -41,11 +42,12 @@ export const UploadProgress = () => {
 		} else if (uploads.length > 0) {
 			setStatus('complete');
 			setButtonText('All uploads complete 🎉');
+			void queryClient.invalidateQueries({ queryKey: ['uploads'] });
 		} else {
 			setStatus('idle');
 			setButtonText('');
 		}
-	}, [filesUploading, uploads]);
+	}, [filesUploading, queryClient, uploads]);
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
@@ -76,7 +78,7 @@ export const UploadProgress = () => {
 												<a
 													href={file.url}
 													target="_blank"
-													rel="noreferrer"
+													rel="noopener noreferrer"
 													className="link flex items-center gap-1"
 												>
 													{file.name}

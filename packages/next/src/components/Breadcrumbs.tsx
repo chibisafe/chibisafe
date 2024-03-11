@@ -2,8 +2,10 @@ import type { BreadcrumbPage } from '@/types';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Breadcrumbs({ pages = [] }: { readonly pages?: BreadcrumbPage[] }) {
-	return pages.length ? (
+export default function Breadcrumbs({ pages = [] }: { readonly pages?: BreadcrumbPage[] | undefined }) {
+	if (!pages.length) return null;
+
+	return (
 		<nav aria-label="Breadcrumb" className="px-2 mb-2">
 			<ol className="flex flex-wrap gap-2 text-sm text-muted-foreground">
 				<li key="base">
@@ -25,5 +27,5 @@ export default function Breadcrumbs({ pages = [] }: { readonly pages?: Breadcrum
 				))}
 			</ol>
 		</nav>
-	) : null;
+	);
 }

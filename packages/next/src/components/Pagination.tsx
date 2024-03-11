@@ -14,8 +14,16 @@ import { Input } from './ui/input';
 import { useCallback, useState } from 'react';
 import { Button } from './ui/button';
 import { SearchIcon } from 'lucide-react';
+import type { FilePropsType } from '@/types';
+import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 
-export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) {
+export function Pagination({
+	itemsTotal,
+	type
+}: {
+	readonly itemsTotal?: number | undefined;
+	readonly type: FilePropsType;
+}) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
@@ -27,14 +35,17 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 			: Number.parseInt(searchParams.get('limit')!, 10)
 		: 50;
 
-	const totalPages = Math.ceil(itemsTotal / perPage);
-	// eslint-disable-next-line unicorn/new-for-builtins
-	const totalPagesForDropdown: Item[] = Array.from(Array(totalPages)).map((_, i) => ({
+	const [search, setSearch] = useState(searchParams.get('search') ?? '');
+
+	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
+
+	const totalItems = itemsTotal ?? data?.count ?? 0;
+
+	const totalPages = Math.ceil(totalItems / perPage);
+	const totalPagesForDropdown: Item[] = Array.from({ length: totalPages }).map((_, i) => ({
 		label: i + 1,
 		value: i + 1
 	}));
-
-	const [search, setSearch] = useState(searchParams.get('search') ?? '');
 
 	const createSearchString = useCallback(() => {
 		const params = new URLSearchParams(searchParams.toString());
@@ -45,9 +56,12 @@ export function Pagination({ itemsTotal = 0 }: { readonly itemsTotal: number }) 
 		router.push(`${pathname}?${params.toString()}`);
 	}, [pathname, router, search, searchParams]);
 
-	const onSelectChange = (value: string) => {
-		router.push(`${pathname}?page=${value}&limit=${perPage}`);
-	};
+	const onSelectChange = useCallback(
+		(value: string) => {
+			router.push(`${pathname}?page=${value}&limit=${perPage}`);
+		},
+		[pathname, perPage, router]
+	);
 
 	return (
 		<>
