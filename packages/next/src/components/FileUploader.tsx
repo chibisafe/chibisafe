@@ -57,8 +57,7 @@ export function FileUploader() {
 				options.postParams = {
 					name: file.name,
 					type: file.type,
-					// @ts-ignore
-					size: file.size
+					size: file.size.toString()
 				};
 
 				options.headers = {

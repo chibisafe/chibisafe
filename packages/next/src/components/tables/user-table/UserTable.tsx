@@ -16,6 +16,7 @@ import type { UserWithCount } from '@/types';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<UserWithCount>();
 const columns = [
@@ -23,9 +24,12 @@ const columns = [
 		id: 'username',
 		header: 'Username',
 		cell: props => (
-			<a href={`/dashboard/admin/user/${props.row.original.uuid}`} className="link inline-flex items-center ml-2">
+			<Link
+				href={`/dashboard/admin/user/${props.row.original.uuid}`}
+				className="link inline-flex items-center ml-2"
+			>
 				{props.row.original.username}
-			</a>
+			</Link>
 		)
 	}),
 	columnHelper.accessor(row => row._count.files, {

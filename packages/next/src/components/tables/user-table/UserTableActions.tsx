@@ -13,6 +13,7 @@ import {
 import { ConfirmationAction } from './UserConfirmationAction';
 import type { UserWithCount } from '@/types';
 import { MoreHorizontalIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCount }>) {
 	return (
@@ -25,7 +26,7 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<a href={`/dashboard/admin/user/${user.uuid}`}>View files</a>
+						<Link href={`/dashboard/admin/user/${user.uuid}`}>View files</Link>
 					</DropdownMenuItem>
 					{/* // TODO: Prepare a new dialog for input */}
 					<DropdownMenuItem onSelect={e => e.preventDefault()}>Set quota</DropdownMenuItem>

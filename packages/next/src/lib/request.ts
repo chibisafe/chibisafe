@@ -42,6 +42,7 @@ const request = {
 
 			const response = await fetch(queryUrl, {
 				method: 'POST',
+				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
 					// Authorization: request.checkForToken(),
@@ -61,6 +62,7 @@ const request = {
 			const queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 			const response = await fetch(queryUrl, {
 				method: 'DELETE',
+				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
 					// Authorization: request.checkForToken(),

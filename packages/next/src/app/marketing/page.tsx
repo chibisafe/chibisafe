@@ -45,10 +45,10 @@ export default async function IndexPage() {
 						<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
 							Get Started
 						</Link>
-						<Link
+						<a
 							href="https://github.com/chibisafe/chibisafe"
 							target="_blank"
-							rel="noreferrer"
+							rel="noopener noreferrer"
 							className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
 						>
 							{stars ? (
@@ -58,7 +58,7 @@ export default async function IndexPage() {
 								</>
 							) : null}
 							GitHub
-						</Link>
+						</a>
 					</div>
 				</div>
 			</section>
@@ -169,14 +169,14 @@ export default async function IndexPage() {
 					<h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Proudly Open Source</h2>
 					<p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
 						Taxonomy is open source and powered by open source software. <br /> The code is available on{' '}
-						<Link
+						<a
 							href="https://github.com/chibisafe/chibisafe"
 							target="_blank"
-							rel="noreferrer"
+							rel="noopener noreferrer"
 							className="underline underline-offset-4"
 						>
 							GitHub
-						</Link>
+						</a>
 						.{' '}
 					</p>
 				</div>

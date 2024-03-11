@@ -12,6 +12,7 @@ import {
 
 import { IpConfirmationAction } from './IpConfirmationAction';
 import { MoreHorizontalIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }>) {
 	return (
@@ -24,7 +25,7 @@ export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<a href={`/dashboard/admin/user/${ip}`}>View files</a>
+						<Link href={`/dashboard/admin/user/${ip}`}>View files</Link>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />

@@ -33,9 +33,13 @@ export function FileInformationDialogActions({
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
 					<DropdownMenuItem onClick={() => void copy(file.url)}>Copy link</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => window.open(file.url, '_blank')}>Open in new tab</DropdownMenuItem>
 					<DropdownMenuItem asChild>
-						<a href={file.url} download>
+						<a href={file.url} target="_blank" rel="noopener noreferrer">
+							Open in new tab
+						</a>
+					</DropdownMenuItem>
+					<DropdownMenuItem asChild>
+						<a href={`/api/file/${file.uuid}/download`} rel="noopener noreferrer">
 							Download
 						</a>
 					</DropdownMenuItem>

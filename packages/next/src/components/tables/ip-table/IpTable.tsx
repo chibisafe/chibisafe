@@ -14,6 +14,7 @@ import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import dayjs from 'dayjs';
 import { IpTableActions } from './IpTableActions';
+import Link from 'next/link';
 
 interface IP {
 	readonly createdAt: string;
@@ -28,9 +29,9 @@ const columns = [
 		id: 'ip',
 		header: 'IP',
 		cell: props => (
-			<a href={`/dashboard/admin/ip/${props.row.original.ip}`} className="link inline-flex items-center ml-2">
+			<Link href={`/dashboard/admin/ip/${props.row.original.ip}`} className="link inline-flex items-center ml-2">
 				{props.row.original.ip}
-			</a>
+			</Link>
 		)
 	}),
 	columnHelper.accessor(row => row.createdAt, {

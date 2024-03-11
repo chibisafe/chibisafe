@@ -6,6 +6,7 @@ import { useCopyToClipboard } from 'usehooks-ts';
 
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { buttonVariants } from '@/styles/button';
 
 export function FileInformationDrawerActions({
 	file,
@@ -23,15 +24,23 @@ export function FileInformationDrawerActions({
 					<Button variant="outline" className="w-full" onClick={() => void copy(file.url)}>
 						Copy link
 					</Button>
-					<Button variant="outline" className="w-full" onClick={() => window.open(file.url, '_blank')}>
-						Open in new tab
-					</Button>
 
-					<Button variant="outline" className="w-full" asChild>
-						<a href={file.url} download>
-							Download
-						</a>
-					</Button>
+					<a
+						href={file.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={buttonVariants({ variant: 'outline', className: 'w-full' })}
+					>
+						Open in new tab
+					</a>
+
+					<a
+						href={`/api/file/${file.uuid}/download`}
+						rel="noopener noreferrer"
+						className={buttonVariants({ variant: 'outline', className: 'w-full' })}
+					>
+						Download
+					</a>
 
 					<Button variant="outline" className="w-full">
 						Regenerate thumbnail

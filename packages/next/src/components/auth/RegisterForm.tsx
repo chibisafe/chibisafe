@@ -13,14 +13,14 @@ import { toast } from 'sonner';
 
 export const RegisterForm = ({ code }: { readonly code?: string }) => {
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	async function onSubmit(data: FormData) {
 		setIsLoading(true);
 
-		const username = String(data.get('username'));
-		const password = String(data.get('password'));
-		const repassword = String(data.get('repassword'));
+		const username = data.get('username');
+		const password = data.get('password');
+		const repassword = data.get('repassword');
 
 		if (password !== repassword) {
 			toast.error('Passwords do not match');
@@ -67,7 +67,8 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 							autoCapitalize="none"
 							autoComplete="username"
 							autoCorrect="off"
-							disabled={isLoading}
+							readOnly={isLoading}
+							required
 						/>
 					</div>
 					<div className="grid gap-1">
@@ -82,7 +83,8 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 							autoCapitalize="none"
 							autoComplete="password"
 							autoCorrect="off"
-							disabled={isLoading}
+							readOnly={isLoading}
+							required
 						/>
 					</div>
 					<div className="grid gap-1">
@@ -97,7 +99,8 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 							autoCapitalize="none"
 							autoComplete="password"
 							autoCorrect="off"
-							disabled={isLoading}
+							readOnly={isLoading}
+							required
 						/>
 					</div>
 					<button type="submit" className={cn(buttonVariants())} disabled={isLoading}>

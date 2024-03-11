@@ -1,47 +1,66 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { File, FilePropsType } from '@/types';
 import { useAtom } from 'jotai';
 import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
-
+import { useSearchParams } from 'next/navigation';
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 
 export function Masonry({
 	files,
 	total,
 	type
 }: {
-	readonly files: File[];
-	readonly total: number;
+	readonly files?: File[] | undefined;
+	readonly total?: number | undefined;
 	readonly type: FilePropsType;
 }) {
+	const searchParams = useSearchParams();
+
+	const currentPage = searchParams.get('page') ? Number.parseInt(searchParams.get('page')!, 10) : 1;
+	const perPage = searchParams.get('limit')
+		? Number.parseInt(searchParams.get('limit')!, 10) > 50
+			? 50
+			: Number.parseInt(searchParams.get('limit')!, 10)
+		: 50;
+	const search = searchParams.get('search') ?? '';
+
+	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
+
 	// const ref = useRef<Record<string, HTMLImageElement | null>>({});
 	const [modalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 
-	const addToHoveredList = (file: File) => {
-		const identifierToUse = file.uuid ?? file.name;
-		if (hoveredFiles.includes(identifierToUse)) return;
-		setHoveredFiles([...hoveredFiles, identifierToUse]);
-	};
+	const addToHoveredList = useCallback(
+		(file: File) => {
+			const identifierToUse = file.uuid ?? file.name;
+			if (hoveredFiles.includes(identifierToUse)) return;
+			setHoveredFiles([...hoveredFiles, identifierToUse]);
+		},
+		[hoveredFiles]
+	);
 
-	const removeFromHoveredList = (file: File) => {
-		const identifierToUse = file.uuid ?? file.name;
-		if (!hoveredFiles.includes(identifierToUse)) return;
-		setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
-	};
+	const removeFromHoveredList = useCallback(
+		(file: File) => {
+			const identifierToUse = file.uuid ?? file.name;
+			if (!hoveredFiles.includes(identifierToUse)) return;
+			setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
+		},
+		[hoveredFiles]
+	);
 
 	return (
 		<>
 			<Plock
-				items={files}
+				items={files?.length ? files : data?.files ?? []}
 				config={{
 					columns: [1, 2, 3, 4],
 					gap: [24, 12, 12, 12],

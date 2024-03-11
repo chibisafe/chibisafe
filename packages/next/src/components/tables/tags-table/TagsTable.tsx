@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { TagsConfirmationAction } from './TagsConfirmationAction';
 import { ArrowUpDown, Trash2Icon } from 'lucide-react';
 import { Tooltip } from '@/components/Tooltip';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<TagWithCount>();
 const columns = [
@@ -30,9 +31,9 @@ const columns = [
 		},
 		cell(props) {
 			return (
-				<a href={`/dashboard/tags/${props.row.original.uuid}`} className="link">
+				<Link href={`/dashboard/tags/${props.row.original.uuid}`} className="link">
 					{props.row.original.name}
-				</a>
+				</Link>
 			);
 		}
 	}),
