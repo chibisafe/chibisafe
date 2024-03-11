@@ -11,7 +11,7 @@ export const useUploadsQuery = ({
 	readonly currentPage: number;
 	readonly perPage: number;
 	readonly search?: string;
-	readonly type: FilePropsType;
+	readonly type?: FilePropsType | undefined;
 }) => {
 	return useQuery<{ count: number; files: File[] }>({
 		enabled: type === 'uploads',

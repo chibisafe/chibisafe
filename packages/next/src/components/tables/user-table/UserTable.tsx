@@ -25,7 +25,7 @@ const columns = [
 		header: 'Username',
 		cell: props => (
 			<Link
-				href={`/dashboard/admin/user/${props.row.original.uuid}`}
+				href={`/dashboard/admin/users/${props.row.original.uuid}`}
 				className="link inline-flex items-center ml-2"
 			>
 				{props.row.original.username}
@@ -119,5 +119,5 @@ export const UserTable = ({ data }: PropsWithChildren<{ readonly data: any }>) =
 		}
 	});
 
-	return <DataTable table={table} columns={columns} showSearch searchColumn="username" showColumnSelector />;
+	return <DataTable table={table} columns={columns} />;
 };

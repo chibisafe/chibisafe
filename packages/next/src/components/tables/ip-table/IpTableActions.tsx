@@ -25,7 +25,7 @@ export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<Link href={`/dashboard/admin/user/${ip}`}>View files</Link>
+						<Link href={`/dashboard/admin/ip/${ip}`}>View files</Link>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />

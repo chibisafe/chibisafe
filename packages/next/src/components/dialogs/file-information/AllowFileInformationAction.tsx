@@ -9,8 +9,15 @@ import { toast } from 'sonner';
 
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { ConfirmationDialog } from '../ConfirmationDialog';
+import { Button } from '@/components/ui/button';
 
-export const AllowFileInformationAction = ({ uuid }: { readonly uuid: string }) => {
+export const AllowFileInformationAction = ({
+	uuid,
+	isDrawer = false
+}: {
+	readonly isDrawer?: boolean | undefined;
+	readonly uuid: string;
+}) => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const [state, formAction] = useFormState(allowFile, {
 		message: '',
@@ -41,9 +48,15 @@ export const AllowFileInformationAction = ({ uuid }: { readonly uuid: string }) 
 				description="This action will remove the file from quarantine and allow anyone with a link to access it."
 				callback={() => formRef.current?.requestSubmit()}
 			>
-				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
-					Allow file
-				</button>
+				{isDrawer ? (
+					<Button variant="destructive" className="w-full">
+						Allow file
+					</Button>
+				) : (
+					<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
+						Allow file
+					</button>
+				)}
 			</ConfirmationDialog>
 		</form>
 	);

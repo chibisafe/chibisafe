@@ -39,7 +39,7 @@ const columns = [
 		header: 'Created By',
 		cell(props) {
 			return (
-				<Link href={`/dashboard/admin/user/${props.row.original.createdBy.uuid}`} className="link">
+				<Link href={`/dashboard/admin/users/${props.row.original.createdBy.uuid}`} className="link">
 					{props.row.original.createdBy.username}
 				</Link>
 			);
@@ -54,7 +54,7 @@ const columns = [
 		header: 'Claimed By',
 		cell(props) {
 			return props.row.original.usedBy.uuid ? (
-				<Link href={`/dashboard/admin/user/${props.row.original.usedBy.uuid}`} className="link">
+				<Link href={`/dashboard/admin/users/${props.row.original.usedBy.uuid}`} className="link">
 					{props.row.original.usedBy.username}
 				</Link>
 			) : (
@@ -76,7 +76,7 @@ const columns = [
 						code={props.row.original.code}
 						description="Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account."
 					>
-						<Button variant="outline" size={'icon'}>
+						<Button variant="outline" size="icon">
 							<Trash2Icon className="h-4 w-4" />
 						</Button>
 					</InvitesConfirmationAction>

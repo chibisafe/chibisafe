@@ -92,12 +92,14 @@ export function FileInformationDialog({
 					}
 					className="relative"
 				>
-					<div className="flex justify-center w-full absolute -top-12">
-						<TabsList>
-							<TabsTrigger value="preview">Preview</TabsTrigger>
-							<TabsTrigger value="information">Information</TabsTrigger>
-						</TabsList>
-					</div>
+					{type === 'publicAlbum' ? null : (
+						<div className="flex justify-center w-full absolute -top-12">
+							<TabsList>
+								<TabsTrigger value="preview">Preview</TabsTrigger>
+								<TabsTrigger value="information">Information</TabsTrigger>
+							</TabsList>
+						</div>
+					)}
 					<TabsContent value="preview" className="mt-0">
 						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
 							{isFileImage(file) ? (
@@ -227,7 +229,7 @@ export function FileInformationDialog({
 											<Label htmlFor="owner">
 												Owner
 												<Link
-													href={`/dashboard/admin/user/${file.user?.uuid}`}
+													href={`/dashboard/admin/users/${file.user?.uuid}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 												>
 													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />

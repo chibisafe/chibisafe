@@ -29,6 +29,7 @@ export const RegenerateApiKey = ({ apiKey }: PropsWithChildren<{ readonly apiKey
 			}
 		};
 	}, [state, state.message, state.type]);
+
 	return (
 		<form action={formAction}>
 			<div className="flex">

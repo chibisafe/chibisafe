@@ -7,6 +7,9 @@ import { Album } from '@/components/Album';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { AlbumSettingsDialog } from '@/components/dialogs/AlbumSettingsDialog';
 import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { Pagination } from '@/components/Pagination';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -15,10 +18,19 @@ export const metadata: Metadata = {
 export default async function AlbumsPage({ searchParams }: { readonly searchParams: PageQuery }) {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
+	if (!token) redirect('/');
+
+	const currentPage = searchParams.page ?? 1;
+	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
+	const search = searchParams.search ?? '';
 
 	const response = await request.get(
 		`albums`,
-		{},
+		{
+			page: currentPage,
+			limit: perPage,
+			search
+		},
 		{
 			authorization: `Bearer ${token}`
 		},
@@ -29,16 +41,17 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 		}
 	);
 
-	const albums = response.albums;
-
 	return (
 		<>
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">
 				<CreateAlbumDialog />
 			</DashboardHeader>
 			<div className="px-2">
-				<div className="flex flex-wrap gap-6 px-4">
-					{albums.map((album: AlbumType) => (
+				<Suspense>
+					<Pagination itemsTotal={response.count} />
+				</Suspense>
+				<div className="flex flex-wrap gap-6 px-4 mt-8">
+					{response.albums.map((album: AlbumType) => (
 						<Album key={album.uuid} album={album} />
 					))}
 				</div>

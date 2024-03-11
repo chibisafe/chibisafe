@@ -22,7 +22,7 @@ export function Pagination({
 	type
 }: {
 	readonly itemsTotal?: number | undefined;
-	readonly type: FilePropsType;
+	readonly type?: FilePropsType | undefined;
 }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
