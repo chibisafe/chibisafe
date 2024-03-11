@@ -26,10 +26,14 @@ export const UploadProgress = () => {
 
 	const removeFile = (uuid: string) => {
 		setUploads(uploads.filter(file => file.uuid !== uuid));
+		if (status === 'complete') {
+			// TODO: Close the popover
+		}
 	};
 
 	useEffect(() => {
 		setFilesUploading(uploads.filter(file => file.processing).length);
+		let timeout: NodeJS.Timeout;
 
 		if (filesUploading > 0) {
 			setStatus('uploading');
@@ -42,11 +46,17 @@ export const UploadProgress = () => {
 		} else if (uploads.length > 0) {
 			setStatus('complete');
 			setButtonText('All uploads complete 🎉');
-			void queryClient.invalidateQueries({ queryKey: ['uploads'] });
+			timeout = setTimeout(() => {
+				void queryClient.invalidateQueries({ queryKey: ['uploads'] });
+			}, 1000);
 		} else {
 			setStatus('idle');
 			setButtonText('');
 		}
+
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, [filesUploading, queryClient, uploads]);
 	return (
 		<Popover>

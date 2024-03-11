@@ -20,7 +20,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="relative -mx-6 mt-6 overflow-hidden p-4 sm:-mx-8 sm:p-8 md:p-10 lg:mt-0 lg:h-[48rem] lg:w-1/2 lg:rounded-l-2xl lg:p-8 flex items-center justify-center">
-					<FileUploader />
+					{/* <FileUploader /> */}
 				</div>
 			</section>
 		</div>
