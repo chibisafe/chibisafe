@@ -13,7 +13,7 @@ export default function InvitePage({ params }: { readonly params: { code: string
 		<div className="container flex h-screen w-screen flex-col items-center justify-center">
 			<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 				<div className="flex flex-col space-y-2 text-center">
-					<ChibisafeLogo className="mx-auto h-6 w-6" />
+					<ChibisafeLogo className="mx-auto mb-4 h-64 w-64" />
 					<h1 className="text-2xl font-semibold tracking-tight">You got an invite</h1>
 					<p className="text-sm text-muted-foreground">
 						You got an invite to create an account on this chibisafe instance. In order to continue please
