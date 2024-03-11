@@ -51,6 +51,7 @@ export function FileInformationDialog({
 	const fetchExtraData = useCallback(async () => {
 		try {
 			if (type === 'admin') return;
+			if (type === 'publicAlbum') return;
 
 			const createdAlbums = await request.get('albums');
 			setAlbums(createdAlbums.albums);

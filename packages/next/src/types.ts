@@ -200,3 +200,7 @@ export interface StorageQuota {
 	quota: number;
 	used: number;
 }
+
+export interface UserWithCountAndQuota extends UserWithCount {
+	storageQuota: StorageQuota;
+}

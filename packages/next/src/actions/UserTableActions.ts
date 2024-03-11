@@ -19,8 +19,10 @@ export const setQuota = async (_: any, form: FormData) => {
 
 	try {
 		await request.post(
-			`album/${uuid}`,
-			{},
+			`admin/user/${uuid}/quota`,
+			{
+				space: form.get('space')
+			},
 			{
 				authorization: `Bearer ${getToken()}`
 			}

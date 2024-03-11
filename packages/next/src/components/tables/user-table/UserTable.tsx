@@ -12,13 +12,13 @@ import { useState, type PropsWithChildren } from 'react';
 import { formatBytes } from '@/lib/file';
 import { Badge } from '../../ui/badge';
 import { UserTableActions } from './UserTableActions';
-import type { UserWithCount } from '@/types';
+import type { UserWithCountAndQuota } from '@/types';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import Link from 'next/link';
 
-const columnHelper = createColumnHelper<UserWithCount>();
+const columnHelper = createColumnHelper<UserWithCountAndQuota>();
 const columns = [
 	columnHelper.accessor(row => row.username, {
 		id: 'username',

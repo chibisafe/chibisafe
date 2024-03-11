@@ -72,22 +72,16 @@ export function Masonry({
 						className={cn(
 							"relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none",
 							{
-								'cursor-not-allowed': file.quarantine && type !== 'admin'
+								'cursor-not-allowed': file.quarantine && type !== 'quarantine'
 							}
 						)}
 						key={idx}
 						onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
 						onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
 					>
-						{/* TODO: No clue whatsoever why this assertion doesn't work when it works in vue,
-						so I'm removing the publicAlbum stuff for now because of it
-						{((type !== 'publicAlbum' && !file.quarantine) ||
-							((type === 'admin' || type === 'quarantine') && file.quarantine)) ?? (
-						)} */}
-
 						<a
 							className={cn('w-full h-full absolute top-0 left-0 pointer-events-auto', {
-								'pointer-events-none': file.quarantine && type !== 'admin'
+								'pointer-events-none': file.quarantine && type !== 'quarantine'
 							})}
 							href={file.url}
 							target="_blank"
@@ -95,7 +89,7 @@ export function Masonry({
 							onClick={e => {
 								e.preventDefault();
 								e.stopPropagation();
-								if (file.quarantine && type !== 'admin') {
+								if (file.quarantine && type !== 'quarantine') {
 									return;
 								}
 
@@ -110,23 +104,7 @@ export function Masonry({
 							</div>
 						) : isFileImage(file) || isFileVideo(file) ? (
 							<>
-								{/* {type === 'publicAlbum' && (
-									<a
-										className="w-full h-full absolute"
-										href={file?.url}
-										target="_blank"
-										rel="noopener noreferrer"
-									/>
-								)} */}
-
-								<img
-									src={file.thumb}
-									// ref={el => {
-									// 	ref.current[file.uuid] = el;
-									// }}
-									// onLoad={() => onImageLoad(file.uuid)}
-									className="cursor-pointer w-full min-w-[160px]"
-								/>
+								<img src={file.thumb} className="cursor-pointer w-full min-w-[160px]" />
 
 								{isFileVideo(file) && hoveredFiles.includes(file.uuid ?? file.name) && (
 									<video
@@ -167,9 +145,6 @@ export function Masonry({
 				<FileInformationDialog
 					file={selectedFile}
 					type={type}
-					// albums={albums}
-					// tags={tags}
-					// isVertical={imageDimensions[selectedFile.uuid]?.isVertical}
 					onOpenChange={(open: boolean) => {
 						if (open) return;
 						setModalOpen(open);
