@@ -24,8 +24,6 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 		queryFn: () => fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search)
 	});
 
-	// const response = await fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search);
-
 	return (
 		<>
 			<DashboardHeader title="Uploads" subtitle="Manage your uploads">

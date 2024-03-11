@@ -7,6 +7,10 @@ import { useCopyToClipboard } from 'usehooks-ts';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { buttonVariants } from '@/styles/button';
+import { RegenerateThumbnailFileInformationAction } from './dialogs/file-information/RegenerateThumbnailFileInformationAction';
+import { AllowFileInformationAction } from './dialogs/file-information/AllowFileInformationAction';
+import { QuarantineFileInformationAction } from './dialogs/file-information/QuarantineFileInformationAction';
+import { DeleteFileInformationAction } from './dialogs/file-information/DeleteFileInformationAction';
 
 export function FileInformationDrawerActions({
 	file,
@@ -20,7 +24,7 @@ export function FileInformationDrawerActions({
 				<Button variant="secondary">Actions</Button>
 			</DrawerTrigger>
 			<DrawerContent>
-				<div className="p-4 pb-0 grid gap-2">
+				<div className="p-4 pb-0 grid gap-2 mb-2">
 					<Button variant="outline" className="w-full" onClick={() => void copy(file.url)}>
 						Copy link
 					</Button>
@@ -42,27 +46,17 @@ export function FileInformationDrawerActions({
 						Download
 					</a>
 
-					<Button variant="outline" className="w-full">
-						Regenerate thumbnail
-					</Button>
-					{/* <Separator /> */}
-					{type === 'uploads' ? (
+					<RegenerateThumbnailFileInformationAction uuid={file.uuid} isDrawer />
+					{type === 'admin' ? (
 						<>
 							{file.quarantine ? (
-								<Button variant="destructive" className="w-full mt-2">
-									Allow file
-								</Button>
+								<AllowFileInformationAction uuid={file.uuid} isDrawer />
 							) : (
-								<Button variant="destructive" className="w-full mt-2">
-									Quarantine
-								</Button>
+								<QuarantineFileInformationAction uuid={file.uuid} isDrawer />
 							)}
-							{/* <Separator /> */}
 						</>
 					) : null}
-					<Button variant="destructive" className="w-full mb-6">
-						Delete
-					</Button>
+					<DeleteFileInformationAction uuid={file.uuid} isDrawer />
 				</div>
 			</DrawerContent>
 		</Drawer>

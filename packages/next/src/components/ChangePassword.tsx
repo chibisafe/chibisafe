@@ -28,6 +28,7 @@ export const ChangePassword = () => {
 			}
 		};
 	}, [state, state.message, state.type]);
+
 	return (
 		<form action={formAction}>
 			<div className="grid gap-2">

@@ -19,7 +19,6 @@ import Link from 'next/link';
 interface IP {
 	readonly createdAt: string;
 	readonly ip: string;
-	// TODO: Migrate the backend to accept a reason why banning an IP
 	readonly reason?: string;
 }
 

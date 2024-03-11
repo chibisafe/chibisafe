@@ -43,13 +43,15 @@ export function FileInformationDialogActions({
 							Download
 						</a>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="p-0">
-						<RegenerateThumbnailFileInformationAction uuid={file.uuid} />
-					</DropdownMenuItem>
+					{type === 'publicAlbum' ? null : (
+						<DropdownMenuItem className="p-0">
+							<RegenerateThumbnailFileInformationAction uuid={file.uuid} />
+						</DropdownMenuItem>
+					)}
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
 				{type === 'admin' ? (
 					<>
+						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
 							{file.quarantine ? (
 								<DropdownMenuItem
@@ -67,15 +69,19 @@ export function FileInformationDialogActions({
 								</DropdownMenuItem>
 							)}
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
 					</>
 				) : null}
-				<DropdownMenuItem
-					className="focus:text-destructive-foreground focus:bg-destructive p-0"
-					onSelect={e => e.preventDefault()}
-				>
-					<DeleteFileInformationAction uuid={file.uuid} />
-				</DropdownMenuItem>
+				{type === 'publicAlbum' ? null : (
+					<>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							className="focus:text-destructive-foreground focus:bg-destructive p-0"
+							onSelect={e => e.preventDefault()}
+						>
+							<DeleteFileInformationAction uuid={file.uuid} />
+						</DropdownMenuItem>
+					</>
+				)}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

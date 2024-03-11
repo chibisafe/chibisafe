@@ -32,7 +32,7 @@ export default async function DashboardAdminUserPage({
 				breadcrumbs={[
 					{ name: 'Admin', url: '/dashboard/admin' },
 					{ name: 'Users', url: '/dashboard/admin/users' },
-					{ name: username, url: `/dashboard/admin/user/${params.uuid}` }
+					{ name: username, url: `/dashboard/admin/users/${params.uuid}` }
 				]}
 			/>
 			<div className="px-2">

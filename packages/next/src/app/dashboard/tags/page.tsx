@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Tags'
 };
 
-export default async function DashboardPage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function DashboardTagsPage({ searchParams }: { readonly searchParams: PageQuery }) {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');

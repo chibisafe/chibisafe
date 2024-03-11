@@ -11,6 +11,7 @@ import { cookies } from 'next/headers';
 import type { LocalStorageUser, StorageQuota } from '@/types';
 import { formatBytes } from '@/lib/file';
 import { Progress } from '@/components/ui/progress';
+import { CategoryBar } from '@/components/Statistics';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Credentials'
@@ -65,7 +66,11 @@ export default async function DashboardPage() {
 							<>
 								<span className="text-light-100 block">Storage quota</span>
 								<span className="text-light-100 flex flex-col gap-2">
-									<Progress value={quota.quota ? (quota.used / quota.quota) * 100 : 0} />
+									<CategoryBar
+										values={[40, 30, 20, 10]}
+										colors={['emerald', 'yellow', 'orange', 'rose']}
+										markerValue={quota.quota ? (quota.used / quota.quota) * 100 : 0}
+									/>
 									<p className="text-[0.8rem] text-muted-foreground">
 										Using {formatBytes(quota.used)} of{' '}
 										{quota.quota ? formatBytes(quota.quota) : 'unlimited'}

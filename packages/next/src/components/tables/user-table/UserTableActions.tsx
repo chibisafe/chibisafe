@@ -26,7 +26,7 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<Link href={`/dashboard/admin/user/${user.uuid}`}>View files</Link>
+						<Link href={`/dashboard/admin/users/${user.uuid}`}>View files</Link>
 					</DropdownMenuItem>
 					{/* // TODO: Prepare a new dialog for input */}
 					<DropdownMenuItem onSelect={e => e.preventDefault()}>Set quota</DropdownMenuItem>

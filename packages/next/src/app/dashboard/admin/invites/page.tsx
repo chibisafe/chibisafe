@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Invites'
 };
 
-export default async function DashboardPage() {
+export default async function DashboardAdminInvitesPage() {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
