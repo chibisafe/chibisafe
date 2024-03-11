@@ -11,10 +11,10 @@ import { buttonVariants } from '@/styles/button';
 export const Header = () => {
 	return (
 		<header className="container z-40 bg-background">
-			<div className="flex h-20 items-center justify-between py-6">
+			<div className="flex h-20 justify-between py-6">
 				<Navigation />
 				<UploadProgress />
-				<nav className="flex items-center">
+				<nav className="flex items-center gap-1">
 					<Link href="https://discord.gg/5g6vgwn" target="_blank" rel="noreferrer">
 						<div
 							className={buttonVariants({
