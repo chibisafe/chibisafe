@@ -11,11 +11,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { ConfirmationAction } from './UserConfirmationAction';
-import type { UserWithCount } from '@/types';
+import type { UserWithCountAndQuota } from '@/types';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
+import { SetQuotaDialog } from '@/components/dialogs/SetQuotaDialog';
 
-export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCount }>) {
+export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCountAndQuota }>) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -28,8 +29,13 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 					<DropdownMenuItem>
 						<Link href={`/dashboard/admin/users/${user.uuid}`}>View files</Link>
 					</DropdownMenuItem>
-					{/* // TODO: Prepare a new dialog for input */}
-					<DropdownMenuItem onSelect={e => e.preventDefault()}>Set quota</DropdownMenuItem>
+					<DropdownMenuItem onSelect={e => e.preventDefault()}>
+						<SetQuotaDialog initialValue={user.storageQuota.quota} uuid={user.uuid}>
+							<button type="button" className="w-full h-full flex p-0 cursor-default">
+								Set quota
+							</button>
+						</SetQuotaDialog>
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
