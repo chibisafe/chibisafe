@@ -23,7 +23,7 @@ export const useUploadsQuery = ({
 				search
 			}
 		],
-		queryFn: () =>
+		queryFn: async () =>
 			request.get(
 				'files',
 				{
