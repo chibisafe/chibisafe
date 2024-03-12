@@ -4,6 +4,7 @@ import type { Settings } from '@/types';
 import type { DropItem, FileDropItem } from 'react-aria-components';
 import { isDirectoryDropItem, isFileDropItem } from 'react-aria-components';
 import { getFileExtension } from './file';
+import { toast } from 'sonner';
 
 export const processDropItem = async (item: DropItem | File, settings: Settings | null) => {
 	if (item instanceof File) {
@@ -40,4 +41,29 @@ export const processDropItem = async (item: DropItem | File, settings: Settings 
 	}
 
 	return [];
+};
+
+export const getSignedUrl = async (file: File) => {
+	// TODO: Since we're using credentials: include this will fail if the
+	// instance is set to public and the user is not logged in. probably.
+	const response = await fetch('/api/upload', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			credentials: 'include'
+		},
+		body: JSON.stringify({
+			contentType: file.type,
+			name: file.name,
+			size: file.size
+		})
+	});
+
+	if (!response.ok) {
+		const error = await response.json();
+		return { error: error.message };
+	}
+
+	const { url, identifier, publicUrl } = await response.json();
+	return { url, identifier, publicUrl };
 };

@@ -2,9 +2,8 @@
 
 import type { DropEvent } from '@react-types/shared';
 import { useAtom, useAtomValue } from 'jotai';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { DropZoneProps } from 'react-aria-components';
-import { globalDropZoneOpenAtom } from '@/lib/atoms/dropzone';
 import { DropZone } from '@/components/ui/dropzone';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -12,16 +11,18 @@ import { settingsAtom } from '@/lib/atoms/settings';
 import { toast } from 'sonner';
 import { getSignedUrl, processDropItem } from '@/lib/dropzone';
 import { useUploadFile } from '@/hooks/useUploadFile';
+import { albumDisablePointerEventAtom } from '@/lib/atoms/dropzone';
 
 interface DropZonePropsWithAlbumUuid extends DropZoneProps {
 	readonly albumUuid?: string;
 }
 
-export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
+export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 	const { className, children, ...additionalProps } = props;
 
 	const ref = useRef<HTMLDivElement>(null);
-	const [globalDropZoneOpen, setGlobalDropZoneOpen] = useAtom(globalDropZoneOpenAtom);
+	const [albumDropZoneOpen, setAlbumDropZoneOpen] = useState(false);
+	const [albumDisablePointerEvent, setAlbumDisablePointerEvent] = useAtom(albumDisablePointerEventAtom);
 
 	const settings = useAtomValue(settingsAtom);
 
@@ -29,6 +30,7 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 
 	const onDrop = useCallback(
 		async (ev: DropEvent) => {
+			setAlbumDisablePointerEvent(true);
 			for (const item of ev.items) {
 				const files = await processDropItem(item, settings);
 				if (!files.length) continue;
@@ -69,64 +71,30 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				);
 			}
 		},
-		[settings, uploadFile]
+		[setAlbumDisablePointerEvent, settings, uploadFile]
 	);
-
-	useEffect(() => {
-		const dragEnterHandler = (ev: DragEvent) => {
-			if (ev.dataTransfer?.types.includes('Files')) {
-				setGlobalDropZoneOpen(true);
-			}
-		};
-
-		window.addEventListener('dragenter', dragEnterHandler);
-
-		return () => {
-			window.removeEventListener('dragenter', dragEnterHandler);
-		};
-	}, [setGlobalDropZoneOpen]);
 
 	return (
 		<DropZone
 			{...additionalProps}
 			className={cn(
-				'fixed inset-0 z-50 p-4 transition-all',
-				globalDropZoneOpen
-					? 'duration-250 visible opacity-100 fade-in'
-					: 'duration-250 invisible opacity-0 fade-out',
+				'absolute inset-0 z-50 p-4 transition-all',
+				albumDropZoneOpen ? 'duration-250 opacity-100 fade-in' : 'duration-250 opacity-0 fade-out',
+				albumDisablePointerEvent ? 'pointer-events-none' : '',
 				className
 			)}
 			onDrop={onDrop}
-			onDropExit={() => setGlobalDropZoneOpen(false)}
+			onDropEnter={() => setAlbumDropZoneOpen(true)}
+			onDropExit={() => {
+				setAlbumDropZoneOpen(false);
+				setAlbumDisablePointerEvent(true);
+			}}
 			ref={ref}
 		>
 			<AnimatePresence>
-				{globalDropZoneOpen ? (
+				{albumDropZoneOpen ? (
 					<div className="global-dropzone-border h-full w-full rounded-xl p-px">
 						<div className="relative h-full w-full rounded-xl global-dropzone-backdrop flex flex-col justify-center items-center">
-							{/* <motion.div
-								animate={{ opacity: 1, y: 0 }}
-								className="absolute bottom-6 left-1/2"
-								exit={{ y: 50, opacity: 0 }}
-								initial={{ y: 50, x: '-50%', opacity: 0 }}
-								key="bottom-banner-outer"
-								transition={{ duration: 0.25 }}
-							>
-								<motion.div
-									animate={{ y: [0, -10] }}
-									className=" flex items-center gap-2 rounded-lg bg-blue-950 px-6 py-5"
-									key="bottom-banner-inner"
-									transition={{
-										delay: 0.25,
-										duration: 0.75,
-										repeat: Number.POSITIVE_INFINITY,
-										repeatType: 'reverse'
-									}}
-								>
-									Drop files to upload them to <PackageOpen size={18} strokeWidth={1.5} />{' '}
-									<span className="text-tum-label-base">My draft files</span>
-								</motion.div>
-							</motion.div> */}
 							<div className="relative flex flex-row justify-center items-center pointer-events-none select-none">
 								<motion.div
 									animate={{ opacity: 1, y: 0 }}
@@ -158,7 +126,6 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 												d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m37.66 101.66a8 8 0 0 1-11.32 0L136 107.31V168a8 8 0 0 1-16 0v-60.69l-18.34 18.35a8 8 0 0 1-11.32-11.32l32-32a8 8 0 0 1 11.32 0l32 32a8 8 0 0 1 0 11.32"
 											/>
 										</svg>
-										{/* <ArrowUpCircle className="h-12 w-12" strokeWidth={1} /> */}
 									</motion.div>
 								</motion.div>
 								<p className="border-l border-white pl-4 text-sm">
