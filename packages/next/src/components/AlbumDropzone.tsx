@@ -78,7 +78,7 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 		<DropZone
 			{...additionalProps}
 			className={cn(
-				'absolute inset-0 z-50 p-4 transition-all',
+				'absolute inset-0 z-50 p-0 transition-all',
 				albumDropZoneOpen ? 'duration-250 opacity-100 fade-in' : 'duration-250 opacity-0 fade-out',
 				albumDisablePointerEvent ? 'pointer-events-none' : '',
 				className
@@ -93,9 +93,9 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 		>
 			<AnimatePresence>
 				{albumDropZoneOpen ? (
-					<div className="global-dropzone-border h-full w-full rounded-xl p-px">
-						<div className="relative h-full w-full rounded-xl global-dropzone-backdrop flex flex-col justify-center items-center">
-							<div className="relative flex flex-row justify-center items-center pointer-events-none select-none">
+					<div className="global-dropzone-border h-full w-full">
+						<div className="relative h-full w-full global-dropzone-backdrop flex flex-col justify-center items-center">
+							<div className="relative flex flex-col justify-center items-center pointer-events-none select-none">
 								<motion.div
 									animate={{ opacity: 1, y: 0 }}
 									className=""
@@ -129,9 +129,9 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 									</motion.div>
 								</motion.div>
 								<p className="border-l border-white pl-4 text-sm">
-									Drop your files here
+									Drop here to upload
 									<br />
-									to upload them
+									to this album
 								</p>
 							</div>
 						</div>
