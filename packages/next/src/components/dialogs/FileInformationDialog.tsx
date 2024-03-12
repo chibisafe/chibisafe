@@ -30,8 +30,8 @@ import { FileInformationDrawerActions } from '@/components/FileInformationDrawer
 import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
-import { format } from '@formkit/tempo';
 import { getDate } from '@/lib/time';
+import { toast } from 'sonner';
 
 export function FileInformationDialog({
 	file,
@@ -67,6 +67,54 @@ export function FileInformationDialog({
 			console.error(error);
 		}
 	}, [file.uuid, type]);
+
+	const addFileToAlbum = useCallback(
+		async (albumUuid: string) => {
+			try {
+				await request.post(`file/${file.uuid}/album/${albumUuid}`);
+				toast.success('File added to album');
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		[file.uuid]
+	);
+
+	const removeFileFromAlbum = useCallback(
+		async (albumUuid: string) => {
+			try {
+				await request.delete(`file/${file.uuid}/album/${albumUuid}`);
+				toast.success('File removed from album');
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		[file.uuid]
+	);
+
+	const addTagToFile = useCallback(
+		async (tagUuid: string) => {
+			try {
+				await request.post(`file/${file.uuid}/tag/${tagUuid}`);
+				toast.success('Tag added to file');
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		[file.uuid]
+	);
+
+	const removeTagFromFile = useCallback(
+		async (tagUuid: string) => {
+			try {
+				await request.delete(`file/${file.uuid}/tag/${tagUuid}`);
+				toast.success('Tag removed from file');
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		[file.uuid]
+	);
 
 	useEffect(() => {
 		if (isOpen) void fetchExtraData();
@@ -294,6 +342,8 @@ export function FileInformationDialog({
 															: []
 													}
 													initialSelected={fileAlbums.map(album => album.uuid)}
+													onSelected={async value => addFileToAlbum(value)}
+													onRemoved={async value => removeFileFromAlbum(value)}
 												/>
 											</div>
 										</div>
@@ -320,6 +370,8 @@ export function FileInformationDialog({
 															: []
 													}
 													initialSelected={fileTags.map(tag => tag.uuid)}
+													onSelected={async value => addTagToFile(value)}
+													onRemoved={async value => removeTagFromFile(value)}
 												/>
 											</div>
 										</div>

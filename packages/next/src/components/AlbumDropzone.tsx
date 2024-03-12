@@ -93,7 +93,7 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 		>
 			<AnimatePresence>
 				{albumDropZoneOpen ? (
-					<div className="global-dropzone-border h-full w-full">
+					<div className="h-full w-full">
 						<div className="relative h-full w-full global-dropzone-backdrop flex flex-col justify-center items-center">
 							<div className="relative flex flex-col justify-center items-center pointer-events-none select-none">
 								<motion.div
