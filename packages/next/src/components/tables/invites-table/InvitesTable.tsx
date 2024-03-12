@@ -10,12 +10,12 @@ import {
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
 import { DataTable } from '../DataTable';
-import dayjs from 'dayjs';
 import type { Invite } from '@/types';
 import { Button } from '@/components/ui/button';
 import { InvitesConfirmationAction } from './InvitesConfirmationAction';
 import { Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
+import { getDate } from '@/lib/time';
 
 const columnHelper = createColumnHelper<Invite>();
 const columns = [
@@ -45,7 +45,7 @@ const columns = [
 			);
 		}
 	}),
-	columnHelper.accessor(row => dayjs(row.createdAt).format('MMMM D, YYYY h:mm A'), {
+	columnHelper.accessor(row => getDate(row.createdAt), {
 		id: 'createdAt',
 		header: 'Created At'
 	}),
@@ -62,7 +62,7 @@ const columns = [
 			);
 		}
 	}),
-	columnHelper.accessor(row => (row.editedAt ? dayjs(row.editedAt).format('MMMM D, YYYY h:mm A') : 'N/A'), {
+	columnHelper.accessor(row => (row.editedAt ? getDate(row.editedAt) : 'N/A'), {
 		id: 'claimedAt',
 		header: 'Claimed At'
 	}),

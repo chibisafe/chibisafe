@@ -2,9 +2,8 @@
 
 import type { DropEvent } from '@react-types/shared';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { PackageOpen } from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
-import type { FileDropItem, DropItem, DropZoneProps } from 'react-aria-components';
+import type { DropZoneProps } from 'react-aria-components';
 import { globalDropZoneOpenAtom } from '@/lib/atoms/dropzone';
 import { DropZone } from '@/components/ui/dropzone';
 import { cn, debug } from '@/lib/utils';
@@ -17,7 +16,11 @@ import { chibiUploader } from '@chibisafe/uploader-client';
 import { uploadsAtom } from '@/lib/atoms/uploads';
 import { processDropItem } from '@/lib/dropzone';
 
-export const GlobalDropZone = (props: DropZoneProps) => {
+interface DropZonePropsWithAlbumUuid extends DropZoneProps {
+	readonly albumUuid?: string;
+}
+
+export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 	const { className, children, ...additionalProps } = props;
 
 	const ref = useRef<HTMLDivElement>(null);
@@ -70,13 +73,8 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 				};
 
 				options.headers = {
-					credentials: 'include'
-					// authorization: token.value ? `Bearer ${token.value}` : '',
-					// albumuuid: isLoggedIn.value
-					// 	? albumsStore.selectedAlbumForUpload
-					// 		? albumsStore.selectedAlbumForUpload
-					// 		: ''
-					// 	: ''
+					credentials: 'include',
+					albumuuid: props.albumUuid ?? ''
 				};
 			}
 
@@ -94,7 +92,8 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 							bytesSent: 0,
 							bytesTotal: file.size,
 							progress: 0,
-							url: ''
+							url: '',
+							albumUuid: props.albumUuid ?? null
 						});
 					});
 				},
@@ -142,13 +141,8 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json',
-								credentials: 'include'
-								// authorization: token.value ? `Bearer ${token.value}` : '',
-								// albumuuid: isLoggedIn.value
-								// 	? albumsStore.selectedAlbumForUpload
-								// 		? albumsStore.selectedAlbumForUpload
-								// 		: ''
-								// 	: ''
+								credentials: 'include',
+								albumuuid: props.albumUuid ?? ''
 							},
 							body: JSON.stringify({ identifier, name: file.name, type: file.type })
 						})
@@ -207,7 +201,7 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 				}
 			});
 		},
-		[setUploads, settings?.chunkSize, settings?.maxSize]
+		[props.albumUuid, setUploads, settings?.chunkSize, settings?.maxSize]
 	);
 
 	const onDrop = useCallback(
@@ -304,8 +298,8 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 			<AnimatePresence>
 				{globalDropZoneOpen ? (
 					<div className="global-dropzone-border h-full w-full rounded-xl p-px">
-						<div className="relative h-full w-full rounded-xl bg-tum-lavender-100/[0.64] dark:bg-tum-lavender-800/[0.64]">
-							<motion.div
+						<div className="relative h-full w-full rounded-xl global-dropzone-backdrop flex flex-col justify-center items-center">
+							{/* <motion.div
 								animate={{ opacity: 1, y: 0 }}
 								className="absolute bottom-6 left-1/2"
 								exit={{ y: 50, opacity: 0 }}
@@ -315,7 +309,7 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 							>
 								<motion.div
 									animate={{ y: [0, -10] }}
-									className=" flex items-center gap-2 rounded-lg bg-tum-lavender-600 px-6 py-5 text-tum-base text-tum-neutral-40 dark:bg-tum-lavender-400 dark:text-tum-neutral-900"
+									className=" flex items-center gap-2 rounded-lg bg-blue-950 px-6 py-5"
 									key="bottom-banner-inner"
 									transition={{
 										delay: 0.25,
@@ -327,7 +321,47 @@ export const GlobalDropZone = (props: DropZoneProps) => {
 									Drop files to upload them to <PackageOpen size={18} strokeWidth={1.5} />{' '}
 									<span className="text-tum-label-base">My draft files</span>
 								</motion.div>
-							</motion.div>
+							</motion.div> */}
+							<div className="relative flex flex-row justify-center items-center pointer-events-none select-none">
+								<motion.div
+									animate={{ opacity: 1, y: 0 }}
+									className=""
+									exit={{ y: 50, opacity: 0 }}
+									initial={{ y: 50, opacity: 0 }}
+									key="bottom-banner-outer"
+									transition={{ duration: 0.25 }}
+								>
+									<motion.div
+										animate={{ y: [10, -10] }}
+										className=" flex items-center gap-2 rounded-lg px-6 py-5"
+										key="bottom-banner-inner"
+										transition={{
+											delay: 0.25,
+											duration: 0.75,
+											repeat: Number.POSITIVE_INFINITY,
+											repeatType: 'reverse'
+										}}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="3em"
+											height="3em"
+											viewBox="0 0 256 256"
+										>
+											<path
+												fill="currentColor"
+												d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m37.66 101.66a8 8 0 0 1-11.32 0L136 107.31V168a8 8 0 0 1-16 0v-60.69l-18.34 18.35a8 8 0 0 1-11.32-11.32l32-32a8 8 0 0 1 11.32 0l32 32a8 8 0 0 1 0 11.32"
+											/>
+										</svg>
+										{/* <ArrowUpCircle className="h-12 w-12" strokeWidth={1} /> */}
+									</motion.div>
+								</motion.div>
+								<p className="border-l border-white pl-4 text-sm">
+									Drop your files here
+									<br />
+									to upload them
+								</p>
+							</div>
 						</div>
 					</div>
 				) : null}

@@ -12,7 +12,11 @@ import { chibiUploader } from '@chibisafe/uploader-client';
 import { toast } from 'sonner';
 import { debug } from '@/lib/utils';
 
-export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerProps>((props, ref) => {
+interface FileTriggerPropsWithAlbumUuid extends FileTriggerProps {
+	readonly albumUuid?: string;
+}
+
+export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAlbumUuid>((props, ref) => {
 	const { children, ...additionalProps } = props;
 	const settings = useAtomValue(settingsAtom);
 	const setUploads = useSetAtom(uploadsAtom);
@@ -57,7 +61,8 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerProps>((pro
 				};
 
 				options.headers = {
-					credentials: 'include'
+					credentials: 'include',
+					albumuuid: props.albumUuid ?? ''
 					// authorization: token.value ? `Bearer ${token.value}` : '',
 					// albumuuid: isLoggedIn.value
 					// 	? albumsStore.selectedAlbumForUpload
@@ -81,7 +86,8 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerProps>((pro
 							bytesSent: 0,
 							bytesTotal: file.size,
 							progress: 0,
-							url: ''
+							url: '',
+							albumUuid: props.albumUuid ?? null
 						});
 					});
 				},
@@ -129,7 +135,8 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerProps>((pro
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json',
-								credentials: 'include'
+								credentials: 'include',
+								albumuuid: props.albumUuid ?? ''
 								// authorization: token.value ? `Bearer ${token.value}` : '',
 								// albumuuid: isLoggedIn.value
 								// 	? albumsStore.selectedAlbumForUpload
@@ -194,7 +201,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerProps>((pro
 				}
 			});
 		},
-		[setUploads, settings?.chunkSize, settings?.maxSize]
+		[props.albumUuid, setUploads, settings?.chunkSize, settings?.maxSize]
 	);
 
 	const onSelect = useCallback(

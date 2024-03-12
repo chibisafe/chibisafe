@@ -58,6 +58,7 @@ export type File = {
 };
 
 export interface UploadFile {
+	albumUuid: string | null;
 	bytesSent: number;
 	bytesTotal: number;
 	error?: string;
