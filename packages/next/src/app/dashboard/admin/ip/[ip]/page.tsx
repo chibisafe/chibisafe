@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Plus } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { fetchEndpoint } from '@/lib/fileFetching';
 import type { PageQuery } from '@/types';
 import { FilesList } from '@/components/FilesList';
+import { BanThisIpDialog } from '@/components/dialogs/BanThisIpDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
@@ -23,6 +22,7 @@ export default async function DashboardPage({
 
 	// TODO: Fetching is broken, I believe it's the backend that's broken
 	const response = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
+	console.log(response);
 	return (
 		<>
 			<DashboardHeader
@@ -34,10 +34,7 @@ export default async function DashboardPage({
 					{ name: params.ip, url: `/dashboard/admin/ip/${params.ip}` }
 				]}
 			>
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					Ban this IP
-				</Button>
+				{response.banned ? null : <BanThisIpDialog ip={params.ip} />}
 			</DashboardHeader>
 			<div className="px-2">
 				<FilesList type="admin" files={response.files} count={response.count} />
