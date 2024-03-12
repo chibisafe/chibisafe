@@ -1,7 +1,6 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { Input } from '@/components/ui/input';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -16,29 +15,16 @@ import { flexRender } from '@tanstack/react-table';
 export const DataTable = ({
 	table,
 	columns,
-	showSearch = false,
-	searchColumn,
 	showColumnSelector = false
 }: PropsWithChildren<{
 	readonly columns: any[];
-	readonly searchColumn?: string;
 	readonly showColumnSelector?: boolean;
-	readonly showSearch?: boolean;
 	readonly table: TableType<any>;
 }>) => {
 	return (
 		<>
-			<div className="flex items-center py-4">
-				{/* // TODO: Be able to search on any columns instead of a specific one */}
-				{showSearch && searchColumn ? (
-					<Input
-						placeholder={`Search...`}
-						value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-						onChange={event => table.getColumn(searchColumn)?.setFilterValue(event.target.value)}
-						className="max-w-sm"
-					/>
-				) : null}
-				{showColumnSelector ? (
+			{showColumnSelector ? (
+				<div className="flex items-center py-4">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="outline" className="ml-auto">
@@ -63,9 +49,9 @@ export const DataTable = ({
 								})}
 						</DropdownMenuContent>
 					</DropdownMenu>
-				) : null}
-			</div>
-			<div className="rounded-md border">
+				</div>
+			) : null}
+			<div className="rounded-md border mt-4">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map(headerGroup => (
