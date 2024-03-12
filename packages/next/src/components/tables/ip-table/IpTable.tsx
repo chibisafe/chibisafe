@@ -12,9 +12,9 @@ import { useState, type PropsWithChildren } from 'react';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
-import dayjs from 'dayjs';
 import { IpTableActions } from './IpTableActions';
 import Link from 'next/link';
+import { getDate } from '@/lib/time';
 
 interface IP {
 	readonly createdAt: string;
@@ -43,7 +43,7 @@ const columns = [
 				</Button>
 			);
 		},
-		cell: props => <span>{dayjs(props.getValue()).format('MMMM D, YYYY h:mm A')}</span>
+		cell: props => <span>{getDate(props.getValue())}</span>
 	}),
 	columnHelper.accessor(row => row.reason, {
 		id: 'reason',

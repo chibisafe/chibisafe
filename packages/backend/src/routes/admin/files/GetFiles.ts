@@ -124,6 +124,16 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					original: {
 						contains: search
 					}
+				},
+				{
+					ip: {
+						equals: search
+					}
+				},
+				{
+					uuid: {
+						equals: search
+					}
 				}
 			]
 		};
@@ -139,6 +149,16 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				{
 					original: {
 						contains: search
+					}
+				},
+				{
+					ip: {
+						equals: search
+					}
+				},
+				{
+					uuid: {
+						equals: search
 					}
 				}
 			]

@@ -3,9 +3,12 @@ import type { PageQuery } from '@/types';
 import { Plus } from 'lucide-react';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/react-aria-button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
+import { GlobalDropZone } from '@/components/Dropzone';
+import { UploadTrigger } from '@/components/UploadTrigger';
+import { buttonVariants } from '@/styles/button';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -21,6 +24,13 @@ export default async function AlbumPage({
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
+	// const queryClient = new QueryClient();
+
+	// await queryClient.prefetchQuery({
+	// 	queryKey: ['uploads', { currentPage, perPage, search }],
+	// 	queryFn: async () => fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search)
+	// });
+
 	const response = await fetchEndpoint({ type: 'album', albumUuid: params.uuid }, currentPage, perPage);
 	return (
 		<>
@@ -32,14 +42,20 @@ export default async function AlbumPage({
 					{ name: response.name, url: `/dashboard/albums/${params.uuid}` }
 				]}
 			>
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					Upload file to album
-				</Button>
+				<UploadTrigger allowsMultiple albumUuid={params.uuid}>
+					<Button className={buttonVariants()}>
+						<Plus className="mr-2 h-4 w-4" />
+						Upload file to album
+					</Button>
+				</UploadTrigger>
 			</DashboardHeader>
 			<div className="px-2">
+				{/* <HydrationBoundary state={dehydrate(queryClient)}>
+					<FilesList type="album" files={response.files} count={response.count} />
+				</HydrationBoundary> */}
 				<FilesList type="album" files={response.files} count={response.count} />
 			</div>
+			<GlobalDropZone albumUuid={params.uuid} />
 		</>
 	);
 }

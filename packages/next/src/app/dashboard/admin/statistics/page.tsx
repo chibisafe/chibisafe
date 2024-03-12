@@ -6,14 +6,9 @@ import request from '@/lib/request';
 import { CategoryBar, DonutChart, Legend, ProgressCircle } from '@/components/Statistics';
 import { Separator } from '@/components/ui/separator';
 import { formatBytes } from '@/lib/file';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { InfoIcon } from 'lucide-react';
 import { Tooltip } from '@/components/Tooltip';
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
+import { getDate, getUptime } from '@/lib/time';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Stats'
@@ -40,13 +35,13 @@ export default async function DashboardAdminStatsPage() {
 
 	const CPULoad = Number.parseFloat(statistics[0]?.system['CPU Load']);
 	const memory = statistics[0]?.system?.Memory;
-	const uptime = dayjs.duration(statistics[0].system.Uptime.value, 'seconds').humanize();
+	const uptime = getUptime(statistics[0].system.Uptime.value);
 	const chibisafeMemory = statistics[1]?.service?.['Memory Usage'];
-	const chibisafeUptime = dayjs.duration(statistics[1].service.Uptime.value, 'seconds').humanize();
+	const chibisafeUptime = getUptime(statistics[1].service.Uptime.value);
 
-	const systemGeneratedOn = dayjs(statistics[0]?.system?.meta.generatedOn).format('MMMM D, YYYY h:mm A');
-	const serviceGeneratedOn = dayjs(statistics[1]?.service?.meta.generatedOn).format('MMMM D, YYYY h:mm A');
-	const fileSystemsGeneratedOn = dayjs(statistics[2]?.fileSystems?.meta.generatedOn).format('MMMM D, YYYY h:mm A');
+	const systemGeneratedOn = getDate(statistics[0]?.system?.meta.generatedOn);
+	const serviceGeneratedOn = getDate(statistics[1]?.service?.meta.generatedOn);
+	const fileSystemsGeneratedOn = getDate(statistics[2]?.service?.meta.generatedOn);
 
 	const fileSystems = statistics[2]?.fileSystems;
 	const uploads = Object.keys(statistics[3].uploads)

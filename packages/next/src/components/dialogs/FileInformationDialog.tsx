@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 import type { Album as AlbumType, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
 import type { DialogProps } from '@radix-ui/react-dialog';
-import dayjs from 'dayjs';
 import {
 	MediaControlBar,
 	MediaController,
@@ -31,6 +30,8 @@ import { FileInformationDrawerActions } from '@/components/FileInformationDrawer
 import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
+import { format } from '@formkit/tempo';
+import { getDate } from '@/lib/time';
 
 export function FileInformationDialog({
 	file,
@@ -211,12 +212,7 @@ export function FileInformationDialog({
 
 									<div>
 										<Label htmlFor="uploaded">Uploaded</Label>
-										<Input
-											value={dayjs(file.createdAt).format('MMMM D, YYYY h:mm A')}
-											name="uploaded"
-											id="uploaded"
-											readOnly
-										/>
+										<Input value={getDate(file.createdAt)} name="uploaded" id="uploaded" readOnly />
 									</div>
 								</div>
 
@@ -268,7 +264,7 @@ export function FileInformationDialog({
 										<div>
 											<Label htmlFor="joined">Joined</Label>
 											<Input
-												value={dayjs(file.user.createdAt).format('MMMM D, YYYY h:mm A')}
+												value={getDate(file.user.createdAt.toString())}
 												name="joined"
 												id="joined"
 												readOnly

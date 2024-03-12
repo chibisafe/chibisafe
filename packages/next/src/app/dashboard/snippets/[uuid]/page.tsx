@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 import { cookies } from 'next/headers';
 import request from '@/lib/request';
-import dayjs from 'dayjs';
 import type { Snippet } from '@/types';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DeleteSnippetDialog } from '@/components/dialogs/DeleteSnippetDialog';
 import { SnippetViewer } from '@/components/SnippetViewer';
+import { getDate } from '@/lib/time';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Snippets - Snippet'
@@ -35,7 +35,7 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 		<>
 			<DashboardHeader
 				title={snippet.name}
-				subtitle={dayjs(snippet.createdAt).fromNow()}
+				subtitle={getDate(snippet.createdAt)}
 				breadcrumbs={[
 					{ name: 'Snippets', url: '/dashboard/snippets' },
 					{ name: snippet.name, url: `/dashboard/admin/ip/${params.uuid}` }

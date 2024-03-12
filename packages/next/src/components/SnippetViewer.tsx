@@ -1,12 +1,9 @@
 import type { Snippet } from '@/types';
 import { ArrowUpRightFromSquare } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { highlighter } from '@/lib/shiki';
 import Link from 'next/link';
-
-dayjs.extend(relativeTime);
+import { getDate } from '@/lib/time';
 
 export const SnippetViewer = ({
 	snippet,
@@ -43,7 +40,10 @@ export const SnippetViewer = ({
 						</h2>
 					) : null}
 					{showCreatedAt ? (
-						<h3 className="text-sm leading-tight tracking-tighter">{dayjs(snippet.createdAt).fromNow()}</h3>
+						<h3 className="text-sm leading-tight tracking-tighter">
+							{snippet.createdAt}
+							{getDate(snippet.createdAt)}
+						</h3>
 					) : null}
 					{showLanguage ? (
 						<h3 className="text-sm leading-tight tracking-tighter">{snippet.language}</h3>

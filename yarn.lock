@@ -1163,6 +1163,7 @@ __metadata:
   resolution: "@chibisafe/website-next@workspace:packages/next"
   dependencies:
     "@chibisafe/uploader-client": ^1.0.11
+    "@formkit/tempo": ^0.0.15
     "@ianvs/prettier-plugin-sort-imports": ^4.1.1
     "@mdx-js/loader": ^3.0.1
     "@mdx-js/react": ^3.0.1
@@ -1794,6 +1795,13 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: a0af57874fcd163add5f7a0cb1c008e9b09feb1d24cbce1263379ae0393cddd6681197a7f2f512f351a97666fc8675ed52cc17d1834266ee8fc65e9edf3435f6
+  languageName: node
+  linkType: hard
+
+"@formkit/tempo@npm:^0.0.15":
+  version: 0.0.15
+  resolution: "@formkit/tempo@npm:0.0.15"
+  checksum: f485c94e12fe219dd7b1a8a65af04de87dcaef444748e07454c1f0be92064a83295a8a38524d01bb446e82b4927c1d632f9bce8db4de7a18918f608ad06c894b
   languageName: node
   linkType: hard
 
