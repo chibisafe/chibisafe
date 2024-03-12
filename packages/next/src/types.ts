@@ -205,3 +205,15 @@ export interface StorageQuota {
 export interface UserWithCountAndQuota extends UserWithCount {
 	storageQuota: StorageQuota;
 }
+
+export interface AlbumLink {
+	albumUuid: string;
+	createdAt: string;
+	editedAt: string | null;
+	enableDownload: boolean;
+	enabled: boolean;
+	expiresAt: string | null;
+	identifier: string;
+	uuid: string;
+	views: number;
+}
