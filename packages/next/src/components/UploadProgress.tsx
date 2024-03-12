@@ -47,7 +47,12 @@ export const UploadProgress = () => {
 			setStatus('complete');
 			setButtonText('All uploads complete 🎉');
 			timeout = setTimeout(() => {
-				void queryClient.invalidateQueries({ queryKey: ['uploads'] });
+				let queryKey = ['uploads'];
+				if (uploads.some(file => file.albumUuid)) {
+					queryKey = ['albums', uploads[0]?.albumUuid ? uploads[0].albumUuid : ''];
+				}
+
+				void queryClient.invalidateQueries({ queryKey });
 			}, 1000);
 		} else {
 			setStatus('idle');

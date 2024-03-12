@@ -14,10 +14,14 @@ export function FancyMultiSelect({
 	options = [],
 	placeholder = 'Select option...',
 	name = 'fancy-multi-select',
-	initialSelected = []
+	initialSelected = [],
+	onSelected,
+	onRemoved
 }: {
 	readonly initialSelected?: string[];
 	readonly name?: string;
+	onRemoved(removed: string): void;
+	onSelected(selected: string): void;
 	readonly options: Option[];
 	readonly placeholder?: string;
 }) {
@@ -28,27 +32,37 @@ export function FancyMultiSelect({
 	);
 	const [inputValue, setInputValue] = useState('');
 
-	const handleUnselect = useCallback((option: Option) => {
-		setSelected(prev => prev.filter(s => s.value !== option.value));
-	}, []);
+	const handleUnselect = useCallback(
+		(option: Option) => {
+			setSelected(prev => prev.filter(s => s.value !== option.value));
+			onRemoved(option.value);
+		},
+		[onRemoved]
+	);
 
-	const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-		const input = inputRef.current;
-		if (input) {
-			if ((e.key === 'Delete' || e.key === 'Backspace') && input.value === '') {
-				setSelected(prev => {
-					const newSelected = [...prev];
-					newSelected.pop();
-					return newSelected;
-				});
-			}
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent<HTMLDivElement>) => {
+			const input = inputRef.current;
+			if (input) {
+				if ((e.key === 'Delete' || e.key === 'Backspace') && input.value === '') {
+					const lastValue = selected[selected.length - 1];
+					setSelected(prev => {
+						const newSelected = [...prev];
+						newSelected.pop();
+						return newSelected;
+					});
 
-			// This is not a default behaviour of the <input /> field
-			if (e.key === 'Escape') {
-				input.blur();
+					if (lastValue) onRemoved(lastValue.value);
+				}
+
+				// This is not a default behaviour of the <input /> field
+				if (e.key === 'Escape') {
+					input.blur();
+				}
 			}
-		}
-	}, []);
+		},
+		[onRemoved, selected]
+	);
 
 	const selectables = options.filter(option => !selected.includes(option));
 
@@ -106,6 +120,7 @@ export function FancyMultiSelect({
 											onSelect={value => {
 												setInputValue('');
 												setSelected(prev => [...prev, option]);
+												onSelected(option.value);
 											}}
 											className={'cursor-pointer'}
 										>

@@ -27,7 +27,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 
 			for (const item of files) {
 				const files = await processDropItem(item, settings);
-				if (!files.length) return;
+				if (!files.length) continue;
 
 				if (!settings?.useNetworkStorage) {
 					void Promise.all(
@@ -41,7 +41,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 						)
 					);
 
-					return;
+					continue;
 				}
 
 				void Promise.all(
@@ -70,7 +70,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 	);
 
 	return (
-		<FileTrigger {...additionalProps} onSelect={onSelect} ref={ref}>
+		<FileTrigger {...additionalProps} onSelect={onSelect} ref={ref} allowsMultiple>
 			{children}
 		</FileTrigger>
 	);
