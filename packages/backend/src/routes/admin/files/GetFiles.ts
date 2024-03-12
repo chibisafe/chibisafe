@@ -5,6 +5,7 @@ import prisma from '@/structures/database.js';
 import type { RequestWithUser, ExtendedFile } from '@/structures/interfaces.js';
 import { booleanSchema } from '@/structures/schemas/Boolean.js';
 import { fileAsAdminSchema } from '@/structures/schemas/FileAsAdmin.js';
+import { fileAsUserSchema } from '@/structures/schemas/FileAsUser.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
@@ -24,7 +25,7 @@ export const schema = {
 	response: {
 		200: z.object({
 			message: z.string().describe('The response message.'),
-			files: z.array(fileAsAdminSchema),
+			files: z.array(fileAsAdminSchema).or(z.array(fileAsUserSchema)),
 			count: z.number().describe('The total count of files.')
 		}),
 		'4xx': http4xxErrorSchema,
