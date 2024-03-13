@@ -23,7 +23,11 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`snippets`,
 		{
 			page: currentPage,
@@ -39,6 +43,10 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	return (
 		<>

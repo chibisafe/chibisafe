@@ -52,11 +52,15 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 		}
 	};
 
-	const { data } = useQuery<{ links: AlbumLink[] }>({
+	const { data, error } = useQuery<{ links: AlbumLink[] }>({
 		queryKey: ['albums', 'links'],
 		enabled: Boolean(album?.uuid),
-		queryFn: async () =>
-			request.get(
+		queryFn: async () => {
+			const {
+				data: response,
+				error,
+				status
+			} = await request.get(
 				`album/${album?.uuid}/links`,
 				{},
 				{},
@@ -65,7 +69,14 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 						tags: ['links']
 					}
 				}
-			)
+			);
+
+			if (error && status === 401) {
+				throw new Error(error);
+			}
+
+			return response;
+		}
 	});
 
 	useEffect(() => {
@@ -82,6 +93,10 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 			}
 		};
 	}, [setOpen, state, state.message, state.type]);
+
+	if (error) {
+		toast.error(error.message);
+	}
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

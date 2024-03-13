@@ -10,8 +10,8 @@ import request from '@/lib/request';
 import { cookies } from 'next/headers';
 import type { LocalStorageUser, StorageQuota } from '@/types';
 import { formatBytes } from '@/lib/file';
-import { Progress } from '@/components/ui/progress';
 import { CategoryBar } from '@/components/Statistics';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Credentials'
@@ -21,7 +21,11 @@ export default async function DashboardPage() {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`user/me`,
 		{},
 		{
@@ -33,6 +37,10 @@ export default async function DashboardPage() {
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	const user = response.user as LocalStorageUser;
 	const quota = response.storageQuota as StorageQuota;

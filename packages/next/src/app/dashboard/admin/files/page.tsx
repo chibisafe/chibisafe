@@ -4,6 +4,7 @@ import type { PageQuery } from '@/types';
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Files'
@@ -14,7 +15,11 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search);
+	const { data: response, error, status } = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search);
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader

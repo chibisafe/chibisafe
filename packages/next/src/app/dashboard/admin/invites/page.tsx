@@ -21,11 +21,20 @@ export default async function DashboardAdminInvitesPage() {
 		authorization: `Bearer ${token}`
 	};
 
-	const response = await request.get(`admin/invites`, {}, authorization, {
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(`admin/invites`, {}, authorization, {
 		next: {
 			tags: ['invites']
 		}
 	});
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader

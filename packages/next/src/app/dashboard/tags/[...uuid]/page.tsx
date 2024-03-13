@@ -6,16 +6,31 @@ import { fetchEndpoint } from '@/lib/fileFetching';
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Tags'
 };
 
-export default async function TagPage({ searchParams, params }: { readonly params: { uuid: string }; readonly searchParams: PageQuery }) {
+export default async function TagPage({
+	searchParams,
+	params
+}: {
+	readonly params: { uuid: string };
+	readonly searchParams: PageQuery;
+}) {
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
-	const response = await fetchEndpoint({ type: 'tag', tagUuid: params.uuid }, currentPage, perPage);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'tag', tagUuid: params.uuid }, currentPage, perPage);
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader

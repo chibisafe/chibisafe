@@ -23,8 +23,12 @@ export const useUploadsQuery = ({
 				search
 			}
 		],
-		queryFn: async () =>
-			request.get(
+		queryFn: async () => {
+			const {
+				data: response,
+				error,
+				status
+			} = await request.get(
 				'files',
 				{
 					page: currentPage,
@@ -37,6 +41,13 @@ export const useUploadsQuery = ({
 						tags: ['files']
 					}
 				}
-			)
+			);
+
+			if (error && status === 401) {
+				throw new Error(error);
+			}
+
+			return response;
+		}
 	});
 };

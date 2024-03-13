@@ -24,7 +24,10 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 
 	await queryClient.prefetchQuery({
 		queryKey: ['uploads', { currentPage, perPage, search }],
-		queryFn: async () => fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search)
+		queryFn: async () => {
+			const { data: response } = await fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search);
+			return response;
+		}
 	});
 
 	return (
