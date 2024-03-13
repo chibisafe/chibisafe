@@ -29,7 +29,7 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 		}
 
 		try {
-			await request.post(
+			const { error } = await request.post(
 				'auth/register',
 				{
 					username,
@@ -41,6 +41,11 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 						}
 					: undefined
 			);
+
+			if (error) {
+				toast.error(error);
+				return;
+			}
 
 			router.push('/login');
 		} catch (error: any) {

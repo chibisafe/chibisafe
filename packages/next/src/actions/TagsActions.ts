@@ -1,25 +1,16 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
-
-const getToken = () => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-	return token;
-};
+import { getToken } from './utils';
 
 export const createTag = async (_: any, form: FormData) => {
 	const name = form.get('name') as string;
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'tag/create',
 			{
 				name
@@ -34,6 +25,8 @@ export const createTag = async (_: any, form: FormData) => {
 			}
 		);
 
+		if (error) return { message: error, type: MessageType.Error };
+
 		revalidateTag('tags');
 		return { message: 'Tag created', type: MessageType.Success };
 	} catch (error: any) {
@@ -45,7 +38,7 @@ export const deleteTag = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.delete(
+		const { error } = await request.delete(
 			`tag/${uuid}`,
 			{},
 			{
@@ -57,6 +50,8 @@ export const deleteTag = async (_: any, form: FormData) => {
 				}
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('tags');
 		return { message: 'Tag deleted', type: MessageType.Success };

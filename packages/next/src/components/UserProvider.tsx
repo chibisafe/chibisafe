@@ -8,6 +8,7 @@ import { useAtom } from 'jotai';
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import request from '@/lib/request';
 import { logout } from '@/lib/logout';
+import { toast } from 'sonner';
 
 export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: boolean }) {
 	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
@@ -16,12 +17,20 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 		if (!currentUser && shouldFetch) {
 			request
 				.get('user/me')
-				.then(response => {
-					setCurrentUser(response.user);
+				.then(async response => {
+					if (response.error) {
+						if (response.status === 401) {
+							await logout();
+						}
+
+						toast.error(response.error);
+						return;
+					}
+
+					setCurrentUser(response.data.user);
 				})
-				.catch(async (error: any) => {
-					// TODO: If error 401 we need to log out
-					await logout();
+				.catch((error: any) => {
+					toast.error(error);
 				});
 		}
 	}, [currentUser, setCurrentUser, shouldFetch]);

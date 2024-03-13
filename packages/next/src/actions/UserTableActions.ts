@@ -1,24 +1,15 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
-
-const getToken = () => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-	return token;
-};
+import { getToken } from './utils';
 
 export const setQuota = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/quota`,
 			{
 				space: form.get('space')
@@ -27,6 +18,8 @@ export const setQuota = async (_: any, form: FormData) => {
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'New quota set', type: MessageType.Success };
@@ -39,13 +32,15 @@ export const enableUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/enable`,
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'User enabled', type: MessageType.Success };
@@ -58,13 +53,15 @@ export const disableUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/disable`,
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'User disabled', type: MessageType.Success };
@@ -77,13 +74,15 @@ export const demoteUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/demote`,
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'User demoted', type: MessageType.Success };
@@ -96,13 +95,15 @@ export const promoteUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/promote`,
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'User promoted', type: MessageType.Success };
@@ -115,13 +116,15 @@ export const purgeUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/user/${uuid}/purge`,
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('users');
 		return { message: 'User purged', type: MessageType.Success };

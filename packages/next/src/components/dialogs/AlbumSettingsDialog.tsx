@@ -43,7 +43,11 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 
 	const createNewAlbumLink = async () => {
 		try {
-			await request.post(`album/${album?.uuid}/link`, {});
+			const { error } = await request.post(`album/${album?.uuid}/link`, {});
+			if (error) {
+				toast.error(error);
+				return;
+			}
 
 			toast.success('Link created');
 			void queryClient.invalidateQueries({ queryKey: ['albums', 'links'] });

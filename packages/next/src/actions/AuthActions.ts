@@ -1,17 +1,11 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
 import { revalidateTag } from 'next/cache';
+import { getToken } from './utils';
 
 export const changePassword = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const password = form.get('currentpassword') as string;
 	const newPassword = form.get('newpassword') as string;
 	const rePassword = form.get('repassword') as string;
@@ -22,16 +16,18 @@ export const changePassword = async (_: any, form: FormData) => {
 	if (newPassword !== rePassword) return { message: 'Passwords do not match', type: MessageType.Error };
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'auth/password/change',
 			{
 				password,
 				newPassword
 			},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('me');
 		return { message: 'Password changed', type: MessageType.Success };
@@ -41,18 +37,16 @@ export const changePassword = async (_: any, form: FormData) => {
 };
 
 export const requestNewApiKey = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'auth/apikey/change',
 			{},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('me');
 		return { message: 'API key regenerated', type: MessageType.Success };

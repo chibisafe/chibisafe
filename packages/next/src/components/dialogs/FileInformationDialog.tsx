@@ -85,7 +85,12 @@ export function FileInformationDialog({
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				await request.post(`file/${file.uuid}/album/${albumUuid}`);
+				const { error } = await request.post(`file/${file.uuid}/album/${albumUuid}`);
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
 				toast.success('File added to album');
 			} catch (error: any) {
 				toast.error(error);
@@ -97,7 +102,12 @@ export function FileInformationDialog({
 	const removeFileFromAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				await request.delete(`file/${file.uuid}/album/${albumUuid}`);
+				const { error } = await request.delete(`file/${file.uuid}/album/${albumUuid}`);
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
 				toast.success('File removed from album');
 			} catch (error) {
 				console.error(error);
@@ -109,7 +119,12 @@ export function FileInformationDialog({
 	const addTagToFile = useCallback(
 		async (tagUuid: string) => {
 			try {
-				await request.post(`file/${file.uuid}/tag/${tagUuid}`);
+				const { error } = await request.post(`file/${file.uuid}/tag/${tagUuid}`);
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
 				toast.success('Tag added to file');
 			} catch (error: any) {
 				toast.error(error);
@@ -121,7 +136,12 @@ export function FileInformationDialog({
 	const removeTagFromFile = useCallback(
 		async (tagUuid: string) => {
 			try {
-				await request.delete(`file/${file.uuid}/tag/${tagUuid}`);
+				const { error } = await request.delete(`file/${file.uuid}/tag/${tagUuid}`);
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
 				toast.success('Tag removed from file');
 			} catch (error) {
 				console.error(error);

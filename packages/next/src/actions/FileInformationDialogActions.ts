@@ -1,22 +1,16 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
+import { getToken } from './utils';
 
 export const regenerateThumbnail = async (uuid: string) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	try {
 		await request.post(
 			`file/${uuid}/thumbnail/regenerate`,
 			{},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
 
@@ -27,20 +21,18 @@ export const regenerateThumbnail = async (uuid: string) => {
 };
 
 export const deleteFile = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.delete(
+		const { error } = await request.delete(
 			`file/${uuid}`,
 			{},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
@@ -49,20 +41,18 @@ export const deleteFile = async (_: any, form: FormData) => {
 };
 
 export const quarantineFile = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/file/${uuid}/quarantine`,
 			{},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		return { message: 'File quarantined', type: MessageType.Success };
 	} catch (error: any) {
@@ -71,20 +61,18 @@ export const quarantineFile = async (_: any, form: FormData) => {
 };
 
 export const allowFile = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`admin/file/${uuid}/allow`,
 			{},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		return { message: 'File allowed', type: MessageType.Success };
 	} catch (error: any) {
