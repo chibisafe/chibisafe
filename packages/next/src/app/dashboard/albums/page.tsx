@@ -35,22 +35,22 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`albums`,
-		{
+	} = await request.get({
+		url: `albums`,
+		query: {
 			page: currentPage,
 			limit: perPage,
 			search
 		},
-		{
+		headers: {
 			authorization: `Bearer ${token}`
 		},
-		{
+		options: {
 			next: {
 				tags: ['albums']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

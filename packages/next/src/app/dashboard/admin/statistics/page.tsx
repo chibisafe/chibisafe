@@ -23,18 +23,17 @@ export default async function DashboardAdminStatsPage() {
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`admin/service/statistics`,
-		{},
-		{
+	} = await request.get({
+		url: `admin/service/statistics`,
+		headers: {
 			authorization: `Bearer ${token}`
 		},
-		{
+		options: {
 			next: {
 				tags: ['me']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

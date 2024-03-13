@@ -30,20 +30,22 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`tags`,
-		{
+	} = await request.get({
+		url: `tags`,
+		query: {
 			page: currentPage,
 			limit: perPage,
 			search
 		},
-		authorization,
-		{
+		headers: {
+			...authorization
+		},
+		options: {
 			next: {
 				tags: ['tags']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

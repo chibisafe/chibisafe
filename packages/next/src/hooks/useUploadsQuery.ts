@@ -28,20 +28,19 @@ export const useUploadsQuery = ({
 				data: response,
 				error,
 				status
-			} = await request.get(
-				'files',
-				{
+			} = await request.get({
+				url: 'files',
+				query: {
 					page: currentPage,
 					limit: perPage,
 					search
 				},
-				{},
-				{
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 
 			if (error && status === 401) {
 				throw new Error(error);
