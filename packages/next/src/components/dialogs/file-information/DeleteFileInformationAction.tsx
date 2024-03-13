@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { Button } from '@/components/ui/button';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const DeleteFileInformationAction = ({
 	uuid,
@@ -23,6 +24,7 @@ export const DeleteFileInformationAction = ({
 		message: '',
 		type: MessageType.Uninitialized
 	});
+	const queryClient = useQueryClient();
 
 	const formRef = useRef<HTMLFormElement>(null);
 
@@ -30,6 +32,7 @@ export const DeleteFileInformationAction = ({
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
+			void queryClient.invalidateQueries({ queryKey: ['uploads'] });
 			setIsDialogOpen(false);
 		}
 
@@ -39,7 +42,7 @@ export const DeleteFileInformationAction = ({
 				state.message = '';
 			}
 		};
-	}, [state.message, state.type, setIsDialogOpen, state]);
+	}, [state.message, state.type, setIsDialogOpen, state, queryClient]);
 
 	return (
 		<form action={formAction} ref={formRef} className="w-full h-full">

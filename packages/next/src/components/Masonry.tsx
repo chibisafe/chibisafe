@@ -3,16 +3,17 @@
 
 import { useCallback, useState } from 'react';
 import type { File, FilePropsType } from '@/types';
-import { useAtom } from 'jotai';
-import { FileAudio, File as FileIcon, FileText, FileWarning, Video } from 'lucide-react';
+import { useAtom, useAtomValue } from 'jotai';
 import { useSearchParams } from 'next/navigation';
-import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
-import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
+import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileInformationDialog';
+import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { FilesTable } from './tables/files-table/FilesTable';
+import { FileThumbnail } from './FileThumbnail';
+import { isMasonryViewAtom } from '@/lib/atoms/settings';
 
 export function Masonry({
 	files,
@@ -35,10 +36,10 @@ export function Masonry({
 
 	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
 
-	// const ref = useRef<Record<string, HTMLImageElement | null>>({});
 	const [modalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
+	const showMasonry = useAtomValue(isMasonryViewAtom);
 
 	const addToHoveredList = useCallback(
 		(file: File) => {
@@ -57,8 +58,6 @@ export function Masonry({
 		},
 		[hoveredFiles]
 	);
-
-	const showMasonry = false;
 
 	return (
 		<>
@@ -102,52 +101,12 @@ export function Masonry({
 								}}
 							/>
 
-							{file.quarantine ? (
-								<div className="h-40 bg-dark-90 flex flex-col justify-center items-center">
-									<FileWarning className="text-red-500 w-16 h-16" />
-								</div>
-							) : isFileImage(file) || isFileVideo(file) ? (
-								<>
-									<img src={file.thumb} className="cursor-pointer w-full min-w-[160px]" />
-
-									{isFileVideo(file) && hoveredFiles.includes(file.uuid ?? file.name) && (
-										<video
-											className="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
-											autoPlay
-											loop
-											muted
-										>
-											<source src={file.preview} type="video/mp4" />
-										</video>
-									)}
-
-									{isFileVideo(file) && (
-										<Video className="absolute bottom-1 right-1 w-6 h-6 pointer-events-none" />
-									)}
-								</>
-							) : (
-								<div className="h-40 bg-dark-90 flex flex-col justify-center items-center cursor-pointer">
-									{isFileAudio(file) && <FileAudio className=" w-16 h-16" />}
-									{isFilePDF(file) && <FileText className=" w-16 h-16" />}
-									{!isFileAudio(file) && !isFilePDF(file) && <FileIcon className=" w-16 h-16" />}
-									{file.original ? (
-										<span className=" mt-4 text-lg text-center break-all w-[160px]">
-											{file.original.length > 60
-												? `${file.original.slice(0, 40)}...`
-												: file.original}
-										</span>
-									) : (
-										<span className=" mt-4 text-lg text-center break-all w-[160px]">
-											{file.name.length > 60 ? `${file.name.slice(0, 40)}...` : file.name}
-										</span>
-									)}
-								</div>
-							)}
+							<FileThumbnail file={file} hoveredFiles={hoveredFiles} type={type} />
 						</div>
 					)}
 				/>
 			) : (
-				<FilesTable data={files?.length ? files : data?.files ?? []} />
+				<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
 			)}
 
 			{selectedFile ? (
