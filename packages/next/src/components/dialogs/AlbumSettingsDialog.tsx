@@ -48,7 +48,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 			toast.success('Link created');
 			void queryClient.invalidateQueries({ queryKey: ['albums', 'links'] });
 		} catch (error: any) {
-			toast.error(error.message);
+			toast.error(error);
 		}
 	};
 

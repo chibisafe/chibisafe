@@ -87,8 +87,8 @@ export function FileInformationDialog({
 			try {
 				await request.post(`file/${file.uuid}/album/${albumUuid}`);
 				toast.success('File added to album');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				toast.error(error);
 			}
 		},
 		[file.uuid]
@@ -111,8 +111,8 @@ export function FileInformationDialog({
 			try {
 				await request.post(`file/${file.uuid}/tag/${tagUuid}`);
 				toast.success('Tag added to file');
-			} catch (error) {
-				console.error(error);
+			} catch (error: any) {
+				toast.error(error);
 			}
 		},
 		[file.uuid]

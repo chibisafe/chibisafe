@@ -37,7 +37,7 @@ export const createTag = async (_: any, form: FormData) => {
 		revalidateTag('tags');
 		return { message: 'Tag created', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -61,6 +61,6 @@ export const deleteTag = async (_: any, form: FormData) => {
 		revalidateTag('tags');
 		return { message: 'Tag deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

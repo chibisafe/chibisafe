@@ -26,7 +26,7 @@ export const deleteAlbum = async (_: any, form: FormData) => {
 		revalidateTag('files');
 		return { message: 'Album deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -49,7 +49,7 @@ export const deleteAlbumAndFiles = async (_: any, form: FormData) => {
 		revalidateTag('files');
 		return { message: 'Album and all files deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -73,7 +73,7 @@ export const deleteLink = async (_: any, form: FormData) => {
 		revalidateTag('links');
 		return { message: 'Link deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -99,7 +99,7 @@ export const toggleEnabled = async (_: any, form: FormData) => {
 
 		return { message: `Link ${enabled ? 'disabled' : 'enabled'}`, type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -122,6 +122,6 @@ export const createAlbumLink = async (form: FormData) => {
 		revalidateTag('links');
 		return { message: 'Album link created', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

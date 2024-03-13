@@ -31,7 +31,7 @@ export const setQuota = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'New quota set', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -50,7 +50,7 @@ export const enableUser = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'User enabled', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -69,7 +69,7 @@ export const disableUser = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'User disabled', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -88,7 +88,7 @@ export const demoteUser = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'User demoted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -107,7 +107,7 @@ export const promoteUser = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'User promoted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -126,6 +126,6 @@ export const purgeUser = async (_: any, form: FormData) => {
 		revalidateTag('users');
 		return { message: 'User purged', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

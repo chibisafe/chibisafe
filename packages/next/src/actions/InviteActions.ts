@@ -48,6 +48,6 @@ export const revokeInvite = async (_: any, form: FormData) => {
 		revalidateTag('ips');
 		return { message: 'Invite revoked', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

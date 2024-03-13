@@ -44,7 +44,7 @@ export const deleteFile = async (_: any, form: FormData) => {
 
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -66,7 +66,7 @@ export const quarantineFile = async (_: any, form: FormData) => {
 
 		return { message: 'File quarantined', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -88,6 +88,6 @@ export const allowFile = async (_: any, form: FormData) => {
 
 		return { message: 'File allowed', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

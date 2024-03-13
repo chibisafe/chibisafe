@@ -65,9 +65,23 @@ const request = {
 				...options,
 				body: JSON.stringify(data)
 			});
-			return await request.parseResponse(response);
-		} catch {
-			// throw new Error(error.message);
+
+			if (!response.ok) {
+				const error = await response.json();
+				return {
+					error: error.message,
+					status: response.status
+				};
+			}
+
+			return {
+				data: await response.json()
+			};
+		} catch (error) {
+			const err = error as Error;
+			return {
+				error: err.message
+			};
 		}
 	},
 
