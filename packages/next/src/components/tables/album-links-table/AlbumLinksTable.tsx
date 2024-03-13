@@ -37,6 +37,7 @@ const columns = [
 		header: 'Enabled',
 		cell: props => (
 			<AlbumLinksToggleAction
+				key={props.row.original.uuid}
 				uuid={props.row.original.uuid}
 				albumUuid={props.row.original.albumUuid}
 				initialEnabled={props.row.original.enabled}

@@ -97,7 +97,7 @@ export const toggleEnabled = async (_: any, form: FormData) => {
 			}
 		);
 
-		return { message: `Link ${enabled ? 'enabled' : 'disabled'}`, type: MessageType.Success };
+		return { message: `Link ${enabled ? 'disabled' : 'enabled'}`, type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error.message, type: MessageType.Error };
 	}

@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import type { ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
+import type { ColumnFiltersState, RowData, SortingState, VisibilityState } from '@tanstack/react-table';
 import {
 	createColumnHelper,
 	getCoreRowModel,
@@ -10,54 +10,29 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import type { File } from '@/types';
-import {
-	ArrowDownToLineIcon,
-	ArrowUpDown,
-	ArrowUpRightFromSquare,
-	FileAudio,
-	FileIcon,
-	FileText,
-	FileWarning
-} from 'lucide-react';
+import type { File, FilePropsType } from '@/types';
+import { ArrowDownToLineIcon, ArrowUpDown, ArrowUpRightFromSquare } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { formatBytes, isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
+import { formatBytes } from '@/lib/file';
+import { FileThumbnail } from '@/components/FileThumbnail';
+
+declare module '@tanstack/table-core' {
+	interface TableMeta<TData extends RowData> {
+		type?: FilePropsType;
+	}
+}
 
 const columnHelper = createColumnHelper<File>();
 const columns = [
 	columnHelper.accessor(row => row.thumb, {
 		id: 'thumbnail',
 		header: 'Preview',
-		cell: props =>
-			props.row.original.quarantine ? (
-				<FileWarning className="text-red-500 w-16 h-16" />
-			) : isFileImage(props.row.original) || isFileVideo(props.row.original) ? (
-				<img src={props.row.original.thumb} className="cursor-pointer w-full max-w-32" />
-			) : (
-				<>
-					{isFileAudio(props.row.original) && <FileAudio className=" w-16 h-16" />}
-					{isFilePDF(props.row.original) && <FileText className=" w-16 h-16" />}
-					{!isFileAudio(props.row.original) && !isFilePDF(props.row.original) && (
-						<FileIcon className=" w-16 h-16" />
-					)}
-					{props.row.original.original ? (
-						<span className="break-all max-w-[160px]">
-							{props.row.original.original.length > 60
-								? `${props.row.original.original.slice(0, 40)}...`
-								: props.row.original.original}
-						</span>
-					) : (
-						<span className="break-all max-w-[160px]">
-							{props.row.original.name.length > 60
-								? `${props.row.original.name.slice(0, 40)}...`
-								: props.row.original.name}
-						</span>
-					)}
-				</>
-			)
+		cell: props => (
+			<FileThumbnail file={props.row.original} isTableView type={props.table.options.meta?.type ?? 'uploads'} />
+		)
 	}),
 	columnHelper.accessor(row => row.url, {
 		id: 'link',
@@ -113,21 +88,28 @@ const columns = [
 		cell: props => (
 			<>
 				<div className="md:inline-block hidden">
-					<FileInformationDialogActions file={props.row.original} type={'uploads'} />
+					<FileInformationDialogActions
+						file={props.row.original}
+						type={props.table.options.meta?.type ?? 'uploads'}
+					/>
 				</div>
 
 				<div className="md:hidden inline-block">
-					<FileInformationDrawerActions file={props.row.original} type={'uploads'} />
+					<FileInformationDrawerActions
+						file={props.row.original}
+						type={props.table.options.meta?.type ?? 'uploads'}
+					/>
 				</div>
 			</>
 		)
 	})
 ];
 
-export const FilesTable = ({ data }: PropsWithChildren<{ readonly data: any }>) => {
+export const FilesTable = ({ data, type }: PropsWithChildren<{ readonly data: any; readonly type: FilePropsType }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
 	const table = useReactTable({
 		data,
 		columns,
@@ -141,6 +123,9 @@ export const FilesTable = ({ data }: PropsWithChildren<{ readonly data: any }>) 
 			sorting,
 			columnFilters,
 			columnVisibility
+		},
+		meta: {
+			type
 		}
 	});
 

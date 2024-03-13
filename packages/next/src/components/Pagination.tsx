@@ -13,9 +13,12 @@ import { Select, type Item } from '@/components/Select';
 import { Input } from './ui/input';
 import { useCallback, useState } from 'react';
 import { Button } from './ui/button';
-import { SearchIcon } from 'lucide-react';
+import { LayoutDashboardIcon, SearchIcon, TableIcon } from 'lucide-react';
 import type { FilePropsType } from '@/types';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
+import { useAtom } from 'jotai';
+import { isMasonryViewAtom } from '@/lib/atoms/settings';
+import { Tooltip } from './Tooltip';
 
 export function Pagination({
 	itemsTotal,
@@ -36,6 +39,7 @@ export function Pagination({
 		: 50;
 
 	const [search, setSearch] = useState(searchParams.get('search') ?? '');
+	const [showMasonry, setShowMasonry] = useAtom(isMasonryViewAtom);
 
 	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
 
@@ -67,6 +71,21 @@ export function Pagination({
 		<>
 			<PaginationBase className="justify-between">
 				<div className="flex w-full max-w-xs items-center space-x-2">
+					<Tooltip content={showMasonry ? 'Switch to table view' : 'Switch to masonry view'}>
+						<Button
+							type="button"
+							size={'icon'}
+							variant={'outline'}
+							className="min-w-10 min-h-10"
+							onClick={() => setShowMasonry(!showMasonry)}
+						>
+							{showMasonry ? (
+								<TableIcon className="h-4 w-4" />
+							) : (
+								<LayoutDashboardIcon className="h-4 w-4" />
+							)}
+						</Button>
+					</Tooltip>
 					<Input
 						placeholder={`Search...`}
 						defaultValue={search}
