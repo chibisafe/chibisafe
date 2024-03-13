@@ -1,30 +1,26 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
+import { getToken } from './utils';
 
 export const createAlbum = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const name = form.get('album') as string;
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'album/create',
 			{
 				name
 			},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('albums');
 		return { message: 'Album created', type: MessageType.Success };

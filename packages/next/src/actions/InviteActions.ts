@@ -1,28 +1,21 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
-
-const getToken = () => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-	return token;
-};
+import { getToken } from './utils';
 
 export const createInvite = async (_: FormData) => {
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'admin/invite/create',
 			{},
 			{
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('invites');
 		return {};
@@ -35,7 +28,7 @@ export const revokeInvite = async (_: any, form: FormData) => {
 	const code = form.get('code') as string;
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'admin/invite/delete',
 			{
 				code
@@ -44,6 +37,8 @@ export const revokeInvite = async (_: any, form: FormData) => {
 				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('ips');
 		return { message: 'Invite revoked', type: MessageType.Success };

@@ -1,18 +1,9 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
-
-const getToken = () => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-	return token;
-};
+import { getToken } from './utils';
 
 export const createSnippet = async (_: any, form: FormData) => {
 	const name = form.get('name') as string;
@@ -22,7 +13,7 @@ export const createSnippet = async (_: any, form: FormData) => {
 	if (!content) return { message: 'Content is required', type: MessageType.Error };
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			'snippet/create',
 			{
 				name,
@@ -39,6 +30,8 @@ export const createSnippet = async (_: any, form: FormData) => {
 			}
 		);
 
+		if (error) return { message: error, type: MessageType.Error };
+
 		revalidateTag('snippets');
 		return { message: 'Snippet created', type: MessageType.Success };
 	} catch (error: any) {
@@ -50,7 +43,7 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		await request.delete(
+		const { error } = await request.delete(
 			`snippet/${uuid}`,
 			{},
 			{
@@ -62,6 +55,8 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 				}
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		return { message: 'Snippet deleted', type: MessageType.Success };
 	} catch (error: any) {

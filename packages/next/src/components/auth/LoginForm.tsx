@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { buttonVariants } from '@/styles/button';
 import request from '@/lib/request';
+import { toast } from 'sonner';
 
 export const LoginForm = () => {
 	const router = useRouter();
@@ -30,13 +31,15 @@ export const LoginForm = () => {
 			});
 
 			if (error && status === 401) {
-				throw new Error(error);
+				toast.error(error);
+				return;
 			}
 
 			setCurrentUser(response.user);
 
 			router.push('/dashboard');
-		} catch (error) {
+		} catch (error: any) {
+			toast.error(error);
 			console.error(error);
 		} finally {
 			setIsLoading(false);

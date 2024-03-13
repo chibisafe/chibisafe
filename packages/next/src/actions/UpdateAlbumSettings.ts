@@ -1,17 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { MessageType } from '@/types';
-
 import request from '@/lib/request';
+import { getToken } from './utils';
 
 export const updateAlbumSettings = async (_: any, form: FormData) => {
-	const cookieStore = cookies();
-	const token = cookieStore.get('token')?.value;
-	if (!token) redirect('/');
-
 	const uuid = form.get('uuid') as string;
 
 	const name = form.get('name') as string;
@@ -21,7 +15,7 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 	const nsfw = form.get('nsfw') === 'on';
 
 	try {
-		await request.post(
+		const { error } = await request.post(
 			`album/${uuid}/edit`,
 			{
 				name,
@@ -29,9 +23,11 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 				nsfw
 			},
 			{
-				authorization: `Bearer ${token}`
+				authorization: `Bearer ${getToken()}`
 			}
 		);
+
+		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('albums');
 		return { message: 'Album updated', type: MessageType.Success };
