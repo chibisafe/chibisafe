@@ -31,20 +31,22 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`admin/ip/list`,
-		{
+	} = await request.get({
+		url: `admin/ip/list`,
+		query: {
 			page: currentPage,
 			limit: perPage,
 			search
 		},
-		authorization,
-		{
+		headers: {
+			...authorization
+		},
+		options: {
 			next: {
 				tags: ['ips']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

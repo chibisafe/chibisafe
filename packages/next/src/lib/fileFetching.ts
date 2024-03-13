@@ -15,6 +15,16 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		authorization: `Bearer ${token}`
 	};
 
+	const headers = {
+		authorization: `Bearer ${token}`
+	};
+
+	const commonQuery = {
+		page: currentPage,
+		limit: currentLimit,
+		search
+	};
+
 	if (props.query?.search) {
 		return request.post(`files/search?page=${currentPage}&limit=${currentLimit}`, {
 			text: props.query?.search
@@ -24,20 +34,16 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 	switch (props.type) {
 		case 'admin': {
 			if (props.userUuid) {
-				return request.get(
-					`admin/user/${props.userUuid}/files`,
-					{
-						page: currentPage,
-						limit: currentLimit,
-						search
-					},
-					authorization,
-					{
+				return request.get({
+					url: `admin/user/${props.userUuid}/files`,
+					...commonQuery,
+					...headers,
+					options: {
 						next: {
 							tags: ['files']
 						}
 					}
-				);
+				});
 			} else if (props.ip) {
 				return request.post(
 					`admin/ip/files?page=${currentPage}&limit=${currentLimit}&search=${search}`,
@@ -52,101 +58,81 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					}
 				);
 			} else {
-				return request.get(
-					`admin/files`,
-					{
-						page: currentPage,
-						limit: currentLimit,
+				return request.get({
+					url: `admin/files`,
+					query: {
+						...commonQuery,
 						publicOnly,
-						quarantine: false,
-						search
+						quarantine: false
 					},
-					authorization,
-					{
+					...headers,
+					options: {
 						next: {
 							tags: ['files']
 						}
 					}
-				);
+				});
 			}
 		}
 
 		case 'quarantine':
-			return request.get(
-				`admin/files`,
-				{
-					page: currentPage,
-					limit: currentLimit,
+			return request.get({
+				url: `admin/files`,
+				query: {
+					...commonQuery,
 					publicOnly,
-					quarantine: true,
-					search
+					quarantine: true
 				},
-				authorization,
-				{
+				...headers,
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 		case 'album':
-			return request.get(
-				`album/${props.albumUuid!}`,
-				{
-					page: currentPage,
-					limit: currentLimit,
-					search
-				},
-				authorization,
-				{
+			return request.get({
+				url: `album/${props.albumUuid!}`,
+				...commonQuery,
+				...headers,
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 		case 'tag':
-			return request.get(
-				`tag/${props.tagUuid}`,
-				{
-					page: currentPage,
-					limit: currentLimit,
-					search
-				},
-				authorization,
-				{
+			return request.get({
+				url: `tag/${props.tagUuid}`,
+				...commonQuery,
+				...headers,
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 		case 'publicAlbum':
-			return request.get(
-				`album/${props.identifier}/view`,
-				{
-					page: currentPage,
-					limit: currentLimit,
-					search
-				},
-				authorization,
-				{
+			return request.get({
+				url: `album/${props.identifier}/view`,
+				...commonQuery,
+				...headers,
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 		default:
-			return request.get(
-				'files',
-				{
-					page: currentPage,
-					limit: currentLimit,
-					search
-				},
-				authorization,
-				{
+			return request.get({
+				url: 'files',
+				...commonQuery,
+				...headers,
+				options: {
 					next: {
 						tags: ['files']
 					}
 				}
-			);
+			});
 	}
 };

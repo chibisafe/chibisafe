@@ -30,20 +30,22 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`admin/users`,
-		{
+	} = await request.get({
+		url: `admin/users`,
+		query: {
 			page: currentPage,
 			limit: perPage,
 			search
 		},
-		authorization,
-		{
+		headers: {
+			...authorization
+		},
+		options: {
 			next: {
 				tags: ['users']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

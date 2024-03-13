@@ -25,18 +25,17 @@ export default async function DashboardPage() {
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`user/me`,
-		{},
-		{
-			authorization: `Bearer ${token}`
+	} = await request.get({
+		url: `user/me`,
+		headers: {
+			Authorization: `Bearer ${token}`
 		},
-		{
+		options: {
 			next: {
 				tags: ['me']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

@@ -18,18 +18,17 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`snippet/public/${params.identifier}`,
-		{},
-		{
+	} = await request.get({
+		url: `snippet/public/${params.identifier}`,
+		headers: {
 			authorization: `Bearer ${token}`
 		},
-		{
+		options: {
 			next: {
 				tags: ['snippets']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

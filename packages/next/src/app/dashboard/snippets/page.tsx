@@ -27,22 +27,22 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 		data: response,
 		error,
 		status
-	} = await request.get(
-		`snippets`,
-		{
+	} = await request.get({
+		url: `snippets`,
+		query: {
 			page: currentPage,
 			limit: perPage,
 			search
 		},
-		{
+		headers: {
 			authorization: `Bearer ${token}`
 		},
-		{
+		options: {
 			next: {
 				tags: ['snippets']
 			}
 		}
-	);
+	});
 
 	if (error && status === 401) {
 		redirect('/login');

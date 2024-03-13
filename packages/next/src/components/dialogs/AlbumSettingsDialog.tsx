@@ -64,16 +64,14 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 				data: response,
 				error,
 				status
-			} = await request.get(
-				`album/${album?.uuid}/links`,
-				{},
-				{},
-				{
+			} = await request.get({
+				url: `${album?.uuid}/links`,
+				options: {
 					next: {
 						tags: ['links']
 					}
 				}
-			);
+			});
 
 			if (error && status === 401) {
 				throw new Error(error);

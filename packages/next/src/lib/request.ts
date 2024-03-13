@@ -1,15 +1,5 @@
 const request = {
-	parseResponse: async (response: Response) => {
-		if (!response.ok) {
-			const error = await response.json();
-			throw new Error(error.message);
-		}
-
-		// if (process.env.NODE_ENV !== 'production') console.log(parsed);
-		return response.json();
-	},
-
-	get: async (url = '', query = {}, headers?: {}, options?: {}) => {
+	get: async ({ url = '', query = {}, headers = {}, options = {} }) => {
 		try {
 			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 
@@ -46,7 +36,6 @@ const request = {
 			};
 		}
 	},
-
 	post: async (url = '', data = {}, headers?: {}, options?: {}) => {
 		try {
 			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;

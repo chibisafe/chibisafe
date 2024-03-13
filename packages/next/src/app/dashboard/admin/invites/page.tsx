@@ -25,9 +25,15 @@ export default async function DashboardAdminInvitesPage() {
 		data: response,
 		error,
 		status
-	} = await request.get(`admin/invites`, {}, authorization, {
-		next: {
-			tags: ['invites']
+	} = await request.get({
+		url: `admin/invites`,
+		headers: {
+			...authorization
+		},
+		options: {
+			next: {
+				tags: ['invites']
+			}
 		}
 	});
 
