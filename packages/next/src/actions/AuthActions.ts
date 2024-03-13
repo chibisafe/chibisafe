@@ -36,7 +36,7 @@ export const changePassword = async (_: any, form: FormData) => {
 		revalidateTag('me');
 		return { message: 'Password changed', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -57,6 +57,6 @@ export const requestNewApiKey = async (_: any, form: FormData) => {
 		revalidateTag('me');
 		return { message: 'API key regenerated', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

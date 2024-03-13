@@ -42,7 +42,7 @@ export const createSnippet = async (_: any, form: FormData) => {
 		revalidateTag('snippets');
 		return { message: 'Snippet created', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
 
@@ -65,6 +65,6 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 
 		return { message: 'Snippet deleted', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };

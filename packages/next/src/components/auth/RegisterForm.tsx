@@ -44,7 +44,7 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 
 			router.push('/login');
 		} catch (error: any) {
-			toast.error(error.message);
+			toast.error(error);
 		} finally {
 			setIsLoading(false);
 		}

@@ -29,6 +29,6 @@ export const createAlbum = async (_: any, form: FormData) => {
 		revalidateTag('albums');
 		return { message: 'Album created', type: MessageType.Success };
 	} catch (error: any) {
-		return { message: error.message, type: MessageType.Error };
+		return { message: error, type: MessageType.Error };
 	}
 };
