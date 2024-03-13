@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { FileProps } from '@/types';
 
-import { searchFiles } from './api';
 import request from './request';
 
 export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number, search = '') => {
@@ -17,7 +16,9 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 	};
 
 	if (props.query?.search) {
-		return searchFiles(props.query?.search, currentPage, currentLimit);
+		return request.post(`files/search?page=${currentPage}&limit=${currentLimit}`, {
+			text: props.query?.search
+		});
 	}
 
 	switch (props.type) {

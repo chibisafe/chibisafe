@@ -4,13 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
-
-import { login } from '@/lib/api';
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { buttonVariants } from '@/styles/button';
+import request from '@/lib/request';
 
 export const LoginForm = () => {
 	const router = useRouter();
@@ -21,10 +20,18 @@ export const LoginForm = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await login({
+			const {
+				data: response,
+				error,
+				status
+			} = await request.post('auth/login', {
 				username: data.get('username') as string,
 				password: data.get('password') as string
 			});
+
+			if (error && status === 401) {
+				throw new Error(error);
+			}
 
 			setCurrentUser(response.user);
 
