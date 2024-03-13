@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import request from '@/lib/request';
 import type { Snippet } from '@/types';
 import { SnippetViewer } from '@/components/SnippetViewer';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Public - Snippet'
@@ -13,7 +14,11 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`snippet/public/${params.identifier}`,
 		{},
 		{
@@ -25,6 +30,10 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	const snippet = response.snippet as Snippet;
 

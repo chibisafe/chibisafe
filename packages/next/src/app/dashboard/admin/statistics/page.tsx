@@ -9,6 +9,7 @@ import { formatBytes } from '@/lib/file';
 import { InfoIcon } from 'lucide-react';
 import { Tooltip } from '@/components/Tooltip';
 import { getDate, getUptime } from '@/lib/time';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Stats'
@@ -18,7 +19,11 @@ export default async function DashboardAdminStatsPage() {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`admin/service/statistics`,
 		{},
 		{
@@ -30,6 +35,10 @@ export default async function DashboardAdminStatsPage() {
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	const statistics = response.statistics;
 

@@ -5,6 +5,7 @@ import { fetchEndpoint } from '@/lib/fileFetching';
 import type { PageQuery } from '@/types';
 import { FilesList } from '@/components/FilesList';
 import { BanThisIpDialog } from '@/components/dialogs/BanThisIpDialog';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
@@ -21,8 +22,15 @@ export default async function DashboardPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
 	// TODO: Fetching is broken, I believe it's the backend that's broken
-	const response = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
-	console.log(response);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader

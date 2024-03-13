@@ -7,6 +7,7 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { DeleteSnippetDialog } from '@/components/dialogs/DeleteSnippetDialog';
 import { SnippetViewer } from '@/components/SnippetViewer';
 import { getDate } from '@/lib/time';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Snippets - Snippet'
@@ -16,7 +17,11 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`snippet/${params.uuid}`,
 		{},
 		{
@@ -28,6 +33,10 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	const snippet = response.snippet as Snippet;
 

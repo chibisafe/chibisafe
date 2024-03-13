@@ -4,6 +4,7 @@ import type { PageQuery } from '@/types';
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - User'
@@ -20,7 +21,15 @@ export default async function DashboardAdminUserPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage, search);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'admin', userUuid: params.uuid }, currentPage, perPage, search);
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	// TODO: If the user hasn't uploaded any files, the response will be an empty array
 	// and the username will be undefined
 	const username = response.files[0]?.user?.username;

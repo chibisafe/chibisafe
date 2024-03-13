@@ -9,6 +9,7 @@ import { FilesList } from '@/components/FilesList';
 import { GlobalDropZone } from '@/components/Dropzone';
 import { UploadTrigger } from '@/components/UploadTrigger';
 import { buttonVariants } from '@/styles/button';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -31,7 +32,15 @@ export default async function AlbumPage({
 	// 	queryFn: async () => fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search)
 	// });
 
-	const response = await fetchEndpoint({ type: 'album', albumUuid: params.uuid }, currentPage, perPage);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'album', albumUuid: params.uuid }, currentPage, perPage);
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader

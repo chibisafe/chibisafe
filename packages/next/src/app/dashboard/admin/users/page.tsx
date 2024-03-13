@@ -26,7 +26,11 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 		authorization: `Bearer ${token}`
 	};
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`admin/users`,
 		{
 			page: currentPage,
@@ -40,6 +44,10 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	return (
 		<>

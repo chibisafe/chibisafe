@@ -31,7 +31,11 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 	// 	queryFn: async () => fetchEndpoint({ type: 'albums' }, currentPage, perPage, search)
 	// });
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`albums`,
 		{
 			page: currentPage,
@@ -47,6 +51,10 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	return (
 		<>

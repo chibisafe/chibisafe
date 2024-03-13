@@ -54,13 +54,27 @@ export function FileInformationDialog({
 			if (type === 'admin') return;
 			if (type === 'publicAlbum') return;
 
-			const createdAlbums = await request.get('albums');
+			const { data: createdAlbums, error: createdAlbumError } = await request.get('albums');
+			if (createdAlbumError) {
+				toast.error(createdAlbumError);
+				return;
+			}
+
 			setAlbums(createdAlbums.albums);
 
-			const albumsTags = await request.get('tags');
+			const { data: albumsTags, error: albumsTagsError } = await request.get('tags');
 			setTags(albumsTags.tags);
+			if (albumsTagsError) {
+				toast.error(albumsTagsError);
+				return;
+			}
 
-			const fileInfo = await request.get(`file/${file.uuid}`);
+			const { data: fileInfo, error: fileInfoError } = await request.get(`file/${file.uuid}`);
+			if (fileInfoError) {
+				toast.error(fileInfoError);
+				return;
+			}
+
 			setFileAlbums(fileInfo.file.albums);
 			setFileTags(fileInfo.file.tags);
 		} catch (error) {

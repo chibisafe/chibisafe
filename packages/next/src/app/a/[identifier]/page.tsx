@@ -5,6 +5,7 @@ import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Public - Album'
@@ -21,12 +22,15 @@ export default async function PublicAlbumPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const response = await fetchEndpoint(
-		{ type: 'publicAlbum', identifier: params.identifier },
-		currentPage,
-		perPage,
-		search
-	);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'publicAlbum', identifier: params.identifier }, currentPage, perPage, search);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
 
 	return (
 		<>

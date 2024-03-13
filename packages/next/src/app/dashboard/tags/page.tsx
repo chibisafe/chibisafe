@@ -26,7 +26,11 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const response = await request.get(
+	const {
+		data: response,
+		error,
+		status
+	} = await request.get(
 		`tags`,
 		{
 			page: currentPage,
@@ -40,6 +44,11 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 			}
 		}
 	);
+
+	if (error && status === 401) {
+		redirect('/login');
+	}
+
 	return (
 		<>
 			<DashboardHeader title="Tags" subtitle="Manage and create tags">
