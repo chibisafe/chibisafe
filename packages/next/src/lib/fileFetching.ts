@@ -11,10 +11,6 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 
-	const authorization = {
-		authorization: `Bearer ${token}`
-	};
-
 	const headers = {
 		authorization: `Bearer ${token}`
 	};
@@ -26,8 +22,11 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 	};
 
 	if (props.query?.search) {
-		return request.post(`files/search?page=${currentPage}&limit=${currentLimit}`, {
-			text: props.query?.search
+		return request.post({
+			url: `files/search?page=${currentPage}&limit=${currentLimit}`,
+			body: {
+				text: props.query?.search
+			}
 		});
 	}
 
@@ -45,18 +44,18 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					}
 				});
 			} else if (props.ip) {
-				return request.post(
-					`admin/ip/files?page=${currentPage}&limit=${currentLimit}&search=${search}`,
-					{
+				return request.post({
+					url: `admin/ip/files?page=${currentPage}&limit=${currentLimit}&search=${search}`,
+					body: {
 						ip: props.ip
 					},
-					authorization,
-					{
+					headers,
+					options: {
 						next: {
 							tags: ['files']
 						}
 					}
-				);
+				});
 			} else {
 				return request.get({
 					url: `admin/files`,

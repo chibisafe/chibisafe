@@ -16,16 +16,16 @@ export const changePassword = async (_: any, form: FormData) => {
 	if (newPassword !== rePassword) return { message: 'Passwords do not match', type: MessageType.Error };
 
 	try {
-		const { error } = await request.post(
-			'auth/password/change',
-			{
+		const { error } = await request.post({
+			url: 'auth/password/change',
+			body: {
 				password,
 				newPassword
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -38,13 +38,12 @@ export const changePassword = async (_: any, form: FormData) => {
 
 export const requestNewApiKey = async (_: any, form: FormData) => {
 	try {
-		const { error } = await request.post(
-			'auth/apikey/change',
-			{},
-			{
+		const { error } = await request.post({
+			url: 'auth/apikey/request',
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 

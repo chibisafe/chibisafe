@@ -9,15 +9,20 @@ export const setQuota = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/quota`,
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/quota`,
+			body: {
 				space: form.get('space')
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -32,13 +37,17 @@ export const enableUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/enable`,
-			{},
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/enable`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -53,13 +62,17 @@ export const disableUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/disable`,
-			{},
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/disable`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -74,13 +87,17 @@ export const demoteUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/demote`,
-			{},
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/demote`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -95,13 +112,17 @@ export const promoteUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/promote`,
-			{},
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/promote`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -116,13 +137,17 @@ export const purgeUser = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.post(
-			`admin/user/${uuid}/purge`,
-			{},
-			{
+		const { error } = await request.post({
+			url: `admin/user/${uuid}/purge`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
+			},
+			options: {
+				next: {
+					tags: ['users']
+				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 

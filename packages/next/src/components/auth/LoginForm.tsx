@@ -25,9 +25,12 @@ export const LoginForm = () => {
 				data: response,
 				error,
 				status
-			} = await request.post('auth/login', {
-				username: data.get('username') as string,
-				password: data.get('password') as string
+			} = await request.post({
+				url: 'auth/login',
+				body: {
+					username: data.get('username') as string,
+					password: data.get('password') as string
+				}
 			});
 
 			if (error && status === 401) {

@@ -7,13 +7,12 @@ import { getToken } from './utils';
 
 export const createInvite = async (_: FormData) => {
 	try {
-		const { error } = await request.post(
-			'admin/invite/create',
-			{},
-			{
+		const { error } = await request.post({
+			url: 'admin/invite/create',
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -28,15 +27,15 @@ export const revokeInvite = async (_: any, form: FormData) => {
 	const code = form.get('code') as string;
 
 	try {
-		const { error } = await request.post(
-			'admin/invite/delete',
-			{
+		const { error } = await request.post({
+			url: 'admin/invite/delete',
+			body: {
 				code
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 

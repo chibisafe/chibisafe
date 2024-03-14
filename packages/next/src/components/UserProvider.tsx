@@ -16,7 +16,7 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 	useEffect(() => {
 		if (!currentUser && shouldFetch) {
 			request
-				.get('user/me')
+				.get({ url: 'user/me' })
 				.then(async response => {
 					if (response.error) {
 						if (response.status === 401) {

@@ -13,22 +13,22 @@ export const createSnippet = async (_: any, form: FormData) => {
 	if (!content) return { message: 'Content is required', type: MessageType.Error };
 
 	try {
-		const { error } = await request.post(
-			'snippet/create',
-			{
+		const { error } = await request.post({
+			url: 'snippet/create',
+			body: {
 				name,
 				content,
 				language: language ?? 'auto-detect'
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			},
-			{
+			options: {
 				next: {
 					tags: ['snippets']
 				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -43,18 +43,17 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.delete(
-			`snippet/${uuid}`,
-			{},
-			{
+		const { error } = await request.delete({
+			url: `snippet/${uuid}`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			},
-			{
+			options: {
 				next: {
 					tags: ['snippets']
 				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 

@@ -15,17 +15,17 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 	const nsfw = form.get('nsfw') === 'on';
 
 	try {
-		const { error } = await request.post(
-			`album/${uuid}/edit`,
-			{
+		const { error } = await request.post({
+			url: `album/${uuid}/edit`,
+			body: {
 				name,
 				description,
 				nsfw
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 

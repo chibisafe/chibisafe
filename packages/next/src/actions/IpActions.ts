@@ -9,15 +9,15 @@ export const unbanIp = async (_: any, form: FormData) => {
 	const ip = form.get('ip') as string;
 
 	try {
-		const { error } = await request.post(
-			'admin/ip/unban',
-			{
+		const { error } = await request.post({
+			url: 'admin/ip/unban',
+			body: {
 				ip
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -32,15 +32,15 @@ export const banIp = async (_: any, form: FormData) => {
 	const ip = form.get('ip') as string;
 
 	try {
-		const { error } = await request.post(
-			'admin/ip/ban',
-			{
+		const { error } = await request.post({
+			url: 'admin/ip/ban',
+			body: {
 				ip
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -55,15 +55,15 @@ export const purgeIp = async (_: any, form: FormData) => {
 	const ip = form.get('ip') as string;
 
 	try {
-		const { error } = await request.post(
-			'admin/ip/files/purge',
-			{
+		const { error } = await request.post({
+			url: 'admin/ip/purge',
+			body: {
 				ip
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
