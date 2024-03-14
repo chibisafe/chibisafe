@@ -43,7 +43,10 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 
 	const createNewAlbumLink = async () => {
 		try {
-			const { error } = await request.post(`album/${album?.uuid}/link`, {});
+			const { error } = await request.post({
+				url: `album/${album?.uuid}/link`
+			});
+
 			if (error) {
 				toast.error(error);
 				return;

@@ -29,18 +29,22 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 		}
 
 		try {
-			const { error } = await request.post(
-				'auth/register',
-				{
+			const obj = {
+				url: 'auth/register',
+				body: {
 					username,
 					password
-				},
-				code
-					? {
-							invite: code
-						}
-					: undefined
-			);
+				}
+			};
+
+			if (code) {
+				// @ts-expect-error headers dont exist
+				obj.headers = {
+					invite: code
+				};
+			}
+
+			const { error } = await request.post(obj);
 
 			if (error) {
 				toast.error(error);

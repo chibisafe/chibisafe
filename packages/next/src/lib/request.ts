@@ -36,7 +36,7 @@ const request = {
 			};
 		}
 	},
-	post: async (url = '', data = {}, headers?: {}, options?: {}) => {
+	post: async ({ url = '', body = {}, headers = {}, options = {} }) => {
 		try {
 			let queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 
@@ -52,7 +52,7 @@ const request = {
 					...headers
 				},
 				...options,
-				body: JSON.stringify(data)
+				body: JSON.stringify(body)
 			});
 
 			if (!response.ok) {
@@ -73,8 +73,7 @@ const request = {
 			};
 		}
 	},
-
-	delete: async (url = '', data = {}, headers?: {}, options?: {}) => {
+	delete: async ({ url = '', headers = {}, options = {} }) => {
 		try {
 			const queryUrl = `${process.env.NEXT_PUBLIC_BASEAPIURL}${url}`;
 			const response = await fetch(queryUrl, {
@@ -85,8 +84,7 @@ const request = {
 					// Authorization: request.checkForToken(),
 					...headers
 				},
-				...options,
-				body: JSON.stringify(data)
+				...options
 			});
 
 			if (!response.ok) {

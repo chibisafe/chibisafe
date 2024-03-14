@@ -10,20 +10,20 @@ export const createTag = async (_: any, form: FormData) => {
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
-		const { error } = await request.post(
-			'tag/create',
-			{
+		const { error } = await request.post({
+			url: 'tag/create',
+			body: {
 				name
 			},
-			{
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			},
-			{
+			options: {
 				next: {
 					tags: ['tags']
 				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
@@ -38,18 +38,17 @@ export const deleteTag = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 
 	try {
-		const { error } = await request.delete(
-			`tag/${uuid}`,
-			{},
-			{
+		const { error } = await request.delete({
+			url: `tag/${uuid}`,
+			headers: {
 				authorization: `Bearer ${getToken()}`
 			},
-			{
+			options: {
 				next: {
 					tags: ['tags']
 				}
 			}
-		);
+		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
