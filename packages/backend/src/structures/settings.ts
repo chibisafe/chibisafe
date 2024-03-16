@@ -232,11 +232,11 @@ const SETTINGS_META = {
 		category: 'other'
 	},
 	blockedExtensions: {
-		type: 'object',
-		description:
-			'The blocked extensions for uploads. When adding a new one, make sure you don\'t include the "." dot.',
+		type: 'string',
+		description: 'The blocked extensions for uploads. Separate them with a comma.',
 		name: 'Blocked Extensions',
-		category: 'uploads'
+		category: 'uploads',
+		example: '.exe,.msi,.com,.bat,.cmd,.scr,.ps1,.sh'
 	},
 	blockNoExtension: {
 		type: 'boolean',
