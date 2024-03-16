@@ -70,11 +70,11 @@ export default async function DashboardAdminSettingsServicePage() {
 	return (
 		<>
 			<DashboardHeader
-				title="Quarantined files"
-				subtitle="Manage quarantined files"
+				title="Settings"
+				subtitle="Manage all your chibisafe settings here"
 				breadcrumbs={[
 					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Quarantined files', url: '/dashboard/admin/quarantine' }
+					{ name: 'Settings', url: '/dashboard/admin/settings' }
 				]}
 			/>
 			<div className="px-2">
