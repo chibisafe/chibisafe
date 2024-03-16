@@ -217,3 +217,14 @@ export interface AlbumLink {
 	uuid: string;
 	views: number;
 }
+
+export interface Setting {
+	category: string;
+	description: string;
+	example?: string;
+	key: string;
+	name: string;
+	notice?: string;
+	type: string;
+	value: any;
+}

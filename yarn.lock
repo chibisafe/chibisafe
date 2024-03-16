@@ -1164,6 +1164,7 @@ __metadata:
   dependencies:
     "@chibisafe/uploader-client": ^1.0.11
     "@formkit/tempo": ^0.0.15
+    "@hookform/resolvers": ^3.3.4
     "@ianvs/prettier-plugin-sort-imports": ^4.1.1
     "@mdx-js/loader": ^3.0.1
     "@mdx-js/react": ^3.0.1
@@ -1216,6 +1217,7 @@ __metadata:
     react-aria-components: ^1.1.1
     react-dom: ^18.2.0
     react-dropzone: ^14.2.3
+    react-hook-form: ^7.51.0
     react-plock: ^3.1.0
     remark-gfm: ^4.0.0
     sharp: ^0.33.2
@@ -1227,6 +1229,7 @@ __metadata:
     typescript: ^5.4.2
     usehooks-ts: ^3.0.1
     vaul: ^0.9.0
+    zod: ^3.22.4
   languageName: unknown
   linkType: soft
 
@@ -1835,6 +1838,15 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 2a0e328d8068e343ec2c61ad5fff4a8260689571530f297953de812fb0c9bae100a049963647dc0af47fd7a841aa6b5075cac89217ca645d030f1ea2db00e771
+  languageName: node
+  linkType: hard
+
+"@hookform/resolvers@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "@hookform/resolvers@npm:3.3.4"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 7761e3340d23acd092dec4023344678e62b0c0ea0ed5aa3687cd315fc339b3b965e11124d643811292e6962683357423e6fe646fffabf9b96f8322f41903924d
   languageName: node
   linkType: hard
 
@@ -14045,6 +14057,15 @@ __metadata:
   peerDependencies:
     react: ">= 16.8 || 18.0.0"
   checksum: 174b744d5ca898cf3d84ec1aeb6cef5211c446697e45dc8ece8287a03d291f8d07253206d5a1247ef156fd385d65e7de666d4d5c2986020b8543b8f2434e8b40
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.51.0":
+  version: 7.51.0
+  resolution: "react-hook-form@npm:7.51.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: c3d9996a2c2867994f10d1f598ca24b0dee019221116750ebe64f5abb422081b76b217c0265807485c9f2fc7b2e8c2aa8bed153cbf86fa0c2603d42b714f20eb
   languageName: node
   linkType: hard
 
