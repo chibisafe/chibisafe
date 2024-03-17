@@ -1,15 +1,10 @@
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { CustomizationForm } from '@/components/forms/settings/CustomizationForm';
-import { OtherForm } from '@/components/forms/settings/OtherForm';
-import { ServiceForm } from '@/components/forms/settings/ServiceForm';
-import { UploadsForm } from '@/components/forms/settings/UploadsForm';
-import { UsersForm } from '@/components/forms/settings/UsersForm';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import request from '@/lib/request';
 import type { Setting } from '@/types';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { SettingsForm } from '@/components/forms/SettingsForm';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Settings'
@@ -47,11 +42,7 @@ export default async function DashboardAdminSettingsServicePage() {
 	const defaultValues = {} as any;
 
 	for (const setting of response.settings) {
-		if (!defaultValues[setting.category]) {
-			defaultValues[setting.category] = {};
-		}
-
-		defaultValues[setting.category][setting.key] = setting.value;
+		defaultValues[setting.key] = setting.value;
 	}
 
 	const categorizedSettings = {
@@ -78,33 +69,7 @@ export default async function DashboardAdminSettingsServicePage() {
 				]}
 			/>
 			<div className="px-2">
-				<Tabs defaultValue="service">
-					<TabsList className="mb-4 gap-2">
-						<TabsTrigger value="service">Service</TabsTrigger>
-						<TabsTrigger value="uploads">Uploads</TabsTrigger>
-						<TabsTrigger value="users">Users</TabsTrigger>
-						<TabsTrigger value="other">Other</TabsTrigger>
-						<TabsTrigger value="customization">Customization</TabsTrigger>
-					</TabsList>
-					<TabsContent value="service">
-						<ServiceForm defaultValues={defaultValues.service} meta={categorizedSettings.service} />
-					</TabsContent>
-					<TabsContent value="uploads">
-						<UploadsForm defaultValues={defaultValues.uploads} meta={categorizedSettings.uploads} />
-					</TabsContent>
-					<TabsContent value="users">
-						<UsersForm defaultValues={defaultValues.users} meta={categorizedSettings.users} />
-					</TabsContent>
-					<TabsContent value="other">
-						<OtherForm defaultValues={defaultValues.other} meta={categorizedSettings.other} />
-					</TabsContent>
-					<TabsContent value="customization">
-						<CustomizationForm
-							defaultValues={defaultValues.customization}
-							meta={categorizedSettings.customization}
-						/>
-					</TabsContent>
-				</Tabs>
+				<SettingsForm categorizedSettings={categorizedSettings} defaultValues={defaultValues} />
 			</div>
 		</>
 	);
