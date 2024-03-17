@@ -1,6 +1,6 @@
 import type { Setting } from '@/types';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
+import { Input } from '../../ui/input';
 
 export const FormFieldNumber = ({ form, data }: { readonly data: Setting; readonly form: any }) => {
 	return (
