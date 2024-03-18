@@ -68,7 +68,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 				error,
 				status
 			} = await request.get({
-				url: `${album?.uuid}/links`,
+				url: `album/${album?.uuid}/links`,
 				options: {
 					next: {
 						tags: ['links']

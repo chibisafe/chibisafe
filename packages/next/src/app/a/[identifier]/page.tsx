@@ -5,7 +5,7 @@ import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Public - Album'
@@ -28,8 +28,10 @@ export default async function PublicAlbumPage({
 		status
 	} = await fetchEndpoint({ type: 'publicAlbum', identifier: params.identifier }, currentPage, perPage, search);
 
-	if (error && status === 401) {
-		redirect('/login');
+	if (error) {
+		if (status === 401) return redirect('/login');
+		if (status === 404) return notFound();
+		redirect('/');
 	}
 
 	return (
