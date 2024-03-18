@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import request from '@/lib/request';
 
 const formSchema = z.object({
 	// Users
@@ -15,7 +16,7 @@ const formSchema = z.object({
 	userAccounts: z.boolean().optional(),
 	usersStorageQuota: z.coerce.number(),
 	// Customization
-	serviceName: z.string(),
+	serviceName: z.string().trim().min(1, { message: 'Required' }),
 	backgroundImageURL: z.string().optional(),
 	logoURL: z.string().optional(),
 	metaDescription: z.string().optional(),
@@ -24,9 +25,9 @@ const formSchema = z.object({
 	metaDomain: z.string().optional(),
 	// Service
 	serveUploadsFrom: z.string().optional(),
-	rateLimitWindow: z.coerce.number(),
-	rateLimitMax: z.coerce.number(),
-	secret: z.string(),
+	rateLimitWindow: z.coerce.number().min(1, { message: 'Required' }),
+	rateLimitMax: z.coerce.number().min(1, { message: 'Required' }),
+	secret: z.string().trim().min(1, { message: 'Required' }),
 	disableUpdateCheck: z.boolean().optional(),
 	// Uploads
 	chunkSize: z.coerce.number(),
@@ -63,17 +64,30 @@ export const SettingsForm = ({
 		mode: 'onChange'
 	});
 
-	// TODO: find a way to grab error data instead of just showing them
-	// on the form itself, since we are using tabs its difficult to show
-	// where the error is coming from
-	const onSubmit = (data: FormValues) => {
-		toast.success(
-			<>
-				<pre>
-					<code>{JSON.stringify(data, null, 2)}</code>
-				</pre>
-			</>
-		);
+	const onSubmit = async (data: FormValues) => {
+		// Each setting is a key-value pair, so we need to convert it to an array of objects
+		const settings = Object.entries(data).map(([key, value]) => {
+			const type = typeof value;
+			return {
+				key,
+				value,
+				type: type === 'number' ? 'number' : type === 'boolean' ? 'boolean' : 'string'
+			};
+		});
+
+		const { error } = await request.post({
+			url: '/admin/service/settings',
+			body: {
+				settings
+			}
+		});
+
+		if (error) {
+			toast.error(error);
+			return;
+		}
+
+		toast.success('Settings saved. Please note that some settings may require a server restart to take effect');
 	};
 
 	return (
@@ -86,6 +100,28 @@ export const SettingsForm = ({
 					<TabsTrigger value="other">Other</TabsTrigger>
 					<TabsTrigger value="customization">Customization</TabsTrigger>
 				</TabsList>
+
+				{form.formState.errors ? (
+					<div className="p-2 mb-4">
+						<ul className="list-disc px-6 bg-red-900 rounded-sm">
+							{Object.keys(form.formState.errors)
+								.map(key => {
+									// @ts-expect-error types
+									return form.formState.errors[key].message ? (
+										<li key={key} className="">
+											Error in the field{' '}
+											<span className="underline underline-offset-2">{key}</span>:{' '}
+											{
+												// @ts-expect-error types
+												form.formState.errors[key].message
+											}
+										</li>
+									) : null;
+								})
+								.filter(item => item !== null)}
+						</ul>
+					</div>
+				) : null}
 
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
