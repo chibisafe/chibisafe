@@ -35,8 +35,10 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 			if (props.userUuid) {
 				return request.get({
 					url: `admin/user/${props.userUuid}/files`,
-					...commonQuery,
-					...headers,
+					query: {
+						...commonQuery
+					},
+					headers,
 					options: {
 						next: {
 							tags: ['files']
@@ -64,7 +66,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 						publicOnly,
 						quarantine: false
 					},
-					...headers,
+					headers,
 					options: {
 						next: {
 							tags: ['files']
@@ -82,7 +84,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					publicOnly,
 					quarantine: true
 				},
-				...headers,
+				headers,
 				options: {
 					next: {
 						tags: ['files']
@@ -92,8 +94,10 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		case 'album':
 			return request.get({
 				url: `album/${props.albumUuid!}`,
-				...commonQuery,
-				...headers,
+				query: {
+					...commonQuery
+				},
+				headers,
 				options: {
 					next: {
 						tags: ['files']
@@ -103,8 +107,10 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		case 'tag':
 			return request.get({
 				url: `tag/${props.tagUuid}`,
-				...commonQuery,
-				...headers,
+				query: {
+					...commonQuery
+				},
+				headers,
 				options: {
 					next: {
 						tags: ['files']
@@ -114,8 +120,10 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		case 'publicAlbum':
 			return request.get({
 				url: `album/${props.identifier}/view`,
-				...commonQuery,
-				...headers,
+				query: {
+					...commonQuery
+				},
+				headers,
 				options: {
 					next: {
 						tags: ['files']
@@ -125,8 +133,10 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		default:
 			return request.get({
 				url: 'files',
-				...commonQuery,
-				...headers,
+				query: {
+					...commonQuery
+				},
+				headers,
 				options: {
 					next: {
 						tags: ['files']
