@@ -54,6 +54,15 @@ export const run = async (_: RequestWithUser, res: FastifyReply) => {
 
 	// eslint-disable-next-line guard-for-in
 	for (const key in settings) {
+		if (key === 'blockedExtensions') {
+			settingsWithTypes.push({
+				...getSettingsMeta(key),
+				key,
+				value: settings[key]?.join(',')
+			});
+			continue;
+		}
+
 		settingsWithTypes.push({
 			...getSettingsMeta(key),
 			key,
