@@ -2,17 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { LucideIcon } from 'lucide-react';
+import { ExternalLinkIcon, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
 export function DashboardSidebarItem({
 	href,
 	name,
-	Icon
+	Icon,
+	isLink = false
 }: {
 	readonly Icon: LucideIcon;
 	readonly href: string;
+	readonly isLink?: boolean;
 	readonly name: string;
 }) {
 	const path = usePathname();
@@ -21,12 +23,14 @@ export function DashboardSidebarItem({
 		<Link href={href}>
 			<span
 				className={cn(
-					'group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-					path === href ? 'bg-accent' : 'transparent'
+					'group flex items-center rounded-md px-3 text-sm font-medium',
+					path === href ? 'bg-accent' : 'transparent',
+					isLink ? 'bg-transparent link py-0' : 'hover:bg-accent hover:text-accent-foreground py-2'
 				)}
 			>
-				<Icon className="mr-2 h-4 w-4" />
+				{isLink ? null : <Icon className="h-4 w-4 mr-2" />}
 				<span>{name}</span>
+				{isLink ? <ExternalLinkIcon className="h-4 w-4 ml-2" /> : null}
 			</span>
 		</Link>
 	);

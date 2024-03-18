@@ -34,6 +34,11 @@ export function DashboardSidebar() {
 					<DashboardSidebarItem href="/dashboard/admin/statistics" name="Statistics" Icon={BarChart3} />
 				</nav>
 			) : null}
+			<nav className="grid items-start gap-1 mt-4">
+				<h3 className="text-muted-foreground text-sm pointer-events-none">Utils</h3>
+				<DashboardSidebarItem href="/dashboard" name="Browser extension" isLink Icon={FileUp} />
+				<DashboardSidebarItem href="/dashboard/albums" name="ShareX config" isLink Icon={Library} />
+			</nav>
 		</>
 	);
 }
