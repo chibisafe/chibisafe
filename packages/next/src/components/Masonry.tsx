@@ -59,63 +59,63 @@ export function Masonry({
 		[hoveredFiles]
 	);
 
-	if (!files?.length) {
-		return (
-			<div className="flex flex-1 justify-center items-center text-white">
-				<h1 className="border-r border-white/30 inline-block mr-5 pr-6 font-medium text-2xl align-top">:(</h1>
-				<div className="inline-block">
-					<h2 className="text-sm font-normal m-0">There are no files to display yet</h2>
-				</div>
-			</div>
-		);
-	}
-
 	return (
 		<>
 			{showMasonry ? (
-				<Plock
-					items={files?.length ? files : data?.files ?? []}
-					config={{
-						columns: [1, 2, 3, 4],
-						gap: [24, 12, 12, 12],
-						media: [640, 1024, 1400, 1400]
-					}}
-					className="px-1"
-					render={(file, idx) => (
-						<div
-							className={cn(
-								"relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none",
-								{
-									'cursor-not-allowed': file.quarantine && type !== 'quarantine'
-								}
-							)}
-							key={idx}
-							onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
-							onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
-						>
-							<a
-								className={cn('w-full h-full absolute top-0 left-0 pointer-events-auto', {
-									'pointer-events-none': file.quarantine && type !== 'quarantine'
-								})}
-								href={file.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								onClick={e => {
-									e.preventDefault();
-									e.stopPropagation();
-									if (file.quarantine && type !== 'quarantine') {
-										return;
+				files?.length ? (
+					<Plock
+						items={files?.length ? files : data?.files ?? []}
+						config={{
+							columns: [1, 2, 3, 4],
+							gap: [24, 12, 12, 12],
+							media: [640, 1024, 1400, 1400]
+						}}
+						className="px-1"
+						render={(file, idx) => (
+							<div
+								className={cn(
+									"relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none",
+									{
+										'cursor-not-allowed': file.quarantine && type !== 'quarantine'
 									}
+								)}
+								key={idx}
+								onMouseEnter={() => (isFileVideo(file) ? addToHoveredList(file) : null)}
+								onMouseLeave={() => (isFileVideo(file) ? removeFromHoveredList(file) : null)}
+							>
+								<a
+									className={cn('w-full h-full absolute top-0 left-0 pointer-events-auto', {
+										'pointer-events-none': file.quarantine && type !== 'quarantine'
+									})}
+									href={file.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={e => {
+										e.preventDefault();
+										e.stopPropagation();
+										if (file.quarantine && type !== 'quarantine') {
+											return;
+										}
 
-									setSelectedFile(file);
-									setModalOpen(true);
-								}}
-							/>
+										setSelectedFile(file);
+										setModalOpen(true);
+									}}
+								/>
 
-							<FileThumbnail file={file} hoveredFiles={hoveredFiles} type={type} />
+								<FileThumbnail file={file} hoveredFiles={hoveredFiles} type={type} />
+							</div>
+						)}
+					/>
+				) : (
+					<div className="flex flex-1 justify-center items-center text-white mt-8">
+						<h1 className="border-r border-white/30 inline-block mr-5 pr-6 font-medium text-2xl align-top">
+							:(
+						</h1>
+						<div className="inline-block">
+							<h2 className="text-sm font-normal m-0">There are no files to display yet</h2>
 						</div>
-					)}
-				/>
+					</div>
+				)
 			) : (
 				<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
 			)}
