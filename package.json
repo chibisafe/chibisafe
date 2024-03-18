@@ -1,6 +1,6 @@
 {
 	"name": "chibisafe",
-	"version": "5.6.8",
+	"version": "6.0.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"private": true,
 	"scripts": {
@@ -11,11 +11,12 @@
 		"postinstall": "is-ci || husky",
 		"generate": "yarn workspace @chibisafe/backend generate",
 		"migrate": "yarn workspace @chibisafe/backend migrate",
-		"migrate:dev": "yarn workspace @chibisafe/backend migrate:dev",
 		"start": "yarn workspace @chibisafe/backend start",
 		"migrate-v4-to-v5": "yarn workspace @chibisafe/migration start",
-		"backend": "yarn workspace @chibisafe/backend dev",
-		"frontend": "yarn workspace @chibisafe/website dev",
+		"dev:backend": "yarn workspace @chibisafe/backend dev",
+		"dev:frontend": "yarn workspace @chibisafe/next dev",
+		"start:backend": "yarn workspace @chibisafe/backend start",
+		"start:frontend": "yarn workspace @chibisafe/next start",
 		"update": "yarn upgrade-interactive"
 	},
 	"author": {
@@ -30,7 +31,6 @@
 	"packageManager": "yarn@3.6.0",
 	"workspaces": [
 		"packages/backend",
-		"packages/frontend",
 		"packages/next"
 	],
 	"devDependencies": {
