@@ -5,9 +5,35 @@ import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags,
 
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
+import { saveAs } from 'file-saver';
 
 export function DashboardSidebar() {
 	const currentUser = useAtomValue(currentUserAtom);
+
+	const getShareXConfig = async (event: any) => {
+		event.preventDefault();
+		if (!currentUser?.apiKey) {
+			// eslint-disable-next-line no-alert
+			window.alert('You need to generate an API key first!');
+			return;
+		}
+
+		const sharexFile = `{
+		"Name": "chibisafe",
+		"DestinationType": "ImageUploader, FileUploader",
+		"RequestType": "POST",
+		"RequestURL": "${location.origin}/api/upload",
+		"FileFormName": "file[]",
+		"Headers": {
+			"x-api-key": "${currentUser.apiKey}"
+		},
+		"ResponseType": "Text",
+		"URL": "$json:url$",
+		"ThumbnailURL": "$json:thumb$"
+	}`;
+		const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
+		saveAs(sharexBlob, `${location.hostname}.sxcu`);
+	};
 
 	return (
 		<>
@@ -36,8 +62,26 @@ export function DashboardSidebar() {
 			) : null}
 			<nav className="grid items-start gap-1 mt-4">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Utils</h3>
-				<DashboardSidebarItem href="/dashboard" name="Browser extension" isLink Icon={FileUp} />
-				<DashboardSidebarItem href="/dashboard/albums" name="ShareX config" isLink Icon={Library} />
+				<a
+					href="https://github.com/chibisafe/chibisafe-extension"
+					rel="noopener noreferrer"
+					target="_blank"
+					className="text-sm font-medium link pl-4"
+				>
+					Browser extension
+				</a>
+				<a
+					href="#"
+					rel="noopener noreferrer"
+					className="text-sm font-medium link pl-4"
+					onClick={e => void getShareXConfig(e)}
+				>
+					ShareX config
+				</a>
+				{/* // TODO: Include iOS share shortcut as a backend route */}
+				<a href="#" rel="noopener noreferrer" className="text-sm font-medium link pl-4">
+					iOS share shortcut
+				</a>
 			</nav>
 		</>
 	);

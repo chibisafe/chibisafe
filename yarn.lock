@@ -1202,6 +1202,7 @@ __metadata:
     dayjs: ^1.11.10
     eslint: ^8.57.0
     eslint-config-neon: ^0.1.59
+    file-saver: ^2.0.5
     framer-motion: ^11.0.8
     immer: ^10.0.3
     jotai: ^2.7.0

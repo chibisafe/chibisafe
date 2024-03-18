@@ -7,6 +7,8 @@ import { UploadProgress } from '@/components/UploadProgress';
 import { buttonVariants } from '@/styles/button';
 
 export const Header = () => {
+	// TODO: Make social icons customizable with an API call
+	// to the backend to allow for custom social links
 	return (
 		<header className="container z-40 bg-background">
 			<div className="flex h-20 justify-between py-6">
