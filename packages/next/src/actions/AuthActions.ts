@@ -39,7 +39,7 @@ export const changePassword = async (_: any, form: FormData) => {
 export const requestNewApiKey = async (_: any, form: FormData) => {
 	try {
 		const { error } = await request.post({
-			url: 'auth/apikey/request',
+			url: 'auth/apikey/change',
 			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
@@ -47,6 +47,8 @@ export const requestNewApiKey = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
+		// TODO: This should revalidate SettingsProvider.tsx > settingsAtom
+		// otherwise the new API key won't be updated when downloading ShareX config
 		revalidateTag('me');
 		return { message: 'API key regenerated', type: MessageType.Success };
 	} catch (error: any) {

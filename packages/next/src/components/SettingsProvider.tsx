@@ -13,7 +13,14 @@ export function SettingsProvider() {
 	useEffect(() => {
 		if (!settings) {
 			request
-				.get({ url: 'settings' })
+				.get({
+					url: 'settings',
+					options: {
+						next: {
+							tags: ['me']
+						}
+					}
+				})
 				// eslint-disable-next-line promise/prefer-await-to-then
 				.then(async response => {
 					if (response.error) {
