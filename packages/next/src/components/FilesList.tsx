@@ -18,7 +18,7 @@ export async function FilesList({
 			<Suspense>
 				<Pagination itemsTotal={count} type={type} />
 				<Masonry files={files} total={count} type={type} />
-				<Pagination itemsTotal={count} type={type} />
+				{count ? <Pagination itemsTotal={count} type={type} /> : null}
 			</Suspense>
 		</div>
 	);
