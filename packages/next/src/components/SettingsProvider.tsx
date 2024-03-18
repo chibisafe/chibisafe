@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 
 import { settingsAtom } from '@/lib/atoms/settings';
 import request from '@/lib/request';
+import { toast } from 'sonner';
 
 export function SettingsProvider() {
 	const [settings, setSettings] = useAtom(settingsAtom);
@@ -12,10 +13,15 @@ export function SettingsProvider() {
 	useEffect(() => {
 		if (!settings) {
 			request
-				.get('settings')
+				.get({ url: 'settings' })
 				// eslint-disable-next-line promise/prefer-await-to-then
-				.then(response => {
-					setSettings(response);
+				.then(async response => {
+					if (response.error) {
+						toast.error(response.error);
+						return;
+					}
+
+					setSettings(response.data);
 				})
 				// eslint-disable-next-line promise/prefer-await-to-then
 				.catch(() => {});
