@@ -1,11 +1,11 @@
 {
-	"name": "@chibisafe/website-next",
+	"name": "@chibisafe/next",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev -p 8001",
 		"build": "next build",
-		"start": "next start",
+		"start": "next start -p 8001",
 		"lint": "next lint",
 		"lint:fix": "next lint --fix",
 		"preview": "next build && next start",
