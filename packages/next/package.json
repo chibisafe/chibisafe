@@ -1,7 +1,13 @@
 {
 	"name": "@chibisafe/next",
-	"version": "0.0.1",
-	"private": true,
+	"version": "0.0.0",
+	"description": "Blazing fast file uploader and bunker written in node! 🚀",
+	"license": "MIT",
+	"author": {
+		"name": "Pitu",
+		"email": "heyitspitu@gmail.com",
+		"url": "https://github.com/Pitu"
+	},
 	"scripts": {
 		"dev": "next dev -p 8001",
 		"build": "next build",
