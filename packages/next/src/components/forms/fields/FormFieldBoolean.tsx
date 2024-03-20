@@ -8,7 +8,7 @@ export const FormFieldBoolean = ({ form, data }: { readonly data: Setting; reado
 			control={form.control}
 			name={data.key}
 			render={({ field }) => (
-				<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+				<FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-background">
 					<div className="space-y-0.5">
 						<FormLabel className="text-base">{data.name}</FormLabel>
 						<FormDescription>{data.description}</FormDescription>

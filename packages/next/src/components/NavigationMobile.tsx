@@ -1,11 +1,19 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import Link from 'next/link';
 import type { NavItem } from '@/types';
 
 import { cn } from '@/lib/utils';
-import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
-export function NavigationMobile({ items, children }: PropsWithChildren<{ readonly items: NavItem[] }>) {
+export function NavigationMobile({
+	items,
+	children,
+	logo,
+	serviceName = ''
+}: PropsWithChildren<{
+	readonly items: NavItem[];
+	readonly logo: ReactNode;
+	readonly serviceName?: string | undefined;
+}>) {
 	return (
 		<div
 			className={cn(
@@ -14,8 +22,8 @@ export function NavigationMobile({ items, children }: PropsWithChildren<{ readon
 		>
 			<div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
 				<Link href="/" className="flex items-center space-x-2">
-					<ChibisafeLogo />
-					<span className="font-bold">chibisafe</span>
+					{logo}
+					<span className="font-bold">{serviceName}</span>
 				</Link>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
 					{items.map((item, index) => (
