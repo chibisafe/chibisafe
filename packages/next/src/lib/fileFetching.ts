@@ -25,7 +25,12 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		return request.post({
 			url: `files/search?page=${currentPage}&limit=${currentLimit}`,
 			body: {
-				text: props.query?.search
+				text: props.query.search
+			},
+			options: {
+				next: {
+					tags: ['search', props.query.search, currentPage, currentLimit]
+				}
 			}
 		});
 	}
@@ -41,7 +46,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files']
+							tags: ['files', 'user', props.userUuid, currentPage, currentLimit]
 						}
 					}
 				});
@@ -54,7 +59,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files']
+							tags: ['files', 'ip', props.ip, currentPage, currentLimit]
 						}
 					}
 				});
@@ -69,7 +74,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files']
+							tags: ['files', 'admin', currentPage, currentLimit]
 						}
 					}
 				});
@@ -87,7 +92,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files']
+						tags: ['files', 'quarantine', currentPage, currentLimit]
 					}
 				}
 			});
@@ -100,7 +105,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files']
+						tags: ['files', 'album', props.albumUuid, currentPage, currentLimit]
 					}
 				}
 			});
@@ -113,7 +118,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files']
+						tags: ['files', 'tag', props.tagUuid, currentPage, currentLimit]
 					}
 				}
 			});
@@ -126,7 +131,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files']
+						tags: ['files', 'publicAlbum', props.identifier, currentPage, currentLimit]
 					}
 				}
 			});
@@ -139,7 +144,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files']
+						tags: ['files', currentPage, currentLimit]
 					}
 				}
 			});
