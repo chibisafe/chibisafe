@@ -38,7 +38,7 @@ export const loadSettings = async (force = false) => {
 
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
-		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom;
+		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom || (process.env.SERVE_UPLOADS_FROM ?? '');
 		SETTINGS.rateLimitWindow = settingsTable.rateLimitWindow;
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
