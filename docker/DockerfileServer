@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 COPY package.json yarn.lock turbo.json tsconfig.json ./
 
-RUN yarn workspaces focus @chibisafe/backend
+RUN yarn workspace focus @chibisafe/backend
 RUN yarn workspace @chibisafe/backend build
 
 ENV NODE_ENV=production
