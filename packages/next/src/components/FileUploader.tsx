@@ -217,8 +217,6 @@ export function FileUploader() {
 				return;
 			}
 
-			// TODO: Since we're using credentials: include this will fail if the
-			// instance is set to public and the user is not logged in. probably.
 			const getSignedUrl = await fetch('/api/upload', {
 				method: 'POST',
 				headers: {

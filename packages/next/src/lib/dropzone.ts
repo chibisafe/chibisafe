@@ -44,8 +44,6 @@ export const processDropItem = async (item: DropItem | File, settings: Settings 
 };
 
 export const getSignedUrl = async (file: File) => {
-	// TODO: Since we're using credentials: include this will fail if the
-	// instance is set to public and the user is not logged in. probably.
 	const response = await fetch('/api/upload', {
 		method: 'POST',
 		headers: {

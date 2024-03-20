@@ -30,8 +30,6 @@ export default async function DashboardAdminUserPage({
 		redirect('/login');
 	}
 
-	// TODO: If the user hasn't uploaded any files, the response will be an empty array
-	// and the username will be undefined
 	const username = response.files[0]?.user?.username;
 	return (
 		<>

@@ -78,7 +78,6 @@ export function DashboardSidebar() {
 				>
 					ShareX config
 				</a>
-				{/* // TODO: Include iOS share shortcut as a backend route */}
 				<a href="#" rel="noopener noreferrer" className="text-sm font-medium link pl-4">
 					iOS share shortcut
 				</a>
