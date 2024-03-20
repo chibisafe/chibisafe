@@ -33,6 +33,16 @@ const nextConfig = {
 			}
 		]
 	},
+	async rewrites() {
+		return process.env.NODE_ENV === 'production'
+			? []
+			: [
+					{
+						source: '/api/:path*',
+						destination: `${process.env.BASE_API_URL}/api/:path*`
+					}
+				];
+	},
 	eslint: {
 		ignoreDuringBuilds: true
 	},
