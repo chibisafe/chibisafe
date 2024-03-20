@@ -9,6 +9,7 @@ export const FilesListNsfwToggle = ({
 	nsfw = false
 }: PropsWithChildren<{ readonly nsfw?: boolean | undefined }>) => {
 	const [showNsfw, setShowNsfw] = useState(false);
+
 	if (nsfw && !showNsfw) {
 		return (
 			<div className="flex flex-col flex-grow items-center justify-center gap-4">

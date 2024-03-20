@@ -1,5 +1,13 @@
 {$BASE_URL} {
-	bind {$ADDRESS}
-	reverse_proxy /api/* http://chibisafe_server:8000
-	reverse_proxy /* http://chibisafe:8001
+	root * /app/uploads
+	file_server
+
+	@api path /api/*
+	reverse_proxy @api http://chibisafe_server:8000
+
+	@noFile {
+		not path /api/*
+		not file
+	}
+	reverse_proxy @noFile http://chibisafe:8001
 }

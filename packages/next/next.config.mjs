@@ -10,14 +10,12 @@ const withMDX = createMDX({
 	}
 });
 
-const baseApiUrl = 'http://localhost:8000/api/';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
+	output: 'standalone',
 	pageExtensions: ['mdx', 'ts', 'tsx'],
 	env: {
-		NEXT_PUBLIC_BASEAPIURL: baseApiUrl,
 		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version
 	},
 	logging: {
@@ -35,13 +33,8 @@ const nextConfig = {
 			}
 		]
 	},
-	async rewrites() {
-		return [
-			{
-				source: '/api/:path*',
-				destination: `${baseApiUrl}:path*`
-			}
-		];
+	eslint: {
+		ignoreDuringBuilds: true
 	},
 	typescript: {
 		ignoreBuildErrors: true
