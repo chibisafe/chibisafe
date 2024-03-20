@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 COPY package.json yarn.lock turbo.json tsconfig.json ./
 
-RUN yarn workspaces focus @chibisafe/next
+RUN yarn workspace focus @chibisafe/next
 RUN yarn workspace @chibisafe/next build
 
 FROM node:20-alpine as runner
