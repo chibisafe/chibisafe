@@ -69,6 +69,7 @@
 
 pre {
 	background: transparent !important;
+	white-space : pre-wrap !important;
 }
 
 code {
