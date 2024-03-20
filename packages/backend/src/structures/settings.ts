@@ -142,7 +142,7 @@ const SETTINGS_META = {
 	serveUploadsFrom: {
 		type: 'string',
 		description:
-			"Enabling this option shifts file hosting control to you. Chibisafe will no longer serve your files, and you'll manage the /uploads folder using nginx/caddy or a similar solution.",
+			'If using Docker, make sure to change this setting to reflect the domain name you are hosting chibisafe on. For example <https://chibisafe.moe>',
 		name: 'Serve Uploads From',
 		example: 'https://cdn.chibisafe.moe',
 		notice: 'For this setting to take effect, you need to restart the server.',
