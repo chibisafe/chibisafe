@@ -76,7 +76,7 @@ export const SettingsForm = ({
 		});
 
 		const { error } = await request.post({
-			url: '/admin/service/settings',
+			url: 'admin/service/settings',
 			body: {
 				settings
 			}
