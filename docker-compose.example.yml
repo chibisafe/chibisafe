@@ -3,14 +3,31 @@ version: "3.7"
 services:
   chibisafe:
     image: chibisafe/chibisafe:latest
-    container_name: chibisafe
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
+    #build:
+    #  context: ./
+    #  dockerfile: ./docker/Dockerfile
+    expose:
+      - 8000
+    restart: unless-stopped
+
+  chibisafe_server:
+    image: chibisafe/chibisafe-server:latest
+    #build:
+    #  context: ./
+    #  dockerfile: ./docker/DockerfileServer
     volumes:
       - ./database:/home/node/chibisafe/database:rw
       - ./uploads:/home/node/chibisafe/uploads:rw
       - ./logs:/home/node/chibisafe/logs:rw
+    expose:
+      - 8001
+    restart: unless-stopped
+  caddy:
+    image: caddy:2-alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
     ports:
-      - 24424:8000
+      - 24424:80
+    environment:
+      - BASE_URL=":80"
     restart: unless-stopped

@@ -1,0 +1,5 @@
+{$BASE_URL} {
+	bind {$ADDRESS}
+	reverse_proxy /api/* http://chibisafe_server:8000
+	reverse_proxy /* http://chibisafe:8001
+}
