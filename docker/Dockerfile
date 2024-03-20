@@ -32,7 +32,7 @@ USER nextjs
 EXPOSE 8001
 ENV HOSTNAME 0.0.0.0
 ENV HOST 0.0.0.0
-ENV BASE_API_URL http://chibisafe_server:8000/
+ENV BASE_API_URL http://chibisafe_server:8000
 ENV PORT 8001
 
 CMD ["node", "--dns-result-order=ipv4first", "server.js"]

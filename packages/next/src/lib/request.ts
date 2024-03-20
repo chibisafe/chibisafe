@@ -1,11 +1,9 @@
 const request = {
 	get: async ({ url = '', query = {}, headers = {}, options = {} }) => {
 		try {
-			let queryUrl = `${process.env.BASE_API_URL ?? ''}api/${url}`;
+			let queryUrl = `${process.env.BASE_API_URL ?? ''}/api/${url}`;
 
 			if (typeof window !== 'undefined') queryUrl = `/api/${url}`;
-
-			console.log('queryUrl', queryUrl);
 
 			// Check if we are passing any arguments and parse them if so
 			if (Object.keys(query).length) {
@@ -42,7 +40,7 @@ const request = {
 	},
 	post: async ({ url = '', body = {}, headers = {}, options = {} }) => {
 		try {
-			let queryUrl = `${process.env.BASE_API_URL ?? ''}api/${url}`;
+			let queryUrl = `${process.env.BASE_API_URL ?? ''}/api/${url}`;
 
 			if (typeof window !== 'undefined') queryUrl = `/api/${url}`;
 
@@ -78,7 +76,7 @@ const request = {
 	},
 	delete: async ({ url = '', headers = {}, options = {} }) => {
 		try {
-			let queryUrl = `${process.env.BASE_API_URL ?? ''}api/${url}`;
+			let queryUrl = `${process.env.BASE_API_URL ?? ''}/api/${url}`;
 
 			if (typeof window !== 'undefined') queryUrl = `/api/${url}`;
 
