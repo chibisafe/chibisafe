@@ -12,6 +12,7 @@ import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { UserProvider } from '@/components/UserProvider';
 
 import { Providers } from './providers';
+import { GlobalBackground } from '@/components/GlobalBackground';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 			>
 				<Providers>
 					{children}
+					<GlobalBackground />
 					<Toaster />
 					<TailwindIndicator />
 					<UserProvider shouldFetch={hasTokenCookie} />

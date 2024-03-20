@@ -5,12 +5,23 @@ import { GitHubLogo } from '@/components/svg/GitHubLogo';
 import { PatreonLogo } from '@/components/svg/PatreonLogo';
 import { UploadProgress } from '@/components/UploadProgress';
 import { buttonVariants } from '@/styles/button';
+import { ChibisafeLogo } from './svg/ChibisafeLogo';
+import request from '@/lib/request';
 
-export const Header = () => {
+export const Header = async () => {
+	const { data } = await request.get({
+		url: 'settings',
+		options: {
+			next: {
+				tags: ['settings']
+			}
+		}
+	});
+
 	return (
-		<header className="container z-40 bg-background">
+		<header className="container z-40">
 			<div className="flex h-20 justify-between py-6">
-				<Navigation />
+				<Navigation logo={<ChibisafeLogo className="w-6 h-6" />} serviceName={data?.serviceName} />
 				<UploadProgress />
 				<nav className="flex items-center gap-1">
 					<a href="https://discord.gg/5g6vgwn" target="_blank" rel="noopener noreferrer">

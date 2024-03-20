@@ -17,7 +17,7 @@ export function SettingsProvider() {
 					url: 'settings',
 					options: {
 						next: {
-							tags: ['me']
+							tags: ['settings']
 						}
 					}
 				})
