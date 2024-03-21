@@ -25,7 +25,7 @@ export const SnippetViewer = ({
 	readonly snippet: Snippet;
 }>) => {
 	return (
-		<div className="border border-1 border-accent rounded p-4">
+		<div className="border border-1 border-accent rounded p-4 bg-background">
 			<div className="flex items-center mb-4">
 				<div className="mb-2">
 					{showTitle ? (
