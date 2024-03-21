@@ -251,7 +251,7 @@ export function FileInformationDialog({
 							</video>
 						) : null}
 						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
-							<div className={cn('grid grid-rows-1 gap-8 md:p-8 p-2 min-w-96 md:grid-cols-2')}>
+							<div className="grid grid-rows-1 gap-8 md:p-8 p-2 min-w-96 md:grid-cols-2 max-h-[calc(100vh-10rem)]">
 								<div className="flex flex-col space-y-1.5 gap-0">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 										File information
