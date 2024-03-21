@@ -21,6 +21,8 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 		search
 	};
 
+	const pageDataTag = [currentPage.toString(), currentLimit.toString()];
+
 	if (props.query?.search) {
 		return request.post({
 			url: `files/search?page=${currentPage}&limit=${currentLimit}`,
@@ -29,7 +31,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 			},
 			options: {
 				next: {
-					tags: ['search', props.query.search, currentPage, currentLimit]
+					tags: ['search', props.query.search, ...pageDataTag]
 				}
 			}
 		});
@@ -46,7 +48,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'user', props.userUuid, currentPage, currentLimit]
+							tags: ['files', 'user', props.userUuid, ...pageDataTag]
 						}
 					}
 				});
@@ -59,7 +61,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'ip', props.ip, currentPage, currentLimit]
+							tags: ['files', 'ip', props.ip, ...pageDataTag]
 						}
 					}
 				});
@@ -74,7 +76,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'admin', currentPage, currentLimit]
+							tags: ['files', 'admin', ...pageDataTag]
 						}
 					}
 				});
@@ -92,7 +94,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'quarantine', currentPage, currentLimit]
+						tags: ['files', 'admin', 'quarantine', ...pageDataTag]
 					}
 				}
 			});
@@ -105,7 +107,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'album', props.albumUuid, currentPage, currentLimit]
+						tags: ['files', 'album', props.albumUuid, ...pageDataTag]
 					}
 				}
 			});
@@ -118,7 +120,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'tag', props.tagUuid, currentPage, currentLimit]
+						tags: ['files', 'tag', props.tagUuid, ...pageDataTag]
 					}
 				}
 			});
@@ -131,7 +133,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'publicAlbum', props.identifier, currentPage, currentLimit]
+						tags: ['files', 'publicAlbum', props.identifier, ...pageDataTag]
 					}
 				}
 			});
@@ -144,7 +146,7 @@ export const fetchEndpoint = async (props: FileProps, currentPage: number, curre
 				headers,
 				options: {
 					next: {
-						tags: ['files', currentPage, currentLimit]
+						tags: ['files', ...pageDataTag]
 					}
 				}
 			});
