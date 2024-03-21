@@ -47,7 +47,7 @@ export function FileInformationDrawerActions({
 					</a>
 
 					<RegenerateThumbnailFileInformationAction uuid={file.uuid} isDrawer />
-					{type === 'admin' ? (
+					{type === 'admin' || type === 'quarantine' ? (
 						<>
 							{file.quarantine ? (
 								<AllowFileInformationAction uuid={file.uuid} isDrawer />
