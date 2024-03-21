@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { ExternalLink, Loader2, XIcon } from 'lucide-react';
+import { CopyIcon, ExternalLink, Loader2, XIcon } from 'lucide-react';
 
 import { uploadsAtom } from '@/lib/atoms/uploads';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -13,6 +13,7 @@ import { Button } from './ui/button';
 import { ProgressBar } from '@tremor/react';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { useCopyToClipboard } from 'usehooks-ts';
 
 type Status = 'complete' | 'idle' | 'uploading';
 
@@ -22,6 +23,7 @@ export const UploadProgress = () => {
 	const [filesUploading, setFilesUploading] = useState(0);
 	const [totalProgress, setTotalProgress] = useState(0);
 	const [status, setStatus] = useState<Status>('idle');
+	const [copiedText, copy] = useCopyToClipboard();
 	const queryClient = useQueryClient();
 
 	const removeFile = (uuid: string) => {
@@ -89,7 +91,7 @@ export const UploadProgress = () => {
 								<div className="flex flex-row w-full justify-between">
 									<div className="text-sm font-medium">
 										{file.status === 'success' ? (
-											<>
+											<div className="flex flex-row gap-2">
 												<a
 													href={file.url}
 													target="_blank"
@@ -99,7 +101,7 @@ export const UploadProgress = () => {
 													{file.name}
 													<ExternalLink className="h-4 w-4 ml-1" />
 												</a>
-											</>
+											</div>
 										) : (
 											file.name
 										)}
@@ -107,14 +109,25 @@ export const UploadProgress = () => {
 									<div className="text-sm text-muted-foreground flex flex-row gap-2 items-center">
 										{file.status}
 										{file.status === 'error' || file.status === 'success' ? (
-											<Button
-												variant="ghost"
-												size="icon"
-												className="w-6 h-6"
-												onClick={() => removeFile(file.uuid)}
-											>
-												<XIcon className="h-4 w-4" />
-											</Button>
+											<>
+												<Button
+													variant="ghost"
+													size="icon"
+													className="w-6 h-6"
+													onClick={() => void copy(file.url ?? '')}
+												>
+													<CopyIcon className="h-4 w-4" />
+												</Button>
+
+												<Button
+													variant="ghost"
+													size="icon"
+													className="w-6 h-6"
+													onClick={() => removeFile(file.uuid)}
+												>
+													<XIcon className="h-4 w-4" />
+												</Button>
+											</>
 										) : null}
 									</div>
 								</div>
