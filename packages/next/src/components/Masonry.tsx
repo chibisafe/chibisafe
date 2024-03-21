@@ -63,7 +63,7 @@ export function Masonry({
 		<>
 			{showMasonry ? (
 				<Plock
-					items={files?.length ? files : data?.files ?? []}
+					items={files?.length ? files : type === 'uploads' ? data?.files ?? [] : []}
 					config={{
 						columns: [1, 2, 3, 4],
 						gap: [24, 12, 12, 12],
