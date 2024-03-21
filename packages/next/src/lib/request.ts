@@ -12,7 +12,7 @@ const request = {
 
 			const response = await fetch(queryUrl, {
 				method: 'GET',
-				credentials: 'include',
+				credentials: typeof window === 'undefined' ? 'omit' : 'include',
 				headers: {
 					'Content-Type': 'application/json',
 					...headers

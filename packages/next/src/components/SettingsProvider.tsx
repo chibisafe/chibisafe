@@ -1,39 +1,41 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 
 import { settingsAtom } from '@/lib/atoms/settings';
 import request from '@/lib/request';
 import { toast } from 'sonner';
+import { useQuery } from '@tanstack/react-query';
 
 export function SettingsProvider() {
-	const [settings, setSettings] = useAtom(settingsAtom);
+	const setSettings = useSetAtom(settingsAtom);
 
-	useEffect(() => {
-		if (!settings) {
-			request
-				.get({
-					url: 'settings',
-					options: {
-						next: {
-							tags: ['settings']
-						}
+	useQuery({
+		queryKey: ['settings'],
+		queryFn: async () => {
+			const {
+				data: response,
+				error,
+				status
+			} = await request.get({
+				url: 'settings',
+				options: {
+					next: {
+						tags: ['settings']
 					}
-				})
-				// eslint-disable-next-line promise/prefer-await-to-then
-				.then(async response => {
-					if (response.error) {
-						toast.error(response.error);
-						return;
-					}
+				}
+			});
 
-					setSettings(response.data);
-				})
-				// eslint-disable-next-line promise/prefer-await-to-then
-				.catch(() => {});
+			if (error && status === 401) {
+				toast.error(error);
+				return;
+			}
+
+			setSettings(response);
+
+			return response;
 		}
-	}, [settings, setSettings]);
+	});
 
 	return null;
 }
