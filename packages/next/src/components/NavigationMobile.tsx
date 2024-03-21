@@ -1,16 +1,13 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import Link from 'next/link';
-import type { NavItem } from '@/types';
 
 import { cn } from '@/lib/utils';
 
 export function NavigationMobile({
-	items,
 	children,
 	logo,
 	serviceName = ''
 }: PropsWithChildren<{
-	readonly items: NavItem[];
 	readonly logo: ReactNode;
 	readonly serviceName?: string | undefined;
 }>) {
@@ -26,18 +23,19 @@ export function NavigationMobile({
 					<span className="font-bold">{serviceName}</span>
 				</Link>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
-					{items.map((item, index) => (
-						<Link
-							key={index}
-							href={item.href}
-							className={cn(
-								'flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline',
-								item.disabled && 'cursor-not-allowed opacity-60'
-							)}
-						>
-							{item.title}
-						</Link>
-					))}
+					<Link
+						href="/dashboard"
+						className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline"
+					>
+						Dashboard
+					</Link>
+					<a
+						href="/docs"
+						rel="noopener noreferrer"
+						className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline"
+					>
+						Docs
+					</a>
 				</nav>
 				{children}
 			</div>
