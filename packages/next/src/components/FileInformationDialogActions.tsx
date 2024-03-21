@@ -49,7 +49,7 @@ export function FileInformationDialogActions({
 						</DropdownMenuItem>
 					)}
 				</DropdownMenuGroup>
-				{type === 'admin' ? (
+				{type === 'admin' || type === 'quarantine' ? (
 					<>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
