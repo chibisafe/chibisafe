@@ -10,7 +10,7 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import type { File, FilePropsType } from '@/types';
+import type { FileWithAdditionalData, FilePropsType } from '@/types';
 import { ArrowDownToLineIcon, ArrowUpDown, ArrowUpRightFromSquare } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
@@ -18,6 +18,7 @@ import { FileInformationDialogActions } from '@/components/FileInformationDialog
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 import { formatBytes } from '@/lib/file';
 import { FileThumbnail } from '@/components/FileThumbnail';
+import Link from 'next/link';
 
 declare module '@tanstack/table-core' {
 	interface TableMeta<TData extends RowData> {
@@ -25,7 +26,7 @@ declare module '@tanstack/table-core' {
 	}
 }
 
-const columnHelper = createColumnHelper<File>();
+const columnHelper = createColumnHelper<FileWithAdditionalData>();
 const columns = [
 	columnHelper.accessor(row => row.thumb, {
 		id: 'thumbnail',
@@ -57,6 +58,26 @@ const columns = [
 				{props.row.original.original} <ArrowDownToLineIcon className="w-4 h-4 ml-1" />
 			</a>
 		)
+	}),
+	columnHelper.accessor(row => row.user, {
+		id: 'user',
+		header: 'Owner',
+		enableHiding: true,
+		cell: props => {
+			if (props.table.options.meta?.type !== 'admin') {
+				props.column.toggleVisibility(false);
+				return;
+			}
+
+			return (
+				<Link
+					href={`/dashboard/admin/users/${props.row.original.user?.uuid}`}
+					className="text-blue-500 underline inline-flex items-center"
+				>
+					{props.row.original.user?.username}
+				</Link>
+			);
+		}
 	}),
 	columnHelper.accessor(row => row.size, {
 		id: 'size',
