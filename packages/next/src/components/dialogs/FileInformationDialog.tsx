@@ -32,6 +32,8 @@ import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
 import { toast } from 'sonner';
+import { useAtom } from 'jotai';
+import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 
 export function FileInformationDialog({
 	file,
@@ -48,6 +50,7 @@ export function FileInformationDialog({
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
+	const [_, setModalOpen] = useAtom(isDialogOpenAtom);
 
 	const fetchExtraData = useCallback(async () => {
 		try {
@@ -279,6 +282,7 @@ export function FileInformationDialog({
 												<Link
 													href={`/dashboard/admin/ip/${file.ip}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
+													onClick={() => setModalOpen(false)}
 												>
 													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 												</Link>
@@ -320,6 +324,7 @@ export function FileInformationDialog({
 												<Link
 													href={`/dashboard/admin/users/${file.user?.uuid}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
+													onClick={() => setModalOpen(false)}
 												>
 													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 												</Link>
