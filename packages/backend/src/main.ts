@@ -183,8 +183,8 @@ const start = async () => {
 		});
 	}
 
-	// Serve uploads only if the user didn't change the default value
-	if (!SETTINGS.serveUploadsFrom) {
+	// Serve uploads only if the user is running in DEV mode
+	if (process.env.NODE_ENV !== 'production') {
 		await server.register(fstatic, {
 			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
 		});
@@ -200,9 +200,8 @@ const start = async () => {
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 
-	if (!SETTINGS.disableUpdateCheck) {
-		await startUpdateCheckSchedule();
-	}
+	// Check for updates
+	await startUpdateCheckSchedule();
 };
 
 void start();
