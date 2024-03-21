@@ -18,14 +18,11 @@ export default async function DashboardPage({
 	readonly params: { ip: string };
 	readonly searchParams: PageQuery;
 }) {
+	const ip = decodeURIComponent(params.ip);
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
-	const {
-		data: response,
-		error,
-		status
-	} = await fetchEndpoint({ type: 'admin', ip: params.ip }, currentPage, perPage);
+	const { data: response, error, status } = await fetchEndpoint({ type: 'admin', ip }, currentPage, perPage);
 	if (error && status === 401) {
 		redirect('/login');
 	}
@@ -33,15 +30,15 @@ export default async function DashboardPage({
 	return (
 		<>
 			<DashboardHeader
-				title={`${params.ip} files`}
+				title={`${ip} files`}
 				subtitle="As an admin, you can manage their files"
 				breadcrumbs={[
 					{ name: 'Admin', url: '/dashboard/admin' },
 					{ name: 'Banned IPs', url: '/dashboard/admin/ip' },
-					{ name: params.ip, url: `/dashboard/admin/ip/${params.ip}` }
+					{ name: ip, url: `/dashboard/admin/ip/${ip}` }
 				]}
 			>
-				{response.banned ? null : <BanThisIpDialog ip={params.ip} />}
+				{response.banned ? null : <BanThisIpDialog ip={ip} />}
 			</DashboardHeader>
 			<div className="px-2">
 				<FilesList type="admin" files={response.files} count={response.count} />
