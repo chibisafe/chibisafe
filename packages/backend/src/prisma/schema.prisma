@@ -89,6 +89,7 @@ model albums {
 model bans {
 	id Int @id @default(autoincrement())
 	ip String
+	reason String?
 	createdAt DateTime @default(now())
 }
 
