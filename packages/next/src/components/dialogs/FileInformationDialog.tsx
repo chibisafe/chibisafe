@@ -198,7 +198,7 @@ export function FileInformationDialog({
 						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
 							{isFileImage(file) ? (
 								<picture>
-									<img src={file.url} className="h-full object-contain md:block" />
+									<img src={file.url} className="h-full object-contain md:block" draggable={false} />
 								</picture>
 							) : isFileVideo(file) ? (
 								<MediaController className="h-full hidden md:block">
