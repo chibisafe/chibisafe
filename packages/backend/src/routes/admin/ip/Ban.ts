@@ -10,7 +10,8 @@ export const schema = {
 	tags: ['IP Management'],
 	body: z
 		.object({
-			ip: z.string().describe('The IP address.')
+			ip: z.string().describe('The IP address.'),
+			reason: z.string().optional().describe('The reason for banning the IP.')
 		})
 		.required(),
 	response: {
@@ -29,7 +30,7 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const { ip }: { ip: string } = req.body as { ip: string };
+	const { ip, reason } = req.body as { ip: string; reason?: string };
 
 	if (!ip) {
 		void res.badRequest('No ip provided');
@@ -49,7 +50,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	await prisma.bans.create({
 		data: {
-			ip
+			ip,
+			reason: reason ?? null
 		}
 	});
 
