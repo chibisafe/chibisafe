@@ -27,6 +27,11 @@ export const schema = {
 	response: {
 		200: z.object({
 			message: responseMessageSchema,
+			user: z
+				.object({
+					username: z.string().describe("The user's username.")
+				})
+				.describe('The user object with the username.'),
 			files: z.array(fileAsAdminSchema),
 			count: z.number().describe('The amount of files that exist.')
 		}),
@@ -50,7 +55,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			uuid
 		},
 		select: {
-			id: true
+			id: true,
+			username: true
 		}
 	});
 
@@ -136,6 +142,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	return res.send({
 		message: "Successfully retrieved user's files",
+		user,
 		files: readyFiles,
 		count
 	});

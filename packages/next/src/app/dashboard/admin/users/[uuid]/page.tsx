@@ -30,7 +30,7 @@ export default async function DashboardAdminUserPage({
 		redirect('/login');
 	}
 
-	const username = response.files[0]?.user?.username;
+	const username = response.user?.username;
 	return (
 		<>
 			<DashboardHeader
