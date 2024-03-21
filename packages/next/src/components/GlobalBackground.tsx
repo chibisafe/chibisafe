@@ -18,7 +18,7 @@ export const GlobalBackground = async () => {
 		return (
 			<div
 				className="fixed inset-0 z-[-1] bg-no-repeat bg-center bg-cover"
-				style={{ background: `url(${data.backgroundImageURL})` }}
+				style={{ backgroundImage: `url(${data.backgroundImageURL})` }}
 			/>
 		);
 	}
