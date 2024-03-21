@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 import { deleteTag } from '@/actions/TagsActions';
+import { Tooltip } from '@/components/Tooltip';
 
 export const TagsConfirmationAction = ({
 	uuid,
@@ -36,11 +37,13 @@ export const TagsConfirmationAction = ({
 	}, [state.message, state.type, state]);
 
 	return (
-		<form action={formAction} ref={formRef} className="h-full">
-			<input type="hidden" name="uuid" value={uuid} />
-			<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
-				{children}
-			</ConfirmationDialog>
-		</form>
+		<Tooltip content="Delete tag">
+			<form action={formAction} ref={formRef} className="h-full">
+				<input type="hidden" name="uuid" value={uuid} />
+				<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
+					{children}
+				</ConfirmationDialog>
+			</form>
+		</Tooltip>
 	);
 };

@@ -14,7 +14,6 @@ import type { TagWithCount } from '@/types';
 import { Button } from '@/components/ui/button';
 import { TagsConfirmationAction } from './TagsConfirmationAction';
 import { ArrowUpDown, Trash2Icon } from 'lucide-react';
-import { Tooltip } from '@/components/Tooltip';
 import Link from 'next/link';
 
 const columnHelper = createColumnHelper<TagWithCount>();
@@ -57,11 +56,9 @@ const columns = [
 					uuid={props.row.original.uuid}
 					description="Are you sure you want to delete this tag? This will not delete any files."
 				>
-					{/* <Tooltip content="Delete tag"> */}
 					<Button variant="outline" size={'icon'}>
 						<Trash2Icon className="h-4 w-4" />
 					</Button>
-					{/* </Tooltip> */}
 				</TagsConfirmationAction>
 			</div>
 		)
