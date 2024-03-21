@@ -308,7 +308,7 @@ export function FileInformationDialog({
 									</div>
 								</div>
 
-								{type === 'admin' && file.user ? (
+								{(type === 'admin' || type === 'quarantine') && file.user ? (
 									<div className="flex flex-col space-y-1.5 gap-0">
 										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 											User information
