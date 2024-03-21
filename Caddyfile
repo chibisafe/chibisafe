@@ -10,7 +10,7 @@
 		header_up X-Forwarded-Proto {http.request.header.X-Forwarded-Proto}
 	}
 
-	@docs path /docs/*
+	@docs path /docs*
 	reverse_proxy @docs http://chibisafe_server:8000 {
 		header_up Host {http.reverse_proxy.upstream.hostport}
 		header_up X-Real-IP {http.request.header.X-Real-IP}
@@ -20,6 +20,7 @@
 
 	@noFile {
 		not path /api/*
+		not path /docs*
 		not file
 	}
 	reverse_proxy @noFile http://chibisafe:8001 {
