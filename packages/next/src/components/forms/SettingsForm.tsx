@@ -9,6 +9,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import request from '@/lib/request';
+import { useQueryClient } from '@tanstack/react-query';
+import { saveSettings } from '@/actions/SaveSettingsAction';
 
 const formSchema = z.object({
 	// Users
@@ -58,6 +60,7 @@ export const SettingsForm = ({
 	readonly categorizedSettings: any;
 	readonly defaultValues: any;
 }) => {
+	const queryClient = useQueryClient();
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues,
@@ -88,6 +91,8 @@ export const SettingsForm = ({
 		}
 
 		toast.success('Settings saved. Please note that some settings may require a server restart to take effect');
+		saveSettings();
+		void queryClient.invalidateQueries({ queryKey: ['settings'] });
 	};
 
 	return (
