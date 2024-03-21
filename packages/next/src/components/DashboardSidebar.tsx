@@ -5,6 +5,7 @@ import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags,
 
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
+// @ts-expect-error file-saver doesn't have typings
 import { saveAs } from 'file-saver';
 
 export function DashboardSidebar() {
@@ -78,7 +79,11 @@ export function DashboardSidebar() {
 				>
 					ShareX config
 				</a>
-				<a href="#" rel="noopener noreferrer" className="text-sm font-medium link pl-4">
+				<a
+					href="https://www.icloud.com/shortcuts/a63987ea47204bbba24d063d620fcf94"
+					rel="noopener noreferrer"
+					className="text-sm font-medium link pl-4"
+				>
 					iOS share shortcut
 				</a>
 			</nav>
