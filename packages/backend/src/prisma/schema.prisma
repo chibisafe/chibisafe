@@ -136,6 +136,7 @@ model settings {
 	enableMixedCaseFilenames Boolean @default(true)
 	usersStorageQuota String @default("0")
 	useNetworkStorage Boolean @default(false)
+	useMinimalHomepage Boolean @default(false)
 	S3Region String @default("")
 	S3Bucket String @default("")
 	S3AccessKey String @default("")

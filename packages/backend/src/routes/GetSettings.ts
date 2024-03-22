@@ -17,7 +17,11 @@ export const schema = {
 			publicMode: z.boolean().describe('Whether or not the service is in public mode.'),
 			userAccounts: z.boolean().describe('Whether or not user accounts are enabled.'),
 			blockedExtensions: z.array(z.string()).describe('The list of blocked extensions.'),
-			useNetworkStorage: z.boolean().describe('Whether or not network storage is enabled.')
+			useNetworkStorage: z.boolean().describe('Whether or not network storage is enabled.'),
+			useMinimalHomepage: z
+				.boolean()
+				.optional()
+				.describe('Whether or not to use a minimal version of the homepage.')
 		})
 	}
 };
@@ -37,6 +41,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts,
 		blockedExtensions: SETTINGS.blockedExtensions,
-		useNetworkStorage: SETTINGS.useNetworkStorage
+		useNetworkStorage: SETTINGS.useNetworkStorage,
+		useMinimalHomepage: SETTINGS.useMinimalHomepage
 	});
 };

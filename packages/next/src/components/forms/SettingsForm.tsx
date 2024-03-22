@@ -25,6 +25,7 @@ const formSchema = z.object({
 	metaKeywords: z.string().optional(),
 	metaTwitterHandle: z.string().optional(),
 	metaDomain: z.string().optional(),
+	useMinimalHomepage: z.boolean().optional(),
 	// Service
 	serveUploadsFrom: z.string().optional(),
 	rateLimitWindow: z.coerce.number().min(1, { message: 'Required' }),
