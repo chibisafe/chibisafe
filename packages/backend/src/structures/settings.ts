@@ -142,10 +142,9 @@ const SETTINGS_META = {
 	serveUploadsFrom: {
 		type: 'string',
 		description:
-			'If using Docker, make sure to change this setting to reflect the domain name you are hosting chibisafe on. For example <https://chibisafe.moe>',
+			'If using Docker, make sure to change this setting to reflect the domain name you are hosting chibisafe on.',
 		name: 'Serve Uploads From',
 		example: 'https://cdn.chibisafe.moe',
-		notice: 'For this setting to take effect, you need to restart the server.',
 		category: 'service'
 	},
 	rateLimitWindow: {
@@ -168,7 +167,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'A secret string used for signing JWT tokens. Keep this secret!',
 		name: 'Secret',
-		notice: 'If you change this setting every user will be asked to log back in. Make sure this setting is random and at least 64 characters long.',
+		notice: 'Changing this will log out everyone. Make sure this setting is random and at least 64 characters long.',
 		category: 'service'
 	},
 	serviceName: {
@@ -246,15 +245,14 @@ const SETTINGS_META = {
 	},
 	publicMode: {
 		type: 'boolean',
-		description:
-			'Whether or not to enable public mode. If enabled, users will be able to upload files without an account.',
+		description: 'If public mode is enabled, users will be able to upload files without being logged in.',
 		name: 'Public Mode',
 		category: 'users'
 	},
 	userAccounts: {
 		type: 'boolean',
 		description:
-			'Whether or not to enable user accounts. If disabled, users will not be able to register new accounts.',
+			'If user accounts are disabled, users will not be able to register new accounts unless they have an invite.',
 		name: 'User Accounts',
 		category: 'users'
 	},
