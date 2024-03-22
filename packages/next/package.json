@@ -76,6 +76,7 @@
 		"@mdx-js/react": "^3.0.1",
 		"@next/mdx": "^14.2.0-canary.33",
 		"@tanstack/react-query-devtools": "^5.28.4",
+		"@types/file-saver": "^2.0.7",
 		"@types/js-cookie": "^3.0.6",
 		"@types/mdx": "^2.0.11",
 		"@types/node": "^20.11.30",

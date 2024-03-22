@@ -5,7 +5,6 @@ import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags,
 
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
-// @ts-expect-error file-saver doesn't have typings
 import { saveAs } from 'file-saver';
 
 export function DashboardSidebar() {

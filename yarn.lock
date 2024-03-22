@@ -1163,6 +1163,7 @@ __metadata:
     "@tanstack/react-query-devtools": "npm:^5.28.4"
     "@tanstack/react-table": "npm:^8.14.0"
     "@tremor/react": "npm:^3.14.1"
+    "@types/file-saver": "npm:^2.0.7"
     "@types/js-cookie": "npm:^3.0.6"
     "@types/mdx": "npm:^2.0.11"
     "@types/node": "npm:^20.11.30"
@@ -5744,6 +5745,13 @@ __metadata:
   version: 2.0.2
   resolution: "@types/fancy-log@npm:2.0.2"
   checksum: 10c0/a214766c9e277aba0a6ed1f28b6710d57c8dedb241c4cff1bfbca2fdbe88e342ea461fdf0f5e7c63bee7dd9754cfdf455160d1fb4fcaa0e3aecd67c22dd2a29b
+  languageName: node
+  linkType: hard
+
+"@types/file-saver@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/file-saver@npm:2.0.7"
+  checksum: 10c0/c6b88a1aea8eec58469da2a90828fef6e9d5d590c7094fb959783d7c32878af80d39439734f3d41b78355dadb507f606e3d04a29a160c85411c65251e58df847
   languageName: node
   linkType: hard
 
