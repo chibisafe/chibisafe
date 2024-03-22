@@ -64,6 +64,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaDomain = settingsTable.metaDomain;
 		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
+		SETTINGS.useMinimalHomepage = settingsTable.useMinimalHomepage;
 		SETTINGS.S3Region = settingsTable.S3Region;
 		SETTINGS.S3Bucket = settingsTable.S3Bucket;
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
@@ -103,6 +104,7 @@ export const loadSettings = async (force = false) => {
 		metaTwitterHandle: '@your-twitter-handle',
 		usersStorageQuota: 0,
 		useNetworkStorage: false,
+		useMinimalHomepage: false,
 		S3Region: '',
 		S3Bucket: '',
 		S3AccessKey: '',
@@ -357,5 +359,11 @@ const SETTINGS_META = {
 		name: 'S3 Public URL',
 		example: 'https://chibisafe.s3.us-east-1.amazonaws.com',
 		category: 'uploads'
+	},
+	useMinimalHomepage: {
+		type: 'boolean',
+		description: 'Whether or not to use a minimal version of the homepage.',
+		name: 'Use Minimal Homepage',
+		category: 'customization'
 	}
 };
