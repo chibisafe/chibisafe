@@ -1,3 +1,4 @@
+import { createReadStream } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -46,6 +47,6 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 	}
 
 	const uploadPath = fileURLToPath(new URL('../../../../../uploads', import.meta.url));
-
-	return res.header('content-disposition', `attachment; filename="${file.original}"`).sendFile(file.name, uploadPath);
+	const filePath = createReadStream(`${uploadPath}/${file.name}`);
+	return res.header('content-disposition', `attachment; filename="${file.original}"`).send(filePath);
 };
