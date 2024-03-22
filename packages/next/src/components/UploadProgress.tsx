@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { CopyIcon, ExternalLink, Loader2, XIcon } from 'lucide-react';
+import { CopyIcon, InfoIcon, Loader2, XIcon } from 'lucide-react';
 
 import { uploadsAtom } from '@/lib/atoms/uploads';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { Button } from './ui/button';
@@ -14,6 +13,8 @@ import { ProgressBar } from '@tremor/react';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCopyToClipboard } from 'usehooks-ts';
+import { Label, ProgressBar as ReactAriaProgressBar } from 'react-aria-components';
+import { Tooltip } from './Tooltip';
 
 type Status = 'complete' | 'idle' | 'uploading';
 
@@ -23,7 +24,7 @@ export const UploadProgress = () => {
 	const [filesUploading, setFilesUploading] = useState(0);
 	const [totalProgress, setTotalProgress] = useState(0);
 	const [status, setStatus] = useState<Status>('idle');
-	const [copiedText, copy] = useCopyToClipboard();
+	const [_, copy] = useCopyToClipboard();
 	const queryClient = useQueryClient();
 
 	const removeFile = (uuid: string) => {
@@ -85,53 +86,81 @@ export const UploadProgress = () => {
 			</PopoverTrigger>
 			<PopoverContent className="w-[512px] mt-2">
 				<ScrollArea className="w-full h-72">
-					<ul className="p-4">
+					<ul className="">
 						{uploads.map(file => (
 							<li key={file.uuid} className="flex items-center justify-between flex-col mb-4 last:mb-0">
-								<div className="flex flex-row w-full justify-between">
-									<div className="text-sm font-medium">
-										{file.status === 'success' ? (
-											<div className="flex flex-row gap-2">
-												<a
-													href={file.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="link flex items-center gap-1"
-												>
-													{file.name}
-													<ExternalLink className="h-4 w-4 ml-1" />
-												</a>
-											</div>
-										) : (
-											file.name
-										)}
-									</div>
-									<div className="text-sm text-muted-foreground flex flex-row gap-2 items-center">
-										{file.status}
-										{file.status === 'error' || file.status === 'success' ? (
-											<>
-												<Button
-													variant="ghost"
-													size="icon"
-													className="w-6 h-6"
-													onClick={() => void copy(file.url ?? '')}
-												>
-													<CopyIcon className="h-4 w-4" />
-												</Button>
+								<ReactAriaProgressBar
+									value={file.progress}
+									className="flex flex-col gap-3 w-full text-white"
+									aria-label="File progress bar"
+								>
+									{({ percentage, valueText }) => (
+										<>
+											<div className="flex text-sm">
+												{file.status === 'uploading' ? (
+													<>
+														<Label className="flex-1">Uploading {file.name}...</Label>
+														<span>{valueText}</span>
+													</>
+												) : file.status === 'success' ? (
+													<div className="flex justify-between flex-1 gap-4 items-center">
+														<a
+															href={file.url}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="link flex items-center gap-1"
+														>
+															{file.name}
+														</a>
+														<div className="flex">
+															<Tooltip content="Copy link">
+																<Button
+																	variant="ghost"
+																	size="icon"
+																	className="w-6 h-6"
+																	onClick={() => void copy(file.url ?? '')}
+																>
+																	<CopyIcon className="h-4 w-4" />
+																</Button>
+															</Tooltip>
 
-												<Button
-													variant="ghost"
-													size="icon"
-													className="w-6 h-6"
-													onClick={() => removeFile(file.uuid)}
-												>
-													<XIcon className="h-4 w-4" />
-												</Button>
-											</>
-										) : null}
-									</div>
-								</div>
-								<Progress value={file.progress} className="w-full h-2 mt-1" />
+															<Tooltip content="Remove from list">
+																<Button
+																	variant="ghost"
+																	size="icon"
+																	className="w-6 h-6"
+																	onClick={() => removeFile(file.uuid)}
+																>
+																	<XIcon className="h-4 w-4" />
+																</Button>
+															</Tooltip>
+														</div>
+													</div>
+												) : file.status === 'error' ? (
+													<div className="flex justify-between flex-1">
+														{file.name}
+														<div className="flex">
+															<Tooltip
+																content={file.error ?? 'An unexpected error ocurred'}
+															>
+																<InfoIcon className="h-4 w-4 text-red-500" />
+															</Tooltip>
+														</div>
+													</div>
+												) : null}
+											</div>
+											<div className="h-2 top-[50%] transform translate-y-[-50%] w-full rounded-full bg-white bg-opacity-40">
+												<div
+													className={cn(
+														'absolute h-2 top-[50%] transform translate-y-[-50%] rounded-full',
+														file.error ? 'bg-red-500' : 'bg-white'
+													)}
+													style={{ width: percentage + '%' }}
+												/>
+											</div>
+										</>
+									)}
+								</ReactAriaProgressBar>
 							</li>
 						))}
 					</ul>
