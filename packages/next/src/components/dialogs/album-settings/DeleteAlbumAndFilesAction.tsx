@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { deleteAlbum } from '@/actions/AlbumSettingsDialogActions';
+import { deleteAlbumAndFiles } from '@/actions/AlbumSettingsDialogActions';
 import { MessageType } from '@/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
@@ -13,7 +13,7 @@ import { ConfirmationDialog } from '../ConfirmationDialog';
 export const DeleteAlbumAndFilesAction = () => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const album = useAtomValue(selectedAlbumAtom);
-	const [state, formAction] = useFormState(deleteAlbum, {
+	const [state, formAction] = useFormState(deleteAlbumAndFiles, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
