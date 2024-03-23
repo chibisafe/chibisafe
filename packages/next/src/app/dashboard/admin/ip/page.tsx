@@ -68,7 +68,7 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 				<Suspense>
 					<Pagination itemsTotal={response?.count ?? 0} />
 				</Suspense>
-				<IpTable data={response?.ips ?? []} />
+				<IpTable data={response?.ips} />
 			</div>
 		</>
 	);

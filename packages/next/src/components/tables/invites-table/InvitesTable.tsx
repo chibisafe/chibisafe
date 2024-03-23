@@ -85,7 +85,7 @@ const columns = [
 	})
 ];
 
-export const InvitesTable = ({ data }: PropsWithChildren<{ readonly data: any }>) => {
+export const InvitesTable = ({ data = [] }: PropsWithChildren<{ readonly data?: any | undefined }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

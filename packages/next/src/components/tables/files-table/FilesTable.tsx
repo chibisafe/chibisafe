@@ -126,7 +126,10 @@ const columns = [
 	})
 ];
 
-export const FilesTable = ({ data, type }: PropsWithChildren<{ readonly data: any; readonly type: FilePropsType }>) => {
+export const FilesTable = ({
+	data = [],
+	type
+}: PropsWithChildren<{ readonly data?: any | undefined; readonly type: FilePropsType }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
