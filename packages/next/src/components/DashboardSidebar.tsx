@@ -60,7 +60,7 @@ export function DashboardSidebar() {
 					<DashboardSidebarItem href="/dashboard/admin/statistics" name="Statistics" Icon={BarChart3} />
 				</nav>
 			) : null}
-			<nav className="grid items-start gap-1 mt-4">
+			<nav className="hidden items-start gap-1 mt-4 md:grid">
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Utils</h3>
 				<a
 					href="https://github.com/chibisafe/chibisafe-extension"
