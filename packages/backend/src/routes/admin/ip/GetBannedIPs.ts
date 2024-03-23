@@ -24,6 +24,7 @@ export const schema = {
 				.array(
 					z.object({
 						ip: z.string().describe('The IP address.'),
+						reason: z.string().nullish().describe('The reason for banning the IP.'),
 						createdAt: z.date().describe('The date the IP was banned.')
 					})
 				)
@@ -65,6 +66,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		where: dbSearchObject,
 		select: {
 			ip: true,
+			reason: true,
 			createdAt: true
 		},
 		orderBy: {
