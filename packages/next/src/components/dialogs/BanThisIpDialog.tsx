@@ -19,6 +19,8 @@ import {
 } from '@/components/ui/dialog';
 import { useRouter } from 'next/navigation';
 import { banIp } from '@/actions/IpActions';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
 
 export function BanThisIpDialog({ ip }: PropsWithChildren<{ readonly ip: string }>) {
 	const router = useRouter();
@@ -57,9 +59,23 @@ export function BanThisIpDialog({ ip }: PropsWithChildren<{ readonly ip: string 
 					<DialogHeader>
 						<DialogTitle>Ban this IP</DialogTitle>
 						<DialogDescription>
-							The IP <strong>{ip}</strong> will be banned. You sure you want to continue?
+							The IP <strong>{ip}</strong> will be banned and won't be able to use the service until
+							unbanned. You sure you want to continue?
 						</DialogDescription>
 					</DialogHeader>
+					<div className="grid gap-4 mb-4">
+						<div className="grid gap-4 mt-4">
+							<div>
+								<Label htmlFor="reason">Reason</Label>
+								<Textarea
+									id="reason"
+									name="reason"
+									placeholder="Reason for ban"
+									className="col-span-4"
+								/>
+							</div>
+						</div>
+					</div>
 					<DialogFooter>
 						<Button type="submit">Confirm</Button>
 					</DialogFooter>

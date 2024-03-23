@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { banIp } from '@/actions/IpActions';
+import { Textarea } from '../ui/textarea';
 
 export function BanIpDialog() {
 	const [open, setOpen] = useState(false);
@@ -55,16 +56,24 @@ export function BanIpDialog() {
 					<DialogHeader>
 						<DialogTitle>Ban new IP</DialogTitle>
 						<DialogDescription>
-							The IP you submit in the field below will be denied access to the platform until you remove
-							the ban. Be careful
+							The submitted IP will be banned and won't be able to use the service until unbanned.
 						</DialogDescription>
 					</DialogHeader>
-					<div className="grid gap-4 py-4">
-						<div className="grid grid-cols-4 items-center gap-4">
-							<Label htmlFor="input" className="text-right">
-								IP
-							</Label>
-							<Input id="ip" name="ip" placeholder="127.0.0.69" className="col-span-3" />
+					<div className="grid gap-4 mb-4">
+						<div className="grid gap-4 mt-4">
+							<div>
+								<Label htmlFor="ip">IP</Label>
+								<Input id="ip" name="ip" placeholder="127.0.0.69" className="col-span-3" />
+							</div>
+							<div>
+								<Label htmlFor="reason">Reason</Label>
+								<Textarea
+									id="reason"
+									name="reason"
+									placeholder="Reason for ban"
+									className="col-span-4"
+								/>
+							</div>
 						</div>
 					</div>
 					<DialogFooter>

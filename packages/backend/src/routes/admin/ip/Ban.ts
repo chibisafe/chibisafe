@@ -55,7 +55,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		}
 	});
 
-	req.log.warn(`IP ${ip} has been banned`);
+	req.log.warn(`IP ${ip} has been banned. Reason: ${reason ?? 'No reason provided'}`);
 
 	return res.send({
 		message: 'Successfully banned the ip'
