@@ -1,4 +1,5 @@
 import { UploadTriggerHomepage } from '@/components/UploadTriggerHomepage';
+import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 import request from '@/lib/request';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/styles/button';
@@ -46,6 +47,7 @@ export default async function Home() {
 		return (
 			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
 				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
 					<h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
 						Welcome to {settings.serviceName ?? 'chibisafe'}
 					</h1>
@@ -59,6 +61,7 @@ export default async function Home() {
 		<>
 			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
 				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
 					<h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
 						Beautiful and performant vault to save all your files in the cloud.
 					</h1>

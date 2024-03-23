@@ -1,15 +1,13 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 import Link from 'next/link';
-import { useSelectedLayoutSegment } from 'next/navigation';
-import { X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { NavigationMobile } from '@/components/NavigationMobile';
 import { settingsAtom } from '@/lib/atoms/settings';
 import { useAtomValue } from 'jotai';
+import { NavigationDrawer } from './NavigationDrawer';
 
 export function Navigation({
 	logo,
@@ -18,8 +16,7 @@ export function Navigation({
 	readonly logo: ReactNode;
 	readonly serviceName?: string | undefined;
 }) {
-	const segment = useSelectedLayoutSegment();
-	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+	const path = usePathname();
 	const settings = useAtomValue(settingsAtom);
 
 	return (
@@ -31,18 +28,14 @@ export function Navigation({
 			<nav className="hidden gap-6 md:flex">
 				<Link
 					href="/dashboard"
-					className={cn(
-						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60'
-					)}
+					className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
 				>
 					Dashboard
 				</Link>
 				<a
 					href="/docs"
 					rel="noopener noreferrer"
-					className={cn(
-						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60'
-					)}
+					className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
 				>
 					Docs
 				</a>
@@ -50,23 +43,13 @@ export function Navigation({
 					href="/faq"
 					className={cn(
 						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
-						'/faq'.startsWith(`/${segment}`) ? 'text-foreground' : 'text-foreground/60'
+						path === '/faq' ? 'text-foreground' : 'text-foreground/60'
 					)}
 				>
 					FAQ
 				</Link>
 			</nav>
-			<button
-				className="flex items-center space-x-2 md:hidden"
-				onClick={() => setShowMobileMenu(!showMobileMenu)}
-				type="button"
-			>
-				{showMobileMenu ? <X /> : logo}
-				<span className="font-bold">Menu</span>
-			</button>
-			{showMobileMenu ? (
-				<NavigationMobile logo={logo} serviceName={settings?.serviceName ?? serviceName} />
-			) : null}
+			<NavigationDrawer logo={logo} className="md:hidden flex" />
 		</div>
 	);
 }
