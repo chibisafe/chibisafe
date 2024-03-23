@@ -60,7 +60,7 @@ const columns = [
 	})
 ];
 
-export const IpTable = ({ data }: PropsWithChildren<{ readonly data: any }>) => {
+export const IpTable = ({ data = [] }: PropsWithChildren<{ readonly data?: any | undefined }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

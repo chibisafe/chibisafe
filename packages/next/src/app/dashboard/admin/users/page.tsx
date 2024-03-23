@@ -65,7 +65,7 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 				<Suspense>
 					<Pagination itemsTotal={response?.count ?? 0} />
 				</Suspense>
-				<UserTable data={response?.users ?? []} />
+				<UserTable data={response?.users} />
 			</div>
 		</>
 	);

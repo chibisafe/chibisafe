@@ -59,7 +59,7 @@ export default async function DashboardAdminInvitesPage() {
 				</form>
 			</DashboardHeader>
 			<div className="px-2">
-				<InvitesTable data={response?.invites ?? []} />
+				<InvitesTable data={response?.invites} />
 			</div>
 		</>
 	);
