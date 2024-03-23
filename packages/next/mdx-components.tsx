@@ -13,6 +13,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		),
 		h6: ({ children }) => <h6 className="text-xl text-muted-foreground">{children}</h6>,
 		p: ({ children }) => <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>,
+		a: ({ children, href }) => (
+			<a href={href} className="link" target="_blank" rel="noopener noreferrer">
+				{children}
+			</a>
+		),
 		...components
 	};
 }

@@ -32,8 +32,7 @@ export function Navigation({
 				<Link
 					href="/dashboard"
 					className={cn(
-						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
-						'/dashboard'.startsWith(`/${segment}`) ? 'text-foreground' : 'text-foreground/60'
+						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60'
 					)}
 				>
 					Dashboard
@@ -47,6 +46,15 @@ export function Navigation({
 				>
 					Docs
 				</a>
+				<Link
+					href="/faq"
+					className={cn(
+						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
+						'/faq'.startsWith(`/${segment}`) ? 'text-foreground' : 'text-foreground/60'
+					)}
+				>
+					FAQ
+				</Link>
 			</nav>
 			<button
 				className="flex items-center space-x-2 md:hidden"
