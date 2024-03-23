@@ -7,9 +7,9 @@ import { Toaster } from 'sonner';
 
 import { fontHeading, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { SettingsProvider } from '@/components/SettingsProvider';
+import { SettingsProvider } from '@/components/providers/SettingsProvider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
-import { UserProvider } from '@/components/UserProvider';
+import { UserProvider } from '@/components/providers/UserProvider';
 
 import { Providers } from './providers';
 import { GlobalBackground } from '@/components/GlobalBackground';
