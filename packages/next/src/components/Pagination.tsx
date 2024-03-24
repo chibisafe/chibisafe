@@ -21,7 +21,7 @@ import { isMasonryViewAtom } from '@/lib/atoms/settings';
 import { Tooltip } from './Tooltip';
 
 export function Pagination({
-	itemsTotal = 0,
+	itemsTotal,
 	type
 }: {
 	readonly itemsTotal?: number | undefined;
