@@ -65,8 +65,8 @@ export function Masonry({
 				<Plock
 					items={files?.length ? files : type === 'uploads' ? data?.files ?? [] : []}
 					config={{
-						columns: [1, 2, 3, 4],
-						gap: [24, 12, 12, 12],
+						columns: [2, 2, 3, 4],
+						gap: [8, 12, 12, 12],
 						media: [640, 1024, 1400, 1400]
 					}}
 					className="px-1"

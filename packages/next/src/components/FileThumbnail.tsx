@@ -58,12 +58,12 @@ export const FileThumbnail = ({
 	) : isFileImage(file) || isFileVideo(file) ? (
 		<ComponentType isTableView={isTableView} file={file} type={type}>
 			<picture>
-				<img src={file.thumb} className="cursor-pointer w-full min-w-[160px]" />
+				<img src={file.thumb} className="cursor-pointer w-full sm:min-w-[160px] min-w-0" />
 			</picture>
 
 			{isFileVideo(file) && hoveredFiles.includes(file.uuid ?? file.name) && (
 				<video
-					className="preview absolute top-0 left-0 w-full h-full pointer-events-none min-w-[160px]"
+					className="preview absolute top-0 left-0 w-full h-full pointer-events-none sm:min-w-[160px] min-w-0"
 					autoPlay
 					loop
 					muted

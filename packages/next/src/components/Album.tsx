@@ -40,8 +40,8 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 	}, [setAlbumDisablePointerEvent]);
 
 	return (
-		<div className="relative h-96 w-60">
-			<AlbumDropZone className="h-96 w-60" albumUuid={album.uuid} />
+		<div className="relative h-56 w-40 md:h-96 md:w-60">
+			<AlbumDropZone className="hidden md:block h-96 w-60" albumUuid={album.uuid} />
 			<div className="group">
 				<div
 					className={cn(
@@ -53,7 +53,7 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 					}}
 				/>
 				<div className="absolute bottom-0 left-4 right-4 pointer-events-none select-none group-hover:pointer-events-auto">
-					<div className="mb-2 transform-gpu text-2xl font-bold text-white delay-75 duration-200 group-hover:-translate-y-14 group-hover:delay-75 cursor-pointer">
+					<div className="max-h-40 overflow-hidden md:overflow-auto md:max-h-none mb-2 transform-gpu text-2xl font-bold text-white delay-75 duration-200 group-hover:-translate-y-14 group-hover:delay-75 cursor-pointer">
 						{album.name}
 					</div>
 					<div className="mb-4 transform-gpu text-lg font-normal text-white delay-0 duration-200 group-hover:-translate-y-14 group-hover:delay-100">

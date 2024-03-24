@@ -8,7 +8,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
 			<Header />
-			<div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+			<div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr] px-4 sm:px-8">
 				<aside className="hidden w-[200px] flex-col md:flex">
 					<DashboardSidebar />
 				</aside>

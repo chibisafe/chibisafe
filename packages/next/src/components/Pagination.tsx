@@ -69,8 +69,8 @@ export function Pagination({
 
 	return (
 		<>
-			<PaginationBase className="justify-between">
-				<div className="flex w-full max-w-xs items-center space-x-2">
+			<PaginationBase className="justify-between flex-col gap-4 sm:gap-0 sm:flex-row">
+				<div className="flex w-full sm:max-w-xs items-center space-x-2">
 					<Tooltip content={showMasonry ? 'Switch to table view' : 'Switch to masonry view'}>
 						<Button
 							type="button"
@@ -106,7 +106,7 @@ export function Pagination({
 						<SearchIcon className="h-4 w-4" />
 					</Button>
 				</div>
-				<PaginationContent>
+				<PaginationContent className="justify-center sm:justify-normal">
 					<PaginationItem>
 						<PaginationPrevious
 							href={`${pathname}?page=${

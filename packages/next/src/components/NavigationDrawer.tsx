@@ -16,7 +16,7 @@ const BaseDrawer = ({ path }: PropsWithChildren<{ readonly path: string }>) => {
 	return (
 		<Drawer>
 			<DrawerTrigger className="w-full">
-				<span className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>Go to page</span>
+				<span className={cn(buttonVariants({ variant: 'default' }), 'w-full')}>Go to page</span>
 			</DrawerTrigger>
 			<DrawerContent>
 				<div className="p-8">

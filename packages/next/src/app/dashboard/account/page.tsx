@@ -52,7 +52,7 @@ export default async function DashboardPage() {
 				breadcrumbs={[{ name: 'Credentials', url: '/dashboard/account' }]}
 			/>
 			<div className="px-2">
-				<div className="grid grid-cols-[300px,1fr] gap-16">
+				<div className="flex flex-col md:grid md:grid-cols-[300px,1fr] gap-16">
 					<div className="grid gap-2">
 						<div className="grid gap-1">
 							<Label htmlFor="username">Your username</Label>
