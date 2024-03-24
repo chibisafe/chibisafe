@@ -58,9 +58,9 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 			</DashboardHeader>
 			<div className="px-2">
 				<Suspense>
-					<Pagination itemsTotal={response.count} />
+					<Pagination itemsTotal={response?.count} />
 				</Suspense>
-				<TagsTable data={response.tags} />
+				<TagsTable data={response?.tags} />
 			</div>
 		</>
 	);

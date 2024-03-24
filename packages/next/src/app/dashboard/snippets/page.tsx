@@ -55,10 +55,10 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 			</DashboardHeader>
 			<div className="px-2">
 				<Suspense>
-					<Pagination itemsTotal={response.count} />
+					<Pagination itemsTotal={response?.count} />
 				</Suspense>
 				<div className="flex flex-col gap-6 mt-8">
-					{response.snippets.map((snippet: Snippet) => {
+					{response?.snippets.map((snippet: Snippet) => {
 						return <SnippetViewer snippet={snippet} maxLines={10} />;
 					})}
 				</div>

@@ -63,12 +63,10 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 			</DashboardHeader>
 			<div className="px-2">
 				<Suspense>
-					<Pagination itemsTotal={response.count} />
+					<Pagination itemsTotal={response?.count} />
 				</Suspense>
 				<div className="flex flex-wrap gap-6 px-4 mt-8">
-					{response.albums.map((album: AlbumType) => (
-						<Album key={album.uuid} album={album} />
-					))}
+					{response?.albums.map((album: AlbumType) => <Album key={album.uuid} album={album} />)}
 				</div>
 			</div>
 			<AlbumSettingsDialog />

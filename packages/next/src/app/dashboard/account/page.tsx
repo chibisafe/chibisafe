@@ -41,8 +41,8 @@ export default async function DashboardPage() {
 		redirect('/login');
 	}
 
-	const user = response.user as LocalStorageUser;
-	const quota = response.storageQuota as StorageQuota;
+	const user = response?.user as LocalStorageUser;
+	const quota = response?.storageQuota as StorageQuota;
 
 	return (
 		<>
@@ -56,7 +56,7 @@ export default async function DashboardPage() {
 					<div className="grid gap-2">
 						<div className="grid gap-1">
 							<Label htmlFor="username">Your username</Label>
-							<Input name="username" id="username" value={user.username} readOnly />
+							<Input name="username" id="username" value={user?.username} readOnly />
 							<p className="text-[0.8rem] text-muted-foreground">
 								Can't be changed, only for display purposes
 							</p>
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
 						<ChangePassword />
 					</div>
 					<div className="flex flex-col">
-						<RegenerateApiKey apiKey={user.apiKey} />
+						<RegenerateApiKey apiKey={user?.apiKey} />
 						<Separator className="my-4" />
 						{quota ? (
 							<>
