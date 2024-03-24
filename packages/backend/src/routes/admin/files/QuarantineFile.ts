@@ -19,11 +19,9 @@ export const schema = {
 			uuid: z.string().describe('The uuid of the file.')
 		})
 		.required(),
-	body: z
-		.object({
-			reason: z.string().optional().describe('The reason for quarantining the file.')
-		})
-		.required(),
+	body: z.object({
+		reason: z.string().nullish().describe('The reason for quarantining the file.')
+	}),
 	response: {
 		200: z.object({
 			message: z.string().describe('The response message.')
