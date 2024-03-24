@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 
@@ -23,7 +23,7 @@ export default function InvitePage({ params }: { readonly params: { code: string
 
 				<RegisterForm code={params.code} />
 
-				<p className="px-8 text-center text-sm text-muted-foreground">
+				{/* <p className="px-8 text-center text-sm text-muted-foreground">
 					By clicking continue, you agree to our{' '}
 					<Link href="/terms" className="hover:text-brand underline underline-offset-4">
 						Terms of Service
@@ -33,7 +33,7 @@ export default function InvitePage({ params }: { readonly params: { code: string
 						Privacy Policy
 					</Link>
 					.
-				</p>
+				</p> */}
 			</div>
 		</div>
 	);
