@@ -146,7 +146,7 @@ const SETTINGS_META = {
 		description:
 			'If using Docker, make sure to change this setting to reflect the domain name you are hosting chibisafe on.',
 		name: 'Serve Uploads From',
-		example: 'https://cdn.chibisafe.moe',
+		notice: 'Make sure to use a full domain name, including https:// . (for example: https://cdn.chibisafe.moe)',
 		category: 'service'
 	},
 	rateLimitWindow: {
