@@ -45,11 +45,11 @@ export default async function Home() {
 
 	if (!settings) {
 		return (
-			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
-				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+			<section className="py-2 sm:py-4">
+				<div className="container flex min-h-[calc(100vh-15rem)] max-w-[64rem] flex-col text-center place-items-center place-content-evenly gap-4">
 					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
-					<h1 className="font-heading text-3xl">Welcome to chibisafe</h1>
-					<p className="max-w-[42rem] leading-normal text-muted-foreground">
+					<h1 className="font-heading text-2xl sm:text-5xl">Welcome to chibisafe</h1>
+					<p className="max-w-[42rem] text-muted-foreground">
 						Couldn't establish a connection to the server. Please try again later.
 					</p>
 				</div>
@@ -59,10 +59,10 @@ export default async function Home() {
 
 	if (settings?.useMinimalHomepage) {
 		return (
-			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
-				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+			<section className="py-2 sm:py-4">
+				<div className="container flex min-h-[calc(100vh-16rem)] max-w-[64rem] flex-col text-center place-items-center place-content-evenly gap-4">
 					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
-					<h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+					<h1 className="font-heading text-2xl sm:text-5xl">
 						Welcome to {settings.serviceName ?? 'chibisafe'}
 					</h1>
 					<UploadTriggerHomepage settings={settings} />
@@ -72,44 +72,45 @@ export default async function Home() {
 	}
 
 	return (
-		<>
-			<section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
-				<div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+		<div className="flex flex-col gap-8">
+			<section className="py-2 sm:py-4">
+				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-evenly gap-4">
 					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
-					<h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-						Beautiful and performant vault to save all your files in the cloud.
-					</h1>
-					<p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-						<span className="text-white">chibisafe</span> is a modern and self-hosted take on file uploading
-						services that can handle anything you throw at it thanks to it's robust and fast API, chunked
-						uploads support and more.
-					</p>
-					<div className="space-x-4">
-						<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
-							Get Started
-						</Link>
-						<a
-							href="https://github.com/chibisafe/chibisafe"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
-						>
-							{stars ? (
-								<>
-									{stars}
-									<Star className="h-4 w-4 mx-1" />
-								</>
-							) : null}
-							GitHub
-						</a>
+					<div className="flex flex-col gap-4 sm:gap-8 place-items-center">
+						<h1 className="font-heading text-2xl sm:text-5xl">
+							Beautiful and performant vault to save all your files in the cloud.
+						</h1>
+						<p className="max-w-[42rem] text-muted-foreground">
+							<span className="text-white">chibisafe</span> is a modern and self-hosted take on file
+							uploading services that can handle anything you throw at it thanks to it's robust and fast
+							API, chunked uploads support and more.
+						</p>
 					</div>
-					<UploadTriggerHomepage settings={settings} />
+					<div className="flex flex-col-reverse gap-12 place-items-center w-full">
+						<div className="flex flex-col gap-4">
+							<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
+								Get Started
+							</Link>
+							<a
+								href="https://github.com/chibisafe/chibisafe"
+								target="_blank"
+								rel="noopener noreferrer"
+								className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+							>
+								{stars ? (
+									<>
+										{stars}
+										<Star className="h-4 w-4 mx-1" />
+									</>
+								) : null}
+								GitHub
+							</a>
+						</div>
+						<UploadTriggerHomepage settings={settings} />
+					</div>
 				</div>
 			</section>
-			<section
-				id="features"
-				className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
-			>
+			<section id="features" className="container flex flex-col gap-12 py-8 bg-slate-50 dark:bg-transparent">
 				<div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
 					<h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Features</h2>
 					<p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
@@ -198,8 +199,8 @@ export default async function Home() {
 					</p>
 				</div>
 			</section>
-			<section id="open-source" className="container py-8 md:py-12 lg:py-24">
-				<div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+			<section id="open-source" className="container py-12">
+				<div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-8 text-center">
 					<h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Proudly Open Source</h2>
 					<p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
 						chibisafe is open source and powered by open source software. <br /> The code is available on{' '}
@@ -215,6 +216,6 @@ export default async function Home() {
 					</p>
 				</div>
 			</section>
-		</>
+		</div>
 	);
 }

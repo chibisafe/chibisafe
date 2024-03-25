@@ -20,8 +20,8 @@ export function Navigation({
 	const settings = useAtomValue(settingsAtom);
 
 	return (
-		<div className="flex gap-6 md:gap-10">
-			<Link href="/" className="hidden items-center space-x-2 md:flex">
+		<div className="flex gap-6">
+			<Link href="/" className="hidden items-center md:flex gap-4">
 				{logo}
 				<span className="hidden font-bold sm:inline-block">{settings?.serviceName ?? serviceName}</span>
 			</Link>

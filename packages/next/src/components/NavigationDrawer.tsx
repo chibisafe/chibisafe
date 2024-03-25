@@ -80,7 +80,7 @@ export const NavigationDrawer = ({
 
 	return (
 		<Drawer>
-			<DrawerTrigger className={cn(className, 'flex flex-row justify-center items-center')}>
+			<DrawerTrigger className={cn(className, 'flex gap-2 justify-center items-center')}>
 				<svg
 					strokeWidth="1.5"
 					viewBox="0 0 24 24"
