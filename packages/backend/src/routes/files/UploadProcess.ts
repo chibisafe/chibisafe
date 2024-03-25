@@ -32,8 +32,7 @@ export const schema = {
 		200: z.object({
 			name: z.string().describe('The name of the file.'),
 			uuid: z.string().describe('The uuid of the file.'),
-			url: z.string().describe('The URL of the file.'),
-			identifier: z.string().describe('The identifier of the file.')
+			url: z.string().describe('The URL of the file.')
 		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
