@@ -29,8 +29,8 @@
 		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.537.0",
-		"@aws-sdk/s3-request-presigner": "^3.537.0",
+		"@aws-sdk/client-s3": "^3.540.0",
+		"@aws-sdk/s3-request-presigner": "^3.540.0",
 		"@chibisafe/uploader-module": "1.0.11",
 		"@fastify/cookie": "^9.3.1",
 		"@fastify/cors": "^9.0.1",
@@ -41,7 +41,7 @@
 		"@fastify/swagger": "^8.14.0",
 		"@napi-rs/blake-hash": "^1.3.4",
 		"@prisma/client": "^5.11.0",
-		"@scalar/fastify-api-reference": "^1.20.2",
+		"@scalar/fastify-api-reference": "^1.20.10",
 		"@sindresorhus/slugify": "^2.2.1",
 		"adm-zip": "^0.5.12",
 		"bcryptjs": "^2.4.3",
@@ -93,7 +93,7 @@
 		"prisma": "^5.11.0",
 		"rimraf": "^5.0.5",
 		"tsx": "^4.7.1",
-		"typescript": "^5.4.2"
+		"typescript": "^5.4.3"
 	},
 	"prisma": {
 		"schema": "src/prisma/schema.prisma"
