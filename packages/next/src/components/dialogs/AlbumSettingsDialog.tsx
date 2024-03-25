@@ -112,7 +112,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 					<DialogDescription>Manage settings and create new public links</DialogDescription>
 				</DialogHeader>
 
-				<form action={formAction} className="flex flex-col space-y-1.5 gap-2">
+				<form action={formAction} className="flex flex-col space-y-1.5 gap-2" id="album-settings">
 					<input type="hidden" name="uuid" value={album?.uuid} />
 					<div>
 						<Label htmlFor="name">Name</Label>
@@ -159,7 +159,9 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 				</div>
 				<DialogFooter className="!justify-between">
 					<AlbumSettingsDialogActions />
-					<Button type="submit">Save</Button>
+					<Button type="submit" form="album-settings">
+						Save
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
