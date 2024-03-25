@@ -56,6 +56,7 @@ export function FileInformationDialog({
 		try {
 			if (type === 'admin') return;
 			if (type === 'publicAlbum') return;
+			if (type === 'quarantine') return;
 
 			const { data: createdAlbums, error: createdAlbumError } = await request.get({
 				url: 'albums'
@@ -312,61 +313,81 @@ export function FileInformationDialog({
 									</div>
 								</div>
 
-								{(type === 'admin' || type === 'quarantine') && file.user ? (
+								{type === 'admin' || type === 'quarantine' ? (
 									<div className="flex flex-col space-y-1.5 gap-0">
 										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 											User information
 										</h2>
 
-										<div>
-											<Label htmlFor="owner">
-												Owner
-												<Link
-													href={`/dashboard/admin/users/${file.user?.uuid}`}
-													className="text-blue-500 underline inline-flex items-center ml-2"
-													onClick={() => setModalOpen(false)}
-												>
-													view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-												</Link>
-											</Label>
-											<Input value={file.user.username} name="owner" id="owner" readOnly />
-										</div>
+										{file.user ? (
+											<>
+												<div>
+													<Label htmlFor="owner">
+														Owner
+														<Link
+															href={`/dashboard/admin/users/${file.user?.uuid}`}
+															className="text-blue-500 underline inline-flex items-center ml-2"
+															onClick={() => setModalOpen(false)}
+														>
+															view files{' '}
+															<ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+														</Link>
+													</Label>
+													<Input
+														value={file.user.username}
+														name="owner"
+														id="owner"
+														readOnly
+													/>
+												</div>
 
-										<div>
-											<Label htmlFor="userUUID">User UUID</Label>
-											<Input value={file.user?.uuid} name="userUUID" id="userUUID" readOnly />
-										</div>
+												<div>
+													<Label htmlFor="userUUID">User UUID</Label>
+													<Input
+														value={file.user?.uuid}
+														name="userUUID"
+														id="userUUID"
+														readOnly
+													/>
+												</div>
 
-										<div>
-											<Label htmlFor="status">Status</Label>
-											<Input
-												value={file.user.enabled ? 'Enabled' : 'Disabled'}
-												name="status"
-												id="status"
-												readOnly
-											/>
-										</div>
+												<div>
+													<Label htmlFor="status">Status</Label>
+													<Input
+														value={file.user.enabled ? 'Enabled' : 'Disabled'}
+														name="status"
+														id="status"
+														readOnly
+													/>
+												</div>
 
-										<div>
-											<Label htmlFor="null">Roles</Label>
+												<div>
+													<Label htmlFor="null">Roles</Label>
+													<div>
+														{file.user.roles.map((role: any) => (
+															<Badge key={role.name} className="mr-1">
+																{role.name}
+															</Badge>
+														))}
+													</div>
+												</div>
+
+												<div>
+													<Label htmlFor="joined">Joined</Label>
+													<Input
+														value={getDate(file.user.createdAt.toString())}
+														name="joined"
+														id="joined"
+														readOnly
+													/>
+												</div>
+											</>
+										) : (
 											<div>
-												{file.user.roles.map((role: any) => (
-													<Badge key={role.name} className="mr-1">
-														{role.name}
-													</Badge>
-												))}
+												<Label htmlFor="owner">Owner</Label>
+												<Input value="No owner" name="owner" id="owner" readOnly />
 											</div>
-										</div>
-
-										<div>
-											<Label htmlFor="joined">Joined</Label>
-											<Input
-												value={getDate(file.user.createdAt.toString())}
-												name="joined"
-												id="joined"
-												readOnly
-											/>
-										</div>
+										)}
 									</div>
 								) : (
 									<div className="max-w-96">
