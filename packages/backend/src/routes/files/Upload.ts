@@ -34,13 +34,21 @@ export const schema = {
 		})
 		.or(z.null()),
 	response: {
-		200: z.object({
-			name: z.string().describe('The name of the file.'),
-			uuid: z.string().describe('The uuid of the file.'),
-			url: z.string().describe('The URL of the file.'),
-			identifier: z.string().optional().describe('The identifier of the file.'),
-			publicUrl: z.string().optional().describe('The public URL of the file.')
-		}),
+		200: z
+			.object({
+				name: z.string().describe('The name of the file.'),
+				uuid: z.string().describe('The uuid of the file.'),
+				url: z.string().describe('The URL of the file.'),
+				identifier: z.string().optional().describe('The identifier of the file.'),
+				publicUrl: z.string().optional().describe('The public URL of the file.')
+			})
+			.or(
+				z.object({
+					url: z.string().describe('The URL of the file.'),
+					identifier: z.string().optional().describe('The identifier of the file.'),
+					publicUrl: z.string().optional().describe('The public URL of the file.')
+				})
+			),
 		204: z.null(),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
