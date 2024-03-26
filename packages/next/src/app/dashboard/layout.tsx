@@ -6,7 +6,7 @@ import { Header } from '@/components/Header';
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
 	return (
-		<div className="flex min-h-screen flex-col space-y-6">
+		<div className="flex min-h-screen flex-col gap-6">
 			<Header />
 			<div className="container flex-1 flex gap-8 px-4 sm:px-8">
 				<aside className="hidden min-w-[200px] flex-col md:flex">
