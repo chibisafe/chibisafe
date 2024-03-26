@@ -86,8 +86,8 @@ export default async function Home() {
 							API, chunked uploads support and more.
 						</p>
 					</div>
-					<div className="flex flex-col-reverse gap-12 place-items-center w-full">
-						<div className="flex flex-col gap-4">
+					<div className="flex flex-col-reverse md:flex-col gap-12 place-items-center w-full">
+						<div className="flex flex-col md:flex-row gap-4">
 							<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
 								Get Started
 							</Link>
@@ -212,7 +212,7 @@ export default async function Home() {
 						>
 							GitHub
 						</a>
-						.{' '}
+						.
 					</p>
 				</div>
 			</section>
