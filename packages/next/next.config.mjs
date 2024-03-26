@@ -18,6 +18,9 @@ const nextConfig = {
 	env: {
 		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version
 	},
+	experimental: {
+		ppr: true
+	},
 	logging: {
 		fetches: {
 			fullUrl: true
