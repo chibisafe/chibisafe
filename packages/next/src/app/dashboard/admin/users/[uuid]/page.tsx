@@ -42,7 +42,7 @@ export default async function DashboardAdminUserPage({
 					{ name: username, url: `/dashboard/admin/users/${params.uuid}` }
 				]}
 			/>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<FilesList type="admin" files={response.files} count={response.count} />
 			</div>
 		</>

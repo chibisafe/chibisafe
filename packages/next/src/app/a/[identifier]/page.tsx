@@ -37,7 +37,7 @@ export default async function PublicAlbumPage({
 	return (
 		<>
 			<DashboardHeader title={response.album.name} subtitle={response.album.description} />
-			<div className="px-2 flex h-full flex-grow flex-col">
+			<div className="px-2 w-full flex h-full flex-grow flex-col">
 				<FilesListNsfwToggle nsfw={response.album.isNsfw}>
 					<FilesList type="publicAlbum" files={response.album.files} count={response.album.count} />
 				</FilesListNsfwToggle>

@@ -113,11 +113,10 @@ export const NavigationDrawer = ({
 				{logo}
 			</DrawerTrigger>
 			<DrawerContent>
-				<DrawerHeader>{/* <DrawerTitle>Site navigation</DrawerTitle> */}</DrawerHeader>
 				<div className="py-4 px-8">
 					<BaseDrawer path={path} />
 				</div>
-				<div className="py-4 px-8">
+				<div className="py-4 px-8 overflow-auto">
 					{path.startsWith('/dashboard') ? (
 						<nav className="grid items-start gap-1 mb-8">
 							<DashboardSidebar />

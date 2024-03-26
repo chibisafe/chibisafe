@@ -21,7 +21,7 @@ export function ConfirmationDialog({
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-			<AlertDialogContent>
+			<AlertDialogContent className="w-11/12">
 				<AlertDialogHeader>
 					<AlertDialogTitle>{title}</AlertDialogTitle>
 					<AlertDialogDescription>{description}</AlertDialogDescription>

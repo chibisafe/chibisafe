@@ -53,7 +53,7 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 			<DashboardHeader title="Snippets" subtitle="Manage and create snippets">
 				<CreateSnippetDialog />
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<Suspense>
 					<Pagination itemsTotal={response?.count} />
 				</Suspense>

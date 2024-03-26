@@ -52,7 +52,7 @@ export function DeleteSnippetDialog({ uuid }: PropsWithChildren<{ readonly uuid:
 					Delete
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-11/12">
 				<form action={formAction}>
 					<input type="hidden" name="uuid" value={uuid} />
 					<DialogHeader>
@@ -61,7 +61,7 @@ export function DeleteSnippetDialog({ uuid }: PropsWithChildren<{ readonly uuid:
 							You sure you want to continue? This action is irreversible.
 						</DialogDescription>
 					</DialogHeader>
-					<DialogFooter>
+					<DialogFooter className="mt-4">
 						<Button type="submit">Confirm</Button>
 					</DialogFooter>
 				</form>

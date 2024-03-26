@@ -53,15 +53,15 @@ export function CreateSnippetDialog() {
 					New snippet
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[800px] w-full">
+			<DialogContent className="sm:max-w-[800px] w-11/12">
 				<form action={formAction}>
 					<DialogHeader>
 						<DialogTitle>New snippet</DialogTitle>
 						<DialogDescription>Create a new snippet here</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 py-4">
-						<div className="grid grid-cols-2 gap-4">
-							<div>
+						<div className="flex flex-col md:flex-row gap-4">
+							<div className="w-full">
 								<Label htmlFor="name">Name</Label>
 								<Input name="name" id="name" />
 							</div>
@@ -73,7 +73,7 @@ export function CreateSnippetDialog() {
 
 						<Textarea
 							placeholder="Write your thoughts here..."
-							className="h-96"
+							className="h-60"
 							name="content"
 							id="content"
 						/>

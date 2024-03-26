@@ -40,8 +40,8 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 	}, [setAlbumDisablePointerEvent]);
 
 	return (
-		<div className="relative h-56 w-40 md:h-96 md:w-60">
-			<AlbumDropZone className="hidden md:block h-96 w-60" albumUuid={album.uuid} />
+		<div className="relative h-56 w-40 sm:h-96 sm:w-60">
+			<AlbumDropZone className="hidden sm:block h-96 w-60" albumUuid={album.uuid} />
 			<div className="group">
 				<div
 					className={cn(

@@ -38,7 +38,7 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 
 	return (
 		<>
-			<div className="px-2 flex h-full flex-grow flex-col">
+			<div className="px-2 w-full flex h-full flex-grow flex-col">
 				<SnippetViewer snippet={snippet} showPublicLink={false} showTitleLink={false} />
 			</div>
 		</>

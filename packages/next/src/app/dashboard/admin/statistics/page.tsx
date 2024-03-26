@@ -69,7 +69,7 @@ export default async function DashboardAdminStatsPage() {
 					{ name: 'Statistics', url: '/dashboard/admin/statistics' }
 				]}
 			/>
-			<div className="px-2 flex flex-col gap-2">
+			<div className="px-2 flex flex-col gap-2 w-full">
 				<h2 className="text-xl font-extrabold flex items-center gap-2">
 					System{' '}
 					<Tooltip content={`Generated on: ${systemGeneratedOn}`}>
@@ -129,7 +129,7 @@ export default async function DashboardAdminStatsPage() {
 						const { total, used } = fileSystems[fileSystem].value;
 						const percentageUsed = Math.ceil((used / total) * 100);
 						return (
-							<div className="flex flex-row justify-center items-center gap-4">
+							<div key={fileSystem} className="flex flex-row justify-center items-center gap-4">
 								<ProgressCircle value={percentageUsed} size="md">
 									<span className="text-xs font-medium text-slate-700">{percentageUsed}%</span>
 								</ProgressCircle>

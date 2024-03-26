@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import type { Album as AlbumType, PageQuery } from '@/types';
 
+import type { PageQuery } from '@/types';
 import request from '@/lib/request';
-import { Album } from '@/components/Album';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { AlbumSettingsDialog } from '@/components/dialogs/AlbumSettingsDialog';
 import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
+import { AlbumMasonry } from '@/components/AlbumMasonry';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -61,13 +61,11 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">
 				<CreateAlbumDialog />
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="grid gap-8 w-full">
 				<Suspense>
 					<Pagination itemsTotal={response?.count} />
 				</Suspense>
-				<div className="flex flex-wrap gap-2 sm:gap-6 px-0 sm:px-4 mt-8 justify-center sm:justify-normal">
-					{response?.albums.map((album: AlbumType) => <Album key={album.uuid} album={album} />)}
-				</div>
+				<AlbumMasonry albums={response?.albums} />
 			</div>
 			<AlbumSettingsDialog />
 		</>

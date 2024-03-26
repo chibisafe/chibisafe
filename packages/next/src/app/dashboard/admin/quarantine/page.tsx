@@ -30,7 +30,7 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 					{ name: 'Quarantined files', url: '/dashboard/admin/quarantine' }
 				]}
 			/>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<FilesList type="quarantine" files={response.files} count={response.count} />
 			</div>
 		</>

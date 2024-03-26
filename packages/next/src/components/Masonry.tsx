@@ -66,7 +66,7 @@ export function Masonry({
 					items={files?.length ? files : type === 'uploads' ? data?.files ?? [] : []}
 					config={{
 						columns: [2, 2, 3, 4],
-						gap: [8, 12, 12, 12],
+						gap: [10, 14, 14, 14],
 						media: [640, 1024, 1400, 1400]
 					}}
 					className="px-1"

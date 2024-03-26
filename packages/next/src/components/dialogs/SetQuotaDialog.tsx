@@ -51,7 +51,7 @@ export function SetQuotaDialog({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="max-w-sm">
+			<DialogContent className="w-11/12">
 				<form action={formAction}>
 					<input type="hidden" name="uuid" value={uuid} />
 					<DialogHeader>

@@ -58,7 +58,7 @@ export default async function AlbumPage({
 					</Button>
 				</UploadTrigger>
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				{/* <HydrationBoundary state={dehydrate(queryClient)}>
 					<FilesList type="album" files={response.files} count={response.count} />
 				</HydrationBoundary> */}

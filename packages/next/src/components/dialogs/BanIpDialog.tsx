@@ -51,7 +51,7 @@ export function BanIpDialog() {
 					Ban new IP
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-11/12">
 				<form action={formAction}>
 					<DialogHeader>
 						<DialogTitle>Ban new IP</DialogTitle>

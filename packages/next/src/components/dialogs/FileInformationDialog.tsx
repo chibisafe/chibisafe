@@ -50,6 +50,9 @@ export function FileInformationDialog({
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
+	const [tab, setTab] = useState(
+		isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? 'preview' : 'information'
+	);
 	const [_, setModalOpen] = useAtom(isDialogOpenAtom);
 
 	const fetchExtraData = useCallback(async () => {
@@ -173,7 +176,8 @@ export function FileInformationDialog({
 			<DialogContent
 				className={cn(
 					// isVertical ? '!w-fit' : '!w-max',
-					'max-w-[calc(100vw-8rem)] max-h-[calc(100vh-8rem)] min-h-[calc(100vh-11rem)] !w-max p-0'
+					'max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] w-max p-0',
+					tab === 'information' ? 'w-11/12 xl:w-max' : ''
 				)}
 			>
 				<div className="absolute right-0 -bottom-12 z-10 md:inline-block hidden">
@@ -184,12 +188,7 @@ export function FileInformationDialog({
 					<FileInformationDrawerActions file={file} type={type} />
 				</div>
 
-				<Tabs
-					defaultValue={
-						isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? 'preview' : 'information'
-					}
-					className="relative"
-				>
+				<Tabs value={tab} onValueChange={setTab} className="relative">
 					{type === 'publicAlbum' ? null : (
 						<div className="flex justify-center w-full absolute -top-12">
 							<TabsList>
@@ -254,9 +253,9 @@ export function FileInformationDialog({
 								<source src={file.preview} type="video/mp4" />
 							</video>
 						) : null}
-						<ScrollArea className="max-h-[calc(100vh-8rem)] w-full">
-							<div className="grid grid-rows-1 gap-8 md:p-8 p-2 min-w-96 md:grid-cols-2 max-h-[calc(100vh-10rem)]">
-								<div className="flex flex-col space-y-1.5 gap-0">
+						<ScrollArea className="p-6 md:p-8">
+							<div className="flex flex-col md:flex-row gap-8 max-h-[calc(100vh-16rem)]">
+								<div className="flex flex-col gap-2 w-full">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 										File information
 									</h2>
@@ -390,8 +389,8 @@ export function FileInformationDialog({
 										)}
 									</div>
 								) : (
-									<div className="max-w-96">
-										<div className="flex flex-col space-y-1.5 gap-0">
+									<div className="w-full">
+										<div className="flex flex-col gap-2">
 											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 												Albums
 											</h2>

@@ -50,7 +50,7 @@ export function CreateTagDialog() {
 					New tag
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-11/12">
 				<form action={formAction}>
 					<DialogHeader>
 						<DialogTitle>New tag</DialogTitle>

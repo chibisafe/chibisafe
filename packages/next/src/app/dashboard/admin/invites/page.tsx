@@ -58,7 +58,7 @@ export default async function DashboardAdminInvitesPage() {
 					</Button>
 				</form>
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<InvitesTable data={response?.invites} />
 			</div>
 		</>

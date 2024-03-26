@@ -71,7 +71,7 @@ export default async function DashboardAdminSettingsServicePage() {
 			>
 				<DiagnosticsDownloadButton />
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<SettingsForm categorizedSettings={categorizedSettings} defaultValues={defaultValues} />
 			</div>
 		</>

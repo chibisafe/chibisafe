@@ -51,10 +51,10 @@ export default async function DashboardPage() {
 				subtitle="Manage your credentials"
 				breadcrumbs={[{ name: 'Credentials', url: '/dashboard/account' }]}
 			/>
-			<div className="px-2">
-				<div className="flex flex-col md:grid md:grid-cols-[300px,1fr] gap-16">
-					<div className="grid gap-2">
-						<div className="grid gap-1">
+			<div className="px-2 w-full">
+				<div className="flex flex-col lg:flex-row gap-8">
+					<div className="flex flex-col gap-2 lg:w-2/4">
+						<div className="flex flex-col gap-1">
 							<Label htmlFor="username">Your username</Label>
 							<Input name="username" id="username" value={user?.username} readOnly />
 							<p className="text-[0.8rem] text-muted-foreground">
@@ -66,12 +66,12 @@ export default async function DashboardPage() {
 
 						<ChangePassword />
 					</div>
-					<div className="flex flex-col">
+					<div className="flex flex-col w-full">
 						<RegenerateApiKey apiKey={user?.apiKey} />
 						<Separator className="my-4" />
 						{quota ? (
 							<>
-								<span className="text-light-100 block">Storage quota</span>
+								<span className="text-light-100">Storage quota</span>
 								<span className="text-light-100 flex flex-col gap-2">
 									<CategoryBar
 										values={[40, 30, 20, 10]}

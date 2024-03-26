@@ -40,7 +40,7 @@ export default async function DashboardPage({
 			>
 				{response.banned ? null : <BanThisIpDialog ip={ip} />}
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<FilesList type="admin" files={response.files} count={response.count} />
 			</div>
 		</>

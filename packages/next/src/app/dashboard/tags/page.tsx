@@ -56,7 +56,7 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 			<DashboardHeader title="Tags" subtitle="Manage and create tags">
 				<CreateTagDialog />
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<Suspense>
 					<Pagination itemsTotal={response?.count} />
 				</Suspense>

@@ -40,7 +40,7 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 					</Button>
 				</UploadTrigger>
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<HydrationBoundary state={dehydrate(queryClient)}>
 					<FilesList type="uploads" />
 				</HydrationBoundary>

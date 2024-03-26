@@ -20,7 +20,7 @@ export const Header = async () => {
 
 	return (
 		<header className="container z-40">
-			<div className="flex h-16 sm:h-20 justify-between">
+			<div className="flex h-16 sm:h-20 place-content-between place-items-center">
 				<Navigation logo={<ChibisafeLogo className="w-6 h-6" />} serviceName={data?.serviceName} />
 				<UploadProgress />
 				<nav className="flex items-center gap-1">

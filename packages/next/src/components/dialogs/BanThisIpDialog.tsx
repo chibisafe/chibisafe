@@ -53,7 +53,7 @@ export function BanThisIpDialog({ ip }: PropsWithChildren<{ readonly ip: string 
 					Ban this IP
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-11/12">
 				<form action={formAction}>
 					<input type="hidden" name="ip" value={ip} />
 					<DialogHeader>

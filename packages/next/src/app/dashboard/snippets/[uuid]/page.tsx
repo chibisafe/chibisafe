@@ -51,7 +51,7 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 			>
 				<DeleteSnippetDialog uuid={snippet.uuid} />
 			</DashboardHeader>
-			<div className="px-2 flex h-full flex-grow flex-col">
+			<div className="px-2 w-full flex h-full flex-grow flex-col">
 				<SnippetViewer snippet={snippet} showTitle={false} showCreatedAt={false} />
 			</div>
 		</>

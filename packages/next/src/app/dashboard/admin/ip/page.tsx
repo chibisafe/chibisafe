@@ -64,7 +64,7 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 			>
 				<BanIpDialog />
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<Suspense>
 					<Pagination itemsTotal={response?.count ?? 0} />
 				</Suspense>

@@ -46,7 +46,7 @@ export default async function TagPage({
 					Upload file
 				</Button>
 			</DashboardHeader>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<FilesList type="tag" files={response.files} count={response.count} />
 			</div>
 		</>

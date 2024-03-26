@@ -30,7 +30,7 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 					{ name: 'All files', url: '/dashboard/admin/files' }
 				]}
 			/>
-			<div className="px-2">
+			<div className="px-2 w-full">
 				<FilesList type="admin" files={response.files} count={response.count} />
 			</div>
 		</>
