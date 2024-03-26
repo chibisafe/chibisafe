@@ -176,7 +176,7 @@ export function FileInformationDialog({
 			<DialogContent
 				className={cn(
 					// isVertical ? '!w-fit' : '!w-max',
-					'max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] w-max p-0',
+					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:w-max p-0',
 					tab === 'information' ? 'w-11/12 xl:w-max' : ''
 				)}
 			>
@@ -204,7 +204,7 @@ export function FileInformationDialog({
 									<img src={file.url} className="h-full object-contain md:block" draggable={false} />
 								</picture>
 							) : isFileVideo(file) ? (
-								<MediaController className="h-full hidden md:block">
+								<MediaController className="h-full w-full">
 									<video slot="media" src={file.url} crossOrigin="" className="h-full" />
 									<MediaControlBar>
 										<MediaPlayButton />
@@ -216,7 +216,7 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : isFileAudio(file) ? (
-								<MediaController className="h-full hidden md:block">
+								<MediaController className="h-full w-full">
 									<audio slot="media" src={file.url} crossOrigin="" />
 									<MediaControlBar>
 										<MediaPlayButton />
