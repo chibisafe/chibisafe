@@ -176,7 +176,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The name of the service.',
 		name: 'Service Name',
-		example: 'Chibisafe',
+		example: 'chibisafe',
 		category: 'customization'
 	},
 	chunkSize: {
@@ -286,7 +286,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The meta domain used for the website SEO.',
 		name: 'Meta Domain',
-		example: 'https://chibisafe.moe',
+		example: 'https://my.chibisafe.instance.moe',
 		category: 'customization'
 	},
 	metaDescription: {
@@ -307,7 +307,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
-		example: '@chibisafe',
+		example: '@your-instance-handle',
 		category: 'customization'
 	},
 	usersStorageQuota: {
