@@ -85,9 +85,7 @@ export default async function Home() {
 							uploading services that can handle anything you throw at it thanks to it's robust and fast
 							API, chunked uploads support and more.
 						</p>
-					</div>
-					<div className="flex flex-col-reverse md:flex-col gap-12 place-items-center w-full">
-						<div className="flex flex-col md:flex-row gap-4">
+						<div className="hidden md:flex flex-col md:flex-row gap-4">
 							<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
 								Get Started
 							</Link>
@@ -106,7 +104,28 @@ export default async function Home() {
 								GitHub
 							</a>
 						</div>
+					</div>
+					<div className="flex flex-col gap-12 place-content-center place-items-center w-full">
 						<UploadTriggerHomepage settings={settings} />
+						<div className="md:hidden flex flex-col gap-4">
+							<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
+								Get Started
+							</Link>
+							<a
+								href="https://github.com/chibisafe/chibisafe"
+								target="_blank"
+								rel="noopener noreferrer"
+								className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+							>
+								{stars ? (
+									<>
+										{stars}
+										<Star className="h-4 w-4 mx-1" />
+									</>
+								) : null}
+								GitHub
+							</a>
+						</div>
 					</div>
 				</div>
 			</section>
