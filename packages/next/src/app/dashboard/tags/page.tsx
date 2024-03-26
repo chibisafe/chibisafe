@@ -9,6 +9,7 @@ import { CreateTagDialog } from '@/components/dialogs/CreateTagDialog';
 import type { PageQuery } from '@/types';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
+
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Tags'
 };

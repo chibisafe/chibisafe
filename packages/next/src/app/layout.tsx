@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 
 import type { PropsWithChildren } from 'react';
-import type { Metadata, Viewport } from 'next';
+import type { Viewport } from 'next';
 import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
 
@@ -13,6 +13,7 @@ import { UserProvider } from '@/components/providers/UserProvider';
 
 import { Providers } from './providers';
 import { GlobalBackground } from '@/components/GlobalBackground';
+import request from '@/lib/request';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -31,48 +32,66 @@ const meta = {
 	description: 'Beautiful and performant vault to save all your files in the cloud.'
 };
 
-export const metadata: Metadata = {
-	metadataBase: new URL(meta.url),
-	title: {
-		default: meta.name,
-		template: `%s - ${meta.name}`
-	},
-	description: meta.description,
-	keywords: ['chibisafe', 'file uploader', 'vault', 'react', 'free', 'open source', 'pitu', 'kana', 'kana.dev'],
-	authors: [
-		{
-			name: 'Pitu',
-			url: 'https://kana.dev'
+export async function generateMetadata() {
+	const { data: settings, error } = await request.get({
+		url: 'settings',
+		options: {
+			next: {
+				tags: ['settings']
+			}
 		}
-	],
-	creator: 'Pitu',
+	});
 
-	openGraph: {
-		type: 'website',
-		locale: 'en_US',
-		url: meta.url,
-		title: meta.name,
-		description: meta.description,
-		siteName: meta.name,
-		images: [`/meta.jpg`]
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: meta.name,
-		description: meta.description,
-		images: [`/meta.jpg`],
-		creator: '@its_pitu'
-	},
-	icons: {
-		icon: '/favicon.ico',
-		shortcut: '/favicon-16x16.png',
-		apple: '/apple-touch-icon.png'
-	},
-	manifest: `/site.webmanifest`
-};
+	if (error) {
+		console.log(error);
+	}
+
+	return {
+		metadataBase: new URL(settings?.metaDomain ?? meta.url),
+		title: {
+			default: settings?.serviceName ?? meta.name,
+			template: `%s - ${settings?.serviceName ?? meta.name}`
+		},
+		description: settings?.metaDescription ?? meta.description,
+		keywords: settings?.metaKeywords.length
+			? settings.metaKeywords
+			: ['chibisafe', 'file uploader', 'vault', 'react', 'free', 'open source', 'pitu', 'kana', 'kana.dev'],
+		authors: [
+			{
+				name: 'Pitu',
+				url: 'https://kana.dev'
+			}
+		],
+		creator: 'Pitu',
+
+		openGraph: {
+			type: 'website',
+			locale: 'en_US',
+			url: settings?.metaDomain ?? meta.url,
+			title: settings?.serviceName ?? meta.name,
+			description: settings?.metaDescription ?? meta.description,
+			siteName: settings?.serviceName ?? meta.name,
+			images: [`/meta.jpg`]
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: settings?.serviceName ?? meta.name,
+			description: settings?.metaDescription ?? meta.description,
+			images: [`/meta.jpg`],
+			creator: settings?.metaTwitterHandle ?? '@its_pitu'
+		},
+		icons: {
+			icon: '/favicon.ico',
+			shortcut: '/favicon-16x16.png',
+			apple: '/apple-touch-icon.png'
+		},
+		manifest: `/site.webmanifest`
+	};
+}
 
 export default function RootLayout({ children }: PropsWithChildren<{}>) {
 	const hasTokenCookie = cookies().has('token');
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />

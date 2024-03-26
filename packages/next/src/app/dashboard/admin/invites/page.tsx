@@ -8,6 +8,7 @@ import { InvitesTable } from '@/components/tables/invites-table/InvitesTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { createInvite } from '@/actions/InviteActions';
+
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Invites'
 };
