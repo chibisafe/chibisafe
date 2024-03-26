@@ -55,6 +55,33 @@ export function FileInformationDialog({
 	);
 	const [_, setModalOpen] = useAtom(isDialogOpenAtom);
 
+	const fetchFileInfo = useCallback(async () => {
+		try {
+			const { data: response, error } = await request.get({ url: `file/${file.uuid}` });
+			if (error) {
+				toast.error(error);
+				return;
+			}
+
+			setFileAlbums(response.file.albums);
+			setFileTags(response.file.tags);
+		} catch (error) {
+			console.error(error);
+		}
+	}, [file.uuid]);
+
+	const fetchAllTags = useCallback(async () => {
+		try {
+			const { data: response, error } = await request.get({ url: 'tags' });
+			setTags(response.tags);
+			if (error) {
+				toast.error(error);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+
 	const fetchExtraData = useCallback(async () => {
 		try {
 			if (type === 'admin') return;
@@ -71,25 +98,12 @@ export function FileInformationDialog({
 
 			setAlbums(createdAlbums.albums);
 
-			const { data: albumsTags, error: albumsTagsError } = await request.get({ url: 'tags' });
-			setTags(albumsTags.tags);
-			if (albumsTagsError) {
-				toast.error(albumsTagsError);
-				return;
-			}
-
-			const { data: fileInfo, error: fileInfoError } = await request.get({ url: `file/${file.uuid}` });
-			if (fileInfoError) {
-				toast.error(fileInfoError);
-				return;
-			}
-
-			setFileAlbums(fileInfo.file.albums);
-			setFileTags(fileInfo.file.tags);
+			await fetchAllTags();
+			await fetchFileInfo();
 		} catch (error) {
 			console.error(error);
 		}
-	}, [file.uuid, type]);
+	}, [fetchAllTags, fetchFileInfo, type]);
 
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
@@ -146,6 +160,50 @@ export function FileInformationDialog({
 			}
 		},
 		[file.uuid]
+	);
+
+	const createTag = useCallback(
+		async (tag: string) => {
+			if (tag.trim() === '') return;
+			if (!tag) return;
+
+			try {
+				const { data: response, error } = await request.post({
+					url: `tag/create`,
+					body: { name: tag }
+				});
+
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
+				if (response.tag) {
+					await addTagToFile(response.tag.uuid);
+
+					setTags([
+						...tags,
+						{
+							uuid: response.tag.uuid,
+							name: response.tag.name
+						}
+					]);
+
+					setFileTags([
+						...fileTags,
+						{
+							uuid: response.tag.uuid,
+							name: response.tag.name
+						}
+					]);
+				}
+
+				toast.success('Tag added to file');
+			} catch (error: any) {
+				toast.error(error);
+			}
+		},
+		[addTagToFile, fileTags, tags]
 	);
 
 	const removeTagFromFile = useCallback(
@@ -433,6 +491,7 @@ export function FileInformationDialog({
 													initialSelected={fileTags.map(tag => tag.uuid)}
 													onSelected={async value => addTagToFile(value)}
 													onRemoved={async value => removeTagFromFile(value)}
+													onCreated={async value => createTag(value)}
 												/>
 											</div>
 										</div>
