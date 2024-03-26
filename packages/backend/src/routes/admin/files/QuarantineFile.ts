@@ -70,7 +70,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const copyCommand = new CopyObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
 			Key: `/quarantine/${newFileName}`,
-			CopySource: file.name
+			CopySource: `${SETTINGS.S3Bucket}/${file.name}`
 		});
 		const removeCommand = new DeleteObjectCommand({
 			Bucket: SETTINGS.S3Bucket,

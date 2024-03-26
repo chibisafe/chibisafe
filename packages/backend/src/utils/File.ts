@@ -530,7 +530,11 @@ export const handleUploadFile = async ({
 		uploadedFile = savedFile.file;
 
 		// Generate thumbnails
-		void generateThumbnails({ filename: savedFile.file.name });
+		void generateThumbnails({
+			filename: savedFile.file.name,
+			tmp: savedFile.file.isS3,
+			watched: savedFile.file.isWatched
+		});
 	}
 
 	return uploadedFile;

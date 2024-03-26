@@ -44,7 +44,9 @@ services:
       - ./minio/data:/data
     ports:
       - 9000:9000
+      - 9001:9001
     environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio
-    command: server /data
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminadmin
+      MINIO_VOLUMES: /data
+    command: minio server --console-address ":9001"

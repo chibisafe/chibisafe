@@ -69,7 +69,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const copyCommand = new CopyObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
 			Key: file.name,
-			CopySource: `/quarantine/${file.quarantineFile!.name}`
+			CopySource: `${SETTINGS.S3Bucket}/quarantine/${file.quarantineFile!.name}`
 		});
 		const removeCommand = new DeleteObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
@@ -96,7 +96,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		await jetpack.moveAsync(path.join(quarantinePath, file.quarantineFile!.name), path.join(uploadPath, file.name));
 	}
 
-	void generateThumbnails({ filename: file.name });
+	void generateThumbnails({ filename: file.name, tmp: file.isS3, watched: file.isWatched });
 
 	return res.send({
 		message: 'Successfully allowed the file'
