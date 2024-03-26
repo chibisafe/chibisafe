@@ -402,14 +402,10 @@ export function FileInformationDialog({
 												<FancyMultiSelect
 													name="albums"
 													placeholder="Select album..."
-													options={
-														albums
-															? albums.map(album => ({
-																	value: album.uuid,
-																	label: album.name
-																}))
-															: []
-													}
+													options={albums.map(album => ({
+														value: album.uuid,
+														label: album.name
+													}))}
 													initialSelected={fileAlbums.map(album => album.uuid)}
 													onSelected={async value => addFileToAlbum(value)}
 													onRemoved={async value => removeFileFromAlbum(value)}
@@ -430,14 +426,10 @@ export function FileInformationDialog({
 												<FancyMultiSelect
 													name="tags"
 													placeholder="Select tags..."
-													options={
-														tags
-															? tags.map(tag => ({
-																	value: tag.uuid,
-																	label: tag.name
-																}))
-															: []
-													}
+													options={tags.map(tag => ({
+														value: tag.uuid,
+														label: tag.name
+													}))}
 													initialSelected={fileTags.map(tag => tag.uuid)}
 													onSelected={async value => addTagToFile(value)}
 													onRemoved={async value => removeTagFromFile(value)}

@@ -105,9 +105,9 @@ export function FancyMultiSelect({
 				</div>
 			</div>
 			<div className="relative mt-2">
-				{open && selectables.length > 0 ? (
-					<div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-						<CommandList>
+				<CommandList>
+					{open && selectables.length > 0 ? (
+						<div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
 							<CommandGroup className="h-full overflow-auto">
 								{selectables.map(option => {
 									return (
@@ -123,15 +123,16 @@ export function FancyMultiSelect({
 												onSelected(option.value);
 											}}
 											className={'cursor-pointer'}
+											value={option.value}
 										>
 											{option.label}
 										</CommandItem>
 									);
 								})}
 							</CommandGroup>
-						</CommandList>
-					</div>
-				) : null}
+						</div>
+					) : null}
+				</CommandList>
 			</div>
 		</Command>
 	);
