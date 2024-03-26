@@ -13,7 +13,6 @@ import { UserProvider } from '@/components/providers/UserProvider';
 
 import { Providers } from './providers';
 import { GlobalBackground } from '@/components/GlobalBackground';
-import NextTopLoader from 'nextjs-toploader';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -86,7 +85,6 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 			>
 				<Providers>
 					{children}
-					<NextTopLoader />
 					<GlobalBackground />
 					<Toaster />
 					<TailwindIndicator />
