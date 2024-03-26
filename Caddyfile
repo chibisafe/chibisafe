@@ -1,32 +1,25 @@
 {$BASE_URL} {
-	root * /app/uploads
-	file_server
+	route {
+		file_server * {
+			root /app/uploads
+			pass_thru
+		}
 
-	@api path /api/*
-	reverse_proxy @api http://chibisafe_server:8000 {
-		header_up Host {http.reverse_proxy.upstream.hostport}
-		header_up X-Real-IP {http.request.header.X-Real-IP}
-		header_up X-Forwarded-For {http.request.header.X-Forwarded-For}
-		header_up X-Forwarded-Proto {http.request.header.X-Forwarded-Proto}
-	}
+		@api path /api/*
+		reverse_proxy @api http://chibisafe_server:8000 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
 
-	@docs path /docs*
-	reverse_proxy @docs http://chibisafe_server:8000 {
-		header_up Host {http.reverse_proxy.upstream.hostport}
-		header_up X-Real-IP {http.request.header.X-Real-IP}
-		header_up X-Forwarded-For {http.request.header.X-Forwarded-For}
-		header_up X-Forwarded-Proto {http.request.header.X-Forwarded-Proto}
-	}
+		@docs path /docs*
+		reverse_proxy @docs http://chibisafe_server:8000 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
 
-	@noFile {
-		not path /api/*
-		not path /docs*
-		not file
-	}
-	reverse_proxy @noFile http://chibisafe:8001 {
-		header_up Host {http.reverse_proxy.upstream.hostport}
-		header_up X-Real-IP {http.request.header.X-Real-IP}
-		header_up X-Forwarded-For {http.request.header.X-Forwarded-For}
-		header_up X-Forwarded-Proto {http.request.header.X-Forwarded-Proto}
+		reverse_proxy http://chibisafe:8001 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
 	}
 }
