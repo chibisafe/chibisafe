@@ -17,7 +17,7 @@ export const schema = {
 		.required(),
 	body: z
 		.object({
-			space: z.number().describe('The amount of space to allocate.')
+			space: z.coerce.number().describe('The amount of space to allocate.')
 		})
 		.required(),
 	response: {

@@ -1,13 +1,12 @@
-import { Buffer } from 'node:buffer';
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
+import { fastifyCookie } from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fstatic from '@fastify/static';
 import fastify from 'fastify';
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import jetpack from 'fs-jetpack';
-import LiveDirectory from 'live-directory';
 import { cleanup } from 'unzipit';
 import Routes from './structures/routes.js';
 import { SETTINGS, loadSettings } from './structures/settings.js';
@@ -29,8 +28,6 @@ const server = fastify({
 });
 
 const watcher = getFileWatcher();
-
-let htmlBuffer: Buffer | null = null;
 
 process.on('SIGINT', async () => {
 	console.log('SIGINT received...');
@@ -82,6 +79,13 @@ const start = async () => {
 		}
 	});
 
+	// Enable cookie parsing
+	await server.register(fastifyCookie, {
+		secret: SETTINGS.secret,
+		hook: 'onRequest',
+		parseOptions: {}
+	});
+
 	// Route error handler
 	// @ts-ignore
 	// eslint-disable-next-line promise/prefer-await-to-callbacks
@@ -124,7 +128,8 @@ const start = async () => {
 	});
 
 	await server.register(cors, {
-		preflightContinue: true,
+		origin: true,
+		credentials: true,
 		allowedHeaders: [
 			'Accept',
 			'Authorization',
@@ -134,7 +139,6 @@ const start = async () => {
 			'Content-Type',
 			'albumUuid',
 			'X-API-KEY',
-			'application/vnd.chibisafe.json', // I'm deprecating this header but will remain here for compatibility reasons
 			// @chibisafe/uploarder headers
 			'chibi-chunk-number',
 			'chibi-chunks-total',
@@ -173,82 +177,14 @@ const start = async () => {
 	});
 
 	if (process.env.NODE_ENV === 'production') {
-		if (!jetpack.exists(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)))) {
-			server.log.error('Frontend build not found, please run `npm run build` in the frontend directory first');
-			process.exit(1);
-		}
-
-		// @ts-ignore
-		const LiveAssets = new LiveDirectory(fileURLToPath(new URL('../dist/site', import.meta.url)), {
-			static: true,
-			cache: {
-				max_file_count: 50,
-				max_file_size: 1024 * 1024 * 2.5
-			}
-		});
-
-		// Wait for the html buffer with replaced values to be ready
-		await getHtmlBuffer();
-
-		server.addHook('onRequest', (req, reply, next) => {
+		server.addHook('onRequest', (req, _, next) => {
 			req.log.debug(req);
-
-			if (req.method !== 'GET' && req.method !== 'HEAD') {
-				next();
-				return;
-			}
-
-			const routes = [
-				'/dashboard',
-				'/invite',
-				'/login',
-				'/register',
-				'/faq',
-				'/features',
-				'/about',
-				'/privacy',
-				'/tos',
-				'/a/',
-				'/s/'
-			];
-
-			const route = routes.some(r => req.url.startsWith(r));
-
-			if (req.url === '/' || route) return reply.type('text/html').send(htmlBuffer);
-
-			const file = LiveAssets.get(req.url.slice(1));
-			if (!file) {
-				next();
-				return;
-			}
-
-			// @ts-ignore
-			const extension = req.url.slice(1).split('.').pop() as string;
-
-			// Map extension to content type
-			const contentType = {
-				js: 'text/javascript',
-				css: 'text/css',
-				html: 'text/html',
-				ico: 'image/x-icon',
-				png: 'image/png',
-				jpg: 'image/jpeg',
-				svg: 'image/svg+xml'
-			};
-
-			return (
-				reply
-					.header('etag', file.etag)
-					.header('Cache-Control', 'max-age=604800, stale-while-revalidate=86400')
-					// @ts-expect-error contentType[extension]
-					.type(contentType[extension])
-					.send(file.cached ? file.content : file.stream())
-			);
+			next();
 		});
 	}
 
-	// Serve uploads only if the user didn't change the default value
-	if (!SETTINGS.serveUploadsFrom) {
+	// Serve uploads only if the user is running in DEV mode
+	if (process.env.NODE_ENV !== 'production') {
 		await server.register(fstatic, {
 			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
 		});
@@ -264,42 +200,8 @@ const start = async () => {
 	// Jumpstart statistics scheduler
 	await jumpstartStatistics();
 
-	if (!SETTINGS.disableUpdateCheck) {
-		await startUpdateCheckSchedule();
-	}
-};
-
-export const getHtmlBuffer = async () => {
-	let indexHTML = jetpack.read(fileURLToPath(new URL('../dist/site/index.html', import.meta.url)), 'utf8');
-	if (!indexHTML) {
-		server.log.error('There was a problem parsing the frontend');
-		process.exit(1);
-	}
-
-	indexHTML = indexHTML.replaceAll('{{title}}', SETTINGS.serviceName);
-	indexHTML = indexHTML.replaceAll('{{description}}', SETTINGS.metaDescription);
-	indexHTML = indexHTML.replaceAll('{{keywords}}', SETTINGS.metaKeywords);
-	indexHTML = indexHTML.replaceAll('{{twitter}}', SETTINGS.metaTwitterHandle);
-	indexHTML = indexHTML.replaceAll('{{domain}}', SETTINGS.metaDomain);
-
-	const settings = {
-		backgroundImageURL: SETTINGS.backgroundImageURL,
-		chunkSize: SETTINGS.chunkSize,
-		logoURL: SETTINGS.logoURL,
-		maxSize: SETTINGS.maxSize,
-		serviceName: SETTINGS.serviceName,
-		publicMode: SETTINGS.publicMode,
-		userAccounts: SETTINGS.userAccounts,
-		blockedExtensions: SETTINGS.blockedExtensions,
-		useNetworkStorage: SETTINGS.useNetworkStorage
-	};
-
-	indexHTML = indexHTML.replaceAll(
-		'</body>',
-		`<script>window.__CHIBISAFE__ = ${JSON.stringify(settings)};</script></body>`
-	);
-
-	htmlBuffer = Buffer.from(indexHTML);
+	// Check for updates
+	await startUpdateCheckSchedule();
 };
 
 void start();

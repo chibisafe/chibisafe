@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -20,11 +21,17 @@ export const schema = {
 		.required(),
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryPageSchema
+		limit: queryPageSchema,
+		search: z.string().optional().describe('The text you want to search within all files from this user.')
 	}),
 	response: {
 		200: z.object({
 			message: responseMessageSchema,
+			user: z
+				.object({
+					username: z.string().describe("The user's username.")
+				})
+				.describe('The user object with the username.'),
 			files: z.array(fileAsAdminSchema),
 			count: z.number().describe('The amount of files that exist.')
 		}),
@@ -40,20 +47,16 @@ export const options = {
 };
 
 export const run = async (req: FastifyRequest, res: FastifyReply) => {
-	const { uuid } = req.params as { uuid?: string };
-	if (!uuid) {
-		void res.badRequest('Invalid uuid supplied');
-		return;
-	}
-
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { uuid } = req.params as { uuid: string };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
 
 	const user = await prisma.users.findUnique({
 		where: {
 			uuid
 		},
 		select: {
-			id: true
+			id: true,
+			username: true
 		}
 	});
 
@@ -62,18 +65,36 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		return;
 	}
 
+	let dbSearchObject: Prisma.filesCountArgs['where'] = {
+		userId: user.id
+	};
+
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			OR: [
+				{
+					name: {
+						contains: search
+					}
+				},
+				{
+					original: {
+						contains: search
+					}
+				}
+			]
+		};
+	}
+
 	const count = await prisma.files.count({
-		where: {
-			userId: user.id
-		}
+		where: dbSearchObject
 	});
 
 	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
-		where: {
-			userId: user.id
-		},
+		where: dbSearchObject,
 		select: {
 			createdAt: true,
 			editedAt: true,
@@ -107,7 +128,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			}
 		},
 		orderBy: {
-			id: 'desc'
+			createdAt: 'desc'
 		}
 	})) as ExtendedFile[] | [];
 
@@ -121,6 +142,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	return res.send({
 		message: "Successfully retrieved user's files",
+		user,
 		files: readyFiles,
 		count
 	});

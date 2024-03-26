@@ -1,7 +1,5 @@
-import process from 'node:process';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { getHtmlBuffer } from '@/main.js';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
@@ -79,8 +77,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		await res.send({ message: 'Settings updated' });
 		// Refresh the instance settings
 		await loadSettings(true);
-		// If running in production, we need to update the html buffer
-		if (process.env.NODE_ENV === 'production') await getHtmlBuffer();
 
 		// Option is enabled, but the schedule is not running
 		if (!parsedSettings.disableUpdateCheck && !updateCheck.active) {

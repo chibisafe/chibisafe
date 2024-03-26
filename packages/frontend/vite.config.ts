@@ -55,7 +55,7 @@ export default defineConfig({
 		exclude: ['vue-demi']
 	},
 	server: {
-		port: 8001,
+		port: 8002,
 		proxy: {
 			'/api': {
 				target: backendUrl,

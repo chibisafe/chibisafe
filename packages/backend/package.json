@@ -1,6 +1,6 @@
 {
 	"name": "@chibisafe/backend",
-	"version": "5.1.3",
+	"version": "0.0.0",
 	"description": "Blazing fast file uploader and bunker written in node! 🚀",
 	"license": "MIT",
 	"author": {
@@ -29,9 +29,10 @@
 		"url": "https://github.com/WeebDev/chibisafe/issues"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.529.1",
-		"@aws-sdk/s3-request-presigner": "^3.529.1",
+		"@aws-sdk/client-s3": "^3.540.0",
+		"@aws-sdk/s3-request-presigner": "^3.540.0",
 		"@chibisafe/uploader-module": "1.0.11",
+		"@fastify/cookie": "^9.3.1",
 		"@fastify/cors": "^9.0.1",
 		"@fastify/helmet": "^11.1.1",
 		"@fastify/rate-limit": "^9.1.0",
@@ -39,10 +40,10 @@
 		"@fastify/static": "^7.0.1",
 		"@fastify/swagger": "^8.14.0",
 		"@napi-rs/blake-hash": "^1.3.4",
-		"@prisma/client": "^5.10.2",
-		"@scalar/fastify-api-reference": "^1.18.2",
+		"@prisma/client": "^5.11.0",
+		"@scalar/fastify-api-reference": "^1.20.10",
 		"@sindresorhus/slugify": "^2.2.1",
-		"adm-zip": "^0.5.10",
+		"adm-zip": "^0.5.12",
 		"bcryptjs": "^2.4.3",
 		"chokidar": "^3.6.0",
 		"cross-env": "^7.0.3",
@@ -62,10 +63,10 @@
 		"moment": "^2.30.1",
 		"node-schedule": "^2.1.1",
 		"pino": "^8.19.0",
-		"pino-pretty": "^10.3.1",
+		"pino-pretty": "^11.0.0",
 		"proxy-addr": "^2.0.7",
 		"randomstring": "^1.3.0",
-		"systeminformation": "^5.22.0",
+		"systeminformation": "^5.22.6",
 		"tsc-alias": "^1.8.8",
 		"tsconfig-paths": "^4.2.0",
 		"unzipit": "^1.4.3",
@@ -80,7 +81,7 @@
 		"@types/fancy-log": "^2.0.2",
 		"@types/fluent-ffmpeg": "^2.1.24",
 		"@types/jsonwebtoken": "^9.0.6",
-		"@types/node": "^20.11.25",
+		"@types/node": "^20.11.30",
 		"@types/node-schedule": "^2.1.6",
 		"@types/proxy-addr": "^2.0.3",
 		"@types/randomstring": "^1.1.12",
@@ -89,10 +90,10 @@
 		"eslint": "^8.57.0",
 		"eslint-config-neon": "^0.1.59",
 		"prettier": "^3.2.5",
-		"prisma": "^5.10.2",
+		"prisma": "^5.11.0",
 		"rimraf": "^5.0.5",
 		"tsx": "^4.7.1",
-		"typescript": "^5.4.2"
+		"typescript": "^5.4.3"
 	},
 	"prisma": {
 		"schema": "src/prisma/schema.prisma"

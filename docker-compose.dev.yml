@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  chibisafe:
+    #image: chibisafe/chibisafe:latest
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - BASE_API_URL=http://chibisafe_server:8000
+    expose:
+      - 8001
+    restart: unless-stopped
+
+  chibisafe_server:
+    #image: chibisafe/chibisafe-server:latest
+    build:
+      context: ./
+      dockerfile: ./docker/DockerfileServer
+    volumes:
+      - ./database:/app/database:rw
+      - ./uploads:/app/uploads:rw
+      - ./logs:/app/logs:rw
+    environment:
+      - SERVE_UPLOADS_FROM=http://localhost:24424
+    expose:
+      - 8000
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./uploads:/app/uploads:ro
+    ports:
+      - 24424:80
+    environment:
+      - BASE_URL=":80"
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio
+    volumes:
+      - ./minio/data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminadmin
+      MINIO_VOLUMES: /data
+    command: minio server --console-address ":9001"

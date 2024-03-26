@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -16,7 +17,8 @@ export const schema = {
 	tags: ['Files'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your files.')
 	}),
 	response: {
 		200: z.object({
@@ -36,20 +38,38 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
+
+	let dbSearchObject: Prisma.filesCountArgs['where'] = {
+		userId: req.user.id
+	};
+
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			OR: [
+				{
+					name: {
+						contains: search
+					}
+				},
+				{
+					original: {
+						contains: search
+					}
+				}
+			]
+		};
+	}
 
 	const count = await prisma.files.count({
-		where: {
-			userId: req.user.id
-		}
+		where: dbSearchObject
 	});
 
 	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
-		where: {
-			userId: req.user.id
-		},
+		where: dbSearchObject,
 		select: {
 			createdAt: true,
 			editedAt: true,
@@ -65,7 +85,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			isWatched: true
 		},
 		orderBy: {
-			id: 'desc'
+			createdAt: 'desc'
 		}
 	})) as ExtendedFile[] | [];
 

@@ -19,6 +19,11 @@ export const schema = {
 			uuid: z.string().describe('The uuid of the file.')
 		})
 		.required(),
+	body: z
+		.object({
+			reason: z.string().optional().describe('The reason for quarantining the file.')
+		})
+		.optional(),
 	response: {
 		200: z.object({
 			message: z.string().describe('The response message.')
@@ -36,7 +41,7 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
-	const { reason }: { reason: string } = req.body as { reason: string };
+	const { reason } = req.body as { reason?: string };
 
 	const file = await prisma.files.findFirst({
 		where: {
@@ -65,7 +70,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const copyCommand = new CopyObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
 			Key: `/quarantine/${newFileName}`,
-			CopySource: file.name
+			CopySource: `${SETTINGS.S3Bucket}/${file.name}`
 		});
 		const removeCommand = new DeleteObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
@@ -85,7 +90,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			quarantineFile: {
 				create: {
 					name: newFileName,
-					reason
+					reason: reason ?? null
 				}
 			}
 		}

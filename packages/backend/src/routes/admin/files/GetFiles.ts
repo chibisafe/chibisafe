@@ -20,7 +20,8 @@ export const schema = {
 		publicOnly: booleanSchema.describe('Whether to only get public files.'),
 		page: queryPageSchema,
 		limit: queryLimitSchema,
-		quarantine: booleanSchema.describe('Whether to only get quarantined files.')
+		quarantine: booleanSchema.describe('Whether to only get quarantined files.'),
+		search: z.string().optional().describe('The text you want to search within all files.')
 	}),
 	response: {
 		200: z.object({
@@ -44,14 +45,16 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		publicOnly = false,
 		page = 1,
 		limit = 50,
-		quarantine = false
-	} = req.query as { limit?: number; page?: number; publicOnly: boolean; quarantine?: boolean };
+		quarantine = false,
+		search = ''
+	} = req.query as { limit?: number; page?: number; publicOnly: boolean; quarantine?: boolean; search?: string };
 
 	const dbSearchObject: Prisma.filesCountArgs = {
 		where: {
 			quarantine
 		}
 	};
+
 	const dbObject: Prisma.filesFindManyArgs = {
 		where: {
 			quarantine
@@ -105,6 +108,60 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					}
 				}
 			}
+		};
+	}
+
+	if (search) {
+		dbSearchObject.where = {
+			...dbSearchObject.where,
+			OR: [
+				{
+					name: {
+						contains: search
+					}
+				},
+				{
+					original: {
+						contains: search
+					}
+				},
+				{
+					ip: {
+						equals: search
+					}
+				},
+				{
+					uuid: {
+						equals: search
+					}
+				}
+			]
+		};
+
+		dbObject.where = {
+			...dbObject.where,
+			OR: [
+				{
+					name: {
+						contains: search
+					}
+				},
+				{
+					original: {
+						contains: search
+					}
+				},
+				{
+					ip: {
+						equals: search
+					}
+				},
+				{
+					uuid: {
+						equals: search
+					}
+				}
+			]
 		};
 	}
 
