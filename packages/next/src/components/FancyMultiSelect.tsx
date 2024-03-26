@@ -16,10 +16,12 @@ export function FancyMultiSelect({
 	name = 'fancy-multi-select',
 	initialSelected = [],
 	onSelected,
-	onRemoved
+	onRemoved,
+	onCreated
 }: {
 	readonly initialSelected?: string[];
 	readonly name?: string;
+	onCreated?(created: string): void;
 	onRemoved(removed: string): void;
 	onSelected(selected: string): void;
 	readonly options: Option[];
@@ -59,9 +61,17 @@ export function FancyMultiSelect({
 				if (e.key === 'Escape') {
 					input.blur();
 				}
+
+				if (e.key === 'Enter') {
+					const currentValue = input.value.trim();
+					if (options.filter(option => option.label === currentValue).length === 0 && onCreated) {
+						onCreated(currentValue);
+						setInputValue('');
+					}
+				}
 			}
 		},
-		[onRemoved, selected]
+		[onCreated, onRemoved, options, selected]
 	);
 
 	const selectables = options.filter(option => !selected.includes(option));
