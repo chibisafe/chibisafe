@@ -49,7 +49,6 @@ const request = {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
-					// Authorization: request.checkForToken(),
 					...headers
 				},
 				...options,
@@ -84,8 +83,6 @@ const request = {
 				method: 'DELETE',
 				credentials: 'include',
 				headers: {
-					'Content-Type': 'application/json',
-					// Authorization: request.checkForToken(),
 					...headers
 				},
 				...options
