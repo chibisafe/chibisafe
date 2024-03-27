@@ -1,62 +1,62 @@
-import { PrismaClient } from '@prisma/client';
+import process from 'node:process';
 import { intro, outro, text, spinner, confirm } from '@clack/prompts';
+import { PrismaClient } from '@prisma/client';
 import betterSqlite from 'better-sqlite3';
 import { v4 as uuidv4 } from 'uuid';
-import process from 'node:process';
 
 type sqliteUser = {
-	id: number;
-	username: string;
-	password: string;
-	enabled: 0 | 1;
-	isAdmin: 0 | 1;
 	apiKey: string | null;
-	passwordEditedAt: number;
 	apiKeyEditedAt: number | null;
 	createdAt: number;
 	editedAt: number;
+	enabled: 0 | 1;
+	id: number;
+	isAdmin: 0 | 1;
+	password: string;
+	passwordEditedAt: number;
+	username: string;
 };
 
 type sqliteAlbum = {
-	id: number;
-	userId: number;
-	name: string;
 	createdAt: number;
 	editedAt: number;
+	id: number;
+	name: string;
 	nsfw: boolean;
+	userId: number;
 	zippedAt: number | null;
 };
 
 type sqliteLink = {
-	id: number;
-	userId: number;
 	albumId: number;
-	identifier: string;
-	views: number;
+	createdAt: number;
+	editedAt: number;
 	enabled: boolean;
 	enabledDownload: boolean;
 	expiresAt: number | null;
-	createdAt: number;
-	editedAt: number;
+	id: number;
+	identifier: string;
+	userId: number;
+	views: number;
 };
 
 type sqliteFile = {
-	id: number;
-	userId: number;
-	name: string;
-	original: string;
-	type: string;
-	size: number;
-	hash: string;
-	ip: string;
 	createdAt: number;
 	editedAt: number;
+	hash: string;
+	id: number;
+	ip: string;
+	name: string;
+	original: string;
+	size: number;
+	type: string;
+	userId: number;
 };
 
 type sqliteAlbumFile = {
-	id: number;
 	albumId: number;
 	fileId: number;
+	id: number;
 };
 
 const start = async () => {

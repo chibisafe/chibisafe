@@ -5,6 +5,7 @@ import { finished } from 'node:stream/promises';
 import { URL, fileURLToPath } from 'node:url';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
+import paths from '@/paths.js';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
@@ -63,7 +64,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	if (file.isS3) {
 		const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${file.name}`;
 
-		const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
+		const tmpDir = paths.tmp;
 		const newPath = `${tmpDir}/${file.name}`;
 
 		const extension = path.extname(file.name);

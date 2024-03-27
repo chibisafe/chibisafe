@@ -7,6 +7,7 @@ import type { FastifyReply } from 'fastify';
 import { fileTypeFromBuffer } from 'file-type';
 import { setOptions, unzip } from 'unzipit';
 import { z } from 'zod';
+import paths from '@/paths.js';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
@@ -67,9 +68,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return;
 	}
 
-	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
+	const tmpDir = paths.tmp;
 
-	const zipPath = fileURLToPath(new URL(`../../../../../uploads/${file.name}`, import.meta.url));
+	const zipPath = `${paths.root}/${file.name}`;
 	const buffer = await readFile(zipPath);
 	try {
 		const { entries } = await unzip(new Uint8Array(buffer));
