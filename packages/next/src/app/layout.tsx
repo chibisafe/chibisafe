@@ -105,7 +105,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 				<Providers>
 					{children}
 					<GlobalBackground />
-					<Toaster />
+					<Toaster position="bottom-center" />
 					<TailwindIndicator />
 					<UserProvider shouldFetch={hasTokenCookie} />
 					<SettingsProvider />
