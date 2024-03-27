@@ -189,8 +189,6 @@ export function FileInformationDialog({
 				}
 
 				if (response.tag) {
-					await addTagToFile(response.tag.uuid);
-
 					setTags([
 						...tags,
 						{
@@ -206,9 +204,9 @@ export function FileInformationDialog({
 							name: response.tag.name
 						}
 					]);
-				}
 
-				toast.success('Tag added to file');
+					void addTagToFile(response.tag.uuid);
+				}
 			} catch (error: any) {
 				toast.error(error);
 			}
@@ -457,7 +455,7 @@ export function FileInformationDialog({
 										)}
 									</div>
 								) : (
-									<div className="w-full">
+									<div className="w-full max-w-lg">
 										<div className="flex flex-col gap-2">
 											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 												Albums

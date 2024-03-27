@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
 import { X } from 'lucide-react';
 
@@ -11,7 +11,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui
 type Option = Record<'label' | 'value', string>;
 
 export function FancyMultiSelect({
-	options = [],
+	options,
 	placeholder = 'Select option...',
 	name = 'fancy-multi-select',
 	initialSelected = [],
@@ -33,6 +33,10 @@ export function FancyMultiSelect({
 		options.filter(option => initialSelected.includes(option.value))
 	);
 	const [inputValue, setInputValue] = useState('');
+
+	useEffect(() => {
+		setSelected(options.filter(option => initialSelected.includes(option.value)));
+	}, [options, initialSelected]);
 
 	const handleUnselect = useCallback(
 		(option: Option) => {
