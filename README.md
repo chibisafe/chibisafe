@@ -112,6 +112,23 @@ You can refer to [this commited file](https://github.com/WeebDev/chibisafe/blob/
 
 Whichever method you choose to install chibisafe keep in mind that the installation process creates an account named `admin` with the same password. Once you log in the first time make sure to change it!
 
+<details>
+ <summary>Environment variables</summary>
+
+```sh
+# If production, set to production
+NODE_ENV=
+# The host to bind the service to
+HOST=
+# The port to bind the service to
+PORT=
+# The upload directory where files will be stored
+# Default is "../../../uploads". The working directory is "packages/backend/dist", resulting in "uploads" folder in the root
+UPLOADS_DIR=
+```
+
+</details>
+
 ## Docker
 
 To deploy chibisafe with docker you have a few options.
