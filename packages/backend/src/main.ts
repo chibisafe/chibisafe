@@ -254,8 +254,16 @@ const start = async () => {
 
 	// Serve uploads only if the user didn't change the default value
 	if (!SETTINGS.serveUploadsFrom) {
+		const url = new URL(
+			// If upload dir is absolute, URL will automatically ignore the import.meta.url
+			process.env.UPLOADS_DIR ?? '../../../uploads',
+			import.meta.url
+		);
+
+		server.log.info(`Serving uploads directory: ${url.href}`);
+
 		await server.register(fstatic, {
-			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
+			root: fileURLToPath(url)
 		});
 	}
 
