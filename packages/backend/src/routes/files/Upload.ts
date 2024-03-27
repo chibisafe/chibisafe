@@ -8,6 +8,7 @@ import slugify from '@sindresorhus/slugify';
 import type { FastifyReply } from 'fastify';
 // import { processFile } from '../../../../../../chibisafe-uploader/packages/uploader-module/lib';
 import { z } from 'zod';
+import paths from '@/paths.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
@@ -132,7 +133,7 @@ export const uploadToNetworkStorage = async (req: RequestWithUser, res: FastifyR
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	if (SETTINGS.useNetworkStorage) return uploadToNetworkStorage(req, res);
 
-	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
+	const tmpDir = fileURLToPath(paths.tmp);
 	const maxChunkSize = SETTINGS.chunkSize;
 	const maxFileSize = SETTINGS.maxSize;
 

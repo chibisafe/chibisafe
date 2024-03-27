@@ -6,6 +6,7 @@ import { URL, fileURLToPath } from 'node:url';
 import { DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
+import paths from '@/paths.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
@@ -65,7 +66,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const album = await validateAlbum(req.headers.albumuuid as string, req.user ? req.user : undefined);
 	const fileURL = `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}/${identifier}`;
 
-	const tmpDir = fileURLToPath(new URL('../../../../../uploads/tmp', import.meta.url));
+	const tmpDir = fileURLToPath(paths.tmp);
 	const newPath = `${tmpDir}/${identifier}`;
 
 	let fileSize = 0;

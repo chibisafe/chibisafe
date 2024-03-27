@@ -2,6 +2,7 @@ import { URL, fileURLToPath } from 'node:url';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import jetpack from 'fs-jetpack';
 import moment from 'moment';
+import paths from '@/paths.js';
 import prisma from '@/structures/database.js';
 import { SETTINGS } from '@/structures/settings.js';
 import { createZip } from '@/utils/File.js';
@@ -56,7 +57,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	// If the date the album was zipped is greater than the date the album was last updated, send the zip
 	if (album.zippedAt && album.editedAt && album.zippedAt > album.editedAt) {
-		const filePath = fileURLToPath(new URL(`../../../../../uploads/zips/${album.uuid}.zip`, import.meta.url));
+		const filePath = `${paths.zips}/${album.uuid}.zip`;
 		const exists = await jetpack.existsAsync(filePath);
 
 		if (exists) {
@@ -79,7 +80,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			}
 		});
 
-		const filePath = fileURLToPath(new URL(`../../../../../uploads/zips/${album.uuid}.zip`, import.meta.url));
+		const filePath = `${paths.zips}/${album.uuid}.zip`;
 		const fileName = `${SETTINGS.serviceName}-${identifier}.zip`;
 		await res.download(filePath, fileName);
 	} catch (error) {

@@ -10,6 +10,7 @@ import jetpack from 'fs-jetpack';
 import moment from 'moment';
 import randomstring from 'randomstring';
 import { v4 as uuidv4 } from 'uuid';
+import paths from '@/paths.js';
 import prisma from '@/structures/database.js';
 import type { FileInProgress, RequestUser, User } from '@/structures/interfaces.js';
 import { SETTINGS } from '@/structures/settings.js';
@@ -22,10 +23,10 @@ const fileIdentifierMaxTries = 5;
 // const preserveExtensions = [
 // 	/\.tar\.\w+/i // tarballs
 // ];
-export const uploadPath = fileURLToPath(new URL('../../../../uploads', import.meta.url));
-export const watchPath = fileURLToPath(new URL('../../../../uploads/live', import.meta.url));
-export const tmpUploadPath = fileURLToPath(new URL('../../../../uploads/tmp', import.meta.url));
-export const quarantinePath = fileURLToPath(new URL('../../../../uploads/quarantine', import.meta.url));
+export const uploadPath = paths.root;
+export const watchPath = paths.live;
+export const tmpUploadPath = paths.tmp;
+export const quarantinePath = paths.quarantine;
 
 export const isExtensionBlocked = (extension: string) => {
 	if (!extension && SETTINGS.blockNoExtension) return true;

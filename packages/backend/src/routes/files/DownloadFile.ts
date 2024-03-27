@@ -2,6 +2,7 @@ import { createReadStream } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+import paths from '@/paths.js';
 import prisma from '@/structures/database.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
@@ -46,7 +47,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		return;
 	}
 
-	const uploadPath = fileURLToPath(new URL('../../../../../uploads', import.meta.url));
+	const uploadPath = paths.root;
 	const filePath = createReadStream(`${uploadPath}/${file.name}`);
 	return res.header('content-disposition', `attachment; filename="${file.original}"`).send(filePath);
 };
