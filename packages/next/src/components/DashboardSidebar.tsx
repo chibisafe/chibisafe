@@ -6,9 +6,34 @@ import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags,
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
 import { saveAs } from 'file-saver';
+import request from '@/lib/request';
+import type { UpdateCheck } from '@/types';
+import { useEffect, useState } from 'react';
 
 export function DashboardSidebar() {
 	const currentUser = useAtomValue(currentUserAtom);
+	const [update, setUpdate] = useState<UpdateCheck | undefined>(undefined);
+
+	useEffect(() => {
+		const checkForUpdates = async () => {
+			if (currentUser?.roles.some(role => role.name === 'admin')) {
+				const { data: response, error } = await request.get({
+					url: 'admin/service/updateCheck'
+				});
+
+				if (error) {
+					console.error(error);
+					return;
+				}
+
+				console.log(response);
+
+				setUpdate(response);
+			}
+		};
+
+		void checkForUpdates();
+	}, [currentUser?.roles]);
 
 	const getShareXConfig = async (event: any) => {
 		event.preventDefault();
@@ -85,6 +110,19 @@ export function DashboardSidebar() {
 				>
 					iOS share shortcut
 				</a>
+				{update?.updateAvailable ? (
+					<div className="text-sm font-medium mt-4 flex flex-col justify-center items-center py-4 border">
+						New version available
+						<a
+							href={update.latestVersionUrl}
+							rel="noopener noreferrer"
+							target="_blank"
+							className="text-sm font-medium link"
+						>
+							v{update.latestVersion}
+						</a>
+					</div>
+				) : null}
 			</nav>
 		</>
 	);

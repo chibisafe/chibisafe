@@ -228,3 +228,17 @@ export interface Setting {
 	type: string;
 	value: any;
 }
+
+export interface ReleaseNotes {
+	body: string;
+	name: string;
+	url: string;
+	version: string;
+}
+
+export interface UpdateCheck {
+	latestVersion: string;
+	latestVersionUrl: string;
+	releaseNotes: ReleaseNotes[];
+	updateAvailable: boolean;
+}

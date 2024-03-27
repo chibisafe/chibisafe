@@ -104,29 +104,6 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				{globalDropZoneOpen ? (
 					<div className="global-dropzone-border h-full w-full rounded-xl p-px">
 						<div className="relative h-full w-full rounded-xl global-dropzone-backdrop flex flex-col justify-center items-center">
-							{/* <motion.div
-								animate={{ opacity: 1, y: 0 }}
-								className="absolute bottom-6 left-1/2"
-								exit={{ y: 50, opacity: 0 }}
-								initial={{ y: 50, x: '-50%', opacity: 0 }}
-								key="bottom-banner-outer"
-								transition={{ duration: 0.25 }}
-							>
-								<motion.div
-									animate={{ y: [0, -10] }}
-									className=" flex items-center gap-2 rounded-lg bg-blue-950 px-6 py-5"
-									key="bottom-banner-inner"
-									transition={{
-										delay: 0.25,
-										duration: 0.75,
-										repeat: Number.POSITIVE_INFINITY,
-										repeatType: 'reverse'
-									}}
-								>
-									Drop files to upload them to <PackageOpen size={18} strokeWidth={1.5} />{' '}
-									<span className="text-tum-label-base">My draft files</span>
-								</motion.div>
-							</motion.div> */}
 							<div className="relative flex flex-row justify-center items-center pointer-events-none select-none">
 								<motion.div
 									animate={{ opacity: 1, y: 0 }}

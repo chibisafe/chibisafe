@@ -78,7 +78,7 @@ export async function generateMetadata() {
 			title: settings?.serviceName ?? meta.name,
 			description: settings?.metaDescription ?? meta.description,
 			images: [`/meta.jpg`],
-			creator: settings?.metaTwitterHandle ?? '@its_pitu'
+			creator: settings?.metaTwitterHandle ?? '@twitter'
 		},
 		icons: {
 			icon: '/favicon.ico',
