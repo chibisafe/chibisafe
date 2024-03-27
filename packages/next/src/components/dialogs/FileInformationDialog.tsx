@@ -258,8 +258,8 @@ export function FileInformationDialog({
 
 				<Tabs value={tab} onValueChange={setTab} className="relative">
 					{type === 'publicAlbum' ? null : (
-						<div className="flex justify-center w-full absolute -top-12">
-							<TabsList>
+						<div className="flex justify-center w-full absolute -top-12 pointer-events-none">
+							<TabsList className="pointer-events-auto">
 								<TabsTrigger value="preview">Preview</TabsTrigger>
 								<TabsTrigger value="information">Information</TabsTrigger>
 							</TabsList>
@@ -487,8 +487,9 @@ export function FileInformationDialog({
 											<div>
 												<Label htmlFor="tags">Attach tags</Label>
 												<div className="font-light text-xs px-2 my-2 border-l-2 border-blue-500">
-													To create a new tag you can type the name of the tag and press enter
-													and it will be attached to the file automatically.
+													To create a new tag, type the name of the tag and press enter.{' '}
+													<br />
+													This will attach it to the file automatically.
 												</div>
 
 												<FancyMultiSelect
