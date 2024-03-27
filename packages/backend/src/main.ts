@@ -8,7 +8,8 @@ import fastify from 'fastify';
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import jetpack from 'fs-jetpack';
 import LiveDirectory from 'live-directory';
-import { cleanup } from 'unzipit';
+import * as unzipit from 'unzipit';
+import prisma from './structures/database.js';
 import Routes from './structures/routes.js';
 import { SETTINGS, loadSettings } from './structures/settings.js';
 import Docs from './utils/Docs.js';
@@ -32,18 +33,22 @@ const watcher = getFileWatcher();
 
 let htmlBuffer: Buffer | null = null;
 
+async function cleanup() {
+	unzipit.cleanup();
+	await watcher.close().then(() => console.log('closed file watcher'));
+	await server.close().then(() => console.log('closed Fastify server'));
+	await prisma.$disconnect().then(() => console.log('disconnected from Prisma client'));
+	process.exit();
+}
+
 process.on('SIGINT', async () => {
 	console.log('SIGINT received...');
-	cleanup();
-	await watcher.close();
-	await server.close();
+	await cleanup();
 });
 
 process.on('SIGTERM', async () => {
 	console.log('SIGTERM received...');
-	cleanup();
-	await watcher.close();
-	await server.close();
+	await cleanup();
 });
 
 // Stray errors and exceptions capturers
