@@ -73,7 +73,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		});
 		const removeCommand = new DeleteObjectCommand({
 			Bucket: SETTINGS.S3Bucket,
-			Key: `/quarantine/${file.quarantineFile!.name}`
+			Key: `quarantine/${file.quarantineFile!.name}`
 		});
 
 		await S3Client.send(copyCommand);
