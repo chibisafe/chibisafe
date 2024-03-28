@@ -19,15 +19,11 @@ export default async function Home() {
 			}
 		});
 
-		if (!response?.ok) {
-			return;
-		}
-
 		const json = await response.json();
 
 		stars = Number.parseInt(json.stargazers_count, 10).toLocaleString();
-	} catch {
-		return;
+	} catch (error) {
+		console.error(error);
 	}
 
 	const { data: settings, error } = await request.get({
@@ -85,7 +81,7 @@ export default async function Home() {
 								and performant vault to <br />
 								save all your files in the cloud. <br />
 							</h1>
-							<p className="max-w-full w-full text-muted-foreground text-normal md:text-2xl font-normal text-center lg:text-left">
+							<p className="max-w-full w-full text-muted-foreground text-lg lg:text-2xl font-normal text-center lg:text-left">
 								A modern and self-hosted take on file uploading services that can handle anything you
 								throw at it thanks to it's robust and fast API, chunked uploads support and more.
 							</p>
@@ -99,7 +95,7 @@ export default async function Home() {
 									rel="noopener noreferrer"
 									className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
 								>
-									{stars ? (
+									{stars && stars !== 'NaN' ? (
 										<>
 											{stars}
 											<Star className="h-4 w-4 mx-1" />
