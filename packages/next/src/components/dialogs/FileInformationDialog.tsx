@@ -297,7 +297,7 @@ export function FileInformationDialog({
 							)}
 						</div>
 					</TabsContent>
-					<TabsContent value="information">
+					<TabsContent value="information" className="h-full">
 						{isFileImage(file) ? (
 							<picture>
 								<img
@@ -315,7 +315,7 @@ export function FileInformationDialog({
 								<source src={file.preview} type="video/mp4" />
 							</video>
 						) : null}
-						<ScrollArea className="p-6 md:p-8">
+						<ScrollArea className="p-6 md:p-8 h-full">
 							<div className="flex flex-col md:flex-row gap-8 max-h-[calc(100vh-16rem)]">
 								<div className="flex flex-col gap-2 w-full">
 									<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
