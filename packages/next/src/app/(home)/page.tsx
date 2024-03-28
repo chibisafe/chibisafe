@@ -75,36 +75,44 @@ export default async function Home() {
 		<div className="flex flex-col gap-8">
 			<section className="py-2 sm:py-4">
 				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-evenly gap-4">
-					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
-					<div className="flex flex-col gap-4 sm:gap-8 place-items-center">
-						<h1 className="font-heading text-2xl sm:text-5xl">
-							Beautiful and performant vault to save all your files in the cloud.
-						</h1>
-						<p className="max-w-[42rem] text-muted-foreground">
-							<span className="text-white">chibisafe</span> is a modern and self-hosted take on file
-							uploading services that can handle anything you throw at it thanks to it's robust and fast
-							API, chunked uploads support and more.
-						</p>
-						<div className="hidden md:flex flex-col md:flex-row gap-4">
-							<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
-								Get Started
-							</Link>
-							<a
-								href="https://github.com/chibisafe/chibisafe"
-								target="_blank"
-								rel="noopener noreferrer"
-								className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
-							>
-								{stars ? (
-									<>
-										{stars}
-										<Star className="h-4 w-4 mx-1" />
-									</>
-								) : null}
-								GitHub
-							</a>
+					<div className="flex flex-col-reverse md:flex-row justify-between gap-8 md:gap-0">
+						<div className="flex flex-col gap-6">
+							<h1 className="font-heading text-2xl sm:text-5xl text-center md:text-left">
+								<span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-500 to-sky-500">
+									chibisafe{' '}
+								</span>
+								is a beautiful <br />
+								and performant vault to <br />
+								save all your files in the cloud. <br />
+							</h1>
+							<p className="max-w-[42rem] text-muted-foreground text-normal md:text-2xl font-normal text-center md:text-left">
+								A modern and self-hosted take on file uploading services that can handle anything you
+								throw at it thanks to it's robust and fast API, chunked uploads support and more.
+							</p>
+							<div className="hidden md:flex flex-col md:flex-row gap-4">
+								<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
+									Get Started
+								</Link>
+								<a
+									href="https://github.com/chibisafe/chibisafe"
+									target="_blank"
+									rel="noopener noreferrer"
+									className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+								>
+									{stars ? (
+										<>
+											{stars}
+											<Star className="h-4 w-4 mx-1" />
+										</>
+									) : null}
+									GitHub
+								</a>
+							</div>
 						</div>
+
+						<ChibisafeLogo className="mx-auto sm:h-64 sm:min-h-64 sm:w-64 sm:min-w-64 w-32 min-w-32 h-32 min-h-32" />
 					</div>
+
 					<div className="flex flex-col gap-12 place-content-center place-items-center w-full">
 						<UploadTriggerHomepage settings={settings} />
 						<div className="md:hidden flex flex-col gap-4">
