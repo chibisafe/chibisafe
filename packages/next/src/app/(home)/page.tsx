@@ -75,9 +75,9 @@ export default async function Home() {
 		<div className="flex flex-col gap-8">
 			<section className="py-2 sm:py-4">
 				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-evenly gap-4">
-					<div className="flex flex-col-reverse md:flex-row justify-between gap-8 md:gap-0">
-						<div className="flex flex-col gap-6">
-							<h1 className="font-heading text-2xl sm:text-5xl text-center md:text-left">
+					<div className="flex flex-col-reverse lg:flex-row justify-between gap-8 lg:gap-0">
+						<div className="flex flex-col gap-6 items-center lg:items-start">
+							<h1 className="font-heading text-2xl sm:text-5xl text-center lg:text-left">
 								<span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-500 to-sky-500">
 									chibisafe{' '}
 								</span>
@@ -85,7 +85,7 @@ export default async function Home() {
 								and performant vault to <br />
 								save all your files in the cloud. <br />
 							</h1>
-							<p className="max-w-[42rem] text-muted-foreground text-normal md:text-2xl font-normal text-center md:text-left">
+							<p className="max-w-full w-full text-muted-foreground text-normal md:text-2xl font-normal text-center lg:text-left">
 								A modern and self-hosted take on file uploading services that can handle anything you
 								throw at it thanks to it's robust and fast API, chunked uploads support and more.
 							</p>
