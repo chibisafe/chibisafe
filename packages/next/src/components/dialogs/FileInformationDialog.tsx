@@ -90,10 +90,6 @@ export function FileInformationDialog({
 
 			const { data: createdAlbums, error: createdAlbumError } = await request.get({
 				url: 'albums',
-				// TODO: Consider having an endpoint that only returns name and uuid for dropdown purposes
-				// or instead, make a new select component that searches for albums as you type, but the
-				// experience might be a bit slow if there are a lot of albums.
-				// Maybe save the list of albums to an atom and update it on album create/delete?
 				query: { limit: 1000 },
 				options: {
 					next: {

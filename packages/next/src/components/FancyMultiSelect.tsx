@@ -137,7 +137,7 @@ export function FancyMultiSelect({
 												onSelected(option.value);
 											}}
 											className={'cursor-pointer'}
-											value={option.value}
+											value={option.label}
 										>
 											{option.label}
 										</CommandItem>
