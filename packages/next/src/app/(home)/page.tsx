@@ -81,7 +81,7 @@ export default async function Home() {
 								and performant vault to <br />
 								save all your files in the cloud. <br />
 							</h1>
-							<p className="max-w-full w-full text-muted-foreground text-lg lg:text-2xl font-normal text-center lg:text-left">
+							<p className="max-w-full w-full text-muted-foreground text-lg lg:text-xl font-normal text-center lg:text-left">
 								A modern and self-hosted take on file uploading services that can handle anything you
 								throw at it thanks to it's robust and fast API, chunked uploads support and more.
 							</p>
