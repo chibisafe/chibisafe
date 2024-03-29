@@ -9,6 +9,7 @@ import { BanIpDialog } from '@/components/dialogs/BanIpDialog';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import type { PageQuery } from '@/types';
+import { BanIpDrawer } from '@/components/drawers/BanIpDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
@@ -62,7 +63,8 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 					{ name: 'Banned IPs', url: '/dashboard/admin/ip' }
 				]}
 			>
-				<BanIpDialog />
+				<BanIpDialog className="hidden md:inline-flex" />
+				<BanIpDrawer className="md:hidden inline-flex" />
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<Suspense>

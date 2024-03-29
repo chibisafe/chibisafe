@@ -7,21 +7,13 @@ import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { banIp } from '@/actions/IpActions';
 import { Textarea } from '../ui/textarea';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 
-export function BanIpDialog({ className }: { readonly className?: string }) {
+export function BanIpDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
 	const [state, formAction] = useFormState(banIp, {
 		message: '',
@@ -44,21 +36,22 @@ export function BanIpDialog({ className }: { readonly className?: string }) {
 	}, [state, state.message, state.type]);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
+		<Drawer open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
 				<Button className={className}>
 					<Plus className="mr-2 h-4 w-4" />
 					Ban new IP
 				</Button>
-			</DialogTrigger>
-			<DialogContent className="w-11/12">
+			</DrawerTrigger>
+			<DrawerContent className="p-4">
+				<div className="grid gap-1.5 p-4 text-center sm:text-left">
+					<h2 className="text-lg font-semibold leading-none tracking-tight">Ban new IP</h2>
+					<p className="text-sm text-muted-foreground">
+						The submitted IP will be banned and won't be able to use the service until unbanned.
+					</p>
+				</div>
+
 				<form action={formAction}>
-					<DialogHeader>
-						<DialogTitle>Ban new IP</DialogTitle>
-						<DialogDescription>
-							The submitted IP will be banned and won't be able to use the service until unbanned.
-						</DialogDescription>
-					</DialogHeader>
 					<div className="grid gap-4 mb-4">
 						<div className="grid gap-4 mt-4">
 							<div>
@@ -76,11 +69,11 @@ export function BanIpDialog({ className }: { readonly className?: string }) {
 							</div>
 						</div>
 					</div>
-					<DialogFooter>
-						<Button type="submit">Submit</Button>
-					</DialogFooter>
+					<Button type="submit" className="mb-4 w-full">
+						Submit
+					</Button>
 				</form>
-			</DialogContent>
-		</Dialog>
+			</DrawerContent>
+		</Drawer>
 	);
 }
