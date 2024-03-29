@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createTag } from '@/actions/TagsActions';
 
-export function CreateTagDialog() {
+export function CreateTagDialog({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
 	const [state, formAction] = useFormState(createTag, {
 		message: '',
@@ -45,7 +45,7 @@ export function CreateTagDialog() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button>
+				<Button className={className}>
 					<Plus className="mr-2 h-4 w-4" />
 					New tag
 				</Button>

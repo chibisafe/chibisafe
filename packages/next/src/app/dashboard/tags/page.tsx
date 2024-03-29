@@ -9,6 +9,7 @@ import { CreateTagDialog } from '@/components/dialogs/CreateTagDialog';
 import type { PageQuery } from '@/types';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
+import { CreateTagDrawer } from '@/components/drawers/CreateTagDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Tags'
@@ -55,7 +56,8 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 	return (
 		<>
 			<DashboardHeader title="Tags" subtitle="Manage and create tags">
-				<CreateTagDialog />
+				<CreateTagDialog className="hidden md:inline-flex" />
+				<CreateTagDrawer className="inline-flex md:hidden " />
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<Suspense>

@@ -43,8 +43,8 @@ export function BanIpDrawer({ className }: { readonly className?: string }) {
 					Ban new IP
 				</Button>
 			</DrawerTrigger>
-			<DrawerContent className="p-4">
-				<div className="grid gap-1.5 p-4 text-center sm:text-left">
+			<DrawerContent>
+				<div className="grid gap-1.5 py-4 px-8 text-center sm:text-left">
 					<h2 className="text-lg font-semibold leading-none tracking-tight">Ban new IP</h2>
 					<p className="text-sm text-muted-foreground">
 						The submitted IP will be banned and won't be able to use the service until unbanned.
@@ -52,7 +52,7 @@ export function BanIpDrawer({ className }: { readonly className?: string }) {
 				</div>
 
 				<form action={formAction}>
-					<div className="grid gap-4 p-4">
+					<div className="grid gap-4 py-4 px-8">
 						<div className="grid gap-4">
 							<div>
 								<Label htmlFor="ip">IP</Label>
