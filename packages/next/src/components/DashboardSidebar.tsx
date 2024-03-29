@@ -10,7 +10,7 @@ import request from '@/lib/request';
 import type { UpdateCheck } from '@/types';
 import { useEffect, useState } from 'react';
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 	const currentUser = useAtomValue(currentUserAtom);
 	const [update, setUpdate] = useState<UpdateCheck | undefined>(undefined);
 
@@ -60,19 +60,19 @@ export function DashboardSidebar() {
 
 	return (
 		<>
-			<nav className="grid items-start gap-1">
+			<nav className="grid items-start gap-1" onClick={() => onClick?.()}>
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Main</h3>
 				<DashboardSidebarItem href="/dashboard" name="Uploads" Icon={FileUp} />
 				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
 				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
 				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
 			</nav>
-			<nav className="grid items-start gap-1 mt-4">
+			<nav className="grid items-start gap-1 mt-4" onClick={() => onClick?.()}>
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>
 				<DashboardSidebarItem href="/dashboard/account" name="Credentials" Icon={Key} />
 			</nav>
 			{currentUser?.roles.find(role => role.name === 'admin') ? (
-				<nav className="grid items-start gap-1 mt-4">
+				<nav className="grid items-start gap-1 mt-4" onClick={() => onClick?.()}>
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />
 					<DashboardSidebarItem href="/dashboard/admin/users" name="Users" Icon={Users} />
@@ -83,7 +83,7 @@ export function DashboardSidebar() {
 					<DashboardSidebarItem href="/dashboard/admin/statistics" name="Statistics" Icon={BarChart3} />
 				</nav>
 			) : null}
-			<nav className="hidden items-start gap-1 mt-4 md:grid">
+			<nav className="hidden items-start gap-1 mt-4 md:grid" onClick={() => onClick?.()}>
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Utils</h3>
 				<a
 					href="https://github.com/chibisafe/chibisafe-extension"

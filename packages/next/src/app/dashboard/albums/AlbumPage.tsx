@@ -22,7 +22,7 @@ export async function AlbumPage({
 		error,
 		status
 	} = await request.get({
-		url: `albums`,
+		url: 'albums',
 		query: {
 			page,
 			limit,

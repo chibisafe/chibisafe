@@ -1,7 +1,7 @@
 'use client';
 
-import { Drawer, DrawerContent, DrawerHeader, DrawerTrigger } from '@/components/ui/drawer';
-import type { PropsWithChildren, ReactNode } from 'react';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { useState, type PropsWithChildren, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { buttonVariants } from '@/styles/button';
@@ -12,15 +12,21 @@ import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { useAtom } from 'jotai';
 import { logout } from '@/lib/logout';
 
-const BaseDrawer = ({ path }: PropsWithChildren<{ readonly path: string }>) => {
+const BaseDrawer = ({ path, onClick }: PropsWithChildren<{ onClick(): void; readonly path: string }>) => {
+	const [open, setOpen] = useState(false);
+	const closeDrawer = () => {
+		setOpen(false);
+		onClick();
+	};
+
 	return (
-		<Drawer>
+		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger className="w-full">
 				<span className={cn(buttonVariants({ variant: 'default' }), 'w-full')}>Go to page</span>
 			</DrawerTrigger>
 			<DrawerContent>
 				<div className="p-8">
-					<nav className="flex flex-col gap-2">
+					<nav className="flex flex-col gap-2" onClick={() => closeDrawer()}>
 						<Link
 							href="/"
 							className={cn(
@@ -72,14 +78,16 @@ export const NavigationDrawer = ({
 }: PropsWithChildren<{ readonly className?: string | undefined; readonly logo: ReactNode }>) => {
 	const path = usePathname();
 	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+	const [open, setOpen] = useState(false);
 
 	const doLogout = async () => {
 		await logout();
 		setCurrentUser(null);
+		setOpen(false);
 	};
 
 	return (
-		<Drawer>
+		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger className={cn(className, 'flex gap-2 justify-center items-center')}>
 				<svg
 					strokeWidth="1.5"
@@ -114,12 +122,12 @@ export const NavigationDrawer = ({
 			</DrawerTrigger>
 			<DrawerContent>
 				<div className="py-4 px-8">
-					<BaseDrawer path={path} />
+					<BaseDrawer path={path} onClick={() => setOpen(false)} />
 				</div>
 				<div className="py-4 px-8 overflow-auto">
 					{path.startsWith('/dashboard') ? (
 						<nav className="grid items-start gap-1 mb-8">
-							<DashboardSidebar />
+							<DashboardSidebar onClick={() => setOpen(false)} />
 						</nav>
 					) : null}
 					{currentUser?.uuid ? (
@@ -130,6 +138,7 @@ export const NavigationDrawer = ({
 						<Link
 							href="/login"
 							className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'w-full')}
+							onClick={() => setOpen(false)}
 						>
 							Login
 						</Link>
