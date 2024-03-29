@@ -25,13 +25,6 @@ export default async function AlbumPage({
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
-	// const queryClient = new QueryClient();
-
-	// await queryClient.prefetchQuery({
-	// 	queryKey: ['uploads', { currentPage, perPage, search }],
-	// 	queryFn: async () => fetchEndpoint({ type: 'uploads' }, currentPage, perPage, search)
-	// });
-
 	const {
 		data: response,
 		error,

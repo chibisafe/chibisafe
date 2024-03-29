@@ -239,7 +239,6 @@ export function FileInformationDialog({
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent
 				className={cn(
-					// isVertical ? '!w-fit' : '!w-max',
 					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0',
 					tab === 'information' ? 'w-11/12 xl:w-max' : ''
 				)}

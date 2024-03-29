@@ -20,8 +20,9 @@ export default async function Home() {
 		});
 
 		const json = await response.json();
-
-		stars = Number.parseInt(json.stargazers_count, 10).toLocaleString();
+		if (json.stargazers_count) {
+			stars = Number.parseInt(json.stargazers_count, 10).toLocaleString();
+		}
 	} catch (error) {
 		console.error(error);
 	}
@@ -95,7 +96,7 @@ export default async function Home() {
 									rel="noopener noreferrer"
 									className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
 								>
-									{stars && stars !== 'NaN' ? (
+									{stars ? (
 										<>
 											{stars}
 											<Star className="h-4 w-4 mx-1" />

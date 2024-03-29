@@ -1,6 +1,5 @@
 'use client';
 
-// import Image from 'next/image';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import type { Album as AlbumType } from '@/types';

@@ -3,7 +3,6 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	// SelectLabel,
 	Select as SelectRoot,
 	SelectTrigger,
 	SelectValue
@@ -40,17 +39,6 @@ export function Select({
 						</SelectItem>
 					))}
 				</SelectGroup>
-
-				{/* TODO: Support groups from props
-				<SelectGroup>
-					<SelectLabel>Europe & Africa</SelectLabel>
-					<SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
-					<SelectItem value="cet">Central European Time (CET)</SelectItem>
-					<SelectItem value="eet">Eastern European Time (EET)</SelectItem>
-					<SelectItem value="west">Western European Summer Time (WEST)</SelectItem>
-					<SelectItem value="cat">Central Africa Time (CAT)</SelectItem>
-					<SelectItem value="eat">East Africa Time (EAT)</SelectItem>
-				</SelectGroup> */}
 			</SelectContent>
 		</SelectRoot>
 	);

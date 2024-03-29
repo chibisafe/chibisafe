@@ -16,13 +16,6 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	// const queryClient = new QueryClient();
-
-	// await queryClient.prefetchQuery({
-	// 	queryKey: ['albums', { currentPage, perPage, search }],
-	// 	queryFn: async () => fetchEndpoint({ type: 'albums' }, currentPage, perPage, search)
-	// });
-
 	return (
 		<>
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">

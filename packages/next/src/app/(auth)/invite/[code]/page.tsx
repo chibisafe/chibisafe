@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-// import Link from 'next/link';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 

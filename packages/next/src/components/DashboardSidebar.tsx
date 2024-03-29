@@ -26,8 +26,6 @@ export function DashboardSidebar() {
 					return;
 				}
 
-				console.log(response);
-
 				setUpdate(response);
 			}
 		};
