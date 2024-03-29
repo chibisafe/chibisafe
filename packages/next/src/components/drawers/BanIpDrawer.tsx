@@ -52,8 +52,8 @@ export function BanIpDrawer({ className }: { readonly className?: string }) {
 				</div>
 
 				<form action={formAction}>
-					<div className="grid gap-4 mb-4">
-						<div className="grid gap-4 mt-4">
+					<div className="grid gap-4 p-4">
+						<div className="grid gap-4">
 							<div>
 								<Label htmlFor="ip">IP</Label>
 								<Input id="ip" name="ip" placeholder="127.0.0.69" className="col-span-3" />
@@ -68,10 +68,10 @@ export function BanIpDrawer({ className }: { readonly className?: string }) {
 								/>
 							</div>
 						</div>
+						<Button type="submit" className="mb-4 w-full">
+							Submit
+						</Button>
 					</div>
-					<Button type="submit" className="mb-4 w-full">
-						Submit
-					</Button>
 				</form>
 			</DrawerContent>
 		</Drawer>

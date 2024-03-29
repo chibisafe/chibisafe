@@ -1,31 +1,19 @@
 'use client';
 
-import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { MessageType } from '@/types';
-import { Trash2Icon } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog';
-import { useRouter } from 'next/navigation';
+import { Label } from '@/components/ui/label';
 import { banIp } from '@/actions/IpActions';
-import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { useRouter } from 'next/navigation';
 
-export function BanThisIpDialog({
-	ip,
-	className
-}: PropsWithChildren<{ readonly className?: string; readonly ip: string }>) {
+export function BanThisIpDrawer({ className, ip }: { readonly className?: string; readonly ip: string }) {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [state, formAction] = useFormState(banIp, {
@@ -49,25 +37,26 @@ export function BanThisIpDialog({
 	}, [router, state, state.message, state.type]);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button className={className} variant={'destructive'}>
-					<Trash2Icon className="mr-2 h-4 w-4" />
+		<Drawer open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
+				<Button className={className}>
+					<Plus className="mr-2 h-4 w-4" />
 					Ban this IP
 				</Button>
-			</DialogTrigger>
-			<DialogContent className="w-11/12">
+			</DrawerTrigger>
+			<DrawerContent className="p-4">
+				<div className="grid gap-1.5 p-4 text-center sm:text-left">
+					<h2 className="text-lg font-semibold leading-none tracking-tight">Ban this IP</h2>
+					<p className="text-sm text-muted-foreground">
+						The IP <strong>{ip}</strong> will be banned and won't be able to use the service until unbanned.
+						You sure you want to continue?
+					</p>
+				</div>
+
 				<form action={formAction}>
 					<input type="hidden" name="ip" value={ip} />
-					<DialogHeader>
-						<DialogTitle>Ban this IP</DialogTitle>
-						<DialogDescription>
-							The IP <strong>{ip}</strong> will be banned and won't be able to use the service until
-							unbanned. You sure you want to continue?
-						</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-4 mb-4">
-						<div className="grid gap-4 mt-4">
+					<div className="grid gap-4 p-4">
+						<div className="grid gap-4">
 							<div>
 								<Label htmlFor="reason">Reason</Label>
 								<Textarea
@@ -78,12 +67,12 @@ export function BanThisIpDialog({
 								/>
 							</div>
 						</div>
+						<Button type="submit" className="mb-4 w-full">
+							Confirm
+						</Button>
 					</div>
-					<DialogFooter>
-						<Button type="submit">Confirm</Button>
-					</DialogFooter>
 				</form>
-			</DialogContent>
-		</Dialog>
+			</DrawerContent>
+		</Drawer>
 	);
 }

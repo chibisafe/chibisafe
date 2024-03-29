@@ -6,6 +6,7 @@ import type { PageQuery } from '@/types';
 import { FilesList } from '@/components/FilesList';
 import { BanThisIpDialog } from '@/components/dialogs/BanThisIpDialog';
 import { redirect } from 'next/navigation';
+import { BanThisIpDrawer } from '@/components/drawers/BanThisIpDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
@@ -38,7 +39,12 @@ export default async function DashboardPage({
 					{ name: ip, url: `/dashboard/admin/ip/${ip}` }
 				]}
 			>
-				{response.banned ? null : <BanThisIpDialog ip={ip} />}
+				{response.banned ? null : (
+					<>
+						<BanThisIpDialog ip={ip} className="hidden md:inline-flex" />
+						<BanThisIpDrawer ip={ip} className="md:hidden inline-flex" />
+					</>
+				)}
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<FilesList type="admin" files={response.files} count={response.count} />
