@@ -5,7 +5,7 @@ import Link from 'next/link';
 export function SiteFooter({ className = '' }: { readonly className?: string }) {
 	return (
 		<footer className={cn(className, 'bg-background-transparent')}>
-			<div className="container flex flex-col place-items-center place-content-between gap-4 py-8 md:flex-row">
+			<div className="container flex flex-col place-items-center place-content-between gap-4 py-5 md:flex-row">
 				<div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
 					<Link href="/" aria-label="chibisafe">
 						<ChibisafeDefaultLogo className="w-6 h-6" />
