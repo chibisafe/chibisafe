@@ -240,7 +240,7 @@ export function FileInformationDialog({
 			<DialogContent
 				className={cn(
 					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0',
-					tab === 'information' ? 'w-11/12 xl:w-max' : ''
+					tab === 'information' ? 'w-11/12 lg:w-5/6 xl:w-6/12' : ''
 				)}
 			>
 				<div className="absolute right-0 -bottom-12 z-10 md:inline-block hidden">
@@ -383,80 +383,82 @@ export function FileInformationDialog({
 								</div>
 
 								{type === 'admin' || type === 'quarantine' ? (
-									<div className="flex flex-col space-y-1.5 gap-0">
-										<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
-											User information
-										</h2>
+									<div className="w-full max-w-lg">
+										<div className="flex flex-col gap-2">
+											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
+												User information
+											</h2>
 
-										{file.user ? (
-											<>
-												<div>
-													<Label htmlFor="owner">
-														Owner
-														<Link
-															href={`/dashboard/admin/users/${file.user?.uuid}`}
-															className="text-blue-500 underline inline-flex items-center ml-2"
-															onClick={() => setModalOpen(false)}
-														>
-															view files{' '}
-															<ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-														</Link>
-													</Label>
-													<Input
-														value={file.user.username}
-														name="owner"
-														id="owner"
-														readOnly
-													/>
-												</div>
-
-												<div>
-													<Label htmlFor="userUUID">User UUID</Label>
-													<Input
-														value={file.user?.uuid}
-														name="userUUID"
-														id="userUUID"
-														readOnly
-													/>
-												</div>
-
-												<div>
-													<Label htmlFor="status">Status</Label>
-													<Input
-														value={file.user.enabled ? 'Enabled' : 'Disabled'}
-														name="status"
-														id="status"
-														readOnly
-													/>
-												</div>
-
-												<div>
-													<Label htmlFor="null">Roles</Label>
+											{file.user ? (
+												<>
 													<div>
-														{file.user.roles.map((role: any) => (
-															<Badge key={role.name} className="mr-1">
-																{role.name}
-															</Badge>
-														))}
+														<Label htmlFor="owner">
+															Owner
+															<Link
+																href={`/dashboard/admin/users/${file.user?.uuid}`}
+																className="text-blue-500 underline inline-flex items-center ml-2"
+																onClick={() => setModalOpen(false)}
+															>
+																view files{' '}
+																<ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+															</Link>
+														</Label>
+														<Input
+															value={file.user.username}
+															name="owner"
+															id="owner"
+															readOnly
+														/>
 													</div>
-												</div>
 
+													<div>
+														<Label htmlFor="userUUID">User UUID</Label>
+														<Input
+															value={file.user?.uuid}
+															name="userUUID"
+															id="userUUID"
+															readOnly
+														/>
+													</div>
+
+													<div>
+														<Label htmlFor="status">Status</Label>
+														<Input
+															value={file.user.enabled ? 'Enabled' : 'Disabled'}
+															name="status"
+															id="status"
+															readOnly
+														/>
+													</div>
+
+													<div>
+														<Label htmlFor="null">Roles</Label>
+														<div>
+															{file.user.roles.map((role: any) => (
+																<Badge key={role.name} className="mr-1">
+																	{role.name}
+																</Badge>
+															))}
+														</div>
+													</div>
+
+													<div>
+														<Label htmlFor="joined">Joined</Label>
+														<Input
+															value={getDate(file.user.createdAt.toString())}
+															name="joined"
+															id="joined"
+															readOnly
+														/>
+													</div>
+												</>
+											) : (
 												<div>
-													<Label htmlFor="joined">Joined</Label>
-													<Input
-														value={getDate(file.user.createdAt.toString())}
-														name="joined"
-														id="joined"
-														readOnly
-													/>
+													<Label htmlFor="owner">Owner</Label>
+													<Input value="No owner" name="owner" id="owner" readOnly />
 												</div>
-											</>
-										) : (
-											<div>
-												<Label htmlFor="owner">Owner</Label>
-												<Input value="No owner" name="owner" id="owner" readOnly />
-											</div>
-										)}
+											)}
+										</div>
 									</div>
 								) : (
 									<div className="w-full max-w-lg">
