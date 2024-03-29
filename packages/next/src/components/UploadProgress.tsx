@@ -34,6 +34,16 @@ export const UploadProgress = () => {
 		if (uploads.length === 1) setOpen(false);
 	};
 
+	const clearAll = () => {
+		setUploads([]);
+		setOpen(false);
+	};
+
+	const copyAllLinks = () => {
+		const links = uploads.map(file => file.url).join('\n');
+		void copy(links);
+	};
+
 	useEffect(() => {
 		setFilesUploading(uploads.filter(file => file.processing).length);
 		let timeout: NodeJS.Timeout;
@@ -84,6 +94,16 @@ export const UploadProgress = () => {
 				) : null}
 			</PopoverTrigger>
 			<PopoverContent className="w-[512px] mt-2">
+				{uploads.length > 1 ? (
+					<div className="flex flex-row gap-2 text-sm justify-end mb-4">
+						<Button size="sm" variant="outline" onClick={() => copyAllLinks()}>
+							Copy all links
+						</Button>
+						<Button size="sm" variant="outline" onClick={() => clearAll()}>
+							Clear all
+						</Button>
+					</div>
+				) : null}
 				<ScrollArea className="w-full h-72">
 					<ul className="">
 						{uploads.map(file => (
