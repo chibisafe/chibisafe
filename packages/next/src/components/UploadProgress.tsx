@@ -19,6 +19,7 @@ import { Tooltip } from './Tooltip';
 type Status = 'complete' | 'idle' | 'uploading';
 
 export const UploadProgress = () => {
+	const [open, setOpen] = useState(false);
 	const [uploads, setUploads] = useAtom(uploadsAtom);
 	const [buttonText, setButtonText] = useState('');
 	const [filesUploading, setFilesUploading] = useState(0);
@@ -29,9 +30,8 @@ export const UploadProgress = () => {
 
 	const removeFile = (uuid: string) => {
 		setUploads(uploads.filter(file => file.uuid !== uuid));
-		if (status === 'complete') {
-			// TODO: Close the popover
-		}
+		// TODO: Not entirely sure why the array is not empty after removing the last file
+		if (uploads.length === 1) setOpen(false);
 	};
 
 	useEffect(() => {
@@ -42,9 +42,8 @@ export const UploadProgress = () => {
 			setStatus('uploading');
 			setButtonText(`Uploading ${filesUploading} file${filesUploading === 1 ? '' : 's'}`);
 			setTotalProgress(
-				uploads
-					.filter(file => file.status !== 'error' && file.status !== 'success')
-					.reduce((acc, file) => acc + file.progress, 0) / uploads.length
+				uploads.filter(file => file.status !== 'error').reduce((acc, file) => acc + file.progress, 0) /
+					uploads.length
 			);
 		} else if (uploads.length > 0) {
 			setStatus('complete');
@@ -67,7 +66,7 @@ export const UploadProgress = () => {
 		};
 	}, [filesUploading, queryClient, uploads]);
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				{buttonText ? (
 					<Button
