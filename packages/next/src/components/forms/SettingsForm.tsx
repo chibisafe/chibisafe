@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import request from '@/lib/request';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveSettings } from '@/actions/SaveSettingsAction';
+import { useLocalStorage } from 'usehooks-ts';
 
 const formSchema = z.object({
 	// Users
@@ -68,6 +69,8 @@ export const SettingsForm = ({
 		mode: 'onChange'
 	});
 
+	const [lastValue, setLastValue] = useLocalStorage('last-settings-tab', 'service');
+
 	const onSubmit = async (data: FormValues) => {
 		// Each setting is a key-value pair, so we need to convert it to an array of objects
 		const settings = Object.entries(data).map(([key, value]) => {
@@ -98,7 +101,7 @@ export const SettingsForm = ({
 
 	return (
 		<>
-			<Tabs defaultValue="service">
+			<Tabs defaultValue={lastValue} onValueChange={setLastValue}>
 				<TabsList className="mb-4 gap-2">
 					<TabsTrigger value="service">Service</TabsTrigger>
 					<TabsTrigger value="uploads">Uploads</TabsTrigger>
