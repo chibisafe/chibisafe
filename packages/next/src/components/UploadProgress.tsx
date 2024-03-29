@@ -80,7 +80,7 @@ export const UploadProgress = () => {
 			<PopoverTrigger asChild>
 				{buttonText ? (
 					<Button
-						variant="outline"
+						variant="default"
 						className={cn('transition-all', status === 'uploading' ? 'flex-col gap-2 py-8' : '')}
 					>
 						{status === 'uploading' ? (
