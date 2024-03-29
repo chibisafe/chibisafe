@@ -34,6 +34,7 @@ import { getDate } from '@/lib/time';
 import { toast } from 'sonner';
 import { useAtom } from 'jotai';
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { useLocalStorage } from 'usehooks-ts';
 
 export function FileInformationDialog({
 	file,
@@ -50,8 +51,9 @@ export function FileInformationDialog({
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
+	const [lastValue, setLastValue] = useLocalStorage('last-file-dialog-tab', 'preview');
 	const [tab, setTab] = useState(
-		isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? 'preview' : 'information'
+		isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? lastValue : 'information'
 	);
 	const [_, setModalOpen] = useAtom(isDialogOpenAtom);
 
@@ -250,7 +252,14 @@ export function FileInformationDialog({
 					<FileInformationDrawerActions file={file} type={type} />
 				</div>
 
-				<Tabs value={tab} onValueChange={setTab} className="relative">
+				<Tabs
+					value={tab}
+					onValueChange={value => {
+						setTab(value);
+						setLastValue(value);
+					}}
+					className="relative"
+				>
 					{type === 'publicAlbum' ? null : (
 						<div className="flex justify-center w-full absolute -top-12 pointer-events-none">
 							<TabsList className="pointer-events-auto">
