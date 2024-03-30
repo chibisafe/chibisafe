@@ -6,6 +6,7 @@ import { AlbumSettingsDialog } from '@/components/dialogs/AlbumSettingsDialog';
 import { CreateAlbumDialog } from '@/components/dialogs/CreateAlbumDialog';
 import { Suspense } from 'react';
 import { AlbumPage } from './AlbumPage';
+import { CreateAlbumDrawer } from '@/components/drawers/CreateAlbumDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -19,7 +20,8 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 	return (
 		<>
 			<DashboardHeader title="Albums" subtitle="Manage and create albums">
-				<CreateAlbumDialog />
+				<CreateAlbumDialog className="hidden md:inline-flex" />
+				<CreateAlbumDrawer className="inline-flex md:hidden" />
 			</DashboardHeader>
 			<div className="grid gap-8 w-full">
 				<Suspense fallback="Loading...">

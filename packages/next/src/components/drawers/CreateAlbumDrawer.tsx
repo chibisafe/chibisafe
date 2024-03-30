@@ -1,26 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createAlbum } from '@/actions/CreateAlbum';
 import { MessageType } from '@/types';
 import { Plus } from 'lucide-react';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { Input } from '../ui/input';
+import { createAlbum } from '@/actions/CreateAlbum';
 
-export function CreateAlbumDialog({ className }: { readonly className?: string }) {
+export function CreateAlbumDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
 	const [state, formAction] = useFormState(createAlbum, {
 		message: '',
@@ -43,32 +35,35 @@ export function CreateAlbumDialog({ className }: { readonly className?: string }
 	}, [state, state.message, state.type]);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
+		<Drawer open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
 				<Button className={className}>
 					<Plus className="mr-2 h-4 w-4" />
 					New album
 				</Button>
-			</DialogTrigger>
-			<DialogContent className="w-11/12">
+			</DrawerTrigger>
+			<DrawerContent>
+				<div className="grid gap-1.5 py-4 px-8 text-center sm:text-left">
+					<h2 className="text-lg font-semibold leading-none tracking-tight">New album</h2>
+					<p className="text-sm text-muted-foreground">Create a new album</p>
+				</div>
+
 				<form action={formAction}>
-					<DialogHeader>
-						<DialogTitle>New album</DialogTitle>
-						<DialogDescription>Create a new album</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-4 py-4">
-						<div className="grid grid-cols-4 items-center gap-4">
-							<Label htmlFor="album" className="text-right">
-								Name
-							</Label>
-							<Input id="album" name="album" placeholder="New album name" className="col-span-3" />
+					<div className="grid gap-4 py-4 px-8">
+						<div className="grid gap-4">
+							<div>
+								<Label htmlFor="album" className="text-right">
+									Name
+								</Label>
+								<Input id="album" name="album" placeholder="New album name" className="col-span-3" />
+							</div>
 						</div>
+						<Button type="submit" className="mb-4 w-full">
+							Create
+						</Button>
 					</div>
-					<DialogFooter>
-						<Button type="submit">Create</Button>
-					</DialogFooter>
 				</form>
-			</DialogContent>
-		</Dialog>
+			</DrawerContent>
+		</Drawer>
 	);
 }
