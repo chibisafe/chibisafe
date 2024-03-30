@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { MessageType } from '@/types';
-import { Plus } from 'lucide-react';
+import { Trash2Icon } from 'lucide-react';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -39,8 +39,8 @@ export function BanThisIpDrawer({ className, ip }: { readonly className?: string
 	return (
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger asChild>
-				<Button className={className}>
-					<Plus className="mr-2 h-4 w-4" />
+				<Button className={className} variant={'destructive'}>
+					<Trash2Icon className="mr-2 h-4 w-4" />
 					Ban this IP
 				</Button>
 			</DrawerTrigger>
