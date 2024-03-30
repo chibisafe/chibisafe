@@ -57,7 +57,7 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 		<>
 			<DashboardHeader title="Tags" subtitle="Manage and create tags">
 				<CreateTagDialog className="hidden md:inline-flex" />
-				<CreateTagDrawer className="inline-flex md:hidden " />
+				<CreateTagDrawer className="inline-flex md:hidden" />
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<Suspense>
