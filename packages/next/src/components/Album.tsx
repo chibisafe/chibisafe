@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { AlbumDropZone } from './AlbumDropzone';
 import { albumDisablePointerEventAtom } from '@/lib/atoms/dropzone';
+import { buttonVariants } from '@/styles/button';
 
 export const Album = ({ album }: { readonly album: AlbumType }) => {
 	const selectedAlbum = useSetAtom(selectedAlbumAtom);
@@ -61,10 +62,19 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 				</div>
 				<Link
 					href={`/dashboard/albums/${album.uuid}`}
-					className="absolute inset-0 transition-all cursor-pointer duration-100 group-hover:scale-105 group-hover:duration-150"
+					className="hidden md:inline-flex absolute inset-0 transition-all cursor-pointer duration-100 group-hover:scale-105 group-hover:duration-150"
 				/>
+				<Link
+					href={`/dashboard/albums/${album.uuid}`}
+					className={cn(
+						buttonVariants({ variant: 'default' }),
+						'md:hidden inline-flex absolute -bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100'
+					)}
+				>
+					View files
+				</Link>
 				<Button
-					className="absolute -bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100"
+					className="absolute bottom-2 md:-bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100"
 					onClick={() => setSelectedAlbum(album)}
 				>
 					Settings
