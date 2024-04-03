@@ -19,9 +19,7 @@ export function NavigationUser() {
 
 	return currentUser?.uuid ? (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="ml-4 text-lg font-medium sm:text-sm">
-				{currentUser.username}
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger className="text-lg font-medium sm:text-sm">{currentUser.username}</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem
 					className="cursor-pointer"
@@ -40,7 +38,7 @@ export function NavigationUser() {
 			href="/login"
 			className={cn(
 				buttonVariants({ variant: 'secondary', size: 'sm' }),
-				'px-4 ml-4 items-center text-lg font-medium sm:text-sm'
+				'px-4 items-center text-lg font-medium sm:text-sm'
 			)}
 		>
 			Login

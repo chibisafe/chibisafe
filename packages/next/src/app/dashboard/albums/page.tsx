@@ -23,7 +23,7 @@ export default async function AlbumsPage({ searchParams }: { readonly searchPara
 				<CreateAlbumDialog className="hidden md:inline-flex" />
 				<CreateAlbumDrawer className="inline-flex md:hidden" />
 			</DashboardHeader>
-			<div className="grid gap-8 w-full">
+			<div className="grid gap-8 w-full px-2">
 				<Suspense fallback="Loading...">
 					<AlbumPage page={currentPage} limit={perPage} search={search} />
 				</Suspense>

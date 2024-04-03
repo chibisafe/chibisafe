@@ -59,7 +59,7 @@ export const Header = async () => {
 							<span className="sr-only">Patreon</span>
 						</div>
 					</a>
-					<div className="hidden md:inline-flex">
+					<div className="hidden md:inline-flex ml-4">
 						<NavigationUser />
 					</div>
 				</nav>

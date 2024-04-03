@@ -13,14 +13,12 @@ type Option = Record<'label' | 'value', string>;
 export function FancyMultiSelect({
 	options,
 	placeholder = 'Select option...',
-	name = 'fancy-multi-select',
 	initialSelected = [],
 	onSelected,
 	onRemoved,
 	onCreated
 }: {
 	readonly initialSelected?: string[];
-	readonly name?: string;
 	onCreated?(created: string): void;
 	onRemoved(removed: string): void;
 	onSelected(selected: string): void;
@@ -131,7 +129,7 @@ export function FancyMultiSelect({
 												e.preventDefault();
 												e.stopPropagation();
 											}}
-											onSelect={value => {
+											onSelect={() => {
 												setInputValue('');
 												setSelected(prev => [...prev, option]);
 												onSelected(option.value);

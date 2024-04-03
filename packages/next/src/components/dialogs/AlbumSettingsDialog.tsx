@@ -146,11 +146,10 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 								private unless you share it with the world.
 							</p>
 
-							{/* <AlbumLinkCreateForm albumUuid={album?.uuid} /> */}
 							<Button
 								type="submit"
 								variant="secondary"
-								className="mt-2"
+								className="mt-2 mb-4"
 								onClick={async () => createNewAlbumLink()}
 							>
 								<Plus className="mr-2 h-4 w-4" />

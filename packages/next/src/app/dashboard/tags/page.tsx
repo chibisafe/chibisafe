@@ -59,7 +59,7 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 				<CreateTagDialog className="hidden md:inline-flex" />
 				<CreateTagDrawer className="inline-flex md:hidden" />
 			</DashboardHeader>
-			<div className="px-2 w-full">
+			<div className="px-2 w-full flex flex-col gap-4">
 				<Suspense>
 					<Pagination itemsTotal={response?.count} />
 				</Suspense>

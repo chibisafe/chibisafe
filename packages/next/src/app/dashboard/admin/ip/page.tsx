@@ -66,7 +66,7 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 				<BanIpDialog className="hidden md:inline-flex" />
 				<BanIpDrawer className="md:hidden inline-flex" />
 			</DashboardHeader>
-			<div className="px-2 w-full">
+			<div className="px-2 w-full flex flex-col gap-4">
 				<Suspense>
 					<Pagination itemsTotal={response?.count ?? 0} />
 				</Suspense>

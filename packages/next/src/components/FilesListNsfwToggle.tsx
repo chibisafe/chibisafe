@@ -7,6 +7,7 @@ import { Button } from './ui/button';
 export const FilesListNsfwToggle = ({
 	children,
 	nsfw = false
+	// eslint-disable-next-line @typescript-eslint/promise-function-async
 }: PropsWithChildren<{ readonly nsfw?: boolean | undefined }>) => {
 	const [showNsfw, setShowNsfw] = useState(false);
 

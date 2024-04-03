@@ -51,7 +51,7 @@ export const DataTable = ({
 					</DropdownMenu>
 				</div>
 			) : null}
-			<div className="rounded-md border mt-4 bg-background-transparent">
+			<div className="rounded-md border bg-background-transparent">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map(headerGroup => (

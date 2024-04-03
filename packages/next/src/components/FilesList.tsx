@@ -14,7 +14,7 @@ export async function FilesList({
 	readonly type: FilePropsType;
 }) {
 	return (
-		<div className="grid gap-8">
+		<div className="grid gap-4">
 			<Suspense>
 				<Pagination itemsTotal={count} type={type} />
 				<Masonry files={files} total={count} type={type} />

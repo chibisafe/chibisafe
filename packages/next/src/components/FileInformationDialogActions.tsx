@@ -23,7 +23,7 @@ export function FileInformationDialogActions({
 	file,
 	type
 }: PropsWithChildren<{ readonly file: FileWithAdditionalData; readonly type: FilePropsType }>) {
-	const [copiedText, copy] = useCopyToClipboard();
+	const [_, copy] = useCopyToClipboard();
 
 	return (
 		<DropdownMenu>

@@ -472,7 +472,6 @@ export function FileInformationDialog({
 													A file can be added to multiple albums.
 												</div>
 												<FancyMultiSelect
-													name="albums"
 													placeholder="Select album..."
 													options={albums.map(album => ({
 														value: album.uuid,
@@ -497,7 +496,6 @@ export function FileInformationDialog({
 												</div>
 
 												<FancyMultiSelect
-													name="tags"
 													placeholder="Select tags..."
 													options={tags.map(tag => ({
 														value: tag.uuid,

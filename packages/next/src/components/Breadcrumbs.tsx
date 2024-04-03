@@ -6,7 +6,7 @@ export default function Breadcrumbs({ pages = [] }: { readonly pages?: Breadcrum
 	if (!pages.length) return null;
 
 	return (
-		<nav aria-label="Breadcrumb" className="px-2 mb-2">
+		<nav aria-label="Breadcrumb" className="px-2">
 			<ol className="flex flex-wrap gap-2 text-sm text-muted-foreground">
 				<li key="base">
 					<Link className="hover:text-foreground" href="/dashboard">

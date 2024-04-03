@@ -10,7 +10,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ title, subtitle, breadcrumbs, children }: DashboardHeaderProps) {
 	return (
-		<>
+		<div className="flex flex-col gap-4 w-full">
 			<Breadcrumbs pages={breadcrumbs} />
 			<div className="flex px-2 flex-col sm:flex-row sm:place-items-center place-content-between w-full">
 				<div className="flex flex-col sm:gap-1 mb-4 sm:mb-0">
@@ -19,6 +19,6 @@ export function DashboardHeader({ title, subtitle, breadcrumbs, children }: Dash
 				</div>
 				{children}
 			</div>
-		</>
+		</div>
 	);
 }
