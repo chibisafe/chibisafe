@@ -9,6 +9,7 @@ import { SnippetViewer } from '@/components/SnippetViewer';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
+import { CreateSnippetDrawer } from '@/components/drawers/CreateSnippetDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Snippets'
@@ -51,7 +52,8 @@ export default async function DashboardSnippetsPage({ searchParams }: { readonly
 	return (
 		<>
 			<DashboardHeader title="Snippets" subtitle="Manage and create snippets">
-				<CreateSnippetDialog />
+				<CreateSnippetDialog className="hidden md:inline-flex" />
+				<CreateSnippetDrawer className="inline-flex md:hidden" />
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<Suspense>

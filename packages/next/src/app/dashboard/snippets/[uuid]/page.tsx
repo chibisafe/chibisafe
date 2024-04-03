@@ -8,6 +8,7 @@ import { DeleteSnippetDialog } from '@/components/dialogs/DeleteSnippetDialog';
 import { SnippetViewer } from '@/components/SnippetViewer';
 import { getDate } from '@/lib/time';
 import { redirect } from 'next/navigation';
+import { DeleteSnippetDrawer } from '@/components/drawers/DeleteSnippetDrawer';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Snippets - Snippet'
@@ -49,7 +50,8 @@ export default async function PublicSnippetPage({ params }: { readonly params: {
 					{ name: snippet.name, url: `/dashboard/admin/ip/${params.uuid}` }
 				]}
 			>
-				<DeleteSnippetDialog uuid={snippet.uuid} />
+				<DeleteSnippetDialog uuid={snippet.uuid} className="hidden md:inline-flex" />
+				<DeleteSnippetDrawer uuid={snippet.uuid} className="inline-flex md:hidden" />
 			</DashboardHeader>
 			<div className="px-2 w-full flex h-full flex-grow flex-col">
 				<SnippetViewer snippet={snippet} showTitle={false} showCreatedAt={false} />

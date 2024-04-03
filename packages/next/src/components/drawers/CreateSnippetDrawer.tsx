@@ -7,23 +7,15 @@ import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { supportedLanguages } from '@/lib/snippets';
 import { Combobox } from '../Combobox';
 import { createSnippet } from '@/actions/SnippetActions';
 
-export function CreateSnippetDialog({ className }: { readonly className?: string }) {
+export function CreateSnippetDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
 	const [state, formAction] = useFormState(createSnippet, {
 		message: '',
@@ -46,21 +38,22 @@ export function CreateSnippetDialog({ className }: { readonly className?: string
 	}, [state, state.message, state.type]);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
+		<Drawer open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
 				<Button className={className}>
 					<Plus className="mr-2 h-4 w-4" />
 					New snippet
 				</Button>
-			</DialogTrigger>
-			<DialogContent className="sm:max-w-[800px] w-11/12">
+			</DrawerTrigger>
+			<DrawerContent>
+				<div className="grid gap-1.5 py-4 px-8 text-center sm:text-left">
+					<h2 className="text-lg font-semibold leading-none tracking-tight">New snippet</h2>
+					<p className="text-sm text-muted-foreground">Create a new snippet</p>
+				</div>
+
 				<form action={formAction}>
-					<DialogHeader>
-						<DialogTitle>New snippet</DialogTitle>
-						<DialogDescription>Create a new snippet here</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-4 py-4">
-						<div className="flex flex-col md:flex-row gap-4">
+					<div className="grid gap-4 py-4 px-8">
+						<div className="flex flex-col gap-4">
 							<div className="w-full">
 								<Label htmlFor="name">Name</Label>
 								<Input name="name" id="name" />
@@ -69,20 +62,20 @@ export function CreateSnippetDialog({ className }: { readonly className?: string
 								<Label htmlFor="language">Language</Label>
 								<Combobox data={supportedLanguages} />
 							</div>
-						</div>
 
-						<Textarea
-							placeholder="Write your thoughts here..."
-							className="h-60"
-							name="content"
-							id="content"
-						/>
+							<Textarea
+								placeholder="Write your thoughts here..."
+								className="h-60"
+								name="content"
+								id="content"
+							/>
+						</div>
+						<Button type="submit" className="mb-4 w-full">
+							Create
+						</Button>
 					</div>
-					<DialogFooter>
-						<Button type="submit">Create</Button>
-					</DialogFooter>
 				</form>
-			</DialogContent>
-		</Dialog>
+			</DrawerContent>
+		</Drawer>
 	);
 }

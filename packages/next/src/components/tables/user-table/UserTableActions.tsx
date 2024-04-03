@@ -15,6 +15,7 @@ import type { UserWithCountAndQuota } from '@/types';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
 import { SetQuotaDialog } from '@/components/dialogs/SetQuotaDialog';
+import { SetQuotaDrawer } from '@/components/drawers/SetQuotaDrawer';
 
 export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCountAndQuota }>) {
 	return (
@@ -30,11 +31,16 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 						<Link href={`/dashboard/admin/users/${user.uuid}`}>View files</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem onSelect={e => e.preventDefault()}>
-						<SetQuotaDialog initialValue={user.storageQuota.quota} uuid={user.uuid}>
-							<button type="button" className="w-full h-full flex p-0 cursor-default">
-								Set quota
-							</button>
-						</SetQuotaDialog>
+						<SetQuotaDialog
+							initialValue={user.storageQuota.quota}
+							uuid={user.uuid}
+							className="hidden md:inline-flex"
+						/>
+						<SetQuotaDrawer
+							initialValue={user.storageQuota.quota}
+							uuid={user.uuid}
+							className="inline-flex md:hidden"
+						/>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
