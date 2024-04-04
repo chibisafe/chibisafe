@@ -92,7 +92,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		const modifiedFile = file as unknown as File;
 		files.push({
 			...modifiedFile,
-			...constructFilePublicLink({ req, fileName: modifiedFile.name, isS3: modifiedFile.isS3, isWatched: true })
+			...constructFilePublicLink({
+				req,
+				fileName: modifiedFile.name,
+				isS3: modifiedFile.isS3,
+				isWatched: file.isWatched
+			})
 		});
 	}
 

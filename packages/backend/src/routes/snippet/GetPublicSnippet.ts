@@ -5,6 +5,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+import { constructSnippetPublicLink } from '@/utils/Snippet.js';
 
 export const schema = {
 	summary: 'Get public snippet',
@@ -16,7 +17,10 @@ export const schema = {
 			snippet: z.object({
 				name: z.string().describe('The name of the snippet.'),
 				content: z.string().describe('The content of the snippet.'),
-				language: z.string().describe('The language of the snippet.')
+				language: z.string().describe('The language of the snippet.'),
+				createdAt: z.date().describe('The date the snippet was created.'),
+				raw: z.string().describe('The direct link to the snippet.'),
+				link: z.string().describe('The link to the snippet.')
 			})
 		}),
 		'4xx': http4xxErrorSchema,
@@ -39,7 +43,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		select: {
 			content: true,
 			language: true,
-			name: true
+			name: true,
+			createdAt: true
 		}
 	});
 
@@ -50,6 +55,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully fetched snippet',
-		snippet
+		snippet: {
+			...snippet,
+			...constructSnippetPublicLink(req, identifier)
+		}
 	});
 };

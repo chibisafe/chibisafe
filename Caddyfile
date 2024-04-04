@@ -1,0 +1,25 @@
+{$BASE_URL} {
+	route {
+		file_server * {
+			root /app/uploads
+			pass_thru
+		}
+
+		@api path /api/*
+		reverse_proxy @api http://chibisafe_server:8000 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
+
+		@docs path /docs*
+		reverse_proxy @docs http://chibisafe_server:8000 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
+
+		reverse_proxy http://chibisafe:8001 {
+			header_up Host {http.reverse_proxy.upstream.hostport}
+			header_up X-Real-IP {http.request.header.X-Real-IP}
+		}
+	}
+}

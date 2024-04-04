@@ -1,19 +1,12 @@
 {
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"configurations": [
 		{
-			"command": "yarn dev:reload",
-			"name": "[DEV] Start backend",
-			"request": "launch",
-			"type": "node-terminal",
-			"cwd": "${workspaceFolder}/packages/backend"
-		},
-		{
 			"command": "yarn dev",
-			"name": "[DEV] Start frontend",
+			"name": "[DEV] Start chibisafe",
 			"request": "launch",
 			"type": "node-terminal",
-			"cwd": "${workspaceFolder}/packages/frontend"
+			"cwd": "${workspaceFolder}"
 		},
 		{
 			"type": "chrome",
@@ -25,8 +18,8 @@
 	],
 	"compounds": [
 		{
-			"name": "Server/Client/Browser",
-			"configurations": ["[DEV] Start backend", "[DEV] Start frontend", "Launch Chrome"],
+			"name": "chibisafe & browser",
+			"configurations": ["[DEV] Start chibisafe", "Launch Chrome"],
 			"stopAll": true
 		}
 	]

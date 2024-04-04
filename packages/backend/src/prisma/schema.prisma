@@ -1,5 +1,6 @@
 generator client {
 	provider = "prisma-client-js"
+	previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -88,6 +89,7 @@ model albums {
 model bans {
 	id Int @id @default(autoincrement())
 	ip String
+	reason String?
 	createdAt DateTime @default(now())
 }
 
@@ -134,6 +136,7 @@ model settings {
 	enableMixedCaseFilenames Boolean @default(true)
 	usersStorageQuota String @default("0")
 	useNetworkStorage Boolean @default(false)
+	useMinimalHomepage Boolean @default(false)
 	S3Region String @default("")
 	S3Bucket String @default("")
 	S3AccessKey String @default("")
