@@ -47,6 +47,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
@@ -54,3 +55,17 @@ jobs:
             chibisafe/chibisafe:${{ env.tag }}
             ghcr.io/chibisafe/chibisafe:latest
             ghcr.io/chibisafe/chibisafe:${{ env.tag }}
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: docker/DockerfileServer
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            chibisafe/chibisafe-server:latest
+            chibisafe/chibisafe-server:${{ env.tag }}
+            ghcr.io/chibisafe/chibisafe-server:latest
+            ghcr.io/chibisafe/chibisafe-server:${{ env.tag }}
