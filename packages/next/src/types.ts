@@ -74,6 +74,7 @@ export interface UploadFile {
 export type PageQuery = {
 	limit?: number;
 	page?: number;
+	publicOnly?: boolean;
 	search?: string;
 };
 

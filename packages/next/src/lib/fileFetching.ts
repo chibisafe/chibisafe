@@ -4,9 +4,13 @@ import type { FileProps } from '@/types';
 
 import request from './request';
 
-export const fetchEndpoint = async (props: FileProps, currentPage: number, currentLimit: number, search = '') => {
-	const publicOnly = false;
-
+export const fetchEndpoint = async (
+	props: FileProps,
+	currentPage: number,
+	currentLimit: number,
+	search = '',
+	publicOnly = false
+) => {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');

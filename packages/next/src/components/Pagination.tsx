@@ -19,6 +19,8 @@ import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { useAtom } from 'jotai';
 import { isMasonryViewAtom } from '@/lib/atoms/settings';
 import { Tooltip } from './Tooltip';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
 
 export function Pagination({
 	itemsTotal,
@@ -37,6 +39,7 @@ export function Pagination({
 			? 50
 			: Number.parseInt(searchParams.get('limit')!, 10)
 		: 50;
+	const publicOnly = searchParams.get('publicOnly') === 'true';
 
 	const [search, setSearch] = useState(searchParams.get('search') ?? '');
 	const [showMasonry, setShowMasonry] = useAtom(isMasonryViewAtom);
@@ -54,17 +57,26 @@ export function Pagination({
 	const createSearchString = useCallback(() => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set('search', search);
+		params.set('publicOnly', String(publicOnly));
 		params.delete('page');
 		params.delete('limit');
 
 		router.push(`${pathname}?${params.toString()}`);
-	}, [pathname, router, search, searchParams]);
+	}, [pathname, publicOnly, router, search, searchParams]);
 
 	const onSelectChange = useCallback(
 		(value: string) => {
-			router.push(`${pathname}?page=${value}&limit=${perPage}`);
+			router.push(`${pathname}?page=${value}&limit=${perPage}&publicOnly=${publicOnly}`);
 		},
-		[pathname, perPage, router]
+		[pathname, perPage, publicOnly, router]
+	);
+
+	const onPublicOnlyChange = useCallback(
+		(value: boolean) => {
+			// console.log(value);
+			router.push(`${pathname}?page=${currentPage}&limit=${perPage}&publicOnly=${value}`);
+		},
+		[currentPage, pathname, perPage, router]
 	);
 
 	return (
@@ -108,12 +120,23 @@ export function Pagination({
 						<SearchIcon className="h-4 w-4" />
 					</Button>
 				</div>
+				<div className="flex w-full sm:max-w-xs items-center gap-2">
+					<div className="flex items-center space-x-2">
+						<Switch id="anonymous-only" onCheckedChange={value => onPublicOnlyChange(value)} />
+						<Label htmlFor="anonymous-only" className="hidden md:inline-flex">
+							Show anonymous files only
+						</Label>
+						<Label htmlFor="anonymous-only" className="inline-flex md:hidden">
+							Anonymous only
+						</Label>
+					</div>
+				</div>
 				<PaginationContent className="justify-center sm:justify-normal">
 					<PaginationItem>
 						<PaginationPrevious
-							href={`${pathname}?page=${
+							href={`${pathname}?search=${search}&page=${
 								currentPage > 1 ? Number(currentPage) - 1 : currentPage
-							}&limit=${perPage}`}
+							}&limit=${perPage}&publicOnly=${publicOnly}`}
 						/>
 					</PaginationItem>
 					<PaginationItem className="flex items-center gap-3 mx-2">
@@ -127,9 +150,9 @@ export function Pagination({
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationNext
-							href={`${pathname}?page=${
+							href={`${pathname}?search=${search}&page=${
 								currentPage < totalPages ? Number(currentPage) + 1 : currentPage
-							}&limit=${perPage}`}
+							}&limit=${perPage}&publicOnly=${publicOnly}`}
 						/>
 					</PaginationItem>
 				</PaginationContent>

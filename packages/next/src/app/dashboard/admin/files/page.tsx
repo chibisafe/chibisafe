@@ -14,8 +14,13 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
+	const publicOnly = searchParams.publicOnly ?? false;
 
-	const { data: response, error, status } = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search);
+	const {
+		data: response,
+		error,
+		status
+	} = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search, publicOnly);
 	if (error && status === 401) {
 		redirect('/login');
 	}
