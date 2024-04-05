@@ -78,7 +78,7 @@ export function FileInformationDialogActions({
 							className="focus:text-destructive-foreground focus:bg-destructive p-0"
 							onSelect={e => e.preventDefault()}
 						>
-							<DeleteFileInformationAction uuid={file.uuid} />
+							<DeleteFileInformationAction uuid={file.uuid} type={type} />
 						</DropdownMenuItem>
 					</>
 				)}

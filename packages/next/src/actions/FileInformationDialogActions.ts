@@ -38,6 +38,25 @@ export const deleteFile = async (_: any, form: FormData) => {
 	}
 };
 
+export const deleteFileAsAdmin = async (_: any, form: FormData) => {
+	const uuid = form.get('uuid') as string;
+
+	try {
+		const { error } = await request.delete({
+			url: `admin/file/${uuid}`,
+			headers: {
+				authorization: `Bearer ${getToken()}`
+			}
+		});
+
+		if (error) return { message: error, type: MessageType.Error };
+
+		return { message: 'File deleted', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};
+
 export const quarantineFile = async (_: any, form: FormData) => {
 	const uuid = form.get('uuid') as string;
 

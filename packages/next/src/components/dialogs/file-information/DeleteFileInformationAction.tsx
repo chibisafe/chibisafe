@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { deleteFile } from '@/actions/FileInformationDialogActions';
+import { deleteFile, deleteFileAsAdmin } from '@/actions/FileInformationDialogActions';
+import type { FilePropsType } from '@/types';
 import { MessageType } from '@/types';
 import { useSetAtom } from 'jotai';
 import { useFormState } from 'react-dom';
@@ -14,13 +15,15 @@ import { useQueryClient } from '@tanstack/react-query';
 
 export const DeleteFileInformationAction = ({
 	uuid,
+	type,
 	isDrawer = false
 }: {
 	readonly isDrawer?: boolean | undefined;
+	readonly type: FilePropsType;
 	readonly uuid: string;
 }) => {
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
-	const [state, formAction] = useFormState(deleteFile, {
+	const [state, formAction] = useFormState(type === 'admin' ? deleteFileAsAdmin : deleteFile, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
