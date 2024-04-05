@@ -65,7 +65,7 @@ const columns = [
 			</div>
 		)
 	}),
-	columnHelper.accessor(row => formatBytes(row.storageQuota.used), {
+	columnHelper.accessor(row => row.storageQuota.used, {
 		id: 'used',
 		header: ({ column }) => {
 			return (
@@ -74,7 +74,8 @@ const columns = [
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
-		}
+		},
+		cell: props => <span>{formatBytes(props.getValue())}</span>
 	}),
 	columnHelper.accessor(row => (row.storageQuota.quota ? formatBytes(row.storageQuota.quota) : 'Unlimited'), {
 		id: 'limit',
