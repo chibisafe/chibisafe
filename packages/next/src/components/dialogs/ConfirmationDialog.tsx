@@ -23,7 +23,7 @@ export function ConfirmationDialog({
 }: PropsWithChildren<{ readonly callback: any; readonly description: string; readonly title?: string }>) {
 	return (
 		<>
-			<div className="hidden md:inline-flex">
+			<div className="hidden md:inline-flex w-full">
 				<AlertDialog>
 					<AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 					<AlertDialogContent className="w-11/12">
