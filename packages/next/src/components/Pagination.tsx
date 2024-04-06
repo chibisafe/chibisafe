@@ -2,18 +2,12 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import {
-	Pagination as PaginationBase,
-	PaginationContent,
-	PaginationItem,
-	PaginationNext,
-	PaginationPrevious
-} from '@/components/ui/pagination';
+import { Pagination as PaginationBase, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 import { Select, type Item } from '@/components/Select';
 import { Input } from './ui/input';
 import { useCallback, useState } from 'react';
 import { Button } from './ui/button';
-import { LayoutDashboardIcon, SearchIcon, TableIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutDashboardIcon, SearchIcon, TableIcon } from 'lucide-react';
 import type { FilePropsType } from '@/types';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { useAtom } from 'jotai';
@@ -57,27 +51,68 @@ export function Pagination({
 	const createSearchString = useCallback(() => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set('search', search);
-		params.set('publicOnly', String(publicOnly));
+		params.set('publicOnly', publicOnly.valueOf.toString());
 		params.delete('page');
 		params.delete('limit');
 
 		router.push(`${pathname}?${params.toString()}`);
 	}, [pathname, publicOnly, router, search, searchParams]);
 
+	const updateUrlParameters = useCallback(
+		(page: number, limit: number, publicOnly: boolean) => {
+			const params = new URLSearchParams(searchParams.toString());
+			if (search) {
+				params.set('search', search);
+			}
+
+			if (page) {
+				params.set('page', String(page));
+			}
+
+			if (limit) {
+				params.set('limit', String(limit));
+			}
+
+			if (publicOnly) {
+				params.set('publicOnly', String(publicOnly));
+			} else {
+				params.delete('publicOnly');
+			}
+
+			router.push(`${pathname}?${params.toString()}`);
+		},
+		[pathname, router, search, searchParams]
+	);
+
 	const onSelectChange = useCallback(
 		(value: string) => {
-			router.push(`${pathname}?page=${value}&limit=${perPage}&publicOnly=${publicOnly}`);
+			updateUrlParameters(Number(value), perPage, publicOnly);
 		},
-		[pathname, perPage, publicOnly, router]
+		[perPage, publicOnly, updateUrlParameters]
 	);
 
 	const onPublicOnlyChange = useCallback(
 		(value: boolean) => {
-			// console.log(value);
-			router.push(`${pathname}?page=${currentPage}&limit=${perPage}&publicOnly=${value}`);
+			updateUrlParameters(currentPage, perPage, value);
 		},
-		[currentPage, pathname, perPage, router]
+		[currentPage, perPage, updateUrlParameters]
 	);
+
+	const setPreviousUrl = () => {
+		if (currentPage <= 1) {
+			return;
+		}
+
+		updateUrlParameters(currentPage - 1, perPage, publicOnly);
+	};
+
+	const setNextUrl = () => {
+		if (currentPage >= totalPages) {
+			return;
+		}
+
+		updateUrlParameters(currentPage + 1, perPage, publicOnly);
+	};
 
 	return (
 		<>
@@ -120,25 +155,32 @@ export function Pagination({
 						<SearchIcon className="h-4 w-4" />
 					</Button>
 				</div>
-				<div className="flex w-full sm:max-w-xs items-center gap-2">
-					<div className="flex items-center space-x-2">
-						<Switch id="anonymous-only" onCheckedChange={value => onPublicOnlyChange(value)} />
-						<Label htmlFor="anonymous-only" className="hidden md:inline-flex">
-							Show anonymous files only
-						</Label>
-						<Label htmlFor="anonymous-only" className="inline-flex md:hidden">
-							Anonymous only
-						</Label>
+				{type === 'admin' ? (
+					<div className="flex w-full sm:max-w-xs items-center gap-2">
+						<div className="flex items-center space-x-2">
+							<Switch id="anonymous-only" onCheckedChange={value => onPublicOnlyChange(value)} />
+							<Label htmlFor="anonymous-only" className="hidden md:inline-flex">
+								Show anonymous files only
+							</Label>
+							<Label htmlFor="anonymous-only" className="inline-flex md:hidden">
+								Anonymous only
+							</Label>
+						</div>
 					</div>
-				</div>
+				) : null}
 				<PaginationContent className="justify-center sm:justify-normal">
-					<PaginationItem>
-						<PaginationPrevious
-							href={`${pathname}?search=${search}&page=${
-								currentPage > 1 ? Number(currentPage) - 1 : currentPage
-							}&limit=${perPage}&publicOnly=${publicOnly}`}
-						/>
-					</PaginationItem>
+					<li>
+						<Button
+							aria-label="Go to previous page"
+							size="default"
+							variant="ghost"
+							className="gap-1 pl-2.5"
+							onClick={() => setPreviousUrl()}
+						>
+							<ChevronLeft className="h-4 w-4" />
+							<span>Previous</span>
+						</Button>
+					</li>
 					<PaginationItem className="flex items-center gap-3 mx-2">
 						<Select
 							className="min-w-[72px]"
@@ -148,13 +190,18 @@ export function Pagination({
 						/>
 						<span className="text-nowrap">of {totalPages}</span>
 					</PaginationItem>
-					<PaginationItem>
-						<PaginationNext
-							href={`${pathname}?search=${search}&page=${
-								currentPage < totalPages ? Number(currentPage) + 1 : currentPage
-							}&limit=${perPage}&publicOnly=${publicOnly}`}
-						/>
-					</PaginationItem>
+					<li>
+						<Button
+							aria-label="Go to next page"
+							size="default"
+							variant="ghost"
+							className="gap-1 pr-2.5"
+							onClick={() => setNextUrl()}
+						>
+							<span>Next</span>
+							<ChevronRight className="h-4 w-4" />
+						</Button>
+					</li>
 				</PaginationContent>
 			</PaginationBase>
 		</>
