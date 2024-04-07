@@ -7,7 +7,7 @@ import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
 
 export const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'];
-export const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov'];
+export const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov', '.mkv', '.mpeg', '.ogv'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
 const squareThumbPath = fileURLToPath(new URL('../../../../uploads/thumbs/square', import.meta.url));
