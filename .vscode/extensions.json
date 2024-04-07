@@ -2,11 +2,7 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"bradlc.vscode-tailwindcss",
-		"antfu.vite",
-		"antfu.iconify",
-		"Vue.volar",
-		"csstools.postcss",
 		"esbenp.prettier-vscode",
-		"rangav.vscode-thunder-client"
+		"prisma.prisma"
 	]
 }

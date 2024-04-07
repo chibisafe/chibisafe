@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -15,7 +16,8 @@ export const schema = {
 	tags: ['Files', 'IP Management'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within all files from this IP.')
 	}),
 	body: z
 		.object({
@@ -41,23 +43,73 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
 	const { ip }: { ip: string } = req.body as { ip: string };
 
+	let dbSearchObject: Prisma.filesCountArgs['where'] = {
+		ip
+	};
+
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			OR: [
+				{
+					name: {
+						contains: search
+					}
+				},
+				{
+					original: {
+						contains: search
+					}
+				}
+			]
+		};
+	}
+
 	const count = await prisma.files.count({
-		where: {
-			ip
-		}
+		where: dbSearchObject
 	});
 
 	const files = (await prisma.files.findMany({
 		take: limit,
 		skip: (page - 1) * limit,
-		where: {
-			ip
+		where: dbSearchObject,
+		select: {
+			createdAt: true,
+			editedAt: true,
+			hash: true,
+			ip: true,
+			name: true,
+			original: true,
+			size: true,
+			type: true,
+			uuid: true,
+			quarantine: true,
+			quarantineFile: {
+				select: {
+					name: true
+				}
+			},
+			isS3: true,
+			isWatched: true,
+			user: {
+				select: {
+					uuid: true,
+					username: true,
+					enabled: true,
+					createdAt: true,
+					roles: {
+						select: {
+							name: true
+						}
+					}
+				}
+			}
 		},
 		orderBy: {
-			id: 'desc'
+			createdAt: 'desc'
 		}
 	})) as ExtendedFile[] | [];
 

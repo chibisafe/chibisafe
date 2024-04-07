@@ -27,7 +27,7 @@ export const loadSettings = async (force = false) => {
 
 		// These settings should be set from the environment variables
 		SETTINGS.port = Number.isNaN(Number(process.env.PORT)) ? 8000 : Number(process.env.PORT) ?? 8000;
-		SETTINGS.host = process.env.HOST ?? '0.0.0.0';
+		SETTINGS.host = process.env.HOST ?? 'localhost';
 
 		// These are static for now
 		SETTINGS.statisticsCron = '0 0 * * * *';
@@ -38,7 +38,7 @@ export const loadSettings = async (force = false) => {
 
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
-		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom;
+		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom || (process.env.SERVE_UPLOADS_FROM ?? '');
 		SETTINGS.rateLimitWindow = settingsTable.rateLimitWindow;
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
@@ -64,6 +64,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.metaDomain = settingsTable.metaDomain;
 		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
+		SETTINGS.useMinimalHomepage = settingsTable.useMinimalHomepage;
 		SETTINGS.S3Region = settingsTable.S3Region;
 		SETTINGS.S3Bucket = settingsTable.S3Bucket;
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
@@ -103,6 +104,7 @@ export const loadSettings = async (force = false) => {
 		metaTwitterHandle: '@your-twitter-handle',
 		usersStorageQuota: 0,
 		useNetworkStorage: false,
+		useMinimalHomepage: false,
 		S3Region: '',
 		S3Bucket: '',
 		S3AccessKey: '',
@@ -142,10 +144,9 @@ const SETTINGS_META = {
 	serveUploadsFrom: {
 		type: 'string',
 		description:
-			"Enabling this option shifts file hosting control to you. Chibisafe will no longer serve your files, and you'll manage the /uploads folder using nginx/caddy or a similar solution.",
+			'If using Docker, make sure to change this setting to reflect the domain name you are hosting chibisafe on.',
 		name: 'Serve Uploads From',
-		example: 'https://cdn.chibisafe.moe',
-		notice: 'For this setting to take effect, you need to restart the server.',
+		notice: 'Make sure to use a full domain name, including https:// . (for example: https://cdn.chibisafe.moe)',
 		category: 'service'
 	},
 	rateLimitWindow: {
@@ -168,14 +169,14 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'A secret string used for signing JWT tokens. Keep this secret!',
 		name: 'Secret',
-		notice: 'If you change this setting every user will be asked to log back in. Make sure this setting is random and at least 64 characters long.',
+		notice: 'Changing this will log out everyone. Make sure this setting is random and at least 64 characters long.',
 		category: 'service'
 	},
 	serviceName: {
 		type: 'string',
 		description: 'The name of the service.',
 		name: 'Service Name',
-		example: 'Chibisafe',
+		example: 'chibisafe',
 		category: 'customization'
 	},
 	chunkSize: {
@@ -232,11 +233,11 @@ const SETTINGS_META = {
 		category: 'other'
 	},
 	blockedExtensions: {
-		type: 'object',
-		description:
-			'The blocked extensions for uploads. When adding a new one, make sure you don\'t include the "." dot.',
+		type: 'string',
+		description: 'The blocked extensions for uploads. Separate them with a comma.',
 		name: 'Blocked Extensions',
-		category: 'uploads'
+		category: 'uploads',
+		example: '.exe,.msi,.com,.bat,.cmd,.scr,.ps1,.sh'
 	},
 	blockNoExtension: {
 		type: 'boolean',
@@ -246,15 +247,14 @@ const SETTINGS_META = {
 	},
 	publicMode: {
 		type: 'boolean',
-		description:
-			'Whether or not to enable public mode. If enabled, users will be able to upload files without an account.',
+		description: 'If public mode is enabled, users will be able to upload files without being logged in.',
 		name: 'Public Mode',
 		category: 'users'
 	},
 	userAccounts: {
 		type: 'boolean',
 		description:
-			'Whether or not to enable user accounts. If disabled, users will not be able to register new accounts.',
+			'If user accounts are disabled, users will not be able to register new accounts unless they have an invite.',
 		name: 'User Accounts',
 		category: 'users'
 	},
@@ -286,7 +286,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The meta domain used for the website SEO.',
 		name: 'Meta Domain',
-		example: 'https://chibisafe.moe',
+		example: 'https://my.chibisafe.instance.moe',
 		category: 'customization'
 	},
 	metaDescription: {
@@ -307,7 +307,7 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The twitter handle of the instance owner.',
 		name: 'Meta Twitter Handle',
-		example: '@chibisafe',
+		example: '@your-instance-handle',
 		category: 'customization'
 	},
 	usersStorageQuota: {
@@ -359,5 +359,11 @@ const SETTINGS_META = {
 		name: 'S3 Public URL',
 		example: 'https://chibisafe.s3.us-east-1.amazonaws.com',
 		category: 'uploads'
+	},
+	useMinimalHomepage: {
+		type: 'boolean',
+		description: 'Whether or not to use a minimal version of the homepage.',
+		name: 'Use Minimal Homepage',
+		category: 'customization'
 	}
 };

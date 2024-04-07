@@ -4,7 +4,7 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/**/*.ts", "vite.config.ts", "src/**/*.vue"],
+			"inputs": ["src/**/*.ts"],
 			"outputs": ["dist/**"]
 		},
 		"dev": {
@@ -13,10 +13,10 @@
 			"persistent": true
 		},
 		"lint": {
-			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs", "vite.config.ts"]
+			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs"]
 		},
 		"format": {
-			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs", "vite.config.ts"]
+			"inputs": ["src/**/*.ts", "**/.eslintrc.json", "**/.prettierignore", "**/.prettierrc.cjs"]
 		}
 	}
 }

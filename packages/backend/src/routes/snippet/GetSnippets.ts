@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyReply } from 'fastify';
 import { z } from 'zod';
 import prisma from '@/structures/database.js';
@@ -15,7 +16,8 @@ export const schema = {
 	tags: ['Snippets'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your snippets.')
 	}),
 	response: {
 		200: z.object({
@@ -31,7 +33,8 @@ export const schema = {
 					link: z.string().describe('The link to the snippet.'),
 					createdAt: z.date().describe('The date the snippet was created.')
 				})
-			)
+			),
+			count: z.number().describe('The amount of snippets that exist.')
 		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
@@ -45,10 +48,29 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
+
+	let dbSearchObject: Prisma.snippetsCountArgs['where'] = {
+		userId: req.user.id
+	};
+
+	if (search) {
+		dbSearchObject = {
+			...dbSearchObject,
+			name: {
+				contains: search
+			}
+		};
+	}
+
+	const count = await prisma.snippets.count({
+		where: dbSearchObject
+	});
+
 	const snippets = await prisma.snippets.findMany({
-		where: {
-			userId: req.user.id
-		},
+		take: limit,
+		skip: (page - 1) * limit,
+		where: dbSearchObject,
 		select: {
 			content: true,
 			language: true,
@@ -63,11 +85,14 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		}
 	});
 
+	const fetchedSnippets = snippets.map(snippet => ({
+		...snippet,
+		...constructSnippetPublicLink(req, snippet.identifier)
+	}));
+
 	return res.send({
 		message: 'Successfully fetched snippets',
-		snippets: snippets.map(snippet => ({
-			...snippet,
-			...constructSnippetPublicLink(req, snippet.identifier)
-		}))
+		snippets: fetchedSnippets,
+		count
 	});
 };

@@ -27,7 +27,8 @@ export const schema = {
 					expiresAt: z.date().nullable().describe('The expiration date of the link'),
 					views: z.number().describe('The amount of views the link has'),
 					createdAt: z.date().describe('The creation date of the link'),
-					editedAt: z.date().nullable().describe('The last edit date of the link')
+					editedAt: z.date().nullable().describe('The last edit date of the link'),
+					albumUuid: z.string().describe('The uuid of the album')
 				})
 			)
 		}),
@@ -83,6 +84,9 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved links',
-		links
+		links: links.map(link => ({
+			...link,
+			albumUuid: uuid
+		}))
 	});
 };

@@ -1,0 +1,21 @@
+FROM node:20-alpine as runner
+
+RUN apk add --no-cache libc6-compat git ffmpeg
+
+WORKDIR /app
+COPY . .
+COPY package.json yarn.lock turbo.json tsconfig.json ./
+
+RUN yarn workspaces focus @chibisafe/backend
+RUN yarn workspace @chibisafe/backend generate
+RUN yarn workspace @chibisafe/backend build
+
+ENV NODE_ENV=production
+
+EXPOSE 8000
+ENV HOSTNAME 0.0.0.0
+ENV HOST 0.0.0.0
+ENV SERVE_UPLOADS_FROM=http://localhost:24424
+ENV PORT 8000
+
+CMD ["yarn", "workspace", "@chibisafe/backend", "start"]

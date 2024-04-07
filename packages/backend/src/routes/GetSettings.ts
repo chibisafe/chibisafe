@@ -10,6 +10,10 @@ export const schema = {
 	response: {
 		200: z.object({
 			serviceName: z.string().describe('The name of the service.'),
+			metaDescription: z.string().optional().describe('The description of the service.'),
+			metaKeywords: z.array(z.string().optional().describe('The keywords of the service.')),
+			metaTwitterHandle: z.string().optional().describe('The Twitter handle of the service.'),
+			metaDomain: z.string().optional().describe('The domain of the service.'),
 			chunkSize: z.number().describe('The size of each chunk in bytes.'),
 			maxSize: z.number().describe('The maximum size of a file in bytes.'),
 			logoURL: z.string().describe('The URL of the logo.'),
@@ -17,7 +21,11 @@ export const schema = {
 			publicMode: z.boolean().describe('Whether or not the service is in public mode.'),
 			userAccounts: z.boolean().describe('Whether or not user accounts are enabled.'),
 			blockedExtensions: z.array(z.string()).describe('The list of blocked extensions.'),
-			useNetworkStorage: z.boolean().describe('Whether or not network storage is enabled.')
+			useNetworkStorage: z.boolean().describe('Whether or not network storage is enabled.'),
+			useMinimalHomepage: z
+				.boolean()
+				.optional()
+				.describe('Whether or not to use a minimal version of the homepage.')
 		})
 	}
 };
@@ -30,6 +38,10 @@ export const options = {
 export const run = (_: RequestWithUser, res: FastifyReply) => {
 	return res.send({
 		serviceName: SETTINGS.serviceName,
+		metaDescription: SETTINGS.metaDescription,
+		metaKeywords: SETTINGS.metaKeywords ? SETTINGS.metaKeywords.split(', ') : [],
+		metaTwitterHandle: SETTINGS.metaTwitterHandle,
+		metaDomain: SETTINGS.metaDomain,
 		chunkSize: SETTINGS.chunkSize,
 		maxSize: SETTINGS.maxSize,
 		logoURL: SETTINGS.logoURL,
@@ -37,6 +49,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		publicMode: SETTINGS.publicMode,
 		userAccounts: SETTINGS.userAccounts,
 		blockedExtensions: SETTINGS.blockedExtensions,
-		useNetworkStorage: SETTINGS.useNetworkStorage
+		useNetworkStorage: SETTINGS.useNetworkStorage,
+		useMinimalHomepage: SETTINGS.useMinimalHomepage
 	});
 };
