@@ -76,7 +76,6 @@ export interface FileWithId extends File {
 export interface ExtendedFile extends File {
 	preview?: string;
 	thumb?: string;
-	thumbSquare?: string;
 	url?: string;
 }
 

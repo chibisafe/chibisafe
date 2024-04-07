@@ -151,7 +151,6 @@ const start = async () => {
 	jetpack.dir(fileURLToPath(new URL('../../../uploads/live', import.meta.url)));
 	jetpack.dir(fileURLToPath(new URL('../../../uploads/tmp', import.meta.url)));
 	jetpack.dir(fileURLToPath(new URL('../../../uploads/zips', import.meta.url)));
-	jetpack.dir(fileURLToPath(new URL('../../../uploads/thumbs/square', import.meta.url)));
 	jetpack.dir(fileURLToPath(new URL('../../../uploads/thumbs/preview', import.meta.url)));
 
 	// Chokidar implementation

@@ -258,14 +258,12 @@ export const constructFilePublicLink = ({
 			? `${SETTINGS.S3PublicUrl || SETTINGS.S3Endpoint}${quarantine ? '/quarantine' : ''}/${fileName}`
 			: `${host}${quarantine ? '/quarantine' : ''}${isWatched ? '/live' : ''}/${fileName}`,
 		thumb: '',
-		thumbSquare: '',
 		preview: ''
 	};
 
 	const { thumb, preview } = getFileThumbnail(fileName) ?? {};
 	if (thumb) {
 		data.thumb = `${host}/thumbs/${thumb}`;
-		data.thumbSquare = `${host}/thumbs/square/${thumb}`;
 		if (preview) {
 			data.preview = `${host}/thumbs/preview/${preview}`;
 		}

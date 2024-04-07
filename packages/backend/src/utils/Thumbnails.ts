@@ -10,7 +10,6 @@ export const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'
 export const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov', '.mkv', '.mpeg', '.ogv'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));
-const squareThumbPath = fileURLToPath(new URL('../../../../uploads/thumbs/square', import.meta.url));
 const videoPreviewPath = fileURLToPath(new URL('../../../../uploads/thumbs/preview', import.meta.url));
 
 const generateThumbnailForImage = async ({
@@ -27,19 +26,6 @@ const generateThumbnailForImage = async ({
 	const filePath = fileURLToPath(
 		new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${watched ? 'live/' : ''}${filename}`, import.meta.url)
 	);
-
-	await new Promise((resolve, reject) => {
-		ffmpeg(filePath)
-			.size('64x64')
-			.format('webp')
-			.output(path.join(squareThumbPath, output))
-			.on('error', error => {
-				log.error(error.message);
-				return reject;
-			})
-			.on('end', resolve)
-			.run();
-	});
 
 	await new Promise((resolve, reject) => {
 		ffmpeg(filePath)
@@ -71,21 +57,6 @@ const generateThumbnailForVideo = async ({
 	const filePath = fileURLToPath(
 		new URL(`../../../../uploads/${tmp ? 'tmp/' : ''}${watched ? 'live/' : ''}${filename}`, import.meta.url)
 	);
-
-	await new Promise((resolve, reject) => {
-		ffmpeg(filePath)
-			.thumbnail({
-				timestamps: [0],
-				filename: '%b.webp',
-				folder: squareThumbPath,
-				size: '64x64'
-			})
-			.on('error', error => {
-				log.error(error.message);
-				return reject;
-			})
-			.on('end', resolve);
-	});
 
 	await new Promise((resolve, reject) => {
 		ffmpeg(filePath)
@@ -160,7 +131,6 @@ export const getFileThumbnail = (filename: string) => {
 export const removeThumbs = async ({ thumb, preview }: { preview?: string; thumb?: string }) => {
 	if (thumb) {
 		await jetpack.removeAsync(path.join(thumbPath, thumb));
-		await jetpack.removeAsync(path.join(squareThumbPath, thumb));
 	}
 
 	if (preview) {

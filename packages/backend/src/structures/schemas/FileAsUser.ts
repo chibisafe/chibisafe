@@ -12,7 +12,6 @@ export const fileAsUserSchema = z
 		type: z.string().describe('The type of the file.'),
 		url: z.string().describe('The URL of the file.'),
 		thumb: z.string().describe('The URL of the thumbnail of the file.'),
-		thumbSquare: z.string().describe('The URL of the square thumbnail of the file.'),
 		preview: z.string().describe('The URL of the preview of the file.'),
 		quarantine: z.boolean().optional().describe('Whether the file is quarantined.')
 	})

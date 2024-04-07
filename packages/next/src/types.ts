@@ -51,7 +51,6 @@ export type File = {
 	quarantine: boolean;
 	size: number;
 	thumb: string;
-	thumbSquare: string;
 	type: string;
 	url: string;
 	uuid: string;
