@@ -55,7 +55,7 @@ export const FileThumbnail = ({
 		<div className={cn('flex flex-col justify-center items-center', isTableView ? '' : 'h-40 bg-dark-90')}>
 			<FileWarning className="text-red-500 w-16 h-16" />
 		</div>
-	) : isFileImage(file) || isFileVideo(file) ? (
+	) : isFileImage(file) || (isFileVideo(file) && file.thumb) ? (
 		<ComponentType isTableView={isTableView} file={file} type={type}>
 			<picture>
 				<img src={file.thumb} className="cursor-pointer w-full sm:min-w-[160px] min-w-0" />
