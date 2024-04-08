@@ -28,10 +28,12 @@ _If you fork/deploy your own instance it would mean a lot if you were to keep ei
 - ✨ Chunked uploads for big files
 - 🔗 Share direct links to uploaded files
 - 📂 Albums/Folders with direct links to share
+- 📝 Snippets/Gists creation with direct links to share
 - 🗃️ File management and file tagging
 - 🙋 User management and quotas
 - ✉️ Public or Private mode (with invite support)
 - ⬆️ ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
+- 📱 iOS shortcut to upload files through the share menu
 - 🌐 Browser extension to upload content from websites easily
 - 🧩 Easily extensible
 - 📖 Open source
