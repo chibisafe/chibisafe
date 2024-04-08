@@ -32,7 +32,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			<h6 className={cn('mt-8 scroll-m-20 text-base font-semibold tracking-tight', className)} {...props} />
 		),
 		a: ({ className, ...props }) => (
-			<a className={cn('font-medium underline underline-offset-4', className)} {...props} />
+			<a
+				className={cn('font-medium underline underline-offset-4 link', className)}
+				target="_blank"
+				rel="noopener noreferrer"
+				{...props}
+			/>
 		),
 		p: ({ className, ...props }) => (
 			<p className={cn('leading-7 [&:not(:first-child)]:mt-6', className)} {...props} />
