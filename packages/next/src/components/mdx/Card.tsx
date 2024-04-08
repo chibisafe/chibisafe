@@ -7,7 +7,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 	readonly href?: string;
 }
 
-export function MdxCard({ href, className, children, disabled, ...props }: CardProps) {
+export function Card({ href, className, children, disabled, ...props }: CardProps) {
 	return (
 		<div
 			className={cn(

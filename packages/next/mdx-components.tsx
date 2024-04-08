@@ -1,5 +1,5 @@
-import { Callout } from '@/components/MdxCallout';
-import { MdxCard } from '@/components/MdxCard';
+import { Callout } from '@/components/mdx/Callout';
+import { Card } from '@/components/mdx/Card';
 import { cn } from '@/lib/utils';
 import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
@@ -93,7 +93,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		),
 		Image,
 		Callout,
-		Card: MdxCard,
+		Card,
 		...components
 	};
 }
