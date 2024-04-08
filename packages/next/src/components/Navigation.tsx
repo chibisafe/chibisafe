@@ -40,6 +40,15 @@ export function Navigation({
 					Docs
 				</a>
 				<Link
+					href="/guides"
+					className={cn(
+						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
+						path.startsWith('/guides') ? 'text-foreground' : 'text-foreground/60'
+					)}
+				>
+					Guides
+				</Link>
+				<Link
 					href="/faq"
 					className={cn(
 						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
