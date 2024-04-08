@@ -26,12 +26,12 @@ export function Navigation({
 				<span className="hidden font-bold sm:inline-block">{settings?.serviceName ?? serviceName}</span>
 			</Link>
 			<nav className="hidden gap-6 md:flex">
-				<Link
+				{/* <Link
 					href="/dashboard"
 					className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
 				>
 					Dashboard
-				</Link>
+				</Link> */}
 				<a
 					href="/docs"
 					rel="noopener noreferrer"

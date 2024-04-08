@@ -71,7 +71,7 @@ export default async function Home() {
 	return (
 		<div className="flex flex-col gap-8">
 			<section className="py-2 sm:py-4">
-				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-evenly gap-4">
+				<div className="container flex min-h-96 max-w-[64rem] py-48 flex-col text-center place-content-evenly gap-4">
 					<div className="flex flex-col-reverse lg:flex-row justify-between gap-8 lg:gap-0">
 						<div className="flex flex-col gap-6 items-center lg:items-start">
 							<h1 className="font-heading text-2xl sm:text-5xl text-center lg:text-left">
@@ -87,7 +87,7 @@ export default async function Home() {
 								throw at it thanks to it's robust and fast API, chunked uploads support and more.
 							</p>
 							<div className="hidden md:flex flex-col md:flex-row gap-4">
-								<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
+								<Link href="/guides" className={cn(buttonVariants({ size: 'lg' }))}>
 									Get Started
 								</Link>
 								<a
@@ -109,7 +109,7 @@ export default async function Home() {
 
 						<ChibisafeLogo className="mx-auto sm:h-64 sm:min-h-64 sm:w-64 sm:min-w-64 w-32 min-w-32 h-32 min-h-32" />
 					</div>
-
+					{/* 
 					<div className="flex flex-col gap-12 place-content-center place-items-center w-full">
 						<UploadTriggerHomepage settings={settings} />
 						<div className="md:hidden flex flex-col gap-4">
@@ -131,7 +131,7 @@ export default async function Home() {
 								GitHub
 							</a>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</section>
 			<section id="features" className="container flex flex-col gap-12 py-8 bg-slate-50 dark:bg-transparent">
@@ -223,7 +223,7 @@ export default async function Home() {
 					</p>
 				</div>
 			</section>
-			<section id="open-source" className="container py-12">
+			<section id="open-source" className="container py-48">
 				<div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-8 text-center">
 					<h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Proudly Open Source</h2>
 					<p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
