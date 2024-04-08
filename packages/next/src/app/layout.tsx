@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 };
 
 const meta = {
-	url: 'https://chibisafe.moe',
+	url: 'https://chibisafe.app',
 	name: 'chibisafe',
 	description: 'Beautiful and performant vault to save all your files in the cloud.'
 };
