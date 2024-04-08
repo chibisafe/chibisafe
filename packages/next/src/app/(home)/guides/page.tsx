@@ -27,6 +27,32 @@ export default function GuidesPage() {
 						<span className="sr-only">View</span>
 					</Link>
 				</article>
+
+				<article className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg hover:bg-secondary">
+					<div className="flex flex-col justify-between space-y-4">
+						<div className="space-y-2">
+							<h2 className="text-xl font-medium tracking-tight">Running chibisafe manually</h2>
+							<p className="text-muted-foreground">Set up chibisafe manually without Docker</p>
+						</div>
+					</div>
+					<Link href="/guides/running-manually" className="absolute inset-0">
+						<span className="sr-only">View</span>
+					</Link>
+				</article>
+
+				<article className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg hover:bg-secondary">
+					<div className="flex flex-col justify-between space-y-4">
+						<div className="space-y-2">
+							<h2 className="text-xl font-medium tracking-tight">Using network storage</h2>
+							<p className="text-muted-foreground">
+								Learn how to configure an S3-compatible backend to store your uploads
+							</p>
+						</div>
+					</div>
+					<Link href="/guides/using-network-storage" className="absolute inset-0">
+						<span className="sr-only">View</span>
+					</Link>
+				</article>
 			</div>
 		</div>
 	);

@@ -27,8 +27,6 @@ export default async function LoginPage() {
 		console.log(error);
 	}
 
-	console.log(settings);
-
 	return (
 		<div className="container flex h-screen w-screen flex-col items-center justify-center">
 			<Link
