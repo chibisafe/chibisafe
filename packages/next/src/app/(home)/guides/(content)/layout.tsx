@@ -10,9 +10,9 @@ export default function GuidesContentLayout({ children }: PropsWithChildren<{}>)
 			{children}
 			<hr className="mt-12" />
 			<div className="flex justify-center py-6 lg:py-10">
-				<Link href="/blog" className={cn(buttonVariants({ variant: 'ghost' }))}>
+				<Link href="/guides" className={cn(buttonVariants({ variant: 'ghost' }))}>
 					<ChevronLeft className="mr-2 h-4 w-4" />
-					See all posts
+					See all guides
 				</Link>
 			</div>
 		</article>
