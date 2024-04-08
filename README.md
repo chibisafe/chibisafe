@@ -49,7 +49,7 @@ For more guides and how to set up different aspects of the service [please refer
 ## Migrate from older versions
 
 <details>
-  <summary>Migrating from v5.x to v6.x Holo</summary>
+  <summary>Migrating from v5.x to v6.x</summary>
 
 This should be straightforward, as no migration is necessary. If you want to set up a new instance jjust to try, the only things you need to take care of are to copy both the `uploads/` and `database/` folders into your new instance. Once chibisafe starts it will apply the necessary migrations automatically.
 </details>
