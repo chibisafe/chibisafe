@@ -12,6 +12,7 @@ import { settingsAtom } from '@/lib/atoms/settings';
 import { toast } from 'sonner';
 import { getSignedUrl, processDropItem } from '@/lib/dropzone';
 import { useUploadFile } from '@/hooks/useUploadFile';
+import { uploadQueue } from '@/lib/uploadQueue';
 
 interface DropZonePropsWithAlbumUuid extends DropZoneProps {
 	readonly albumUuid?: string;
@@ -34,8 +35,8 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				if (!files.length) continue;
 
 				if (!settings?.useNetworkStorage) {
-					void Promise.all(
-						files.map(async file =>
+					files.map(async file =>
+						uploadQueue.add(async () =>
 							uploadFile({
 								file: file instanceof File ? file : await file.getFile(),
 								endpoint: '/api/upload',
@@ -48,8 +49,8 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 					continue;
 				}
 
-				void Promise.all(
-					files.map(async file => {
+				files.map(async file => {
+					uploadQueue.add(async () => {
 						const actualFile = file instanceof File ? file : await file.getFile();
 						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
 						if (error) {
@@ -65,8 +66,8 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 							identifier,
 							publicUrl
 						});
-					})
-				);
+					});
+				});
 			}
 		},
 		[settings, uploadFile]
