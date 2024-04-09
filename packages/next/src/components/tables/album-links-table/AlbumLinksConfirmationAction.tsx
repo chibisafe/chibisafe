@@ -28,7 +28,7 @@ export const AlbumLinksConfirmationAction = ({
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
-			void queryClient.invalidateQueries({ queryKey: ['albums', 'links'] });
+			void queryClient.invalidateQueries({ queryKey: ['albums', albumUuid, 'links'] });
 		}
 
 		return () => {
@@ -37,7 +37,7 @@ export const AlbumLinksConfirmationAction = ({
 				state.message = '';
 			}
 		};
-	}, [state.message, state.type, state, queryClient]);
+	}, [state.message, state.type, state, queryClient, albumUuid]);
 
 	return (
 		<form action={formAction} ref={formRef} className="h-full">
