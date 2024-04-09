@@ -35,13 +35,14 @@ The first things you should do is clone the repository to get everything necessa
 git clone https://github.com/chibisafe/chibisafe.git
 cd chibisafe
 yarn install
-yarn migrate
+yarn workspace @chibisafe/backend generate
+yarn workspace @chibisafe/backend migrate
 yarn build
 ```
 
 With chibisafe now built you need to run both the backend and the frontend process to get the whole system working. Before starting the chibisafe stack you need to set up 2 environment variables in order for chibisafe to understand where it needs to connect. In order to do so first run the following command:
 ```bash
-echo "BASE_API_URL=http://127.0.0.1:8000" >> ./packages/backend/.env
+echo "BASE_API_URL=http://127.0.0.1:8000" >> ./packages/next/.env
 ```
 
 After that's done, run the following command replacing `https://chibi.domain` with your domain, for example `https://chibisafe.app`

@@ -8,6 +8,7 @@ import { getSignedUrl, processDropItem } from '@/lib/dropzone';
 import { settingsAtom } from '@/lib/atoms/settings';
 import { toast } from 'sonner';
 import { useUploadFile } from '@/hooks/useUploadFile';
+import { uploadQueue } from '@/lib/uploadQueue';
 
 interface FileTriggerPropsWithAlbumUuid extends FileTriggerProps {
 	readonly albumUuid?: string;
@@ -30,8 +31,8 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 				if (!files.length) continue;
 
 				if (!settings?.useNetworkStorage) {
-					void Promise.all(
-						files.map(async file =>
+					files.map(async file =>
+						uploadQueue.add(async () =>
 							uploadFile({
 								file: file instanceof File ? file : await file.getFile(),
 								endpoint: '/api/upload',
@@ -40,14 +41,12 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 							})
 						)
 					);
-
 					continue;
 				}
 
-				void Promise.all(
-					files.map(async file => {
+				files.map(async file => {
+					uploadQueue.add(async () => {
 						const actualFile = file instanceof File ? file : await file.getFile();
-
 						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
 						if (error) {
 							toast.error(error);
@@ -62,8 +61,8 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 							identifier,
 							publicUrl
 						});
-					})
-				);
+					});
+				});
 			}
 		},
 		[settings, uploadFile]
