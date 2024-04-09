@@ -122,44 +122,53 @@ export function Pagination({
 	return (
 		<>
 			<PaginationBase className="justify-between flex-col gap-4 sm:gap-0 sm:flex-row">
-				<div className="flex w-full sm:max-w-xs items-center gap-2">
-					<div className="hidden lg:block">
-						<Tooltip content={showMasonry ? 'Switch to table view' : 'Switch to masonry view'}>
+				{type === 'publicAlbum' ? (
+					<div className="flex w-full sm:max-w-xs items-center gap-2">{itemsTotal} results</div>
+				) : (
+					<>
+						<div className="flex w-full sm:max-w-xs items-center gap-2">
+							<div className="hidden lg:block">
+								<Tooltip content={showMasonry ? 'Switch to table view' : 'Switch to masonry view'}>
+									<Button
+										type="button"
+										size={'icon'}
+										variant={'outline'}
+										className="min-w-10 min-h-10"
+										onClick={() => setShowMasonry(!showMasonry)}
+									>
+										{showMasonry ? (
+											<TableIcon className="h-4 w-4" />
+										) : (
+											<LayoutDashboardIcon className="h-4 w-4" />
+										)}
+									</Button>
+								</Tooltip>
+							</div>
+							<Input
+								placeholder={`Search...`}
+								defaultValue={search}
+								onChange={event => setSearch(event.target.value)}
+								onKeyDown={e => {
+									if (e.key === 'Enter') {
+										createSearchString();
+									}
+								}}
+							/>
 							<Button
 								type="button"
 								size={'icon'}
 								variant={'outline'}
 								className="min-w-10 min-h-10"
-								onClick={() => setShowMasonry(!showMasonry)}
+								onClick={() => createSearchString()}
 							>
-								{showMasonry ? (
-									<TableIcon className="h-4 w-4" />
-								) : (
-									<LayoutDashboardIcon className="h-4 w-4" />
-								)}
+								<SearchIcon className="h-4 w-4" />
 							</Button>
-						</Tooltip>
-					</div>
-					<Input
-						placeholder={`Search...`}
-						defaultValue={search}
-						onChange={event => setSearch(event.target.value)}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								createSearchString();
-							}
-						}}
-					/>
-					<Button
-						type="button"
-						size={'icon'}
-						variant={'outline'}
-						className="min-w-10 min-h-10"
-						onClick={() => createSearchString()}
-					>
-						<SearchIcon className="h-4 w-4" />
-					</Button>
-				</div>
+						</div>
+						<div className="flex w-full sm:max-w-xs items-center justify-center gap-2">
+							<p>{totalItems} results</p>
+						</div>
+					</>
+				)}
 				{type === 'admin' ? (
 					<div className="flex w-full sm:max-w-xs items-center gap-2">
 						<div className="flex items-center space-x-2">
