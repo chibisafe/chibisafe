@@ -51,7 +51,12 @@ export function Pagination({
 	const createSearchString = useCallback(() => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set('search', search);
-		params.set('publicOnly', publicOnly.valueOf.toString());
+		if (publicOnly) {
+			params.set('publicOnly', publicOnly.toString());
+		} else {
+			params.delete('publicOnly');
+		}
+
 		params.delete('page');
 		params.delete('limit');
 
@@ -66,15 +71,15 @@ export function Pagination({
 			}
 
 			if (page) {
-				params.set('page', String(page));
+				params.set('page', page.toString());
 			}
 
 			if (limit) {
-				params.set('limit', String(limit));
+				params.set('limit', limit.toString());
 			}
 
 			if (publicOnly) {
-				params.set('publicOnly', String(publicOnly));
+				params.set('publicOnly', publicOnly.toString());
 			} else {
 				params.delete('publicOnly');
 			}
