@@ -9,7 +9,7 @@
 		"url": "https://github.com/Pitu"
 	},
 	"scripts": {
-		"build": "rimraf \"dist/*/{*.js,!(site/)}\" --glob && tsc && tsc-alias",
+		"build": "rimraf dist && tsc && tsc-alias",
 		"start": "yarn migrate && cross-env NODE_ENV=production NODE_PRESERVE_SYMLINKS=1 node -r dotenv/config -r tsconfig-paths/register dist/main.js dotenv_config_path=../../.env",
 		"dev": "cross-env NODE_PRESERVE_SYMLINKS=1 tsx watch src/main.ts",
 		"studio": "prisma studio",
