@@ -66,7 +66,7 @@ export const fetchEndpoint = async (
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'user', props.userUuid, ...pageDataTag]
+							tags: ['files', 'user', props.userUuid?.toString(), ...pageDataTag]
 						}
 					}
 				});
@@ -79,7 +79,7 @@ export const fetchEndpoint = async (
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'ip', props.ip, ...pageDataTag]
+							tags: ['files', 'ip', props.ip?.toString(), ...pageDataTag]
 						}
 					}
 				});
@@ -125,7 +125,7 @@ export const fetchEndpoint = async (
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'album', props.albumUuid, ...pageDataTag]
+						tags: ['files', 'album', props.albumUuid?.toString(), ...pageDataTag]
 					}
 				}
 			});
@@ -138,7 +138,7 @@ export const fetchEndpoint = async (
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'tag', props.tagUuid, ...pageDataTag]
+						tags: ['files', 'tag', props.tagUuid?.toString(), ...pageDataTag]
 					}
 				}
 			});
