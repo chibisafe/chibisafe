@@ -237,7 +237,7 @@ export function FileInformationDialog({
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent
 				className={cn(
-					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0',
+					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0 min-w-60',
 					tab === 'information' ? 'w-11/12 lg:w-5/6 xl:w-6/12' : ''
 				)}
 			>
@@ -265,7 +265,7 @@ export function FileInformationDialog({
 						</div>
 					)}
 					<TabsContent value="preview" className="mt-0">
-						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
+						<div className={cn('h-[calc(100vh-11rem)]', 'w-full flex')}>
 							{isFileImage(file) ? (
 								<picture>
 									<img src={file.url} className="h-full object-contain md:block" draggable={false} />
@@ -283,7 +283,7 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : isFileAudio(file) ? (
-								<MediaController className="h-full w-full">
+								<MediaController className="w-full min-w-96">
 									<audio slot="media" src={file.url} crossOrigin="" />
 									<MediaControlBar>
 										<MediaPlayButton />
