@@ -32,8 +32,6 @@ services:
       - ./database:/app/database:rw
       - ./uploads:/app/uploads:rw
       - ./logs:/app/logs:rw
-    environment:
-      - SERVE_UPLOADS_FROM=http://localhost:24424
     expose:
       - 8000
     restart: unless-stopped
@@ -49,10 +47,6 @@ services:
       - BASE_URL=":80"
     restart: unless-stopped
 ```
-
-<Callout type="warning">
-  Please note that you need to change `SERVE_UPLOADS_FROM` to reflect your full domain where you will be serving this chibisafe instance from. It is also worth mentioning that you can either change it in your docker-compose.yml file as shown above or once you have chibisafe running from the admin dashboard.
-</Callout>
 
 Now that your `docker-compose.yml` file is set up it's now time to create the `Caddyfile` to finish the configuration process:
 
