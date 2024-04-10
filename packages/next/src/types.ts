@@ -103,8 +103,14 @@ export interface Settings {
 	chunkSize: number;
 	logoURL: string;
 	maxSize: number;
+	metaDescription: string;
+	metaDomain: string;
+	metaKeywords: string;
+	metaTwitterHandle: string;
 	publicMode: boolean;
+	serveUploadsFrom: string;
 	serviceName: string;
+	useMinimalHomepage: boolean;
 	useNetworkStorage: boolean;
 	userAccounts: boolean;
 }
