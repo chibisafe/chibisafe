@@ -47,6 +47,10 @@ services:
       - BASE_URL=":80"
     restart: unless-stopped
 ```
+<Callout type="danger">
+  Even if you use NGINX Proxy Manager, or Caddy in your host system, it is still necessary to hhave Caddy inside the docker compose file. Do not change these options unless you know what you are doing, otherwise you'll break the routing.
+</Callout>
+
 
 Now that your `docker-compose.yml` file is set up it's now time to create the `Caddyfile` to finish the configuration process:
 
@@ -77,9 +81,6 @@ Now that your `docker-compose.yml` file is set up it's now time to create the `C
 	}
 }
 ```
-<Callout type="warning">
-  We've been getting many questions if it's okay to remove the Caddy service from the docker compose file if you are already running Caddy yourself and the short answer is no. Caddy inside the containers runs as a proxy pass between the 2 services to expose just 1 port for you to actually proxy pass outside of Docker, so it's best if you leave it there.
-</Callout>
 
 ### Running chibisafe
 Now that you have every piece needed, you can launch chibisafe by running the following command:
