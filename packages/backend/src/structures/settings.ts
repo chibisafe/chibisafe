@@ -34,7 +34,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
 		// Run the update check at midnight every day
-		SETTINGS.updateCheckCron = '0 0 * * *';
+		SETTINGS.updateCheckCron = '0 * * * *';
 
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
