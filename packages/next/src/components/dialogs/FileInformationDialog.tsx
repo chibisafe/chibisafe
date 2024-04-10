@@ -265,7 +265,7 @@ export function FileInformationDialog({
 						</div>
 					)}
 					<TabsContent value="preview" className="mt-0">
-						<div className={cn('h-[calc(100vh-11rem)]', 'w-full flex')}>
+						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
 							{isFileImage(file) ? (
 								<picture>
 									<img src={file.url} className="h-full object-contain md:block" draggable={false} />
@@ -283,7 +283,7 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : isFileAudio(file) ? (
-								<MediaController className="w-full min-w-96">
+								<MediaController className="w-full min-w-96 h-full">
 									<audio slot="media" src={file.url} crossOrigin="" />
 									<MediaControlBar>
 										<MediaPlayButton />
