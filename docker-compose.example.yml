@@ -15,8 +15,6 @@ services:
       - ./database:/app/database:rw
       - ./uploads:/app/uploads:rw
       - ./logs:/app/logs:rw
-    environment:
-      - SERVE_UPLOADS_FROM=http://localhost:24424
     expose:
       - 8000
     restart: unless-stopped

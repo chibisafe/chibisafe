@@ -14,6 +14,7 @@ import { UserProvider } from '@/components/providers/UserProvider';
 import { Providers } from './providers';
 import { GlobalBackground } from '@/components/GlobalBackground';
 import request from '@/lib/request';
+import { GlobalAdminNotice } from '@/components/GlobalAdminNotice';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 				)}
 			>
 				<Providers>
+					<GlobalAdminNotice />
 					{children}
 					<GlobalBackground />
 					<Toaster position="bottom-center" />

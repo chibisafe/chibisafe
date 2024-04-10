@@ -16,7 +16,6 @@ ENV NODE_ENV=production
 EXPOSE 8000
 ENV HOSTNAME 0.0.0.0
 ENV HOST 0.0.0.0
-ENV SERVE_UPLOADS_FROM=http://localhost:24424
 ENV PORT 8000
 
 CMD ["yarn", "workspace", "@chibisafe/backend", "start"]

@@ -25,7 +25,8 @@ export const schema = {
 			useMinimalHomepage: z
 				.boolean()
 				.optional()
-				.describe('Whether or not to use a minimal version of the homepage.')
+				.describe('Whether or not to use a minimal version of the homepage.'),
+			serveUploadsFrom: z.string().optional().describe('The URL to serve uploads from.')
 		})
 	}
 };
@@ -50,6 +51,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		userAccounts: SETTINGS.userAccounts,
 		blockedExtensions: SETTINGS.blockedExtensions,
 		useNetworkStorage: SETTINGS.useNetworkStorage,
-		useMinimalHomepage: SETTINGS.useMinimalHomepage
+		useMinimalHomepage: SETTINGS.useMinimalHomepage,
+		serveUploadsFrom: SETTINGS.serveUploadsFrom
 	});
 };
