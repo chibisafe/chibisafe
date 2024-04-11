@@ -16,7 +16,7 @@ export const GlobalAdminNotice = () => {
 	return (
 		<div className="bg-yellow-700 text-white p-2 text-center text-sm">
 			Files and thumbnails will be broken until you add your full domain in{' '}
-			<Link href="/dashboard/settings" className="underline">
+			<Link href="/dashboard/admin/settings" className="underline">
 				Settings {'>'} Service {'>'} Serve uploads from
 			</Link>
 		</div>
