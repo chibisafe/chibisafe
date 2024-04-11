@@ -6,39 +6,41 @@ export const useUploadsQuery = ({
 	currentPage,
 	perPage,
 	search = '',
-	type
+	type,
+	albumUuid
 }: {
+	readonly albumUuid?: string | undefined;
 	readonly currentPage: number;
 	readonly perPage: number;
 	readonly search?: string;
 	readonly type?: FilePropsType | undefined;
 }) => {
+	const isUploads = type === 'uploads';
+	const isAlbumUploads = type === 'album' && Boolean(albumUuid);
+
 	return useQuery<{ count: number; files: File[] }>({
-		enabled: type === 'uploads',
-		queryKey: [
-			'uploads',
-			{
-				currentPage,
-				perPage,
-				search
-			}
-		],
+		enabled: isUploads || isAlbumUploads,
+		queryKey: isUploads
+			? [
+					'uploads',
+					{
+						currentPage,
+						perPage,
+						search
+					}
+				]
+			: ['album', albumUuid, { currentPage, perPage, search }],
 		queryFn: async () => {
 			const {
 				data: response,
 				error,
 				status
 			} = await request.get({
-				url: 'files',
+				url: isUploads ? 'files' : `album/${albumUuid}`,
 				query: {
 					page: currentPage,
 					limit: perPage,
 					search
-				},
-				options: {
-					next: {
-						tags: ['files']
-					}
 				}
 			});
 

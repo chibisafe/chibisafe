@@ -18,8 +18,10 @@ import { Label } from './ui/label';
 
 export function Pagination({
 	itemsTotal,
-	type
+	type,
+	albumUuid
 }: {
+	readonly albumUuid?: string | undefined;
 	readonly itemsTotal?: number | undefined;
 	readonly type?: FilePropsType | undefined;
 }) {
@@ -38,7 +40,7 @@ export function Pagination({
 	const [search, setSearch] = useState(searchParams.get('search') ?? '');
 	const [showMasonry, setShowMasonry] = useAtom(isMasonryViewAtom);
 
-	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
+	const { data } = useUploadsQuery({ currentPage, perPage, search, type, albumUuid });
 
 	const totalItems = itemsTotal ?? data?.count ?? 0;
 

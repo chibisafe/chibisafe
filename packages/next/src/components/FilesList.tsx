@@ -7,8 +7,10 @@ import { Pagination } from '@/components/Pagination';
 export async function FilesList({
 	files,
 	count,
-	type
+	type,
+	albumUuid
 }: {
+	readonly albumUuid?: string | undefined;
 	readonly count?: number;
 	readonly files?: File[];
 	readonly type: FilePropsType;
@@ -16,9 +18,9 @@ export async function FilesList({
 	return (
 		<div className="grid gap-4">
 			<Suspense>
-				<Pagination itemsTotal={count} type={type} />
-				<Masonry files={files} total={count} type={type} />
-				<Pagination itemsTotal={count} type={type} />
+				<Pagination itemsTotal={count} type={type} albumUuid={albumUuid} />
+				<Masonry files={files} total={count} type={type} albumUuid={albumUuid} />
+				<Pagination itemsTotal={count} type={type} albumUuid={albumUuid} />
 			</Suspense>
 		</div>
 	);
