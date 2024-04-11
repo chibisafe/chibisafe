@@ -34,6 +34,7 @@ import { getDate } from '@/lib/time';
 import { toast } from 'sonner';
 import { useAtom } from 'jotai';
 import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { revalidateTag } from 'next/cache';
 
 export function FileInformationDialog({
 	file,
@@ -122,6 +123,9 @@ export function FileInformationDialog({
 					return;
 				}
 
+				revalidateTag('albums');
+				revalidateTag('publicAlbum');
+
 				toast.success('File added to album');
 			} catch (error: any) {
 				toast.error(error);
@@ -140,6 +144,9 @@ export function FileInformationDialog({
 					toast.error(error);
 					return;
 				}
+
+				revalidateTag('albums');
+				revalidateTag('publicAlbum');
 
 				toast.success('File removed from album');
 			} catch (error) {
