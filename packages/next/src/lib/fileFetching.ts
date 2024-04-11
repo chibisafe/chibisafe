@@ -26,6 +26,7 @@ export const fetchEndpoint = async (
 				...commonQuery
 			},
 			options: {
+				cache: 'no-store',
 				next: {
 					tags: ['files', 'publicAlbum', props.identifier, ...pageDataTag]
 				}
