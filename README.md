@@ -50,7 +50,7 @@ For more guides and how to set up different aspects of the service [please refer
 
 ## Migrate from older versions
 
-#### from v5.x to v6.x
+### v5 to v6
 
 If you come from v5 you might be used to chibisafe exposing 1 single port for you to reverse proxy into nginx/caddy/apache. Starting from v6 this is also the case (although port is now 24424) as long as you run the configuration we provide with docker. Other than configuring your reverse proxy accordingly, all you need to do to migrate is to copy both the `uploads/` and `database/` folders into your new instance folder. Once chibisafe starts it will apply the necessary migrations automatically.
 </details>
