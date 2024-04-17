@@ -34,11 +34,11 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.enabledStatistics = ['system', 'service', 'fileSystems', 'uploads', 'users', 'albums'];
 
 		// Run the update check at midnight every day
-		SETTINGS.updateCheckCron = '0 0 * * *';
+		SETTINGS.updateCheckCron = '0 * * * *';
 
 		// These settings should be set from the database
 		SETTINGS.serviceName = settingsTable.serviceName;
-		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom || (process.env.SERVE_UPLOADS_FROM ?? '');
+		SETTINGS.serveUploadsFrom = settingsTable.serveUploadsFrom || '';
 		SETTINGS.rateLimitWindow = settingsTable.rateLimitWindow;
 		SETTINGS.rateLimitMax = settingsTable.rateLimitMax;
 		SETTINGS.secret = settingsTable.secret;
@@ -50,6 +50,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.enableMixedCaseFilenames = settingsTable.enableMixedCaseFilenames;
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
+		SETTINGS.generatedLinksLength = settingsTable.generatedLinksLength;
 		SETTINGS.blockedExtensions = settingsTable.blockedExtensions.split(',');
 		SETTINGS.blockNoExtension = settingsTable.blockNoExtension;
 		SETTINGS.publicMode = settingsTable.publicMode;
@@ -90,6 +91,7 @@ export const loadSettings = async (force = false) => {
 		enableMixedCaseFilenames: true,
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
+		generatedLinksLength: 8,
 		blockedExtensions: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'].join(','),
 		blockNoExtension: true,
 		publicMode: false,
@@ -230,6 +232,13 @@ const SETTINGS_META = {
 		description: 'The length of the generated album names.',
 		name: 'Generated Album Length',
 		notice: 'This setting should at least be 4 characters long to avoid collisions.',
+		category: 'other'
+	},
+	generatedLinksLength: {
+		type: 'number',
+		description: 'The length of the generated short URL links.',
+		name: 'Generated short URL Length',
+		notice: 'This setting should at least be 8 characters long to avoid collisions.',
 		category: 'other'
 	},
 	blockedExtensions: {

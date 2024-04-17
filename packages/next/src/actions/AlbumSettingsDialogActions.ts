@@ -19,7 +19,7 @@ export const deleteAlbum = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
+		revalidateTag('albums');
 		return { message: 'Album deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -40,6 +40,7 @@ export const deleteAlbumAndFiles = async (_: any, form: FormData) => {
 		if (error) return { message: error, type: MessageType.Error };
 
 		revalidateTag('files');
+		revalidateTag('albums');
 		return { message: 'Album and all files deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

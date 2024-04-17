@@ -31,6 +31,7 @@ _If you fork/deploy your own instance it would mean a lot if you were to keep ei
 - 📝 Snippets/Gists creation with direct links to share
 - 🗃️ File management and file tagging
 - 🙋 User management and quotas
+- 🔗 Built-in URL shortener
 - ✉️ Public or Private mode (with invite support)
 - ⬆️ ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
 - 📱 iOS shortcut to upload files through the share menu
@@ -50,10 +51,9 @@ For more guides and how to set up different aspects of the service [please refer
 
 ## Migrate from older versions
 
-<details>
-  <summary>Migrating from v5.x to v6.x</summary>
+### v5 to v6
 
-This should be straightforward, as no migration is necessary. If you want to set up a new instance jjust to try, the only things you need to take care of are to copy both the `uploads/` and `database/` folders into your new instance. Once chibisafe starts it will apply the necessary migrations automatically.
+If you come from v5 you might be used to chibisafe exposing 1 single port for you to reverse proxy into nginx/caddy/apache. Starting from v6 this is also the case (although port is now 24424) as long as you run the configuration we provide with docker. Other than configuring your reverse proxy accordingly, all you need to do to migrate is to copy both the `uploads/` and `database/` folders into your new instance folder. Once chibisafe starts it will apply the necessary migrations automatically.
 </details>
 
 > [!CAUTION]

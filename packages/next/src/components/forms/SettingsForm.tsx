@@ -50,7 +50,8 @@ const formSchema = z.object({
 	S3PublicUrl: z.string().optional(),
 	// Other
 	generateZips: z.boolean().optional(),
-	generatedAlbumLength: z.coerce.number()
+	generatedAlbumLength: z.coerce.number(),
+	generatedLinksLength: z.coerce.number()
 });
 
 type FormValues = z.infer<typeof formSchema>;

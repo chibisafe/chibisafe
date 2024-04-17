@@ -53,14 +53,14 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 			}
 
 			toast.success('Link created');
-			void queryClient.invalidateQueries({ queryKey: ['albums', 'links'] });
+			void queryClient.invalidateQueries({ queryKey: ['albums', album?.uuid?.toString(), 'links'] });
 		} catch (error: any) {
 			toast.error(error);
 		}
 	};
 
 	const { data, error } = useQuery<{ links: AlbumLink[] }>({
-		queryKey: ['albums', 'links'],
+		queryKey: ['albums', album?.uuid, 'links'],
 		enabled: Boolean(album?.uuid),
 		queryFn: async () => {
 			const {
@@ -71,7 +71,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 				url: `album/${album?.uuid}/links`,
 				options: {
 					next: {
-						tags: ['links']
+						tags: ['album', album?.uuid.toString(), 'links']
 					}
 				}
 			});

@@ -11,14 +11,6 @@ export const fetchEndpoint = async (
 	search = '',
 	publicOnly = false
 ) => {
-	const cookiesStore = cookies();
-	const token = cookiesStore.get('token')?.value;
-	if (!token) redirect('/');
-
-	const headers = {
-		authorization: `Bearer ${token}`
-	};
-
 	const commonQuery = {
 		page: currentPage,
 		limit: currentLimit,
@@ -26,6 +18,29 @@ export const fetchEndpoint = async (
 	};
 
 	const pageDataTag = [currentPage.toString(), currentLimit.toString()];
+
+	if (props.type === 'publicAlbum') {
+		return request.get({
+			url: `album/${props.identifier}/view`,
+			query: {
+				...commonQuery
+			},
+			options: {
+				cache: 'no-store',
+				next: {
+					tags: ['files', 'publicAlbum', props.identifier, ...pageDataTag]
+				}
+			}
+		});
+	}
+
+	const cookiesStore = cookies();
+	const token = cookiesStore.get('token')?.value;
+	if (!token) redirect('/');
+
+	const headers = {
+		authorization: `Bearer ${token}`
+	};
 
 	if (props.query?.search) {
 		return request.post({
@@ -52,7 +67,7 @@ export const fetchEndpoint = async (
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'user', props.userUuid, ...pageDataTag]
+							tags: ['files', 'user', props.userUuid?.toString(), ...pageDataTag]
 						}
 					}
 				});
@@ -65,7 +80,7 @@ export const fetchEndpoint = async (
 					headers,
 					options: {
 						next: {
-							tags: ['files', 'ip', props.ip, ...pageDataTag]
+							tags: ['files', 'ip', props.ip?.toString(), ...pageDataTag]
 						}
 					}
 				});
@@ -111,7 +126,7 @@ export const fetchEndpoint = async (
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'album', props.albumUuid, ...pageDataTag]
+						tags: ['files', 'album', props.albumUuid?.toString(), ...pageDataTag]
 					}
 				}
 			});
@@ -124,20 +139,7 @@ export const fetchEndpoint = async (
 				headers,
 				options: {
 					next: {
-						tags: ['files', 'tag', props.tagUuid, ...pageDataTag]
-					}
-				}
-			});
-		case 'publicAlbum':
-			return request.get({
-				url: `album/${props.identifier}/view`,
-				query: {
-					...commonQuery
-				},
-				headers,
-				options: {
-					next: {
-						tags: ['files', 'publicAlbum', props.identifier, ...pageDataTag]
+						tags: ['files', 'tag', props.tagUuid?.toString(), ...pageDataTag]
 					}
 				}
 			});

@@ -7,20 +7,17 @@ import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
-import { deleteLink } from '@/actions/AlbumSettingsDialogActions';
-import { useQueryClient } from '@tanstack/react-query';
+import { deleteLink } from '@/actions/LinksActions';
 
-export const AlbumLinksConfirmationAction = ({
-	uuid,
-	albumUuid,
+export const LinksConfirmationAction = ({
+	identifier,
 	description,
 	children
-}: PropsWithChildren<{ readonly albumUuid: string; readonly description: string; readonly uuid: string }>) => {
+}: PropsWithChildren<{ readonly description: string; readonly identifier: string }>) => {
 	const [state, formAction] = useFormState(deleteLink, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
-	const queryClient = useQueryClient();
 
 	const formRef = useRef<HTMLFormElement>(null);
 
@@ -28,7 +25,6 @@ export const AlbumLinksConfirmationAction = ({
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
-			void queryClient.invalidateQueries({ queryKey: ['albums', albumUuid, 'links'] });
 		}
 
 		return () => {
@@ -37,12 +33,11 @@ export const AlbumLinksConfirmationAction = ({
 				state.message = '';
 			}
 		};
-	}, [state.message, state.type, state, queryClient, albumUuid]);
+	}, [state.message, state.type, state]);
 
 	return (
-		<form action={formAction} ref={formRef} className="h-full">
-			<input type="hidden" name="uuid" value={uuid} />
-			<input type="hidden" name="albumUuid" value={albumUuid} />
+		<form action={formAction} ref={formRef} className="w-full h-full">
+			<input type="hidden" name="identifier" value={identifier} />
 			<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
 				{children}
 			</ConfirmationDialog>

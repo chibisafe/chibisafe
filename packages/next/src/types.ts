@@ -103,8 +103,14 @@ export interface Settings {
 	chunkSize: number;
 	logoURL: string;
 	maxSize: number;
+	metaDescription: string;
+	metaDomain: string;
+	metaKeywords: string;
+	metaTwitterHandle: string;
 	publicMode: boolean;
+	serveUploadsFrom: string;
 	serviceName: string;
+	useMinimalHomepage: boolean;
 	useNetworkStorage: boolean;
 	userAccounts: boolean;
 }
@@ -194,6 +200,15 @@ export interface Snippet {
 	parentUuid: string;
 	raw: string;
 	uuid: string;
+}
+
+export interface Link {
+	createdAt: string;
+	destination: string;
+	identifier: string;
+	link: string;
+	uuid: string;
+	views: number;
 }
 
 export interface StorageQuota {

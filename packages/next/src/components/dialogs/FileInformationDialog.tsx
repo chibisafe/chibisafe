@@ -237,7 +237,7 @@ export function FileInformationDialog({
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent
 				className={cn(
-					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0',
+					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0 min-w-60',
 					tab === 'information' ? 'w-11/12 lg:w-5/6 xl:w-6/12' : ''
 				)}
 			>
@@ -283,7 +283,7 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : isFileAudio(file) ? (
-								<MediaController className="h-full w-full">
+								<MediaController className="w-full min-w-96 h-full">
 									<audio slot="media" src={file.url} crossOrigin="" />
 									<MediaControlBar>
 										<MediaPlayButton />

@@ -45,11 +45,6 @@ With chibisafe now built you need to run both the backend and the frontend proce
 echo "BASE_API_URL=http://127.0.0.1:8000" >> ./packages/next/.env
 ```
 
-After that's done, run the following command replacing `https://chibi.domain` with your domain, for example `https://chibisafe.app`
-```bash
-echo "SERVE_UPLOADS_FROM=https://chibi.domain" >> ./packages/backend/.env
-```
-
 You can start both processes by running the following 2 commands in either separate terminals or tmux sessions.
 ```bash
 yarn start:backend
@@ -79,9 +74,8 @@ If you rather use PM2 what you can do is create a file called `chibisafe.json` i
       "script": "yarn",
       "args": ["workspace", "@chibisafe/backend", "start"],
       "env": {
-            "SERVE_UPLOADS_FROM": "https://chibi.domain",
-            "NODE_ENV": "production"
-        }
+        "NODE_ENV": "production"
+      }
     }
   ]
 }

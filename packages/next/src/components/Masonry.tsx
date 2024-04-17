@@ -18,13 +18,18 @@ import { isMasonryViewAtom } from '@/lib/atoms/settings';
 export function Masonry({
 	files,
 	total,
-	type
+	type,
+	albumUuid
 }: {
+	readonly albumUuid?: string | undefined;
 	readonly files?: File[] | undefined;
 	readonly total?: number | undefined;
 	readonly type: FilePropsType;
 }) {
 	const searchParams = useSearchParams();
+
+	const isUploads = type === 'uploads';
+	const isAlbumUploads = type === 'album' && Boolean(albumUuid);
 
 	const currentPage = searchParams.get('page') ? Number.parseInt(searchParams.get('page')!, 10) : 1;
 	const perPage = searchParams.get('limit')
@@ -34,7 +39,7 @@ export function Masonry({
 		: 50;
 	const search = searchParams.get('search') ?? '';
 
-	const { data } = useUploadsQuery({ currentPage, perPage, search, type });
+	const { data } = useUploadsQuery({ currentPage, perPage, search, type, albumUuid });
 
 	const [modalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
@@ -63,7 +68,7 @@ export function Masonry({
 		<>
 			{showMasonry ? (
 				<Plock
-					items={files?.length ? files : type === 'uploads' ? data?.files ?? [] : []}
+					items={files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []}
 					config={{
 						columns: [2, 2, 3, 4],
 						gap: [10, 14, 14, 14],
