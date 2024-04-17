@@ -36,6 +36,17 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return;
 	}
 
+	await prisma.shortenedLinks.update({
+		where: {
+			identifier
+		},
+		data: {
+			views: {
+				increment: 1
+			}
+		}
+	});
+
 	if (!link.destination.startsWith('http')) {
 		link.destination = `http://${link.destination}`;
 	}
