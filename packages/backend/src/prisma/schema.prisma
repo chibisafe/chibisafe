@@ -73,6 +73,16 @@ model snippets {
 	editedAt DateTime?
 }
 
+model shortenedLinks {
+	id Int @id @default(autoincrement())
+	uuid String @unique
+	userId Int?
+	identifier String @unique
+	destination String
+	views Int @default(0)
+	createdAt DateTime @default(now())
+}
+
 model albums {
 	id Int @id @default(autoincrement())
 	uuid String @unique
@@ -120,6 +130,7 @@ model settings {
 	generateOriginalFileNameWithIdentifier Boolean @default(false)
 	generatedFilenameLength Int
 	generatedAlbumLength Int
+	generatedLinksLength Int
 	blockedExtensions String
 	blockNoExtension Boolean
 	publicMode Boolean
