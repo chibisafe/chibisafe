@@ -202,6 +202,15 @@ export interface Snippet {
 	uuid: string;
 }
 
+export interface Link {
+	createdAt: string;
+	destination: string;
+	identifier: string;
+	link: string;
+	uuid: string;
+	views: number;
+}
+
 export interface StorageQuota {
 	overQuota: boolean;
 	quota: number;
