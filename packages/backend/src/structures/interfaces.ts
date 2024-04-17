@@ -125,6 +125,7 @@ export interface Settings {
 	generateZips: boolean;
 	generatedAlbumLength: number;
 	generatedFilenameLength: number;
+	generatedLinksLength: number;
 	logoURL: string;
 	maxSize: number;
 	metaDescription: string;
