@@ -2,6 +2,10 @@
 
 chibisafe supports adding an S3-compatible Object Storage service to use as the destination for your uploads, meaning you can now offload all your uploads to any S3-compatible storage of choice like AWS S3, Backblaze, Wasabi, etc.
 
+<Callout type="warning">
+  Enabling network storage will prevent using tools like ShareX or uploading directly to the `/api/upload` endpoint as the normal uploading flow changes by getting a signed URL from the network provider.
+</Callout>
+
 Settings for each provider might differ slightly but the main idea is that providing the following options, users can upload files directly to the storage:
 
 <img
