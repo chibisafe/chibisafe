@@ -31,6 +31,7 @@ _If you fork/deploy your own instance it would mean a lot if you were to keep ei
 - 📝 Snippets/Gists creation with direct links to share
 - 🗃️ File management and file tagging
 - 🙋 User management and quotas
+- 🔗 Built-in URL shortener
 - ✉️ Public or Private mode (with invite support)
 - ⬆️ ShareX support out-of-the-box to upload screenshots/screenrecordings from your desktop
 - 📱 iOS shortcut to upload files through the share menu
