@@ -30,7 +30,7 @@ CREATE TABLE "new_settings" (
     "generateOriginalFileNameWithIdentifier" BOOLEAN NOT NULL DEFAULT false,
     "generatedFilenameLength" INTEGER NOT NULL,
     "generatedAlbumLength" INTEGER NOT NULL,
-    "generatedLinksLength" INTEGER NOT NULL,
+    "generatedLinksLength" INTEGER NOT NULL DEFAULT 8,
     "blockedExtensions" TEXT NOT NULL,
     "blockNoExtension" BOOLEAN NOT NULL,
     "publicMode" BOOLEAN NOT NULL,

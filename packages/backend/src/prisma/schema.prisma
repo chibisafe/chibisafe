@@ -130,7 +130,7 @@ model settings {
 	generateOriginalFileNameWithIdentifier Boolean @default(false)
 	generatedFilenameLength Int
 	generatedAlbumLength Int
-	generatedLinksLength Int
+	generatedLinksLength Int @default(8)
 	blockedExtensions String
 	blockNoExtension Boolean
 	publicMode Boolean
