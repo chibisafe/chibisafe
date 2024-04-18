@@ -15,7 +15,7 @@ export const schema = {
 	description: 'Create a new shortened link',
 	tags: ['Links'],
 	body: z.object({
-		url: z.string().optional().describe('The destination url.'),
+		url: z.string().describe('The destination url.'),
 		vanity: z.string().optional().describe('The vanity url to use.')
 	}),
 	response: {
@@ -47,8 +47,6 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { url, vanity } = req.body as { url: string; vanity?: string | undefined };
-
-	console.log(url, vanity);
 	const now = moment.utc().toDate();
 
 	let linkToUse;
