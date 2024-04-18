@@ -51,7 +51,8 @@ const formSchema = z.object({
 	// Other
 	generateZips: z.boolean().optional(),
 	generatedAlbumLength: z.coerce.number(),
-	generatedLinksLength: z.coerce.number()
+	generatedLinksLength: z.coerce.number(),
+	useUrlShortener: z.boolean().optional()
 });
 
 type FormValues = z.infer<typeof formSchema>;

@@ -3,6 +3,7 @@ import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { SETTINGS } from '@/structures/settings.js';
 
 export const schema = {
 	summary: 'Get link',
@@ -20,6 +21,11 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
+	if (!SETTINGS.useUrlShortener) {
+		void res.notImplemented('URL shortener is disabled');
+		return;
+	}
+
 	const { identifier } = req.params as { identifier: string };
 
 	const link = await prisma.shortenedLinks.findFirst({
