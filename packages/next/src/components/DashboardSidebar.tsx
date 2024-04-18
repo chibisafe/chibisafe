@@ -22,9 +22,11 @@ import { saveAs } from 'file-saver';
 import request from '@/lib/request';
 import type { UpdateCheck } from '@/types';
 import { useEffect, useState } from 'react';
+import { settingsAtom } from '@/lib/atoms/settings';
 
 export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 	const currentUser = useAtomValue(currentUserAtom);
+	const currentSettings = useAtomValue(settingsAtom);
 	const [update, setUpdate] = useState<UpdateCheck | undefined>(undefined);
 
 	useEffect(() => {
@@ -79,7 +81,9 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
 				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
 				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
-				<DashboardSidebarItem href="/dashboard/links" name="Short URLs" Icon={Link} />
+				{currentSettings?.useUrlShortener ? (
+					<DashboardSidebarItem href="/dashboard/links" name="Short URLs" Icon={Link} />
+				) : null}
 			</nav>
 			<nav className="grid items-start gap-1 mt-4" onClick={() => onClick?.()}>
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>

@@ -112,6 +112,7 @@ export interface Settings {
 	serviceName: string;
 	useMinimalHomepage: boolean;
 	useNetworkStorage: boolean;
+	useUrlShortener: boolean;
 	userAccounts: boolean;
 }
 

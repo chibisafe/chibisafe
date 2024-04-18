@@ -26,6 +26,7 @@ export const schema = {
 				.boolean()
 				.optional()
 				.describe('Whether or not to use a minimal version of the homepage.'),
+			useUrlShortener: z.boolean().describe('Whether or not to use the URL shortener.'),
 			serveUploadsFrom: z.string().optional().describe('The URL to serve uploads from.')
 		})
 	}
@@ -52,6 +53,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		blockedExtensions: SETTINGS.blockedExtensions,
 		useNetworkStorage: SETTINGS.useNetworkStorage,
 		useMinimalHomepage: SETTINGS.useMinimalHomepage,
-		serveUploadsFrom: SETTINGS.serveUploadsFrom
+		serveUploadsFrom: SETTINGS.serveUploadsFrom,
+		useUrlShortener: SETTINGS.useUrlShortener
 	});
 };
