@@ -207,6 +207,10 @@ export interface Link {
 	destination: string;
 	identifier: string;
 	link: string;
+	user?: {
+		username: string;
+		uuid: string;
+	};
 	uuid: string;
 	views: number;
 }

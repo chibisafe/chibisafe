@@ -7,14 +7,19 @@ import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
-import { deleteLink } from '@/actions/LinksActions';
+import { deleteLink, deleteLinkAsAdmin } from '@/actions/LinksActions';
 
 export const LinksConfirmationAction = ({
 	identifier,
 	description,
+	isAdmin,
 	children
-}: PropsWithChildren<{ readonly description: string; readonly identifier: string }>) => {
-	const [state, formAction] = useFormState(deleteLink, {
+}: PropsWithChildren<{
+	readonly description: string;
+	readonly identifier: string;
+	readonly isAdmin?: boolean | undefined;
+}>) => {
+	const [state, formAction] = useFormState(isAdmin ? deleteLinkAsAdmin : deleteLink, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
