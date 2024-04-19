@@ -32,7 +32,15 @@ export const schema = {
 export const options = {
 	url: '/file/:uuid/highlight',
 	method: 'get',
-	middlewares: ['apiKey', 'auth']
+	middlewares: [
+		{
+			name: 'apiKey'
+		},
+		{
+			name: 'auth',
+			optional: true
+		}
+	]
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
@@ -41,7 +49,6 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const file = (await prisma.files.findFirst({
 		where: {
 			uuid
-			// userId: req.user.id
 		},
 		select: {
 			name: true,
@@ -71,7 +78,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		return language.aliases?.includes(extension) ?? language.id === extension;
 	});
 
-	const extensionsToIgnore = ['txt', 'log'];
+	const extensionsToIgnore = ['txt', 'log', 'srt'];
 
 	if (!foundLanguage && !extensionsToIgnore.includes(extension)) {
 		void res.badRequest('The file type is not supported');

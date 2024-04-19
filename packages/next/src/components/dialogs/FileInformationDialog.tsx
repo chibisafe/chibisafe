@@ -15,7 +15,7 @@ import {
 	MediaVolumeRange
 } from 'media-chrome/dist/react';
 
-import { formatBytes, isFileAudio, isFileImage, isFileText, isFileVideo } from '@/lib/file';
+import { formatBytes, isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
 import request from '@/lib/request';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -26,7 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
+import { ArrowUpRightFromSquare } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
@@ -42,11 +42,7 @@ export function FileInformationDialog() {
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
-	const [tab, setTab] = useState(
-		isFileImage(selectedFile) || isFileAudio(selectedFile) || isFileVideo(selectedFile) || isFileText(selectedFile)
-			? 'preview'
-			: 'information'
-	);
+	const [tab, setTab] = useState('preview');
 	const [isModalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 
 	const fetchFileInfo = useCallback(async () => {
@@ -236,14 +232,7 @@ export function FileInformationDialog() {
 	useEffect(() => {
 		if (isModalOpen) {
 			void fetchExtraData();
-			setTab(
-				isFileImage(selectedFile) ||
-					isFileAudio(selectedFile) ||
-					isFileVideo(selectedFile) ||
-					isFileText(selectedFile)
-					? 'preview'
-					: 'information'
-			);
+			setTab('preview');
 		}
 	}, [isModalOpen, fetchExtraData, selectedFile]);
 
@@ -312,13 +301,8 @@ export function FileInformationDialog() {
 										<MediaVolumeRange />
 									</MediaControlBar>
 								</MediaController>
-							) : isFileText(selectedFile) ? (
-								<FileTextViewer uuid={selectedFile.uuid} />
 							) : (
-								<span className="text-light-100 h-full items-center hidden md:flex px-8 flex-col justify-center gap-4">
-									<FileQuestionIcon className="w-16 h-16" />
-									Sorry but this filetype can't be previewed at this time.
-								</span>
+								<FileTextViewer uuid={selectedFile.uuid} />
 							)}
 						</div>
 					</TabsContent>
