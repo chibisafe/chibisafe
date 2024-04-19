@@ -1,23 +1,23 @@
 import { CustomMDX } from '@/components/mdx/Mdx';
-import { getPosts } from '@/lib/mdx';
+import { getFaq } from '@/lib/mdx';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
-	const posts = getPosts();
+	const posts = getFaq();
 
 	return posts.map(post => ({
 		slug: post.slug
 	}));
 }
 
-export function generateMetadata({ params }: { readonly params: { slug: string } }) {
-	const post = getPosts().find(post => post.slug === params.slug);
+export function generateMetadata() {
+	const post = getFaq()[0];
 	if (!post) {
 		return;
 	}
 
 	const { title, summary: description, image } = post.metadata;
-	const ogImage = image ? image : '/meta.jpg';
+	const ogImage = image ? image : `/meta.jpg`;
 
 	return {
 		title,
@@ -41,8 +41,8 @@ export function generateMetadata({ params }: { readonly params: { slug: string }
 	};
 }
 
-export default function Guide({ params }: { readonly params: { slug: string } }) {
-	const post = getPosts().find(post => post.slug === params.slug);
+export default function Faq() {
+	const post = getFaq()[0];
 
 	if (!post) {
 		return notFound();

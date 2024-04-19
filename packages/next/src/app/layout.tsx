@@ -48,7 +48,7 @@ export async function generateMetadata() {
 	}
 
 	return {
-		metadataBase: new URL(settings?.metaDomain || meta.url),
+		metadataBase: new URL(settings?.serveUploadsFrom || meta.url),
 		title: {
 			default: settings?.serviceName ?? meta.name,
 			template: `%s - ${settings?.serviceName ?? meta.name}`
