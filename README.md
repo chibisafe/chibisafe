@@ -44,8 +44,9 @@ _If you fork/deploy your own instance it would mean a lot if you were to keep ei
 ## Installing and running chibisafe
 Whichever method you choose to install chibisafe keep in mind that the installation process creates an account named `admin` with the same password. Once you log in the first time make sure to change it! Also we ***highly*** recommend using docker for chibisafe.
 
-- [Running chibisafe with Docker](https://chibisafe.app/guides/running-with-docker) | [Alternate link](https://github.com/chibisafe/chibisafe/blob/master/packages/next/src/app/(home)/guides/(content)/running-with-docker/page.mdx)
-- [Running chibisafe manually](https://chibisafe.app/guides/running-manually) | [Alternate link](https://github.com/chibisafe/chibisafe/blob/master/packages/next/src/app/(home)/guides/(content)/running-manually/page.mdx)
+- [Running chibisafe with Docker](https://chibisafe.app/guides/running-with-docker) | [Alternate link](https://github.com/chibisafe/chibisafe/blob/master/packages/next/src/content/guides/running-with-docker.mdx)
+- [Running chibisafe manually](https://chibisafe.app/guides/running-manually) | [Alternate link](https://github.com/chibisafe/chibisafe/blob/master/packages/next/src/content/guides/running-manually.mdx)
+- [Using network storage with chibisafe](https://chibisafe.app/guides/using-network-storage) | [Alternate link](https://github.com/chibisafe/chibisafe/blob/master/packages/next/src/content/guides/using-network-storage.mdx)
 
 For more guides and how to set up different aspects of the service [please refer to the guides](https://chibisafe.app/guides)
 
