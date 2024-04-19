@@ -35,7 +35,8 @@ export const schema = {
 						type: z.string().describe('The type of the file.'),
 						url: z.string().describe('The URL of the file.'),
 						thumb: z.string().describe('The URL of the thumbnail of the file.'),
-						preview: z.string().describe('The URL of the preview of the file.')
+						preview: z.string().describe('The URL of the preview of the file.'),
+						uuid: z.string().describe('The UUID of the file.')
 					})
 				)
 			})
@@ -95,7 +96,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 					name: true,
 					type: true,
 					isS3: true,
-					isWatched: true
+					isWatched: true,
+					uuid: true
 				},
 				orderBy: {
 					id: 'desc'
