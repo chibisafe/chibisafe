@@ -262,3 +262,18 @@ export interface UpdateCheck {
 	releaseNotes: ReleaseNotes[];
 	updateAvailable: boolean;
 }
+
+export interface MetadataBuilder {
+	description?: string;
+	openGraph: {
+		description?: string;
+		images?: string[];
+		title?: string;
+	};
+	title: string;
+	twitter: {
+		description?: string;
+		images?: string[];
+		title?: string;
+	};
+}

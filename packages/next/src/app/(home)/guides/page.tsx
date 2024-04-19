@@ -2,7 +2,15 @@ import Link from 'next/link';
 
 export const metadata = {
 	title: 'Guides',
-	description: 'This section includes guides for running and configuring your chibisafe instance.'
+	description: 'This page includes guides for running and configuring your chibisafe instance.',
+	openGraph: {
+		title: 'Guides',
+		images: ['/meta-guides.jpg']
+	},
+	twitter: {
+		title: 'Guides',
+		images: ['/meta-guides.jpg']
+	}
 };
 
 export default function GuidesPage() {
