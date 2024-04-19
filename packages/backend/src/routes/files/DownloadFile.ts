@@ -5,6 +5,7 @@ import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
+import { constructFilePublicLink } from '@/utils/File.js';
 
 export const schema = {
 	summary: 'Download file',
@@ -37,13 +38,19 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		},
 		select: {
 			name: true,
-			original: true
+			original: true,
+			isS3: true
 		}
 	});
 
 	if (!file) {
 		void res.notFound('The file could not be found');
 		return;
+	}
+
+	if (file.isS3) {
+		const link = constructFilePublicLink({ req, fileName: file.name, isS3: file.isS3 });
+		return res.redirect(link.url);
 	}
 
 	const uploadPath = fileURLToPath(new URL('../../../../../uploads', import.meta.url));
