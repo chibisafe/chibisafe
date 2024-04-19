@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: { readonly params: { identifi
 		title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
 		openGraph: {
 			title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
-			images: [response.album.isNsfw ? '/meta-nsfw-album.jpg' : '/meta-album.jpg']
+			images: [response.album.isNsfw ? '/og?section=nsfw-album' : '/og?section=album']
 		},
 		twitter: {
 			title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
-			images: [response.album.isNsfw ? '/meta-nsfw-album.jpg' : '/meta-album.jpg']
+			images: [response.album.isNsfw ? '/og?section=nsfw-album' : '/og?section=album']
 		}
 	} as MetadataBuilder;
 
