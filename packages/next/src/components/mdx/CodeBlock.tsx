@@ -1,9 +1,4 @@
 import * as React from 'react';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import rehypePrettyCode from 'rehype-pretty-code';
 
 import { highlighter } from '@/lib/shiki';
 
