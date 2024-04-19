@@ -1,5 +1,7 @@
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { readFileSync } from 'node:fs';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
@@ -9,7 +11,7 @@ const withMDX = createMDX({
 	// Add markdown plugins here, as desired
 	extension: /\.mdx?$/,
 	options: {
-		remarkPlugins: [remarkGfm],
+		remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
 		rehypePlugins: [
 			rehypeSlug,
 			rehypeAutolinkHeadings,
