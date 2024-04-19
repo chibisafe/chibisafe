@@ -22,6 +22,7 @@ import Link from 'next/link';
 
 declare module '@tanstack/table-core' {
 	interface TableMeta<TData extends RowData> {
+		isAdmin?: boolean;
 		type?: FilePropsType;
 	}
 }

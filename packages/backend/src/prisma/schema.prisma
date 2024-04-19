@@ -23,6 +23,7 @@ model users {
 	editedAt DateTime?
 	files files[]
 	roles roles[]
+	links shortenedLinks []
 }
 
 model roles {
@@ -76,6 +77,7 @@ model snippets {
 model shortenedLinks {
 	id Int @id @default(autoincrement())
 	uuid String @unique
+	user users? @relation(fields: [userId], references: [id])
 	userId Int?
 	identifier String @unique
 	destination String
@@ -130,7 +132,7 @@ model settings {
 	generateOriginalFileNameWithIdentifier Boolean @default(false)
 	generatedFilenameLength Int
 	generatedAlbumLength Int
-	generatedLinksLength Int
+	generatedLinksLength Int @default(8)
 	blockedExtensions String
 	blockNoExtension Boolean
 	publicMode Boolean
@@ -148,6 +150,7 @@ model settings {
 	usersStorageQuota String @default("0")
 	useNetworkStorage Boolean @default(false)
 	useMinimalHomepage Boolean @default(false)
+	useUrlShortener Boolean @default(false)
 	S3Region String @default("")
 	S3Bucket String @default("")
 	S3AccessKey String @default("")

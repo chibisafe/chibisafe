@@ -8,6 +8,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+import { SETTINGS } from '@/structures/settings.js';
 import { constructShortLink, getUniqueShortLinkIdentifier } from '@/utils/Link.js';
 
 export const schema = {
@@ -15,7 +16,7 @@ export const schema = {
 	description: 'Create a new shortened link',
 	tags: ['Links'],
 	body: z.object({
-		url: z.string().optional().describe('The destination url.'),
+		url: z.string().describe('The destination url.'),
 		vanity: z.string().optional().describe('The vanity url to use.')
 	}),
 	response: {
@@ -46,9 +47,12 @@ export const options = {
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { url, vanity } = req.body as { url: string; vanity?: string | undefined };
+	if (!SETTINGS.useUrlShortener) {
+		void res.notImplemented('URL shortener is disabled');
+		return;
+	}
 
-	console.log(url, vanity);
+	const { url, vanity } = req.body as { url: string; vanity?: string | undefined };
 	const now = moment.utc().toDate();
 
 	let linkToUse;

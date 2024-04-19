@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
-import type { Album as AlbumType, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
-import type { DialogProps } from '@radix-ui/react-dialog';
+import { useCallback, useEffect, useState } from 'react';
+import type { Album as AlbumType, Tag } from '@/types';
 import {
 	MediaControlBar,
 	MediaController,
@@ -27,37 +26,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { ArrowUpRightFromSquare, FileQuestionIcon } from 'lucide-react';
+import { ArrowUpRightFromSquare } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
 import { toast } from 'sonner';
-import { useAtom } from 'jotai';
-import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { useAtom, useAtomValue } from 'jotai';
+import { currentTypeAtom, isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileInformationDialog';
+import { FileTextViewer } from '../FileTextViewer';
 
-export function FileInformationDialog({
-	file,
-	type,
-	isOpen = false,
-	onOpenChange = () => {}
-}: PropsWithChildren<{
-	readonly file: FileWithAdditionalData;
-	readonly isOpen: DialogProps['open'];
-	readonly onOpenChange: DialogProps['onOpenChange'];
-	readonly type: FilePropsType;
-}>) {
+export function FileInformationDialog() {
+	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
+	const currentType = useAtomValue(currentTypeAtom);
 	const [albums, setAlbums] = useState<AlbumType[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<AlbumType[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
-	const [tab, setTab] = useState(
-		isFileImage(file) || isFileAudio(file) || isFileVideo(file) ? 'preview' : 'information'
-	);
-	const [_, setModalOpen] = useAtom(isDialogOpenAtom);
+	const [tab, setTab] = useState('preview');
+	const [isModalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 
 	const fetchFileInfo = useCallback(async () => {
 		try {
-			const { data: response, error } = await request.get({ url: `file/${file.uuid}` });
+			const { data: response, error } = await request.get({ url: `file/${selectedFile?.uuid}` });
 			if (error) {
 				toast.error(error);
 				return;
@@ -68,7 +58,7 @@ export function FileInformationDialog({
 		} catch (error) {
 			console.error(error);
 		}
-	}, [file.uuid]);
+	}, [selectedFile?.uuid]);
 
 	const fetchAllTags = useCallback(async () => {
 		try {
@@ -84,9 +74,9 @@ export function FileInformationDialog({
 
 	const fetchExtraData = useCallback(async () => {
 		try {
-			if (type === 'admin') return;
-			if (type === 'publicAlbum') return;
-			if (type === 'quarantine') return;
+			if (currentType === 'admin') return;
+			if (currentType === 'publicAlbum') return;
+			if (currentType === 'quarantine') return;
 
 			const { data: createdAlbums, error: createdAlbumError } = await request.get({
 				url: 'albums',
@@ -109,13 +99,13 @@ export function FileInformationDialog({
 		} catch (error) {
 			console.error(error);
 		}
-	}, [fetchAllTags, fetchFileInfo, type]);
+	}, [fetchAllTags, fetchFileInfo, currentType]);
 
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
 				const { error } = await request.post({
-					url: `file/${file.uuid}/album/${albumUuid}`
+					url: `file/${selectedFile?.uuid}/album/${albumUuid}`
 				});
 				if (error) {
 					toast.error(error);
@@ -127,14 +117,14 @@ export function FileInformationDialog({
 				toast.error(error);
 			}
 		},
-		[file.uuid]
+		[selectedFile?.uuid]
 	);
 
 	const removeFileFromAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
 				const { error } = await request.delete({
-					url: `file/${file.uuid}/album/${albumUuid}`
+					url: `file/${selectedFile?.uuid}/album/${albumUuid}`
 				});
 				if (error) {
 					toast.error(error);
@@ -146,14 +136,14 @@ export function FileInformationDialog({
 				console.error(error);
 			}
 		},
-		[file.uuid]
+		[selectedFile?.uuid]
 	);
 
 	const addTagToFile = useCallback(
 		async (tagUuid: string) => {
 			try {
 				const { error } = await request.post({
-					url: `file/${file.uuid}/tag/${tagUuid}`
+					url: `file/${selectedFile?.uuid}/tag/${tagUuid}`
 				});
 				if (error) {
 					toast.error(error);
@@ -165,7 +155,7 @@ export function FileInformationDialog({
 				toast.error(error);
 			}
 		},
-		[file.uuid]
+		[selectedFile?.uuid]
 	);
 
 	const createTag = useCallback(
@@ -214,7 +204,7 @@ export function FileInformationDialog({
 		async (tagUuid: string) => {
 			try {
 				const { error } = await request.delete({
-					url: `file/${file.uuid}/tag/${tagUuid}`
+					url: `file/${selectedFile?.uuid}/tag/${tagUuid}`
 				});
 				if (error) {
 					toast.error(error);
@@ -226,15 +216,28 @@ export function FileInformationDialog({
 				console.error(error);
 			}
 		},
-		[file.uuid]
+		[selectedFile?.uuid]
+	);
+
+	const onOpenChange = useCallback(
+		(open: boolean) => {
+			if (open) return;
+
+			setModalOpen(open);
+			setSelectedFile(null);
+		},
+		[setModalOpen, setSelectedFile]
 	);
 
 	useEffect(() => {
-		if (isOpen) void fetchExtraData();
-	}, [isOpen, fetchExtraData]);
+		if (isModalOpen) {
+			void fetchExtraData();
+			setTab('preview');
+		}
+	}, [isModalOpen, fetchExtraData, selectedFile]);
 
-	return (
-		<Dialog open={isOpen} onOpenChange={onOpenChange}>
+	return selectedFile && currentType ? (
+		<Dialog open={isModalOpen} onOpenChange={onOpenChange}>
 			<DialogContent
 				className={cn(
 					'w-11/12 max-w-screen max-h-screen md:min-h-[calc(100vh-11rem)] lg:max-w-[calc(100vw-8rem)] lg:w-max p-0 min-w-60',
@@ -242,11 +245,11 @@ export function FileInformationDialog({
 				)}
 			>
 				<div className="absolute right-0 -bottom-12 z-10 md:inline-block hidden">
-					<FileInformationDialogActions file={file} type={type} />
+					<FileInformationDialogActions file={selectedFile} type={currentType} />
 				</div>
 
 				<div className="absolute right-0 -bottom-12 z-10 md:hidden inline-block">
-					<FileInformationDrawerActions file={file} type={type} />
+					<FileInformationDrawerActions file={selectedFile} type={currentType} />
 				</div>
 
 				<Tabs
@@ -256,7 +259,7 @@ export function FileInformationDialog({
 					}}
 					className="relative"
 				>
-					{type === 'publicAlbum' ? null : (
+					{currentType === 'publicAlbum' ? null : (
 						<div className="flex justify-center w-full absolute -top-12 pointer-events-none">
 							<TabsList className="pointer-events-auto">
 								<TabsTrigger value="preview">Preview</TabsTrigger>
@@ -266,13 +269,17 @@ export function FileInformationDialog({
 					)}
 					<TabsContent value="preview" className="mt-0">
 						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
-							{isFileImage(file) ? (
+							{isFileImage(selectedFile) ? (
 								<picture>
-									<img src={file.url} className="h-full object-contain md:block" draggable={false} />
+									<img
+										src={selectedFile.url}
+										className="h-full object-contain md:block"
+										draggable={false}
+									/>
 								</picture>
-							) : isFileVideo(file) ? (
+							) : isFileVideo(selectedFile) ? (
 								<MediaController className="h-full w-full">
-									<video slot="media" src={file.url} crossOrigin="" className="h-full" />
+									<video slot="media" src={selectedFile.url} crossOrigin="" className="h-full" />
 									<MediaControlBar>
 										<MediaPlayButton />
 										<MediaMuteButton />
@@ -282,9 +289,9 @@ export function FileInformationDialog({
 										<MediaFullscreenButton />
 									</MediaControlBar>
 								</MediaController>
-							) : isFileAudio(file) ? (
+							) : isFileAudio(selectedFile) ? (
 								<MediaController className="w-full min-w-96 h-full">
-									<audio slot="media" src={file.url} crossOrigin="" />
+									<audio slot="media" src={selectedFile.url} crossOrigin="" />
 									<MediaControlBar>
 										<MediaPlayButton />
 										<MediaTimeDisplay showDuration />
@@ -295,29 +302,28 @@ export function FileInformationDialog({
 									</MediaControlBar>
 								</MediaController>
 							) : (
-								<span className="text-light-100 h-full items-center hidden md:flex px-8 flex-col justify-center gap-4">
-									<FileQuestionIcon className="w-16 h-16" />
-									Sorry but this filetype can't be previewed at this time.
-								</span>
+								<div className="h-full w-full">
+									<FileTextViewer uuid={selectedFile.uuid} />
+								</div>
 							)}
 						</div>
 					</TabsContent>
 					<TabsContent value="information" className="h-full">
-						{isFileImage(file) ? (
+						{isFileImage(selectedFile) ? (
 							<picture>
 								<img
-									src={file.url}
+									src={selectedFile.url}
 									className="h-auto hidden absolute -top-px -left-[272px] xl:block border bg-background p-2 shadow-lg sm:rounded-lg max-w-[264px]"
 								/>
 							</picture>
-						) : isFileVideo(file) ? (
+						) : isFileVideo(selectedFile) ? (
 							<video
 								className="h-auto hidden absolute -top-px -left-[272px] xl:block border bg-background p-2 shadow-lg sm:rounded-lg max-w-[264px]"
 								autoPlay
 								loop
 								muted
 							>
-								<source src={file.preview} type="video/mp4" />
+								<source src={selectedFile.preview} type="video/mp4" />
 							</video>
 						) : null}
 						<ScrollArea className="p-6 md:p-8 h-full">
@@ -329,25 +335,25 @@ export function FileInformationDialog({
 
 									<div>
 										<Label htmlFor="uuid">UUID</Label>
-										<Input value={file.uuid} name="uuid" id="uuid" readOnly />
+										<Input value={selectedFile.uuid} name="uuid" id="uuid" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="name">Name</Label>
-										<Input value={file.name} name="name" id="name" readOnly />
+										<Input value={selectedFile.name} name="name" id="name" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="original">Original</Label>
-										<Input value={file.original} name="original" id="original" readOnly />
+										<Input value={selectedFile.original} name="original" id="original" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="ip">
 											IP{' '}
-											{type === 'admin' ? (
+											{currentType === 'admin' ? (
 												<Link
-													href={`/dashboard/admin/ip/${file.ip}`}
+													href={`/dashboard/admin/ip/${selectedFile.ip}`}
 													className="text-blue-500 underline inline-flex items-center ml-2"
 													onClick={() => setModalOpen(false)}
 												>
@@ -355,44 +361,49 @@ export function FileInformationDialog({
 												</Link>
 											) : null}
 										</Label>
-										<Input value={file.ip} name="ip" id="ip" readOnly />
+										<Input value={selectedFile.ip} name="ip" id="ip" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="url">URL</Label>
-										<Input value={file.url} name="url" id="url" readOnly />
+										<Input value={selectedFile.url} name="url" id="url" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="size">Size</Label>
-										<Input value={formatBytes(file.size)} name="size" id="size" readOnly />
+										<Input value={formatBytes(selectedFile.size)} name="size" id="size" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="hash">Hash</Label>
-										<Input value={file.hash} name="hash" id="hash" readOnly />
+										<Input value={selectedFile.hash} name="hash" id="hash" readOnly />
 									</div>
 
 									<div>
 										<Label htmlFor="uploaded">Uploaded</Label>
-										<Input value={getDate(file.createdAt)} name="uploaded" id="uploaded" readOnly />
+										<Input
+											value={getDate(selectedFile.createdAt)}
+											name="uploaded"
+											id="uploaded"
+											readOnly
+										/>
 									</div>
 								</div>
 
-								{type === 'admin' || type === 'quarantine' ? (
+								{currentType === 'admin' || currentType === 'quarantine' ? (
 									<div className="w-full max-w-lg">
 										<div className="flex flex-col gap-2">
 											<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">
 												User information
 											</h2>
 
-											{file.user ? (
+											{selectedFile.user ? (
 												<>
 													<div>
 														<Label htmlFor="owner">
 															Owner
 															<Link
-																href={`/dashboard/admin/users/${file.user?.uuid}`}
+																href={`/dashboard/admin/users/${selectedFile.user?.uuid}`}
 																className="text-blue-500 underline inline-flex items-center ml-2"
 																onClick={() => setModalOpen(false)}
 															>
@@ -401,7 +412,7 @@ export function FileInformationDialog({
 															</Link>
 														</Label>
 														<Input
-															value={file.user.username}
+															value={selectedFile.user.username}
 															name="owner"
 															id="owner"
 															readOnly
@@ -411,7 +422,7 @@ export function FileInformationDialog({
 													<div>
 														<Label htmlFor="userUUID">User UUID</Label>
 														<Input
-															value={file.user?.uuid}
+															value={selectedFile.user?.uuid}
 															name="userUUID"
 															id="userUUID"
 															readOnly
@@ -421,7 +432,7 @@ export function FileInformationDialog({
 													<div>
 														<Label htmlFor="status">Status</Label>
 														<Input
-															value={file.user.enabled ? 'Enabled' : 'Disabled'}
+															value={selectedFile.user.enabled ? 'Enabled' : 'Disabled'}
 															name="status"
 															id="status"
 															readOnly
@@ -431,7 +442,7 @@ export function FileInformationDialog({
 													<div>
 														<Label htmlFor="null">Roles</Label>
 														<div>
-															{file.user.roles.map((role: any) => (
+															{selectedFile.user.roles.map((role: any) => (
 																<Badge key={role.name} className="mr-1">
 																	{role.name}
 																</Badge>
@@ -442,7 +453,7 @@ export function FileInformationDialog({
 													<div>
 														<Label htmlFor="joined">Joined</Label>
 														<Input
-															value={getDate(file.user.createdAt.toString())}
+															value={getDate(selectedFile.user.createdAt.toString())}
 															name="joined"
 															id="joined"
 															readOnly
@@ -513,5 +524,5 @@ export function FileInformationDialog({
 				</Tabs>
 			</DialogContent>
 		</Dialog>
-	);
+	) : null;
 }

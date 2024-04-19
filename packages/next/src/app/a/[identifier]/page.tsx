@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { PageQuery } from '@/types';
+import type { MetadataBuilder, PageQuery } from '@/types';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -7,9 +7,43 @@ import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
 import { notFound, redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-	title: 'Public - Album'
-};
+export async function generateMetadata({ params }: { readonly params: { identifier: string } }): Promise<Metadata> {
+	const { data: response, error } = await fetchEndpoint(
+		{ type: 'publicAlbum', identifier: params.identifier },
+		1,
+		1,
+		''
+	);
+
+	if (error) {
+		return {};
+	}
+
+	const meta = {
+		title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
+		openGraph: {
+			title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
+			images: [response.album.isNsfw ? '/meta-nsfw-album.jpg' : '/meta-album.jpg']
+		},
+		twitter: {
+			title: response.album.isNsfw ? `[nsfw] ${response.album.name}` : response.album.name,
+			images: [response.album.isNsfw ? '/meta-nsfw-album.jpg' : '/meta-album.jpg']
+		}
+	} as MetadataBuilder;
+
+	if (response.album.description) {
+		meta.description = response.album.description;
+		meta.openGraph.description = response.album.description;
+		meta.twitter.description = response.album.description;
+	}
+
+	if (!response.album.isNsfw && response.album.cover) {
+		meta.openGraph.images = [response.album.cover];
+		meta.twitter.images = [response.album.cover];
+	}
+
+	return meta;
+}
 
 export default async function PublicAlbumPage({
 	searchParams,

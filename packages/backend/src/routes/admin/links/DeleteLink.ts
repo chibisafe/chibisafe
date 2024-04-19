@@ -1,31 +1,36 @@
 import type { FastifyReply } from 'fastify';
+import { z } from 'zod';
 import prisma from '@/structures/database.js';
 import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
-import { SETTINGS } from '@/structures/settings.js';
+import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 
 export const schema = {
-	summary: 'Get link',
-	description: 'Get a link and redirect the response',
+	summary: 'Delete link',
+	description: 'Deletes a link',
 	tags: ['Links'],
+	params: z
+		.object({
+			identifier: z.string().describe('The identifier of the link.')
+		})
+		.required(),
 	response: {
+		200: z.object({
+			message: responseMessageSchema
+		}),
 		'4xx': http4xxErrorSchema,
 		'5xx': http5xxErrorSchema
 	}
 };
 
 export const options = {
-	url: '/link/:identifier',
-	method: 'get'
+	url: '/admin/link/:identifier',
+	method: 'delete',
+	middlewares: ['apiKey', 'auth', 'admin']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	if (!SETTINGS.useUrlShortener) {
-		void res.notImplemented('URL shortener is disabled');
-		return;
-	}
-
 	const { identifier } = req.params as { identifier: string };
 
 	const link = await prisma.shortenedLinks.findFirst({
@@ -33,29 +38,22 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			identifier
 		},
 		select: {
-			destination: true
+			identifier: true
 		}
 	});
 
 	if (!link) {
-		void res.notFound('The link could not be found');
+		void res.badRequest("The shortened link doesn't exist");
 		return;
 	}
 
-	await prisma.shortenedLinks.update({
+	await prisma.shortenedLinks.delete({
 		where: {
 			identifier
-		},
-		data: {
-			views: {
-				increment: 1
-			}
 		}
 	});
 
-	if (!link.destination.startsWith('http')) {
-		link.destination = `http://${link.destination}`;
-	}
-
-	return res.redirect(link.destination);
+	return res.send({
+		message: 'Successfully deleted shortened link'
+	});
 };

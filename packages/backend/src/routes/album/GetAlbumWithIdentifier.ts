@@ -35,9 +35,11 @@ export const schema = {
 						type: z.string().describe('The type of the file.'),
 						url: z.string().describe('The URL of the file.'),
 						thumb: z.string().describe('The URL of the thumbnail of the file.'),
-						preview: z.string().describe('The URL of the preview of the file.')
+						preview: z.string().describe('The URL of the preview of the file.'),
+						uuid: z.string().describe('The UUID of the file.')
 					})
-				)
+				),
+				cover: z.string().nullable().describe('The URL of the cover of the album.')
 			})
 		}),
 		'4xx': http4xxErrorSchema,
@@ -95,7 +97,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 					name: true,
 					type: true,
 					isS3: true,
-					isWatched: true
+					isWatched: true,
+					uuid: true
 				},
 				orderBy: {
 					id: 'desc'
@@ -111,6 +114,23 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		return;
 	}
 
+	const firstImage = await prisma.albums.findFirst({
+		where: {
+			id: link.albumId
+		},
+		select: {
+			files: {
+				select: {
+					name: true
+				},
+				take: 1,
+				orderBy: {
+					id: 'asc'
+				}
+			}
+		}
+	});
+
 	// Construct the public links
 	const files = [];
 	for (const file of album.files) {
@@ -121,16 +141,23 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		});
 	}
 
-	// await prisma.links.update({
-	// 	where: {
-	// 		identifier
-	// 	},
-	// 	data: {
-	// 		views: {
-	// 			increment: 1
-	// 		}
-	// 	}
-	// });
+	const coverPublicLink = firstImage?.files[0]?.name
+		? constructFilePublicLink({
+				req,
+				fileName: firstImage.files[0].name
+			})
+		: null;
+
+	await prisma.links.update({
+		where: {
+			identifier
+		},
+		data: {
+			views: {
+				increment: 1
+			}
+		}
+	});
 
 	return res.send({
 		message: 'Successfully retrieved album',
@@ -138,6 +165,8 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			name: album.name,
 			description: album.description,
 			files,
+			// Only send cover if the first file is an image
+			cover: coverPublicLink?.thumb ? coverPublicLink.url : null,
 			isNsfw: album.nsfw,
 			count: album._count.files
 		}

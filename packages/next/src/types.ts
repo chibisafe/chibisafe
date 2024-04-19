@@ -112,6 +112,7 @@ export interface Settings {
 	serviceName: string;
 	useMinimalHomepage: boolean;
 	useNetworkStorage: boolean;
+	useUrlShortener: boolean;
 	userAccounts: boolean;
 }
 
@@ -207,6 +208,10 @@ export interface Link {
 	destination: string;
 	identifier: string;
 	link: string;
+	user?: {
+		username: string;
+		uuid: string;
+	};
 	uuid: string;
 	views: number;
 }
@@ -256,4 +261,19 @@ export interface UpdateCheck {
 	latestVersionUrl: string;
 	releaseNotes: ReleaseNotes[];
 	updateAvailable: boolean;
+}
+
+export interface MetadataBuilder {
+	description?: string;
+	openGraph: {
+		description?: string;
+		images?: string[];
+		title?: string;
+	};
+	title: string;
+	twitter: {
+		description?: string;
+		images?: string[];
+		title?: string;
+	};
 }
