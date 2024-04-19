@@ -29,17 +29,15 @@ export const FileTextViewer = ({ uuid }: { readonly uuid?: string }) => {
 	}, [fetchHighlight]);
 
 	return content ? (
-		<div className="h-full w-screen max-w-[calc(100vw-6rem)] overflow-hidden">
-			<ScrollArea className="h-full">
-				<div
-					className="w-full"
-					// eslint-disable-next-line react/no-danger
-					dangerouslySetInnerHTML={{
-						__html: content
-					}}
-				/>
-			</ScrollArea>
-		</div>
+		<ScrollArea className="h-full 2xl:max-w-7xl xl:max-w-5xl md:max-w-3xl max-w-[calc(100vw-6rem)] w-full p-8">
+			<div
+				className="w-full"
+				// eslint-disable-next-line react/no-danger
+				dangerouslySetInnerHTML={{
+					__html: content
+				}}
+			/>
+		</ScrollArea>
 	) : (
 		<span className="text-light-100 h-full items-center hidden md:flex px-8 flex-col justify-center gap-4">
 			<FileQuestionIcon className="w-16 h-16" />

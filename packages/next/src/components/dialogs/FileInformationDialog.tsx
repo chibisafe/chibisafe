@@ -302,7 +302,9 @@ export function FileInformationDialog() {
 									</MediaControlBar>
 								</MediaController>
 							) : (
-								<FileTextViewer uuid={selectedFile.uuid} />
+								<div className="h-full w-full">
+									<FileTextViewer uuid={selectedFile.uuid} />
+								</div>
 							)}
 						</div>
 					</TabsContent>
