@@ -72,13 +72,13 @@ export async function generateMetadata() {
 			title: settings?.serviceName ?? meta.name,
 			description: settings?.metaDescription ?? meta.description,
 			siteName: settings?.serviceName ?? meta.name,
-			images: [`/meta.jpg`]
+			images: [`/og`]
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title: settings?.serviceName ?? meta.name,
 			description: settings?.metaDescription ?? meta.description,
-			images: [`/meta.jpg`],
+			images: [`/og`],
 			creator: settings?.metaTwitterHandle ?? '@twitter'
 		},
 		icons: {

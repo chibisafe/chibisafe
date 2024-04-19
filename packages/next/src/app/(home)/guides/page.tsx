@@ -6,11 +6,11 @@ export const metadata = {
 	description: 'This page includes guides for running and configuring your chibisafe instance.',
 	openGraph: {
 		title: 'Guides',
-		images: ['/meta-guides.jpg']
+		images: ['/og?section=guides']
 	},
 	twitter: {
 		title: 'Guides',
-		images: ['/meta-guides.jpg']
+		images: ['/og?section=guides']
 	}
 };
 

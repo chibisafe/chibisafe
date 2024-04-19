@@ -3,10 +3,18 @@
 
 import request from '@/lib/request';
 
-export const ChibisafeDefaultLogo = ({ className = '' }: { readonly className?: string }) => (
+export const ChibisafeDefaultLogo = ({
+	className = '',
+	width = '234px',
+	height = '245px'
+}: {
+	readonly className?: string;
+	readonly height?: string | undefined;
+	readonly width?: string | undefined;
+}) => (
 	<svg
-		width="234px"
-		height="245px"
+		width={width}
+		height={height}
 		viewBox="0 0 234 245"
 		className={className}
 		style={{
