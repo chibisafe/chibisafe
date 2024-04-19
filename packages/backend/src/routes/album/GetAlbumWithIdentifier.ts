@@ -141,10 +141,12 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		});
 	}
 
-	const coverPublicLink = constructFilePublicLink({
-		req,
-		fileName: firstImage?.files[0]?.name as unknown as any
-	});
+	const coverPublicLink = firstImage?.files.length
+		? constructFilePublicLink({
+				req,
+				fileName: firstImage?.files[0]?.name as unknown as any
+			})
+		: null;
 
 	await prisma.links.update({
 		where: {
@@ -164,7 +166,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			description: album.description,
 			files,
 			// Only send cover if the first file is an image
-			cover: coverPublicLink.thumb ? coverPublicLink.url : null,
+			cover: coverPublicLink?.thumb ? coverPublicLink.url : null,
 			isNsfw: album.nsfw,
 			count: album._count.files
 		}
