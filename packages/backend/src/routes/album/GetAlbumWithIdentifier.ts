@@ -141,10 +141,10 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 		});
 	}
 
-	const coverPublicLink = firstImage?.files.length
+	const coverPublicLink = firstImage?.files[0]?.name
 		? constructFilePublicLink({
 				req,
-				fileName: firstImage?.files[0]?.name as unknown as any
+				fileName: firstImage.files[0].name
 			})
 		: null;
 
