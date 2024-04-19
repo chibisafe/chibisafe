@@ -16,8 +16,7 @@ export function generateMetadata() {
 		return;
 	}
 
-	const { title, summary: description, image } = post.metadata;
-	const ogImage = image ? image : `/meta.jpg`;
+	const { title, summary: description } = post.metadata;
 
 	return {
 		title,
@@ -26,17 +25,13 @@ export function generateMetadata() {
 			title,
 			description,
 			type: 'article',
-			images: [
-				{
-					url: ogImage
-				}
-			]
+			images: ['/og?section=faq']
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: [ogImage]
+			images: ['/og?section=faq']
 		}
 	};
 }

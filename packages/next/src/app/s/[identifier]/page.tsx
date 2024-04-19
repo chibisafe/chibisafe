@@ -24,11 +24,11 @@ export async function generateMetadata({ params }: { readonly params: { identifi
 		title: snippet.name,
 		openGraph: {
 			title: snippet.name,
-			images: ['/meta-snippet.jpg']
+			images: ['/og?section=snippet']
 		},
 		twitter: {
 			title: snippet.name,
-			images: ['/meta-snippet.jpg']
+			images: ['/og?section=snippet']
 		}
 	} as MetadataBuilder;
 }
