@@ -30,12 +30,6 @@ function RoundedImage(props: any) {
 	return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-function Code({ children, ...props }: PropsWithChildren<any>) {
-	// const codeHTML = highlight(children);
-	// return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
-	return <div>{children}</div>;
-}
-
 function slugify(str: any) {
 	return (
 		str
@@ -125,15 +119,6 @@ const components = {
 		<img className={cn('rounded-md border', className)} alt={alt} {...props} />
 	),
 	hr: ({ ...props }) => <hr className="my-4 md:my-8" {...props} />,
-	// pre: ({ className, ...props }: PropsWithChildren<any>) => (
-	// 	<pre className={cn('mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4', className)} {...props} />
-	// ),
-	// code: ({ className, ...props }: PropsWithChildren<any>) => (
-	// 	<code
-	// 		className={cn('relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm', className)}
-	// 		{...props}
-	// 	/>
-	// ),
 	Image: RoundedImage,
 	code: (content: any) => <CodeBlock code={content} />,
 	Table,
