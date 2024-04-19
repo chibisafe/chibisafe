@@ -19,6 +19,6 @@ export const options = {
 
 export const run = (_: FastifyRequest, res: FastifyReply) => {
 	return res.send({
-		status: "yes"
+		status: 'yes'
 	});
 };

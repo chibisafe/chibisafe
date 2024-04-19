@@ -49,3 +49,23 @@ export const deleteLink = async (_: any, form: FormData) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+export const deleteLinkAsAdmin = async (_: any, form: FormData) => {
+	const identifier = form.get('identifier') as string;
+
+	try {
+		const { error } = await request.delete({
+			url: `admin/link/${identifier}`,
+			headers: {
+				authorization: `Bearer ${getToken()}`
+			}
+		});
+
+		if (error) return { message: error, type: MessageType.Error };
+
+		revalidateTag('links');
+		return { message: 'Link deleted', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};

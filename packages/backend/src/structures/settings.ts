@@ -66,6 +66,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.usersStorageQuota = Number(settingsTable.usersStorageQuota);
 		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
 		SETTINGS.useMinimalHomepage = settingsTable.useMinimalHomepage;
+		SETTINGS.useUrlShortener = settingsTable.useUrlShortener;
 		SETTINGS.S3Region = settingsTable.S3Region;
 		SETTINGS.S3Bucket = settingsTable.S3Bucket;
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
@@ -107,6 +108,7 @@ export const loadSettings = async (force = false) => {
 		usersStorageQuota: 0,
 		useNetworkStorage: false,
 		useMinimalHomepage: false,
+		useUrlShortener: false,
 		S3Region: '',
 		S3Bucket: '',
 		S3AccessKey: '',
@@ -325,6 +327,12 @@ const SETTINGS_META = {
 		name: 'Users Storage Quota',
 		notice: "You can override this setting by changing it on a user's profile.",
 		category: 'users'
+	},
+	useUrlShortener: {
+		type: 'boolean',
+		description: 'Whether or not to use the built-in URL shortener.',
+		name: 'Use URL Shortener',
+		category: 'other'
 	},
 	useNetworkStorage: {
 		type: 'boolean',

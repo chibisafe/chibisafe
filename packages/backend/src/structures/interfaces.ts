@@ -142,6 +142,7 @@ export interface Settings {
 	statisticsCron: string;
 	updateCheckCron: string;
 	useNetworkStorage: boolean;
+	useUrlShortener: boolean;
 	userAccounts: boolean;
 	usersStorageQuota: number;
 }

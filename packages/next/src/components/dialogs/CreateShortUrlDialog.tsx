@@ -64,7 +64,13 @@ export function CreateShortUrlDialog({ className }: { readonly className?: strin
 						<div className="grid gap-4 mt-4">
 							<div>
 								<Label htmlFor="url">Destination</Label>
-								<Input id="url" name="url" placeholder="https://chibisafe.app" className="col-span-3" />
+								<Input
+									id="url"
+									name="url"
+									placeholder="https://chibisafe.app"
+									className="col-span-3"
+									required
+								/>
 							</div>
 							<div>
 								<Label htmlFor="vanity">Custom URL</Label>

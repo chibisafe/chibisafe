@@ -45,6 +45,26 @@ const columns = [
 		id: 'views',
 		header: 'Views'
 	}),
+	columnHelper.accessor(row => row.user?.username, {
+		id: 'user',
+		header: 'User',
+		enableHiding: true,
+		cell: props => {
+			if (!props.table.options.meta?.isAdmin) {
+				props.column.toggleVisibility(false);
+				return;
+			}
+
+			return (
+				<Link
+					href={`/dashboard/admin/users/${props.row.original.user?.uuid}`}
+					className="text-blue-500 underline inline-flex items-center"
+				>
+					{props.row.original.user?.username}
+				</Link>
+			);
+		}
+	}),
 	columnHelper.accessor(row => getDate(row.createdAt), {
 		id: 'createdAt',
 		header: 'Created At'
@@ -57,6 +77,7 @@ const columns = [
 				<LinksConfirmationAction
 					identifier={props.row.original.identifier}
 					description="Are you sure you want to delete this URL?"
+					isAdmin={props.table.options.meta?.isAdmin}
 				>
 					<Button variant="outline" size="icon">
 						<Trash2Icon className="h-4 w-4" />
@@ -67,7 +88,10 @@ const columns = [
 	})
 ];
 
-export const LinksTable = ({ data = [] }: PropsWithChildren<{ readonly data?: any | undefined }>) => {
+export const LinksTable = ({
+	data = [],
+	isAdmin = false
+}: PropsWithChildren<{ readonly data?: any | undefined; readonly isAdmin?: boolean | undefined }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -84,6 +108,9 @@ export const LinksTable = ({ data = [] }: PropsWithChildren<{ readonly data?: an
 			sorting,
 			columnFilters,
 			columnVisibility
+		},
+		meta: {
+			isAdmin
 		}
 	});
 
