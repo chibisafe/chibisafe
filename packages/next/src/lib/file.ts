@@ -18,22 +18,26 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 	return `${Number.parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
-export const isFileVideo = (file: FileWithAdditionalData) => {
+export const isFileVideo = (file: FileWithAdditionalData | null) => {
+	if (!file) return false;
 	const { type } = file;
 	return type.startsWith('video/');
 };
 
-export const isFileImage = (file: FileWithAdditionalData) => {
+export const isFileImage = (file: FileWithAdditionalData | null) => {
+	if (!file) return false;
 	const { type } = file;
 	return type.startsWith('image/');
 };
 
-export const isFileAudio = (file: FileWithAdditionalData) => {
+export const isFileAudio = (file: FileWithAdditionalData | null) => {
+	if (!file) return false;
 	const { type } = file;
 	return type.startsWith('audio/');
 };
 
-export const isFilePDF = (file: FileWithAdditionalData) => {
+export const isFilePDF = (file: FileWithAdditionalData | null) => {
+	if (!file) return false;
 	const { type } = file;
 	return type === 'application/pdf';
 };

@@ -1,15 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { File, FilePropsType } from '@/types';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
-import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileInformationDialog';
+import { isDialogOpenAtom, selectedFileAtom, currentTypeAtom } from '@/lib/atoms/fileInformationDialog';
 import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { FilesTable } from './tables/files-table/FilesTable';
 import { FileThumbnail } from './FileThumbnail';
@@ -27,7 +26,6 @@ export function Masonry({
 	readonly type: FilePropsType;
 }) {
 	const searchParams = useSearchParams();
-
 	const isUploads = type === 'uploads';
 	const isAlbumUploads = type === 'album' && Boolean(albumUuid);
 
@@ -41,10 +39,15 @@ export function Masonry({
 
 	const { data } = useUploadsQuery({ currentPage, perPage, search, type, albumUuid });
 
-	const [modalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
-	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
+	const setModalOpen = useSetAtom(isDialogOpenAtom);
+	const setSelectedFile = useSetAtom(selectedFileAtom);
+	const setCurrentType = useSetAtom(currentTypeAtom);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 	const showMasonry = useAtomValue(isMasonryViewAtom);
+
+	useEffect(() => {
+		setCurrentType(type);
+	}, [setCurrentType, type]);
 
 	const addToHoveredList = useCallback(
 		(file: File) => {
@@ -113,19 +116,6 @@ export function Masonry({
 			) : (
 				<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
 			)}
-
-			{selectedFile ? (
-				<FileInformationDialog
-					file={selectedFile}
-					type={type}
-					onOpenChange={(open: boolean) => {
-						if (open) return;
-						setModalOpen(open);
-						setSelectedFile(null);
-					}}
-					isOpen={modalOpen}
-				/>
-			) : null}
 		</>
 	);
 }

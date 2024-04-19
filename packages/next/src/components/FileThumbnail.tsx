@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import type { File, FilePropsType } from '@/types';
 import { useSetAtom } from 'jotai';
 import { FileWarning, Video, FileAudio, FileText, FileIcon } from 'lucide-react';
-import type { PropsWithChildren } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 
 const ComponentType = ({
 	children,
@@ -51,14 +51,20 @@ export const FileThumbnail = ({
 	readonly isTableView?: boolean;
 	readonly type: FilePropsType;
 }) => {
+	const [error, setError] = useState(false);
+
 	return file.quarantine ? (
 		<div className={cn('flex flex-col justify-center items-center', isTableView ? '' : 'h-40 bg-dark-90')}>
 			<FileWarning className="text-red-500 w-16 h-16" />
 		</div>
-	) : isFileImage(file) || (isFileVideo(file) && file.thumb) ? (
+	) : (isFileImage(file) && !error) || (isFileVideo(file) && file.thumb && !error) ? (
 		<ComponentType isTableView={isTableView} file={file} type={type}>
 			<picture>
-				<img src={file.thumb} className="cursor-pointer w-full sm:min-w-[160px] min-w-0" />
+				<img
+					src={file.thumb}
+					className="cursor-pointer w-full sm:min-w-[160px] min-w-0"
+					onError={() => setError(true)}
+				/>
 			</picture>
 
 			{isFileVideo(file) && hoveredFiles.includes(file.uuid ?? file.name) && (

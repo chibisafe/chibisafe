@@ -1121,6 +1121,7 @@ __metadata:
     proxy-addr: "npm:^2.0.7"
     randomstring: "npm:^1.3.0"
     rimraf: "npm:^5.0.5"
+    shiki: "npm:^1.3.0"
     systeminformation: "npm:^5.22.7"
     tsc-alias: "npm:^1.8.8"
     tsconfig-paths: "npm:^4.2.0"
@@ -5062,6 +5063,13 @@ __metadata:
   version: 1.2.4
   resolution: "@shikijs/core@npm:1.2.4"
   checksum: 10c0/11eceedb269a414a0bb9112992b466fcad6e51d48181e04c4c2267422960894a663e7c6620560d8106593d9dac8334a1469c6c975c4d1efcd0600225f730a477
+  languageName: node
+  linkType: hard
+
+"@shikijs/core@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@shikijs/core@npm:1.3.0"
+  checksum: 10c0/0b11f11961a563ef91122f2a17b66af7502b0f8665f53c435aaadf39006722466379fb1acc5ed64d7d381921f6900a13647b27d0bf3fb0d619471a8bbfa34a9b
   languageName: node
   linkType: hard
 
@@ -13983,6 +13991,15 @@ __metadata:
   dependencies:
     "@shikijs/core": "npm:1.2.4"
   checksum: 10c0/2b23ebdce10c55bf089b3050e1f494061b28fda6a658449430b8b595b0df49b348eb667f571769cb767d0609bf6d814f87c3f0dec6d7067efb575095a2780e3b
+  languageName: node
+  linkType: hard
+
+"shiki@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "shiki@npm:1.3.0"
+  dependencies:
+    "@shikijs/core": "npm:1.3.0"
+  checksum: 10c0/a57f9d86567e86e9f003ccc42aaee594a47dde0f034047c251cf8d4b8971ec790c1ec2a3563c8126408ac2274ab7717201a24a6b70b1ef9dc1ab8f55f64d5879
   languageName: node
   linkType: hard
 
