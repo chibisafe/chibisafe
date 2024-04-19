@@ -3,6 +3,7 @@ import type { File, FilePropsType } from '@/types';
 
 import { Masonry } from '@/components/Masonry';
 import { Pagination } from '@/components/Pagination';
+import { FileInformationDialog } from './dialogs/FileInformationDialog';
 
 export async function FilesList({
 	files,
@@ -22,6 +23,7 @@ export async function FilesList({
 				<Masonry files={files} total={count} type={type} albumUuid={albumUuid} />
 				<Pagination itemsTotal={count} type={type} albumUuid={albumUuid} />
 			</Suspense>
+			<FileInformationDialog />
 		</div>
 	);
 }
