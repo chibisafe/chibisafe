@@ -6,13 +6,24 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
 import { notFound, redirect } from 'next/navigation';
+import request from '@/lib/request';
 
-export async function generateMetadata({ params }: { readonly params: { identifier: string } }): Promise<Metadata> {
+export async function generateMetadata({
+	searchParams,
+	params
+}: {
+	readonly params: { identifier: string };
+	readonly searchParams: PageQuery;
+}): Promise<Metadata> {
+	const currentPage = searchParams.page ?? 1;
+	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
+	const search = searchParams.search ?? '';
+
 	const { data: response, error } = await fetchEndpoint(
 		{ type: 'publicAlbum', identifier: params.identifier },
-		1,
-		1,
-		''
+		currentPage,
+		perPage,
+		search
 	);
 
 	if (error) {
@@ -67,6 +78,15 @@ export default async function PublicAlbumPage({
 		if (status === 404) return notFound();
 		redirect('/');
 	}
+
+	try {
+		await request.get({
+			url: `album/${params.identifier}/view/count`,
+			options: {
+				cache: 'no-cache'
+			}
+		});
+	} catch {}
 
 	return (
 		<>

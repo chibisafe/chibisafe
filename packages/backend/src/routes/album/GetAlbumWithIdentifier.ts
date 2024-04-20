@@ -148,17 +148,6 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			})
 		: null;
 
-	await prisma.links.update({
-		where: {
-			identifier
-		},
-		data: {
-			views: {
-				increment: 1
-			}
-		}
-	});
-
 	return res.send({
 		message: 'Successfully retrieved album',
 		album: {

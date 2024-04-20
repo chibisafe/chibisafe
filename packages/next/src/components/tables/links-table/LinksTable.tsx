@@ -24,9 +24,9 @@ const columns = [
 		header: 'Short URL',
 		cell(props) {
 			return (
-				<Link href={props.row.original.link} className="link" target="_blank" rel="noopener noreferrer">
+				<a href={props.row.original.link} className="link" target="_blank" rel="noopener noreferrer">
 					{props.row.original.link}
-				</Link>
+				</a>
 			);
 		}
 	}),

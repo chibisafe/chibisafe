@@ -12,7 +12,6 @@ import { useState, type PropsWithChildren } from 'react';
 import { ArrowUpRightFromSquare, Trash2Icon } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
-import Link from 'next/link';
 import type { AlbumLink } from '@/types';
 import { AlbumLinksConfirmationAction } from './AlbumLinksConfirmationAction';
 import { AlbumLinksToggleAction } from './AlbumLinksToggleAction';
@@ -27,9 +26,9 @@ const columns = [
 		id: 'link',
 		header: 'Link',
 		cell: props => (
-			<Link href={`/a/${props.row.original.identifier}`} className="link inline-flex items-center">
+			<a href={`/a/${props.row.original.identifier}`} target="_blank" className="link inline-flex items-center">
 				{props.row.original.identifier} <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-			</Link>
+			</a>
 		)
 	}),
 	columnHelper.display({
