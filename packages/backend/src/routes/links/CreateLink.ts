@@ -58,6 +58,12 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	let linkToUse;
 
 	if (vanity) {
+		const tempFullUrl = constructShortLink(req, vanity);
+		if (tempFullUrl === url) {
+			void res.badRequest('Custom URL cannot be the same as the destination URL');
+			return;
+		}
+
 		const sluggifiedVanity = slugify(vanity, { separator: '_', decamelize: false, lowercase: false });
 		const existingLink = await prisma.shortenedLinks.findFirst({
 			where: {

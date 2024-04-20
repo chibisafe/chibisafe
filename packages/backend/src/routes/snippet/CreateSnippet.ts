@@ -7,6 +7,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+import { SETTINGS } from '@/structures/settings.js';
 import { constructSnippetPublicLink, getUniqueSnippetIdentifier } from '@/utils/Snippet.js';
 
 export const schema = {
@@ -48,6 +49,11 @@ export const options = {
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { name, content, language } = req.body as { content: string; language: string; name: string };
+
+	if (!SETTINGS.publicMode && !req.user) {
+		void res.unauthorized('Only registered users are allowed to upload files.');
+		return;
+	}
 
 	const now = moment.utc().toDate();
 	const uniqueIdentifier = await getUniqueSnippetIdentifier();
