@@ -6,8 +6,8 @@ import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { SETTINGS } from '@/structures/settings.js';
 
 export const schema = {
-	summary: 'Get link',
-	description: 'Get a link and redirect the response',
+	summary: 'Increase link view count',
+	description: 'Increases the number of times a link was viewed',
 	tags: ['Links'],
 	response: {
 		'4xx': http4xxErrorSchema,
@@ -16,7 +16,7 @@ export const schema = {
 };
 
 export const options = {
-	url: '/link/:identifier',
+	url: '/link/:identifier/count',
 	method: 'get'
 };
 
@@ -28,23 +28,23 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	const { identifier } = req.params as { identifier: string };
 
-	const link = await prisma.shortenedLinks.findFirst({
-		where: {
-			identifier
-		},
-		select: {
-			destination: true
-		}
-	});
-
-	if (!link) {
-		void res.notFound('The link could not be found');
+	try {
+		await prisma.shortenedLinks.update({
+			where: {
+				identifier
+			},
+			data: {
+				views: {
+					increment: 1
+				}
+			}
+		});
+	} catch (error: any) {
+		void res.internalServerError(error);
 		return;
 	}
 
-	if (!link.destination.startsWith('http')) {
-		link.destination = `http://${link.destination}`;
-	}
-
-	return res.redirect(link.destination);
+	return res.send({
+		message: 'Successfully updated count'
+	});
 };
