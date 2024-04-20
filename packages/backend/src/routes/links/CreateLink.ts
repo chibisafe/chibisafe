@@ -58,7 +58,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	let linkToUse;
 
 	if (vanity) {
-		if (vanity === url) {
+		const tempFullUrl = constructShortLink(req, vanity);
+		if (tempFullUrl === url) {
 			void res.badRequest('Custom URL cannot be the same as the destination URL');
 			return;
 		}
