@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
-import type { FilePropsType, FileWithAdditionalData } from '@/types';
+import type { FilePropsType, FileWithIndex } from '@/types';
 
 export const isDialogOpenAtom = atom(false);
-export const selectedFileAtom = atom<FileWithAdditionalData | null>(null);
+export const selectedFileAtom = atom<FileWithIndex | null>(null);
 export const currentTypeAtom = atom<FilePropsType | null>(null);
+export const allFilesAtom = atom<FileWithIndex[]>([]);

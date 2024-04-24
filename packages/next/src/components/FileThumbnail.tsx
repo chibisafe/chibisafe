@@ -3,7 +3,7 @@
 import { selectedFileAtom, isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
 import { isFileImage, isFileVideo, isFileAudio, isFilePDF } from '@/lib/file';
 import { cn } from '@/lib/utils';
-import type { File, FilePropsType } from '@/types';
+import type { File, FilePropsType, FileWithIndex } from '@/types';
 import { useSetAtom } from 'jotai';
 import { FileWarning, Video, FileAudio, FileText, FileIcon } from 'lucide-react';
 import { useState, type PropsWithChildren } from 'react';
@@ -13,7 +13,11 @@ const ComponentType = ({
 	isTableView,
 	file,
 	type
-}: PropsWithChildren<{ readonly file?: File; readonly isTableView?: boolean; readonly type: FilePropsType }>) => {
+}: PropsWithChildren<{
+	readonly file?: FileWithIndex;
+	readonly isTableView?: boolean;
+	readonly type: FilePropsType;
+}>) => {
 	const setModalOpen = useSetAtom(isDialogOpenAtom);
 	const setSelectedFile = useSetAtom(selectedFileAtom);
 
@@ -46,7 +50,7 @@ export const FileThumbnail = ({
 	isTableView = false,
 	type
 }: {
-	readonly file: File;
+	readonly file: FileWithIndex;
 	readonly hoveredFiles?: string[];
 	readonly isTableView?: boolean;
 	readonly type: FilePropsType;

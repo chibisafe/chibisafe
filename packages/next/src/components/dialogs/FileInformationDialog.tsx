@@ -26,17 +26,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { ArrowUpRightFromSquare } from 'lucide-react';
+import { ArrowUpRightFromSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
 import { toast } from 'sonner';
 import { useAtom, useAtomValue } from 'jotai';
-import { currentTypeAtom, isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileInformationDialog';
+import { currentTypeAtom, isDialogOpenAtom, selectedFileAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
 import { FileTextViewer } from '../FileTextViewer';
+import { useEventListener } from 'usehooks-ts';
 
 export function FileInformationDialog() {
 	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
+	const allFiles = useAtomValue(allFilesAtom);
 	const currentType = useAtomValue(currentTypeAtom);
 	const [albums, setAlbums] = useState<AlbumType[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
@@ -44,6 +46,10 @@ export function FileInformationDialog() {
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
 	const [tab, setTab] = useState('preview');
 	const [isModalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
+	const [touchStart, setTouchStart] = useState<Number | null>(null);
+	const [touchEnd, setTouchEnd] = useState<Number | null>(null);
+
+	const swipeDistanceToTrigger = 50;
 
 	const fetchFileInfo = useCallback(async () => {
 		try {
@@ -229,6 +235,57 @@ export function FileInformationDialog() {
 		[setModalOpen, setSelectedFile]
 	);
 
+	const onTouchStart = (e: any) => {
+		setTouchEnd(null);
+		setTouchStart(e.targetTouches?.[0]?.clientX ?? 0);
+	};
+
+	const onTouchMove = (e: any) => setTouchEnd(e.targetTouches?.[0]?.clientX ?? 0);
+
+	const onTouchEnd = () => {
+		if (!touchStart || !touchEnd) return;
+		const distance = Number(touchStart) - Number(touchEnd);
+		const isLeftSwipe = distance > swipeDistanceToTrigger;
+		const isRightSwipe = distance < -swipeDistanceToTrigger;
+
+		if (isLeftSwipe) {
+			findNextFile();
+		} else if (isRightSwipe) {
+			findPreviousFile();
+		}
+	};
+
+	const findPreviousFile = () => {
+		const previousIndex = (selectedFile?.index ?? 0) - 1;
+		const newItem = allFiles?.at(previousIndex);
+		if (selectedFile?.index !== 0 && newItem) {
+			setSelectedFile(newItem);
+		}
+	};
+
+	const findNextFile = () => {
+		const nextIndex = (selectedFile?.index ?? 0) + 1;
+		const newItem = allFiles?.at(nextIndex);
+		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
+			setSelectedFile(newItem);
+		}
+	};
+
+	useEventListener('keydown', event => {
+		event.stopPropagation();
+
+		if (tab === 'information') return;
+		if (!selectedFile) {
+			return;
+		}
+
+		if (event.key === 'ArrowLeft') {
+			findPreviousFile();
+		} else if (event.key === 'ArrowRight') {
+			findNextFile();
+		}
+	});
+
 	useEffect(() => {
 		if (isModalOpen) {
 			void fetchExtraData();
@@ -268,7 +325,28 @@ export function FileInformationDialog() {
 						</div>
 					)}
 					<TabsContent value="preview" className="mt-0">
-						<div className={cn('h-[calc(100vh-11rem)]', 'w-full')}>
+						<div
+							className={cn('h-[calc(100vh-11rem)]', 'w-full')}
+							onTouchStart={onTouchStart}
+							onTouchMove={onTouchMove}
+							onTouchEnd={onTouchEnd}
+						>
+							<button
+								type="button"
+								aria-label="Previous"
+								className="absolute top-[calc(50%-12px)] -left-12"
+								onClick={() => findPreviousFile()}
+							>
+								<ChevronLeft className="w-6 h-6" />
+							</button>
+							<button
+								type="button"
+								aria-label="Next"
+								className="absolute top-[calc(50%-12px)] -right-12"
+								onClick={() => findNextFile()}
+							>
+								<ChevronRight className="w-6 h-6" />
+							</button>
 							{isFileImage(selectedFile) ? (
 								<picture>
 									<img

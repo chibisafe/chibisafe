@@ -2,10 +2,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import type { File, FilePropsType } from '@/types';
+import type { File, FilePropsType, FileWithIndex } from '@/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
-import { isDialogOpenAtom, selectedFileAtom, currentTypeAtom } from '@/lib/atoms/fileInformationDialog';
+import { isDialogOpenAtom, selectedFileAtom, currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
 import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
@@ -41,13 +41,21 @@ export function Masonry({
 
 	const setModalOpen = useSetAtom(isDialogOpenAtom);
 	const setSelectedFile = useSetAtom(selectedFileAtom);
+	const setAllFilesAtom = useSetAtom(allFilesAtom);
 	const setCurrentType = useSetAtom(currentTypeAtom);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 	const showMasonry = useAtomValue(isMasonryViewAtom);
+	const [filesToUse, setFilesToUse] = useState<FileWithIndex[]>(
+		(files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
+			...file,
+			index
+		}))
+	);
 
 	useEffect(() => {
 		setCurrentType(type);
-	}, [setCurrentType, type]);
+		setAllFilesAtom(filesToUse);
+	}, [filesToUse, setAllFilesAtom, setCurrentType, type]);
 
 	const addToHoveredList = useCallback(
 		(file: File) => {
@@ -71,7 +79,7 @@ export function Masonry({
 		<>
 			{showMasonry ? (
 				<Plock
-					items={files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []}
+					items={filesToUse}
 					config={{
 						columns: [2, 2, 3, 4],
 						gap: [10, 14, 14, 14],
