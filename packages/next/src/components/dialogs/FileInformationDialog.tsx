@@ -26,7 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
 import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
-import { ArrowUpRightFromSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRightFromSquare, ChevronLeft, ChevronRight, Loader2Icon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
@@ -48,6 +48,7 @@ export function FileInformationDialog() {
 	const [isModalOpen, setModalOpen] = useAtom(isDialogOpenAtom);
 	const [touchStart, setTouchStart] = useState<Number | null>(null);
 	const [touchEnd, setTouchEnd] = useState<Number | null>(null);
+	const [loading, setLoading] = useState(true);
 
 	const swipeDistanceToTrigger = 50;
 
@@ -260,6 +261,7 @@ export function FileInformationDialog() {
 		const newItem = allFiles?.at(previousIndex);
 		if (selectedFile?.index !== 0 && newItem) {
 			setSelectedFile(newItem);
+			setLoading(true);
 		}
 	};
 
@@ -268,6 +270,7 @@ export function FileInformationDialog() {
 		const newItem = allFiles?.at(nextIndex);
 		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
 			setSelectedFile(newItem);
+			setLoading(true);
 		}
 	};
 
@@ -288,7 +291,6 @@ export function FileInformationDialog() {
 
 	useEffect(() => {
 		if (isModalOpen) {
-			void fetchExtraData();
 			setTab('preview');
 		}
 	}, [isModalOpen, fetchExtraData, selectedFile]);
@@ -312,6 +314,10 @@ export function FileInformationDialog() {
 				<Tabs
 					value={tab}
 					onValueChange={value => {
+						if (value === 'information') {
+							void fetchExtraData();
+						}
+
 						setTab(value);
 					}}
 					className="relative"
@@ -348,13 +354,28 @@ export function FileInformationDialog() {
 								<ChevronRight className="w-6 h-6" />
 							</button>
 							{isFileImage(selectedFile) ? (
-								<picture>
-									<img
-										src={selectedFile.url}
-										className="h-full object-contain md:block"
-										draggable={false}
-									/>
-								</picture>
+								<>
+									<div
+										className={cn(
+											'h-full w-full absolute top-0 left-0 bg-black/50 select-none pointer-events-none',
+											{
+												hidden: !loading
+											}
+										)}
+									>
+										<Loader2Icon className="absolute top-1/2 left-1/2 w-8 h-8 -ml-4 -mt-4 animate-spin" />
+									</div>
+									<picture>
+										<img
+											src={selectedFile.url}
+											className="h-full object-contain md:block"
+											draggable={false}
+											fetchPriority="high"
+											onLoad={() => setLoading(false)}
+											onError={() => setLoading(false)}
+										/>
+									</picture>
+								</>
 							) : isFileVideo(selectedFile) ? (
 								<MediaController className="h-full w-full">
 									<video slot="media" src={selectedFile.url} crossOrigin="" className="h-full" />
