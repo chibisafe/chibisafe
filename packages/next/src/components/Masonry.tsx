@@ -13,6 +13,10 @@ import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { FilesTable } from './tables/files-table/FilesTable';
 import { FileThumbnail } from './FileThumbnail';
 import { isMasonryViewAtom } from '@/lib/atoms/settings';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
+import { Button } from './ui/button';
+import { Toggle } from './ui/toggle';
 
 export function Masonry({
 	files,
@@ -51,6 +55,8 @@ export function Masonry({
 			index
 		}))
 	);
+	const [isBulkSelecting, setIsBulkSelecting] = useState(false);
+	const [selectedFiles, setSelectedFiles] = useState<FileWithIndex[]>([]);
 
 	useEffect(() => {
 		setCurrentType(type);
@@ -75,8 +81,55 @@ export function Masonry({
 		[hoveredFiles]
 	);
 
+	const resetBulkFiles = useCallback(() => {
+		setIsBulkSelecting(false);
+		setSelectedFiles([]);
+	}, []);
+
+	const selectAllFiles = useCallback(() => {
+		setSelectedFiles(filesToUse);
+	}, [filesToUse]);
+
 	return (
-		<>
+		<div className="flex flex-col w-full h-full gap-4">
+			<div className="h-10 flex flex-row gap-2 items-center">
+				<Toggle
+					variant="outline"
+					pressed={isBulkSelecting}
+					onPressedChange={value => {
+						if (value === false) {
+							resetBulkFiles();
+						}
+
+						setIsBulkSelecting(value);
+					}}
+				>
+					Bulk actions
+				</Toggle>
+
+				{isBulkSelecting ? (
+					<>
+						{/* <span className="text-sm font-medium ">{selectedFiles.length} selected</span> */}
+						<Button onClick={() => selectAllFiles()} variant="outline" className="text-sm font-medium">
+							Select all
+						</Button>
+						{selectedFiles.length ? (
+							<>
+								{/* <Button
+									onClick={() => resetBulkFiles()}
+									variant="outline"
+									className="text-sm font-medium"
+								>
+									Clear
+								</Button> */}
+								<Button size="sm" className="text-sm font-medium">
+									with {selectedFiles.length} selected...
+								</Button>
+							</>
+						) : null}
+					</>
+				) : null}
+			</div>
 			{showMasonry ? (
 				<Plock
 					items={filesToUse}
@@ -89,9 +142,18 @@ export function Masonry({
 					render={(file, idx) => (
 						<div
 							className={cn(
-								"relative w-full h-auto transition-all duration-200 hover:scale-105 hover:duration-150 hover:outline-4 hover:outline-[hsl(216_77%_45%)] outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:via-30% hover:after:from-transparent hover:after:via-transparent after:content-[''] after:pointer-events-none",
+								"relative w-full h-auto transition-all duration-200 hover:duration-150  outline outline-transparent hover:z-50 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:content-[''] after:pointer-events-none",
 								{
 									'cursor-not-allowed': file.quarantine && type !== 'quarantine'
+								},
+								[
+									isBulkSelecting
+										? 'after:via-0% hover:after:via-100%'
+										: 'hover:scale-105 hover:outline-4 hover:outline-[hsl(216_77%_45%)] hover:after:from-transparent hover:after:via-transparent'
+								],
+								{
+									'outline-4 outline-[hsl(216_77%_45%)]':
+										isBulkSelecting && selectedFiles.includes(file)
 								}
 							)}
 							key={idx}
@@ -105,10 +167,21 @@ export function Masonry({
 								href={file.url}
 								target="_blank"
 								rel="noopener noreferrer"
+								draggable={false}
 								onClick={e => {
 									e.preventDefault();
 									e.stopPropagation();
 									if (file.quarantine && type !== 'quarantine') {
+										return;
+									}
+
+									if (isBulkSelecting) {
+										if (selectedFiles.includes(file)) {
+											setSelectedFiles(selectedFiles.filter(f => f !== file));
+										} else {
+											setSelectedFiles([...selectedFiles, file]);
+										}
+
 										return;
 									}
 
@@ -124,6 +197,6 @@ export function Masonry({
 			) : (
 				<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
 			)}
-		</>
+		</div>
 	);
 }
