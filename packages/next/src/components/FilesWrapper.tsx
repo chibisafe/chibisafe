@@ -24,8 +24,9 @@ import {
 	DropdownMenuTrigger
 } from './ui/dropdown-menu';
 import { BulkAlbumActions } from './dialogs/bulk-actions/BulkAlbumActions';
+import { BulkDeleteFilesAction } from './dialogs/bulk-actions/BulkDeleteFilesAction';
 
-function SelectionActions({ children }: PropsWithChildren<{}>) {
+function SelectionActions({ children, type }: PropsWithChildren<{ readonly type: FilePropsType }>) {
 	const selectedFiles = useAtomValue(selectedFilesAtom);
 
 	return (
@@ -41,8 +42,7 @@ function SelectionActions({ children }: PropsWithChildren<{}>) {
 						className="focus:text-destructive-foreground focus:bg-destructive p-0"
 						onSelect={e => e.preventDefault()}
 					>
-						Delete files
-						{/* <DeleteFileInformationAction uuid={file.uuid} type={type} /> */}
+						<BulkDeleteFilesAction uuids={selectedFiles.map(file => file.uuid)} type={type} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -50,7 +50,7 @@ function SelectionActions({ children }: PropsWithChildren<{}>) {
 	);
 }
 
-function SelectionWrapper({ selectAllFiles }: { selectAllFiles(): void }) {
+function SelectionWrapper({ selectAllFiles, type }: { selectAllFiles(): void; readonly type: FilePropsType }) {
 	const [selectedFiles, setSelectedFiles] = useAtom(selectedFilesAtom);
 
 	return (
@@ -72,7 +72,7 @@ function SelectionWrapper({ selectAllFiles }: { selectAllFiles(): void }) {
 
 				<div className="flex flex-row items-center md:gap-4">
 					<span>{selectedFiles.length} selected</span>
-					<SelectionActions>
+					<SelectionActions type={type}>
 						<Button size="sm" className="text-sm font-medium">
 							Actions
 						</Button>
@@ -81,7 +81,7 @@ function SelectionWrapper({ selectAllFiles }: { selectAllFiles(): void }) {
 			</div>
 			<div className="h-full flex-row flex-grow  md:hidden flex gap-4 justify-between">
 				<div className="flex flex-row items-center">
-					<SelectionActions>
+					<SelectionActions type={type}>
 						<Button size="sm" className="text-sm font-medium gap-1 items-center tabular-nums">
 							{selectedFiles.length} selected <Pencil className="h-4 w-4" />
 						</Button>
@@ -158,7 +158,7 @@ export function FilesWrapper({
 					<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
 				)}
 			</div>
-			<SelectionWrapper selectAllFiles={selectAllFiles} />
+			<SelectionWrapper selectAllFiles={selectAllFiles} type={type} />
 		</>
 	);
 }
