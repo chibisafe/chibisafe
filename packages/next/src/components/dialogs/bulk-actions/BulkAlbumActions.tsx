@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import request from '@/lib/request';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const BulkAlbumActions = ({
 	uuids,
@@ -27,6 +28,7 @@ export const BulkAlbumActions = ({
 	const [open, setOpen] = useState(false);
 	const [albums, setAlbums] = useState<Album[]>([]);
 	const [allAlbums, setAllAlbums] = useState<Album[]>([]);
+	const [ready, setReady] = useState(false);
 
 	const getAllAlbums = useCallback(async () => {
 		try {
@@ -114,8 +116,11 @@ export const BulkAlbumActions = ({
 
 	useEffect(() => {
 		if (open) {
-			void getAlbumsFromFiles();
-			void getAllAlbums();
+			(async () => {
+				await getAllAlbums();
+				await getAlbumsFromFiles();
+				setReady(true);
+			})();
 		}
 	}, [open, getAlbumsFromFiles, getAllAlbums]);
 
@@ -124,11 +129,11 @@ export const BulkAlbumActions = ({
 			<DialogTrigger asChild>
 				{isDrawer ? (
 					<Button variant="destructive" className="w-full">
-						Manage albums...
+						Manage albums
 					</Button>
 				) : (
 					<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
-						Manage albums...
+						Manage albums
 					</button>
 				)}
 			</DialogTrigger>
@@ -140,20 +145,24 @@ export const BulkAlbumActions = ({
 						<strong>Changes take action immediately.</strong>
 					</DialogDescription>
 				</DialogHeader>
-				<div className="grid gap-4 mb-4">
-					<FancyMultiSelect
-						placeholder="Select album..."
-						options={allAlbums.map(album => ({
-							value: album.uuid,
-							label: album.name
-						}))}
-						initialSelected={albums.map(album => album.uuid)}
-						onSelected={async value => addFilesToAlbum(value)}
-						onRemoved={async value => removeFilesFromAlbum(value)}
-					/>
+				<div className="grid gap-4">
+					{ready ? (
+						<FancyMultiSelect
+							placeholder="Select album..."
+							options={allAlbums.map(album => ({
+								value: album.uuid,
+								label: album.name
+							}))}
+							initialSelected={albums.map(album => album.uuid)}
+							onSelected={async value => addFilesToAlbum(value)}
+							onRemoved={async value => removeFilesFromAlbum(value)}
+						/>
+					) : (
+						<Skeleton className="w-full h-10" />
+					)}
 				</div>
 				<DialogFooter>
-					<Button type="button" variant="secondary">
+					<Button type="button" variant="secondary" onClick={() => setOpen(false)}>
 						Close
 					</Button>
 				</DialogFooter>
