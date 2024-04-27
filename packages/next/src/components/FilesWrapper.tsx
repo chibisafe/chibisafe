@@ -25,6 +25,7 @@ import {
 } from './ui/dropdown-menu';
 import { BulkAlbumActions } from './dialogs/bulk-actions/BulkAlbumActions';
 import { BulkDeleteFilesAction } from './dialogs/bulk-actions/BulkDeleteFilesAction';
+import { BulkRegenerateThumbnailsAction } from './dialogs/bulk-actions/BulkRegenerateThumbnailsAction';
 
 function SelectionActions({ children, type }: PropsWithChildren<{ readonly type: FilePropsType }>) {
 	const selectedFiles = useAtomValue(selectedFilesAtom);
@@ -36,6 +37,9 @@ function SelectionActions({ children, type }: PropsWithChildren<{ readonly type:
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 						<BulkAlbumActions uuids={selectedFiles.map(file => file.uuid)} />
+					</DropdownMenuItem>
+					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
+						<BulkRegenerateThumbnailsAction uuids={selectedFiles.map(file => file.uuid)} />
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
