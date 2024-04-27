@@ -77,14 +77,9 @@ function FileItem({
 			className={cn(
 				"relative w-full h-auto transition-all duration-200 hover:duration-150 outline outline-transparent hover:z-40 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47_/_0.5)] after:via-[rgb(19_36_61_/_0.1)] after:content-[''] after:pointer-events-none group",
 				{
-					'cursor-not-allowed': file.quarantine && type !== 'quarantine'
-				},
-				[
-					isSelectionActive
-						? 'after:via-0% hover:after:via-100%'
-						: 'md:hover:scale-105 md:hover:outline-4 md:hover:outline-[hsl(216_77%_45%)] hover:after:from-transparent hover:after:via-transparent'
-				],
-				{
+					'cursor-not-allowed': file.quarantine && type !== 'quarantine',
+					'md:hover:scale-105 md:hover:outline-4 md:hover:outline-[hsl(216_77%_45%)] hover:after:from-transparent hover:after:via-transparent':
+						!isSelectionActive,
 					'outline-4 outline-[hsl(46,77%,45%)]': isSelectionActive && isSelected
 				}
 			)}
