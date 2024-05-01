@@ -369,7 +369,7 @@ export function FileInformationDialog() {
 								<>
 									<div
 										className={cn(
-											'h-full w-full absolute top-0 left-0 bg-black/50 select-none pointer-events-none',
+											'h-full w-full absolute top-0 left-0 bg-black/50 select-none pointer-events-none z-10',
 											{
 												hidden: !loading
 											}
