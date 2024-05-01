@@ -2,8 +2,8 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useCallback, useEffect, useState, useRef } from 'react';
-import type { File, FilePropsType, FileWithIndex } from '@/types';
+import { useCallback, useEffect, useRef, useMemo } from 'react';
+import type { File, FilePropsType } from '@/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
@@ -135,12 +135,13 @@ export function FilesWrapper({
 	const setAllFilesAtom = useSetAtom(allFilesAtom);
 	const setCurrentType = useSetAtom(currentTypeAtom);
 	const showMasonry = useAtomValue(isMasonryViewAtom);
-	const [filesToUse, setFilesToUse] = useState<FileWithIndex[]>(
-		(files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
+
+	const filesToUse = useMemo(() => {
+		return (files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
 			...file,
 			index
-		}))
-	);
+		}));
+	}, [files, data, isUploads, isAlbumUploads]);
 
 	const setSelectedFiles = useSetAtom(selectedFilesAtom);
 
