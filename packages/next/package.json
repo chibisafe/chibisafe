@@ -56,7 +56,7 @@
 		"js-cookie": "^3.0.5",
 		"lucide-react": "0.365.0",
 		"media-chrome": "^2.2.5",
-		"next": "^14.2.0-canary.60",
+		"next": "14.3.0-canary.33",
 		"next-themes": "^0.3.0",
 		"p-queue": "^8.0.1",
 		"react": "^18.2.0",

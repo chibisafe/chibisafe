@@ -236,14 +236,32 @@ export function FileInformationDialog() {
 		[setModalOpen, setSelectedFile]
 	);
 
-	const onTouchStart = (e: any) => {
+	const findPreviousFile = useCallback(() => {
+		const previousIndex = (selectedFile?.index ?? 0) - 1;
+		const newItem = allFiles?.at(previousIndex);
+		if (selectedFile?.index !== 0 && newItem) {
+			setSelectedFile(newItem);
+			setLoading(true);
+		}
+	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+
+	const findNextFile = useCallback(() => {
+		const nextIndex = (selectedFile?.index ?? 0) + 1;
+		const newItem = allFiles?.at(nextIndex);
+		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
+			setSelectedFile(newItem);
+			setLoading(true);
+		}
+	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+
+	const onTouchStart = useCallback((e: any) => {
 		setTouchEnd(null);
 		setTouchStart(e.targetTouches?.[0]?.clientX ?? 0);
-	};
+	}, []);
 
-	const onTouchMove = (e: any) => setTouchEnd(e.targetTouches?.[0]?.clientX ?? 0);
+	const onTouchMove = useCallback((e: any) => setTouchEnd(e.targetTouches?.[0]?.clientX ?? 0), []);
 
-	const onTouchEnd = () => {
+	const onTouchEnd = useCallback(() => {
 		if (!touchStart || !touchEnd) return;
 		const distance = Number(touchStart) - Number(touchEnd);
 		const isLeftSwipe = distance > swipeDistanceToTrigger;
@@ -254,25 +272,7 @@ export function FileInformationDialog() {
 		} else if (isRightSwipe) {
 			findPreviousFile();
 		}
-	};
-
-	const findPreviousFile = () => {
-		const previousIndex = (selectedFile?.index ?? 0) - 1;
-		const newItem = allFiles?.at(previousIndex);
-		if (selectedFile?.index !== 0 && newItem) {
-			setSelectedFile(newItem);
-			setLoading(true);
-		}
-	};
-
-	const findNextFile = () => {
-		const nextIndex = (selectedFile?.index ?? 0) + 1;
-		const newItem = allFiles?.at(nextIndex);
-		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
-			setSelectedFile(newItem);
-			setLoading(true);
-		}
-	};
+	}, [touchStart, touchEnd, findNextFile, findPreviousFile]);
 
 	useEventListener('keydown', event => {
 		event.stopPropagation();
@@ -340,7 +340,7 @@ export function FileInformationDialog() {
 							<button
 								type="button"
 								aria-label="Previous"
-								className="absolute top-[calc(50%-12px)] -left-12"
+								className="absolute top-[calc(50%-12px)] -left-12 hidden lg:inline-block"
 								onClick={() => findPreviousFile()}
 							>
 								<ChevronLeft className="w-6 h-6" />
@@ -348,7 +348,7 @@ export function FileInformationDialog() {
 							<button
 								type="button"
 								aria-label="Next"
-								className="absolute top-[calc(50%-12px)] -right-12"
+								className="absolute top-[calc(50%-12px)] -right-12 hidden lg:inline-block"
 								onClick={() => findNextFile()}
 							>
 								<ChevronRight className="w-6 h-6" />
@@ -365,7 +365,7 @@ export function FileInformationDialog() {
 									>
 										<Loader2Icon className="absolute top-1/2 left-1/2 w-8 h-8 -ml-4 -mt-4 animate-spin" />
 									</div>
-									<picture>
+									<picture className="flex items-center justify-center h-full">
 										<img
 											src={selectedFile.url}
 											className="h-full object-contain md:block"
