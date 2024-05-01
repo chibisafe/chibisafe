@@ -1174,6 +1174,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.24"
     "@typescript-eslint/parser": "npm:^7.5.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
+    "@zoom-image/react": "npm:^0.4.10"
     autoprefixer: "npm:^10.4.19"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.0"
@@ -2362,6 +2363,13 @@ __metadata:
   version: 0.14.2
   resolution: "@microsoft/tsdoc@npm:0.14.2"
   checksum: 10c0/c018857ad439144559ce34a397a29ace7cf5b24b999b8e3c1b88d878338088b3a453eaac4435beaf2c7eae13c4c0aac81e42f96f0f1d48e8d4eeb438eb3bb82f
+  languageName: node
+  linkType: hard
+
+"@namnode/store@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@namnode/store@npm:0.1.0"
+  checksum: 10c0/9317994267c8cd44d3619177e288bb13d3dc7b0cebbae58749ae4c28f2b43e9d653ff9929aa9c457894742a3d90fa0fc81ad09cd3089bba4e5726ea9267b5b80
   languageName: node
   linkType: hard
 
@@ -6601,6 +6609,26 @@ __metadata:
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
   checksum: 10c0/8209c937cb39119f44eb63cf90c0b73e7c754209a6411c707be08e50e29ee81356dca1a848a405c8bdeebfe2f5e4f831ad310ae1689eeef65e7445c090c6657d
+  languageName: node
+  linkType: hard
+
+"@zoom-image/core@npm:0.34.0":
+  version: 0.34.0
+  resolution: "@zoom-image/core@npm:0.34.0"
+  dependencies:
+    "@namnode/store": "npm:^0.1.0"
+  checksum: 10c0/87878051610f50f8bf6598e7dce0a2807c800c0da228d7c78b0ae82bd812f73890319d07863ec87ff16447ac124e80f8583c6ca19e17fa04858a238254bc8f04
+  languageName: node
+  linkType: hard
+
+"@zoom-image/react@npm:^0.4.10":
+  version: 0.4.10
+  resolution: "@zoom-image/react@npm:0.4.10"
+  dependencies:
+    "@zoom-image/core": "npm:0.34.0"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10c0/3e462d783aaf187dc97729bb73a21d5992867db0fff046e3d571f4401ec68eab314bdd856d302a059d8436240a088174312d9620deb2265d96871985115818a2
   languageName: node
   linkType: hard
 

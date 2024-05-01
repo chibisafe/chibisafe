@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Album as AlbumType, Tag } from '@/types';
 import {
 	MediaControlBar,
@@ -35,6 +35,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { currentTypeAtom, isDialogOpenAtom, selectedFileAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
 import { FileTextViewer } from '../FileTextViewer';
 import { useEventListener } from 'usehooks-ts';
+import { useZoomImageWheel } from '@zoom-image/react';
 
 export function FileInformationDialog() {
 	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
@@ -49,6 +50,8 @@ export function FileInformationDialog() {
 	const [touchStart, setTouchStart] = useState<Number | null>(null);
 	const [touchEnd, setTouchEnd] = useState<Number | null>(null);
 	const [loading, setLoading] = useState(true);
+	const imageZoomContainerRef = useRef<HTMLDivElement>(null);
+	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 
 	const swipeDistanceToTrigger = 50;
 
@@ -274,6 +277,11 @@ export function FileInformationDialog() {
 		}
 	}, [touchStart, touchEnd, findNextFile, findPreviousFile]);
 
+	const finishedLoading = useCallback(() => {
+		setLoading(false);
+		setZoomImageState({ currentZoom: 1 });
+	}, [setZoomImageState]);
+
 	useEventListener('keydown', event => {
 		event.stopPropagation();
 
@@ -292,8 +300,12 @@ export function FileInformationDialog() {
 	useEffect(() => {
 		if (isModalOpen) {
 			setTab('preview');
+
+			if (imageZoomContainerRef.current) {
+				createZoomImage(imageZoomContainerRef.current, { dblTapAnimationDuration: 150 });
+			}
 		}
-	}, [isModalOpen, fetchExtraData, selectedFile]);
+	}, [isModalOpen, fetchExtraData, selectedFile, createZoomImage]);
 
 	return selectedFile && currentType ? (
 		<Dialog open={isModalOpen} onOpenChange={onOpenChange}>
@@ -365,13 +377,16 @@ export function FileInformationDialog() {
 									>
 										<Loader2Icon className="absolute top-1/2 left-1/2 w-8 h-8 -ml-4 -mt-4 animate-spin" />
 									</div>
-									<picture className="flex items-center justify-center h-full">
+									<picture
+										className="flex items-center justify-center h-full"
+										ref={imageZoomContainerRef}
+									>
 										<img
 											src={selectedFile.url}
 											className="h-full object-contain md:block"
 											draggable={false}
 											fetchPriority="high"
-											onLoad={() => setLoading(false)}
+											onLoad={() => finishedLoading()}
 											onError={() => setLoading(false)}
 										/>
 									</picture>
