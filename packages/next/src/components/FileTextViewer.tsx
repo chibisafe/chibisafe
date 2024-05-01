@@ -12,11 +12,12 @@ export const FileTextViewer = ({ uuid }: { readonly uuid?: string }) => {
 	const fetchHighlight = useCallback(async () => {
 		try {
 			setLoading(true);
+			setContent(null);
+
 			const { data: response, error } = await request.raw({ method: 'GET', url: `file/${uuid}/highlight` });
 			const data = await response?.text();
 
 			if (!data) {
-				setLoading(false);
 				return;
 			}
 
@@ -25,10 +26,9 @@ export const FileTextViewer = ({ uuid }: { readonly uuid?: string }) => {
 			if (error) {
 				toast.error(error);
 			}
-
-			setLoading(false);
 		} catch (error) {
 			console.error(error);
+		} finally {
 			setLoading(false);
 		}
 	}, [uuid]);
