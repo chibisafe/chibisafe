@@ -46,3 +46,48 @@ export const deleteFiles = async (uuids: string[], type: string) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+// TODO: Implement these to be able to revalidate the albums and files tags server-side
+// export const addFilesToAlbum = async (uuids: string[], albumUuid: string) => {
+// 	try {
+// 		const { error } = await request.post({
+// 			url: `files/album/${albumUuid}`,
+// 			body: { files: uuids },
+// 			headers: {
+// 				authorization: `Bearer ${getToken()}`
+// 			}
+// 		});
+
+// 		if (error) return { message: error, type: MessageType.Error };
+
+// 		revalidateTag('files');
+// 		return {
+// 			message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} added to album`,
+// 			type: MessageType.Success
+// 		};
+// 	} catch (error: any) {
+// 		return { message: error, type: MessageType.Error };
+// 	}
+// };
+
+// export const removeFilesFromAlbum = async (uuids: string[], albumUuid: string) => {
+// 	try {
+// 		const { error } = await request.post({
+// 			url: `files/album/${albumUuid}/delete`,
+// 			body: { files: uuids },
+// 			headers: {
+// 				authorization: `Bearer ${getToken()}`
+// 			}
+// 		});
+
+// 		if (error) return { message: error, type: MessageType.Error };
+
+// 		revalidateTag('files');
+// 		return {
+// 			message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} removed from album`,
+// 			type: MessageType.Success
+// 		};
+// 	} catch (error: any) {
+// 		return { message: error, type: MessageType.Error };
+// 	}
+// };
