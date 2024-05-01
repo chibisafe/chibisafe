@@ -340,7 +340,7 @@ export function FileInformationDialog() {
 							<button
 								type="button"
 								aria-label="Previous"
-								className="absolute top-[calc(50%-12px)] -left-12"
+								className="absolute top-[calc(50%-12px)] -left-12 hidden lg:inline-block"
 								onClick={() => findPreviousFile()}
 							>
 								<ChevronLeft className="w-6 h-6" />
@@ -348,7 +348,7 @@ export function FileInformationDialog() {
 							<button
 								type="button"
 								aria-label="Next"
-								className="absolute top-[calc(50%-12px)] -right-12"
+								className="absolute top-[calc(50%-12px)] -right-12 hidden lg:inline-block"
 								onClick={() => findNextFile()}
 							>
 								<ChevronRight className="w-6 h-6" />
@@ -365,7 +365,7 @@ export function FileInformationDialog() {
 									>
 										<Loader2Icon className="absolute top-1/2 left-1/2 w-8 h-8 -ml-4 -mt-4 animate-spin" />
 									</div>
-									<picture>
+									<picture className="flex items-center justify-center h-full">
 										<img
 											src={selectedFile.url}
 											className="h-full object-contain md:block"
