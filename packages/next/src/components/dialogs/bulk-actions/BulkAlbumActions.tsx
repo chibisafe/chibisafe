@@ -17,6 +17,7 @@ import {
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import request from '@/lib/request';
 import { Skeleton } from '@/components/ui/skeleton';
+import { customRevalidateTag } from '@/actions/utils';
 
 export const BulkAlbumActions = ({
 	uuids,
@@ -86,6 +87,9 @@ export const BulkAlbumActions = ({
 					return;
 				}
 
+				customRevalidateTag('albums');
+				customRevalidateTag('files');
+
 				toast.success('Files added to album');
 			} catch (error: any) {
 				toast.error(error);
@@ -105,6 +109,9 @@ export const BulkAlbumActions = ({
 					toast.error(error);
 					return;
 				}
+
+				customRevalidateTag('albums');
+				customRevalidateTag('files');
 
 				toast.success('Files removed from album');
 			} catch (error) {
