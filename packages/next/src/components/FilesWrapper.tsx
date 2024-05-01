@@ -148,7 +148,11 @@ export function FilesWrapper({
 	useEffect(() => {
 		setCurrentType(type);
 		setAllFilesAtom(filesToUse);
-	}, [filesToUse, setAllFilesAtom, setCurrentType, type]);
+
+		return () => {
+			setSelectedFiles([]);
+		};
+	}, [filesToUse, setAllFilesAtom, setCurrentType, setSelectedFiles, type]);
 
 	const selectAllFiles = useCallback(() => {
 		setSelectedFiles(filesToUse);
