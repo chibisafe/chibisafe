@@ -56,7 +56,7 @@ export function FileInformationDrawerActions({
 							)}
 						</>
 					) : null}
-					<DeleteFileInformationAction uuid={file.uuid} isDrawer />
+					<DeleteFileInformationAction uuid={file.uuid} type={type} isDrawer />
 				</div>
 			</DrawerContent>
 		</Drawer>
