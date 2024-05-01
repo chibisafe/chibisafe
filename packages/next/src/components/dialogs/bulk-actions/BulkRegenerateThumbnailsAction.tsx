@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { Button } from '@/components/ui/button';
-import request from '@/lib/request';
+import { regenerateThumbnails } from '@/actions/BulkActions';
+import { MessageType } from '@/types';
 
 export const BulkRegenerateThumbnailsAction = ({
 	uuids,
@@ -14,35 +15,36 @@ export const BulkRegenerateThumbnailsAction = ({
 	readonly isDrawer?: boolean | undefined;
 	readonly uuids: string[];
 }) => {
-	const regenerateThumbs = useCallback(async () => {
-		try {
-			const { error } = await request.post({
-				url: 'files/thumbnail/regenerate',
-				body: { files: uuids }
-			});
+	const [state, formAction, isPending] = useActionState(regenerateThumbnails.bind(null, uuids), {
+		message: '',
+		type: MessageType.Uninitialized
+	});
 
-			if (error) {
-				toast.error(error);
-				return;
-			}
-
-			toast.success(
-				`${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} thumbnail${uuids.length > 1 ? 's' : ''} regenerated`
-			);
-		} catch (error) {
-			console.error(error);
+	useEffect(() => {
+		if (state.type === MessageType.Error) toast.error(state.message);
+		else if (state.type === MessageType.Success) {
+			toast.success(state.message);
 		}
-	}, [uuids]);
+
+		return () => {
+			if (state.type === MessageType.Success) {
+				state.type = MessageType.Uninitialized;
+				state.message = '';
+			}
+		};
+	}, [state.message, state.type, state, uuids.length]);
 
 	return (
 		<ConfirmationDialog
 			description={`This action will regenerate thumbnails for ${uuids.length} file${uuids.length > 1 ? 's' : ''}.`}
-			callback={async () => regenerateThumbs()}
+			callback={() => formAction()}
 		>
 			{isDrawer ? (
-				<Button className="w-full">Regenerate thumbnails</Button>
+				<Button type="submit" className="w-full" disabled={isPending}>
+					Regenerate thumbnails
+				</Button>
 			) : (
-				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
+				<button type="submit" className="w-full h-full flex px-2 py-1.5 cursor-default" disabled={isPending}>
 					Regenerate thumbnails
 				</button>
 			)}

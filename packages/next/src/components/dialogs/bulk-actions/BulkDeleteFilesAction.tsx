@@ -1,12 +1,12 @@
 'use client';
 
-import { useCallback } from 'react';
-import type { FilePropsType } from '@/types';
+import { useActionState, useEffect } from 'react';
+import { MessageType, type FilePropsType } from '@/types';
 import { toast } from 'sonner';
 
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { Button } from '@/components/ui/button';
-import request from '@/lib/request';
+import { deleteFiles } from '@/actions/BulkActions';
 
 export const BulkDeleteFilesAction = ({
 	uuids,
@@ -17,40 +17,37 @@ export const BulkDeleteFilesAction = ({
 	readonly type: FilePropsType;
 	readonly uuids: string[];
 }) => {
-	const deleteFiles = useCallback(async () => {
-		const url =
-			type === 'admin' ? 'admin/files/delete' : type === 'quarantine' ? 'admin/files/delete' : 'files/delete';
-		try {
-			const { error } = await request.post({
-				url,
-				body: { files: uuids }
-			});
+	const [state, formAction, isPending] = useActionState(deleteFiles.bind(null, uuids, type), {
+		message: '',
+		type: MessageType.Uninitialized
+	});
 
-			if (error) {
-				toast.error(error);
-				return;
-			}
-
-			// TODO: Refetch files. Maybe build something that we can submit a form to
-			// to the SSR server to refetch the files when doing client API calls?
-			toast.success(`${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} removed`);
-		} catch (error) {
-			console.error(error);
+	useEffect(() => {
+		if (state.type === MessageType.Error) toast.error(state.message);
+		else if (state.type === MessageType.Success) {
+			toast.success(state.message);
 		}
-	}, [type, uuids]);
+
+		return () => {
+			if (state.type === MessageType.Success) {
+				state.type = MessageType.Uninitialized;
+				state.message = '';
+			}
+		};
+	}, [state.message, state.type, state, uuids.length]);
 
 	return (
 		<ConfirmationDialog
 			description={`This action will delete the selected ${uuids.length} file${uuids.length > 1 ? 's' : ''}.`}
-			callback={async () => deleteFiles()}
+			callback={() => formAction()}
 		>
 			{isDrawer ? (
-				<Button variant="destructive" className="w-full">
+				<Button type="submit" variant="destructive" className="w-full" disabled={isPending}>
 					Delete {uuids.length}
 					{uuids.length > 1 ? 'files' : 'file'}
 				</Button>
 			) : (
-				<button type="button" className="w-full h-full flex px-2 py-1.5 cursor-default">
+				<button type="submit" className="w-full h-full flex px-2 py-1.5 cursor-default" disabled={isPending}>
 					Delete {uuids.length} {uuids.length > 1 ? 'files' : 'file'}
 				</button>
 			)}
