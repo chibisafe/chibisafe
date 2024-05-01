@@ -236,14 +236,32 @@ export function FileInformationDialog() {
 		[setModalOpen, setSelectedFile]
 	);
 
-	const onTouchStart = (e: any) => {
+	const findPreviousFile = useCallback(() => {
+		const previousIndex = (selectedFile?.index ?? 0) - 1;
+		const newItem = allFiles?.at(previousIndex);
+		if (selectedFile?.index !== 0 && newItem) {
+			setSelectedFile(newItem);
+			setLoading(true);
+		}
+	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+
+	const findNextFile = useCallback(() => {
+		const nextIndex = (selectedFile?.index ?? 0) + 1;
+		const newItem = allFiles?.at(nextIndex);
+		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
+			setSelectedFile(newItem);
+			setLoading(true);
+		}
+	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+
+	const onTouchStart = useCallback((e: any) => {
 		setTouchEnd(null);
 		setTouchStart(e.targetTouches?.[0]?.clientX ?? 0);
-	};
+	}, []);
 
-	const onTouchMove = (e: any) => setTouchEnd(e.targetTouches?.[0]?.clientX ?? 0);
+	const onTouchMove = useCallback((e: any) => setTouchEnd(e.targetTouches?.[0]?.clientX ?? 0), []);
 
-	const onTouchEnd = () => {
+	const onTouchEnd = useCallback(() => {
 		if (!touchStart || !touchEnd) return;
 		const distance = Number(touchStart) - Number(touchEnd);
 		const isLeftSwipe = distance > swipeDistanceToTrigger;
@@ -254,25 +272,7 @@ export function FileInformationDialog() {
 		} else if (isRightSwipe) {
 			findPreviousFile();
 		}
-	};
-
-	const findPreviousFile = () => {
-		const previousIndex = (selectedFile?.index ?? 0) - 1;
-		const newItem = allFiles?.at(previousIndex);
-		if (selectedFile?.index !== 0 && newItem) {
-			setSelectedFile(newItem);
-			setLoading(true);
-		}
-	};
-
-	const findNextFile = () => {
-		const nextIndex = (selectedFile?.index ?? 0) + 1;
-		const newItem = allFiles?.at(nextIndex);
-		if (selectedFile?.index !== (allFiles?.length ?? 0) - 1 && newItem) {
-			setSelectedFile(newItem);
-			setLoading(true);
-		}
-	};
+	}, [touchStart, touchEnd, findNextFile, findPreviousFile]);
 
 	useEventListener('keydown', event => {
 		event.stopPropagation();

@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import type { File, FilePropsType, FileWithIndex } from '@/types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { File, FilePropsType } from '@/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { isDialogOpenAtom, selectedFileAtom, currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
@@ -45,12 +45,13 @@ export function Masonry({
 	const setCurrentType = useSetAtom(currentTypeAtom);
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);
 	const showMasonry = useAtomValue(isMasonryViewAtom);
-	const [filesToUse, setFilesToUse] = useState<FileWithIndex[]>(
-		(files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
+
+	const filesToUse = useMemo(() => {
+		return (files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
 			...file,
 			index
-		}))
-	);
+		}));
+	}, [files, data, isUploads, isAlbumUploads]);
 
 	useEffect(() => {
 		setCurrentType(type);
