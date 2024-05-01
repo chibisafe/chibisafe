@@ -5,12 +5,15 @@ import { Plus } from 'lucide-react';
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { Button } from '@/components/ui/react-aria-button';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { FilesList } from '@/components/FilesList';
 import { GlobalDropZone } from '@/components/Dropzone';
 import { UploadTrigger } from '@/components/UploadTrigger';
 import { buttonVariants } from '@/styles/button';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { Pagination } from '@/components/Pagination';
+import { FilesWrapper } from '@/components/FilesWrapper';
+import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -70,7 +73,14 @@ export default async function AlbumPage({
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<HydrationBoundary state={dehydrate(queryClient)}>
-					<FilesList type="album" albumUuid={params.uuid} />
+					<div className="grid gap-4">
+						<Suspense>
+							<Pagination type="album" albumUuid={params.uuid} />
+							<FilesWrapper type="album" albumUuid={params.uuid} />
+							<Pagination type="album" albumUuid={params.uuid} />
+						</Suspense>
+						<FileInformationDialog />
+					</div>
 				</HydrationBoundary>
 			</div>
 			<GlobalDropZone albumUuid={params.uuid} />
