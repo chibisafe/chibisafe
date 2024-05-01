@@ -4,12 +4,15 @@ import { Plus } from 'lucide-react';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { FilesList } from '@/components/FilesList';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { UploadTrigger } from '@/components/UploadTrigger';
 import { Button } from '@/components/ui/react-aria-button';
 import { buttonVariants } from '@/styles/button';
 import { GlobalDropZone } from '@/components/Dropzone';
+import { Suspense } from 'react';
+import { Pagination } from '@/components/Pagination';
+import { FilesWrapper } from '@/components/FilesWrapper';
+import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Uploads'
@@ -42,7 +45,14 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<HydrationBoundary state={dehydrate(queryClient)}>
-					<FilesList type="uploads" />
+					<div className="grid gap-4">
+						<Suspense>
+							<Pagination type="uploads" />
+							<FilesWrapper type="uploads" />
+							<Pagination type="uploads" />
+						</Suspense>
+						<FileInformationDialog />
+					</div>
 				</HydrationBoundary>
 			</div>
 			<GlobalDropZone />

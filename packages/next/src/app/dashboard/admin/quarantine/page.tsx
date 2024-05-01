@@ -3,8 +3,11 @@ import type { PageQuery } from '@/types';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { FilesList } from '@/components/FilesList';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { Pagination } from '@/components/Pagination';
+import { FilesWrapper } from '@/components/FilesWrapper';
+import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Quarantine'
@@ -31,7 +34,14 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 				]}
 			/>
 			<div className="px-2 w-full">
-				<FilesList type="quarantine" files={response.files} count={response.count} />
+				<div className="grid gap-4">
+					<Suspense>
+						<Pagination itemsTotal={response.count} type="quarantine" />
+						<FilesWrapper files={response.files} total={response.count} type="quarantine" />
+						<Pagination itemsTotal={response.count} type="quarantine" />
+					</Suspense>
+					<FileInformationDialog />
+				</div>
 			</div>
 		</>
 	);
