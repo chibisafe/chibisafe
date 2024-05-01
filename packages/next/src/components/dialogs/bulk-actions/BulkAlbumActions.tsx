@@ -17,7 +17,7 @@ import {
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import request from '@/lib/request';
 import { Skeleton } from '@/components/ui/skeleton';
-import { customRevalidateTag } from '@/actions/utils';
+import { customRevalidateTag } from '@/actions/Revalidate';
 
 export const BulkAlbumActions = ({
 	uuids,
