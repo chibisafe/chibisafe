@@ -10,7 +10,7 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import type { FileWithAdditionalData, FilePropsType } from '@/types';
+import type { FilePropsType, FileWithIndex } from '@/types';
 import { ArrowDownToLineIcon, ArrowUpDown, ArrowUpRightFromSquare } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
@@ -27,7 +27,7 @@ declare module '@tanstack/table-core' {
 	}
 }
 
-const columnHelper = createColumnHelper<FileWithAdditionalData>();
+const columnHelper = createColumnHelper<FileWithIndex>();
 const columns = [
 	columnHelper.accessor(row => row.thumb, {
 		id: 'thumbnail',
@@ -40,10 +40,7 @@ const columns = [
 		id: 'link',
 		header: 'Link',
 		cell: props => (
-			<a
-				href={`/dashboard/admin/ip/${props.row.original.url}`}
-				className="text-blue-500 underline inline-flex items-center"
-			>
+			<a href={props.row.original.url} className="text-blue-500 underline inline-flex items-center">
 				{props.row.original.name} <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 			</a>
 		)
