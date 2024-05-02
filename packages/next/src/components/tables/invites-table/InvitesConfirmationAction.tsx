@@ -1,46 +1,34 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useEffect, useRef } from 'react';
-import { MessageType } from '@/types';
-import { useFormState } from 'react-dom';
-import { toast } from 'sonner';
-
-import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 import { revokeInvite } from '@/actions/InviteActions';
+import { Button } from '@/components/ui/button';
+import { Trash2Icon } from 'lucide-react';
+import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
+import { useSetAtom } from 'jotai';
+import { useServerAction } from '@/hooks/useServerAction';
 
-export const InvitesConfirmationAction = ({
-	code,
-	description,
-	children
-}: PropsWithChildren<{ readonly code: string; readonly description: string }>) => {
-	const [state, formAction] = useFormState(revokeInvite, {
-		message: '',
-		type: MessageType.Uninitialized
+export const InvitesConfirmationAction = ({ code }: PropsWithChildren<{ readonly code: string }>) => {
+	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
+	const { formAction, isPending } = useServerAction({
+		action: revokeInvite,
+		uuid: code
 	});
 
-	const formRef = useRef<HTMLFormElement>(null);
-
-	useEffect(() => {
-		if (state.type === MessageType.Error) toast.error(state.message);
-		else if (state.type === MessageType.Success) {
-			toast.success(state.message);
-		}
-
-		return () => {
-			if (state.type === MessageType.Success) {
-				state.type = MessageType.Uninitialized;
-				state.message = '';
-			}
-		};
-	}, [state.message, state.type, state]);
-
 	return (
-		<form action={formAction} ref={formRef} className="w-full h-full">
-			<input type="hidden" name="code" value={code} />
-			<ConfirmationDialog description={description} callback={() => formRef.current?.requestSubmit()}>
-				{children}
-			</ConfirmationDialog>
-		</form>
+		<Button
+			variant="outline"
+			size="icon"
+			disabled={isPending}
+			onClick={() =>
+				setConfirmationDialog({
+					callback: () => formAction(),
+					description:
+						'Are you sure you want to revoke this invite? It will prevent anyone from using it to create an account.'
+				})
+			}
+		>
+			<Trash2Icon className="h-4 w-4" />
+		</Button>
 	);
 };
