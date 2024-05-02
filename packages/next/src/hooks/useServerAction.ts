@@ -10,10 +10,7 @@ export const useServerAction = ({ action, uuid }: { action: any; uuid: string })
 		type: MessageType.Uninitialized
 	});
 
-	console.log(state);
-
 	useEffect(() => {
-		console.log(state);
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);
