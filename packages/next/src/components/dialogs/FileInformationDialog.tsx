@@ -25,7 +25,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
-import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 import { ArrowUpRightFromSquare, ChevronLeft, ChevronRight, Loader2Icon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
@@ -315,12 +314,8 @@ export function FileInformationDialog() {
 					tab === 'information' ? 'w-11/12 lg:w-5/6 xl:w-6/12' : ''
 				)}
 			>
-				<div className="absolute right-0 -bottom-12 z-10 md:inline-block hidden">
+				<div className="absolute right-0 -bottom-12 z-10">
 					<FileInformationDialogActions file={selectedFile} type={currentType} />
-				</div>
-
-				<div className="absolute right-0 -bottom-12 z-10 md:hidden inline-block">
-					<FileInformationDrawerActions file={selectedFile} type={currentType} />
 				</div>
 
 				<Tabs

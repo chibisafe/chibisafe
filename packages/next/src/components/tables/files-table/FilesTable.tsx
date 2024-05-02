@@ -15,7 +15,6 @@ import { ArrowDownToLineIcon, ArrowUpDown, ArrowUpRightFromSquare } from 'lucide
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
-import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 import { formatBytes } from '@/lib/file';
 import { FileThumbnail } from '@/components/FileThumbnail';
 import Link from 'next/link';
@@ -105,21 +104,10 @@ const columns = [
 		id: 'actions',
 		header: '',
 		cell: props => (
-			<>
-				<div className="md:inline-block hidden">
-					<FileInformationDialogActions
-						file={props.row.original}
-						type={props.table.options.meta?.type ?? 'uploads'}
-					/>
-				</div>
-
-				<div className="md:hidden inline-block">
-					<FileInformationDrawerActions
-						file={props.row.original}
-						type={props.table.options.meta?.type ?? 'uploads'}
-					/>
-				</div>
-			</>
+			<FileInformationDialogActions
+				file={props.row.original}
+				type={props.table.options.meta?.type ?? 'uploads'}
+			/>
 		)
 	})
 ];
