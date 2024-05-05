@@ -69,7 +69,7 @@ export const createAdminUserIfNotExists = async () => {
 	});
 
 	if (!ownerUser) {
-		const hash = await bcrypt.hash('admin', 10);
+		const hash = await bcrypt.hash(process.env.ADMIN_SECRET ?? 'admin', 10);
 		await prisma.users.create({
 			data: {
 				uuid: uuidv4(),
