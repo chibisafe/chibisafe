@@ -26,7 +26,9 @@ export const unbanIp = async (ip: string) => {
 	}
 };
 
-export const banIp = async (ip: string, reason?: string | null) => {
+export const banIp = async (_: any, form: FormData) => {
+	const ip = form.get('ip') as string;
+	const reason = form.get('reason') as string;
 	try {
 		const { error } = await request.post({
 			url: 'admin/ip/ban',
