@@ -51,12 +51,22 @@ function FileItem({
 		[hoveredFiles, setHoveredFiles]
 	);
 
+	const canFileCanBeSelected = useCallback(() => {
+		if (file.quarantine && type !== 'quarantine') {
+			return;
+		}
+
+		if (isSelected) {
+			setSelectedFiles(selectedFiles.filter(f => f !== file));
+		} else {
+			setSelectedFiles([...selectedFiles, file]);
+		}
+	}, [file, isSelected, selectedFiles, setSelectedFiles, type]);
+
 	const attrs = useLongPress(
 		e => {
 			// console.log('long press', e);
-			if (!isSelected) {
-				setSelectedFiles([...selectedFiles, file]);
-			}
+			canFileCanBeSelected();
 		},
 		{
 			// onStart: e => {
@@ -92,7 +102,8 @@ function FileItem({
 					'absolute right-0 top-0 z-20 hidden pointer-events-none group-hover:hidden group-hover:pointer-events-auto md:group-hover:flex',
 					{
 						'pointer-events-auto': isSelectionActive,
-						flex: isSelected
+						flex: isSelected,
+						'!hidden': file.quarantine && type !== 'quarantine'
 					}
 				)}
 			>
@@ -102,11 +113,7 @@ function FileItem({
 						e.preventDefault();
 						e.stopPropagation();
 
-						if (isSelected) {
-							setSelectedFiles(selectedFiles.filter(f => f !== file));
-						} else {
-							setSelectedFiles([...selectedFiles, file]);
-						}
+						canFileCanBeSelected();
 					}}
 				>
 					{isSelected ? <CircleCheckIcon className="h-6 w-6" /> : <CircleIcon className="h-6 w-6" />}
@@ -123,13 +130,7 @@ function FileItem({
 						return;
 					}
 
-					if (isSelectionActive) {
-						if (isSelected) {
-							setSelectedFiles(selectedFiles.filter(f => f !== file));
-						} else {
-							setSelectedFiles([...selectedFiles, file]);
-						}
-					}
+					canFileCanBeSelected();
 				}}
 			/>
 			<a

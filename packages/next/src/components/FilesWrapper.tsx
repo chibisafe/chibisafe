@@ -74,14 +74,16 @@ function SelectionWrapper({ selectAllFiles, type }: { selectAllFiles(): void; re
 					</Button>
 				</div>
 
-				<div className="flex flex-row items-center md:gap-4">
-					<span>{selectedFiles.length} selected</span>
-					<SelectionActions type={type}>
-						<Button size="sm" className="text-sm font-medium">
-							Actions
-						</Button>
-					</SelectionActions>
-				</div>
+				{selectedFiles.length ? (
+					<div className="flex flex-row items-center md:gap-4">
+						<span>{selectedFiles.length} selected</span>
+						<SelectionActions type={type}>
+							<Button size="sm" className="text-sm font-medium">
+								Actions
+							</Button>
+						</SelectionActions>
+					</div>
+				) : null}
 			</div>
 			<div className="h-full flex-row flex-grow  md:hidden flex gap-4 justify-between">
 				<div className="flex flex-row items-center">
