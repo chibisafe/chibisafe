@@ -57,6 +57,15 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					original: {
 						contains: search
 					}
+				},
+				{
+					tags: {
+						some: {
+							name: {
+								contains: search
+							}
+						}
+					}
 				}
 			]
 		};
