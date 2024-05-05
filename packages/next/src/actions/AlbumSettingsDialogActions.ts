@@ -44,10 +44,7 @@ export const deleteAlbumAndFiles = async (uuid: string) => {
 	}
 };
 
-export const deleteLink = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-	const albumUuid = form.get('albumUuid') as string;
-
+export const deleteLink = async (uuid: string, albumUuid: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `album/${albumUuid}/link/${uuid}`,

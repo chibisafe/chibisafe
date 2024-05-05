@@ -30,9 +30,7 @@ export const createShortURL = async (_: any, form: FormData) => {
 	}
 };
 
-export const deleteLink = async (_: any, form: FormData) => {
-	const identifier = form.get('identifier') as string;
-
+export const deleteLink = async (identifier: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `link/${identifier}`,
@@ -50,9 +48,7 @@ export const deleteLink = async (_: any, form: FormData) => {
 	}
 };
 
-export const deleteLinkAsAdmin = async (_: any, form: FormData) => {
-	const identifier = form.get('identifier') as string;
-
+export const deleteLinkAsAdmin = async (identifier: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `admin/link/${identifier}`,

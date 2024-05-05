@@ -33,9 +33,7 @@ export const setQuota = async (_: any, form: FormData) => {
 	}
 };
 
-export const enableUser = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const enableUser = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/enable`,
@@ -58,9 +56,7 @@ export const enableUser = async (_: any, form: FormData) => {
 	}
 };
 
-export const disableUser = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const disableUser = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/disable`,
@@ -83,9 +79,7 @@ export const disableUser = async (_: any, form: FormData) => {
 	}
 };
 
-export const demoteUser = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const demoteUser = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/demote`,
@@ -108,9 +102,7 @@ export const demoteUser = async (_: any, form: FormData) => {
 	}
 };
 
-export const promoteUser = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const promoteUser = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/promote`,
@@ -133,9 +125,7 @@ export const promoteUser = async (_: any, form: FormData) => {
 	}
 };
 
-export const purgeUser = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const purgeUser = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/purge`,

@@ -34,9 +34,7 @@ export const createTag = async (_: any, form: FormData) => {
 	}
 };
 
-export const deleteTag = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const deleteTag = async (uuid: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `tag/${uuid}`,
