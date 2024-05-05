@@ -1,56 +1,32 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
-import { MessageType, type FilePropsType } from '@/types';
-import { toast } from 'sonner';
-
-import { ConfirmationDialog } from '../ConfirmationDialog';
-import { Button } from '@/components/ui/button';
+import { type FilePropsType } from '@/types';
 import { deleteFiles } from '@/actions/BulkActions';
+import { useSetAtom } from 'jotai';
+import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
+import { useServerAction } from '@/hooks/useServerAction';
 
-export const BulkDeleteFilesAction = ({
-	uuids,
-	type,
-	isDrawer = false
-}: {
-	readonly isDrawer?: boolean | undefined;
-	readonly type: FilePropsType;
-	readonly uuids: string[];
-}) => {
-	const [state, formAction, isPending] = useActionState(deleteFiles.bind(null, uuids, type), {
-		message: '',
-		type: MessageType.Uninitialized
+export const BulkDeleteFilesAction = ({ uuids, type }: { readonly type: FilePropsType; readonly uuids: string[] }) => {
+	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
+	const { formAction, isPending } = useServerAction({
+		action: deleteFiles,
+		identifier: uuids,
+		secondaryIdentifier: type
 	});
 
-	useEffect(() => {
-		if (state.type === MessageType.Error) toast.error(state.message);
-		else if (state.type === MessageType.Success) {
-			toast.success(state.message);
-		}
-
-		return () => {
-			if (state.type === MessageType.Success) {
-				state.type = MessageType.Uninitialized;
-				state.message = '';
-			}
-		};
-	}, [state.message, state.type, state, uuids.length]);
-
 	return (
-		<ConfirmationDialog
-			description={`This action will delete the selected ${uuids.length} file${uuids.length > 1 ? 's' : ''}.`}
-			callback={() => formAction()}
+		<button
+			type="submit"
+			className="w-full h-full flex px-2 py-1.5 cursor-default"
+			disabled={isPending}
+			onClick={() => {
+				setConfirmationDialog({
+					callback: () => formAction(),
+					description: `This action will delete the selected ${uuids.length} file${uuids.length > 1 ? 's' : ''}.`
+				});
+			}}
 		>
-			{isDrawer ? (
-				<Button type="submit" variant="destructive" className="w-full" disabled={isPending}>
-					Delete {uuids.length}
-					{uuids.length > 1 ? 'files' : 'file'}
-				</Button>
-			) : (
-				<button type="submit" className="w-full h-full flex px-2 py-1.5 cursor-default" disabled={isPending}>
-					Delete {uuids.length} {uuids.length > 1 ? 'files' : 'file'}
-				</button>
-			)}
-		</ConfirmationDialog>
+			Delete {uuids.length} {uuids.length > 1 ? 'files' : 'file'}
+		</button>
 	);
 };

@@ -38,7 +38,7 @@ const AllowFileButton = ({
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
 		action: allowFile,
-		uuid
+		identifier: uuid
 	});
 	const queryClient = useQueryClient();
 
@@ -80,7 +80,7 @@ const QuarantineFileButton = ({
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
 		action: quarantineFile,
-		uuid
+		identifier: uuid
 	});
 	const queryClient = useQueryClient();
 
@@ -123,7 +123,7 @@ const DeleteFileButton = ({
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
 		action: type === 'admin' ? deleteFileAsAdmin : deleteFile,
-		uuid
+		identifier: uuid
 	});
 	const queryClient = useQueryClient();
 

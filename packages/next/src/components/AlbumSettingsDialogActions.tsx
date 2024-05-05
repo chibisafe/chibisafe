@@ -33,7 +33,7 @@ const DeleteAlbumButton = ({
 
 	const { formAction, isPending, state } = useServerAction({
 		action: deleteAlbum,
-		uuid: album?.uuid ?? ''
+		identifier: album?.uuid ?? ''
 	});
 
 	useEffect(() => {
@@ -72,7 +72,7 @@ const DeleteAlbumAndFilesButton = ({
 
 	const { formAction, isPending, state } = useServerAction({
 		action: deleteAlbumAndFiles,
-		uuid: album?.uuid ?? ''
+		identifier: album?.uuid ?? ''
 	});
 
 	useEffect(() => {

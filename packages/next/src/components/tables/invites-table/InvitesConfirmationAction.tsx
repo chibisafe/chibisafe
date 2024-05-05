@@ -12,7 +12,7 @@ export const InvitesConfirmationAction = ({ code }: PropsWithChildren<{ readonly
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const { formAction, isPending } = useServerAction({
 		action: revokeInvite,
-		uuid: code
+		identifier: code
 	});
 
 	return (

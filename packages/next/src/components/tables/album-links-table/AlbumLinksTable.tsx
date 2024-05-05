@@ -9,11 +9,10 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import { ArrowUpRightFromSquare, Trash2Icon } from 'lucide-react';
-import { Button } from '../../ui/button';
+import { ArrowUpRightFromSquare } from 'lucide-react';
 import { DataTable } from '../DataTable';
 import type { AlbumLink } from '@/types';
-import { AlbumLinksConfirmationAction } from './AlbumLinksConfirmationAction';
+import { DeleteLinkButton } from './DeleteLinkButton';
 import { AlbumLinksToggleAction } from './AlbumLinksToggleAction';
 
 const columnHelper = createColumnHelper<AlbumLink>();
@@ -48,15 +47,7 @@ const columns = [
 		header: '',
 		cell: props => (
 			<div className="flex justify-end">
-				<AlbumLinksConfirmationAction
-					uuid={props.row.original.uuid}
-					albumUuid={props.row.original.albumUuid}
-					description="Are you sure you want to delete this link?"
-				>
-					<Button variant="outline" size={'icon'}>
-						<Trash2Icon className="h-4 w-4" />
-					</Button>
-				</AlbumLinksConfirmationAction>
+				<DeleteLinkButton uuid={props.row.original.uuid} albumUuid={props.row.original.albumUuid} />
 			</div>
 		)
 	})
