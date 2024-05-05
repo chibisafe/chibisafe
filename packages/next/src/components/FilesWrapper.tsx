@@ -26,6 +26,8 @@ import {
 import { BulkAlbumActions } from './dialogs/bulk-actions/BulkAlbumActions';
 import { BulkDeleteFilesAction } from './dialogs/bulk-actions/BulkDeleteFilesAction';
 import { BulkRegenerateThumbnailsAction } from './dialogs/bulk-actions/BulkRegenerateThumbnailsAction';
+import { BulkUnquarantineFilesAction } from './dialogs/bulk-actions/BulkUnquarantineFilesAction';
+import { BulkQuarantineFilesAction } from './dialogs/bulk-actions/BulkQuarantineFilesAction';
 
 function SelectionActions({ children, type }: PropsWithChildren<{ readonly type: FilePropsType }>) {
 	const selectedFiles = useAtomValue(selectedFilesAtom);
@@ -41,6 +43,28 @@ function SelectionActions({ children, type }: PropsWithChildren<{ readonly type:
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 						<BulkRegenerateThumbnailsAction uuids={selectedFiles.map(file => file.uuid)} />
 					</DropdownMenuItem>
+					{type === 'admin' ? (
+						<>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								className="focus:text-destructive-foreground focus:bg-destructive p-0"
+								onSelect={e => e.preventDefault()}
+							>
+								<BulkQuarantineFilesAction uuids={selectedFiles.map(file => file.uuid)} />
+							</DropdownMenuItem>
+						</>
+					) : null}
+					{type === 'quarantine' ? (
+						<>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								className="focus:text-destructive-foreground focus:bg-destructive p-0"
+								onSelect={e => e.preventDefault()}
+							>
+								<BulkUnquarantineFilesAction uuids={selectedFiles.map(file => file.uuid)} />
+							</DropdownMenuItem>
+						</>
+					) : null}
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="focus:text-destructive-foreground focus:bg-destructive p-0"
