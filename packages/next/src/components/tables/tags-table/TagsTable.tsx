@@ -12,8 +12,8 @@ import { useState, type PropsWithChildren } from 'react';
 import { DataTable } from '../DataTable';
 import type { TagWithCount } from '@/types';
 import { Button } from '@/components/ui/button';
-import { TagsConfirmationAction } from './TagsConfirmationAction';
-import { ArrowUpDown, Trash2Icon } from 'lucide-react';
+import { DeleteTagButton } from './DeleteTagButton';
+import { ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 
 const columnHelper = createColumnHelper<TagWithCount>();
@@ -52,14 +52,7 @@ const columns = [
 		header: '',
 		cell: props => (
 			<div className="flex justify-end">
-				<TagsConfirmationAction
-					uuid={props.row.original.uuid}
-					description="Are you sure you want to delete this tag? This will not delete any files."
-				>
-					<Button variant="outline" size={'icon'}>
-						<Trash2Icon className="h-4 w-4" />
-					</Button>
-				</TagsConfirmationAction>
+				<DeleteTagButton uuid={props.row.original.uuid} />
 			</div>
 		)
 	})

@@ -5,9 +5,7 @@ import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
 
-export const unbanIp = async (_: any, form: FormData) => {
-	const ip = form.get('ip') as string;
-
+export const unbanIp = async (ip: string) => {
 	try {
 		const { error } = await request.post({
 			url: 'admin/ip/unban',
@@ -31,7 +29,6 @@ export const unbanIp = async (_: any, form: FormData) => {
 export const banIp = async (_: any, form: FormData) => {
 	const ip = form.get('ip') as string;
 	const reason = form.get('reason') as string;
-
 	try {
 		const { error } = await request.post({
 			url: 'admin/ip/ban',
@@ -53,9 +50,7 @@ export const banIp = async (_: any, form: FormData) => {
 	}
 };
 
-export const purgeIp = async (_: any, form: FormData) => {
-	const ip = form.get('ip') as string;
-
+export const purgeIp = async (ip: string) => {
 	try {
 		const { error } = await request.post({
 			url: 'admin/ip/purge',

@@ -10,7 +10,7 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-import { ConfirmationAction } from './UserConfirmationAction';
+import { UserActionsButton } from './UserActionsButton';
 import type { UserWithCountAndQuota } from '@/types';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -47,23 +47,23 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 				<DropdownMenuGroup>
 					{user.enabled ? (
 						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-							<ConfirmationAction
+							<UserActionsButton
 								uuid={user.uuid}
 								type="disable"
 								description="This action will disable the user and thus prevent them from logging into chibisafe again until you enable them once more. All uploaded files and albums will remain intact."
 							>
 								Disable
-							</ConfirmationAction>
+							</UserActionsButton>
 						</DropdownMenuItem>
 					) : (
 						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-							<ConfirmationAction
+							<UserActionsButton
 								uuid={user.uuid}
 								type="enable"
 								description="This action will enable the user and allow them to log into chibisafe again. They'll be able to access all previous uploads and albums."
 							>
 								Enable
-							</ConfirmationAction>
+							</UserActionsButton>
 						</DropdownMenuItem>
 					)}
 					{user.roles.some(role => role.name === 'admin') ? (
@@ -71,36 +71,36 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 							className="focus:text-destructive-foreground focus:bg-destructive p-0"
 							onSelect={e => e.preventDefault()}
 						>
-							<ConfirmationAction
+							<UserActionsButton
 								uuid={user.uuid}
 								type="demote"
 								description="This action will remove the admin role and demote the user back to a normal user."
 							>
 								Demote
-							</ConfirmationAction>
+							</UserActionsButton>
 						</DropdownMenuItem>
 					) : (
 						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-							<ConfirmationAction
+							<UserActionsButton
 								uuid={user.uuid}
 								type="promote"
 								description="This action will promote the user to admin. They'll be able to do everything you can do. Be careful before promoting anyone to understand the risks."
 							>
 								Promote
-							</ConfirmationAction>
+							</UserActionsButton>
 						</DropdownMenuItem>
 					)}
 					<DropdownMenuItem
 						className="focus:text-destructive-foreground focus:bg-destructive p-0"
 						onSelect={e => e.preventDefault()}
 					>
-						<ConfirmationAction
+						<UserActionsButton
 							uuid={user.uuid}
 							type="purge"
 							description="This action will delete ALL files, albums, tags and snippets created by the user. This action is not reversible."
 						>
 							Purge
-						</ConfirmationAction>
+						</UserActionsButton>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
