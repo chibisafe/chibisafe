@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import bcrypt from 'bcryptjs';
 import type { FastifyRequest } from 'fastify';
