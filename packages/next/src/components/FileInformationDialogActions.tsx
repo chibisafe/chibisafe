@@ -3,7 +3,7 @@
 import { useEffect, type PropsWithChildren } from 'react';
 import { MessageType, type FilePropsType, type FileWithAdditionalData } from '@/types';
 import { useCopyToClipboard, useMediaQuery } from 'usehooks-ts';
-import { allowFile, deleteFile, deleteFileAsAdmin, quarantineFile } from '@/actions/FileInformationDialogActions';
+import { allowFile, deleteFile, deleteFileAsAdmin, quarantineFile } from '@/actions/FileDialogActions';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -22,7 +22,7 @@ import { useSetAtom } from 'jotai';
 import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
 import { cn } from '@/lib/utils';
 import { useServerAction } from '@/hooks/useServerAction';
-import { isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { useQueryClient } from '@tanstack/react-query';
 
 const AllowFileButton = ({

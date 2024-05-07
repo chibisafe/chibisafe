@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Files'
@@ -45,7 +45,7 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 						<FilesWrapper files={response.files} total={response.count} type="admin" />
 						<Pagination itemsTotal={response.count} type="admin" />
 					</Suspense>
-					<FileInformationDialog />
+					<FileDialog />
 				</div>
 			</div>
 		</>

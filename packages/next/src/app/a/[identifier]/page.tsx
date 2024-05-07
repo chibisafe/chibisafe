@@ -9,7 +9,7 @@ import request from '@/lib/request';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export async function generateMetadata({
 	searchParams,
@@ -106,7 +106,7 @@ export default async function PublicAlbumPage({
 							/>
 							<Pagination itemsTotal={response.album.count} type="publicAlbum" />
 						</Suspense>
-						<FileInformationDialog />
+						<FileDialog />
 					</div>
 				</FilesListNsfwToggle>
 			</div>

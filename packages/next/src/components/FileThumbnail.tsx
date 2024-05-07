@@ -1,6 +1,6 @@
 'use client';
 
-import { selectedFileAtom, isDialogOpenAtom } from '@/lib/atoms/fileInformationDialog';
+import { selectedFileAtom, isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { isFileImage, isFileVideo, isFileAudio, isFilePDF } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import type { File, FilePropsType, FileWithIndex } from '@/types';

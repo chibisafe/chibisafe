@@ -12,7 +12,7 @@ import { GlobalDropZone } from '@/components/Dropzone';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Uploads'
@@ -51,7 +51,7 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 							<FilesWrapper type="uploads" />
 							<Pagination type="uploads" />
 						</Suspense>
-						<FileInformationDialog />
+						<FileDialog />
 					</div>
 				</HydrationBoundary>
 			</div>

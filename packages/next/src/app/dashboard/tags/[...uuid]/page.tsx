@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Tags'
@@ -56,7 +56,7 @@ export default async function TagPage({
 						<FilesWrapper files={response.files} total={response.count} type="tag" />
 						<Pagination itemsTotal={response.count} type="tag" />
 					</Suspense>
-					<FileInformationDialog />
+					<FileDialog />
 				</div>
 			</div>
 		</>

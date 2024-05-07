@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Quarantine'
@@ -40,7 +40,7 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 						<FilesWrapper files={response.files} total={response.count} type="quarantine" />
 						<Pagination itemsTotal={response.count} type="quarantine" />
 					</Suspense>
-					<FileInformationDialog />
+					<FileDialog />
 				</div>
 			</div>
 		</>
