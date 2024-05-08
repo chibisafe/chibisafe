@@ -37,8 +37,8 @@ export const FileDialogToolbar = ({
 	const isMobile = useMediaQuery('(max-width: 768px)');
 
 	return (
-		<div className="fixed md:-right-12 -top-12 h-10 z-[60] w-screen !pointer-events-auto bg-black flex flex-row justify-end items-center gap-4 md:gap-1 pr-2">
-			<input type="text" className={isMobile ? 'hidden' : 'opacity-0 pointer-events-none select-none'} />
+		<div className="fixed md:-right-12 -top-12 h-10 z-[60] w-screen !pointer-events-auto bg-black flex flex-row justify-center items-center gap-4 md:gap-1 pr-2">
+			<input type="text" className={isMobile ? 'hidden' : 'opacity-0 pointer-events-none select-none w-0'} />
 			<Tooltip content="Download">
 				<a
 					href={`/api/file/${file.uuid}/download`}
