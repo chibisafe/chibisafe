@@ -38,7 +38,7 @@ export const FileTextViewer = ({ uuid }: { readonly uuid?: string }) => {
 	}, [fetchHighlight]);
 
 	return content ? (
-		<ScrollArea className="h-full 2xl:max-w-7xl xl:max-w-5xl md:max-w-3xl max-w-[calc(100vw-6rem)] w-full p-8">
+		<ScrollArea className="h-full 2xl:max-w-7xl xl:max-w-5xl md:max-w-3xl max-w-[calc(100vw-6rem)] w-full p-8 bg-background">
 			<div
 				className="w-full"
 				// eslint-disable-next-line react/no-danger
