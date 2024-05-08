@@ -55,7 +55,7 @@ export function FileDialog() {
 			setSelectedFile(newItem);
 			setLoading(true);
 		}
-	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+	}, [selectedFile?.index, allFiles, setSelectedFile]);
 
 	const findNextFile = useCallback(() => {
 		const nextIndex = (selectedFile?.index ?? 0) + 1;
@@ -64,7 +64,7 @@ export function FileDialog() {
 			setSelectedFile(newItem);
 			setLoading(true);
 		}
-	}, [selectedFile, allFiles, setSelectedFile, setLoading]);
+	}, [selectedFile?.index, allFiles, setSelectedFile]);
 
 	const onTouchStart = useCallback((e: any) => {
 		setTouchEnd(null);
@@ -120,14 +120,10 @@ export function FileDialog() {
 			>
 				<FileDialogToolbar file={selectedFile} type={currentType} />
 
-				{/* <div
-					className="absolute top-0 left-0 w-full h-full bg-red-700/50"
-					onClick={() => setModalOpen(false)}
-				/> */}
-
 				<div
 					className={cn(
-						'w-max max-w-screen max-h-screen h-[inherit] lg:max-w-[calc(100vw-8rem)] p-0 min-w-60 !pointer-events-auto flex items-center'
+						'w-max max-w-screen lg:max-w-[calc(100vw-8rem)] p-0 min-w-60 !pointer-events-auto flex items-center',
+						'max-h-screen h-[inherit]'
 					)}
 					onTouchStart={onTouchStart}
 					onTouchMove={onTouchMove}

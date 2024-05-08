@@ -37,8 +37,8 @@ const ComponentToRender = ({ children }: PropsWithChildren<{}>) => {
 			<DrawerTrigger>
 				<OpenButton />
 			</DrawerTrigger>
-			<DrawerContent className="max-h-[70%]">
-				<ScrollArea>{children}</ScrollArea>
+			<DrawerContent>
+				<ScrollArea className="h-svh pb-24">{children}</ScrollArea>
 			</DrawerContent>
 		</Drawer>
 	) : (
