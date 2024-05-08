@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
-import { FileInformationDialog } from '@/components/dialogs/FileInformationDialog';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
@@ -79,7 +79,7 @@ export default async function AlbumPage({
 							<FilesWrapper type="album" albumUuid={params.uuid} />
 							<Pagination type="album" albumUuid={params.uuid} />
 						</Suspense>
-						<FileInformationDialog />
+						<FileDialog />
 					</div>
 				</HydrationBoundary>
 			</div>

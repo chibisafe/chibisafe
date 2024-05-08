@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useMemo } from 'react';
 import type { File, FilePropsType } from '@/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
-import { currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileInformationDialog';
+import { currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileDialog';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { FilesTable } from './tables/files-table/FilesTable';
 import { isMasonryViewAtom } from '@/lib/atoms/settings';

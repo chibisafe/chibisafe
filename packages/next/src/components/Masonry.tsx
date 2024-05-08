@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { File, FilePropsType, FileWithIndex } from '@/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileInformationDialog';
+import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileDialog';
 import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
