@@ -115,7 +115,7 @@ export function FileDialog() {
 		<Dialog open={isModalOpen} onOpenChange={onOpenChange}>
 			<DialogContent
 				className={cn(
-					'h-[calc(100vh-6rem)] md:w-[calc(100vw-6rem)] md:h-[calc(100vh-6rem)] max-w-none bg-transparent border-none shadow-none p-0 flex justify-center items-center !pointer-events-none'
+					'h-[calc(100dvh-6rem)] md:w-[calc(100vw-6rem)] md:h-[calc(100dvh-6rem)] max-w-none bg-transparent border-none shadow-none p-0 flex justify-center items-center !pointer-events-none'
 				)}
 			>
 				<FileDialogToolbar file={selectedFile} type={currentType} />
