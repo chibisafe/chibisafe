@@ -11,6 +11,8 @@ services:
 
   chibisafe_server:
     image: chibisafe/chibisafe-server:latest
+    environment:
+      - ADMIN_PASSWORD=admin
     volumes:
       - ./database:/app/database:rw
       - ./uploads:/app/uploads:rw
