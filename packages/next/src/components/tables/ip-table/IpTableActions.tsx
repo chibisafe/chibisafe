@@ -10,7 +10,7 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-import { IpConfirmationAction } from './IpConfirmationAction';
+import { IpActionsButton } from './IpActionsButton';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
 
@@ -31,26 +31,26 @@ export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-						<IpConfirmationAction
+						<IpActionsButton
 							ip={ip}
 							type="unban"
 							description="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						>
 							Unban
-						</IpConfirmationAction>
+						</IpActionsButton>
 					</DropdownMenuItem>
 
 					<DropdownMenuItem
 						className="focus:text-destructive-foreground focus:bg-destructive p-0"
 						onSelect={e => e.preventDefault()}
 					>
-						<IpConfirmationAction
+						<IpActionsButton
 							ip={ip}
 							type="purge"
 							description="This action will delete ALL files uploaded by this IP. This action is not reversible."
 						>
 							Purge files
-						</IpConfirmationAction>
+						</IpActionsButton>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>

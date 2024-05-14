@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react';
 import { DashboardSidebar } from '@/components/DashboardSidebar';
 import { SiteFooter } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { ConfirmationDialog } from '@/components/dialogs/ConfirmationDialog';
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
 	return (
@@ -17,6 +18,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 				</main>
 			</div>
 			<SiteFooter className="border-t" />
+			<ConfirmationDialog />
 		</div>
 	);
 }

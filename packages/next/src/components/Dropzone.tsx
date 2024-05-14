@@ -73,6 +73,57 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 		[settings, uploadFile]
 	);
 
+	const onPaste = useCallback(
+		async (ev: ClipboardEvent) => {
+			const items = ev.clipboardData?.items;
+			if (!items) return;
+
+			for (const item of items) {
+				const file = item.getAsFile();
+				if (!file) continue;
+
+				const files = await processDropItem(file, settings);
+				if (!files.length) continue;
+
+				if (!settings?.useNetworkStorage) {
+					files.map(async file =>
+						uploadQueue.add(async () =>
+							uploadFile({
+								file: file instanceof File ? file : await file.getFile(),
+								endpoint: '/api/upload',
+								isNetworkStored: false,
+								method: 'POST'
+							})
+						)
+					);
+
+					continue;
+				}
+
+				files.map(async file => {
+					uploadQueue.add(async () => {
+						const actualFile = file instanceof File ? file : await file.getFile();
+						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
+						if (error) {
+							toast.error(error);
+							return;
+						}
+
+						await uploadFile({
+							file: actualFile,
+							endpoint: url,
+							isNetworkStored: true,
+							method: 'PUT',
+							identifier,
+							publicUrl
+						});
+					});
+				});
+			}
+		},
+		[settings, uploadFile]
+	);
+
 	useEffect(() => {
 		const dragEnterHandler = (ev: DragEvent) => {
 			if (ev.dataTransfer?.types.includes('Files')) {
@@ -81,11 +132,13 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 		};
 
 		window.addEventListener('dragenter', dragEnterHandler);
+		window.addEventListener('paste', onPaste);
 
 		return () => {
 			window.removeEventListener('dragenter', dragEnterHandler);
+			window.removeEventListener('paste', onPaste);
 		};
-	}, [setGlobalDropZoneOpen]);
+	}, [onPaste, setGlobalDropZoneOpen]);
 
 	return (
 		<DropZone

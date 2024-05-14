@@ -3,6 +3,7 @@
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
+import { revalidateTag } from 'next/cache';
 
 export const regenerateThumbnail = async (uuid: string) => {
 	try {
@@ -13,15 +14,15 @@ export const regenerateThumbnail = async (uuid: string) => {
 			}
 		});
 
-		return {};
-	} catch {
-		return {};
+		revalidateTag('files');
+
+		return { message: 'Thumbnail queued for regeneration', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
 	}
 };
 
-export const deleteFile = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const deleteFile = async (uuid: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `file/${uuid}`,
@@ -32,15 +33,15 @@ export const deleteFile = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
+		revalidateTag('files');
+
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
 	}
 };
 
-export const deleteFileAsAdmin = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const deleteFileAsAdmin = async (uuid: string) => {
 	try {
 		const { error } = await request.delete({
 			url: `admin/file/${uuid}`,
@@ -51,15 +52,15 @@ export const deleteFileAsAdmin = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
+		revalidateTag('files');
+
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
 	}
 };
 
-export const quarantineFile = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const quarantineFile = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/file/${uuid}/quarantine`,
@@ -70,15 +71,15 @@ export const quarantineFile = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
+		revalidateTag('files');
+
 		return { message: 'File quarantined', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
 	}
 };
 
-export const allowFile = async (_: any, form: FormData) => {
-	const uuid = form.get('uuid') as string;
-
+export const allowFile = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: `admin/file/${uuid}/allow`,
@@ -88,6 +89,8 @@ export const allowFile = async (_: any, form: FormData) => {
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
+
+		revalidateTag('files');
 
 		return { message: 'File allowed', type: MessageType.Success };
 	} catch (error: any) {

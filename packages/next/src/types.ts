@@ -97,6 +97,10 @@ export interface FileWithAdditionalData extends File {
 	};
 }
 
+export interface FileWithIndex extends FileWithAdditionalData {
+	index: number;
+}
+
 export interface Settings {
 	backgroundImageURL: string;
 	blockedExtensions: string[];

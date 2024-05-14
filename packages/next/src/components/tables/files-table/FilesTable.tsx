@@ -10,12 +10,11 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import type { FileWithAdditionalData, FilePropsType } from '@/types';
+import type { FilePropsType, FileWithIndex } from '@/types';
 import { ArrowDownToLineIcon, ArrowUpDown, ArrowUpRightFromSquare } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { DataTable } from '../DataTable';
 import { FileInformationDialogActions } from '@/components/FileInformationDialogActions';
-import { FileInformationDrawerActions } from '@/components/FileInformationDrawerActions';
 import { formatBytes } from '@/lib/file';
 import { FileThumbnail } from '@/components/FileThumbnail';
 import Link from 'next/link';
@@ -27,7 +26,7 @@ declare module '@tanstack/table-core' {
 	}
 }
 
-const columnHelper = createColumnHelper<FileWithAdditionalData>();
+const columnHelper = createColumnHelper<FileWithIndex>();
 const columns = [
 	columnHelper.accessor(row => row.thumb, {
 		id: 'thumbnail',
@@ -40,10 +39,7 @@ const columns = [
 		id: 'link',
 		header: 'Link',
 		cell: props => (
-			<a
-				href={`/dashboard/admin/ip/${props.row.original.url}`}
-				className="text-blue-500 underline inline-flex items-center"
-			>
+			<a href={props.row.original.url} className="text-blue-500 underline inline-flex items-center">
 				{props.row.original.name} <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
 			</a>
 		)
@@ -108,21 +104,10 @@ const columns = [
 		id: 'actions',
 		header: '',
 		cell: props => (
-			<>
-				<div className="md:inline-block hidden">
-					<FileInformationDialogActions
-						file={props.row.original}
-						type={props.table.options.meta?.type ?? 'uploads'}
-					/>
-				</div>
-
-				<div className="md:hidden inline-block">
-					<FileInformationDrawerActions
-						file={props.row.original}
-						type={props.table.options.meta?.type ?? 'uploads'}
-					/>
-				</div>
-			</>
+			<FileInformationDialogActions
+				file={props.row.original}
+				type={props.table.options.meta?.type ?? 'uploads'}
+			/>
 		)
 	})
 ];

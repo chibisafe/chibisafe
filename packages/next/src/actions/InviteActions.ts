@@ -23,14 +23,12 @@ export const createInvite = async (_: FormData) => {
 	}
 };
 
-export const revokeInvite = async (_: any, form: FormData) => {
-	const code = form.get('code') as string;
-
+export const revokeInvite = async (uuid: string) => {
 	try {
 		const { error } = await request.post({
 			url: 'admin/invite/delete',
 			body: {
-				code
+				code: uuid
 			},
 			headers: {
 				authorization: `Bearer ${getToken()}`
@@ -39,7 +37,7 @@ export const revokeInvite = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('ips');
+		revalidateTag('invites');
 		return { message: 'Invite revoked', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

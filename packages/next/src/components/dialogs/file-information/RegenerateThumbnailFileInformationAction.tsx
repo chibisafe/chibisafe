@@ -1,4 +1,4 @@
-import { regenerateThumbnail } from '@/actions/FileInformationDialogActions';
+import { regenerateThumbnail } from '@/actions/FileDialogActions';
 import { Button } from '@/components/ui/button';
 
 export const RegenerateThumbnailFileInformationAction = ({

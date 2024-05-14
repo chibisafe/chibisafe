@@ -40,10 +40,7 @@ export const SnippetViewer = ({
 						</h2>
 					) : null}
 					{showCreatedAt ? (
-						<h3 className="text-sm leading-tight tracking-tighter">
-							{snippet.createdAt}
-							{getDate(snippet.createdAt)}
-						</h3>
+						<h3 className="text-sm leading-tight tracking-tighter">{getDate(snippet.createdAt)}</h3>
 					) : null}
 					{showLanguage ? (
 						<h3 className="text-sm leading-tight tracking-tighter">{snippet.language}</h3>

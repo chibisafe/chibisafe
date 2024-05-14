@@ -61,7 +61,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 
 	const { data, error } = useQuery<{ links: AlbumLink[] }>({
 		queryKey: ['albums', album?.uuid, 'links'],
-		enabled: Boolean(album?.uuid),
+		enabled: Boolean(album?.uuid) && open,
 		queryFn: async () => {
 			const {
 				data: response,

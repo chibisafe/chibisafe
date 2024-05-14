@@ -3,10 +3,13 @@ import type { MetadataBuilder, PageQuery } from '@/types';
 
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { FilesList } from '@/components/FilesList';
 import { FilesListNsfwToggle } from '@/components/FilesListNsfwToggle';
 import { notFound, redirect } from 'next/navigation';
 import request from '@/lib/request';
+import { Suspense } from 'react';
+import { Pagination } from '@/components/Pagination';
+import { FilesWrapper } from '@/components/FilesWrapper';
+import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export async function generateMetadata({
 	searchParams,
@@ -93,7 +96,18 @@ export default async function PublicAlbumPage({
 			<DashboardHeader title={response.album.name} subtitle={response.album.description} />
 			<div className="px-2 w-full flex h-full flex-grow flex-col">
 				<FilesListNsfwToggle nsfw={response.album.isNsfw}>
-					<FilesList type="publicAlbum" files={response.album.files} count={response.album.count} />
+					<div className="grid gap-4">
+						<Suspense>
+							<Pagination itemsTotal={response.album.count} type="publicAlbum" />
+							<FilesWrapper
+								files={response.album.files}
+								total={response.album.count}
+								type="publicAlbum"
+							/>
+							<Pagination itemsTotal={response.album.count} type="publicAlbum" />
+						</Suspense>
+						<FileDialog />
+					</div>
 				</FilesListNsfwToggle>
 			</div>
 		</>

@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import bcrypt from 'bcryptjs';
 import type { FastifyRequest } from 'fastify';
@@ -69,7 +70,7 @@ export const createAdminUserIfNotExists = async () => {
 	});
 
 	if (!ownerUser) {
-		const hash = await bcrypt.hash('admin', 10);
+		const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD ?? 'admin', 10);
 		await prisma.users.create({
 			data: {
 				uuid: uuidv4(),
