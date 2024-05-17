@@ -38,7 +38,7 @@ function SelectionActions({ children, type }: PropsWithChildren<{ readonly type:
 			<DropdownMenuContent className="w-56 z-[42]">
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-						<BulkAlbumActions uuids={selectedFiles.map(file => file.uuid)} />
+						<BulkAlbumActions files={selectedFiles} />
 					</DropdownMenuItem>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 						<BulkRegenerateThumbnailsAction uuids={selectedFiles.map(file => file.uuid)} />
