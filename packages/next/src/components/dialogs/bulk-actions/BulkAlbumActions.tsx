@@ -18,6 +18,7 @@ import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import request from '@/lib/request';
 import { Skeleton } from '@/components/ui/skeleton';
 import { customRevalidateTag } from '@/actions/Revalidate';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface FileWithAlbums {
 	albums: Album[];
@@ -224,60 +225,62 @@ export const BulkAlbumActions = ({
 						<>
 							{isDirty ? (
 								<div className="text-sm text-muted-foreground flex flex-col gap-2">
-									{Object.keys(albumsToAdd).length
-										? Object.entries(albumsToAdd).map(([album, files]) =>
-												files.length ? (
-													<div key={album} className="flex flex-col gap-2">
-														<p>
-															{files.length} files will be added to the album{' '}
-															<span className="font-bold">
-																{allAlbums.find(el => el.uuid === album)?.name}
-															</span>
-														</p>
-														<ul className="text-green-800">
-															{files.map(file => (
-																<li key={file.uuid}>
-																	<a
-																		href={file.url}
-																		target="_blank"
-																		rel="noreferrer noopener"
-																	>
-																		{file.name}
-																	</a>
-																</li>
-															))}
-														</ul>
-													</div>
-												) : null
-											)
-										: null}
-									{Object.keys(albumsToRemove).length
-										? Object.entries(albumsToRemove).map(([album, files]) =>
-												files.length ? (
-													<div key={album} className="flex flex-col gap-2">
-														<p>
-															{files.length} files will be removed from the album{' '}
-															<span className="font-bold">
-																{allAlbums.find(el => el.uuid === album)?.name}
-															</span>
-														</p>
-														<ul className="text-red-800">
-															{files.map(file => (
-																<li key={file.uuid}>
-																	<a
-																		href={file.url}
-																		target="_blank"
-																		rel="noreferrer noopener"
-																	>
-																		{file.name}
-																	</a>
-																</li>
-															))}
-														</ul>
-													</div>
-												) : null
-											)
-										: null}
+									<ScrollArea className="max-h-96">
+										{Object.keys(albumsToAdd).length
+											? Object.entries(albumsToAdd).map(([album, files]) =>
+													files.length ? (
+														<div key={album} className="flex flex-col gap-2">
+															<p>
+																{files.length} files will be added to the album{' '}
+																<span className="font-bold">
+																	{allAlbums.find(el => el.uuid === album)?.name}
+																</span>
+															</p>
+															<ul className="text-green-800">
+																{files.map(file => (
+																	<li key={file.uuid}>
+																		<a
+																			href={file.url}
+																			target="_blank"
+																			rel="noreferrer noopener"
+																		>
+																			{file.name}
+																		</a>
+																	</li>
+																))}
+															</ul>
+														</div>
+													) : null
+												)
+											: null}
+										{Object.keys(albumsToRemove).length
+											? Object.entries(albumsToRemove).map(([album, files]) =>
+													files.length ? (
+														<div key={album} className="flex flex-col gap-2">
+															<p>
+																{files.length} files will be removed from the album{' '}
+																<span className="font-bold">
+																	{allAlbums.find(el => el.uuid === album)?.name}
+																</span>
+															</p>
+															<ul className="text-red-800">
+																{files.map(file => (
+																	<li key={file.uuid}>
+																		<a
+																			href={file.url}
+																			target="_blank"
+																			rel="noreferrer noopener"
+																		>
+																			{file.name}
+																		</a>
+																	</li>
+																))}
+															</ul>
+														</div>
+													) : null
+												)
+											: null}
+									</ScrollArea>
 								</div>
 							) : null}
 
