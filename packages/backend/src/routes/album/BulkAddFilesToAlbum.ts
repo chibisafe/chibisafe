@@ -11,14 +11,12 @@ export const schema = {
 	summary: 'Add files to album',
 	description: 'Adds all the supplied files to an album',
 	tags: ['Files', 'Albums', 'Bulk'],
-	params: z
-		.object({
-			albumUuid: z.string().describe('The uuid of the album.')
+	body: z.array(
+		z.object({
+			album: z.string().describe('The uuid of the album.'),
+			files: z.array(z.string()).describe('The uuids of the files.')
 		})
-		.required(),
-	body: z.object({
-		files: z.array(z.string()).optional().nullable().default([])
-	}),
+	),
 	response: {
 		200: z.object({
 			message: responseMessageSchema
@@ -29,17 +27,16 @@ export const schema = {
 };
 
 export const options = {
-	url: '/files/album/:albumUuid',
+	url: '/files/album/add',
 	method: 'post',
 	middlewares: ['apiKey', 'auth']
 };
 
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
-	const { files } = req.body as z.infer<typeof schema.body>;
-	const { albumUuid } = req.params as z.infer<typeof schema.params>;
+	const data = req.body as z.infer<typeof schema.body>;
 
-	if (!files?.length) {
-		void res.badRequest('No file uuids provided');
+	if (!data?.length) {
+		void res.badRequest('No data provided');
 		return;
 	}
 
@@ -63,36 +60,37 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	// });
 
 	try {
-		for (const file of files) {
-			await prisma.files.update({
-				where: {
-					uuid: file,
-					userId: req.user.id
-				},
-				data: {
-					albums: {
-						connect: {
-							uuid: albumUuid
+		for (const { album, files } of data) {
+			for (const file of files) {
+				await prisma.files.update({
+					where: {
+						uuid: file,
+						userId: req.user.id
+					},
+					data: {
+						albums: {
+							connect: {
+								uuid: album
+							}
 						}
 					}
+				});
+			}
+
+			await prisma.albums.update({
+				where: {
+					uuid: album
+				},
+				data: {
+					editedAt: now
 				}
 			});
 		}
-
-		await prisma.albums.update({
-			where: {
-				uuid: albumUuid
-			},
-			data: {
-				editedAt: now
-			}
-		});
 	} catch (error: any) {
 		console.error(error);
 		void res.internalServerError('Failed to add files to album');
 		return;
 	}
-	// This sucks but it's necessary until we move away from Prisma
 
 	return res.send({
 		message: 'Successfully added files to album'
