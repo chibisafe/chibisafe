@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { locales } from './app/[lang]/dictionaries';
+import { langs } from './lib/langs';
 
 const getLocale = (request: NextRequest) => {
 	const acceptedLanguage = request.headers.get('accept-language') ?? undefined;
@@ -9,11 +9,12 @@ const getLocale = (request: NextRequest) => {
 	const languages = new Negotiator({ headers }).languages();
 	const defaultLocale = 'en';
 
-	return match(languages, locales, defaultLocale); // -> 'en-US'
+	return match(languages, langs, defaultLocale);
 };
 
 export function middleware(request: NextRequest) {
 	const currentUser = request.cookies.get('token')?.value;
+	const chosenLocale = request.cookies.get('lang')?.value;
 
 	if (request.nextUrl.pathname.startsWith('/dashboard') && !currentUser) {
 		return NextResponse.redirect(new URL('/login', request.url));
@@ -25,15 +26,19 @@ export function middleware(request: NextRequest) {
 
 	// Check if there is any supported locale in the pathname
 	const { pathname } = request.nextUrl;
-	const pathnameHasLocale = locales.some(locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
+	const pathnameHasLocale = langs.some(locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
 	if (pathnameHasLocale) return NextResponse.next();
+
+	// Redirect if there is a chosen locale
+	if (chosenLocale) {
+		request.nextUrl.pathname = `/${chosenLocale}${pathname}`;
+		return NextResponse.redirect(request.nextUrl);
+	}
 
 	// Redirect if there is no locale
 	const locale = getLocale(request);
 	request.nextUrl.pathname = `/${locale}${pathname}`;
-	// e.g. incoming request is /products
-	// The new URL is now /en-US/products
 	return NextResponse.redirect(request.nextUrl);
 }
 

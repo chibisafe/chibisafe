@@ -7,6 +7,7 @@ import { UploadProgress } from '@/components/UploadProgress';
 import { buttonVariants } from '@/styles/button';
 import { ChibisafeLogo } from './svg/ChibisafeLogo';
 import request from '@/lib/request';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const Header = async () => {
 	const { data } = await request.get({
@@ -59,7 +60,11 @@ export const Header = async () => {
 							<span className="sr-only">Patreon</span>
 						</div>
 					</a>
-					<div className="hidden md:inline-flex ml-4">
+
+					<div className="inline-flex ml-4">
+						<LanguageSwitcher />
+					</div>
+					<div className="hidden md:inline-flex ml-2">
 						<NavigationUser />
 					</div>
 				</nav>
