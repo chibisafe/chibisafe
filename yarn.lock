@@ -1169,6 +1169,7 @@ __metadata:
     "@types/file-saver": "npm:^2.0.7"
     "@types/js-cookie": "npm:^3.0.6"
     "@types/mdx": "npm:^2.0.12"
+    "@types/negotiator": "npm:^0"
     "@types/node": "npm:^20.12.5"
     "@types/react": "npm:^18.2.74"
     "@types/react-dom": "npm:^18.2.24"
@@ -1190,6 +1191,7 @@ __metadata:
     js-cookie: "npm:^3.0.5"
     lucide-react: "npm:0.365.0"
     media-chrome: "npm:^2.2.5"
+    negotiator: "npm:^0.6.3"
     next: "npm:14.3.0-canary.33"
     next-mdx-remote: "npm:^4.4.1"
     next-themes: "npm:^0.3.0"
@@ -6151,6 +6153,13 @@ __metadata:
   version: 0.7.34
   resolution: "@types/ms@npm:0.7.34"
   checksum: 10c0/ac80bd90012116ceb2d188fde62d96830ca847823e8ca71255616bc73991aa7d9f057b8bfab79e8ee44ffefb031ddd1bcce63ea82f9e66f7c31ec02d2d823ccc
+  languageName: node
+  linkType: hard
+
+"@types/negotiator@npm:^0":
+  version: 0.6.3
+  resolution: "@types/negotiator@npm:0.6.3"
+  checksum: 10c0/d182002d9d7d3248139008e29857dddbc98bd7ada1fddbb33c96fce2f62821698a1ac62e90a92ea004c594abc6865e143f50146e21123a0aeb0641c2bf832aa3
   languageName: node
   linkType: hard
 
