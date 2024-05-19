@@ -67,6 +67,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
 		SETTINGS.useMinimalHomepage = settingsTable.useMinimalHomepage;
 		SETTINGS.useUrlShortener = settingsTable.useUrlShortener;
+		SETTINGS.generateThumbnails = settingsTable.generateThumbnails;
 		SETTINGS.S3Region = settingsTable.S3Region;
 		SETTINGS.S3Bucket = settingsTable.S3Bucket;
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
@@ -109,6 +110,7 @@ export const loadSettings = async (force = false) => {
 		useNetworkStorage: false,
 		useMinimalHomepage: false,
 		useUrlShortener: false,
+		generateThumbnails: true,
 		S3Region: '',
 		S3Bucket: '',
 		S3AccessKey: '',
@@ -338,6 +340,12 @@ const SETTINGS_META = {
 		type: 'boolean',
 		description: 'Whether or not to use network storage like S3/Backblaze/Wasabi.',
 		name: 'Use Network Storage',
+		category: 'uploads'
+	},
+	generateThumbnails: {
+		type: 'boolean',
+		description: 'Whether or not to generate thumbnails for images and videos.',
+		name: 'Generate Thumbnails',
 		category: 'uploads'
 	},
 	S3Region: {
