@@ -122,6 +122,7 @@ export interface Settings {
 	enableMixedCaseFilenames: boolean;
 	enabledStatistics: string[];
 	generateOriginalFileNameWithIdentifier: boolean;
+	generateThumbnails: boolean;
 	generateZips: boolean;
 	generatedAlbumLength: number;
 	generatedFilenameLength: number;

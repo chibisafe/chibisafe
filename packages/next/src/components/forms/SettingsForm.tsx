@@ -42,6 +42,7 @@ const formSchema = z.object({
 	blockedExtensions: z.string().optional(),
 	blockNoExtension: z.boolean().optional(),
 	useNetworkStorage: z.boolean().optional(),
+	generateThumbnails: z.boolean().optional(),
 	S3Region: z.string().optional(),
 	S3Bucket: z.string().optional(),
 	S3AccessKey: z.string().optional(),

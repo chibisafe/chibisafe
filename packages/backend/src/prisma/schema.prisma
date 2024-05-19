@@ -151,6 +151,7 @@ model settings {
 	useNetworkStorage Boolean @default(false)
 	useMinimalHomepage Boolean @default(false)
 	useUrlShortener Boolean @default(false)
+	generateThumbnails Boolean @default(true)
 	S3Region String @default("")
 	S3Bucket String @default("")
 	S3AccessKey String @default("")
