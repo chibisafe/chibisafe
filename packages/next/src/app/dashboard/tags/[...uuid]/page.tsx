@@ -53,7 +53,7 @@ export default async function TagPage({
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="tag" />
-						<FilesWrapper files={response.files} total={response.count} type="tag" />
+						<FilesWrapper files={response.results} total={response.count} type="tag" />
 						<Pagination itemsTotal={response.count} type="tag" />
 					</Suspense>
 					<FileDialog />

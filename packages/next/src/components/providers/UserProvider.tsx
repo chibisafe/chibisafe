@@ -16,7 +16,7 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 	useEffect(() => {
 		if (!currentUser && shouldFetch) {
 			request
-				.get({ url: 'user/me' })
+				.get({ url: 'v1/users/me' })
 				.then(async response => {
 					if (response.error) {
 						if (response.status === 401) {
@@ -27,7 +27,13 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 						return;
 					}
 
-					setCurrentUser(response.data.user);
+					setCurrentUser({
+						apiKey: '',
+						roles: [],
+						token: '',
+						username: response.data.username,
+						uuid: response.data.uuid
+					});
 				})
 				.catch((error: any) => {
 					toast.error(error);

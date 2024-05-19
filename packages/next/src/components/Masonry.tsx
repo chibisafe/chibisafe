@@ -35,7 +35,7 @@ function FileItem({
 
 	const addToHoveredList = useCallback(
 		(file: File) => {
-			const identifierToUse = file.uuid ?? file.name;
+			const identifierToUse = file.uuid ?? file.identifier;
 			if (hoveredFiles.includes(identifierToUse)) return;
 			setHoveredFiles([...hoveredFiles, identifierToUse]);
 		},
@@ -44,7 +44,7 @@ function FileItem({
 
 	const removeFromHoveredList = useCallback(
 		(file: File) => {
-			const identifierToUse = file.uuid ?? file.name;
+			const identifierToUse = file.uuid ?? file.identifier;
 			if (!hoveredFiles.includes(identifierToUse)) return;
 			setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
 		},
@@ -138,7 +138,7 @@ function FileItem({
 					'pointer-events-none': file.quarantine && type !== 'quarantine',
 					hidden: isSelectionActive
 				})}
-				href={file.url}
+				href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
 				target="_blank"
 				rel="noopener noreferrer"
 				draggable={false}

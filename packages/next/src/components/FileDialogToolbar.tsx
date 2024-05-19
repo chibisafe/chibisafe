@@ -10,7 +10,7 @@ import {
 import { Tooltip } from './Tooltip';
 import { Button } from './ui/button';
 import { useEffect, type PropsWithChildren } from 'react';
-import { MessageType, type FilePropsType, type FileWithAdditionalData } from '@/types';
+import { MessageType, type FilePropsType, type File } from '@/types';
 import { useCopyToClipboard, useMediaQuery } from 'usehooks-ts';
 import { buttonVariants } from '@/styles/button';
 import {
@@ -31,7 +31,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export const FileDialogToolbar = ({
 	file,
 	type
-}: PropsWithChildren<{ readonly file: FileWithAdditionalData; readonly type: FilePropsType }>) => {
+}: PropsWithChildren<{ readonly file: File; readonly type: FilePropsType }>) => {
 	const [_, copy] = useCopyToClipboard();
 	const regenerateThumbailWithUuid = regenerateThumbnail.bind(null, file.uuid);
 	const isMobile = useMediaQuery('(max-width: 768px)');
@@ -53,7 +53,7 @@ export const FileDialogToolbar = ({
 
 			<Tooltip content="Open in new tab">
 				<a
-					href={file.url}
+					href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
 					target="_blank"
 					rel="noopener noreferrer"
 					className={buttonVariants({ variant: 'ghost', size: 'icon' })}
@@ -63,7 +63,11 @@ export const FileDialogToolbar = ({
 			</Tooltip>
 
 			<Tooltip content="Copy link">
-				<Button size={'icon'} variant={'ghost'} onClick={() => void copy(file.url)}>
+				<Button
+					size={'icon'}
+					variant={'ghost'}
+					onClick={() => void copy(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`)}
+				>
 					<LinkIcon className="h-5 w-5" />
 				</Button>
 			</Tooltip>

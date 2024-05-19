@@ -46,10 +46,10 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 				<div
 					className={cn(
 						"absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-200 after:absolute after:-inset-0 after:bg-gradient-to-t after:from-[rgb(4_21_47)] after:via-[rgb(19_36_61_/_0.6)] after:via-30% after:content-[''] group-hover:scale-105 group-hover:duration-150 group-hover:outline-4 group-hover:outline-[hsl(216_77%_45%)] outline outline-transparent",
-						album.nsfw ? 'blur group-hover:blur-0' : ''
+						album.isNSFW ? 'blur group-hover:blur-0' : ''
 					)}
 					style={{
-						backgroundImage: `url(${album.cover})`
+						backgroundImage: `url(${album.coverImage})`
 					}}
 				/>
 				<div className="absolute bottom-0 left-4 right-4 pointer-events-none select-none group-hover:pointer-events-auto">
@@ -57,7 +57,7 @@ export const Album = ({ album }: { readonly album: AlbumType }) => {
 						{album.name}
 					</div>
 					<div className="mb-4 transform-gpu text-lg font-normal text-white delay-0 duration-200 group-hover:-translate-y-14 group-hover:delay-100">
-						{album.count} files
+						{album.filesCount} files
 					</div>
 				</div>
 				<Link

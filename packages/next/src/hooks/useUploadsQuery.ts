@@ -18,7 +18,7 @@ export const useUploadsQuery = ({
 	const isUploads = type === 'uploads';
 	const isAlbumUploads = type === 'album' && Boolean(albumUuid);
 
-	return useQuery<{ count: number; files: File[] }>({
+	return useQuery<{ count: number; results: File[] }>({
 		enabled: isUploads || isAlbumUploads,
 		queryKey: isUploads
 			? [
@@ -36,9 +36,9 @@ export const useUploadsQuery = ({
 				error,
 				status
 			} = await request.get({
-				url: isUploads ? 'files' : `album/${albumUuid}`,
+				url: isUploads ? 'v1/files' : `album/${albumUuid}`,
 				query: {
-					page: currentPage,
+					page: currentPage - 1,
 					limit: perPage,
 					search
 				}

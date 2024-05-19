@@ -18,7 +18,8 @@ const nextConfig = {
 	output: 'standalone',
 	pageExtensions: ['mdx', 'ts', 'tsx'],
 	env: {
-		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version
+		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version,
+		NEXT_PUBLIC_BASE_API_URL: process.env.BASE_API_URL
 	},
 	experimental: {
 		ppr: true

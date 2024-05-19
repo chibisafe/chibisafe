@@ -26,7 +26,7 @@ export const LoginForm = () => {
 				error,
 				status
 			} = await request.post({
-				url: 'auth/login',
+				url: 'v1/auth/login',
 				body: {
 					username: data.get('username') as string,
 					password: data.get('password') as string

@@ -163,7 +163,7 @@ export function FilesWrapper({
 	const showMasonry = useAtomValue(isMasonryViewAtom);
 
 	const filesToUse = useMemo(() => {
-		return (files?.length ? files : isUploads || isAlbumUploads ? data?.files ?? [] : []).map((file, index) => ({
+		return (files?.length ? files : isUploads || isAlbumUploads ? data?.results ?? [] : []).map((file, index) => ({
 			...file,
 			index
 		}));
@@ -190,7 +190,7 @@ export function FilesWrapper({
 				{showMasonry ? (
 					<Masonry files={filesToUse} type={type} />
 				) : (
-					<FilesTable data={files?.length ? files : data?.files ?? []} type={type} />
+					<FilesTable data={files?.length ? files : data?.results ?? []} type={type} />
 				)}
 			</div>
 			<SelectionWrapper selectAllFiles={selectAllFiles} type={type} />

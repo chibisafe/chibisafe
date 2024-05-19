@@ -26,7 +26,7 @@ export default async function DashboardPage() {
 		error,
 		status
 	} = await request.get({
-		url: `user/me`,
+		url: `v1/users/me`,
 		headers: {
 			Authorization: `Bearer ${token}`
 		},

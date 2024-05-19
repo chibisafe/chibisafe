@@ -49,7 +49,7 @@ export default async function DashboardAdminUserPage({
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
+						<FilesWrapper files={response.results} total={response.count} type="admin" />
 						<Pagination itemsTotal={response.count} type="admin" />
 					</Suspense>
 					<FileDialog />

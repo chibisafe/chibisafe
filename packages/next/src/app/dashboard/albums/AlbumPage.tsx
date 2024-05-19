@@ -22,9 +22,9 @@ export async function AlbumPage({
 		error,
 		status
 	} = await request.get({
-		url: 'albums',
+		url: 'v1/folders',
 		query: {
-			page,
+			offset: page - 1,
 			limit,
 			search
 		},
@@ -45,7 +45,7 @@ export async function AlbumPage({
 	return (
 		<>
 			<Pagination itemsTotal={response?.count} />
-			<AlbumMasonry albums={response?.albums} />
+			<AlbumMasonry albums={response?.results} />
 		</>
 	);
 }

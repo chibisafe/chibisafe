@@ -37,7 +37,7 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="quarantine" />
-						<FilesWrapper files={response.files} total={response.count} type="quarantine" />
+						<FilesWrapper files={response.results} total={response.count} type="quarantine" />
 						<Pagination itemsTotal={response.count} type="quarantine" />
 					</Suspense>
 					<FileDialog />

@@ -44,7 +44,7 @@ export const fetchEndpoint = async (
 
 	if (props.query?.search) {
 		return request.post({
-			url: `files/search?page=${currentPage}&limit=${currentLimit}`,
+			url: `v1/files/search?offset=${currentPage - 1}&limit=${currentLimit}`,
 			body: {
 				text: props.query.search
 			},
@@ -145,7 +145,7 @@ export const fetchEndpoint = async (
 			});
 		default:
 			return request.get({
-				url: 'files',
+				url: 'v1/files',
 				query: {
 					...commonQuery
 				},

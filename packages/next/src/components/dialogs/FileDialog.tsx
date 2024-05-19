@@ -162,7 +162,7 @@ export function FileDialog() {
 								ref={imageZoomContainerRef}
 							>
 								<img
-									src={selectedFile.url}
+									src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
 									className="h-full object-contain md:block"
 									draggable={false}
 									fetchPriority="high"
@@ -173,7 +173,12 @@ export function FileDialog() {
 						</>
 					) : isFileVideo(selectedFile) ? (
 						<MediaController className="h-full w-full">
-							<video slot="media" src={selectedFile.url} crossOrigin="" className="h-full" />
+							<video
+								slot="media"
+								src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
+								crossOrigin=""
+								className="h-full"
+							/>
 							<MediaControlBar>
 								<MediaPlayButton />
 								<MediaMuteButton />
@@ -185,7 +190,11 @@ export function FileDialog() {
 						</MediaController>
 					) : isFileAudio(selectedFile) ? (
 						<MediaController className="w-full min-w-96 h-full">
-							<audio slot="media" src={selectedFile.url} crossOrigin="" />
+							<audio
+								slot="media"
+								src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
+								crossOrigin=""
+							/>
 							<MediaControlBar>
 								<MediaPlayButton />
 								<MediaTimeDisplay showDuration />

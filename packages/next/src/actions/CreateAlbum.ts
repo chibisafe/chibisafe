@@ -7,13 +7,18 @@ import { getToken } from './utils';
 
 export const createAlbum = async (_: any, form: FormData) => {
 	const name = form.get('album') as string;
+	const description = form.get('description') as string;
+	const isNSFW = form.get('isNSFW') === 'true';
+
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
 		const { error } = await request.post({
-			url: 'album/create',
+			url: 'v1/folders',
 			body: {
-				name
+				name,
+				description: description ?? '',
+				isNSFW: isNSFW ?? false
 			},
 			headers: {
 				authorization: `Bearer ${getToken()}`

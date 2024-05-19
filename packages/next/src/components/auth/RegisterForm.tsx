@@ -30,7 +30,7 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 
 		try {
 			const obj = {
-				url: 'auth/register',
+				url: 'v1/auth/register',
 				body: {
 					username,
 					password

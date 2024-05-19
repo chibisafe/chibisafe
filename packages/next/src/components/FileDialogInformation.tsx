@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import type { Album, FilePropsType, FileWithAdditionalData, Tag } from '@/types';
+import type { Album, FilePropsType, File, Tag } from '@/types';
 import { ScrollArea } from './ui/scroll-area';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -56,7 +56,7 @@ const ComponentToRender = ({ children }: PropsWithChildren<{}>) => {
 export const FileDialogInformation = ({
 	file,
 	type
-}: PropsWithChildren<{ readonly file: FileWithAdditionalData; readonly type: FilePropsType }>) => {
+}: PropsWithChildren<{ readonly file: File; readonly type: FilePropsType }>) => {
 	const [tags, setTags] = useState<Tag[]>([]);
 	const [fileTags, setFileTags] = useState<Tag[]>([]);
 	const [albums, setAlbums] = useState<Album[]>([]);
@@ -66,8 +66,12 @@ export const FileDialogInformation = ({
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
+				//
 				const { error } = await request.post({
-					url: `file/${file?.uuid}/album/${albumUuid}`
+					url: `v1/folders/${albumUuid}/files/bulk-add`,
+					body: {
+						uuids: [file?.uuid]
+					}
 				});
 				if (error) {
 					toast.error(error);
@@ -85,8 +89,11 @@ export const FileDialogInformation = ({
 	const removeFileFromAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				const { error } = await request.delete({
-					url: `file/${file?.uuid}/album/${albumUuid}`
+				const { error } = await request.post({
+					url: `v1/folders/${albumUuid}/files/bulk-add`,
+					body: {
+						uuids: [file?.uuid]
+					}
 				});
 				if (error) {
 					toast.error(error);
@@ -146,7 +153,7 @@ export const FileDialogInformation = ({
 			if (type === 'quarantine') return;
 
 			const { data: userAlbums, error: userAlbumsError } = await request.get({
-				url: 'albums',
+				url: 'v1/folders',
 				query: { limit: 1000 },
 				options: {
 					next: {
@@ -159,7 +166,7 @@ export const FileDialogInformation = ({
 				return;
 			}
 
-			setAlbums(userAlbums.albums);
+			setAlbums(userAlbums.results);
 
 			const { data: userTags, error: userTagsError } = await request.get({ url: 'tags' });
 			setTags(userTags.tags);
@@ -196,7 +203,7 @@ export const FileDialogInformation = ({
 								User information
 							</h2>
 
-							{file.user ? (
+							{/* {file.user ? (
 								<>
 									<div>
 										<Label htmlFor="owner">
@@ -253,7 +260,7 @@ export const FileDialogInformation = ({
 									<Label htmlFor="owner">Owner</Label>
 									<Input value="No owner" name="owner" id="owner" readOnly />
 								</div>
-							)}
+							)} */}
 						</div>
 					</div>
 				) : (
@@ -311,12 +318,12 @@ export const FileDialogInformation = ({
 
 					<div>
 						<Label htmlFor="name">Name</Label>
-						<Input value={file.name} name="name" id="name" readOnly />
+						<Input value={file.filename} name="name" id="name" readOnly />
 					</div>
 
 					<div>
 						<Label htmlFor="original">Original</Label>
-						<Input value={file.original} name="original" id="original" readOnly />
+						<Input value={file.fileMetadata.originalFilename} name="original" id="original" readOnly />
 					</div>
 
 					<div>
@@ -324,7 +331,7 @@ export const FileDialogInformation = ({
 							IP{' '}
 							{type === 'admin' ? (
 								<Link
-									href={`/dashboard/admin/ip/${file.ip}`}
+									href={`/dashboard/admin/ip/${file.fileMetadata.ip}`}
 									className="text-blue-500 underline inline-flex items-center ml-2"
 									onClick={() => setModalOpen(false)}
 								>
@@ -332,22 +339,27 @@ export const FileDialogInformation = ({
 								</Link>
 							) : null}
 						</Label>
-						<Input value={file.ip} name="ip" id="ip" readOnly />
+						<Input value={file.fileMetadata.ip} name="ip" id="ip" readOnly />
 					</div>
 
 					<div>
 						<Label htmlFor="url">URL</Label>
-						<Input value={file.url} name="url" id="url" readOnly />
+						<Input
+							value={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
+							name="url"
+							id="url"
+							readOnly
+						/>
 					</div>
 
 					<div>
 						<Label htmlFor="size">Size</Label>
-						<Input value={formatBytes(file.size)} name="size" id="size" readOnly />
+						<Input value={formatBytes(file.fileMetadata.size)} name="size" id="size" readOnly />
 					</div>
 
 					<div>
 						<Label htmlFor="hash">Hash</Label>
-						<Input value={file.hash} name="hash" id="hash" readOnly />
+						<Input value={file.fileMetadata.hash} name="hash" id="hash" readOnly />
 					</div>
 
 					<div>
