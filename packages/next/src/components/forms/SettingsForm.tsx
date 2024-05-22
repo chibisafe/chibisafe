@@ -28,7 +28,19 @@ const formSchema = z.object({
 	metaDomain: z.string().optional(),
 	useMinimalHomepage: z.boolean().optional(),
 	// Service
-	serveUploadsFrom: z.string().optional(),
+	serveUploadsFrom: z.string().refine(
+		value => {
+			try {
+				new URL(value);
+				return true;
+			} catch {
+				return false;
+			}
+		},
+		{
+			message: 'Please enter a valid URL'
+		}
+	),
 	rateLimitWindow: z.coerce.number().min(1, { message: 'Required' }),
 	rateLimitMax: z.coerce.number().min(1, { message: 'Required' }),
 	secret: z.string().trim().min(1, { message: 'Required' }),
