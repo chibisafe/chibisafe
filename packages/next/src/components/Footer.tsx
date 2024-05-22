@@ -44,17 +44,17 @@ export const SiteFooter = async ({ className = '' }: { readonly className?: stri
 				</div>
 				<div className="flex flex-col items-center gap-4 md:flex-row text-xs">
 					{data?.rulesPage ? (
-						<Link href="/rules" aria-label="rules">
+						<Link href="/legal/rules" aria-label="rules">
 							Rules
 						</Link>
 					) : null}
 					{data?.privacyPolicyPage ? (
-						<Link href="/privacy" aria-label="privacy policy">
+						<Link href="/legal/privacy" aria-label="privacy policy">
 							Privacy policy
 						</Link>
 					) : null}
 					{data?.termsOfServicePage ? (
-						<Link href="/terms" aria-label="terms of service">
+						<Link href="/legal/terms" aria-label="terms of service">
 							Terms of service
 						</Link>
 					) : null}
