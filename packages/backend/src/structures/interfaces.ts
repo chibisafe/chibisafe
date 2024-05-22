@@ -134,13 +134,16 @@ export interface Settings {
 	metaKeywords: string;
 	metaTwitterHandle: string;
 	port: number;
+	privacyPolicyPage: string;
 	publicMode: boolean;
 	rateLimitMax: number;
 	rateLimitWindow: number;
+	rulesPage: string;
 	secret: string;
 	serveUploadsFrom: string;
 	serviceName: string;
 	statisticsCron: string;
+	termsOfServicePage: string;
 	updateCheckCron: string;
 	useNetworkStorage: boolean;
 	useUrlShortener: boolean;

@@ -74,6 +74,9 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.S3SecretKey = settingsTable.S3SecretKey;
 		SETTINGS.S3Endpoint = settingsTable.S3Endpoint;
 		SETTINGS.S3PublicUrl = settingsTable.S3PublicUrl;
+		SETTINGS.privacyPolicyPage = settingsTable.privacyPolicyPage;
+		SETTINGS.termsOfServicePage = settingsTable.termsOfServicePage;
+		SETTINGS.rulesPage = settingsTable.rulesPage;
 		return;
 	}
 
@@ -116,7 +119,10 @@ export const loadSettings = async (force = false) => {
 		S3AccessKey: '',
 		S3SecretKey: '',
 		S3Endpoint: '',
-		S3PublicUrl: ''
+		S3PublicUrl: '',
+		privacyPolicyPage: '',
+		termsOfServicePage: '',
+		rulesPage: ''
 	};
 
 	await prisma.settings.create({
@@ -390,5 +396,23 @@ const SETTINGS_META = {
 		description: 'Whether or not to use a minimal version of the homepage.',
 		name: 'Use Minimal Homepage',
 		category: 'customization'
+	},
+	privacyPolicyPage: {
+		type: 'text',
+		description: 'The markdown content for the privacy policy page. Leave empty to disable.',
+		name: 'Privacy Policy Page',
+		category: 'legal'
+	},
+	termsOfServicePage: {
+		type: 'text',
+		description: 'The markdown content for the terms of service page. Leave empty to disable.',
+		name: 'Terms of Service Page',
+		category: 'legal'
+	},
+	rulesPage: {
+		type: 'text',
+		description: 'The markdown content for the rules page. Leave empty to disable.',
+		name: 'Rules Page',
+		category: 'legal'
 	}
 };

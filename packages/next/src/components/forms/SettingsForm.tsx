@@ -65,7 +65,11 @@ const formSchema = z.object({
 	generateZips: z.boolean().optional(),
 	generatedAlbumLength: z.coerce.number(),
 	generatedLinksLength: z.coerce.number(),
-	useUrlShortener: z.boolean().optional()
+	useUrlShortener: z.boolean().optional(),
+	// Legal
+	privacyPolicyPage: z.string().optional(),
+	termsOfServicePage: z.string().optional(),
+	rulesPage: z.string().optional()
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -123,6 +127,7 @@ export const SettingsForm = ({
 					<TabsTrigger value="users">Users</TabsTrigger>
 					<TabsTrigger value="other">Other</TabsTrigger>
 					<TabsTrigger value="customization">Customization</TabsTrigger>
+					<TabsTrigger value="legal">Legal</TabsTrigger>
 				</TabsList>
 
 				{form.formState.errors ? (
@@ -163,6 +168,9 @@ export const SettingsForm = ({
 						</TabsContent>
 						<TabsContent value="customization">
 							<FormWrapper form={form} meta={categorizedSettings.customization} />
+						</TabsContent>
+						<TabsContent value="legal">
+							<FormWrapper form={form} meta={categorizedSettings.legal} />
 						</TabsContent>
 						<Button type="submit" className="mt-4">
 							Save settings
