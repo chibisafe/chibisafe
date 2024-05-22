@@ -119,7 +119,7 @@ export const fetchEndpoint = async (
 			});
 		case 'album':
 			return request.get({
-				url: `album/${props.albumUuid!}`,
+				url: `v1/folders/${props.albumUuid!}`,
 				query: {
 					...commonQuery
 				},

@@ -9,7 +9,7 @@ export const GlobalAdminNotice = () => {
 	const settings = useAtomValue(settingsAtom);
 	const currentUser = useAtomValue(currentUserAtom);
 
-	if (settings?.serveUploadsFrom || !currentUser?.roles.some(role => role.name === 'admin')) {
+	if (settings?.serveUploadsFrom || !currentUser?.roles?.some(role => role.name === 'admin')) {
 		return null;
 	}
 
