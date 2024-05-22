@@ -28,9 +28,15 @@ export const schema = {
 				.describe('Whether or not to use a minimal version of the homepage.'),
 			useUrlShortener: z.boolean().describe('Whether or not to use the URL shortener.'),
 			serveUploadsFrom: z.string().optional().describe('The URL to serve uploads from.'),
-			privacyPolicyPage: z.boolean().optional().describe('Whether or not the privacy policy page is enabled.'),
-			termsOfServicePage: z.boolean().optional().describe('Whether or not the terms of service page is enabled.'),
-			rulesPage: z.boolean().optional().describe('Whether or not the rules page is enabled.')
+			privacyPolicyPageContent: z
+				.boolean()
+				.optional()
+				.describe('Whether or not the privacy policy page is enabled.'),
+			termsOfServicePageContent: z
+				.boolean()
+				.optional()
+				.describe('Whether or not the terms of service page is enabled.'),
+			rulesPageContent: z.boolean().optional().describe('Whether or not the rules page is enabled.')
 		})
 	}
 };
@@ -58,8 +64,8 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		useMinimalHomepage: SETTINGS.useMinimalHomepage,
 		serveUploadsFrom: SETTINGS.serveUploadsFrom,
 		useUrlShortener: SETTINGS.useUrlShortener,
-		privacyPolicyPage: Boolean(SETTINGS.privacyPolicyPage),
-		termsOfServicePage: Boolean(SETTINGS.termsOfServicePage),
-		rulesPage: Boolean(SETTINGS.rulesPage)
+		privacyPolicyPageContent: Boolean(SETTINGS.privacyPolicyPageContent),
+		termsOfServicePageContent: Boolean(SETTINGS.termsOfServicePageContent),
+		rulesPageContent: Boolean(SETTINGS.rulesPageContent)
 	});
 };

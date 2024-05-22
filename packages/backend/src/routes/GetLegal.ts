@@ -21,8 +21,8 @@ export const options = {
 
 export const run = (req: RequestWithUser, res: FastifyReply) => {
 	const { section } = req.params as { section: string };
-	if (section === 'privacy') return res.send({ content: SETTINGS.privacyPolicyPage });
-	else if (section === 'terms') return res.send({ content: SETTINGS.termsOfServicePage });
-	else if (section === 'rules') return res.send({ content: SETTINGS.rulesPage });
+	if (section === 'privacy') return res.send({ content: SETTINGS.privacyPolicyPageContent });
+	else if (section === 'terms') return res.send({ content: SETTINGS.termsOfServicePageContent });
+	else if (section === 'rules') return res.send({ content: SETTINGS.rulesPageContent });
 	else return res.status(404).send({ message: 'Not found' });
 };
