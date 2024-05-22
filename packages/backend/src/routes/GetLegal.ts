@@ -21,7 +21,6 @@ export const options = {
 
 export const run = (req: RequestWithUser, res: FastifyReply) => {
 	const { section } = req.params as { section: string };
-	console.log('section', section);
 	if (section === 'privacy') return res.send({ content: SETTINGS.privacyPolicyPage });
 	else if (section === 'terms') return res.send({ content: SETTINGS.termsOfServicePage });
 	else if (section === 'rules') return res.send({ content: SETTINGS.rulesPage });

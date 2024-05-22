@@ -36,8 +36,6 @@ export default async function Legal({ params }: { readonly params: { slug: strin
 		return notFound();
 	}
 
-	console.log('data', data);
-
 	return (
 		<section>
 			<script
