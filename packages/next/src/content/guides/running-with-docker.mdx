@@ -105,6 +105,8 @@ After the chibisafe images are pulled and the setup process finishes, you will b
 ### Reverse proxy
 In order to attach a domain name to an application running with an exposed port like chibisafe you need to set up a reverse proxy in your system. The 2 most common solutions for this are [Caddy](https://caddyserver.com/) and [NGINX](https://www.nginx.com/), and we prefer Caddy since it's simpler to use and understand. For that reason we'll only be providing a Caddyfile configuration snippet to get you up and running, so if you have further questions you can head to our [Discord support server](https://discord.gg/5g6vgwn) and ask or open a GitHub issue and we'll try to get back to you as soon as possible.
 
+#### Caddy
+
 If you have Caddy installed locally you can add this to your Caddyfile in order reverse proxy the exposed port from chibisafe:
 ```yml
 your-chibisafe-domain.com {
@@ -125,6 +127,38 @@ your-chibisafe-domain.com {
 ```
 
 After correctly setting your Caddyfile and restarting the caddy process in your system, you should be able to visit your instance with the domain name and start using it.
+
+#### Nginx
+Configuring Nginx is more difficult so we're only providing with a skeleton config for you to modify and add https to it with certbot or by supplying your own keys
+
+```nginx
+# for reference purposes only
+# Chibisafe Reverse Proxy
+
+server {
+	server_name chibi.domain;
+	listen [::]:443 ssl;
+	listen 443 ssl;
+
+	location / {
+		proxy_pass http://localhost:24424/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	}
+
+	# Settings managed by certbot
+	ssl_certificate /etc/letsencrypt/live/your.domain.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/your.domain.com/privkey.pem;
+	include /etc/letsencrypt/options-ssl-nginx.conf;
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
+```
+
+<Callout type="warning">
+  Make sure to change chibi.domain for your own domain name.
+</Callout>
+
 
 ### Next steps
 Now that everything is up and running, if you want to update chibisafe to a new version once a new release is available you can run the following command to do so:
