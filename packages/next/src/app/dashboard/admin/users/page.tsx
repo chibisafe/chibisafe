@@ -31,9 +31,9 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 		error,
 		status
 	} = await request.get({
-		url: `admin/users`,
+		url: `v1/users`,
 		query: {
-			page: currentPage,
+			offset: currentPage - 1,
 			limit: perPage,
 			search
 		},
@@ -65,7 +65,7 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 				<Suspense>
 					<Pagination itemsTotal={response?.count} />
 				</Suspense>
-				<UserTable data={response?.users} />
+				<UserTable data={response?.results} />
 			</div>
 		</>
 	);

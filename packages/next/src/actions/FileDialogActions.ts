@@ -24,11 +24,12 @@ export const regenerateThumbnail = async (uuid: string) => {
 
 export const deleteFile = async (uuid: string) => {
 	try {
-		const { error } = await request.delete({
-			url: `file/${uuid}`,
+		const { error } = await request.post({
+			url: `v1/files/bulk-delete`,
 			headers: {
 				authorization: `Bearer ${getToken()}`
-			}
+			},
+			body: { uuids: [uuid] }
 		});
 
 		if (error) return { message: error, type: MessageType.Error };

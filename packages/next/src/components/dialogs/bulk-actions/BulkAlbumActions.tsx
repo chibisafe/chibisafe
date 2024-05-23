@@ -52,7 +52,7 @@ export const BulkAlbumActions = ({
 	const getAllAlbums = useCallback(async () => {
 		try {
 			const { data, error } = await request.get({
-				url: 'albums',
+				url: 'v1/folders',
 				query: { limit: 1000 },
 				options: {
 					next: {
@@ -65,7 +65,7 @@ export const BulkAlbumActions = ({
 				return;
 			}
 
-			setAllAlbums(data.albums);
+			setAllAlbums(data.results);
 		} catch (error) {
 			console.error(error);
 		}
@@ -240,11 +240,11 @@ export const BulkAlbumActions = ({
 																{files.map(file => (
 																	<li key={file.uuid}>
 																		<a
-																			href={file.url}
+																			href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
 																			target="_blank"
 																			rel="noreferrer noopener"
 																		>
-																			{file.name}
+																			{file.filename}
 																		</a>
 																	</li>
 																))}
@@ -267,11 +267,11 @@ export const BulkAlbumActions = ({
 																{files.map(file => (
 																	<li key={file.uuid}>
 																		<a
-																			href={file.url}
+																			href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
 																			target="_blank"
 																			rel="noreferrer noopener"
 																		>
-																			{file.name}
+																			{file.filename}
 																		</a>
 																	</li>
 																))}

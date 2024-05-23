@@ -66,7 +66,6 @@ export const FileDialogInformation = ({
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				//
 				const { error } = await request.post({
 					url: `v1/folders/${albumUuid}/files/bulk-add`,
 					body: {
@@ -168,21 +167,21 @@ export const FileDialogInformation = ({
 
 			setAlbums(userAlbums.results);
 
-			const { data: userTags, error: userTagsError } = await request.get({ url: 'tags' });
-			setTags(userTags.tags);
+			const { data: userTags, error: userTagsError } = await request.get({ url: 'v1/tags' });
+			setTags(userTags.results);
 			if (userTagsError) {
 				toast.error(userTagsError);
 				return;
 			}
 
-			const { data: userFile, error: userFileError } = await request.get({ url: `file/${file?.uuid}` });
+			const { data: userFile, error: userFileError } = await request.get({ url: `v1/files/${file?.uuid}` });
 			if (userFileError) {
 				toast.error(userFileError);
 				return;
 			}
 
-			setFileAlbums(userFile.file.albums);
-			setFileTags(userFile.file.tags);
+			setFileAlbums(userFile.folders);
+			setFileTags(userFile.tags);
 		} catch (error) {
 			console.error(error);
 		}

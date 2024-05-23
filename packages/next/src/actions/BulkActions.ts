@@ -31,8 +31,12 @@ export const deleteFiles = async (uuids: string[], type: string) => {
 	try {
 		const { error } = await request.post({
 			url:
-				type === 'admin' ? 'admin/files/delete' : type === 'quarantine' ? 'admin/files/delete' : 'files/delete',
-			body: { files: uuids },
+				type === 'admin'
+					? 'admin/files/delete'
+					: type === 'quarantine'
+						? 'admin/files/delete'
+						: 'v1/files/bulk-delete',
+			body: { uuids },
 			headers: {
 				authorization: `Bearer ${getToken()}`
 			}
