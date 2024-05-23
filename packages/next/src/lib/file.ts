@@ -45,3 +45,31 @@ export const isFilePDF = (file: File | null) => {
 export const getFileExtension = (name: string) => {
 	return name.split('.').pop();
 };
+
+export function convertDataRateLog(inputBytesPerSecond: number): string {
+	const units = ['B/s', 'kB/s', 'MB/s', 'GB/s', 'TB/s'];
+	const base = 1_000;
+
+	if (inputBytesPerSecond < 1) {
+		return inputBytesPerSecond + ' ' + units[0];
+	}
+
+	const exponent = Math.floor(Math.log10(inputBytesPerSecond) / Math.log10(base));
+	const value = inputBytesPerSecond / base ** exponent;
+
+	return value.toFixed(2) + ' ' + units[exponent];
+}
+
+export function convertDataRateLogBinary(inputBytesPerSecond: number): string {
+	const units = ['B/s', 'KiB/s', 'MiB/s', 'GiB/s', 'TiB/s'];
+	const base = 1_024;
+
+	if (inputBytesPerSecond < 1) {
+		return inputBytesPerSecond + ' ' + units[0];
+	}
+
+	const exponent = Math.floor(Math.log2(inputBytesPerSecond) / Math.log2(base));
+	const value = inputBytesPerSecond / base ** exponent;
+
+	return value.toFixed(2) + ' ' + units[exponent];
+}
