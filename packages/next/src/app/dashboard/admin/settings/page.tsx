@@ -51,7 +51,8 @@ export default async function DashboardAdminSettingsServicePage() {
 		uploads: [] as Setting[],
 		users: [] as Setting[],
 		other: [] as Setting[],
-		customization: [] as Setting[]
+		customization: [] as Setting[],
+		legal: [] as Setting[]
 	};
 
 	for (const setting of response.settings) {

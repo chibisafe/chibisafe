@@ -1,8 +1,18 @@
 import { cn } from '@/lib/utils';
 import { ChibisafeDefaultLogo } from '@/components/svg/ChibisafeLogo';
 import Link from 'next/link';
+import request from '@/lib/request';
 
-export function SiteFooter({ className = '' }: { readonly className?: string }) {
+export const SiteFooter = async ({ className = '' }: { readonly className?: string }) => {
+	const { data } = await request.get({
+		url: 'settings',
+		options: {
+			next: {
+				tags: ['settings']
+			}
+		}
+	});
+
 	return (
 		<footer className={cn(className, 'bg-background-transparent')}>
 			<div className="container flex flex-col place-items-center place-content-between gap-4 py-5 md:flex-row">
@@ -32,7 +42,24 @@ export function SiteFooter({ className = '' }: { readonly className?: string }) 
 						. <span className="text-slate-400 text-xs">v{process.env.NEXT_PUBLIC_VERSION}</span>
 					</p>
 				</div>
+				<div className="flex flex-col items-center gap-4 md:flex-row text-xs">
+					{data?.rulesPageContent ? (
+						<Link href="/rules" aria-label="rules">
+							Rules
+						</Link>
+					) : null}
+					{data?.privacyPolicyPageContent ? (
+						<Link href="/privacy-policy" aria-label="privacy policy">
+							Privacy policy
+						</Link>
+					) : null}
+					{data?.termsOfServicePageContent ? (
+						<Link href="/terms-of-service" aria-label="terms of service">
+							Terms of service
+						</Link>
+					) : null}
+				</div>
 			</div>
 		</footer>
 	);
-}
+};
