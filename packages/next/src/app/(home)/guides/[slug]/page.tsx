@@ -55,7 +55,7 @@ export default function Guide({ params }: { readonly params: { slug: string } })
 						'@type': 'BlogPosting',
 						headline: post.metadata.title,
 						description: post.metadata.summary,
-						image: post.metadata.image ? post.metadata.image : '/meta.jpg'
+						image: post.metadata.image ? post.metadata.image : '/og?section=faq'
 					})
 				}}
 			/>

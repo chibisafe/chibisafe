@@ -90,7 +90,7 @@ Backblaze B2 uses a different rule structure than most S3 providers. It is recom
 Run this command to make changes to bucket CORS policy:
 
 ```bash
-b2 update-bucket --corsRules "$(<./cors.json)" bucketName
+b2 bucket update bucketName allPublic --cors-rules "$(<./cors.json)"
 ```
 
 ### Closing
