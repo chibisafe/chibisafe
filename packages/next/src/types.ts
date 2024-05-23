@@ -111,9 +111,12 @@ export interface Settings {
 	metaDomain: string;
 	metaKeywords: string;
 	metaTwitterHandle: string;
+	privacyPolicyPageContent: boolean;
 	publicMode: boolean;
+	rulesPageContent: boolean;
 	serveUploadsFrom: string;
 	serviceName: string;
+	termsOfServicePageContent: boolean;
 	useMinimalHomepage: boolean;
 	useNetworkStorage: boolean;
 	useUrlShortener: boolean;
