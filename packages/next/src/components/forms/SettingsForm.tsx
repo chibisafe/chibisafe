@@ -67,9 +67,9 @@ const formSchema = z.object({
 	generatedLinksLength: z.coerce.number(),
 	useUrlShortener: z.boolean().optional(),
 	// Legal
-	privacyPolicyPage: z.string().optional(),
-	termsOfServicePage: z.string().optional(),
-	rulesPage: z.string().optional()
+	privacyPolicyPageContent: z.string().optional(),
+	termsOfServicePageContent: z.string().optional(),
+	rulesPageContent: z.string().optional()
 });
 
 type FormValues = z.infer<typeof formSchema>;
