@@ -13,6 +13,8 @@ export const SiteFooter = async ({ className = '' }: { readonly className?: stri
 		}
 	});
 
+	console.log(data);
+
 	return (
 		<footer className={cn(className, 'bg-background-transparent')}>
 			<div className="container flex flex-col place-items-center place-content-between gap-4 py-5 md:flex-row">
@@ -43,18 +45,18 @@ export const SiteFooter = async ({ className = '' }: { readonly className?: stri
 					</p>
 				</div>
 				<div className="flex flex-col items-center gap-4 md:flex-row text-xs">
-					{data?.rulesPage ? (
-						<Link href="/legal/rules" aria-label="rules">
+					{data?.rulesPageContent ? (
+						<Link href="/rules" aria-label="rules">
 							Rules
 						</Link>
 					) : null}
-					{data?.privacyPolicyPage ? (
-						<Link href="/legal/privacy" aria-label="privacy policy">
+					{data?.privacyPolicyPageContent ? (
+						<Link href="/privacy-policy" aria-label="privacy policy">
 							Privacy policy
 						</Link>
 					) : null}
-					{data?.termsOfServicePage ? (
-						<Link href="/legal/terms" aria-label="terms of service">
+					{data?.termsOfServicePageContent ? (
+						<Link href="/terms-of-service" aria-label="terms of service">
 							Terms of service
 						</Link>
 					) : null}
