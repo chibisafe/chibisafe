@@ -29,7 +29,6 @@ export function CreateShortUrlDialog({ className }: { readonly className?: strin
 	});
 
 	useEffect(() => {
-		console.log(state);
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
 			toast.success(state.message);

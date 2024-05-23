@@ -13,8 +13,6 @@ export const SiteFooter = async ({ className = '' }: { readonly className?: stri
 		}
 	});
 
-	console.log(data);
-
 	return (
 		<footer className={cn(className, 'bg-background-transparent')}>
 			<div className="container flex flex-col place-items-center place-content-between gap-4 py-5 md:flex-row">
