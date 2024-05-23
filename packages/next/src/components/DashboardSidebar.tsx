@@ -31,7 +31,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 
 	useEffect(() => {
 		const checkForUpdates = async () => {
-			if (currentUser?.roles.some(role => role.name === 'admin')) {
+			if (currentUser?.roles?.some(role => role.name === 'admin')) {
 				const { data: response, error } = await request.get({
 					url: 'admin/service/updateCheck'
 				});
@@ -46,7 +46,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 		};
 
 		void checkForUpdates();
-	}, [currentUser?.roles]);
+	}, [currentUser, currentUser?.roles]);
 
 	const getShareXConfig = async (event: any) => {
 		event.preventDefault();

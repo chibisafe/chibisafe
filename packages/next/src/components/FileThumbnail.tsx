@@ -67,8 +67,8 @@ export const FileThumbnail = ({
 			<Image
 				unoptimized
 				src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/thumbnails/${file.identifier}.webp`}
-				width={file.fileMetadata.thumbnailWidth}
-				height={file.fileMetadata.thumbnailHeight}
+				width={file.fileMetadata.thumbnailWidth ?? 0}
+				height={file.fileMetadata.thumbnailHeight ?? 0}
 				className="cursor-pointer w-full sm:min-w-[160px] min-w-0"
 				alt={file.identifier}
 				onError={() => setError(true)}
