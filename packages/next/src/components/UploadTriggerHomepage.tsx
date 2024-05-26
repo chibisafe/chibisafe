@@ -58,7 +58,7 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 				<div
 					className={cn(
 						buttonVariants({ variant: 'outline' }),
-						'relative h-full w-full transition-colors flex flex-col justify-center items-center'
+						'relative h-full w-full transition-colors flex flex-col justify-center items-center bg-background-transparent'
 					)}
 				>
 					<label className="flex flex-col items-center justify-center w-full cursor-pointer">
