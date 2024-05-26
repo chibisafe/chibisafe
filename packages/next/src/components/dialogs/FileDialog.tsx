@@ -163,7 +163,7 @@ export function FileDialog() {
 							>
 								<img
 									src={selectedFile.url}
-									className="h-full object-contain md:block"
+									className="max-h-full object-contain md:block"
 									draggable={false}
 									fetchPriority="high"
 									onLoad={() => finishedLoading()}
