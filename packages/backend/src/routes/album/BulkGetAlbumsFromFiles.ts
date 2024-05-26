@@ -21,6 +21,17 @@ export const schema = {
 					uuid: z.string().describe('The uuid of the album.'),
 					name: z.string().describe('The name of the album.')
 				})
+			),
+			files: z.array(
+				z.object({
+					uuid: z.string().describe('The uuid of the file.'),
+					albums: z.array(
+						z.object({
+							uuid: z.string().describe('The uuid of the album.'),
+							name: z.string().describe('The name of the album.')
+						})
+					)
+				})
 			)
 		}),
 		'4xx': http4xxErrorSchema,
@@ -65,6 +76,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 	return res.send({
 		message: 'Successfully retrieved albums',
-		albums: filteredAlbums
+		albums: filteredAlbums,
+		files: dbFiles
 	});
 };

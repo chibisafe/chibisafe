@@ -27,7 +27,16 @@ export const schema = {
 				.optional()
 				.describe('Whether or not to use a minimal version of the homepage.'),
 			useUrlShortener: z.boolean().describe('Whether or not to use the URL shortener.'),
-			serveUploadsFrom: z.string().optional().describe('The URL to serve uploads from.')
+			serveUploadsFrom: z.string().optional().describe('The URL to serve uploads from.'),
+			privacyPolicyPageContent: z
+				.boolean()
+				.optional()
+				.describe('Whether or not the privacy policy page is enabled.'),
+			termsOfServicePageContent: z
+				.boolean()
+				.optional()
+				.describe('Whether or not the terms of service page is enabled.'),
+			rulesPageContent: z.boolean().optional().describe('Whether or not the rules page is enabled.')
 		})
 	}
 };
@@ -54,6 +63,9 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		useNetworkStorage: SETTINGS.useNetworkStorage,
 		useMinimalHomepage: SETTINGS.useMinimalHomepage,
 		serveUploadsFrom: SETTINGS.serveUploadsFrom,
-		useUrlShortener: SETTINGS.useUrlShortener
+		useUrlShortener: SETTINGS.useUrlShortener,
+		privacyPolicyPageContent: Boolean(SETTINGS.privacyPolicyPageContent),
+		termsOfServicePageContent: Boolean(SETTINGS.termsOfServicePageContent),
+		rulesPageContent: Boolean(SETTINGS.rulesPageContent)
 	});
 };

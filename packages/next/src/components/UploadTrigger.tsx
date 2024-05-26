@@ -18,7 +18,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 	const { children, ...additionalProps } = props;
 	const settings = useAtomValue(settingsAtom);
 
-	const { uploadFile } = useUploadFile({ albumUuid: props.albumUuid });
+	const { uploadFile } = useUploadFile({ albumUuid: props.albumUuid ?? undefined });
 
 	const onSelect = useCallback(
 		async (files: FileList | null) => {

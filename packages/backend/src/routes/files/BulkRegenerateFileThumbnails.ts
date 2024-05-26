@@ -91,7 +91,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		}
 
-		void generateThumbnails({ filename: file.name, tmp: file.isS3, watched: file.isWatched });
+		void generateThumbnails({ filename: file.name, tmp: file.isS3, watched: file.isWatched, force: true });
 	}
 
 	return res.send({

@@ -120,48 +120,6 @@ export const FileDialogInformation = ({
 		[file?.uuid]
 	);
 
-	const createTag = useCallback(
-		async (tag: string) => {
-			if (tag.trim() === '') return;
-			if (!tag) return;
-
-			try {
-				const { data: response, error } = await request.post({
-					url: `tag/create`,
-					body: { name: tag }
-				});
-
-				if (error) {
-					toast.error(error);
-					return;
-				}
-
-				if (response.tag) {
-					setTags([
-						...tags,
-						{
-							uuid: response.tag.uuid,
-							name: response.tag.name
-						}
-					]);
-
-					setFileTags([
-						...fileTags,
-						{
-							uuid: response.tag.uuid,
-							name: response.tag.name
-						}
-					]);
-
-					void addTagToFile(response.tag.uuid);
-				}
-			} catch (error: any) {
-				toast.error(error);
-			}
-		},
-		[addTagToFile, fileTags, tags]
-	);
-
 	const removeTagFromFile = useCallback(
 		async (tagUuid: string) => {
 			try {
@@ -337,7 +295,6 @@ export const FileDialogInformation = ({
 									initialSelected={fileTags.map(tag => tag.uuid)}
 									onSelected={async value => addTagToFile(value)}
 									onRemoved={async value => removeTagFromFile(value)}
-									onCreated={async value => createTag(value)}
 								/>
 							</div>
 						</div>

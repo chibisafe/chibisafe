@@ -28,7 +28,19 @@ const formSchema = z.object({
 	metaDomain: z.string().optional(),
 	useMinimalHomepage: z.boolean().optional(),
 	// Service
-	serveUploadsFrom: z.string().optional(),
+	serveUploadsFrom: z.string().refine(
+		value => {
+			try {
+				new URL(value);
+				return true;
+			} catch {
+				return false;
+			}
+		},
+		{
+			message: 'Please enter a valid URL'
+		}
+	),
 	rateLimitWindow: z.coerce.number().min(1, { message: 'Required' }),
 	rateLimitMax: z.coerce.number().min(1, { message: 'Required' }),
 	secret: z.string().trim().min(1, { message: 'Required' }),
@@ -42,6 +54,7 @@ const formSchema = z.object({
 	blockedExtensions: z.string().optional(),
 	blockNoExtension: z.boolean().optional(),
 	useNetworkStorage: z.boolean().optional(),
+	generateThumbnails: z.boolean().optional(),
 	S3Region: z.string().optional(),
 	S3Bucket: z.string().optional(),
 	S3AccessKey: z.string().optional(),
@@ -52,7 +65,11 @@ const formSchema = z.object({
 	generateZips: z.boolean().optional(),
 	generatedAlbumLength: z.coerce.number(),
 	generatedLinksLength: z.coerce.number(),
-	useUrlShortener: z.boolean().optional()
+	useUrlShortener: z.boolean().optional(),
+	// Legal
+	privacyPolicyPageContent: z.string().optional(),
+	termsOfServicePageContent: z.string().optional(),
+	rulesPageContent: z.string().optional()
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -110,6 +127,7 @@ export const SettingsForm = ({
 					<TabsTrigger value="users">Users</TabsTrigger>
 					<TabsTrigger value="other">Other</TabsTrigger>
 					<TabsTrigger value="customization">Customization</TabsTrigger>
+					<TabsTrigger value="legal">Legal</TabsTrigger>
 				</TabsList>
 
 				{form.formState.errors ? (
@@ -150,6 +168,9 @@ export const SettingsForm = ({
 						</TabsContent>
 						<TabsContent value="customization">
 							<FormWrapper form={form} meta={categorizedSettings.customization} />
+						</TabsContent>
+						<TabsContent value="legal">
+							<FormWrapper form={form} meta={categorizedSettings.legal} />
 						</TabsContent>
 						<Button type="submit" className="mt-4">
 							Save settings

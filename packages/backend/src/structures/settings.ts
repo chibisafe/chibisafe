@@ -67,12 +67,16 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.useNetworkStorage = settingsTable.useNetworkStorage;
 		SETTINGS.useMinimalHomepage = settingsTable.useMinimalHomepage;
 		SETTINGS.useUrlShortener = settingsTable.useUrlShortener;
+		SETTINGS.generateThumbnails = settingsTable.generateThumbnails;
 		SETTINGS.S3Region = settingsTable.S3Region;
 		SETTINGS.S3Bucket = settingsTable.S3Bucket;
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
 		SETTINGS.S3SecretKey = settingsTable.S3SecretKey;
 		SETTINGS.S3Endpoint = settingsTable.S3Endpoint;
 		SETTINGS.S3PublicUrl = settingsTable.S3PublicUrl;
+		SETTINGS.privacyPolicyPageContent = settingsTable.privacyPolicyPageContent;
+		SETTINGS.termsOfServicePageContent = settingsTable.termsOfServicePageContent;
+		SETTINGS.rulesPageContent = settingsTable.rulesPageContent;
 		return;
 	}
 
@@ -109,12 +113,16 @@ export const loadSettings = async (force = false) => {
 		useNetworkStorage: false,
 		useMinimalHomepage: false,
 		useUrlShortener: false,
+		generateThumbnails: true,
 		S3Region: '',
 		S3Bucket: '',
 		S3AccessKey: '',
 		S3SecretKey: '',
 		S3Endpoint: '',
-		S3PublicUrl: ''
+		S3PublicUrl: '',
+		privacyPolicyPageContent: '',
+		termsOfServicePageContent: '',
+		rulesPageContent: ''
 	};
 
 	await prisma.settings.create({
@@ -340,6 +348,12 @@ const SETTINGS_META = {
 		name: 'Use Network Storage',
 		category: 'uploads'
 	},
+	generateThumbnails: {
+		type: 'boolean',
+		description: 'Whether or not to generate thumbnails for images and videos.',
+		name: 'Generate Thumbnails',
+		category: 'uploads'
+	},
 	S3Region: {
 		type: 'string',
 		description: 'The region for the S3 bucket.',
@@ -382,5 +396,23 @@ const SETTINGS_META = {
 		description: 'Whether or not to use a minimal version of the homepage.',
 		name: 'Use Minimal Homepage',
 		category: 'customization'
+	},
+	privacyPolicyPageContent: {
+		type: 'text',
+		description: 'The markdown content for the privacy policy page. Leave empty to disable.',
+		name: 'Privacy Policy Page',
+		category: 'legal'
+	},
+	termsOfServicePageContent: {
+		type: 'text',
+		description: 'The markdown content for the terms of service page. Leave empty to disable.',
+		name: 'Terms of Service Page',
+		category: 'legal'
+	},
+	rulesPageContent: {
+		type: 'text',
+		description: 'The markdown content for the rules page. Leave empty to disable.',
+		name: 'Rules Page',
+		category: 'legal'
 	}
 };

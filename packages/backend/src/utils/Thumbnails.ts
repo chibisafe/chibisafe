@@ -2,6 +2,7 @@ import path from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import ffmpeg from 'fluent-ffmpeg';
 import jetpack from 'fs-jetpack';
+import { SETTINGS } from '@/structures/settings.js';
 import { deleteTmpFile } from './File.js';
 import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
@@ -89,12 +90,15 @@ const generateThumbnailForVideo = async ({
 export const generateThumbnails = async ({
 	filename,
 	tmp = false,
-	watched = false
+	watched = false,
+	force = false
 }: {
 	filename: string;
+	force?: boolean;
 	tmp?: boolean;
 	watched?: boolean;
 }) => {
+	if (!SETTINGS.generateThumbnails && !force) return;
 	if (!filename) return;
 	const ext = path.extname(filename).toLowerCase();
 	const output = `${filename.slice(0, -ext.length)}.webp`;
