@@ -71,7 +71,7 @@ export default async function Home() {
 	return (
 		<div className="flex flex-col gap-8">
 			<section className="py-2 sm:py-4">
-				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-evenly gap-4">
+				<div className="container flex min-h-[calc(100vh-8rem)] max-w-[64rem] flex-col text-center place-content-center gap-32">
 					<div className="flex flex-col-reverse lg:flex-row justify-between gap-8 lg:gap-0">
 						<div className="flex flex-col gap-6 items-center lg:items-start">
 							<h1 className="font-heading text-2xl sm:text-5xl text-center lg:text-left">
