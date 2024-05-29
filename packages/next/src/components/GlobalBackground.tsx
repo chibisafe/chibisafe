@@ -1,24 +1,18 @@
-import request from '@/lib/request';
+'use client';
 
-export const GlobalBackground = async () => {
-	const { data, error } = await request.get({
-		url: 'settings',
-		options: {
-			next: {
-				tags: ['settings']
-			}
-		}
-	});
+import { settingsAtom } from '@/lib/atoms/settings';
+import { useAtomValue } from 'jotai';
+import { usePathname } from 'next/navigation';
 
-	if (error) {
-		return null;
-	}
+export const GlobalBackground = () => {
+	const settings = useAtomValue(settingsAtom);
+	const pathname = usePathname();
 
-	if (data?.backgroundImageURL) {
+	if (settings?.backgroundImageURL && !pathname.startsWith('/guides')) {
 		return (
 			<div
 				className="fixed inset-0 z-[-1] bg-no-repeat bg-center bg-cover"
-				style={{ backgroundImage: `url(${data.backgroundImageURL})` }}
+				style={{ backgroundImage: `url(${settings.backgroundImageURL})` }}
 			/>
 		);
 	}
