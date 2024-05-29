@@ -233,6 +233,7 @@ export const BulkAlbumActions = ({
 		}
 
 		toast.success('Changes saved successfully');
+		setOpen(false);
 	}, [addedAlbums, compareChanges, removedAlbums]);
 
 	useEffect(() => {
@@ -248,6 +249,12 @@ export const BulkAlbumActions = ({
 		return () => {
 			setReady(false);
 			setIsDirty(false);
+			setAllFiles([]);
+			setAllFilesOriginal([]);
+			setAllAlbums([]);
+			setSelectedAlbums([]);
+			setAddedAlbums({});
+			setRemovedAlbums({});
 		};
 	}, [open, fetchAllAlbums, getUsedAlbums]);
 
