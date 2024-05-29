@@ -20,13 +20,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { customRevalidateTag } from '@/actions/Revalidate';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface FileWithAlbums {
-	albums: Album[];
+interface PartialAlbum {
+	name: string;
 	uuid: string;
 }
 
-interface ModifiedFiles {
-	[albumUuid: string]: FileWithIndex[];
+interface FileWithAlbums {
+	albums?: PartialAlbum[];
+	name: string;
+	url: string;
+	uuid: string;
 }
 
 export const BulkAlbumActions = ({
@@ -40,16 +43,16 @@ export const BulkAlbumActions = ({
 	const [ready, setReady] = useState(false);
 	const [isDirty, setIsDirty] = useState(false);
 
+	const [allFiles, setAllFiles] = useState<FileWithAlbums[]>([]);
+	const [allFilesOriginal, setAllFilesOriginal] = useState<FileWithAlbums[]>([]);
+
 	const [allAlbums, setAllAlbums] = useState<Album[]>([]);
+	const [selectedAlbums, setSelectedAlbums] = useState<string[]>([]);
 
-	const [dbFiles, setDbFiles] = useState<FileWithAlbums[]>([]);
+	const [addedAlbums, setAddedAlbums] = useState<Record<string, string[]>>({});
+	const [removedAlbums, setRemovedAlbums] = useState<Record<string, string[]>>({});
 
-	const [albumsToAdd, setAlbumsToAdd] = useState<ModifiedFiles>({});
-	const [albumsToRemove, setAlbumsToRemove] = useState<ModifiedFiles>({});
-
-	const [usedAlbums, setUsedAlbums] = useState<Album[]>([]);
-
-	const getAllAlbums = useCallback(async () => {
+	const fetchAllAlbums = useCallback(async () => {
 		try {
 			const { data, error } = await request.get({
 				url: 'albums',
@@ -71,7 +74,7 @@ export const BulkAlbumActions = ({
 		}
 	}, []);
 
-	const getAlbumsFromFiles = useCallback(async () => {
+	const getUsedAlbums = useCallback(async () => {
 		try {
 			const { data, error } = await request.post({
 				url: 'files/albums',
@@ -82,123 +85,175 @@ export const BulkAlbumActions = ({
 					}
 				}
 			});
+
 			if (error) {
 				toast.error(error);
 				return;
 			}
 
-			setDbFiles(data.files);
-			setUsedAlbums(data.albums);
+			setAllFiles(data.files);
+			setAllFilesOriginal(data.files);
+
+			setSelectedAlbums(data.albums?.map((album: Album) => album.uuid) ?? []);
 		} catch (error) {
 			console.error(error);
 		}
 	}, [files]);
 
-	const doAddFilesToAlbum = useCallback(async () => {
-		const albums = Object.entries(albumsToAdd);
-		try {
-			const { error } = await request.post({
-				url: `files/album/add`,
-				body: albums.map(([album, files]) => ({ album, files: files.map(file => file.uuid) }))
-			});
-
-			if (error) {
-				toast.error(error);
-				return;
-			}
-
-			customRevalidateTag('albums');
-			customRevalidateTag('files');
-
-			toast.success('Files added to album');
-		} catch (error: any) {
-			toast.error(error);
-		}
-	}, [albumsToAdd]);
-
-	const doRemoveFilesFromAlbum = useCallback(async () => {
-		const albums = Object.entries(albumsToRemove);
-
-		try {
-			const { error } = await request.post({
-				url: `files/album/delete`,
-				body: albums.map(([album, files]) => ({ album, files: files.map(file => file.uuid) }))
-			});
-			if (error) {
-				toast.error(error);
-				return;
-			}
-
-			customRevalidateTag('albums');
-			customRevalidateTag('files');
-
-			toast.success('Files removed from album');
-		} catch (error) {
-			console.error(error);
-		}
-	}, [albumsToRemove]);
-
-	const processFiles = useCallback(async () => {
-		if (Object.keys(albumsToAdd).length) {
-			await doAddFilesToAlbum();
-		}
-
-		if (Object.keys(albumsToRemove).length) {
-			await doRemoveFilesFromAlbum();
-		}
-
-		customRevalidateTag('albums');
-		customRevalidateTag('files');
-
-		setAlbumsToAdd({});
-		setAlbumsToRemove({});
-		setIsDirty(false);
-	}, [albumsToAdd, albumsToRemove, doAddFilesToAlbum, doRemoveFilesFromAlbum]);
-
-	const addFilesToAlbum = useCallback(
+	const handleAddAlbum = useCallback(
 		(albumUuid: string) => {
-			const filesNotInAlbum = files.filter(file =>
-				dbFiles
-					.filter(file => !file.albums.some(album => album.uuid === albumUuid))
-					.some(f => f.uuid === file.uuid)
-			);
-			setAlbumsToAdd(prev => ({ ...prev, [albumUuid]: filesNotInAlbum }));
-			setUsedAlbums(prev => [...prev, allAlbums.find(el => el.uuid === albumUuid)!]);
-			setIsDirty(true);
+			setAllFiles(prev => {
+				const newFiles = prev.map(file => {
+					if (file.albums?.some(album => album.uuid === albumUuid)) {
+						return file;
+					}
+
+					const albumToAdd = allAlbums.find(el => el.uuid === albumUuid)!;
+					return {
+						...file,
+						albums: [...(file.albums ?? []), { uuid: albumToAdd.uuid, name: albumToAdd.name }]
+					};
+				});
+
+				setSelectedAlbums(prev => [...prev, albumUuid]);
+				setIsDirty(true);
+
+				return newFiles;
+			});
 		},
-		[allAlbums, dbFiles, files]
+		[allAlbums]
 	);
 
-	const removeFilesFromAlbum = useCallback(
-		(albumUuid: string) => {
-			const filesInAlbum = files.filter(file =>
-				dbFiles
-					.filter(file => file.albums.some(album => album.uuid === albumUuid))
-					.some(f => f.uuid === file.uuid)
-			);
-			setAlbumsToRemove(prev => ({ ...prev, [albumUuid]: filesInAlbum }));
-			setUsedAlbums(prev => prev.filter(album => album.uuid !== albumUuid));
-			setIsDirty(true);
-		},
-		[dbFiles, files]
-	);
+	const handleRemoveAlbum = useCallback((albumUuid: string) => {
+		setAllFiles(prev => {
+			return prev.map(file => {
+				if (!file.albums?.some(album => album.uuid === albumUuid)) {
+					return file;
+				}
+
+				const updatedAlbums = file.albums?.filter(album => album.uuid !== albumUuid);
+
+				setSelectedAlbums(prev => prev.filter(uuid => uuid !== albumUuid));
+				setIsDirty(true);
+
+				return {
+					...file,
+					albums: updatedAlbums
+				};
+			});
+		});
+	}, []);
+
+	const compareChanges = useCallback(() => {
+		const added = {} as any;
+		const removed = {} as any;
+
+		for (const file of allFiles) {
+			const originalFile = allFilesOriginal.find(f => f.uuid === file.uuid);
+
+			if (!originalFile) {
+				continue;
+			}
+
+			const originalAlbums = originalFile.albums?.map(album => album.uuid) ?? [];
+			const currentAlbums = file.albums?.map(album => album.uuid) ?? [];
+
+			// Find albums that were added
+			for (const albumUuid of currentAlbums) {
+				if (!originalAlbums.includes(albumUuid)) {
+					if (!added[albumUuid]) {
+						added[albumUuid] = [];
+					}
+
+					added[albumUuid].push(file.uuid);
+				}
+			}
+
+			// Find albums that were removed
+			for (const albumUuid of originalAlbums) {
+				if (!currentAlbums.includes(albumUuid)) {
+					if (!removed[albumUuid]) {
+						removed[albumUuid] = [];
+					}
+
+					removed[albumUuid].push(file.uuid);
+				}
+			}
+		}
+
+		setAddedAlbums(added);
+		setRemovedAlbums(removed);
+	}, [allFiles, allFilesOriginal]);
+
+	const saveChanges = useCallback(async () => {
+		compareChanges();
+
+		if (Object.keys(addedAlbums).length > 0) {
+			try {
+				const { error } = await request.post({
+					url: `files/album/add`,
+					body: Object.entries(addedAlbums).map(([albumUuid, filesUuid]) => ({
+						album: albumUuid,
+						files: filesUuid
+					}))
+				});
+
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
+				customRevalidateTag('albums');
+				customRevalidateTag('files');
+			} catch (error: any) {
+				toast.error(error);
+			}
+		}
+
+		if (Object.keys(removedAlbums).length > 0) {
+			try {
+				const { error } = await request.post({
+					url: `files/album/remove`,
+					body: Object.entries(removedAlbums).map(([albumUuid, filesUuid]) => ({
+						album: albumUuid,
+						files: filesUuid
+					}))
+				});
+
+				if (error) {
+					toast.error(error);
+					return;
+				}
+
+				customRevalidateTag('albums');
+				customRevalidateTag('files');
+			} catch (error: any) {
+				toast.error(error);
+			}
+		}
+
+		toast.success('Changes saved successfully');
+	}, [addedAlbums, compareChanges, removedAlbums]);
 
 	useEffect(() => {
 		if (open) {
 			(async () => {
-				await getAllAlbums();
-				await getAlbumsFromFiles();
+				await fetchAllAlbums();
+				await getUsedAlbums();
 				setReady(true);
+				setIsDirty(true);
 			})();
 		}
 
 		return () => {
 			setReady(false);
-			setAlbumsToAdd({});
-			setAlbumsToRemove({});
 			setIsDirty(false);
 		};
-	}, [open, getAlbumsFromFiles, getAllAlbums]);
+	}, [open, fetchAllAlbums, getUsedAlbums]);
+
+	useEffect(() => {
+		compareChanges();
+	}, [allFiles, compareChanges]);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -217,7 +272,7 @@ export const BulkAlbumActions = ({
 				<DialogHeader>
 					<DialogTitle>Manage albums</DialogTitle>
 					<DialogDescription>
-						Use the dropdown below to select one or more albums to add the selected files to.
+						Use the dropdown below to manage the albums from all thhe selected files.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid gap-4">
@@ -225,61 +280,77 @@ export const BulkAlbumActions = ({
 						<>
 							{isDirty ? (
 								<div className="text-sm text-muted-foreground flex flex-col gap-2">
-									<ScrollArea className="max-h-96">
-										{Object.keys(albumsToAdd).length
-											? Object.entries(albumsToAdd).map(([album, files]) =>
-													files.length ? (
-														<div key={album} className="flex flex-col gap-2">
+									<ScrollArea className="max-h-96 flex flex-col gap-2">
+										<ul>
+											{Object.keys(addedAlbums).length
+												? Object.entries(addedAlbums).map(([albumUuid, fileUuids]) => (
+														<li key={albumUuid} className="flex flex-col gap-2 mb-2">
 															<p>
-																{files.length} files will be added to the album{' '}
+																{fileUuids.length} files will be added to the album{' '}
 																<span className="font-bold">
-																	{allAlbums.find(el => el.uuid === album)?.name}
+																	{allAlbums.find(el => el.uuid === albumUuid)?.name}
 																</span>
 															</p>
 															<ul className="text-green-800">
-																{files.map(file => (
-																	<li key={file.uuid}>
+																{fileUuids.map(fileUuid => (
+																	<li key={fileUuid}>
 																		<a
-																			href={file.url}
+																			href={
+																				files.find(
+																					file => file.uuid === fileUuid
+																				)?.url
+																			}
 																			target="_blank"
 																			rel="noreferrer noopener"
 																		>
-																			{file.name}
+																			{
+																				files.find(
+																					file => file.uuid === fileUuid
+																				)?.name
+																			}
 																		</a>
 																	</li>
 																))}
 															</ul>
-														</div>
-													) : null
-												)
-											: null}
-										{Object.keys(albumsToRemove).length
-											? Object.entries(albumsToRemove).map(([album, files]) =>
-													files.length ? (
-														<div key={album} className="flex flex-col gap-2">
+														</li>
+													))
+												: null}
+										</ul>
+										<ul>
+											{Object.keys(removedAlbums).length
+												? Object.entries(removedAlbums).map(([albumUuid, fileUuids]) => (
+														<li key={albumUuid} className="flex flex-col gap-2 mb-2">
 															<p>
-																{files.length} files will be removed from the album{' '}
+																{fileUuids.length} files will be removed from the album{' '}
 																<span className="font-bold">
-																	{allAlbums.find(el => el.uuid === album)?.name}
+																	{allAlbums.find(el => el.uuid === albumUuid)?.name}
 																</span>
 															</p>
 															<ul className="text-red-800">
-																{files.map(file => (
-																	<li key={file.uuid}>
+																{fileUuids.map(fileUuid => (
+																	<li key={fileUuid}>
 																		<a
-																			href={file.url}
+																			href={
+																				files.find(
+																					file => file.uuid === fileUuid
+																				)?.url
+																			}
 																			target="_blank"
 																			rel="noreferrer noopener"
 																		>
-																			{file.name}
+																			{
+																				files.find(
+																					file => file.uuid === fileUuid
+																				)?.name
+																			}
 																		</a>
 																	</li>
 																))}
 															</ul>
-														</div>
-													) : null
-												)
-											: null}
+														</li>
+													))
+												: null}
+										</ul>
 									</ScrollArea>
 								</div>
 							) : null}
@@ -290,9 +361,9 @@ export const BulkAlbumActions = ({
 									value: album.uuid,
 									label: album.name
 								}))}
-								initialSelected={usedAlbums.map(album => album.uuid)}
-								onSelected={async value => addFilesToAlbum(value)}
-								onRemoved={async value => removeFilesFromAlbum(value)}
+								initialSelected={selectedAlbums}
+								onSelected={async value => handleAddAlbum(value)}
+								onRemoved={async value => handleRemoveAlbum(value)}
 							/>
 						</>
 					) : (
@@ -303,7 +374,7 @@ export const BulkAlbumActions = ({
 					<Button type="button" variant="secondary" onClick={() => setOpen(false)}>
 						Close
 					</Button>
-					<Button type="button" variant="default" onClick={() => void processFiles()}>
+					<Button type="button" variant="default" onClick={() => void saveChanges()}>
 						Save
 					</Button>
 				</DialogFooter>

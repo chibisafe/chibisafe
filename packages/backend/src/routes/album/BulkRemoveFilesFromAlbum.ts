@@ -27,7 +27,7 @@ export const schema = {
 };
 
 export const options = {
-	url: '/files/album/delete',
+	url: '/files/album/remove',
 	method: 'post',
 	middlewares: ['apiKey', 'auth']
 };
