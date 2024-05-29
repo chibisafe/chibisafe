@@ -5,7 +5,7 @@ import request from '@/lib/request';
 
 export const SiteFooter = async ({ className = '' }: { readonly className?: string }) => {
 	const { data } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']

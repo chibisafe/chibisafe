@@ -28,7 +28,7 @@ export default async function Home() {
 	}
 
 	const { data: settings, error } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']
@@ -54,14 +54,12 @@ export default async function Home() {
 		);
 	}
 
-	if (settings?.useMinimalHomepage) {
+	if (settings?.siteMinimalisticUi.value) {
 		return (
 			<section className="py-2 sm:py-4">
 				<div className="container flex min-h-[calc(100vh-16rem)] max-w-[64rem] flex-col text-center place-items-center place-content-evenly gap-4">
 					<ChibisafeLogo className="mx-auto mb-4 sm:h-64 sm:w-64 w-32 h-32" />
-					<h1 className="font-heading text-2xl sm:text-5xl">
-						Welcome to {settings.serviceName ?? 'chibisafe'}
-					</h1>
+					<h1 className="font-heading text-2xl sm:text-5xl">Welcome to {settings.siteName.value}</h1>
 					<UploadTriggerHomepage settings={settings} />
 				</div>
 			</section>

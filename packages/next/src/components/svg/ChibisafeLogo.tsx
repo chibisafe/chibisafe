@@ -547,7 +547,7 @@ export const ChibisafeDefaultLogo = ({
 
 export const ChibisafeLogo = async ({ className = '' }: { readonly className?: string }) => {
 	const { data, error } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']
@@ -559,10 +559,10 @@ export const ChibisafeLogo = async ({ className = '' }: { readonly className?: s
 		return <ChibisafeDefaultLogo className={className} />;
 	}
 
-	if (data?.logoURL) {
+	if (data?.siteLogoUrl.value) {
 		return (
 			<picture>
-				<img src={data.logoURL} alt="chibisafe" className={className} />
+				<img src={data.siteLogoUrl.value} alt="chibisafe" className={className} />
 			</picture>
 		);
 	}

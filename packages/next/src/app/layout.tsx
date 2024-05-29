@@ -27,15 +27,9 @@ export const viewport: Viewport = {
 	]
 };
 
-const meta = {
-	url: 'https://chibisafe.app',
-	name: 'chibisafe',
-	description: 'Beautiful and performant vault to save all your files in the cloud.'
-};
-
 export async function generateMetadata() {
 	const { data: settings, error } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']
@@ -48,15 +42,13 @@ export async function generateMetadata() {
 	}
 
 	return {
-		metadataBase: new URL(settings?.serveUploadsFrom || meta.url),
+		metadataBase: new URL(settings?.siteUrl.value),
 		title: {
-			default: settings?.serviceName ?? meta.name,
-			template: `%s - ${settings?.serviceName ?? meta.name}`
+			default: settings?.siteName.value,
+			template: `%s - ${settings?.siteName.value}`
 		},
-		description: settings?.metaDescription ?? meta.description,
-		keywords: settings?.metaKeywords.length
-			? settings.metaKeywords
-			: ['chibisafe', 'file uploader', 'vault', 'react', 'free', 'open source', 'pitu', 'kana', 'kana.dev'],
+		description: settings?.siteDescription.value,
+		keywords: settings.siteKeywords.value,
 		authors: [
 			{
 				name: 'Pitu',
@@ -68,18 +60,18 @@ export async function generateMetadata() {
 		openGraph: {
 			type: 'website',
 			locale: 'en_US',
-			url: settings?.metaDomain ?? meta.url,
-			title: settings?.serviceName ?? meta.name,
-			description: settings?.metaDescription ?? meta.description,
-			siteName: settings?.serviceName ?? meta.name,
+			url: settings?.siteUrl.value,
+			title: settings?.siteName.value,
+			description: settings?.siteDescription.value,
+			siteName: settings?.siteName.value,
 			images: [`/og`]
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: settings?.serviceName ?? meta.name,
-			description: settings?.metaDescription ?? meta.description,
+			title: settings?.siteName.value,
+			description: settings?.siteDescription.value,
 			images: [`/og`],
-			creator: settings?.metaTwitterHandle ?? '@twitter'
+			creator: settings?.siteAuthor.value
 		},
 		icons: {
 			icon: '/favicon.ico',

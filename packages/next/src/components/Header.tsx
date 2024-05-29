@@ -10,7 +10,7 @@ import request from '@/lib/request';
 
 export const Header = async () => {
 	const { data } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']
@@ -21,7 +21,7 @@ export const Header = async () => {
 	return (
 		<header className="container z-40">
 			<div className="flex h-16 sm:h-20 place-content-between place-items-center">
-				<Navigation logo={<ChibisafeLogo className="w-6 h-6" />} serviceName={data?.serviceName} />
+				<Navigation logo={<ChibisafeLogo className="w-6 h-6" />} serviceName={data?.siteName.value} />
 				<UploadProgress />
 				<nav className="flex items-center gap-1">
 					<a href="https://discord.gg/5g6vgwn" target="_blank" rel="noopener noreferrer">

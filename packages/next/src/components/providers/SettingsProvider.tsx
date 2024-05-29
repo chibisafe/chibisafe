@@ -18,7 +18,7 @@ export function SettingsProvider() {
 				error,
 				status
 			} = await request.get({
-				url: 'settings',
+				url: 'v1/settings',
 				options: {
 					next: {
 						tags: ['settings']

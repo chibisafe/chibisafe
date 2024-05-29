@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
 	const { data: settings, error } = await request.get({
-		url: 'settings',
+		url: 'v1/settings',
 		options: {
 			next: {
 				tags: ['settings']
@@ -47,12 +47,12 @@ export default async function LoginPage() {
 				<div className="flex flex-col space-y-2 text-center">
 					<ChibisafeLogo className="mx-auto mb-4 h-64 w-64" />
 					<h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
-					{settings?.userAccounts ? (
+					{settings?.registrationEnabled.value ? (
 						<p className="text-sm text-muted-foreground">Enter your email below to create an account</p>
 					) : null}
 				</div>
 
-				{settings?.userAccounts ? (
+				{settings?.registrationEnabled.value ? (
 					<RegisterForm />
 				) : (
 					<div className="flex flex-col gap-2 text-center">
