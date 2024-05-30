@@ -2,8 +2,9 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { File, FilePropsType, FileWithIndex } from '@/types';
+import type { FilePropsType } from '@/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import type { FileWithFileMetadataAndIndex } from '@/lib/atoms/fileDialog';
 import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileDialog';
 import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
@@ -13,6 +14,7 @@ import { useLongPress } from '@uidotdev/usehooks';
 import { selectedFilesAtom, selectionActiveAtom } from '@/lib/atoms/selectedFiles';
 import { CircleCheckIcon, CircleIcon } from 'lucide-react';
 import { Button } from './ui/button';
+import { ENV } from '@/util/env';
 
 function FileItem({
 	file,
@@ -21,7 +23,7 @@ function FileItem({
 	hoveredFiles,
 	setHoveredFiles
 }: {
-	readonly file: FileWithIndex;
+	readonly file: FileWithFileMetadataAndIndex;
 	readonly hoveredFiles: string[];
 	readonly idx: number;
 	setHoveredFiles(files: string[]): void;
@@ -34,7 +36,7 @@ function FileItem({
 	const isSelected = useMemo(() => selectedFiles.includes(file), [selectedFiles, file]);
 
 	const addToHoveredList = useCallback(
-		(file: File) => {
+		(file: FileWithFileMetadataAndIndex) => {
 			const identifierToUse = file.uuid ?? file.identifier;
 			if (hoveredFiles.includes(identifierToUse)) return;
 			setHoveredFiles([...hoveredFiles, identifierToUse]);
@@ -43,7 +45,7 @@ function FileItem({
 	);
 
 	const removeFromHoveredList = useCallback(
-		(file: File) => {
+		(file: FileWithFileMetadataAndIndex) => {
 			const identifierToUse = file.uuid ?? file.identifier;
 			if (!hoveredFiles.includes(identifierToUse)) return;
 			setHoveredFiles(hoveredFiles.filter(file => file !== identifierToUse));
@@ -138,7 +140,7 @@ function FileItem({
 					'pointer-events-none': file.quarantine && type !== 'quarantine',
 					hidden: isSelectionActive
 				})}
-				href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
+				href={`${ENV.BASE_API_URL}/${file.filename}`}
 				target="_blank"
 				rel="noopener noreferrer"
 				draggable={false}
@@ -166,7 +168,7 @@ export function Masonry({
 	files,
 	type
 }: {
-	readonly files?: FileWithIndex[] | undefined;
+	readonly files?: FileWithFileMetadataAndIndex[] | undefined;
 	readonly type: FilePropsType;
 }) {
 	const [hoveredFiles, setHoveredFiles] = useState<string[]>([]);

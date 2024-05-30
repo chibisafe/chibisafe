@@ -24,6 +24,7 @@ import { FileTextViewer } from '../FileTextViewer';
 import { useEventListener } from 'usehooks-ts';
 import { useZoomImageWheel } from '@zoom-image/react';
 import { FileDialogToolbar } from '../FileDialogToolbar';
+import { ENV } from '@/util/env';
 
 export function FileDialog() {
 	const [selectedFile, setSelectedFile] = useAtom(selectedFileAtom);
@@ -162,7 +163,7 @@ export function FileDialog() {
 								ref={imageZoomContainerRef}
 							>
 								<img
-									src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
+									src={`${ENV.BASE_API_URL}/${selectedFile.filename}`}
 									className="max-h-full object-contain md:block"
 									draggable={false}
 									fetchPriority="high"
@@ -175,7 +176,7 @@ export function FileDialog() {
 						<MediaController className="h-full w-full">
 							<video
 								slot="media"
-								src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
+								src={`${ENV.BASE_API_URL}/${selectedFile.filename}`}
 								crossOrigin=""
 								className="h-full"
 							/>
@@ -190,11 +191,7 @@ export function FileDialog() {
 						</MediaController>
 					) : isFileAudio(selectedFile) ? (
 						<MediaController className="w-full min-w-96 h-full">
-							<audio
-								slot="media"
-								src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${selectedFile.filename}`}
-								crossOrigin=""
-							/>
+							<audio slot="media" src={`${ENV.BASE_API_URL}/${selectedFile.filename}`} crossOrigin="" />
 							<MediaControlBar>
 								<MediaPlayButton />
 								<MediaTimeDisplay showDuration />

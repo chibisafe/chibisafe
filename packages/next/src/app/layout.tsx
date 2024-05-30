@@ -13,8 +13,8 @@ import { UserProvider } from '@/components/providers/UserProvider';
 
 import { Providers } from './providers';
 import { GlobalBackground } from '@/components/GlobalBackground';
-import request from '@/lib/request';
 import { GlobalAdminNotice } from '@/components/GlobalAdminNotice';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -28,27 +28,17 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata() {
-	const { data: settings, error } = await request.get({
-		url: 'v1/settings',
-		options: {
-			next: {
-				tags: ['settings']
-			}
-		}
-	});
-
-	if (error) {
-		console.log(error);
-	}
+	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	if (!data) return {};
 
 	return {
-		metadataBase: new URL(settings?.siteUrl.value),
+		metadataBase: new URL(data.siteUrl.value),
 		title: {
-			default: settings?.siteName.value,
-			template: `%s - ${settings?.siteName.value}`
+			default: data.siteName.value,
+			template: `%s - ${data.siteName.value}`
 		},
-		description: settings?.siteDescription.value,
-		keywords: settings.siteKeywords.value,
+		description: data.siteDescription.value,
+		keywords: data.siteKeywords.value,
 		authors: [
 			{
 				name: 'Pitu',
@@ -60,18 +50,18 @@ export async function generateMetadata() {
 		openGraph: {
 			type: 'website',
 			locale: 'en_US',
-			url: settings?.siteUrl.value,
-			title: settings?.siteName.value,
-			description: settings?.siteDescription.value,
-			siteName: settings?.siteName.value,
+			url: data.siteUrl.value,
+			title: data.siteName.value,
+			description: data.siteDescription.value,
+			siteName: data.siteName.value,
 			images: [`/og`]
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: settings?.siteName.value,
-			description: settings?.siteDescription.value,
+			title: data.siteName.value,
+			description: data.siteDescription.value,
 			images: [`/og`],
-			creator: settings?.siteAuthor.value
+			creator: data.siteAuthor.value
 		},
 		icons: {
 			icon: '/favicon.ico',

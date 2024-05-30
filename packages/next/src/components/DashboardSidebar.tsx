@@ -31,7 +31,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 
 	useEffect(() => {
 		const checkForUpdates = async () => {
-			if (currentUser?.roles?.some(role => role.name === 'admin')) {
+			if (currentUser?.permissions.canManageSettings) {
 				const { data: response, error } = await request.get({
 					url: 'admin/service/updateCheck'
 				});
@@ -46,7 +46,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 		};
 
 		void checkForUpdates();
-	}, [currentUser, currentUser?.roles]);
+	}, [currentUser?.permissions.canManageSettings]);
 
 	const getShareXConfig = async (event: any) => {
 		event.preventDefault();
@@ -63,7 +63,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 		"RequestURL": "${location.origin}/api/upload",
 		"FileFormName": "file[]",
 		"Headers": {
-			"x-api-key": "${currentUser.apiKey}"
+			"chibi-api-key": "${currentUser.apiKey}"
 		},
 		"ResponseType": "Text",
 		"URL": "$json:url$",
@@ -81,7 +81,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
 				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
 				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
-				{currentSettings?.useUrlShortener ? (
+				{currentSettings?.urlShorteningEnabled ? (
 					<DashboardSidebarItem href="/dashboard/links" name="Short URLs" Icon={Link} />
 				) : null}
 			</nav>
@@ -89,7 +89,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>
 				<DashboardSidebarItem href="/dashboard/account" name="Credentials" Icon={Key} />
 			</nav>
-			{currentUser?.roles.find(role => role.name === 'admin') ? (
+			{currentUser?.permissions.canManageSettings ? (
 				<nav className="grid items-start gap-1 mt-4" onClick={() => onClick?.()}>
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />

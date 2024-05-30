@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import type { PageQuery } from '@/types';
 
-import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Files'
@@ -19,13 +19,24 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 	const search = searchParams.search ?? '';
 	const publicOnly = searchParams.publicOnly ?? false;
 
-	const {
-		data: response,
-		error,
-		status
-	} = await fetchEndpoint({ type: 'admin' }, currentPage, perPage, search, publicOnly);
-	if (error && status === 401) {
+	// TODO: Implement admin header once the API supports it
+	// TODO: Implement publicOnly once the API supports it
+	const { data, error, response } = await openAPIClient.GET('/api/v1/files/', {
+		params: {
+			query: {
+				offset: currentPage - 1,
+				limit: perPage,
+				search
+			}
+		}
+	});
+
+	if (response.status === 401) {
 		redirect('/login');
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
 	}
 
 	return (
@@ -41,9 +52,9 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 			<div className="px-2 w-full">
 				<div className="grid gap-4">
 					<Suspense>
-						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.results} total={response.count} type="admin" />
-						<Pagination itemsTotal={response.count} type="admin" />
+						<Pagination itemsTotal={data.count} type="admin" />
+						<FilesWrapper files={data.results} total={data.count} type="admin" />
+						<Pagination itemsTotal={data.count} type="admin" />
 					</Suspense>
 					<FileDialog />
 				</div>

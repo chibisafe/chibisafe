@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import type { Album, FilePropsType, File, Tag } from '@/types';
+import type { FilePropsType, File } from '@/types';
 import { ScrollArea } from './ui/scroll-area';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -15,10 +15,13 @@ import { useMediaQuery } from 'usehooks-ts';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip } from './Tooltip';
 import { Button } from './ui/button';
-import request from '@/lib/request';
 import { toast } from 'sonner';
 import { useSetAtom } from 'jotai';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
+import { ENV } from '@/util/env';
+import { openAPIClient } from '@/lib/clientFetch';
+import type { FolderWithFilesCountAndCoverImage } from '@/lib/atoms/albumSettingsDialog';
+import type { TagWithFilesCountAndCoverImage } from '@/lib/atoms/tags';
 
 const OpenButton = () => {
 	return (
@@ -53,27 +56,37 @@ const ComponentToRender = ({ children }: PropsWithChildren<{}>) => {
 	);
 };
 
+type AlbumOrTag = {
+	name: string;
+	uuid: string;
+};
+
 export const FileDialogInformation = ({
 	file,
 	type
 }: PropsWithChildren<{ readonly file: File; readonly type: FilePropsType }>) => {
-	const [tags, setTags] = useState<Tag[]>([]);
-	const [fileTags, setFileTags] = useState<Tag[]>([]);
-	const [albums, setAlbums] = useState<Album[]>([]);
-	const [fileAlbums, setFileAlbums] = useState<Album[]>([]);
+	const [tags, setTags] = useState<TagWithFilesCountAndCoverImage[]>([]);
+	const [fileTags, setFileTags] = useState<AlbumOrTag[]>([]);
+	const [albums, setAlbums] = useState<FolderWithFilesCountAndCoverImage[]>([]);
+	const [fileAlbums, setFileAlbums] = useState<AlbumOrTag[]>([]);
 	const setModalOpen = useSetAtom(isDialogOpenAtom);
 
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				const { error } = await request.post({
-					url: `v1/folders/${albumUuid}/files/bulk-add`,
+				const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/files/bulk-add', {
+					params: {
+						path: {
+							uuid: albumUuid
+						}
+					},
 					body: {
 						uuids: [file?.uuid]
 					}
 				});
+
 				if (error) {
-					toast.error(error);
+					toast.error(error.message);
 					return;
 				}
 
@@ -88,14 +101,19 @@ export const FileDialogInformation = ({
 	const removeFileFromAlbum = useCallback(
 		async (albumUuid: string) => {
 			try {
-				const { error } = await request.post({
-					url: `v1/folders/${albumUuid}/files/bulk-add`,
+				const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/files/bulk-delete', {
+					params: {
+						path: {
+							uuid: albumUuid
+						}
+					},
 					body: {
 						uuids: [file?.uuid]
 					}
 				});
+
 				if (error) {
-					toast.error(error);
+					toast.error(error.message);
 					return;
 				}
 
@@ -110,11 +128,19 @@ export const FileDialogInformation = ({
 	const addTagToFile = useCallback(
 		async (tagUuid: string) => {
 			try {
-				const { error } = await request.post({
-					url: `file/${file?.uuid}/tag/${tagUuid}`
+				const { error } = await openAPIClient.POST('/api/v1/tags/{uuid}/files/bulk-add', {
+					params: {
+						path: {
+							uuid: tagUuid
+						}
+					},
+					body: {
+						uuids: [file?.uuid]
+					}
 				});
+
 				if (error) {
-					toast.error(error);
+					toast.error(error.message);
 					return;
 				}
 
@@ -129,11 +155,19 @@ export const FileDialogInformation = ({
 	const removeTagFromFile = useCallback(
 		async (tagUuid: string) => {
 			try {
-				const { error } = await request.delete({
-					url: `file/${file?.uuid}/tag/${tagUuid}`
+				const { error } = await openAPIClient.POST('/api/v1/tags/{uuid}/files/bulk-delete', {
+					params: {
+						path: {
+							uuid: tagUuid
+						}
+					},
+					body: {
+						uuids: [file?.uuid]
+					}
 				});
+
 				if (error) {
-					toast.error(error);
+					toast.error(error.message);
 					return;
 				}
 
@@ -151,40 +185,46 @@ export const FileDialogInformation = ({
 			if (type === 'publicAlbum') return;
 			if (type === 'quarantine') return;
 
-			const { data: userAlbums, error: userAlbumsError } = await request.get({
-				url: 'v1/folders',
-				query: { limit: 1000 },
-				options: {
-					next: {
-						tags: ['albums']
+			const { data: userAlbums, error: userAlbumsError } = await openAPIClient.GET('/api/v1/folders/', {
+				params: {
+					query: {
+						limit: 9999
 					}
 				}
 			});
+
 			if (userAlbumsError) {
-				toast.error(userAlbumsError);
+				toast.error(userAlbumsError.message);
 				return;
 			}
 
 			setAlbums(userAlbums.results);
 
-			const { data: userTags, error: userTagsError } = await request.get({
-				url: 'v1/tags',
-				query: { limit: 9999 },
-				options: {
-					next: {
-						tags: ['albums']
+			const { data: userTags, error: userTagsError } = await openAPIClient.GET('/api/v1/tags/', {
+				params: {
+					query: {
+						limit: 9999
 					}
 				}
 			});
-			setTags(userTags.tags);
+
 			if (userTagsError) {
-				toast.error(userTagsError);
+				toast.error(userTagsError.message);
 				return;
 			}
 
-			const { data: userFile, error: userFileError } = await request.get({ url: `v1/files/${file?.uuid}` });
+			setTags(userTags.results);
+
+			const { data: userFile, error: userFileError } = await openAPIClient.GET('/api/v1/files/{uuid}/', {
+				params: {
+					path: {
+						uuid: file?.uuid
+					}
+				}
+			});
+
 			if (userFileError) {
-				toast.error(userFileError);
+				toast.error(userFileError.message);
 				return;
 			}
 
@@ -304,7 +344,7 @@ export const FileDialogInformation = ({
 									placeholder="Select tags..."
 									options={tags.map(tag => ({
 										value: tag.uuid,
-										label: tag.name
+										label: `${tag.name}${tag.nearestParent ? ` (${tag.nearestParent.name})` : ''}`
 									}))}
 									initialSelected={fileTags.map(tag => tag.uuid)}
 									onSelected={async value => addTagToFile(value)}
@@ -351,12 +391,7 @@ export const FileDialogInformation = ({
 
 					<div>
 						<Label htmlFor="url">URL</Label>
-						<Input
-							value={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
-							name="url"
-							id="url"
-							readOnly
-						/>
+						<Input value={`${ENV.BASE_API_URL}/${file.filename}`} name="url" id="url" readOnly />
 					</div>
 
 					<div>

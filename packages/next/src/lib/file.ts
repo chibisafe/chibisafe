@@ -1,4 +1,4 @@
-import type { File } from '@/types';
+import type { FileWithFileMetadataAndIndex } from './atoms/fileDialog';
 
 export const formatBytes = (bytes: number, decimals = 2) => {
 	if (bytes === 0) return '0 Bytes';
@@ -18,26 +18,26 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 	return `${Number.parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
-export const isFileVideo = (file: File | null) => {
-	if (!file) return false;
+export const isFileVideo = (file: FileWithFileMetadataAndIndex | null) => {
+	if (!file?.fileMetadata) return false;
 	const { mimeType } = file.fileMetadata;
-	return mimeType.startsWith('video/');
+	return mimeType?.startsWith('video/');
 };
 
-export const isFileImage = (file: File | null) => {
-	if (!file) return false;
+export const isFileImage = (file: FileWithFileMetadataAndIndex | null) => {
+	if (!file?.fileMetadata) return false;
 	const { mimeType } = file.fileMetadata;
-	return mimeType.startsWith('image/');
+	return mimeType?.startsWith('image/');
 };
 
-export const isFileAudio = (file: File | null) => {
-	if (!file) return false;
+export const isFileAudio = (file: FileWithFileMetadataAndIndex | null) => {
+	if (!file?.fileMetadata) return false;
 	const { mimeType } = file.fileMetadata;
-	return mimeType.startsWith('audio/');
+	return mimeType?.startsWith('audio/');
 };
 
-export const isFilePDF = (file: File | null) => {
-	if (!file) return false;
+export const isFilePDF = (file: FileWithFileMetadataAndIndex | null) => {
+	if (!file?.fileMetadata) return false;
 	const { mimeType } = file.fileMetadata;
 	return mimeType === 'application/pdf';
 };

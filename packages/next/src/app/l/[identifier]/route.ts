@@ -20,5 +20,6 @@ export async function GET(_: Request, { params }: { params: { identifier: string
 		}
 	})();
 
+	// TODO: https://nextjs.org/blog/next-15-rc#executing-code-after-a-response-with-nextafter-experimental
 	redirect(`/api/link/${identifier}`);
 }

@@ -7,6 +7,7 @@ import { FileTrigger } from '@/components/ui/file-trigger';
 import { chunkFile, uploadChunks } from '@/lib/upload';
 import { uploadsQueueAtom } from '@/lib/atoms/uploads';
 import { customRevalidatePath } from '@/actions/Revalidate';
+import { ENV } from '@/util/env';
 
 interface FileTriggerPropsWithAlbumUuid extends FileTriggerProps {
 	readonly albumUuid?: string;
@@ -66,7 +67,7 @@ export const UploadTrigger = forwardRef<HTMLInputElement, FileTriggerPropsWithAl
 								upload.finished = true;
 								upload.percentComplete = 100;
 								upload.uploadSpeed = 0;
-								upload.url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/${filename}`;
+								upload.url = `${ENV.BASE_API_URL}/${filename}`;
 							}
 						});
 						await customRevalidatePath('/dashboard');

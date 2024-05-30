@@ -22,6 +22,7 @@ export async function generateMetadata({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
+	// TODO: Not implemented in the API yet
 	const { data: response, error } = await fetchEndpoint(
 		{ type: 'publicAlbum', identifier: params.identifier },
 		currentPage,

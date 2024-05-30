@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { ImageResponse } from 'next/og';
-import fetchRequest from '@/lib/request';
 import { ChibisafeDefaultLogo } from '@/components/svg/ChibisafeLogo';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const contentType = 'image/jpeg';
 export const runtime = 'edge';
@@ -24,15 +24,7 @@ export async function GET(request: Request) {
 	const url = new URL(request.url);
 	const section = url.searchParams.get('section') ?? null;
 
-	const { data, error } = await fetchRequest.get({
-		url: 'v1/settings',
-		options: {
-			next: {
-				tags: ['settings']
-			}
-		}
-	});
-
+	const { data, error } = await openAPIClient.GET('/api/v1/settings/');
 	if (error) {
 		return null;
 	}

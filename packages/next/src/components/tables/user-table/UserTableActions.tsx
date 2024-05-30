@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { UserActionsButton } from './UserActionsButton';
-import type { UserWithCountAndQuota } from '@/types';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
 import { SetQuotaDialog } from '@/components/dialogs/SetQuotaDialog';
 import { SetQuotaDrawer } from '@/components/drawers/SetQuotaDrawer';
+import type { UserWithRolesAndQuota } from '@/types';
 
-export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithCountAndQuota }>) {
+export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithRolesAndQuota }>) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -32,12 +32,12 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 					</DropdownMenuItem>
 					<DropdownMenuItem onSelect={e => e.preventDefault()}>
 						<SetQuotaDialog
-							initialValue={user.storageQuota.quota}
+							initialValue={user.storageQuota}
 							uuid={user.uuid}
 							className="hidden md:inline-flex"
 						/>
 						<SetQuotaDrawer
-							initialValue={user.storageQuota.quota}
+							initialValue={user.storageQuota}
 							uuid={user.uuid}
 							className="inline-flex md:hidden"
 						/>
@@ -45,6 +45,17 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
+					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
+						<button
+							type="button"
+							className="w-full h-full flex px-2 py-1.5 cursor-default"
+							onClick={() => {
+								// TODO: Create dialog for roles
+							}}
+						>
+							Set roles
+						</button>
+					</DropdownMenuItem>
 					{user.enabled ? (
 						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 							<UserActionsButton
@@ -63,30 +74,6 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 								description="This action will enable the user and allow them to log into chibisafe again. They'll be able to access all previous uploads and albums."
 							>
 								Enable
-							</UserActionsButton>
-						</DropdownMenuItem>
-					)}
-					{user.roles.some(role => role.name === 'admin') ? (
-						<DropdownMenuItem
-							className="focus:text-destructive-foreground focus:bg-destructive p-0"
-							onSelect={e => e.preventDefault()}
-						>
-							<UserActionsButton
-								uuid={user.uuid}
-								type="demote"
-								description="This action will remove the admin role and demote the user back to a normal user."
-							>
-								Demote
-							</UserActionsButton>
-						</DropdownMenuItem>
-					) : (
-						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-							<UserActionsButton
-								uuid={user.uuid}
-								type="promote"
-								description="This action will promote the user to admin. They'll be able to do everything you can do. Be careful before promoting anyone to understand the risks."
-							>
-								Promote
 							</UserActionsButton>
 						</DropdownMenuItem>
 					)}

@@ -1,5 +1,10 @@
-import type { Album } from '@/types';
+import type { components } from '@/util/openapiSchema';
 import { atom } from 'jotai';
 
+export type FolderWithFilesCountAndCoverImage = components['schemas']['Folder'] & {
+	coverImage: (components['schemas']['File'] & { fileMetadata: components['schemas']['FileMetadata'] | null }) | null;
+	filesCount: number;
+};
+
 export const isDialogOpenAtom = atom(false);
-export const selectedAlbumAtom = atom<Album | null>(null);
+export const selectedAlbumAtom = atom<FolderWithFilesCountAndCoverImage | null>(null);

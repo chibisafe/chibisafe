@@ -1,4 +1,5 @@
 import type * as React from 'react';
+import type { components } from './util/openapiSchema';
 
 export interface NavItem {
 	disabled?: boolean;
@@ -13,10 +14,10 @@ export interface NavigationProps {
 	items?: NavItem[];
 }
 
-export interface User {
-	admin?: boolean;
-	name: string;
-}
+// export interface User {
+// 	admin?: boolean;
+// 	name: string;
+// }
 
 export interface Role {
 	name: string;
@@ -287,3 +288,10 @@ export interface MetadataBuilder {
 		title?: string;
 	};
 }
+
+// NEW TYPES
+export type UserWithRolesAndQuota = components['schemas']['UserWithRoles'] & {
+	filesCount: number;
+	storageQuota: number;
+	storageQuotaUsed: number;
+};

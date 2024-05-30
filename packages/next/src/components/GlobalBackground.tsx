@@ -1,14 +1,7 @@
-import request from '@/lib/request';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const GlobalBackground = async () => {
-	const { data, error } = await request.get({
-		url: 'v1/settings',
-		options: {
-			next: {
-				tags: ['settings']
-			}
-		}
-	});
+	const { data, error } = await openAPIClient.GET('/api/v1/settings/');
 
 	if (error) {
 		return null;

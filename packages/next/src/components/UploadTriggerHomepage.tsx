@@ -3,19 +3,20 @@ import { UploadCloudIcon } from 'lucide-react';
 import { UploadTrigger } from './UploadTrigger';
 import { Button } from './ui/react-aria-button';
 import { formatBytes } from '@/lib/file';
-import type { Album } from '@/types';
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { useAtomValue } from 'jotai';
 import { buttonVariants } from '@/styles/button';
 import { cn } from '@/lib/utils';
 import { Combobox } from './Combobox';
 import { useEffect, useState } from 'react';
-import request from '@/lib/request';
 import { toast } from 'sonner';
+import type { SettingsType } from '@/lib/atoms/settings';
+import { openAPIClient } from '@/lib/clientFetch';
+import type { FolderWithFilesCountAndCoverImage } from '@/lib/atoms/albumSettingsDialog';
 
-export const UploadTriggerHomepage = ({ settings }: { readonly settings: any }) => {
+export const UploadTriggerHomepage = ({ settings }: { readonly settings: SettingsType }) => {
 	const currentUser = useAtomValue(currentUserAtom);
-	const [albums, setAlbums] = useState<Album[]>([]);
+	const [albums, setAlbums] = useState<FolderWithFilesCountAndCoverImage[]>([]);
 	const [isDisabled, setIsDisabled] = useState(true);
 	const [selectedAlbum, setSelectedAlbum] = useState<string | null>(null);
 
@@ -28,17 +29,16 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: any }) 
 		}
 
 		const fetchAlbums = async () => {
-			const { data, error } = await request.get({
-				url: 'v1/folders',
-				query: { limit: 9999 },
-				options: {
-					next: {
-						tags: ['albums']
+			const { data, error } = await openAPIClient.GET('/api/v1/folders/', {
+				params: {
+					query: {
+						limit: 9999
 					}
 				}
 			});
+
 			if (error) {
-				toast.error(error);
+				toast.error(error.message);
 				return;
 			}
 

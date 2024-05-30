@@ -27,6 +27,7 @@ import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { useServerAction } from '@/hooks/useServerAction';
 import { useQueryClient } from '@tanstack/react-query';
+import { ENV } from '@/util/env';
 
 export const FileDialogToolbar = ({
 	file,
@@ -53,7 +54,7 @@ export const FileDialogToolbar = ({
 
 			<Tooltip content="Open in new tab">
 				<a
-					href={`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`}
+					href={`${ENV.BASE_API_URL}/${file.filename}`}
 					target="_blank"
 					rel="noopener noreferrer"
 					className={buttonVariants({ variant: 'ghost', size: 'icon' })}
@@ -66,7 +67,7 @@ export const FileDialogToolbar = ({
 				<Button
 					size={'icon'}
 					variant={'ghost'}
-					onClick={() => void copy(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${file.filename}`)}
+					onClick={() => void copy(`${ENV.BASE_API_URL}/${file.filename}`)}
 				>
 					<LinkIcon className="h-5 w-5" />
 				</Button>

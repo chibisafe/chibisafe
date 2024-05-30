@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import type { Album as AlbumType } from '@/types';
 import { useSetAtom } from 'jotai';
 
+import type { FolderWithFilesCountAndCoverImage } from '@/lib/atoms/albumSettingsDialog';
 import { isDialogOpenAtom, selectedAlbumAtom } from '@/lib/atoms/albumSettingsDialog';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,13 +12,13 @@ import { AlbumDropZone } from './AlbumDropzone';
 import { albumDisablePointerEventAtom } from '@/lib/atoms/dropzone';
 import { buttonVariants } from '@/styles/button';
 
-export const Album = ({ album }: { readonly album: AlbumType }) => {
+export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverImage }) => {
 	const selectedAlbum = useSetAtom(selectedAlbumAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const setAlbumDisablePointerEvent = useSetAtom(albumDisablePointerEventAtom);
 
 	const setSelectedAlbum = useCallback(
-		(album: AlbumType) => {
+		(album: FolderWithFilesCountAndCoverImage) => {
 			selectedAlbum(album);
 			setIsDialogOpen(true);
 		},

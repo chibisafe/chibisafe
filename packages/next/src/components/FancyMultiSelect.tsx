@@ -31,6 +31,7 @@ export function FancyMultiSelect({
 	const [inputValue, setInputValue] = useState('');
 
 	useEffect(() => {
+		if (!initialSelected.length) return;
 		setSelected(options.filter(option => initialSelected.includes(option.value)));
 	}, [options, initialSelected]);
 

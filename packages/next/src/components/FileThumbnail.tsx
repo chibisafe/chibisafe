@@ -1,9 +1,11 @@
 'use client';
 
+import type { FileWithFileMetadataAndIndex } from '@/lib/atoms/fileDialog';
 import { selectedFileAtom, isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { isFileImage, isFileVideo, isFileAudio, isFilePDF } from '@/lib/file';
 import { cn } from '@/lib/utils';
-import type { FilePropsType, FileWithIndex } from '@/types';
+import type { FilePropsType } from '@/types';
+import { ENV } from '@/util/env';
 import { useSetAtom } from 'jotai';
 import { FileWarning, Video, FileAudio, FileText, FileIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -15,7 +17,7 @@ const ComponentType = ({
 	file,
 	type
 }: PropsWithChildren<{
-	readonly file?: FileWithIndex;
+	readonly file?: FileWithFileMetadataAndIndex;
 	readonly isTableView?: boolean;
 	readonly type: FilePropsType;
 }>) => {
@@ -51,7 +53,7 @@ export const FileThumbnail = ({
 	isTableView = false,
 	type
 }: {
-	readonly file: FileWithIndex;
+	readonly file: FileWithFileMetadataAndIndex;
 	readonly hoveredFiles?: string[];
 	readonly isTableView?: boolean;
 	readonly type: FilePropsType;
@@ -62,13 +64,13 @@ export const FileThumbnail = ({
 		<div className={cn('flex flex-col justify-center items-center', isTableView ? '' : 'h-40 bg-dark-90')}>
 			<FileWarning className="text-red-500 w-16 h-16" />
 		</div>
-	) : (isFileImage(file) && !error) || (isFileVideo(file) && file.fileMetadata.thumbnailWidth && !error) ? (
+	) : (isFileImage(file) && !error) || (isFileVideo(file) && file.fileMetadata?.thumbnailWidth && !error) ? (
 		<ComponentType isTableView={isTableView} file={file} type={type}>
 			<Image
 				unoptimized
-				src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/thumbnails/${file.identifier}.webp`}
-				width={file.fileMetadata.thumbnailWidth ?? 0}
-				height={file.fileMetadata.thumbnailHeight ?? 0}
+				src={`${ENV.BASE_API_URL}/thumbnails/${file.identifier}.webp`}
+				width={file.fileMetadata?.thumbnailWidth ?? 0}
+				height={file.fileMetadata?.thumbnailHeight ?? 0}
 				className="cursor-pointer w-full sm:min-w-[160px] min-w-0"
 				alt={file.identifier}
 				onError={() => setError(true)}
@@ -81,10 +83,7 @@ export const FileThumbnail = ({
 					loop
 					muted
 				>
-					<source
-						src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/thumbnails/${file.identifier}.webm`}
-						type="video/webm"
-					/>
+					<source src={`${ENV.BASE_API_URL}/thumbnails/${file.identifier}.webm`} type="video/webm" />
 				</video>
 			)}
 
@@ -101,7 +100,7 @@ export const FileThumbnail = ({
 				{isFileAudio(file) && <FileAudio className=" w-16 h-16" />}
 				{isFilePDF(file) && <FileText className=" w-16 h-16" />}
 				{!isFileAudio(file) && !isFilePDF(file) && <FileIcon className=" w-16 h-16" />}
-				{file.fileMetadata.originalFilename ? (
+				{file.fileMetadata?.originalFilename ? (
 					<span className={cn('break-all w-[160px]', isTableView ? '' : 'mt-4 text-lg text-center')}>
 						{file.fileMetadata.originalFilename.length > 60
 							? `${file.fileMetadata.originalFilename.slice(0, 40)}...`

@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import type { ColumnFiltersState, RowData, SortingState, VisibilityState } from '@tanstack/react-table';
+import type { ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
 import {
 	createColumnHelper,
 	getCoreRowModel,
@@ -18,13 +18,6 @@ import { FileInformationDialogActions } from '@/components/FileInformationDialog
 import { formatBytes } from '@/lib/file';
 import { FileThumbnail } from '@/components/FileThumbnail';
 import Link from 'next/link';
-
-declare module '@tanstack/table-core' {
-	interface TableMeta<TData extends RowData> {
-		isAdmin?: boolean;
-		type?: FilePropsType;
-	}
-}
 
 const columnHelper = createColumnHelper<FileWithIndex>();
 const columns = [

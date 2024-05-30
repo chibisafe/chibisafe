@@ -17,7 +17,8 @@
 		"preview": "next build && next start",
 		"typecheck": "tsc --noEmit",
 		"format:write": "prettier --write \"**/*.{ts,tsx,mdx}\"",
-		"format:check": "prettier --check \"**/*.{ts,tsx,mdx}\""
+		"format:check": "prettier --check \"**/*.{ts,tsx,mdx}\"",
+		"build:openapi": "openapi-typescript http://localhost:3001/swagger/json --output=src/util/openapiSchema.ts --array-length --empty-objects-unknown --export-type --default-non-nullable false"
 	},
 	"dependencies": {
 		"@chibisafe/uploader-client": "^1.0.12",
@@ -59,6 +60,7 @@
 		"media-chrome": "^2.2.5",
 		"next": "14.3.0-canary.33",
 		"next-themes": "^0.3.0",
+		"openapi-fetch": "0.9.7",
 		"p-queue": "^8.0.1",
 		"react": "^18.2.0",
 		"react-aria-components": "^1.1.1",
@@ -93,6 +95,7 @@
 		"eslint": "^8.57.0",
 		"eslint-config-neon": "^0.1.62",
 		"next-mdx-remote": "^4.4.1",
+		"openapi-typescript": "7.0.0-rc.0",
 		"postcss": "^8.4.38",
 		"prettier": "^3.2.5",
 		"remark-frontmatter": "^5.0.0",

@@ -3,9 +3,10 @@
 
 import type { PropsWithChildren } from 'react';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
-import type { File, FilePropsType } from '@/types';
+import type { FilePropsType } from '@/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
+import type { FileWithFileMetadata } from '@/lib/atoms/fileDialog';
 import { currentTypeAtom, allFilesAtom } from '@/lib/atoms/fileDialog';
 import { useUploadsQuery } from '@/hooks/useUploadsQuery';
 import { FilesTable } from './tables/files-table/FilesTable';
@@ -138,7 +139,7 @@ export function FilesWrapper({
 	albumUuid
 }: {
 	readonly albumUuid?: string | undefined;
-	readonly files?: File[] | undefined;
+	readonly files?: FileWithFileMetadata[] | undefined;
 	readonly total?: number | undefined;
 	readonly type: FilePropsType;
 }) {

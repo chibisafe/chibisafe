@@ -9,36 +9,31 @@ import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { buttonVariants } from '@/styles/button';
-import request from '@/lib/request';
 import { toast } from 'sonner';
+import { openAPIClient } from '@/lib/clientFetch';
 
 export const LoginForm = () => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const setCurrentUser = useSetAtom(currentUserAtom);
 
-	async function onSubmit(data: FormData) {
+	async function onSubmit(form: FormData) {
 		setIsLoading(true);
 
 		try {
-			const {
-				data: response,
-				error,
-				status
-			} = await request.post({
-				url: 'v1/auth/login',
+			const { data, error } = await openAPIClient.POST('/api/v1/auth/login', {
 				body: {
-					username: data.get('username') as string,
-					password: data.get('password') as string
+					username: form.get('username') as string,
+					password: form.get('password') as string
 				}
 			});
 
-			if (error && status === 401) {
-				toast.error(error);
+			if (error) {
+				toast.error(error.message);
 				return;
 			}
 
-			setCurrentUser(response.user);
+			setCurrentUser(data.user);
 
 			router.push('/dashboard');
 		} catch (error: any) {

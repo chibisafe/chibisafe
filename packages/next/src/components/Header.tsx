@@ -6,17 +6,10 @@ import { PatreonLogo } from '@/components/svg/PatreonLogo';
 import { UploadProgress } from '@/components/UploadProgress';
 import { buttonVariants } from '@/styles/button';
 import { ChibisafeLogo } from './svg/ChibisafeLogo';
-import request from '@/lib/request';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const Header = async () => {
-	const { data } = await request.get({
-		url: 'v1/settings',
-		options: {
-			next: {
-				tags: ['settings']
-			}
-		}
-	});
+	const { data } = await openAPIClient.GET('/api/v1/settings/');
 
 	return (
 		<header className="container z-40">
