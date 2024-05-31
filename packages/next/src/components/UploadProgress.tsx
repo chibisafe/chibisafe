@@ -59,7 +59,8 @@ export const UploadProgress = () => {
 			setStatus('uploading');
 			setButtonText(`Uploading ${filesUploading} file${filesUploading === 1 ? '' : 's'}`);
 			setTotalProgress(
-				// TODO: See if we add back the error status
+				// TODO: The logic here is wrong, it should be the sum of all uploads progress divided by the number of uploads
+				// but also filtering the ones that ended?
 				// .filter(file => file.status !== 'error')
 				uploads.reduce((acc, file) => acc + file.percentComplete, 0) / uploads.length
 			);

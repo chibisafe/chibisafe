@@ -17,16 +17,16 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
-	const publicOnly = searchParams.publicOnly ?? false;
+	const anonymous = searchParams.publicOnly ?? false;
 
-	// TODO: Implement admin header once the API supports it
-	// TODO: Implement publicOnly once the API supports it
 	const { data, error, response } = await openAPIClient.GET('/api/v1/files/', {
 		params: {
 			query: {
 				offset: currentPage - 1,
 				limit: perPage,
-				search
+				search,
+				admin: true,
+				anonymous
 			}
 		}
 	});
