@@ -9,7 +9,12 @@ export const GlobalAdminNotice = () => {
 	const settings = useAtomValue(settingsAtom);
 	const currentUser = useAtomValue(currentUserAtom);
 
-	if (currentUser?.permissions.canManageSettings && (!settings?.siteUrl.value || !settings?.siteUploadsUrl?.value)) {
+	if (
+		currentUser?.permissions.canManageSettings &&
+		(!settings?.siteUrl.value ||
+			settings.siteUrl.value === 'https://your-domain.com' ||
+			!settings?.siteUploadsUrl?.value)
+	) {
 		return (
 			<div className="bg-yellow-700 text-white p-2 text-center text-sm">
 				Files and thumbnails will be broken until you add your full domain in{' '}
