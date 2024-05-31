@@ -26,22 +26,23 @@ export const deleteAlbum = async (uuid: string) => {
 };
 
 export const deleteAlbumAndFiles = async (uuid: string) => {
-	// try {
-	// 	const { error } = await request.delete({
-	// 		url: `album/${uuid}/purge`,
-	// 		headers: {
-	// 			authorization: `Bearer ${getToken()}`
-	// 		}
-	// 	});
-	// 	if (error) return { message: error, type: MessageType.Error };
-	// 	revalidateTag('files');
-	// 	revalidateTag('albums');
-	// 	return { message: 'Album and all files deleted', type: MessageType.Success };
-	// } catch (error: any) {
-	// 	return { message: error, type: MessageType.Error };
-	// }
+	try {
+		const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/purge/', {
+			params: {
+				path: {
+					uuid
+				}
+			}
+		});
 
-	return { message: 'Not implemented yet', type: MessageType.Error };
+		if (error) return { message: error.message, type: MessageType.Error };
+
+		revalidateTag('files');
+		revalidateTag('albums');
+		return { message: 'Album purged', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
 };
 
 export const deleteLink = async (shareUuid: string, albumUuid: string) => {
