@@ -63,7 +63,6 @@ const SiteSettingsSchema = z.object({
 	siteMinimalisticUi: z.boolean(),
 	registrationEnabled: z.boolean(),
 	anonymousUploadsEnabled: z.boolean(),
-	urlShorteningEnabled: z.boolean(),
 	thumbnailGenerationEnabled: z.boolean(),
 	secret: z.string().min(1, { message: 'Required' }),
 	uploadChunkSize: z.coerce.number(),

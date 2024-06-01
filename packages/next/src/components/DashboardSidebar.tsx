@@ -1,20 +1,7 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import {
-	BarChart3,
-	Code,
-	FileUp,
-	Files,
-	Key,
-	Library,
-	Network,
-	Settings2,
-	Tags,
-	UserPlus,
-	Users,
-	Link
-} from 'lucide-react';
+import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags, UserPlus, Users } from 'lucide-react';
 
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
@@ -22,11 +9,9 @@ import { saveAs } from 'file-saver';
 import request from '@/lib/request';
 import type { UpdateCheck } from '@/types';
 import { useEffect, useState } from 'react';
-import { settingsAtom } from '@/lib/atoms/settings';
 
 export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 	const currentUser = useAtomValue(currentUserAtom);
-	const currentSettings = useAtomValue(settingsAtom);
 	const [update, setUpdate] = useState<UpdateCheck | undefined>(undefined);
 
 	useEffect(() => {
@@ -81,9 +66,6 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 				<DashboardSidebarItem href="/dashboard/albums" name="Albums" Icon={Library} />
 				<DashboardSidebarItem href="/dashboard/tags" name="Tags" Icon={Tags} />
 				<DashboardSidebarItem href="/dashboard/snippets" name="Snippets" Icon={Code} />
-				{currentSettings?.urlShorteningEnabled ? (
-					<DashboardSidebarItem href="/dashboard/links" name="Short URLs" Icon={Link} />
-				) : null}
 			</nav>
 			<nav className="grid items-start gap-1 mt-4" onClick={() => onClick?.()}>
 				<h3 className="text-muted-foreground text-sm pointer-events-none">Account</h3>
@@ -95,7 +77,6 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />
 					<DashboardSidebarItem href="/dashboard/admin/users" name="Users" Icon={Users} />
 					<DashboardSidebarItem href="/dashboard/admin/files" name="All files" Icon={Files} />
-					<DashboardSidebarItem href="/dashboard/admin/links" name="All short URLs" Icon={Link} />
 					<DashboardSidebarItem href="/dashboard/admin/quarantine" name="Quarantined files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/ip" name="Banned IPs" Icon={Network} />
 					<DashboardSidebarItem href="/dashboard/admin/invites" name="Invites" Icon={UserPlus} />
