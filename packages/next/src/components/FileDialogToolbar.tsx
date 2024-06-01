@@ -42,7 +42,7 @@ export const FileDialogToolbar = ({
 			<input type="text" className={isMobile ? 'hidden' : 'opacity-0 pointer-events-none select-none w-0'} />
 			<Tooltip content="Download">
 				<a
-					href={`/api/file/${file.uuid}/download`}
+					href={`${ENV.BASE_API_URL}/api/v1/files/${file.uuid}/download`}
 					rel="noopener noreferrer"
 					className={buttonVariants({ variant: 'ghost', size: 'icon' })}
 				>

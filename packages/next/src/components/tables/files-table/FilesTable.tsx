@@ -18,6 +18,7 @@ import { FileInformationDialogActions } from '@/components/FileInformationDialog
 import { formatBytes } from '@/lib/file';
 import { FileThumbnail } from '@/components/FileThumbnail';
 import Link from 'next/link';
+import { ENV } from '@/util/env';
 
 const columnHelper = createColumnHelper<FileWithIndex>();
 const columns = [
@@ -42,7 +43,7 @@ const columns = [
 		header: 'Original',
 		cell: props => (
 			<a
-				href={`/api/file/${props.row.original.uuid}/download`}
+				href={`${ENV.BASE_API_URL}/api/v1/files/${props.row.original.uuid}/download`}
 				className="text-blue-500 underline inline-flex items-center break-all"
 			>
 				{props.row.original.original} <ArrowDownToLineIcon className="w-4 h-4 ml-1" />

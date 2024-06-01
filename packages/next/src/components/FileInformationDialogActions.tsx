@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { useServerAction } from '@/hooks/useServerAction';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { useQueryClient } from '@tanstack/react-query';
+import { ENV } from '@/util/env';
 
 const AllowFileButton = ({
 	uuid,
@@ -180,7 +181,7 @@ export function FileInformationDialogActions({
 					</a>
 
 					<a
-						href={`/api/file/${file.uuid}/download`}
+						href={`${ENV.BASE_API_URL}/api/v1/files/${file.uuid}/download`}
 						rel="noopener noreferrer"
 						className={buttonVariants({ variant: 'outline', className: 'w-full' })}
 					>
@@ -216,7 +217,7 @@ export function FileInformationDialogActions({
 						</a>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
-						<a href={`/api/file/${file.uuid}/download`} rel="noopener noreferrer">
+						<a href={`${ENV.BASE_API_URL}/api/v1/files/${file.uuid}/download`} rel="noopener noreferrer">
 							Download
 						</a>
 					</DropdownMenuItem>
