@@ -31,17 +31,10 @@ export const RegisterForm = ({ code }: { readonly code?: string }) => {
 			const { error } = await openAPIClient.POST('/api/v1/auth/register', {
 				body: {
 					username: form.get('username') as string,
-					password: form.get('password') as string
+					password: form.get('password') as string,
+					...(code ? { inviteCode: code } : null)
 				}
 			});
-
-			// TODO: Implement code thing when API supports it
-			// if (code) {
-			// 	// @ts-expect-error headers dont exist
-			// 	obj.headers = {
-			// 		invite: code
-			// 	};
-			// }
 
 			if (error) {
 				toast.error(error.message);

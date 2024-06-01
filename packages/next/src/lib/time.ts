@@ -12,3 +12,7 @@ export const getDate = (date: string) => {
 	if (!date?.length) return 'N/A';
 	return format(date, { date: 'medium', time: 'short' });
 };
+
+export const isValidDate = (date: Record<string, unknown> | string) => {
+	return new Date(date as string).getTime() > 0;
+};

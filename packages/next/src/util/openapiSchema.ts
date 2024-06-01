@@ -180,6 +180,38 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/invites/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1Invites"];
+        put?: never;
+        post: operations["postApiV1Invites"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ip-bans/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1Ip-bans"];
+        put?: never;
+        post: operations["postApiV1Ip-bans"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/roles/": {
         parameters: {
             query?: never;
@@ -532,6 +564,70 @@ export type paths = {
         patch: operations["patchApiV1RolesByUuidStorage"];
         trace?: never;
     };
+    "/api/v1/ip-bans/{uuid}/files/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1Ip-bansByUuidFiles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ip-bans/{uuid}/purge/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1Ip-bansByUuidPurge"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ip-bans/{uuid}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1Ip-bansByUuid"];
+        put?: never;
+        post?: never;
+        delete: operations["deleteApiV1Ip-bansByUuid"];
+        options?: never;
+        head?: never;
+        patch: operations["patchApiV1Ip-bansByUuid"];
+        trace?: never;
+    };
+    "/api/v1/invites/{uuid}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1InvitesByUuid"];
+        put?: never;
+        post?: never;
+        delete: operations["deleteApiV1InvitesByUuid"];
+        options?: never;
+        head?: never;
+        patch: operations["patchApiV1InvitesByUuid"];
+        trace?: never;
+    };
     "/api/v1/folders/bulk-delete/": {
         parameters: {
             query?: never;
@@ -724,6 +820,22 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/files/{uuid}/quarantine/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1FilesByUuidQuarantine"];
+        delete: operations["deleteApiV1FilesByUuidQuarantine"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/files/{uuid}/": {
         parameters: {
             query?: never;
@@ -734,6 +846,38 @@ export type paths = {
         get: operations["getApiV1FilesByUuid"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/{uuid}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1FilesByUuidDownload"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/{uuid}/regenerate-thumbnail": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1FilesByUuidRegenerate-thumbnail"];
         delete?: never;
         options?: never;
         head?: never;
@@ -882,6 +1026,18 @@ export type components = {
                 name: string;
             }[];
         };
+        /** @description Invite */
+        UserInvite: {
+            /** @description UUID of the invite */
+            uuid: string;
+            /** @description Identifier of the invite */
+            identifier: string;
+            expiresAt: null | (Record<string, unknown> | string);
+            /** @description Timestamp of when the invite was created */
+            createdAt: Record<string, unknown> | string;
+            /** @description Timestamp of when the invite was last edited */
+            editedAt: Record<string, unknown> | string;
+        };
         /** @description Permissions of the role */
         RolePermissions: {
             /** @description Whether the user can upload files */
@@ -956,6 +1112,18 @@ export type components = {
                 canManageIPBans: boolean;
             };
         };
+        /** @description IP Ban */
+        IPBan: {
+            /** @description UUID of the IP ban */
+            uuid: string;
+            /** @description IP address */
+            ip: string;
+            reason: null | string;
+            /** @description Timestamp of when the IP ban was created */
+            createdAt: Record<string, unknown> | string;
+            /** @description Timestamp of when the IP ban was last edited */
+            editedAt: Record<string, unknown> | string;
+        };
         Settings: {
             /** @default {
              *       "type": "string",
@@ -964,7 +1132,7 @@ export type components = {
              *     } */
             siteName: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -976,7 +1144,7 @@ export type components = {
              *     } */
             siteUrl: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -988,7 +1156,7 @@ export type components = {
              *     } */
             siteUploadsUrl?: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: false;
@@ -1000,7 +1168,7 @@ export type components = {
              *     } */
             siteDescription: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -1020,7 +1188,7 @@ export type components = {
              *     } */
             siteKeywords: {
                 /** @constant */
-                type: "array";
+                type?: "array";
                 value: string[];
                 /** @constant */
                 public?: true;
@@ -1032,7 +1200,7 @@ export type components = {
              *     } */
             siteAuthor: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -1044,7 +1212,7 @@ export type components = {
              *     } */
             siteTheme: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -1056,7 +1224,7 @@ export type components = {
              *     } */
             siteLogoUrl: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -1068,7 +1236,7 @@ export type components = {
              *     } */
             siteBackgroundUrl: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: true;
@@ -1080,7 +1248,7 @@ export type components = {
              *     } */
             siteMinimalisticUi: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: true;
@@ -1092,7 +1260,7 @@ export type components = {
              *     } */
             registrationEnabled: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: true;
@@ -1104,7 +1272,7 @@ export type components = {
              *     } */
             anonymousUploadsEnabled: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: true;
@@ -1116,7 +1284,7 @@ export type components = {
              *     } */
             urlShorteningEnabled: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: true;
@@ -1128,7 +1296,7 @@ export type components = {
              *     } */
             thumbnailGenerationEnabled?: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: false;
@@ -1140,7 +1308,7 @@ export type components = {
              *     } */
             secret?: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string;
                 /** @constant */
                 public?: false;
@@ -1176,7 +1344,7 @@ export type components = {
              *     } */
             uploadDisallowedFileExtensions: {
                 /** @constant */
-                type: "string";
+                type?: "string";
                 value: string[];
                 /** @constant */
                 public?: true;
@@ -1188,7 +1356,7 @@ export type components = {
              *     } */
             uploadDisallowNoFileExtension: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: true;
@@ -1200,7 +1368,7 @@ export type components = {
              *     } */
             zippingEnabled?: {
                 /** @constant */
-                type: "boolean";
+                type?: "boolean";
                 value: boolean;
                 /** @constant */
                 public?: false;
@@ -1273,6 +1441,8 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @description Invite code */
+                    inviteCode?: string;
                     /** @description Username of the user */
                     username: string;
                     /** @description Password of the user */
@@ -1910,6 +2080,17 @@ export interface operations {
                                 hash: string;
                                 ip: null | string;
                             };
+                            quarantineFile: null | {
+                                /** @description UUID of the file */
+                                uuid: string;
+                                /** @description Identifier of the file */
+                                identifier: string;
+                                /** @description Filename of the file */
+                                filename: string;
+                                /** @description Date the file was created */
+                                createdAt: Record<string, unknown> | string;
+                                reason: null | string;
+                            };
                         }[];
                     };
                 };
@@ -2083,6 +2264,270 @@ export interface operations {
                         /** @description Date the folder was created */
                         createdAt: Record<string, unknown> | string;
                         /** @description Date the folder was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getApiV1Invites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for listing invites */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Number of invites
+                         * @default 0
+                         */
+                        count: number;
+                        /** @description List of invites */
+                        results: {
+                            /** @description UUID of the invite */
+                            uuid: string;
+                            /** @description Identifier of the invite */
+                            identifier: string;
+                            expiresAt: null | (Record<string, unknown> | string);
+                            /** @description Timestamp of when the invite was created */
+                            createdAt: Record<string, unknown> | string;
+                            /** @description Timestamp of when the invite was last edited */
+                            editedAt: Record<string, unknown> | string;
+                            user: null | {
+                                /** @description UUID of the user */
+                                uuid: string;
+                                /** @description Username of the user */
+                                username: string;
+                                /** @description Whether the user is enabled */
+                                enabled: boolean;
+                                /** @description Date the user was created */
+                                createdAt: Record<string, unknown> | string;
+                                /** @description Date the user was edited */
+                                editedAt: Record<string, unknown> | string;
+                            };
+                            invitee: null | {
+                                /** @description UUID of the user */
+                                uuid: string;
+                                /** @description Username of the user */
+                                username: string;
+                                /** @description Whether the user is enabled */
+                                enabled: boolean;
+                                /** @description Date the user was created */
+                                createdAt: Record<string, unknown> | string;
+                                /** @description Date the user was edited */
+                                editedAt: Record<string, unknown> | string;
+                            };
+                        }[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    postApiV1Invites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Timestamp of when the invite expires */
+                    expiresAt?: Record<string, unknown> | string;
+                };
+            };
+        };
+        responses: {
+            /** @description Invite */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the invite */
+                        uuid: string;
+                        /** @description Identifier of the invite */
+                        identifier: string;
+                        expiresAt: null | (Record<string, unknown> | string);
+                        /** @description Timestamp of when the invite was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the invite was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "getApiV1Ip-bans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for listing IP bans */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Number of IP bans
+                         * @default 0
+                         */
+                        count: number;
+                        /** @description List of IP bans */
+                        results: {
+                            /** @description UUID of the IP ban */
+                            uuid: string;
+                            /** @description IP address */
+                            ip: string;
+                            reason: null | string;
+                            /** @description Timestamp of when the IP ban was created */
+                            createdAt: Record<string, unknown> | string;
+                            /** @description Timestamp of when the IP ban was last edited */
+                            editedAt: Record<string, unknown> | string;
+                        }[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1Ip-bans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description IP address */
+                    ip: string;
+                    /** @description Reason for the IP ban */
+                    reason?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description IP Ban */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the IP ban */
+                        uuid: string;
+                        /** @description IP address */
+                        ip: string;
+                        reason: null | string;
+                        /** @description Timestamp of when the IP ban was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the IP ban was last edited */
                         editedAt: Record<string, unknown> | string;
                     };
                 };
@@ -2295,7 +2740,7 @@ export interface operations {
                          *     } */
                         siteName: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2307,7 +2752,7 @@ export interface operations {
                          *     } */
                         siteUrl: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2319,7 +2764,7 @@ export interface operations {
                          *     } */
                         siteUploadsUrl?: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: false;
@@ -2331,7 +2776,7 @@ export interface operations {
                          *     } */
                         siteDescription: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2351,7 +2796,7 @@ export interface operations {
                          *     } */
                         siteKeywords: {
                             /** @constant */
-                            type: "array";
+                            type?: "array";
                             value: string[];
                             /** @constant */
                             public?: true;
@@ -2363,7 +2808,7 @@ export interface operations {
                          *     } */
                         siteAuthor: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2375,7 +2820,7 @@ export interface operations {
                          *     } */
                         siteTheme: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2387,7 +2832,7 @@ export interface operations {
                          *     } */
                         siteLogoUrl: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2399,7 +2844,7 @@ export interface operations {
                          *     } */
                         siteBackgroundUrl: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: true;
@@ -2411,7 +2856,7 @@ export interface operations {
                          *     } */
                         siteMinimalisticUi: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: true;
@@ -2423,7 +2868,7 @@ export interface operations {
                          *     } */
                         registrationEnabled: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: true;
@@ -2435,7 +2880,7 @@ export interface operations {
                          *     } */
                         anonymousUploadsEnabled: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: true;
@@ -2447,7 +2892,7 @@ export interface operations {
                          *     } */
                         urlShorteningEnabled: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: true;
@@ -2459,7 +2904,7 @@ export interface operations {
                          *     } */
                         thumbnailGenerationEnabled?: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: false;
@@ -2471,7 +2916,7 @@ export interface operations {
                          *     } */
                         secret?: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string;
                             /** @constant */
                             public?: false;
@@ -2507,7 +2952,7 @@ export interface operations {
                          *     } */
                         uploadDisallowedFileExtensions: {
                             /** @constant */
-                            type: "string";
+                            type?: "string";
                             value: string[];
                             /** @constant */
                             public?: true;
@@ -2519,7 +2964,7 @@ export interface operations {
                          *     } */
                         uploadDisallowNoFileExtension: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: true;
@@ -2531,7 +2976,7 @@ export interface operations {
                          *     } */
                         zippingEnabled?: {
                             /** @constant */
-                            type: "boolean";
+                            type?: "boolean";
                             value: boolean;
                             /** @constant */
                             public?: false;
@@ -2623,105 +3068,105 @@ export interface operations {
                 "application/json": {
                     siteName?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteUrl?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteUploadsUrl?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: false;
                     };
                     siteDescription?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteKeywords?: {
                         /** @constant */
-                        type: "array";
+                        type?: "array";
                         value: string[];
                         /** @constant */
                         public?: true;
                     };
                     siteAuthor?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteTheme?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteLogoUrl?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteBackgroundUrl?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: true;
                     };
                     siteMinimalisticUi?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: true;
                     };
                     registrationEnabled?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: true;
                     };
                     anonymousUploadsEnabled?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: true;
                     };
                     urlShorteningEnabled?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: true;
                     };
                     thumbnailGenerationEnabled?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: false;
                     };
                     secret?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string;
                         /** @constant */
                         public?: false;
@@ -2742,21 +3187,21 @@ export interface operations {
                     };
                     uploadDisallowedFileExtensions?: {
                         /** @constant */
-                        type: "string";
+                        type?: "string";
                         value: string[];
                         /** @constant */
                         public?: true;
                     };
                     uploadDisallowNoFileExtension?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: true;
                     };
                     zippingEnabled?: {
                         /** @constant */
-                        type: "boolean";
+                        type?: "boolean";
                         value: boolean;
                         /** @constant */
                         public?: false;
@@ -3342,6 +3787,17 @@ export interface operations {
                                 /** @description Hash of the file */
                                 hash: string;
                                 ip: null | string;
+                            };
+                            quarantineFile: null | {
+                                /** @description UUID of the file */
+                                uuid: string;
+                                /** @description Identifier of the file */
+                                identifier: string;
+                                /** @description Filename of the file */
+                                filename: string;
+                                /** @description Date the file was created */
+                                createdAt: Record<string, unknown> | string;
+                                reason: null | string;
                             };
                         }[];
                         /** @description User */
@@ -4144,6 +4600,17 @@ export interface operations {
                                 /** @description Hash of the file */
                                 hash: string;
                                 ip: null | string;
+                            };
+                            quarantineFile: null | {
+                                /** @description UUID of the file */
+                                uuid: string;
+                                /** @description Identifier of the file */
+                                identifier: string;
+                                /** @description Filename of the file */
+                                filename: string;
+                                /** @description Date the file was created */
+                                createdAt: Record<string, unknown> | string;
+                                reason: null | string;
                             };
                         }[];
                     };
@@ -5083,6 +5550,557 @@ export interface operations {
             };
         };
     };
+    "getApiV1Ip-bansByUuidFiles": {
+        parameters: {
+            query?: {
+                /** @description Number of items to return */
+                limit?: string | number;
+                /** @description Number of items to skip */
+                offset?: string | number;
+                /** @description Search query to filter results */
+                search?: string;
+            };
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for listing files */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Number of files
+                         * @default 0
+                         */
+                        count: number;
+                        /** @description List of files */
+                        results: {
+                            /** @description UUID of the file */
+                            uuid: string;
+                            /** @description Identifier of the file */
+                            identifier: string;
+                            /** @description Filename of the file */
+                            filename: string;
+                            /** @description Date the file was created */
+                            createdAt: Record<string, unknown> | string;
+                            fileMetadata: null | {
+                                /** @description UUID of the file metadata */
+                                uuid: string;
+                                /** @description Original filename of the file */
+                                originalFilename: string;
+                                mimeType: null | string;
+                                /** @description Size of the file in bytes */
+                                size: number;
+                                originalWidth: null | number;
+                                originalHeight: null | number;
+                                thumbnailWidth: null | number;
+                                thumbnailHeight: null | number;
+                                /** @description Hash of the file */
+                                hash: string;
+                                ip: null | string;
+                            };
+                            quarantineFile: null | {
+                                /** @description UUID of the file */
+                                uuid: string;
+                                /** @description Identifier of the file */
+                                identifier: string;
+                                /** @description Filename of the file */
+                                filename: string;
+                                /** @description Date the file was created */
+                                createdAt: Record<string, unknown> | string;
+                                reason: null | string;
+                            };
+                        }[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1Ip-bansByUuidPurge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "getApiV1Ip-bansByUuid": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description IP Ban */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the IP ban */
+                        uuid: string;
+                        /** @description IP address */
+                        ip: string;
+                        reason: null | string;
+                        /** @description Timestamp of when the IP ban was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the IP ban was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "deleteApiV1Ip-bansByUuid": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "patchApiV1Ip-bansByUuid": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description IP address */
+                    ip?: string;
+                    /** @description Reason for the IP ban */
+                    reason?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description IP Ban */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the IP ban */
+                        uuid: string;
+                        /** @description IP address */
+                        ip: string;
+                        reason: null | string;
+                        /** @description Timestamp of when the IP ban was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the IP ban was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getApiV1InvitesByUuid: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for getting an invite */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the invite */
+                        uuid: string;
+                        /** @description Identifier of the invite */
+                        identifier: string;
+                        expiresAt: null | (Record<string, unknown> | string);
+                        /** @description Timestamp of when the invite was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the invite was last edited */
+                        editedAt: Record<string, unknown> | string;
+                        user: null | {
+                            /** @description UUID of the user */
+                            uuid: string;
+                            /** @description Username of the user */
+                            username: string;
+                            /** @description Whether the user is enabled */
+                            enabled: boolean;
+                            /** @description Date the user was created */
+                            createdAt: Record<string, unknown> | string;
+                            /** @description Date the user was edited */
+                            editedAt: Record<string, unknown> | string;
+                        };
+                        invitee: null | {
+                            /** @description UUID of the user */
+                            uuid: string;
+                            /** @description Username of the user */
+                            username: string;
+                            /** @description Whether the user is enabled */
+                            enabled: boolean;
+                            /** @description Date the user was created */
+                            createdAt: Record<string, unknown> | string;
+                            /** @description Date the user was edited */
+                            editedAt: Record<string, unknown> | string;
+                        };
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    deleteApiV1InvitesByUuid: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    none: {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    patchApiV1InvitesByUuid: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Timestamp of when the invite expires */
+                    expiresAt?: Record<string, unknown> | string;
+                };
+            };
+        };
+        responses: {
+            /** @description Invite */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the invite */
+                        uuid: string;
+                        /** @description Identifier of the invite */
+                        identifier: string;
+                        expiresAt: null | (Record<string, unknown> | string);
+                        /** @description Timestamp of when the invite was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Timestamp of when the invite was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     "postApiV1FoldersBulk-delete": {
         parameters: {
             query?: never;
@@ -5421,6 +6439,17 @@ export interface operations {
                                 /** @description Hash of the file */
                                 hash: string;
                                 ip: null | string;
+                            };
+                            quarantineFile: null | {
+                                /** @description UUID of the file */
+                                uuid: string;
+                                /** @description Identifier of the file */
+                                identifier: string;
+                                /** @description Filename of the file */
+                                filename: string;
+                                /** @description Date the file was created */
+                                createdAt: Record<string, unknown> | string;
+                                reason: null | string;
                             };
                         }[];
                     };
@@ -6220,6 +7249,128 @@ export interface operations {
             };
         };
     };
+    postApiV1FilesByUuidQuarantine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    reason?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description File */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the file */
+                        uuid: string;
+                        /** @description Identifier of the file */
+                        identifier: string;
+                        /** @description Filename of the file */
+                        filename: string;
+                        /** @description Date the file was created */
+                        createdAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    deleteApiV1FilesByUuidQuarantine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     getApiV1FilesByUuid: {
         parameters: {
             query?: never;
@@ -6284,6 +7435,17 @@ export interface operations {
                             megapixels: null | number;
                             fov: null | string;
                         };
+                        quarantineFile: null | {
+                            /** @description UUID of the file */
+                            uuid: string;
+                            /** @description Identifier of the file */
+                            identifier: string;
+                            /** @description Filename of the file */
+                            filename: string;
+                            /** @description Date the file was created */
+                            createdAt: Record<string, unknown> | string;
+                            reason: null | string;
+                        };
                         /** @description Tags the file belongs to */
                         tags: {
                             uuid: string;
@@ -6307,6 +7469,115 @@ export interface operations {
                         message: string;
                     };
                 };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getApiV1FilesByUuidDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1FilesByUuidRegenerate-thumbnail": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Unauthorized */
             401: {
