@@ -5,28 +5,27 @@ import { revalidateTag } from 'next/cache';
 import { openAPIClient } from '@/lib/serverFetch';
 
 export const regenerateThumbnails = async (uuids: string[]) => {
-	// try {
-	// 	const { error } = await request.post({
-	// 		url: 'files/thumbnail/regenerate',
-	// 		body: { files: uuids },
-	// 		headers: {
-	// 			authorization: `Bearer ${getToken()}`
-	// 		}
-	// 	});
-	// 	if (error) return { message: error, type: MessageType.Error };
-	// 	revalidateTag('files');
-	// 	return {
-	// 		message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} thumbnail${uuids.length > 1 ? 's' : ''} regenerated`,
-	// 		type: MessageType.Success
-	// 	};
-	// } catch (error: any) {
-	// 	return { message: error, type: MessageType.Error };
-	// }
-	return { message: 'Not implemented yet', type: MessageType.Error };
+	try {
+		await openAPIClient.POST('/api/v1/files/bulk-regenerate-thumbnails/', {
+			body: {
+				uuids
+			}
+		});
+
+		revalidateTag('files');
+		return {
+			message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} thumbnail${uuids.length > 1 ? 's' : ''} regenerated`,
+			type: MessageType.Success
+		};
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
 };
 
-export const deleteFiles = async (uuids: string[], type: string) => {
+export const deleteFiles = async (uuids: string[]) => {
 	try {
+		// If the user is admin it changes nothing, same endpoint.
+		// If the user is not admin it will only delete the files that the user owns.
 		await openAPIClient.POST('/api/v1/files/bulk-delete/', {
 			body: {
 				uuids
@@ -41,42 +40,37 @@ export const deleteFiles = async (uuids: string[], type: string) => {
 };
 
 export const quarantineFiles = async (uuids: string[]) => {
-	// try {
-	// 	const { error } = await request.post({
-	// 		url: 'admin/files/quarantine',
-	// 		body: { files: uuids },
-	// 		headers: {
-	// 			authorization: `Bearer ${getToken()}`
-	// 		}
-	// 	});
-	// 	if (error) return { message: error, type: MessageType.Error };
-	// 	revalidateTag('files');
-	// 	return {
-	// 		message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} quarantined`,
-	// 		type: MessageType.Success
-	// 	};
-	// } catch (error: any) {
-	// 	return { message: error, type: MessageType.Error };
-	// }
-	return { message: 'Not implemented yet', type: MessageType.Error };
+	try {
+		await openAPIClient.POST('/api/v1/files/bulk-quarantine', {
+			body: {
+				uuids
+			}
+		});
+
+		revalidateTag('files');
+		return {
+			message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} quarantined`,
+			type: MessageType.Success
+		};
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
 };
 
 export const unquarantineFiles = async (uuids: string[]) => {
-	// try {
-	// 	const { error } = await request.post({
-	// 		url: 'admin/files/allow',
-	// 		body: { files: uuids },
-	// 		headers: {
-	// 			authorization: `Bearer ${getToken()}`
-	// 		}
-	// 	});
+	try {
+		await openAPIClient.POST('/api/v1/files/bulk-unquarantine', {
+			body: {
+				uuids
+			}
+		});
 
-	// 	if (error) return { message: error, type: MessageType.Error };
-
-	// 	revalidateTag('files');
-	// 	return { message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} allowed`, type: MessageType.Success };
-	// } catch (error: any) {
-	// 	return { message: error, type: MessageType.Error };
-	// }
-	return { message: 'Not implemented yet', type: MessageType.Error };
+		revalidateTag('files');
+		return {
+			message: `${uuids.length} ${uuids.length > 1 ? 'files' : 'file'} unquarantined`,
+			type: MessageType.Success
+		};
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
 };

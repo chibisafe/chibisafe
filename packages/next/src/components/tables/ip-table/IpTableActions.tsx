@@ -14,7 +14,7 @@ import { IpActionsButton } from './IpActionsButton';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }>) {
+export function IpTableActions({ ip, uuid }: PropsWithChildren<{ readonly ip: string; readonly uuid: string }>) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -32,7 +32,7 @@ export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 						<IpActionsButton
-							ip={ip}
+							uuid={uuid}
 							type="unban"
 							description="This will let the affected IP interact with chibisafe services again. Are you sure?"
 						>
@@ -45,7 +45,7 @@ export function IpTableActions({ ip }: PropsWithChildren<{ readonly ip: string }
 						onSelect={e => e.preventDefault()}
 					>
 						<IpActionsButton
-							ip={ip}
+							uuid={uuid}
 							type="purge"
 							description="This action will delete ALL files uploaded by this IP. This action is not reversible."
 						>

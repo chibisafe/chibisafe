@@ -1,23 +1,24 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { banIp, purgeIp, unbanIp } from '@/actions/IpActions';
+import { purgeIp, unbanIp } from '@/actions/IpActions';
 import { useServerAction } from '@/hooks/useServerAction';
 import { useSetAtom } from 'jotai';
 import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
 
 export const IpActionsButton = ({
-	ip,
+	uuid,
 	type,
 	description,
 	children
-}: PropsWithChildren<{ readonly description: string; readonly ip: string; readonly type: string }>) => {
+}: PropsWithChildren<{
+	readonly description: string;
+	readonly type: string;
+	readonly uuid: string;
+}>) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	let actionToPerform;
 	switch (type) {
-		case 'ban':
-			actionToPerform = banIp;
-			break;
 		case 'unban':
 			actionToPerform = unbanIp;
 			break;
@@ -30,7 +31,7 @@ export const IpActionsButton = ({
 
 	const { formAction, isPending } = useServerAction({
 		action: actionToPerform,
-		identifier: ip
+		identifier: uuid
 	});
 
 	return (

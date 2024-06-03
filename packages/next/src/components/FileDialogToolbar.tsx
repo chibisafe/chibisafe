@@ -10,31 +10,26 @@ import {
 import { Tooltip } from './Tooltip';
 import { Button } from './ui/button';
 import { useEffect, type PropsWithChildren } from 'react';
-import { MessageType, type FilePropsType, type File } from '@/types';
+import { MessageType, type FilePropsType } from '@/types';
 import { useCopyToClipboard, useMediaQuery } from 'usehooks-ts';
 import { buttonVariants } from '@/styles/button';
-import {
-	allowFile,
-	deleteFile,
-	deleteFileAsAdmin,
-	quarantineFile,
-	regenerateThumbnail
-} from '@/actions/FileDialogActions';
 import { toast } from 'sonner';
 import { FileDialogInformation } from './FileDialogInformation';
 import { useSetAtom } from 'jotai';
 import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
+import type { FileWithFileMetadataAndIndex } from '@/lib/atoms/fileDialog';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { useServerAction } from '@/hooks/useServerAction';
 import { useQueryClient } from '@tanstack/react-query';
 import { ENV } from '@/util/env';
+import { deleteFiles, quarantineFiles, regenerateThumbnails, unquarantineFiles } from '@/actions/BulkActions';
 
 export const FileDialogToolbar = ({
 	file,
 	type
-}: PropsWithChildren<{ readonly file: File; readonly type: FilePropsType }>) => {
+}: PropsWithChildren<{ readonly file: FileWithFileMetadataAndIndex; readonly type: FilePropsType }>) => {
 	const [_, copy] = useCopyToClipboard();
-	const regenerateThumbailWithUuid = regenerateThumbnail.bind(null, file.uuid);
+	const regenerateThumbailWithUuid = regenerateThumbnails.bind(null, [file.uuid]);
 	const isMobile = useMediaQuery('(max-width: 768px)');
 
 	return (
@@ -88,7 +83,7 @@ export const FileDialogToolbar = ({
 						</Button>
 					</Tooltip>
 
-					<DeleteFileButton uuid={file.uuid} type={type} />
+					<DeleteFileButton uuid={file.uuid} />
 				</>
 			)}
 
@@ -107,8 +102,8 @@ const AllowFileButton = ({ uuid }: { readonly uuid: string }) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
-		action: allowFile,
-		identifier: uuid
+		action: unquarantineFiles,
+		identifier: [uuid]
 	});
 	const queryClient = useQueryClient();
 
@@ -143,8 +138,8 @@ const QuarantineFileButton = ({ uuid }: { readonly uuid: string }) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
-		action: quarantineFile,
-		identifier: uuid
+		action: quarantineFiles,
+		identifier: [uuid]
 	});
 	const queryClient = useQueryClient();
 
@@ -174,12 +169,12 @@ const QuarantineFileButton = ({ uuid }: { readonly uuid: string }) => {
 	);
 };
 
-const DeleteFileButton = ({ uuid, type }: { readonly type?: FilePropsType; readonly uuid: string }) => {
+const DeleteFileButton = ({ uuid }: { readonly uuid: string }) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
-		action: type === 'admin' ? deleteFileAsAdmin : deleteFile,
-		identifier: uuid
+		action: deleteFiles,
+		identifier: [uuid]
 	});
 	const queryClient = useQueryClient();
 

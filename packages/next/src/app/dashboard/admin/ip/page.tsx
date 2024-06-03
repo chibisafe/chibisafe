@@ -10,47 +10,33 @@ import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import type { PageQuery } from '@/types';
 import { BanIpDrawer } from '@/components/drawers/BanIpDrawer';
+import { openAPIClient } from '@/lib/serverFetch';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
 };
 
 export default async function DashboardAdminIPsPage({ searchParams }: { readonly searchParams: PageQuery }) {
-	const cookiesStore = cookies();
-	const token = cookiesStore.get('token')?.value;
-	if (!token) redirect('/');
-
-	const authorization = {
-		authorization: `Bearer ${token}`
-	};
-
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const {
-		data: response,
-		error,
-		status
-	} = await request.get({
-		url: `admin/ip/list`,
-		query: {
-			page: currentPage,
-			limit: perPage,
-			search
-		},
-		headers: {
-			...authorization
-		},
-		options: {
-			next: {
-				tags: ['ips']
+	const { data, error, response } = await openAPIClient.GET('/api/v1/ip-bans/', {
+		params: {
+			query: {
+				offset: currentPage - 1,
+				limit: perPage,
+				search
 			}
 		}
 	});
 
-	if (error && status === 401) {
+	if (response.status === 401) {
 		redirect('/login');
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
 	}
 
 	return (
@@ -68,9 +54,9 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 			</DashboardHeader>
 			<div className="px-2 w-full flex flex-col gap-4">
 				<Suspense>
-					<Pagination itemsTotal={response?.count ?? 0} />
+					<Pagination itemsTotal={data.count} />
 				</Suspense>
-				<IpTable data={response?.ips} />
+				<IpTable data={data.results} />
 			</div>
 		</>
 	);

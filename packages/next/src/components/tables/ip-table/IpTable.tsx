@@ -15,12 +15,9 @@ import { DataTable } from '../DataTable';
 import { IpTableActions } from './IpTableActions';
 import Link from 'next/link';
 import { getDate } from '@/lib/time';
+import type { components } from '@/util/openapiSchema';
 
-interface IP {
-	readonly createdAt: string;
-	readonly ip: string;
-	readonly reason?: string;
-}
+type IP = components['schemas']['IPBan'];
 
 const columnHelper = createColumnHelper<IP>();
 const columns = [
@@ -54,13 +51,13 @@ const columns = [
 		header: '',
 		cell: props => (
 			<div className="flex justify-end">
-				<IpTableActions ip={props.row.original.ip} />
+				<IpTableActions ip={props.row.original.ip} uuid={props.row.original.uuid} />
 			</div>
 		)
 	})
 ];
 
-export const IpTable = ({ data = [] }: PropsWithChildren<{ readonly data?: any | undefined }>) => {
+export const IpTable = ({ data = [] }: PropsWithChildren<{ readonly data: IP[] }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

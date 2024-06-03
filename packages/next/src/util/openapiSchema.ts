@@ -724,6 +724,38 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/folders/public/{shareIdentifier}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1FoldersPublicByShareIdentifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/folders/public/{shareIdentifier}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiV1FoldersPublicByShareIdentifierFiles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/folders/{uuid}/purge/": {
         parameters: {
             query?: never;
@@ -814,6 +846,54 @@ export type paths = {
         get?: never;
         put?: never;
         post: operations["postApiV1FilesBulk-delete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/bulk-quarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1FilesBulk-quarantine"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/bulk-unquarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1FilesBulk-unquarantine"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/bulk-regenerate-thumbnails/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiV1FilesBulk-regenerate-thumbnails"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2090,6 +2170,18 @@ export interface operations {
                                 /** @description Date the file was created */
                                 createdAt: Record<string, unknown> | string;
                                 reason: null | string;
+                            };
+                            user?: null | {
+                                /** @description UUID of the user */
+                                uuid: string;
+                                /** @description Username of the user */
+                                username: string;
+                                /** @description Whether the user is enabled */
+                                enabled: boolean;
+                                /** @description Date the user was created */
+                                createdAt: Record<string, unknown> | string;
+                                /** @description Date the user was edited */
+                                editedAt: Record<string, unknown> | string;
                             };
                         }[];
                     };
@@ -4612,6 +4704,18 @@ export interface operations {
                                 createdAt: Record<string, unknown> | string;
                                 reason: null | string;
                             };
+                            user?: null | {
+                                /** @description UUID of the user */
+                                uuid: string;
+                                /** @description Username of the user */
+                                username: string;
+                                /** @description Whether the user is enabled */
+                                enabled: boolean;
+                                /** @description Date the user was created */
+                                createdAt: Record<string, unknown> | string;
+                                /** @description Date the user was edited */
+                                editedAt: Record<string, unknown> | string;
+                            };
                         }[];
                     };
                 };
@@ -6451,6 +6555,18 @@ export interface operations {
                                 createdAt: Record<string, unknown> | string;
                                 reason: null | string;
                             };
+                            user?: null | {
+                                /** @description UUID of the user */
+                                uuid: string;
+                                /** @description Username of the user */
+                                username: string;
+                                /** @description Whether the user is enabled */
+                                enabled: boolean;
+                                /** @description Date the user was created */
+                                createdAt: Record<string, unknown> | string;
+                                /** @description Date the user was edited */
+                                editedAt: Record<string, unknown> | string;
+                            };
                         }[];
                     };
                 };
@@ -6572,6 +6688,168 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getApiV1FoldersPublicByShareIdentifier: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                shareIdentifier: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Folder */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description UUID of the folder */
+                        uuid: string;
+                        /** @description Name of the folder */
+                        name: string;
+                        description: null | string;
+                        /**
+                         * @description Whether the folder is NSFW
+                         * @default false
+                         */
+                        isNSFW: boolean;
+                        /** @description Date the folder was created */
+                        createdAt: Record<string, unknown> | string;
+                        /** @description Date the folder was last edited */
+                        editedAt: Record<string, unknown> | string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getApiV1FoldersPublicByShareIdentifierFiles: {
+        parameters: {
+            query?: {
+                /** @description Number of items to return */
+                limit?: string | number;
+                /** @description Number of items to skip */
+                offset?: string | number;
+                /** @description Search query to filter results */
+                search?: string;
+            };
+            header?: never;
+            path: {
+                shareIdentifier: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for listing files */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Number of files
+                         * @default 0
+                         */
+                        count: number;
+                        /** @description List of files */
+                        results: {
+                            /** @description UUID of the file */
+                            uuid: string;
+                            /** @description Identifier of the file */
+                            identifier: string;
+                            /** @description Filename of the file */
+                            filename: string;
+                            /** @description Date the file was created */
+                            createdAt: Record<string, unknown> | string;
+                            fileMetadata: null | {
+                                /** @description UUID of the file metadata */
+                                uuid: string;
+                                mimeType: null | string;
+                                /** @description Size of the file in bytes */
+                                size: number;
+                                originalWidth: null | number;
+                                originalHeight: null | number;
+                                thumbnailWidth: null | number;
+                                thumbnailHeight: null | number;
+                                /** @description Hash of the file */
+                                hash: string;
+                            };
+                        }[];
+                    };
+                };
             };
             /** @description Unauthorized */
             401: {
@@ -7203,6 +7481,179 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @description UUIDs of the files to delete */
+                    uuids: string[];
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1FilesBulk-quarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description UUIDs of the files to quarantine */
+                    uuids: string[];
+                    /** @description Reason for quarantining the files */
+                    reason?: string;
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1FilesBulk-unquarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description UUIDs of the files to unquarantine */
+                    uuids: string[];
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiV1FilesBulk-regenerate-thumbnails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description UUIDs of the files to regenerate thumbnails for */
                     uuids: string[];
                 };
             };

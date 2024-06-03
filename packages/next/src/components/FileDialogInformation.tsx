@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type PropsWithChildren } from 'react';
 
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import type { FilePropsType, File } from '@/types';
+import type { FilePropsType } from '@/types';
 import { ScrollArea } from './ui/scroll-area';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -17,6 +17,7 @@ import { Tooltip } from './Tooltip';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
 import { useSetAtom } from 'jotai';
+import type { FileWithFileMetadataAndIndex } from '@/lib/atoms/fileDialog';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { ENV } from '@/util/env';
 import { openAPIClient } from '@/lib/clientFetch';
@@ -64,7 +65,7 @@ type AlbumOrTag = {
 export const FileDialogInformation = ({
 	file,
 	type
-}: PropsWithChildren<{ readonly file: File; readonly type: FilePropsType }>) => {
+}: PropsWithChildren<{ readonly file: FileWithFileMetadataAndIndex; readonly type: FilePropsType }>) => {
 	const [tags, setTags] = useState<TagWithFilesCountAndCoverImage[]>([]);
 	const [fileTags, setFileTags] = useState<AlbumOrTag[]>([]);
 	const [albums, setAlbums] = useState<FolderWithFilesCountAndCoverImage[]>([]);
@@ -251,6 +252,7 @@ export const FileDialogInformation = ({
 							</h2>
 
 							{/* {file.user ? (
+								TODO: Not implemented yet
 								<>
 									<div>
 										<Label htmlFor="owner">
@@ -370,7 +372,7 @@ export const FileDialogInformation = ({
 
 					<div>
 						<Label htmlFor="original">Original</Label>
-						<Input value={file.fileMetadata.originalFilename} name="original" id="original" readOnly />
+						<Input value={file.fileMetadata?.originalFilename} name="original" id="original" readOnly />
 					</div>
 
 					<div>
@@ -378,7 +380,7 @@ export const FileDialogInformation = ({
 							IP{' '}
 							{type === 'admin' ? (
 								<Link
-									href={`/dashboard/admin/ip/${file.fileMetadata.ip}`}
+									href={`/dashboard/admin/ip/${file.fileMetadata?.ip}`}
 									className="text-blue-500 underline inline-flex items-center ml-2"
 									onClick={() => setModalOpen(false)}
 								>
@@ -386,7 +388,7 @@ export const FileDialogInformation = ({
 								</Link>
 							) : null}
 						</Label>
-						<Input value={file.fileMetadata.ip} name="ip" id="ip" readOnly />
+						<Input value={file.fileMetadata?.ip ?? 'No IP'} name="ip" id="ip" readOnly />
 					</div>
 
 					<div>
@@ -396,12 +398,12 @@ export const FileDialogInformation = ({
 
 					<div>
 						<Label htmlFor="size">Size</Label>
-						<Input value={formatBytes(file.fileMetadata.size)} name="size" id="size" readOnly />
+						<Input value={formatBytes(file.fileMetadata?.size ?? 0)} name="size" id="size" readOnly />
 					</div>
 
 					<div>
 						<Label htmlFor="hash">Hash</Label>
-						<Input value={file.fileMetadata.hash} name="hash" id="hash" readOnly />
+						<Input value={file.fileMetadata?.hash} name="hash" id="hash" readOnly />
 					</div>
 
 					<div>
