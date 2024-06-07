@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import request from '@/lib/request';
 import { IpTable } from '@/components/tables/ip-table/IpTable';
 import { BanIpDialog } from '@/components/dialogs/BanIpDialog';
 import { Suspense } from 'react';
