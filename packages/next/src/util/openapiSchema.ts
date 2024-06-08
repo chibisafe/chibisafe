@@ -2529,7 +2529,14 @@ export interface operations {
     };
     "getApiV1Ip-bans": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Number of items to return */
+                limit?: string | number;
+                /** @description Number of items to skip */
+                offset?: string | number;
+                /** @description Search query to filter results */
+                search?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -6735,7 +6742,6 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Folder */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6756,6 +6762,37 @@ export interface operations {
                         createdAt: Record<string, unknown> | string;
                         /** @description Date the folder was last edited */
                         editedAt: Record<string, unknown> | string;
+                        /**
+                         * @description Number of files in the folder
+                         * @default 0
+                         */
+                        filesCount: number;
+                        coverImage: null | {
+                            /** @description UUID of the file */
+                            uuid: string;
+                            /** @description Identifier of the file */
+                            identifier: string;
+                            /** @description Filename of the file */
+                            filename: string;
+                            /** @description Date the file was created */
+                            createdAt: Record<string, unknown> | string;
+                            fileMetadata: null | {
+                                /** @description UUID of the file metadata */
+                                uuid: string;
+                                /** @description Original filename of the file */
+                                originalFilename: string;
+                                mimeType: null | string;
+                                /** @description Size of the file in bytes */
+                                size: number;
+                                originalWidth: null | number;
+                                originalHeight: null | number;
+                                thumbnailWidth: null | number;
+                                thumbnailHeight: null | number;
+                                /** @description Hash of the file */
+                                hash: string;
+                                ip: null | string;
+                            };
+                        };
                     };
                 };
             };

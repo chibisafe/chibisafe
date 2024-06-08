@@ -9,6 +9,7 @@ import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 import { openAPIClient } from '@/lib/serverFetch';
+import { ENV } from '@/util/env';
 
 export async function generateMetadata({ params }: { readonly params: { identifier: string } }): Promise<Metadata> {
 	const { data, error } = await openAPIClient.GET('/api/v1/folders/public/{shareIdentifier}/', {
@@ -41,11 +42,10 @@ export async function generateMetadata({ params }: { readonly params: { identifi
 		meta.twitter.description = data.description;
 	}
 
-	// TODO: Add cover image oncce the API supports it
-	// if (!data.isNSFW && data.cover) {
-	// 	meta.openGraph.images = [data.cover];
-	// 	meta.twitter.images = [data.cover];
-	// }
+	if (!data.isNSFW && data.coverImage) {
+		meta.openGraph.images = [`${ENV.BASE_API_URL}/${data.coverImage.filename}`];
+		meta.twitter.images = [`${ENV.BASE_API_URL}/${data.coverImage.filename}`];
+	}
 
 	return meta;
 }
