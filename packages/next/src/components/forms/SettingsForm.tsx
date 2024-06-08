@@ -55,7 +55,7 @@ const SiteSettingsSchema = z.object({
 			}
 		),
 	siteDescription: z.string().optional(),
-	siteKeywords: z.string().optional(),
+	siteKeywords: z.array(z.string()).optional(),
 	siteAuthor: z.string().optional(),
 	siteTheme: z.string().optional(),
 	siteLogoUrl: z.string().optional(),
@@ -283,11 +283,7 @@ export const SettingsForm = ({ settings }: { readonly settings: components['sche
 		const parsedSettingsObject = Object.entries(data).map(([key, value]) => {
 			return {
 				[key]: {
-					// @ts-expect-error types
-					type: settings[key].type,
-					value,
-					// @ts-expect-error types
-					public: settings[key].public
+					value
 				}
 			};
 		});
