@@ -1,7 +1,20 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import { BarChart3, Code, FileUp, Files, Key, Library, Network, Settings2, Tags, UserPlus, Users } from 'lucide-react';
+import {
+	BarChart3,
+	Code,
+	FileUp,
+	Files,
+	Key,
+	Library,
+	Network,
+	Settings2,
+	ShieldCheck,
+	Tags,
+	UserPlus,
+	Users
+} from 'lucide-react';
 
 import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DashboardSidebarItem } from '@/components/DashboardSidebarItem';
@@ -76,6 +89,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 					<h3 className="text-muted-foreground text-sm pointer-events-none">Admin</h3>
 					<DashboardSidebarItem href="/dashboard/admin/settings" name="Settings" Icon={Settings2} />
 					<DashboardSidebarItem href="/dashboard/admin/users" name="Users" Icon={Users} />
+					<DashboardSidebarItem href="/dashboard/admin/roles" name="Roles" Icon={ShieldCheck} />
 					<DashboardSidebarItem href="/dashboard/admin/files" name="All files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/quarantine" name="Quarantined files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/ip" name="Banned IPs" Icon={Network} />

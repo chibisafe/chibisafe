@@ -19,9 +19,9 @@ export interface NavigationProps {
 // 	name: string;
 // }
 
-export interface Role {
-	name: string;
-}
+// export interface Role {
+// 	name: string;
+// }
 
 export interface LocalStorageUser {
 	apiKey: string;
@@ -294,4 +294,11 @@ export type UserWithRolesAndQuota = components['schemas']['UserWithRoles'] & {
 	filesCount: number;
 	storageQuota: number;
 	storageQuotaUsed: number;
+};
+
+export type Role = {
+	name: string;
+	permissions: components['schemas']['RolesPermissions']['permissions'];
+	storageQuota: components['schemas']['RolesPermissions']['storageQuota'];
+	uuid: string;
 };

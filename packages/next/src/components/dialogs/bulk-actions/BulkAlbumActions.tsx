@@ -297,7 +297,7 @@ export const BulkAlbumActions = ({
 																	{allAlbums.find(el => el.uuid === albumUuid)?.name}
 																</span>
 															</p>
-															<ul className="text-green-800">
+															<ul className="text-green-700">
 																{fileUuids.map(fileUuid => (
 																	<li key={fileUuid}>
 																		<a
@@ -332,7 +332,7 @@ export const BulkAlbumActions = ({
 																	{allAlbums.find(el => el.uuid === albumUuid)?.name}
 																</span>
 															</p>
-															<ul className="text-red-800">
+															<ul className="text-red-700">
 																{fileUuids.map(fileUuid => (
 																	<li key={fileUuid}>
 																		<a
