@@ -13,9 +13,9 @@ import {
 import { UserActionsButton } from './UserActionsButton';
 import { MoreHorizontalIcon } from 'lucide-react';
 import Link from 'next/link';
-import { SetQuotaDialog } from '@/components/dialogs/SetQuotaDialog';
-import { SetQuotaDrawer } from '@/components/drawers/SetQuotaDrawer';
 import type { UserWithRolesAndQuota } from '@/types';
+import { AssignRolesDialog } from '@/components/dialogs/roles/AssignRolesDialog';
+import { cn } from '@/lib/utils';
 
 export function UserTableActions({ user }: PropsWithChildren<{ readonly user: UserWithRolesAndQuota }>) {
 	return (
@@ -30,32 +30,16 @@ export function UserTableActions({ user }: PropsWithChildren<{ readonly user: Us
 					<DropdownMenuItem>
 						<Link href={`/dashboard/admin/users/${user.uuid}`}>View files</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem onSelect={e => e.preventDefault()}>
-						<SetQuotaDialog
-							initialValue={user.storageQuota}
+					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
+						<AssignRolesDialog
 							uuid={user.uuid}
-							className="hidden md:inline-flex"
-						/>
-						<SetQuotaDrawer
-							initialValue={user.storageQuota}
-							uuid={user.uuid}
-							className="inline-flex md:hidden"
+							roles={user.roles?.map(role => role.uuid) ?? []}
+							className={cn('h-full w-full flex px-2 py-1.5 cursor-default')}
 						/>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
-						<button
-							type="button"
-							className="w-full h-full flex px-2 py-1.5 cursor-default"
-							onClick={() => {
-								// TODO: Create dialog for roles
-							}}
-						>
-							Set roles
-						</button>
-					</DropdownMenuItem>
 					{user.enabled ? (
 						<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 							<UserActionsButton

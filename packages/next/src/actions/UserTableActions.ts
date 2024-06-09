@@ -2,8 +2,6 @@
 
 import { revalidateTag } from 'next/cache';
 import { MessageType } from '@/types';
-import request from '@/lib/request';
-import { getToken } from './utils';
 import { openAPIClient } from '@/lib/serverFetch';
 
 export const setQuota = async (_: any, form: FormData) => {

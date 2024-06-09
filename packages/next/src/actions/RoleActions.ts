@@ -84,3 +84,25 @@ export const setRolePermissions = async (uuid: string, permissions: string) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+export const assignRoles = async (uuid: string, roles: string[]) => {
+	try {
+		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}/roles/', {
+			params: {
+				path: {
+					uuid
+				}
+			},
+			body: {
+				uuids: roles
+			}
+		});
+
+		if (error) return { message: error.message, type: MessageType.Error };
+
+		revalidateTag('users');
+		return { message: 'Roles assigned', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};
