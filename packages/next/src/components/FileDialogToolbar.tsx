@@ -22,7 +22,8 @@ import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
 import { useServerAction } from '@/hooks/useServerAction';
 import { useQueryClient } from '@tanstack/react-query';
 import { ENV } from '@/util/env';
-import { deleteFiles, quarantineFiles, regenerateThumbnails, unquarantineFiles } from '@/actions/BulkActions';
+import { deleteFiles, regenerateThumbnails } from '@/actions/BulkActions';
+import { quarantineFile, unquarantineFile } from '@/actions/FileDialogActions';
 
 export const FileDialogToolbar = ({
 	file,
@@ -102,8 +103,8 @@ const AllowFileButton = ({ uuid }: { readonly uuid: string }) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
-		action: unquarantineFiles,
-		identifier: [uuid]
+		action: unquarantineFile,
+		identifier: uuid
 	});
 	const queryClient = useQueryClient();
 
@@ -138,8 +139,8 @@ const QuarantineFileButton = ({ uuid }: { readonly uuid: string }) => {
 	const setConfirmationDialog = useSetAtom(confirmationDialogAtom);
 	const setIsDialogOpen = useSetAtom(isDialogOpenAtom);
 	const { formAction, isPending, state } = useServerAction({
-		action: quarantineFiles,
-		identifier: [uuid]
+		action: quarantineFile,
+		identifier: uuid
 	});
 	const queryClient = useQueryClient();
 
