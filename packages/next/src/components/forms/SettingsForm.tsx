@@ -55,7 +55,7 @@ const SiteSettingsSchema = z.object({
 			}
 		),
 	siteDescription: z.string().optional(),
-	siteKeywords: z.array(z.string()).optional(),
+	siteKeywords: z.any().optional(),
 	siteAuthor: z.string().optional(),
 	siteTheme: z.string().optional(),
 	siteLogoUrl: z.string().optional(),
@@ -281,6 +281,14 @@ export const SettingsForm = ({ settings }: { readonly settings: components['sche
 
 	const onSubmit = async (data: FormValues) => {
 		const parsedSettingsObject = Object.entries(data).map(([key, value]) => {
+			if (key === 'siteKeywords') {
+				return {
+					[key]: {
+						value: String(value).split(',')
+					}
+				};
+			}
+
 			return {
 				[key]: {
 					value
