@@ -11,9 +11,7 @@ export const GlobalAdminNotice = () => {
 
 	if (
 		currentUser?.permissions.canManageSettings &&
-		(!settings?.siteUrl.value ||
-			settings.siteUrl.value === 'https://your-domain.com' ||
-			!settings?.siteUploadsUrl?.value)
+		(!settings?.siteUrl.value || settings.siteUrl.value === 'https://your-domain.com')
 	) {
 		return (
 			<div className="bg-yellow-700 text-white p-2 text-center text-sm">
