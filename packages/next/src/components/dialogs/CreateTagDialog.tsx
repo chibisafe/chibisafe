@@ -10,7 +10,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger
@@ -139,11 +138,11 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 					/>
 				</div>
 			</div>
-			<DialogFooter>
+			<div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
 				<Button type="submit" disabled={isPending}>
 					Create
 				</Button>
-			</DialogFooter>
+			</div>
 		</form>
 	);
 };

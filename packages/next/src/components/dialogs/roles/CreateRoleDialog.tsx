@@ -2,70 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { MessageType } from '@/types';
-import { Plus } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useServerAction } from '@/hooks/useServerAction';
-import { useMediaQuery } from 'usehooks-ts';
-import { Drawer, DrawerContent, DrawerTrigger } from '../../ui/drawer';
 import { createRole } from '@/actions/RoleActions';
+import { DialogContainer } from '@/components/dialogs/DialogContainer';
 
 export function CreateRoleDialog() {
 	const [open, setOpen] = useState(false);
-	const isMobile = useMediaQuery('(max-width: 768px)');
-
-	// UI
-	const buttonText = 'New role';
-	const formTitle = 'Create new role';
-	const formDescription =
-		'Use this form to create a new role and be able to later assign permissions and storage quotas to it.';
-
-	return isMobile ? (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerTrigger asChild>
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					{buttonText}
-				</Button>
-			</DrawerTrigger>
-			<DrawerContent>
-				<div className="grid gap-1.5 py-4 px-8 text-center sm:text-left">
-					<h2 className="text-lg font-semibold leading-none tracking-tight">{formTitle}</h2>
-					<p className="text-sm text-muted-foreground">{formDescription}</p>
-				</div>
-
-				<div className="p-8">
-					<Form onSuccess={() => setOpen(false)} />
-				</div>
-			</DrawerContent>
-		</Drawer>
-	) : (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button>
-					<Plus className="mr-2 h-4 w-4" />
-					{buttonText}
-				</Button>
-			</DialogTrigger>
-			<DialogContent className="w-11/12">
-				<DialogHeader>
-					<DialogTitle>{formTitle}</DialogTitle>
-					<DialogDescription>{formDescription}</DialogDescription>
-				</DialogHeader>
-				<Form onSuccess={() => setOpen(false)} />
-			</DialogContent>
-		</Dialog>
+	return (
+		<DialogContainer
+			button="New role"
+			title="Create new role"
+			description="Use this form to create a new role and be able to later assign permissions and storage quotas to it."
+			open={open}
+			onOpenChange={setOpen}
+		>
+			<Form onSuccess={() => setOpen(false)} />
+		</DialogContainer>
 	);
 }
 
@@ -101,11 +56,11 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 					/>
 				</div>
 			</div>
-			<DialogFooter>
+			<div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
 				<Button type="submit" disabled={isPending}>
 					Create
 				</Button>
-			</DialogFooter>
+			</div>
 		</form>
 	);
 };

@@ -33,7 +33,10 @@ export const changePassword = async (_: any, form: FormData) => {
 
 export const requestNewApiKey = async (_: any, __: FormData) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/users/me/regenerate-api-key');
+		const { error } = await openAPIClient.POST('/api/v1/users/me/regenerate-api-key', {
+			// @ts-expect-error schema is wrong, we need an empty body
+			body: {}
+		});
 
 		if (error) return { message: error.message, type: MessageType.Error };
 

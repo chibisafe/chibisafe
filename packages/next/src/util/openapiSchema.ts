@@ -1400,7 +1400,7 @@ export type components = {
              *     } */
             uploadChunkSize: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: true;
@@ -1412,7 +1412,7 @@ export type components = {
              *     } */
             uploadMaxSize: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: true;
@@ -1460,7 +1460,7 @@ export type components = {
              *     } */
             fileIdentifierLength?: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: false;
@@ -1472,7 +1472,7 @@ export type components = {
              *     } */
             folderIdentifierLength?: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: false;
@@ -1484,7 +1484,7 @@ export type components = {
              *     } */
             snippetIdentifierLength?: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: false;
@@ -1496,7 +1496,7 @@ export type components = {
              *     } */
             urlShorteningIdentifierLength?: {
                 /** @constant */
-                type: "number";
+                type?: "number";
                 value: number;
                 /** @constant */
                 public?: false;
@@ -3027,7 +3027,7 @@ export interface operations {
                          *     } */
                         uploadChunkSize: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: true;
@@ -3039,7 +3039,7 @@ export interface operations {
                          *     } */
                         uploadMaxSize: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: true;
@@ -3087,7 +3087,7 @@ export interface operations {
                          *     } */
                         fileIdentifierLength?: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: false;
@@ -3099,7 +3099,7 @@ export interface operations {
                          *     } */
                         folderIdentifierLength?: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: false;
@@ -3111,7 +3111,7 @@ export interface operations {
                          *     } */
                         snippetIdentifierLength?: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: false;
@@ -3123,7 +3123,7 @@ export interface operations {
                          *     } */
                         urlShorteningIdentifierLength?: {
                             /** @constant */
-                            type: "number";
+                            type?: "number";
                             value: number;
                             /** @constant */
                             public?: false;
@@ -3272,14 +3272,14 @@ export interface operations {
                     };
                     uploadChunkSize?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: true;
                     };
                     uploadMaxSize?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: true;
@@ -3307,28 +3307,28 @@ export interface operations {
                     };
                     fileIdentifierLength?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: false;
                     };
                     folderIdentifierLength?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: false;
                     };
                     snippetIdentifierLength?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: false;
                     };
                     urlShorteningIdentifierLength?: {
                         /** @constant */
-                        type: "number";
+                        type?: "number";
                         value: number;
                         /** @constant */
                         public?: false;
@@ -5442,7 +5442,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         message: string;
                     };
                 };
@@ -5453,7 +5453,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         message: string;
                     };
                 };
@@ -5464,7 +5464,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         message: string;
                     };
                 };
