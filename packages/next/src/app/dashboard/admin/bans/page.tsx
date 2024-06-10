@@ -2,16 +2,15 @@ import type { Metadata } from 'next';
 
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { redirect } from 'next/navigation';
-import { IpTable } from '@/components/tables/ip-table/IpTable';
+import { IpTable } from '@/components/tables/ip-bans-table/IpTable';
 import { BanIpDialog } from '@/components/dialogs/BanIpDialog';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import type { PageQuery } from '@/types';
-import { BanIpDrawer } from '@/components/drawers/BanIpDrawer';
 import { openAPIClient } from '@/lib/serverFetch';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin - IPs'
+	title: 'Dashboard - Admin - Banned IPs'
 };
 
 export default async function DashboardAdminIPsPage({ searchParams }: { readonly searchParams: PageQuery }) {
@@ -44,11 +43,10 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 				subtitle="Manage banned IPs"
 				breadcrumbs={[
 					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Banned IPs', url: '/dashboard/admin/ip' }
+					{ name: 'Banned IPs', url: '/dashboard/admin/bans' }
 				]}
 			>
-				<BanIpDialog className="hidden md:inline-flex" />
-				<BanIpDrawer className="md:hidden inline-flex" />
+				<BanIpDialog />
 			</DashboardHeader>
 			<div className="px-2 w-full flex flex-col gap-4">
 				<Suspense>

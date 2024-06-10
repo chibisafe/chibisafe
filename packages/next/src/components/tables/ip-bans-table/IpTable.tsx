@@ -25,7 +25,10 @@ const columns = [
 		id: 'ip',
 		header: 'IP',
 		cell: props => (
-			<Link href={`/dashboard/admin/ip/${props.row.original.ip}`} className="link inline-flex items-center ml-2">
+			<Link
+				href={`/dashboard/admin/bans/${props.row.original.uuid}`}
+				className="link inline-flex items-center ml-2"
+			>
 				{props.row.original.ip}
 			</Link>
 		)

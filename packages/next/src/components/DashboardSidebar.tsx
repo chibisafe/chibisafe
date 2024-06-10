@@ -92,7 +92,7 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 					<DashboardSidebarItem href="/dashboard/admin/roles" name="Roles" Icon={ShieldCheck} />
 					<DashboardSidebarItem href="/dashboard/admin/files" name="All files" Icon={Files} />
 					<DashboardSidebarItem href="/dashboard/admin/quarantine" name="Quarantined files" Icon={Files} />
-					<DashboardSidebarItem href="/dashboard/admin/ip" name="Banned IPs" Icon={Network} />
+					<DashboardSidebarItem href="/dashboard/admin/bans" name="Banned IPs" Icon={Network} />
 					<DashboardSidebarItem href="/dashboard/admin/invites" name="Invites" Icon={UserPlus} />
 					<DashboardSidebarItem href="/dashboard/admin/statistics" name="Statistics" Icon={BarChart3} />
 				</nav>
