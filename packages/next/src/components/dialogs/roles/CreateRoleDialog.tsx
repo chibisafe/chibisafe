@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useServerAction } from '@/hooks/useServerAction';
 import { createRole } from '@/actions/RoleActions';
 import { DialogContainer } from '@/components/dialogs/DialogContainer';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function CreateRoleDialog() {
 	const [open, setOpen] = useState(false);
@@ -26,6 +27,7 @@ export function CreateRoleDialog() {
 
 const Form = ({ onSuccess }: { onSuccess(): void }) => {
 	const [name, setName] = useState('');
+	const queryClient = useQueryClient();
 
 	const { formAction, isPending, state } = useServerAction({
 		action: createRole,
@@ -35,12 +37,13 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 	useEffect(() => {
 		if (state.type === MessageType.Success) {
 			onSuccess?.();
+			void queryClient.invalidateQueries({ queryKey: ['roles'] });
 		}
 
 		return () => {
 			setName('');
 		};
-	}, [onSuccess, state.type]);
+	}, [onSuccess, queryClient, state.type]);
 
 	return (
 		<form action={formAction}>

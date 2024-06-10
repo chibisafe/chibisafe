@@ -146,6 +146,11 @@ function FileItem({
 			/>
 
 			<FileThumbnail file={file} hoveredFiles={hoveredFiles} type={type} />
+			{file.isOwner ? null : (
+				<div className="absolute top-0 w-full flex items-center justify-center bg-[rgb(4_21_47_/_0.8)] p-1">
+					Guest
+				</div>
+			)}
 		</div>
 	);
 }

@@ -10,6 +10,8 @@ import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { openAPIClient } from '@/lib/clientFetch';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DialogContainer } from '@/components/dialogs/DialogContainer';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export function AssignRolesDialog({
 	className,
@@ -38,15 +40,8 @@ export function AssignRolesDialog({
 	);
 }
 
-type Role = {
-	name: string;
-	uuid: string;
-};
-
 const Form = ({ onSuccess, uuid, roles }: { onSuccess(): void; readonly roles: string[]; readonly uuid: string }) => {
-	const [ready, setReady] = useState(false);
 	const [selectedRoles, setSelectedRoles] = useState<string[]>(roles ?? []);
-	const [allRoles, setAllRoles] = useState<Role[]>([]);
 
 	const { formAction, isPending, state } = useServerAction({
 		action: assignRoles,
@@ -54,49 +49,43 @@ const Form = ({ onSuccess, uuid, roles }: { onSuccess(): void; readonly roles: s
 		secondaryIdentifier: selectedRoles
 	});
 
+	const { data, isLoading } = useQuery({
+		queryKey: ['roles'],
+		queryFn: async () => {
+			const { data, error } = await openAPIClient.GET('/api/v1/roles/');
+
+			if (error) {
+				toast.error(error.message);
+				return;
+			}
+
+			return data.results.map(role => ({
+				label: role.name,
+				value: role.uuid
+			}));
+		}
+	});
+
 	useEffect(() => {
 		if (state.type === MessageType.Success) {
 			onSuccess?.();
 		}
-
-		const fetchData = async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/roles/');
-			if (error || !data.results) {
-				return;
-			}
-
-			setAllRoles(
-				data.results.map(role => ({
-					name: role.name,
-					uuid: role.uuid
-				}))
-			);
-
-			setReady(true);
-		};
-
-		void fetchData();
 	}, [onSuccess, state.type]);
 
 	return (
 		<form action={formAction}>
 			<div className="flex flex-col gap-4 my-4">
 				<div className="flex flex-col gap-2">
-					{ready ? (
+					{isLoading ? (
+						<Skeleton className="w-full h-10" />
+					) : (
 						<FancyMultiSelect
 							placeholder="Search roles"
-							options={
-								allRoles.map(role => ({
-									value: role.uuid,
-									label: role.name
-								})) ?? []
-							}
+							options={data ?? []}
 							initialSelected={selectedRoles}
 							onSelected={async value => setSelectedRoles(prev => [...prev, value])}
 							onRemoved={async value => setSelectedRoles(prev => prev.filter(v => v !== value))}
 						/>
-					) : (
-						<Skeleton className="w-full h-10" />
 					)}
 				</div>
 			</div>

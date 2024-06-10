@@ -54,7 +54,13 @@ export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverI
 							? `url(${ENV.BASE_API_URL}/thumbnails/${album.coverImage.identifier}.webp)`
 							: ''
 					}}
-				/>
+				>
+					{album.isOwner ? null : (
+						<div className="absolute top-0 w-full flex items-center justify-center bg-[rgb(4_21_47)] p-1">
+							Collaborator
+						</div>
+					)}
+				</div>
 				<div className="absolute bottom-0 left-4 right-4 pointer-events-none select-none group-hover:pointer-events-auto">
 					<div className="max-h-40 overflow-hidden md:overflow-auto md:max-h-none mb-2 transform-gpu text-2xl font-bold text-white delay-75 duration-200 group-hover:-translate-y-14 group-hover:delay-75 cursor-pointer">
 						{album.name}
@@ -67,6 +73,7 @@ export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverI
 					href={`/dashboard/albums/${album.uuid}`}
 					className="hidden md:inline-flex absolute inset-0 transition-all cursor-pointer duration-100 group-hover:scale-105 group-hover:duration-150"
 				/>
+
 				<Link
 					href={`/dashboard/albums/${album.uuid}`}
 					className={cn(
@@ -76,12 +83,14 @@ export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverI
 				>
 					View files
 				</Link>
-				<Button
-					className="absolute bottom-2 md:-bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100"
-					onClick={() => setSelectedAlbum(album)}
-				>
-					Settings
-				</Button>
+				{album.isOwner ? (
+					<Button
+						className="absolute bottom-2 md:-bottom-10 left-4 right-4 transition-all opacity-0 duration-100 group-hover:-translate-y-14 transform-gpu group-hover:opacity-100 group-hover:delay-100"
+						onClick={() => setSelectedAlbum(album)}
+					>
+						Settings
+					</Button>
+				) : null}
 			</div>
 		</div>
 	);

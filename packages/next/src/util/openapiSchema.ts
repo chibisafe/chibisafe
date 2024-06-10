@@ -396,12 +396,12 @@ export type paths = {
             cookie?: never;
         };
         get: operations["getApiV1UsersByUuidRoles"];
-        put?: never;
+        put: operations["putApiV1UsersByUuidRoles"];
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch: operations["patchApiV1UsersByUuidRoles"];
+        patch?: never;
         trace?: never;
     };
     "/api/v1/users/{uuid}/": {
@@ -975,12 +975,6 @@ export type components = {
                 uuid: string;
                 /** @description Username of the collaborator */
                 username: string;
-            };
-            folder: null | {
-                /** @description UUID of the folder */
-                uuid: string;
-                /** @description Name of the folder */
-                name: string;
             };
             /** @description Date the collaborator was added */
             createdAt: Record<string, unknown> | string;
@@ -2255,6 +2249,8 @@ export interface operations {
                             createdAt: Record<string, unknown> | string;
                             /** @description Date the folder was last edited */
                             editedAt: Record<string, unknown> | string;
+                            /** @description Whether the user is the owner of the folder */
+                            isOwner: boolean;
                             /**
                              * @description Number of files in the folder
                              * @default 0
@@ -2730,7 +2726,6 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Role */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -2743,6 +2738,34 @@ export interface operations {
                         name: string;
                         /** @description Storage quota of the role */
                         storageQuota: number;
+                        permissions: null | {
+                            /** @description Whether the user can upload files */
+                            canUploadFiles: boolean;
+                            /** @description Whether the user can create folders */
+                            canCreateFolders: boolean;
+                            /** @description Whether the user can create folder links */
+                            canCreateFolderLinks: boolean;
+                            /** @description Whether the user can create tags */
+                            canCreateTags: boolean;
+                            /** @description Whether the user can create snippets */
+                            canCreateSnippets: boolean;
+                            /** @description Whether the user can manage files */
+                            canManageFiles: boolean;
+                            /** @description Whether the user can manage folders */
+                            canManageFolders: boolean;
+                            /** @description Whether the user can manage tags */
+                            canManageTags: boolean;
+                            /** @description Whether the user can manage snippets */
+                            canManageSnippets: boolean;
+                            /** @description Whether the user can manage settings */
+                            canManageSettings: boolean;
+                            /** @description Whether the user can manage roles */
+                            canManageRoles: boolean;
+                            /** @description Whether the user can manage users */
+                            canManageUsers: boolean;
+                            /** @description Whether the user can manage IP bans */
+                            canManageIPBans: boolean;
+                        };
                     };
                 };
             };
@@ -4160,7 +4183,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         /** @description API key of the current user */
                         apiKey: string;
                         /** @description Date the API key was edited */
@@ -4174,7 +4197,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         message: string;
                     };
                 };
@@ -4185,7 +4208,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
+                    none: {
                         message: string;
                     };
                 };
@@ -4331,7 +4354,7 @@ export interface operations {
             };
         };
     };
-    patchApiV1UsersByUuidRoles: {
+    putApiV1UsersByUuidRoles: {
         parameters: {
             query?: never;
             header?: never;
@@ -4354,6 +4377,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                };
             };
             /** @description Unauthorized */
             401: {
@@ -6293,12 +6327,6 @@ export interface operations {
                             /** @description Username of the collaborator */
                             username: string;
                         };
-                        folder: null | {
-                            /** @description UUID of the folder */
-                            uuid: string;
-                            /** @description Name of the folder */
-                            name: string;
-                        };
                         /** @description Date the collaborator was added */
                         createdAt: Record<string, unknown> | string;
                         /** @description Date the collaborator was last edited */
@@ -6371,12 +6399,6 @@ export interface operations {
                             uuid: string;
                             /** @description Username of the collaborator */
                             username: string;
-                        };
-                        folder: null | {
-                            /** @description UUID of the folder */
-                            uuid: string;
-                            /** @description Name of the folder */
-                            name: string;
                         };
                         /** @description Date the collaborator was added */
                         createdAt: Record<string, unknown> | string;
@@ -6562,6 +6584,8 @@ export interface operations {
                                 createdAt: Record<string, unknown> | string;
                                 reason: null | string;
                             };
+                            /** @description Whether the file is owned by the user */
+                            isOwner: boolean;
                             user?: null | {
                                 /** @description UUID of the user */
                                 uuid: string;
@@ -6975,7 +6999,6 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Folder */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6996,6 +7019,8 @@ export interface operations {
                         createdAt: Record<string, unknown> | string;
                         /** @description Date the folder was last edited */
                         editedAt: Record<string, unknown> | string;
+                        /** @description Whether the user is the owner of the folder */
+                        isOwner: boolean;
                     };
                 };
             };
@@ -7110,7 +7135,6 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Folder */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7131,6 +7155,8 @@ export interface operations {
                         createdAt: Record<string, unknown> | string;
                         /** @description Date the folder was last edited */
                         editedAt: Record<string, unknown> | string;
+                        /** @description Whether the user is the owner of the folder */
+                        isOwner: boolean;
                     };
                 };
             };

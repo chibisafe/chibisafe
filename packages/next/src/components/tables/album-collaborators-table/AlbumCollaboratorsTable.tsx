@@ -9,24 +9,25 @@ import {
 	useReactTable
 } from '@tanstack/react-table';
 import { useState, type PropsWithChildren } from 'react';
-import { ArrowUpRightFromSquare } from 'lucide-react';
-import { DataTable } from '@/components/tables/DataTable';
-import { DeleteLinkButton } from '@/components/tables/album-links-table/DeleteLinkButton';
+import { DataTable } from '../DataTable';
+import type { components } from '@/util/openapiSchema';
+import Link from 'next/link';
+import { DeleteCollaboratorButton } from './DeleteCollaboratorButton';
 
-type AlbumLink = {
-	identifier: string;
-	uuid: string;
-};
+type AlbumCollaborator = components['schemas']['Collaborator'];
 
-const columnHelper = createColumnHelper<AlbumLink>();
+const columnHelper = createColumnHelper<AlbumCollaborator>();
 const columns = [
 	columnHelper.display({
-		id: 'link',
-		header: 'Link',
+		id: 'user',
+		header: 'User',
 		cell: props => (
-			<a href={`/a/${props.row.original.identifier}`} target="_blank" className="link inline-flex items-center">
-				{props.row.original.identifier} <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-			</a>
+			<Link
+				href={`/dashboard/admin/users/${props.row.original.user?.uuid}`}
+				className="link inline-flex items-center ml-2"
+			>
+				{props.row.original.user?.username}
+			</Link>
 		)
 	}),
 	columnHelper.display({
@@ -34,20 +35,24 @@ const columns = [
 		header: '',
 		cell: props => (
 			<div className="flex justify-end">
-				<DeleteLinkButton uuid={props.row.original.uuid} albumUuid={props.table.options.meta!.albumUuid!} />
+				<DeleteCollaboratorButton
+					uuid={props.row.original.user?.uuid ?? ''}
+					albumUuid={props.table.options.meta!.albumUuid!}
+				/>
 			</div>
 		)
 	})
 ];
 
-export const AlbumLinksTable = ({
+export const AlbumCollaboratorsTable = ({
 	data = [],
 	albumUuid
-}: PropsWithChildren<{ readonly albumUuid: string; readonly data?: AlbumLink[] | undefined }>) => {
+}: PropsWithChildren<{ readonly albumUuid: string; readonly data?: AlbumCollaborator[] | undefined }>) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
+	console.log(data);
 	const table = useReactTable({
 		data,
 		columns,

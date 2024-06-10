@@ -65,3 +65,23 @@ export const deleteLink = async (shareUuid: string, albumUuid: string) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+export const removeCollaborator = async (uuid: string, albumUuid: string) => {
+	try {
+		const { error } = await openAPIClient.DELETE('/api/v1/folders/{uuid}/collaborators/{collaboratorUuid}', {
+			params: {
+				path: {
+					uuid: albumUuid,
+					collaboratorUuid: uuid
+				}
+			}
+		});
+
+		if (error) return { message: error.message, type: MessageType.Error };
+
+		revalidateTag('collaborators');
+		return { message: 'Collaborator removed', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};

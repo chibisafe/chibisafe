@@ -4,6 +4,7 @@ import type { components } from '@/util/openapiSchema';
 
 export type FileWithFileMetadata = components['schemas']['File'] & {
 	fileMetadata: components['schemas']['FileMetadata'] | null;
+	isOwner?: boolean;
 };
 
 export type FileWithFileMetadataAndIndex = FileWithFileMetadata & {

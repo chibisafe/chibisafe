@@ -36,15 +36,17 @@ export const FileDialogToolbar = ({
 	return (
 		<div className="fixed md:-right-12 -top-12 h-10 z-[60] w-screen !pointer-events-auto bg-black flex flex-row justify-center items-center gap-4 md:gap-1 pr-2">
 			<input type="text" className={isMobile ? 'hidden' : 'opacity-0 pointer-events-none select-none w-0'} />
-			<Tooltip content="Download">
-				<a
-					href={`${ENV.BASE_API_URL}/api/v1/files/${file.uuid}/download`}
-					rel="noopener noreferrer"
-					className={buttonVariants({ variant: 'ghost', size: 'icon' })}
-				>
-					<DownloadIcon className="h-5 w-5" />
-				</a>
-			</Tooltip>
+			{type === 'publicAlbum' || !file.isOwner ? null : (
+				<Tooltip content="Download">
+					<a
+						href={`${ENV.BASE_API_URL}/api/v1/files/${file.uuid}/download`}
+						rel="noopener noreferrer"
+						className={buttonVariants({ variant: 'ghost', size: 'icon' })}
+					>
+						<DownloadIcon className="h-5 w-5" />
+					</a>
+				</Tooltip>
+			)}
 
 			{type === 'publicAlbum' ? null : <FileDialogInformation file={file} type={type} />}
 
@@ -58,7 +60,6 @@ export const FileDialogToolbar = ({
 					<SquareArrowOutUpRight className="h-5 w-5" />
 				</a>
 			</Tooltip>
-
 			<Tooltip content="Copy link">
 				<Button
 					size={'icon'}
@@ -68,8 +69,7 @@ export const FileDialogToolbar = ({
 					<LinkIcon className="h-5 w-5" />
 				</Button>
 			</Tooltip>
-
-			{type === 'publicAlbum' ? null : (
+			{type === 'publicAlbum' || !file.isOwner ? null : (
 				<>
 					<Tooltip content="Regenerate thumbnail">
 						<Button
@@ -87,7 +87,6 @@ export const FileDialogToolbar = ({
 					<DeleteFileButton uuid={file.uuid} />
 				</>
 			)}
-
 			{type === 'admin' || type === 'quarantine' ? (
 				file.quarantine ? (
 					<AllowFileButton uuid={file.uuid} />

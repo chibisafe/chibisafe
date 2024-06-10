@@ -21,7 +21,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { AlbumSettingsDialogActions } from '../AlbumSettingsDialogActions';
@@ -29,11 +28,14 @@ import { AlbumLinksTable } from '../tables/album-links-table/AlbumLinksTable';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { openAPIClient } from '@/lib/clientFetch';
+import { AlbumCollaboratorsTable } from '../tables/album-collaborators-table/AlbumCollaboratorsTable';
+import { currentUserAtom } from '@/lib/atoms/currentUser';
 
 export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 	const [open, setOpen] = useAtom(isDialogOpenAtom);
 	const album = useAtomValue(selectedAlbumAtom);
 	const queryClient = useQueryClient();
+	const currentUser = useAtomValue(currentUserAtom);
 
 	const [state, formAction] = useFormState(updateAlbumSettings, {
 		message: '',
@@ -84,6 +86,27 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 		}
 	});
 
+	const { data: collaboratorData, error: collaboratorError } = useQuery({
+		queryKey: ['collaborators', album?.uuid],
+		enabled: Boolean(album?.uuid) && open,
+		queryFn: async () => {
+			const { data, error } = await openAPIClient.GET('/api/v1/folders/{uuid}/collaborators/', {
+				params: {
+					path: {
+						uuid: album!.uuid
+					}
+				}
+			});
+
+			if (error) {
+				toast.error(error.message);
+				return;
+			}
+
+			return data.filter(collaborator => collaborator.user?.uuid !== currentUser?.uuid);
+		}
+	});
+
 	useEffect(() => {
 		if (state.type === MessageType.Error) toast.error(state.message);
 		else if (state.type === MessageType.Success) {
@@ -101,6 +124,10 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 
 	if (error) {
 		toast.error(error.message);
+	}
+
+	if (collaboratorError) {
+		toast.error(collaboratorError.message);
 	}
 
 	return album?.uuid ? (
@@ -122,7 +149,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 							</div>
 							<div>
 								<Label htmlFor="description">Description</Label>
-								<Textarea id="description" name="description" defaultValue={album.description ?? ''} />
+								<Input id="description" name="description" defaultValue={album.description ?? ''} />
 							</div>
 							<div className="space-y-2 flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
 								<div className="space-y-0.5">
@@ -157,6 +184,25 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 							</Button>
 
 							<AlbumLinksTable data={data} albumUuid={album.uuid} />
+						</div>
+						<div>
+							<Label htmlFor="description">Collaborators</Label>
+							<p className="text-[0.8rem] text-muted-foreground">
+								A list of all the collaborators for this album. Collaborators can view and add content
+								to the album.
+							</p>
+
+							<Button
+								type="submit"
+								variant="secondary"
+								className="mt-2 mb-4"
+								onClick={async () => createNewAlbumLink()}
+							>
+								<Plus className="mr-2 h-4 w-4" />
+								Invite
+							</Button>
+
+							<AlbumCollaboratorsTable data={collaboratorData} albumUuid={album.uuid} />
 						</div>
 					</div>
 					<DialogFooter className="!place-content-between mt-4 gap-4">

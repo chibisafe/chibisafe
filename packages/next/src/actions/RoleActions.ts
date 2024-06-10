@@ -87,7 +87,7 @@ export const setRolePermissions = async (uuid: string, permissions: string) => {
 
 export const assignRoles = async (uuid: string, roles: string[]) => {
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}/roles/', {
+		const { error } = await openAPIClient.PUT('/api/v1/users/{uuid}/roles/', {
 			params: {
 				path: {
 					uuid

@@ -237,8 +237,8 @@ export const FileDialogInformation = ({
 	}, [file?.uuid, type]);
 
 	useEffect(() => {
-		void fetchAdditionalData();
-	}, [fetchAdditionalData]);
+		if (file.isOwner) void fetchAdditionalData();
+	}, [fetchAdditionalData, file.isOwner]);
 
 	return (
 		<ComponentToRender>
@@ -312,7 +312,7 @@ export const FileDialogInformation = ({
 							)} */}
 						</div>
 					</div>
-				) : (
+				) : file.isOwner ? (
 					<div className="w-full">
 						<div className="flex flex-col gap-2">
 							<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">Albums</h2>
@@ -355,7 +355,7 @@ export const FileDialogInformation = ({
 							</div>
 						</div>
 					</div>
-				)}
+				) : null}
 
 				<div className="flex flex-col gap-2 w-full">
 					<h2 className="text-2xl font-semibold leading-none tracking-tight mb-4">File information</h2>
@@ -370,26 +370,30 @@ export const FileDialogInformation = ({
 						<Input value={file.filename} name="name" id="name" readOnly />
 					</div>
 
-					<div>
-						<Label htmlFor="original">Original</Label>
-						<Input value={file.fileMetadata?.originalFilename} name="original" id="original" readOnly />
-					</div>
+					{type === 'admin' || file.isOwner ? (
+						<div>
+							<Label htmlFor="original">Original</Label>
+							<Input value={file.fileMetadata?.originalFilename} name="original" id="original" readOnly />
+						</div>
+					) : null}
 
-					<div>
-						<Label htmlFor="ip">
-							IP{' '}
-							{type === 'admin' ? (
-								<Link
-									href={`/dashboard/admin/ip/${file.fileMetadata?.ip}`}
-									className="text-blue-500 underline inline-flex items-center ml-2"
-									onClick={() => setModalOpen(false)}
-								>
-									view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
-								</Link>
-							) : null}
-						</Label>
-						<Input value={file.fileMetadata?.ip ?? 'No IP'} name="ip" id="ip" readOnly />
-					</div>
+					{type === 'admin' || file.isOwner ? (
+						<div>
+							<Label htmlFor="ip">
+								IP{' '}
+								{type === 'admin' ? (
+									<Link
+										href={`/dashboard/admin/ip/${file.fileMetadata?.ip}`}
+										className="text-blue-500 underline inline-flex items-center ml-2"
+										onClick={() => setModalOpen(false)}
+									>
+										view files <ArrowUpRightFromSquare className="w-3 h-3 ml-1" />
+									</Link>
+								) : null}
+							</Label>
+							<Input value={file.fileMetadata?.ip ?? 'No IP'} name="ip" id="ip" readOnly />
+						</div>
+					) : null}
 
 					<div>
 						<Label htmlFor="url">URL</Label>
