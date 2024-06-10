@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import type { PageQuery } from '@/types';
 
-import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -18,10 +17,11 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data: response, error, status } = await fetchEndpoint({ type: 'quarantine' }, currentPage, perPage, search);
-	if (error && status === 401) {
-		redirect('/login');
-	}
+	// TODO: Implement when the API is ready
+	const response = {
+		count: 0,
+		results: []
+	};
 
 	return (
 		<>
