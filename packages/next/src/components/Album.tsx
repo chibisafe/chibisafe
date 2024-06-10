@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { AlbumDropZone } from './AlbumDropzone';
 import { albumDisablePointerEventAtom } from '@/lib/atoms/dropzone';
 import { buttonVariants } from '@/styles/button';
+import { ENV } from '@/util/env';
 
 export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverImage }) => {
 	const selectedAlbum = useSetAtom(selectedAlbumAtom);
@@ -49,7 +50,9 @@ export const Album = ({ album }: { readonly album: FolderWithFilesCountAndCoverI
 						album.isNSFW ? 'blur group-hover:blur-0' : ''
 					)}
 					style={{
-						backgroundImage: `url(${album.coverImage})`
+						backgroundImage: album.coverImage
+							? `url(${ENV.BASE_API_URL}/thumbnails/${album.coverImage.identifier}.webp)`
+							: ''
 					}}
 				/>
 				<div className="absolute bottom-0 left-4 right-4 pointer-events-none select-none group-hover:pointer-events-auto">
