@@ -60,3 +60,22 @@ export const quarantineFile = async (uuid: string) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+export const regenerateThumbnail = async (uuid: string) => {
+	try {
+		const { error } = await openAPIClient.POST('/api/v1/files/{uuid}/regenerate-thumbnail', {
+			params: {
+				path: {
+					uuid
+				}
+			}
+		});
+
+		if (error) return { message: error, type: MessageType.Error };
+		revalidateTag('files');
+
+		return { message: 'Thumbnail regenerated', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};

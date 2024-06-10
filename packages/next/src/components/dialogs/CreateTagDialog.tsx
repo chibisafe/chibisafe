@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label';
 import { createTag } from '@/actions/TagsActions';
 import { openAPIClient } from '@/lib/clientFetch';
 import { useServerAction } from '@/hooks/useServerAction';
-import { FancyMultiSelect } from '../FancyMultiSelect';
+import { FancyMultiSelect } from '@/components/FancyMultiSelect';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMediaQuery } from 'usehooks-ts';
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer';
@@ -118,14 +118,11 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 					<FancyMultiSelect
 						placeholder="Search for a parent tag..."
 						options={
-							tagsData
-								?.filter(tag => !selectedParents.includes(tag.uuid))
-								.map(tag => ({
-									value: tag.uuid,
-									label: `${tag.name}${tag.nearestParent ? ` (${tag.nearestParent.name})` : ''}`
-								})) ?? []
+							tagsData?.map(tag => ({
+								value: tag.uuid,
+								label: `${tag.name}${tag.nearestParent ? ` (${tag.nearestParent.name})` : ''}`
+							})) ?? []
 						}
-						initialSelected={[]}
 						onSelected={async value => setSelectedParents(prev => [...prev, value])}
 						onRemoved={async value => setSelectedParents(prev => prev.filter(v => v !== value))}
 					/>

@@ -119,18 +119,15 @@ const Form = ({ onSuccess, uuid, roles }: { onSuccess(): void; readonly roles: s
 			<div className="flex flex-col gap-4 my-4">
 				<div className="flex flex-col gap-2">
 					{ready ? (
-						// TODO: Change this multiselect site-wide
 						<FancyMultiSelect
 							placeholder="Search roles"
 							options={
-								allRoles
-									?.filter(role => !selectedRoles.includes(role.uuid))
-									.map(role => ({
-										value: role.uuid,
-										label: role.name
-									})) ?? []
+								allRoles.map(role => ({
+									value: role.uuid,
+									label: role.name
+								})) ?? []
 							}
-							initialSelected={[]}
+							initialSelected={selectedRoles}
 							onSelected={async value => setSelectedRoles(prev => [...prev, value])}
 							onRemoved={async value => setSelectedRoles(prev => prev.filter(v => v !== value))}
 						/>
