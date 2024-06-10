@@ -7,6 +7,7 @@ import type { PageQuery } from '@/types';
 import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { openAPIClient } from '@/lib/serverFetch';
+import { CreateUserDialog } from '@/components/dialogs/CreateUserDialog';
 
 export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Users'
@@ -40,7 +41,9 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 					{ name: 'Admin', url: '/dashboard/admin' },
 					{ name: 'Users', url: '/dashboard/admin/users' }
 				]}
-			/>
+			>
+				<CreateUserDialog />
+			</DashboardHeader>
 			<div className="px-2 w-full flex flex-col gap-4">
 				<Suspense>
 					<Pagination itemsTotal={data?.count} />

@@ -1,7 +1,7 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { enableUser, disableUser, purgeUser } from '@/actions/UserTableActions';
+import { enableUser, disableUser, purgeUser } from '@/actions/UserActions';
 import { useSetAtom } from 'jotai';
 import { confirmationDialogAtom } from '@/lib/atoms/dialogs/confirmationDialog';
 import { useServerAction } from '@/hooks/useServerAction';

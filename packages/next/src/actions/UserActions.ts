@@ -54,3 +54,30 @@ export const purgeUser = async (uuid: string) => {
 		return { message: error, type: MessageType.Error };
 	}
 };
+
+export const createUser = async (_: any, form: FormData) => {
+	const username = form.get('username') as string;
+	const password = form.get('password') as string;
+	const rePassword = form.get('repassword') as string;
+
+	if (!username) return { message: 'Username is required', type: MessageType.Error };
+	if (!password) return { message: 'Password is required', type: MessageType.Error };
+	if (!rePassword) return { message: 'Repeat password is required', type: MessageType.Error };
+	if (password !== rePassword) return { message: 'Passwords do not match', type: MessageType.Error };
+
+	try {
+		const { error } = await openAPIClient.POST('/api/v1/users/', {
+			body: {
+				username,
+				password
+			}
+		});
+
+		if (error) return { message: error.message, type: MessageType.Error };
+
+		revalidateTag('users');
+		return { message: 'User created', type: MessageType.Success };
+	} catch (error: any) {
+		return { message: error, type: MessageType.Error };
+	}
+};
