@@ -3,14 +3,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { FilePropsType } from '@/types';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import type { FileWithFileMetadataAndIndex } from '@/lib/atoms/fileDialog';
 import { isDialogOpenAtom, selectedFileAtom } from '@/lib/atoms/fileDialog';
 import { isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Masonry as Plock } from '@/components/ui/plock';
 import { FileThumbnail } from './FileThumbnail';
-import { useLongPress } from '@uidotdev/usehooks';
 import { selectedFilesAtom, selectionActiveAtom } from '@/lib/atoms/selectedFiles';
 import { CircleCheckIcon, CircleIcon } from 'lucide-react';
 import { Button } from './ui/button';
@@ -32,7 +31,7 @@ function FileItem({
 	const setModalOpen = useSetAtom(isDialogOpenAtom);
 	const setSelectedFile = useSetAtom(selectedFileAtom);
 	const [selectedFiles, setSelectedFiles] = useAtom(selectedFilesAtom);
-	const isSelectionActive = useAtomValue(selectionActiveAtom);
+	const [isSelectionActive, setIsSelectionActive] = useAtom(selectionActiveAtom);
 	const isSelected = useMemo(() => selectedFiles.includes(file), [selectedFiles, file]);
 
 	const addToHoveredList = useCallback(
@@ -60,29 +59,17 @@ function FileItem({
 
 		if (isSelected) {
 			setSelectedFiles(selectedFiles.filter(f => f !== file));
+			if (selectedFiles.length === 1) {
+				setIsSelectionActive(false);
+			}
 		} else {
+			if (!selectedFiles.length) {
+				setIsSelectionActive(true);
+			}
+
 			setSelectedFiles([...selectedFiles, file]);
 		}
-	}, [file, isSelected, selectedFiles, setSelectedFiles, type]);
-
-	const attrs = useLongPress(
-		e => {
-			// console.log('long press', e);
-			canFileCanBeSelected();
-		},
-		{
-			// onStart: e => {
-			// 	console.log('Press started');
-			// },
-			// onFinish: e => {
-			// 	console.log('Press finished');
-			// },
-			// onCancel: e => {
-			// 	console.log('Press cancelled');
-			// },
-			threshold: 500
-		}
-	);
+	}, [file, isSelected, selectedFiles, setIsSelectionActive, setSelectedFiles, type]);
 
 	return (
 		<div
@@ -144,7 +131,6 @@ function FileItem({
 				target="_blank"
 				rel="noopener noreferrer"
 				draggable={false}
-				{...attrs}
 				style={{ WebkitTouchCallout: 'none' }}
 				onClick={e => {
 					e.preventDefault();

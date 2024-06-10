@@ -14,7 +14,7 @@ import { isMasonryViewAtom } from '@/lib/atoms/settings';
 import { Button } from './ui/button';
 import { Masonry } from './Masonry';
 import { cn } from '@/lib/utils';
-import { selectedFilesAtom } from '@/lib/atoms/selectedFiles';
+import { selectedFilesAtom, selectionActiveAtom } from '@/lib/atoms/selectedFiles';
 import { Pencil } from 'lucide-react';
 import {
 	DropdownMenu,
@@ -171,6 +171,7 @@ export function FilesWrapper({
 	}, [files, data, isUploads, isAlbumUploads]);
 
 	const setSelectedFiles = useSetAtom(selectedFilesAtom);
+	const [isSelectionActive, setIsSelectionActive] = useAtom(selectionActiveAtom);
 
 	useEffect(() => {
 		setCurrentType(type);
@@ -187,6 +188,21 @@ export function FilesWrapper({
 
 	return (
 		<>
+			<Button
+				onClick={() =>
+					setIsSelectionActive(value => {
+						if (value) {
+							setSelectedFiles([]);
+						}
+
+						return !value;
+					})
+				}
+				variant="outline"
+				className="flex md:hidden"
+			>
+				{isSelectionActive ? 'Turn off bulk actions' : 'Bulk actions'}
+			</Button>
 			<div className="flex flex-col w-full h-full gap-4 relative" ref={container}>
 				{showMasonry ? (
 					<Masonry files={filesToUse} type={type} />
