@@ -23,8 +23,6 @@ export default async function DashboardAdminIPsPage() {
 		return <div>Error: {error.message}</div>;
 	}
 
-	console.log(data.results);
-
 	return (
 		<>
 			<DashboardHeader

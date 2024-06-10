@@ -20,9 +20,13 @@ import { createTag } from '@/actions/TagsActions';
 import { openAPIClient } from '@/lib/clientFetch';
 import { useServerAction } from '@/hooks/useServerAction';
 import { FancyMultiSelect } from '@/components/FancyMultiSelect';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMediaQuery } from 'usehooks-ts';
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer';
+
+type Tag = {
+	label: string;
+	value: string;
+};
 
 export function CreateTagDialog({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
@@ -68,8 +72,8 @@ export function CreateTagDialog({ className }: { readonly className?: string }) 
 
 const Form = ({ onSuccess }: { onSuccess(): void }) => {
 	const [name, setName] = useState('');
+	const [tags, setTags] = useState<Tag[]>([]);
 	const [selectedParents, setSelectedParents] = useState<string[]>([]);
-	const queryClient = useQueryClient();
 
 	const { formAction, isPending, state } = useServerAction({
 		action: createTag,
@@ -77,9 +81,12 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 		secondaryIdentifier: selectedParents
 	});
 
-	const { data: tagsData } = useQuery({
-		queryKey: ['tags'],
-		queryFn: async () => {
+	useEffect(() => {
+		if (state.type === MessageType.Success) {
+			onSuccess?.();
+		}
+
+		const fetchData = async () => {
 			const { data, error } = await openAPIClient.GET('/api/v1/tags/', {
 				params: {
 					query: {
@@ -93,38 +100,42 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 				return;
 			}
 
-			return data.results;
-		}
-	});
+			setTags(
+				data.results.map(tag => ({
+					value: tag.uuid,
+					label: `${tag.name}${tag.nearestParent ? ` (${tag.nearestParent.name})` : ''}`
+				}))
+			);
+		};
 
-	useEffect(() => {
-		if (state.type === MessageType.Success) {
-			void queryClient.invalidateQueries({ queryKey: ['tags'] });
-			onSuccess?.();
-		}
+		void fetchData();
 
 		return () => {
 			setSelectedParents([]);
 			setName('');
 		};
-	}, [onSuccess, queryClient, state, state.message, state.type]);
+	}, [onSuccess, state.message, state.type]);
 
 	return (
 		<form action={formAction}>
 			<div className="flex flex-col gap-4 my-4">
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="name">Parent tags</Label>
-					<FancyMultiSelect
-						placeholder="Search for a parent tag..."
-						options={
-							tagsData?.map(tag => ({
-								value: tag.uuid,
-								label: `${tag.name}${tag.nearestParent ? ` (${tag.nearestParent.name})` : ''}`
-							})) ?? []
-						}
-						onSelected={async value => setSelectedParents(prev => [...prev, value])}
-						onRemoved={async value => setSelectedParents(prev => prev.filter(v => v !== value))}
-					/>
+					{tags.length ? (
+						<FancyMultiSelect
+							placeholder="Search for a parent tag..."
+							options={
+								tags?.map(tag => ({
+									value: tag.value,
+									label: tag.label
+								})) ?? []
+							}
+							onSelected={async value => setSelectedParents(prev => [...prev, value])}
+							onRemoved={async value => setSelectedParents(prev => prev.filter(v => v !== value))}
+						/>
+					) : (
+						<p>No tags found</p>
+					)}
 				</div>
 
 				<div className="flex flex-col gap-2">
