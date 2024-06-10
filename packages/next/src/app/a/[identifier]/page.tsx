@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: { readonly params: { identifi
 	}
 
 	if (!data.isNSFW && data.coverImage) {
-		meta.openGraph.images = [`${ENV.BASE_API_URL}/${data.coverImage.filename}`];
-		meta.twitter.images = [`${ENV.BASE_API_URL}/${data.coverImage.filename}`];
+		meta.openGraph.images = [`${ENV.BASE_API_URL}/thumbnails/${data.coverImage.identifier}.webp`];
+		meta.twitter.images = [`${ENV.BASE_API_URL}/thumbnails/${data.coverImage.identifier}.webp`];
 	}
 
 	return meta;
