@@ -1,0 +1,119 @@
+---
+title: Running Chibisafe with Nginx Proxy Manager through Docker
+summary: This guide shows you how to run Chibisafe with Nginx Proxy Manager (or NPM) through Docker without the internal Caddy server.
+---
+
+# Running Chibisafe with Nginx Proxy Manager through Docker
+> This guide shows you how to run Chibisafe with Nginx Proxy Manager (or NPM) through Docker without the internal Caddy server.
+
+In order to install chibisafe and run it with Nginx Proxy Manager there are a few things you need to set up on your system beforehand. This guide assumes you are using Ubuntu/Debian so feel free to adjust commands as you see fit based on your distro.
+
+### Pre-requisites
+
+Before running chibisafe make sure you install docker and docker-compose. Please refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
+
+You will need to setup Nginx Proxy Manager as well, on port 80, 443 and 81. Go to [#installing-nginx-proxy-manager](#installing-nginx-proxy-manager) for more information.
+
+You will also need a FQDN (Fully Qualified Domain Name) pointing to your server. You can use a service like [Cloudflare](https://www.cloudflare.com/) to get a domain.
+
+### Installing Nginx Proxy Manager
+
+First, you need to install Nginx Proxy Manager. You can follow the official guide [here](https://nginxproxymanager.com/guide/#quick-setup). But there are some little changes we need to make to the configuration.
+
+After you have created the docker-compose.yml file, you need to change the `image` field to `jc21/nginx-proxy-manager:github-pr-3478`. Why is so? Because the latest images has a bug in locations, which is fixed by this PR. Your docker-compose.yml file should look like this:
+
+```yaml
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:github-pr-3478'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+```
+
+After that, you can run `docker-compose up -d` to start Nginx Proxy Manager. Don't forget to configure it by going to `http://<your server ip>:81`.
+
+### Installing
+
+This guide assumes you will use Docker to run chibisafe. If you want to run it manually, just follow the [manual guide](/guides/running-manually) and install Nginx Proxy Manager like we said.
+
+First, move to a place where you can install it:
+
+```bash
+cd /home/<your user>
+```
+
+Then, make a directory for chibisafe and move to it:
+
+```bash
+mkdir chibisafe
+cd chibisafe
+```
+
+Now, you need to create a docker-compose.yml file. You can use the following template:
+
+```yaml
+version: "3.7"
+
+services:
+  chibisafe:
+    image: chibisafe/chibisafe:latest
+    environment:
+      - BASE_API_URL=http://chibisafe_server:8000
+    expose:
+      - 8001
+    restart: unless-stopped
+    ports:
+      - 8001:8001
+
+  chibisafe_server:
+    image: chibisafe/chibisafe-server:latest
+    volumes:
+      - ./database:/app/database:rw
+      - ./uploads:/app/uploads:rw
+      - ./logs:/app/logs:rw
+    expose:
+      - 8000
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+```
+
+> What did we change?
+> We removed the caddy section, as we won't need it. We also exposed to the host the ports 8000 and 8001, so Nginx Proxy Manager can access them.
+
+Now, you can run `docker-compose up -d` to start chibisafe.
+
+### Configuring Nginx Proxy Manager
+
+Now, you need to configure Nginx Proxy Manager to proxy the requests to chibisafe. Go to your Nginx Proxy Manager instance and add a new proxy host.
+
+- **Domain Names**: Your domain name (e.g. chibisafe.example.com)
+- **Scheme**: http
+- **Forward Hostname/IP**: \<your local ip or public ip\>
+- **Forward Port**: 8001
+
+> Don't forget to enable `cache assets`, `websockets support` and configure an SSL certificate (and enable `force ssl`). You can use Let's Encrypt for that.
+
+Then, head over to the location tab and add a new location:
+
+- **location**: /api
+- **scheme**: http
+- **forward hostname/ip**: \<your local ip or public ip\>
+- **forward port**: 8000
+
+You can now save the configuration and wait for Nginx Proxy Manager to apply the changes.
+
+### DNS Configuration
+
+Now, you need to configure your DNS to point to your server. You can use Cloudflare for that. Just add an A record pointing to your server's IP.
+
+### Done!
+
+You can now access chibisafe through your domain name. If you have any issues, feel free to ask for help in our [Discord server](https://discord.gg/5g6vgwn).
