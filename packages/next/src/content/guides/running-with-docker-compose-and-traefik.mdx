@@ -62,8 +62,6 @@ services:
     networks:
       - traefik_web
       - internal
-volumes:
-  db-data:
 networks:
   traefik_web:
     external: true
@@ -148,6 +146,7 @@ volumes:
 ## Run
 
 ```
+docker network create traefik_web
 cd /path/to/traefik
 docker-compose up -d
 cd /path/to/chibisafe
