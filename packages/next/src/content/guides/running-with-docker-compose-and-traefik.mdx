@@ -127,7 +127,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./letsencrypt:/letsencrypt
     networks:
-      - web
+      - traefik_web
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.your-domain-name.com`)"
@@ -135,9 +135,11 @@ services:
       - "traefik.http.routers.traefik.tls.certResolver=le"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
 networks:
-  web:
-    name: traefik_web
+  traefik_web:
+    external: true
+
 volumes:
   letsencrypt:
     name: letsencrypt
