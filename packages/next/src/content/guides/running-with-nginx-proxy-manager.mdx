@@ -12,32 +12,9 @@ In order to install chibisafe and run it with Nginx Proxy Manager there are a fe
 
 Before running chibisafe make sure you install docker and docker-compose. Please refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
 
-You will need to setup Nginx Proxy Manager as well, on port 80, 443 and 81. Go to [#installing-nginx-proxy-manager](#installing-nginx-proxy-manager) for more information.
+You will need to setup Nginx Proxy Manager as well, on port 80, 443 and 81. Go to the [official Nginx Proxy Manager documentation](https://nginxproxymanager.com/guide/#quick-setup) for installation instructions.
 
 You will also need a FQDN (Fully Qualified Domain Name) pointing to your server. You can use a service like [Cloudflare](https://www.cloudflare.com/) to get a domain.
-
-### Installing Nginx Proxy Manager
-
-First, you need to install Nginx Proxy Manager. You can follow the official guide [here](https://nginxproxymanager.com/guide/#quick-setup). But there are some little changes we need to make to the configuration.
-
-After you have created the docker-compose.yml file, you need to change the `image` field to `jc21/nginx-proxy-manager:github-pr-3478`. Why is so? Because the latest images has a bug in locations, which is fixed by this PR. Your docker-compose.yml file should look like this:
-
-```yaml
-version: '3.8'
-services:
-  app:
-    image: 'jc21/nginx-proxy-manager:github-pr-3478'
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
-```
-
-After that, you can run `docker-compose up -d` to start Nginx Proxy Manager. Don't forget to configure it by going to `http://<your server ip>:81`.
 
 ### Installing
 
