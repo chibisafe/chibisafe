@@ -6,7 +6,6 @@ This guide will help you set up ChibiSafe using Docker Compose with Caddy and Tr
 
 - Docker
 - Docker Compose
-- Traefik (must be running)
 
 ## Directory Structure
 
@@ -139,10 +138,6 @@ services:
 networks:
   traefik_web:
     external: true
-
-volumes:
-  letsencrypt:
-    name: letsencrypt
 ```
 
 ## Run
