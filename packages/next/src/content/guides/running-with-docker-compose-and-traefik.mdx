@@ -1,11 +1,12 @@
-# ChibiSafe with Caddy and Traefik Setup
+---
+title: Running chibisafe with Docker, Caddy and Traefik
+summary: An overview guide on how to run chibisafe with Caddy and Traefik
+---
 
-This guide will help you set up ChibiSafe using Docker Compose with Caddy and Traefik for HTTPS support.
+This guide will hopefully serve as a starting point in helping you set up chibisafe using Docker Compose with Caddy and Traefik for HTTPS support.
 
 ## Prerequisites
-
-- Docker
-- Docker Compose
+You need to have Docker and Docker Compose installed on your system before proceeding any further, as this guide already assumes they are.
 
 ## Directory Structure
 
@@ -21,7 +22,7 @@ Ensure you have the following directory structure:
 
 ## /path/to/chibisafe/docker-compose.yml
 
-```
+```yml
 services:
   chibisafe:
     image: chibisafe/chibisafe:latest
@@ -98,7 +99,7 @@ networks:
 
 ## /path/to/traefik/docker-compose.yml
 
-```
+```yml
 services:
   traefik:
     image: traefik:v2.11
@@ -142,7 +143,7 @@ networks:
 
 ## Run
 
-```
+```bash
 docker network create traefik_web
 cd /path/to/traefik
 docker-compose up -d
