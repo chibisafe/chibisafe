@@ -54,7 +54,7 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 		</div>
 	) : (
 		<UploadTrigger allowsMultiple albumUuid={selectedAlbum ?? ''}>
-			<div className="flex flex-col items-center justify-center w-3/6 h-40">
+			<div className="flex flex-col items-center justify-center sm:w-3/6 h-40 w-full">
 				<div
 					className={cn(
 						buttonVariants({ variant: 'outline' }),

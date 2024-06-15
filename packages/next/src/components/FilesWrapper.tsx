@@ -84,8 +84,8 @@ function SelectionWrapper({ selectAllFiles, type }: { selectAllFiles(): void; re
 	return (
 		<div
 			className={cn(
-				'min-h-20 flex md:py-0 py-4 items-center fixed -bottom-20 z-[41] transition-transform duration-200 inset-x-4 bg-card rounded-lg shadow-xl border md:w-1/2 md:translate-x-1/2 px-4 md:px-8',
-				[selectedFiles.length ? '-translate-y-32' : 'translate-y-0']
+				'min-h-20 md:py-0 py-4 items-center fixed -bottom-20 z-[41] transition-transform duration-200 inset-x-4 bg-card rounded-lg shadow-xl border md:w-1/2 md:translate-x-1/2 px-4 md:px-8',
+				[selectedFiles.length ? '-translate-y-32 flex' : 'translate-y-0 hidden']
 			)}
 		>
 			<div className="h-full flex-row flex-grow justify-between hidden md:flex">

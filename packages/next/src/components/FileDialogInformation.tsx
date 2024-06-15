@@ -147,7 +147,7 @@ export const FileDialogInformation = ({
 
 			const { data: userAlbums, error: userAlbumsError } = await request.get({
 				url: 'albums',
-				query: { limit: 1000 },
+				query: { limit: 9999 },
 				options: {
 					next: {
 						tags: ['albums']
@@ -161,7 +161,15 @@ export const FileDialogInformation = ({
 
 			setAlbums(userAlbums.albums);
 
-			const { data: userTags, error: userTagsError } = await request.get({ url: 'tags' });
+			const { data: userTags, error: userTagsError } = await request.get({
+				url: 'tags',
+				query: { limit: 9999 },
+				options: {
+					next: {
+						tags: ['albums']
+					}
+				}
+			});
 			setTags(userTags.tags);
 			if (userTagsError) {
 				toast.error(userTagsError);
