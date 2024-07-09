@@ -72,6 +72,11 @@ services:
 
 Now, you can run `docker-compose up -d` to start chibisafe.
 
+<Callout type="warning">
+  This way of hosting chibisafe will NOT allow you to customize the ports which chibisafe listens on. So if anything (like portainer) uses the `8000` and `8001` port, you'll get an error and will need to change the port the other thing listening on 8000 and 8001 uses.
+  If you want to customize them, you will need to edit the chibisafe source code to change environment variables, and then either build a local docker image to run it or run it manually.
+</Callout>
+
 ### Configuring Nginx Proxy Manager
 
 Now, you need to configure Nginx Proxy Manager to proxy the requests to chibisafe. Go to your Nginx Proxy Manager instance and add a new proxy host.
