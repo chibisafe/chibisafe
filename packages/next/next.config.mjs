@@ -32,10 +32,20 @@ const nextConfig = {
 	images: {
 		// TODO: Enable from anywhere or find a better way to configure it
 		// this is used to be able to use <Image> with external URLs
+		// remotePatterns: [
+		// 	{
+		// 		protocol: 'http',
+		// 		hostname: 'localhost'
+		// 	}
+		// ]
+		dangerouslyAllowSVG: true,
+		contentDispositionType: 'attachment',
+		contentSecurityPolicy: "default-src 'self'; frame-src 'none'; sandbox;",
 		remotePatterns: [
 			{
 				protocol: 'http',
-				hostname: 'localhost'
+				hostname: 'localhost',
+				port: '3001'
 			}
 		]
 	},
