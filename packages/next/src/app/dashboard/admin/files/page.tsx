@@ -19,7 +19,7 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 	const search = searchParams.search ?? '';
 	const anonymous = searchParams.publicOnly ?? false;
 
-	const { data, error, response } = await openAPIClient.GET('/api/v1/files/', {
+	const { data, error, response } = await openAPIClient.GET('/api/v1/files', {
 		params: {
 			query: {
 				offset: currentPage - 1,

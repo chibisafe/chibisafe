@@ -17,7 +17,7 @@ export async function AlbumPage({
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 
-	const { data, response } = await openAPIClient.GET('/api/v1/folders/', {
+	const { data, response } = await openAPIClient.GET('/api/v1/folders', {
 		params: {
 			query: {
 				offset: page - 1,

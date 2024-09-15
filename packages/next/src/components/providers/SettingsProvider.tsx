@@ -13,7 +13,7 @@ export function SettingsProvider() {
 	useQuery({
 		queryKey: ['settings'],
 		queryFn: async () => {
-			const { data, error, response } = await openAPIClient.GET('/api/v1/settings/');
+			const { data, error, response } = await openAPIClient.GET('/api/v1/settings');
 
 			if (error && response.status === 401) {
 				toast.error(error.message);

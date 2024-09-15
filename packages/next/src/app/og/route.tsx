@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 	const url = new URL(request.url);
 	const section = url.searchParams.get('section') ?? null;
 
-	const { data, error } = await openAPIClient.GET('/api/v1/settings/');
+	const { data, error } = await openAPIClient.GET('/api/v1/settings');
 	if (error) {
 		return null;
 	}

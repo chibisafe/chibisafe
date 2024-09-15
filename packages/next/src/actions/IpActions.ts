@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const unbanIp = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE('/api/v1/ip-bans/{uuid}/', {
+		const { error } = await openAPIClient.DELETE('/api/v1/ip-bans/{uuid}', {
 			params: {
 				path: {
 					uuid
@@ -28,7 +28,7 @@ export const banIp = async (_: any, form: FormData) => {
 	const reason = form.get('reason') as string;
 
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/ip-bans/', {
+		const { error } = await openAPIClient.POST('/api/v1/ip-bans', {
 			body: {
 				ip,
 				reason
@@ -46,7 +46,7 @@ export const banIp = async (_: any, form: FormData) => {
 
 export const purgeIp = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/ip-bans/{uuid}/purge/', {
+		const { error } = await openAPIClient.POST('/api/v1/ip-bans/{uuid}/purge', {
 			params: {
 				path: {
 					uuid

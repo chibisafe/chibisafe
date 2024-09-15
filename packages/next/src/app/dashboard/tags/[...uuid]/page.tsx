@@ -26,7 +26,7 @@ export default async function TagPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data: meta, response } = await openAPIClient.GET('/api/v1/tags/{uuid}/', {
+	const { data: meta, response } = await openAPIClient.GET('/api/v1/tags/{uuid}', {
 		params: {
 			path: {
 				uuid: params.uuid
@@ -38,7 +38,7 @@ export default async function TagPage({
 		redirect('/login');
 	}
 
-	const { data, error } = await openAPIClient.GET('/api/v1/tags/{uuid}/files/', {
+	const { data, error } = await openAPIClient.GET('/api/v1/tags/{uuid}/files', {
 		params: {
 			path: {
 				uuid: params.uuid

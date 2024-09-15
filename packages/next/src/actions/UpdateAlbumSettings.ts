@@ -14,7 +14,7 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 	const nsfw = form.get('nsfw') === 'on';
 
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/folders/{uuid}/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/folders/{uuid}', {
 			params: {
 				path: { uuid }
 			},

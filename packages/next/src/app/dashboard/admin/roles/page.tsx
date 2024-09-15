@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardAdminIPsPage() {
-	const { data, error, response } = await openAPIClient.GET('/api/v1/roles/');
+	const { data, error, response } = await openAPIClient.GET('/api/v1/roles');
 
 	if (response.status === 401) {
 		redirect('/login');

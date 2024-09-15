@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const createInvite = async (_: FormData) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/invites/', {
+		const { error } = await openAPIClient.POST('/api/v1/invites', {
 			body: {}
 		});
 
@@ -20,7 +20,7 @@ export const createInvite = async (_: FormData) => {
 
 export const revokeInvite = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE('/api/v1/invites/{uuid}/', {
+		const { error } = await openAPIClient.DELETE('/api/v1/invites/{uuid}', {
 			params: {
 				path: {
 					uuid

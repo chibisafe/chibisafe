@@ -29,7 +29,7 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 		}
 
 		const fetchAlbums = async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/folders/', {
+			const { data, error } = await openAPIClient.GET('/api/v1/folders', {
 				params: {
 					query: {
 						limit: 9999

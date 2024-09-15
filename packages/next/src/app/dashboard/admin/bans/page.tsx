@@ -18,7 +18,7 @@ export default async function DashboardAdminIPsPage({ searchParams }: { readonly
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data, error, response } = await openAPIClient.GET('/api/v1/ip-bans/', {
+	const { data, error, response } = await openAPIClient.GET('/api/v1/ip-bans', {
 		params: {
 			query: {
 				offset: currentPage - 1,

@@ -44,7 +44,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 
 	const createNewAlbumLink = async () => {
 		try {
-			const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/share/', {
+			const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/share', {
 				params: {
 					path: {
 						uuid: album!.uuid
@@ -69,7 +69,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 		queryKey: ['share', album?.uuid],
 		enabled: Boolean(album?.uuid) && open,
 		queryFn: async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/folders/{uuid}/share/', {
+			const { data, error } = await openAPIClient.GET('/api/v1/folders/{uuid}/share', {
 				params: {
 					path: {
 						uuid: album!.uuid
@@ -90,7 +90,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 		queryKey: ['collaborators', album?.uuid],
 		enabled: Boolean(album?.uuid) && open,
 		queryFn: async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/folders/{uuid}/collaborators/', {
+			const { data, error } = await openAPIClient.GET('/api/v1/folders/{uuid}/collaborators', {
 				params: {
 					path: {
 						uuid: album!.uuid

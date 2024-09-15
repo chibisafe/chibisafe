@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const deleteRole = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE('/api/v1/roles/{uuid}/', {
+		const { error } = await openAPIClient.DELETE('/api/v1/roles/{uuid}', {
 			params: {
 				path: {
 					uuid
@@ -25,7 +25,7 @@ export const deleteRole = async (uuid: string) => {
 
 export const createRole = async (name: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/roles/', {
+		const { error } = await openAPIClient.POST('/api/v1/roles', {
 			body: {
 				name
 			}
@@ -42,7 +42,7 @@ export const createRole = async (name: string) => {
 
 export const setRoleQuota = async (uuid: string, quota: string) => {
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/roles/{uuid}/storage/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/roles/{uuid}/storage', {
 			params: {
 				path: {
 					uuid
@@ -65,7 +65,7 @@ export const setRoleQuota = async (uuid: string, quota: string) => {
 export const setRolePermissions = async (uuid: string, permissions: string) => {
 	try {
 		const perms = JSON.parse(permissions);
-		const { error } = await openAPIClient.PATCH('/api/v1/roles/{uuid}/permissions/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/roles/{uuid}/permissions', {
 			params: {
 				path: {
 					uuid
@@ -87,7 +87,7 @@ export const setRolePermissions = async (uuid: string, permissions: string) => {
 
 export const assignRoles = async (uuid: string, roles: string[]) => {
 	try {
-		const { error } = await openAPIClient.PUT('/api/v1/users/{uuid}/roles/', {
+		const { error } = await openAPIClient.PUT('/api/v1/users/{uuid}/roles', {
 			params: {
 				path: {
 					uuid

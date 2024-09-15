@@ -12,7 +12,7 @@ export const createAlbum = async (_: any, form: FormData) => {
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/folders/', {
+		const { error } = await openAPIClient.POST('/api/v1/folders', {
 			body: {
 				name,
 				description: description ?? '',

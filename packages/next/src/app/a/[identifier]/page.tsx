@@ -12,7 +12,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 import { ENV } from '@/util/env';
 
 export async function generateMetadata({ params }: { readonly params: { identifier: string } }): Promise<Metadata> {
-	const { data, error } = await openAPIClient.GET('/api/v1/folders/public/{shareIdentifier}/', {
+	const { data, error } = await openAPIClient.GET('/api/v1/folders/public/{shareIdentifier}', {
 		params: {
 			path: {
 				shareIdentifier: params.identifier
@@ -65,7 +65,7 @@ export default async function PublicAlbumPage({
 		data: albumData,
 		error,
 		response
-	} = await openAPIClient.GET('/api/v1/folders/public/{shareIdentifier}/', {
+	} = await openAPIClient.GET('/api/v1/folders/public/{shareIdentifier}', {
 		params: {
 			path: {
 				shareIdentifier: params.identifier

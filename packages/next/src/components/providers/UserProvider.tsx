@@ -16,7 +16,7 @@ export function UserProvider({ shouldFetch = false }: { readonly shouldFetch?: b
 	useEffect(() => {
 		if (!currentUser && shouldFetch) {
 			openAPIClient
-				.GET('/api/v1/users/me/')
+				.GET('/api/v1/users/me')
 				.then(async ({ data, error, response }) => {
 					if (response.status === 401) {
 						await logout();

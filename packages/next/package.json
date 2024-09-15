@@ -18,7 +18,7 @@
 		"typecheck": "tsc --noEmit",
 		"format:write": "prettier --write \"**/*.{ts,tsx,mdx}\"",
 		"format:check": "prettier --check \"**/*.{ts,tsx,mdx}\"",
-		"build:openapi": "openapi-typescript http://localhost:3001/swagger/json --output=src/util/openapiSchema.ts --array-length --empty-objects-unknown --export-type --default-non-nullable false"
+		"build:openapi": "openapi-typescript http://localhost:3001/api/docs/json --output=src/util/openapiSchema.ts --array-length --empty-objects-unknown --export-type --default-non-nullable false"
 	},
 	"dependencies": {
 		"@chibisafe/uploader-client": "^1.0.12",

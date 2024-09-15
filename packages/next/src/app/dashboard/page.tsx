@@ -28,7 +28,7 @@ export default async function DashboardPage({ searchParams }: { readonly searchP
 	await queryClient.prefetchQuery({
 		queryKey: ['uploads', { currentPage, perPage, search }],
 		queryFn: async () => {
-			const { data } = await openAPIClient.GET('/api/v1/files/', {
+			const { data } = await openAPIClient.GET('/api/v1/files', {
 				params: {
 					query: {
 						offset: currentPage - 1,

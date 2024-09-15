@@ -87,7 +87,7 @@ const Form = ({ onSuccess }: { onSuccess(): void }) => {
 		}
 
 		const fetchData = async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/tags/', {
+			const { data, error } = await openAPIClient.GET('/api/v1/tags', {
 				params: {
 					query: {
 						limit: 9999

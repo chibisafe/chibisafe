@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata() {
-	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	const { data } = await openAPIClient.GET('/api/v1/settings');
 	if (!data) return {};
 
 	return {

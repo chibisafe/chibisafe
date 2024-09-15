@@ -18,7 +18,7 @@ export default async function DashboardAdminUsersPage({ searchParams }: { readon
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data, response } = await openAPIClient.GET('/api/v1/users/', {
+	const { data, response } = await openAPIClient.GET('/api/v1/users', {
 		params: {
 			query: {
 				offset: currentPage - 1,

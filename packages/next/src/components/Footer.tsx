@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { openAPIClient } from '@/lib/serverFetch';
 
 export const SiteFooter = async ({ className = '' }: { readonly className?: string }) => {
-	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	const { data } = await openAPIClient.GET('/api/v1/settings');
 
 	return (
 		<footer className={cn(className, 'bg-background-transparent')}>

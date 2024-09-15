@@ -546,7 +546,7 @@ export const ChibisafeDefaultLogo = ({
 );
 
 export const ChibisafeLogo = async ({ className = '' }: { readonly className?: string }) => {
-	const { data, error } = await openAPIClient.GET('/api/v1/settings/');
+	const { data, error } = await openAPIClient.GET('/api/v1/settings');
 
 	if (error) {
 		return <ChibisafeDefaultLogo className={className} />;

@@ -30,7 +30,7 @@ export default async function AlbumPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data, error, response } = await openAPIClient.GET('/api/v1/folders/{uuid}/', {
+	const { data, error, response } = await openAPIClient.GET('/api/v1/folders/{uuid}', {
 		params: {
 			path: {
 				uuid: params.uuid
@@ -51,7 +51,7 @@ export default async function AlbumPage({
 	await queryClient.prefetchQuery({
 		queryKey: ['album', params.uuid, { currentPage, perPage, search }],
 		queryFn: async () => {
-			const { data } = await openAPIClient.GET('/api/v1/folders/{uuid}/files/', {
+			const { data } = await openAPIClient.GET('/api/v1/folders/{uuid}/files', {
 				params: {
 					path: {
 						uuid: params.uuid

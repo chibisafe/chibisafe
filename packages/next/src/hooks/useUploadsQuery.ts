@@ -34,7 +34,7 @@ export const useUploadsQuery = ({
 			: ['album', albumUuid, { currentPage, perPage, search }],
 		queryFn: async () => {
 			const { data, error, response } = await openAPIClient.GET(
-				isUploads ? '/api/v1/files/' : '/api/v1/folders/{uuid}/files/',
+				isUploads ? '/api/v1/files' : '/api/v1/folders/{uuid}/files',
 				{
 					// @ts-ignore
 					params: {

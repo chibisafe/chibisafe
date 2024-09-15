@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardAdminSettingsServicePage() {
-	const { data, error, response } = await openAPIClient.GET('/api/v1/settings/');
+	const { data, error, response } = await openAPIClient.GET('/api/v1/settings');
 
 	if (response.status === 401) {
 		redirect('/login');

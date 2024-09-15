@@ -301,7 +301,7 @@ export const SettingsForm = ({ settings }: { readonly settings: components['sche
 		}, {});
 
 		try {
-			const { error } = await openAPIClient.PATCH('/api/v1/settings/', {
+			const { error } = await openAPIClient.PATCH('/api/v1/settings', {
 				body: parsedSettings
 			});
 

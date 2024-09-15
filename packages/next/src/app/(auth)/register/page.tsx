@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginPage() {
-	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	const { data } = await openAPIClient.GET('/api/v1/settings');
 
 	return (
 		<div className="container flex h-screen w-screen flex-col items-center justify-center">

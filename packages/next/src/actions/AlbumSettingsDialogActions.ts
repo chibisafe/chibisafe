@@ -7,7 +7,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const deleteAlbum = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE('/api/v1/folders/{uuid}/', {
+		const { error } = await openAPIClient.DELETE('/api/v1/folders/{uuid}', {
 			params: {
 				path: {
 					uuid
@@ -27,7 +27,7 @@ export const deleteAlbum = async (uuid: string) => {
 
 export const deleteAlbumAndFiles = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/purge/', {
+		const { error } = await openAPIClient.POST('/api/v1/folders/{uuid}/purge', {
 			params: {
 				path: {
 					uuid

@@ -28,7 +28,7 @@ export default async function DashboardPage({
 		data: ipData,
 		error,
 		response
-	} = await openAPIClient.GET('/api/v1/ip-bans/{uuid}/', {
+	} = await openAPIClient.GET('/api/v1/ip-bans/{uuid}', {
 		params: {
 			path: {
 				uuid: params.uuid
@@ -44,7 +44,7 @@ export default async function DashboardPage({
 		return <div>Error: {error.message}</div>;
 	}
 
-	const { data, error: filesError } = await openAPIClient.GET('/api/v1/ip-bans/{uuid}/files/', {
+	const { data, error: filesError } = await openAPIClient.GET('/api/v1/ip-bans/{uuid}/files', {
 		params: {
 			path: {
 				uuid: params.uuid

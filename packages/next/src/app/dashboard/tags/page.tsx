@@ -18,7 +18,7 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data, response } = await openAPIClient.GET('/api/v1/tags/', {
+	const { data, response } = await openAPIClient.GET('/api/v1/tags', {
 		params: {
 			query: {
 				offset: currentPage - 1,

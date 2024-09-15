@@ -9,7 +9,7 @@ import { ChibisafeLogo } from './svg/ChibisafeLogo';
 import { openAPIClient } from '@/lib/serverFetch';
 
 export const Header = async () => {
-	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	const { data } = await openAPIClient.GET('/api/v1/settings');
 
 	return (
 		<header className="container z-40">

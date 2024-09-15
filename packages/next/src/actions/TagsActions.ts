@@ -9,7 +9,7 @@ export const createTag = async (name: string, parentsUuid?: string[]) => {
 	if (!name) return { message: 'Name is required', type: MessageType.Error };
 
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/tags/', {
+		const { error } = await openAPIClient.POST('/api/v1/tags', {
 			body: {
 				...(parentsUuid?.length ? { parents: parentsUuid } : null),
 				name
@@ -27,7 +27,7 @@ export const createTag = async (name: string, parentsUuid?: string[]) => {
 
 export const deleteTag = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE(`/api/v1/tags/{uuid}/`, {
+		const { error } = await openAPIClient.DELETE(`/api/v1/tags/{uuid}`, {
 			params: {
 				path: {
 					uuid

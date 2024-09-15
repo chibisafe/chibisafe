@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const regenerateThumbnails = async (uuids: string[]) => {
 	try {
-		await openAPIClient.POST('/api/v1/files/bulk-regenerate-thumbnails/', {
+		await openAPIClient.POST('/api/v1/files/bulk-regenerate-thumbnails', {
 			body: {
 				uuids
 			}
@@ -26,7 +26,7 @@ export const deleteFiles = async (uuids: string[]) => {
 	try {
 		// If the user is admin it changes nothing, same endpoint.
 		// If the user is not admin it will only delete the files that the user owns.
-		await openAPIClient.POST('/api/v1/files/bulk-delete/', {
+		await openAPIClient.POST('/api/v1/files/bulk-delete', {
 			body: {
 				uuids
 			}

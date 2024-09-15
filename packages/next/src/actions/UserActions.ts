@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const enableUser = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}', {
 			params: { path: { uuid } },
 			body: {
 				enabled: true
@@ -24,7 +24,7 @@ export const enableUser = async (uuid: string) => {
 
 export const disableUser = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/users/{uuid}', {
 			params: { path: { uuid } },
 			body: {
 				enabled: false
@@ -42,7 +42,7 @@ export const disableUser = async (uuid: string) => {
 
 export const purgeUser = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/users/{uuid}/purge/', {
+		const { error } = await openAPIClient.POST('/api/v1/users/{uuid}/purge', {
 			params: { path: { uuid } }
 		});
 
@@ -66,7 +66,7 @@ export const createUser = async (_: any, form: FormData) => {
 	if (password !== rePassword) return { message: 'Passwords do not match', type: MessageType.Error };
 
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/users/', {
+		const { error } = await openAPIClient.POST('/api/v1/users', {
 			body: {
 				username,
 				password

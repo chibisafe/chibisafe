@@ -54,7 +54,7 @@ export const BulkAlbumActions = ({
 
 	const fetchAllAlbums = useCallback(async () => {
 		try {
-			const { data, error } = await openAPIClient.GET('/api/v1/folders/', {
+			const { data, error } = await openAPIClient.GET('/api/v1/folders', {
 				params: {
 					query: {
 						limit: 9999
@@ -75,7 +75,7 @@ export const BulkAlbumActions = ({
 
 	const getUsedAlbums = useCallback(async () => {
 		try {
-			const { data, error } = await openAPIClient.POST('/api/v1/bulk-files-folders/', {
+			const { data, error } = await openAPIClient.POST('/api/v1/bulk-files-folders', {
 				body: {
 					uuids: files.map(file => file.uuid)
 				}
@@ -191,7 +191,7 @@ export const BulkAlbumActions = ({
 
 		if (Object.keys(addedAlbums).length > 0) {
 			try {
-				const { error } = await openAPIClient.POST('/api/v1/bulk-add-to-folders/', {
+				const { error } = await openAPIClient.POST('/api/v1/bulk-add-to-folders', {
 					body: {
 						folderUuids: Object.keys(addedAlbums),
 						fileUuids: Object.values(addedAlbums).flat()
@@ -212,7 +212,7 @@ export const BulkAlbumActions = ({
 
 		if (Object.keys(removedAlbums).length > 0) {
 			try {
-				const { error } = await openAPIClient.POST('/api/v1/bulk-delete-from-folders/', {
+				const { error } = await openAPIClient.POST('/api/v1/bulk-delete-from-folders', {
 					body: {
 						folderUuids: Object.keys(removedAlbums),
 						fileUuids: Object.values(removedAlbums).flat()

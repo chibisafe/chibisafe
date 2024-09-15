@@ -52,7 +52,7 @@ const Form = ({ onSuccess, uuid, roles }: { onSuccess(): void; readonly roles: s
 	const { data, isLoading } = useQuery({
 		queryKey: ['roles'],
 		queryFn: async () => {
-			const { data, error } = await openAPIClient.GET('/api/v1/roles/');
+			const { data, error } = await openAPIClient.GET('/api/v1/roles');
 
 			if (error) {
 				toast.error(error.message);

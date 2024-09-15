@@ -27,7 +27,7 @@ export default async function Home() {
 		console.error(error);
 	}
 
-	const { data } = await openAPIClient.GET('/api/v1/settings/');
+	const { data } = await openAPIClient.GET('/api/v1/settings');
 
 	if (!data) {
 		return (

@@ -15,7 +15,7 @@ export const changePassword = async (_: any, form: FormData) => {
 	if (newPassword !== rePassword) return { message: 'Passwords do not match', type: MessageType.Error };
 
 	try {
-		const { error } = await openAPIClient.PATCH('/api/v1/users/me/', {
+		const { error } = await openAPIClient.PATCH('/api/v1/users/me', {
 			body: {
 				oldPassword: password,
 				newPassword

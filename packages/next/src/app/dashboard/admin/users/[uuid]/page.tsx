@@ -24,7 +24,7 @@ export default async function DashboardAdminUserPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const { data, error, response } = await openAPIClient.GET('/api/v1/users/{uuid}/files/', {
+	const { data, error, response } = await openAPIClient.GET('/api/v1/users/{uuid}/files', {
 		params: {
 			path: {
 				uuid: params.uuid

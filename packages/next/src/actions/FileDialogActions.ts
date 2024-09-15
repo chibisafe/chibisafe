@@ -6,7 +6,7 @@ import { openAPIClient } from '@/lib/serverFetch';
 
 export const deleteFile = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/files/bulk-delete/', {
+		const { error } = await openAPIClient.POST('/api/v1/files/bulk-delete', {
 			body: {
 				uuids: [uuid]
 			}
@@ -24,7 +24,7 @@ export const deleteFile = async (uuid: string) => {
 
 export const unquarantineFile = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.DELETE('/api/v1/files/{uuid}/quarantine/', {
+		const { error } = await openAPIClient.DELETE('/api/v1/files/{uuid}/quarantine', {
 			params: {
 				path: {
 					uuid
@@ -43,7 +43,7 @@ export const unquarantineFile = async (uuid: string) => {
 
 export const quarantineFile = async (uuid: string) => {
 	try {
-		const { error } = await openAPIClient.POST('/api/v1/files/{uuid}/quarantine/', {
+		const { error } = await openAPIClient.POST('/api/v1/files/{uuid}/quarantine', {
 			params: {
 				path: {
 					uuid

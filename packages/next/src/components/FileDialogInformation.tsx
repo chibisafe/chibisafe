@@ -186,7 +186,7 @@ export const FileDialogInformation = ({
 			if (type === 'publicAlbum') return;
 			if (type === 'quarantine') return;
 
-			const { data: userAlbums, error: userAlbumsError } = await openAPIClient.GET('/api/v1/folders/', {
+			const { data: userAlbums, error: userAlbumsError } = await openAPIClient.GET('/api/v1/folders', {
 				params: {
 					query: {
 						limit: 9999
@@ -201,7 +201,7 @@ export const FileDialogInformation = ({
 
 			setAlbums(userAlbums.results);
 
-			const { data: userTags, error: userTagsError } = await openAPIClient.GET('/api/v1/tags/', {
+			const { data: userTags, error: userTagsError } = await openAPIClient.GET('/api/v1/tags', {
 				params: {
 					query: {
 						limit: 9999
@@ -216,7 +216,7 @@ export const FileDialogInformation = ({
 
 			setTags(userTags.results);
 
-			const { data: userFile, error: userFileError } = await openAPIClient.GET('/api/v1/files/{uuid}/', {
+			const { data: userFile, error: userFileError } = await openAPIClient.GET('/api/v1/files/{uuid}', {
 				params: {
 					path: {
 						uuid: file?.uuid
