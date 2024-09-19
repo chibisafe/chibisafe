@@ -1,39 +1,35 @@
 import type { Metadata } from 'next';
 
-import { DashboardHeader } from '@/components/DashboardHeader';
+import { UserTable } from '@/components/tables/user-table/UserTable';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import request from '@/lib/request';
-import { TagsTable } from '@/components/tables/tags-table/TagsTable';
-import { CreateTagDialog } from '@/components/dialogs/CreateTagDialog';
 import type { PageQuery } from '@/types';
-import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
-import { CreateTagDrawer } from '@/components/drawers/CreateTagDrawer';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin - Tags'
+	title: 'Dashboard - Admin - Users'
 };
 
-export default async function DashboardTagsPage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function DashboardAdminUsersPage({ searchParams }: { readonly searchParams: PageQuery }) {
 	const cookiesStore = cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 
-	const authorization = {
-		authorization: `Bearer ${token}`
-	};
-
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
+
+	const authorization = {
+		authorization: `Bearer ${token}`
+	};
 
 	const {
 		data: response,
 		error,
 		status
 	} = await request.get({
-		url: `tags`,
+		url: `admin/users`,
 		query: {
 			page: currentPage,
 			limit: perPage,
@@ -44,7 +40,7 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 		},
 		options: {
 			next: {
-				tags: ['tags']
+				tags: ['users']
 			}
 		}
 	});
@@ -55,15 +51,9 @@ export default async function DashboardTagsPage({ searchParams }: { readonly sea
 
 	return (
 		<>
-			<DashboardHeader title="Tags" subtitle="Manage and create tags">
-				<CreateTagDialog className="hidden md:inline-flex" />
-				<CreateTagDrawer className="inline-flex md:hidden" />
-			</DashboardHeader>
 			<div className="px-2 w-full flex flex-col gap-4">
-				<Suspense>
-					<Pagination itemsTotal={response?.count} />
-				</Suspense>
-				<TagsTable data={response?.tags} />
+				<Pagination itemsTotal={response?.count} />
+				<UserTable data={response?.users} />
 			</div>
 		</>
 	);

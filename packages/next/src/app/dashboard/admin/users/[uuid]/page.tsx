@@ -4,13 +4,12 @@ import type { PageQuery } from '@/types';
 import { fetchEndpoint } from '@/lib/fileFetching';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin - User'
+	title: 'Dashboard - Admin - Users - User'
 };
 
 export default async function DashboardAdminUserPage({
@@ -47,11 +46,9 @@ export default async function DashboardAdminUserPage({
 			/>
 			<div className="px-2 w-full">
 				<div className="grid gap-4">
-					<Suspense>
-						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
-						<Pagination itemsTotal={response.count} type="admin" />
-					</Suspense>
+					<Pagination itemsTotal={response.count} type="admin" />
+					<FilesWrapper files={response.files} total={response.count} type="admin" />
+					<Pagination itemsTotal={response.count} type="admin" />
 					<FileDialog />
 				</div>
 			</div>

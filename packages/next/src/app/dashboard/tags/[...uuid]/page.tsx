@@ -6,13 +6,12 @@ import { fetchEndpoint } from '@/lib/fileFetching';
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Tags'
+	title: 'Dashboard - Tags - Tag'
 };
 
 export default async function TagPage({
@@ -51,11 +50,9 @@ export default async function TagPage({
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<div className="grid gap-4">
-					<Suspense>
-						<Pagination itemsTotal={response.count} type="tag" />
-						<FilesWrapper files={response.files} total={response.count} type="tag" />
-						<Pagination itemsTotal={response.count} type="tag" />
-					</Suspense>
+					<Pagination itemsTotal={response.count} type="tag" />
+					<FilesWrapper files={response.files} total={response.count} type="tag" />
+					<Pagination itemsTotal={response.count} type="tag" />
 					<FileDialog />
 				</div>
 			</div>

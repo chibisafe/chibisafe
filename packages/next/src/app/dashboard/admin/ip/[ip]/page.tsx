@@ -6,13 +6,12 @@ import type { PageQuery } from '@/types';
 import { BanThisIpDialog } from '@/components/dialogs/BanThisIpDialog';
 import { redirect } from 'next/navigation';
 import { BanThisIpDrawer } from '@/components/drawers/BanThisIpDrawer';
-import { Suspense } from 'react';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin - IPs'
+	title: 'Dashboard - Admin - IPs - IP'
 };
 
 export default async function DashboardPage({
@@ -51,11 +50,9 @@ export default async function DashboardPage({
 			</DashboardHeader>
 			<div className="px-2 w-full">
 				<div className="grid gap-4">
-					<Suspense>
-						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
-						<Pagination itemsTotal={response.count} type="admin" />
-					</Suspense>
+					<Pagination itemsTotal={response.count} type="admin" />
+					<FilesWrapper files={response.files} total={response.count} type="admin" />
+					<Pagination itemsTotal={response.count} type="admin" />
 					<FileDialog />
 				</div>
 			</div>
