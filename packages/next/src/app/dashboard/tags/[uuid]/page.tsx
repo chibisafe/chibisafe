@@ -1,21 +1,22 @@
 import type { Metadata } from 'next';
-
-import { DashboardHeader } from '@/components/DashboardHeader';
 import type { PageQuery } from '@/types';
-import { Suspense } from 'react';
+import { Plus } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { DashboardHeader } from '@/components/DashboardHeader';
+import { redirect } from 'next/navigation';
 import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 import { openAPIClient } from '@/lib/serverFetch';
-import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-	title: 'Dashboard - Admin - IPs'
+	title: 'Dashboard - Tags - Tag'
 };
 
-export default async function DashboardPage({
-	params,
-	searchParams
+export default async function TagPage({
+	searchParams,
+	params
 }: {
 	readonly params: { uuid: string };
 	readonly searchParams: PageQuery;
@@ -24,11 +25,7 @@ export default async function DashboardPage({
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
 
-	const {
-		data: ipData,
-		error,
-		response
-	} = await openAPIClient.GET('/api/v1/ip-bans/{uuid}', {
+	const { data: meta, response } = await openAPIClient.GET('/api/v1/tags/{uuid}', {
 		params: {
 			path: {
 				uuid: params.uuid
@@ -40,11 +37,7 @@ export default async function DashboardPage({
 		redirect('/login');
 	}
 
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
-
-	const { data, error: filesError } = await openAPIClient.GET('/api/v1/ip-bans/{uuid}/files', {
+	const { data, error } = await openAPIClient.GET('/api/v1/tags/{uuid}/files', {
 		params: {
 			path: {
 				uuid: params.uuid
@@ -57,28 +50,29 @@ export default async function DashboardPage({
 		}
 	});
 
-	if (filesError) {
-		return <div>Error: {filesError.message}</div>;
+	if (error) {
+		return <div>Error: {error.message}</div>;
 	}
 
 	return (
 		<>
 			<DashboardHeader
-				title={`${ipData.ip} files`}
-				subtitle="As an admin, you can manage their files"
+				title={meta?.name ?? ''}
 				breadcrumbs={[
-					{ name: 'Admin', url: '/dashboard/admin' },
-					{ name: 'Banned IPs', url: '/dashboard/admin/ip' },
-					{ name: ipData.ip, url: `/dashboard/admin/ip/${ipData.ip}` }
+					{ name: 'Tags', url: '/dashboard/tags' },
+					{ name: meta?.name ?? '', url: `/dashboard/tags/${params.uuid}` }
 				]}
-			/>
+			>
+				<Button>
+					<Plus className="mr-2 h-4 w-4" />
+					Upload file
+				</Button>
+			</DashboardHeader>
 			<div className="px-2 w-full">
 				<div className="grid gap-4">
-					<Suspense>
-						<Pagination itemsTotal={data.count} type="admin" />
-						<FilesWrapper files={data.results} total={data.count} type="admin" />
-						<Pagination itemsTotal={data.count} type="admin" />
-					</Suspense>
+					<Pagination itemsTotal={data.count} type="tag" />
+					<FilesWrapper files={data.results} total={data.count} type="tag" />
+					<Pagination itemsTotal={data.count} type="tag" />
 					<FileDialog />
 				</div>
 			</div>

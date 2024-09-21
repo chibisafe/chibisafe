@@ -1,12 +1,7 @@
 import type { Metadata } from 'next';
 import type { PageQuery } from '@/types';
-import { Plus } from 'lucide-react';
 
-import { Button } from '@/components/ui/react-aria-button';
-import { DashboardHeader } from '@/components/DashboardHeader';
 import { GlobalDropZone } from '@/components/Dropzone';
-import { UploadTrigger } from '@/components/UploadTrigger';
-import { buttonVariants } from '@/styles/button';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -40,29 +35,12 @@ export default async function AlbumSettingsPage({ params }: { readonly params: {
 	return (
 		<>
 			WIP
-			{/* <DashboardHeader
-				title={data.name}
-				subtitle={data.description ?? ''}
-				breadcrumbs={[
-					{ name: 'Albums', url: '/dashboard/albums' },
-					{ name: data.name, url: `/dashboard/albums/${params.uuid}` }
-				]}
-			>
-				<UploadTrigger allowsMultiple albumUuid={params.uuid}>
-					<Button className={buttonVariants()}>
-						<Plus className="mr-2 h-4 w-4" />
-						Upload file to album
-					</Button>
-				</UploadTrigger>
-			</DashboardHeader>
-			<div className="px-2 w-full">
+			{/* <div className="px-2 w-full">
 				<HydrationBoundary state={dehydrate(queryClient)}>
 					<div className="grid gap-4">
-						<Suspense>
-							<Pagination type="album" albumUuid={params.uuid} />
-							<FilesWrapper type="album" albumUuid={params.uuid} />
-							<Pagination type="album" albumUuid={params.uuid} />
-						</Suspense>
+						<Pagination type="album" albumUuid={params.uuid} />
+						<FilesWrapper type="album" albumUuid={params.uuid} />
+						<Pagination type="album" albumUuid={params.uuid} />
 						<FileDialog />
 					</div>
 				</HydrationBoundary>
