@@ -49,8 +49,8 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./uploads:/app/uploads:ro
-    expose:
-      - 80
+    ports:
+      - 24424:80
     environment:
       - BASE_URL=":80"
     restart: unless-stopped
