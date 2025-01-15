@@ -57,18 +57,19 @@ export function DashboardSidebar({ onClick }: { onClick?(): void }) {
 		}
 
 		const sharexFile = `{
-		"Name": "chibisafe",
-		"DestinationType": "ImageUploader, FileUploader",
-		"RequestType": "POST",
-		"RequestURL": "${location.origin}/api/upload",
-		"FileFormName": "file[]",
-		"Headers": {
-			"x-api-key": "${currentUser.apiKey}"
-		},
-		"ResponseType": "Text",
-		"URL": "$json:url$",
-		"ThumbnailURL": "$json:thumb$"
-	}`;
+    "Version": "14.0.0",
+    "Name": "chibisafe",
+    "DestinationType": "ImageUploader, FileUploader",
+    "RequestMethod": "POST",
+    "RequestURL": "${location.origin}/api/upload",
+    "Headers": {
+      "x-api-key": "${currentUser.apiKey}"
+    },
+    "Body": "MultipartFormData",
+    "FileFormName": "file[]",
+    "URL": "{json:url}",
+    "ThumbnailURL": "{json:thumb}"
+  }`;
 		const sharexBlob = new Blob([sharexFile], { type: 'application/octet-binary' });
 		saveAs(sharexBlob, `${location.hostname}.sxcu`);
 	};
