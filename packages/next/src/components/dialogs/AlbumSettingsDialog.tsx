@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, type PropsWithChildren } from 'react';
+import { useActionState, useEffect, type PropsWithChildren } from 'react';
 import { updateAlbumSettings } from '@/actions/UpdateAlbumSettings';
 import { MessageType } from '@/types';
 import { useAtom, useAtomValue } from 'jotai';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { isDialogOpenAtom, selectedAlbumAtom } from '@/lib/atoms/albumSettingsDialog';
@@ -37,7 +36,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 	const queryClient = useQueryClient();
 	const currentUser = useAtomValue(currentUserAtom);
 
-	const [state, formAction] = useFormState(updateAlbumSettings, {
+	const [state, formAction] = useActionState(updateAlbumSettings, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
 import { Loader2 } from 'lucide-react';
@@ -16,6 +16,7 @@ export const LoginForm = () => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const setCurrentUser = useSetAtom(currentUserAtom);
+	const usernameInputRef = useRef<HTMLInputElement>(null);
 
 	async function onSubmit(form: FormData) {
 		setIsLoading(true);
@@ -28,6 +29,8 @@ export const LoginForm = () => {
 				}
 			});
 
+			console.log(data);
+
 			if (error) {
 				toast.error(error.message);
 				return;
@@ -39,6 +42,7 @@ export const LoginForm = () => {
 		} catch (error: any) {
 			toast.error(error);
 			console.error(error);
+			usernameInputRef.current?.focus();
 		} finally {
 			setIsLoading(false);
 		}
@@ -53,6 +57,7 @@ export const LoginForm = () => {
 							Username
 						</Label>
 						<Input
+							ref={usernameInputRef}
 							id="username"
 							name="username"
 							placeholder="Username"

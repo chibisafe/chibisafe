@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { MessageType } from '@/types';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useFormState } from 'react-dom';
 import { createAlbum } from '@/actions/CreateAlbum';
 import { toast } from 'sonner';
 import { DialogContainer } from './DialogContainer';
@@ -27,7 +25,7 @@ export function CreateAlbumDialog() {
 }
 
 const Form = ({ onSuccess }: { onSuccess(): void }) => {
-	const [state, formAction] = useFormState(createAlbum, {
+	const [state, formAction] = useActionState(createAlbum, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +26,7 @@ export function BanIpDialog() {
 }
 
 const Form = ({ onSuccess }: { onSuccess(): void }) => {
-	const [state, formAction] = useFormState(banIp, {
+	const [state, formAction] = useActionState(banIp, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
