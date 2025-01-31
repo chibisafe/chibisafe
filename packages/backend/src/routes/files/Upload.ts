@@ -187,6 +187,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		if (req.headers['cf-connecting-ip']) {
 			realIP = req.headers['cf-connecting-ip'] as string;
 		}
+
 		if (req.headers['x-forwarded-for']) {
 			realIP = req.headers['x-forwarded-for'] as string;
 		}
