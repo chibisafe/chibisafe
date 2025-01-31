@@ -248,7 +248,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Internal server error */
@@ -304,7 +304,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -382,7 +382,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Bad request */
@@ -471,7 +471,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -549,7 +549,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -740,7 +740,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Internal server error */
@@ -812,6 +812,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -840,6 +841,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     reason: string | null;
@@ -854,11 +856,13 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the user was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     /**
                                      * Format: date-time
                                      * @description Date the user was edited
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     editedAt: string;
                                 } | null;
@@ -948,11 +952,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the folder was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the folder was last edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                                 /** @description Whether the user is the owner of the folder */
@@ -972,6 +978,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     fileMetadata: {
@@ -1063,11 +1070,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the folder was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the folder was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -1141,11 +1150,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Timestamp of when the invite was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Timestamp of when the invite was last edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                                 user: {
@@ -1158,11 +1169,13 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the user was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     /**
                                      * Format: date-time
                                      * @description Date the user was edited
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     editedAt: string;
                                 } | null;
@@ -1176,11 +1189,13 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the user was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     /**
                                      * Format: date-time
                                      * @description Date the user was edited
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     editedAt: string;
                                 } | null;
@@ -1227,6 +1242,7 @@ export type paths = {
                         /**
                          * Format: date-time
                          * @description Timestamp of when the invite expires
+                         * @default 1970-01-01T00:00:00.000Z
                          */
                         expiresAt?: string;
                     };
@@ -1248,11 +1264,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -1333,11 +1351,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Timestamp of when the IP ban was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Timestamp of when the IP ban was last edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                             }[];
@@ -1403,11 +1423,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -1699,7 +1721,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -2399,7 +2421,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -2472,11 +2494,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the tag was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the tag was last edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                                 nearestParent: {
@@ -2500,6 +2524,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     fileMetadata: {
@@ -2580,11 +2605,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the tag was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the tag was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -2685,7 +2712,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -2705,7 +2732,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Internal server error */
@@ -2773,11 +2800,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the user was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the user was edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                                 /** @description Roles of the user */
@@ -2859,11 +2888,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the user was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the user was edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             /** @description Roles of the user */
@@ -2954,6 +2985,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -2982,6 +3014,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     reason: string | null;
@@ -2998,11 +3031,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the user was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the user was edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                             };
@@ -3292,6 +3327,7 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the API key was edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             apiKeyEditedAt: string;
                         };
@@ -3353,7 +3389,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -3516,7 +3552,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Bad request */
@@ -3606,11 +3642,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the user was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the user was edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             /** @description Roles of the user */
@@ -3677,7 +3715,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -3752,11 +3790,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the user was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the user was edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -3831,7 +3871,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -3923,6 +3963,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -3951,6 +3992,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     reason: string | null;
@@ -3965,11 +4007,13 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the user was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     /**
                                      * Format: date-time
                                      * @description Date the user was edited
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     editedAt: string;
                                 } | null;
@@ -4054,7 +4098,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -4132,7 +4176,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -4208,11 +4252,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the tag was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the tag was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -4272,7 +4318,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -4345,11 +4391,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the tag was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the tag was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -4802,7 +4850,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -5098,6 +5146,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -5126,6 +5175,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     reason: string | null;
@@ -5203,7 +5253,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -5269,11 +5319,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -5333,7 +5385,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -5409,11 +5461,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the IP ban was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -5489,11 +5543,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             user: {
@@ -5506,11 +5562,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the user was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the user was edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                             } | null;
@@ -5524,11 +5582,13 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the user was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 /**
                                  * Format: date-time
                                  * @description Date the user was edited
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 editedAt: string;
                             } | null;
@@ -5589,7 +5649,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -5645,6 +5705,7 @@ export type paths = {
                         /**
                          * Format: date-time
                          * @description Timestamp of when the invite expires
+                         * @default 1970-01-01T00:00:00.000Z
                          */
                         expiresAt?: string;
                     };
@@ -5666,11 +5727,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Timestamp of when the invite was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -5745,7 +5808,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -5823,11 +5886,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the collaborator was added
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the collaborator was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         }[];
@@ -5903,11 +5968,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the collaborator was added
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the collaborator was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         }[];
@@ -5994,7 +6061,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Bad request */
@@ -6096,6 +6163,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -6123,6 +6191,7 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the file was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     reason: string | null;
@@ -6139,11 +6208,13 @@ export type paths = {
                                     /**
                                      * Format: date-time
                                      * @description Date the user was created
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     createdAt: string;
                                     /**
                                      * Format: date-time
                                      * @description Date the user was edited
+                                     * @default 1970-01-01T00:00:00.000Z
                                      */
                                     editedAt: string;
                                 } | null;
@@ -6228,7 +6299,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -6306,7 +6377,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -6388,11 +6459,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the folder was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the folder was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             /**
@@ -6410,6 +6483,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -6523,6 +6597,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 fileMetadata: {
@@ -6611,7 +6686,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -6682,11 +6757,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the folder was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the folder was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             /** @description Whether the user is the owner of the folder */
@@ -6748,7 +6825,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -6833,11 +6910,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the folder was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the folder was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                             /** @description Whether the user is the owner of the folder */
@@ -6915,11 +6994,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the share was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the share was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         }[];
@@ -6974,7 +7055,10 @@ export type paths = {
             requestBody?: {
                 content: {
                     "application/json": {
-                        /** Format: date-time */
+                        /**
+                         * Format: date-time
+                         * @default 1970-01-01T00:00:00.000Z
+                         */
                         expiresAt?: string;
                     };
                 };
@@ -6995,11 +7079,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the share was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the share was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -7085,7 +7171,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Bad request */
@@ -7150,7 +7236,10 @@ export type paths = {
             requestBody?: {
                 content: {
                     "application/json": {
-                        /** Format: date-time */
+                        /**
+                         * Format: date-time
+                         * @default 1970-01-01T00:00:00.000Z
+                         */
                         expiresAt?: string;
                     };
                 };
@@ -7171,11 +7260,13 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the share was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             /**
                              * Format: date-time
                              * @description Date the share was last edited
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             editedAt: string;
                         };
@@ -7253,7 +7344,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7331,7 +7422,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7409,7 +7500,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7485,7 +7576,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7561,7 +7652,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7648,6 +7739,7 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the file was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                         };
@@ -7705,7 +7797,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -7782,6 +7874,7 @@ export type paths = {
                             /**
                              * Format: date-time
                              * @description Date the file was created
+                             * @default 1970-01-01T00:00:00.000Z
                              */
                             createdAt: string;
                             fileMetadata: {
@@ -7832,6 +7925,7 @@ export type paths = {
                                 /**
                                  * Format: date-time
                                  * @description Date the file was created
+                                 * @default 1970-01-01T00:00:00.000Z
                                  */
                                 createdAt: string;
                                 reason: string | null;
@@ -7927,7 +8021,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Bad request */
@@ -8010,7 +8104,7 @@ export type paths = {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": Record<string, unknown>;
+                        "application/json": unknown;
                     };
                 };
                 /** @description Unauthorized */
@@ -8057,7 +8151,132 @@ export type paths = {
 };
 export type webhooks = Record<string, never>;
 export type components = {
-    schemas: never;
+    schemas: {
+        /** @description Folder */
+        Folder: {
+            /** @description UUID of the folder */
+            uuid: string;
+            /** @description Name of the folder */
+            name: string;
+            description: string | null;
+            /**
+             * @description Whether the folder is NSFW
+             * @default false
+             */
+            isNSFW: boolean;
+            /**
+             * Format: date-time
+             * @description Date the folder was created
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description Date the folder was last edited
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            editedAt: string;
+        };
+        /** @description File */
+        File: {
+            /** @description UUID of the file */
+            uuid: string;
+            /** @description Identifier of the file */
+            identifier: string;
+            /** @description Filename of the file */
+            filename: string;
+            /**
+             * Format: date-time
+             * @description Date the file was created
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+        };
+        /** @description Metadata of the file */
+        FileMetadata: {
+            /** @description UUID of the file metadata */
+            uuid: string;
+            /** @description Original filename of the file */
+            originalFilename: string;
+            mimeType: string | null;
+            /** @description Size of the file in bytes */
+            size: number;
+            originalWidth: number | null;
+            originalHeight: number | null;
+            thumbnailWidth: number | null;
+            thumbnailHeight: number | null;
+            /** @description Hash of the file */
+            hash: string;
+            ip: string | null;
+        };
+        /** @description Tag */
+        Tag: {
+            /** @description UUID of the tag */
+            uuid: string;
+            /** @description Name of the tag */
+            name: string;
+            /**
+             * Format: date-time
+             * @description Date the tag was created
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description Date the tag was last edited
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            editedAt: string;
+        };
+        /** @description User */
+        User: {
+            /** @description UUID of the user */
+            uuid: string;
+            /** @description Username of the user */
+            username: string;
+            /** @description Whether the user is enabled */
+            enabled: boolean;
+            /**
+             * Format: date-time
+             * @description Date the user was created
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description Date the user was edited
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            editedAt: string;
+        };
+        UserWithRoles: {
+            /** @description UUID of the user */
+            uuid: string;
+            /** @description Username of the user */
+            username: string;
+            /** @description Whether the user is enabled */
+            enabled: boolean;
+            /**
+             * Format: date-time
+             * @description Date the user was created
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description Date the user was edited
+             * @default 1970-01-01T00:00:00.000Z
+             */
+            editedAt: string;
+            /** @description Roles of the user */
+            roles: {
+                /** @description UUID of the role */
+                uuid: string;
+                /** @description Name of the role */
+                name: string;
+            }[];
+        };
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
