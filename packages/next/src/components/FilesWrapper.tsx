@@ -28,7 +28,7 @@ import { BulkDeleteFilesAction } from './dialogs/bulk-actions/BulkDeleteFilesAct
 import { BulkRegenerateThumbnailsAction } from './dialogs/bulk-actions/BulkRegenerateThumbnailsAction';
 import { BulkUnquarantineFilesAction } from './dialogs/bulk-actions/BulkUnquarantineFilesAction';
 import { BulkQuarantineFilesAction } from './dialogs/bulk-actions/BulkQuarantineFilesAction';
-
+import { BulkCompareAction } from './dialogs/bulk-actions/BulkCompareAction';
 function SelectionActions({ children, type }: PropsWithChildren<{ readonly type: FilePropsType }>) {
 	const selectedFiles = useAtomValue(selectedFilesAtom);
 
@@ -42,6 +42,9 @@ function SelectionActions({ children, type }: PropsWithChildren<{ readonly type:
 					</DropdownMenuItem>
 					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
 						<BulkRegenerateThumbnailsAction uuids={selectedFiles.map(file => file.uuid)} />
+					</DropdownMenuItem>
+					<DropdownMenuItem className="p-0" onSelect={e => e.preventDefault()}>
+						<BulkCompareAction files={selectedFiles} />
 					</DropdownMenuItem>
 					{type === 'admin' ? (
 						<>
