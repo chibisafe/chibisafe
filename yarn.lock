@@ -1198,6 +1198,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     react: "npm:^18.2.0"
     react-aria-components: "npm:^1.1.1"
+    react-compare-slider: "npm:^4.0.0-0"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.2"
@@ -13664,6 +13665,16 @@ __metadata:
     react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
   checksum: 10c0/03c17a9874b4c172f6cbdd97f8587420998f99520af19cf7dc24f730e7880fd688a6dbc66f2388ed3eb236992b4bcd075af410454228376a58332da24463cbd9
+  languageName: node
+  linkType: hard
+
+"react-compare-slider@npm:^4.0.0-0":
+  version: 4.0.0-0
+  resolution: "react-compare-slider@npm:4.0.0-0"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10c0/90971a043af35551c267f832e7849ecff33286351bf812bcb21346c7ca26255cef3dd35a399a6a612e84f2bb76d1d255fc8ae9b792302d334439fc23bd2b2f81
   languageName: node
   linkType: hard
 
