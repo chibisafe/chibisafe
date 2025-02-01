@@ -5,7 +5,7 @@ summary: A comprehensive guide on how to set up chibisafe with Docker
 
 # Running chibisafe with Docker
 
-> This document will guide you in setting up chibisafe with [Docker](https://www.docker.com/). Although it's not the only method, it is the preferred way to run the service given its ease of use. 
+> This document will guide you in setting up chibisafe with [Docker](https://www.docker.com/). Although it's not the only method, it is the preferred way to run the service given its ease of use.
 
 The fastest and easiest method to run chibisafe nowdays is by using the official Docker images we provide.
 This lets you get up and running with only a few commands and it comes in 2 different flavors:
@@ -19,9 +19,15 @@ This lets you get up and running with only a few commands and it comes in 2 diff
 ### Configuring
 In order to use our images you need to create somewhere in your system just 2 files, `docker-compose.yml` and `Caddyfile`. The way our docker compose file is structured it will create 3 services which are the chibisafe backend, the chibisafe frontend, and a very minimal caddy instance to merge those 2 services into 1 resulting port.
 
-```yml
-version: "3.7"
+This is what your directory should look like
+<pre>
+└── chibisafe
+    ├── docker-compose.yml
+    └── Caddyfile
+</pre>
 
+```yml
+# chibisafe/docker-compose.yml
 services:
   chibisafe:
     image: chibisafe/chibisafe:latest
@@ -53,13 +59,14 @@ services:
     restart: unless-stopped
 ```
 <Callout type="danger">
-  Even if you use NGINX Proxy Manager, or Caddy in your host system, it is still necessary to hhave Caddy inside the docker compose file. Do not change these options unless you know what you are doing, otherwise you'll break the routing.
+  Even if you use NGINX Proxy Manager, or Caddy in your host system, it is still necessary to have Caddy inside the docker compose file. Do not change these options unless you know what you are doing, otherwise you'll break the routing.
 </Callout>
 
 
 Now that your `docker-compose.yml` file is set up it's now time to create the `Caddyfile` to finish the configuration process:
 
-```yml
+```
+# chibisafe/Caddyfile
 {$BASE_URL} {
 	route {
 		file_server * {
@@ -106,17 +113,23 @@ After the chibisafe images are pulled and the setup process finishes, you will b
 In order to attach a domain name to an application running with an exposed port like chibisafe you need to set up a reverse proxy in your system. The 2 most common solutions for this are [Caddy](https://caddyserver.com/) and [NGINX](https://www.nginx.com/), and we prefer Caddy since it's simpler to use and understand. For that reason we'll only be providing a Caddyfile configuration snippet to get you up and running, so if you have further questions you can head to our [Discord support server](https://discord.gg/5g6vgwn) and ask or open a GitHub issue and we'll try to get back to you as soon as possible.
 
 #### Caddy
+<Callout type="warning">
+  This section explains configuration options for Caddy installs on your host system. This is separate from the Caddy install used within the Chibisafe stack.
+</Callout>
 
 Once you have Caddy installed locally you can add this to your Caddyfile in order reverse proxy the exposed port from chibisafe:
-```yml
+
+```
+# /etc/caddy/Caddyfile
 your-chibisafe-domain.com {
-	tls internal
 	reverse_proxy localhost:24424
 }
 ```
 
-If you are a CloudFlare user and want your instance to be proxied by them, you should instead use the one below since it adds the necessary headers to pass the visitor's IP to the chibisafe instance.
-```yml
+If you use Cloudflare or a similar service and want your instance to be proxied by them, you should instead use the one below since it adds the necessary headers to pass the visitor's IP to the chibisafe instance. Note that the trusted proxies and X-Forwarded-For headers are specifically made for use with Cloudflare and will require modification for other proxies.
+
+```
+# /etc/caddy/Caddyfile
 your-chibisafe-domain.com {
 	tls internal
 	reverse_proxy localhost:24424 {

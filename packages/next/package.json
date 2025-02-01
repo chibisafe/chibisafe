@@ -63,6 +63,7 @@
 		"p-queue": "^8.1.0",
 		"react": "^19.0.0",
 		"react-aria-components": "^1.6.0",
+    "react-compare-slider": "^4.0.0-0",
 		"react-dom": "^19.0.0",
 		"react-dropzone": "^14.3.5",
 		"react-hook-form": "^7.54.2",

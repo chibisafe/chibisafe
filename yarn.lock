@@ -410,6 +410,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     react: "npm:^19.0.0"
     react-aria-components: "npm:^1.6.0"
+    react-compare-slider: "npm:^4.0.0-0"
     react-dom: "npm:^19.0.0"
     react-dropzone: "npm:^14.3.5"
     react-hook-form: "npm:^7.54.2"
