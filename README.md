@@ -22,7 +22,7 @@ _If you fork/deploy your own instance it would mean a lot if you were to keep ei
 </p>
 
 ### Features of v6 aka Holo
-- 📄 [Beautiful docs](https://chibisafe.app/docs/intro)
+- 📄 [Beautiful docs](https://chibisafe.app)
 - 🗄️ [S3 Storage Support](https://github.com/chibisafe/chibisafe/blob/master/docs/s3.md)
 - 📷 Beautiful masonry to browse media files
 - ✨ Chunked uploads for big files
