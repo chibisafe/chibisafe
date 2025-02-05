@@ -41,7 +41,8 @@ export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | und
 
 			if (isNetworkStored) {
 				options.headers = {
-					'Content-Type': file.type
+					'Content-Type': file.type,
+          'x-amz-acl': 'public-read'
 				};
 			} else {
 				options.postParams = {
