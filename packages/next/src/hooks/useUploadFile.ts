@@ -42,8 +42,12 @@ export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | und
 			if (isNetworkStored) {
 				options.headers = {
 					'Content-Type': file.type,
-          'x-amz-acl': 'public-read'
 				};
+
+				if(endpoint.includes("digitaloceanspaces.com")){
+					options.headers["x-amz-acl"] = "public-read";
+				}
+        
 			} else {
 				options.postParams = {
 					name: file.name,
