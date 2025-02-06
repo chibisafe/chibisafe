@@ -41,7 +41,7 @@ export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | und
 
 			if (isNetworkStored) {
 				options.headers = {
-					'Content-Type': file.type,
+					'Content-Type': file.type
 				};
 
 				if(endpoint.includes("digitaloceanspaces.com")){
