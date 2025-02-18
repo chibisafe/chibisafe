@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="234" height="376" src="https://lolisafe.moe/xjoghu.png">
+  <img width="234" height="376" src="https://chibisafe.moe/xjoghu.png">
 </p>
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/chibisafe/chibisafe/master/LICENSE)
@@ -72,7 +72,7 @@ If you come from v5 you might be used to chibisafe exposing 1 single port for yo
 
 ## Author
 
-**Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/WeebDev/chibisafe/blob/master/LICENSE) License.<br>
+**Chibisafe** © [Pitu](https://github.com/Pitu), Released under the [MIT](https://github.com/chibisafe/chibisafe/blob/master/LICENSE) License.<br>
 Authored and maintained by Pitu.
 
 <a href="https://github.com/chibisafe/chibisafe/graphs/contributors">
