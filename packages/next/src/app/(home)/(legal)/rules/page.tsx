@@ -2,6 +2,8 @@ import { CustomMDX } from '@/components/mdx/Mdx';
 import request from '@/lib/request';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export function generateMetadata() {
 	const section = 'Rules';
 	return {
