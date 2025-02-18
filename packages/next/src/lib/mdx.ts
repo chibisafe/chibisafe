@@ -54,10 +54,6 @@ function getMDXData(dir: string) {
 	});
 }
 
-export function getPosts() {
-	return getMDXData(path.join(process.cwd(), 'src', 'content', 'guides'));
-}
-
 export function getFaq() {
 	return getMDXData(path.join(process.cwd(), 'src', 'content', 'faq'));
 }
