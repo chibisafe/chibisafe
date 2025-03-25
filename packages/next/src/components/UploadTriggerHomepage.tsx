@@ -18,6 +18,7 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 	const [albums, setAlbums] = useState<Album[]>([]);
 	const [isDisabled, setIsDisabled] = useState(true);
 	const [selectedAlbum, setSelectedAlbum] = useState<string | null>(null);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
 		if (!settings?.publicMode && !currentUser?.uuid) {
@@ -27,7 +28,13 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 			setIsDisabled(false);
 		}
 
+		if (currentUser?.uuid) {
+			setIsLoggedIn(true);
+		}
+
 		const fetchAlbums = async () => {
+			if (!currentUser?.uuid) return;
+
 			const { data, error } = await request.get({
 				url: 'albums',
 				query: { limit: 1000 },
@@ -73,16 +80,20 @@ export const UploadTriggerHomepage = ({ settings }: { readonly settings: Setting
 						</Button>
 					</label>
 				</div>
-				<div className="-translate-y-5 bg-secondary rounded-lg">
-					<Combobox
-						data={albums.map(album => ({
-							value: album.name,
-							label: album.name
-						}))}
-						onSelected={value => setSelectedAlbum(albums.find(album => album.name === value)?.uuid ?? null)}
-						placeholder="Select album..."
-					/>
-				</div>
+				{isLoggedIn && (
+					<div className="-translate-y-5 bg-secondary rounded-lg">
+						<Combobox
+							data={albums.map(album => ({
+								value: album.name,
+								label: album.name
+							}))}
+							onSelected={value =>
+								setSelectedAlbum(albums.find(album => album.name === value)?.uuid ?? null)
+							}
+							placeholder="Select album..."
+						/>
+					</div>
+				)}
 			</div>
 		</UploadTrigger>
 	);

@@ -7,7 +7,7 @@ import { deleteTmpFile } from './File.js';
 import { log } from './Logger.js';
 import previewUtil from './videoPreview/FragmentPreview.js';
 
-export const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg'];
+export const imageExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.webp', '.svg', '.ico', '.heic', '.avif'];
 export const videoExtensions = ['.webm', '.mp4', '.wmv', '.avi', '.mov', '.mkv', '.mpeg', '.ogv'];
 
 const thumbPath = fileURLToPath(new URL('../../../../uploads/thumbs', import.meta.url));

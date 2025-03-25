@@ -3,30 +3,10 @@ import { ChibisafeLogo } from '@/components/svg/ChibisafeLogo';
 import request from '@/lib/request';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/styles/button';
-import { BlocksIcon, GalleryHorizontal, LinkIcon, Star, TagsIcon, UsersRoundIcon } from 'lucide-react';
+import { BlocksIcon, GalleryHorizontal, LinkIcon, TagsIcon, UsersRoundIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function Home() {
-	let stars = null;
-
-	try {
-		const response = await fetch('https://api.github.com/repos/chibisafe/chibisafe', {
-			headers: {
-				Accept: 'application/vnd.github+json'
-			},
-			next: {
-				revalidate: 60
-			}
-		});
-
-		const json = await response.json();
-		if (json.stargazers_count) {
-			stars = Number.parseInt(json.stargazers_count, 10).toLocaleString();
-		}
-	} catch (error) {
-		console.error(error);
-	}
-
 	const { data: settings, error } = await request.get({
 		url: 'settings',
 		options: {
@@ -96,12 +76,6 @@ export default async function Home() {
 									rel="noopener noreferrer"
 									className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
 								>
-									{stars ? (
-										<>
-											{stars}
-											<Star className="h-4 w-4 mx-1" />
-										</>
-									) : null}
 									GitHub
 								</a>
 							</div>
@@ -122,12 +96,6 @@ export default async function Home() {
 								rel="noopener noreferrer"
 								className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
 							>
-								{stars ? (
-									<>
-										{stars}
-										<Star className="h-4 w-4 mx-1" />
-									</>
-								) : null}
 								GitHub
 							</a>
 						</div>

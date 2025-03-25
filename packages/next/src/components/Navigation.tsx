@@ -39,15 +39,15 @@ export function Navigation({
 				>
 					Docs
 				</a>
-				<Link
-					href="/guides"
+				<a
+					href="https://chibisafe.app/docs/intro"
+					rel="noopener noreferrer"
 					className={cn(
-						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
-						path.startsWith('/guides') ? 'text-foreground' : 'text-foreground/60'
+						'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60'
 					)}
 				>
 					Guides
-				</Link>
+				</a>
 				<Link
 					href="/faq"
 					className={cn(
