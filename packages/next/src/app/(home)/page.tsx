@@ -64,7 +64,7 @@ export default async function Home() {
 							</h1>
 							<p className="max-w-full w-full text-muted-foreground text-lg lg:text-xl font-normal text-center lg:text-left">
 								A modern and self-hosted take on file uploading services that can handle anything you
-								throw at it thanks to it's robust and fast API, chunked uploads support and more.
+								throw at it thanks to its robust and fast API, chunked uploads support and more.
 							</p>
 							<div className="hidden md:flex flex-col md:flex-row gap-4">
 								<Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
