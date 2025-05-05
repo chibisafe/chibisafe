@@ -184,11 +184,11 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 
 		// set realIP to make sure it is returning the right IP address for some proxies
 		let realIP = req.ip;
-		if (req.headers['cf-connecting-ip']) {
+		if (req.headers['x-real-ip']) {
+			realIP = req.headers['x-real-ip'] as string;
+		} else if (req.headers['cf-connecting-ip']) {
 			realIP = req.headers['cf-connecting-ip'] as string;
-		}
-
-		if (req.headers['x-forwarded-for']) {
+		} else if (req.headers['x-forwarded-for']) {
 			realIP = req.headers['x-forwarded-for'] as string;
 		}
 
