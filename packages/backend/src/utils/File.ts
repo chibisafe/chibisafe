@@ -518,9 +518,18 @@ export const handleUploadFile = async ({
 	let uploadedFile;
 	const fileOnDb = await checkFileHashOnDB(user, file);
 	if (fileOnDb?.repeated) {
+
 		log.info(
 			`> Tried uploading ${file.original} but already exists on database with identifier: ${fileOnDb.file.name}`
 		);
+
+		//  && album != fileOnDb.file.albums.find((file: any) => file.id === album)
+		// todo what happens if the file is already in the same album
+		if(SETTINGS.saveDuplicatesToAlbum && album) {
+			await saveFileToAlbum(album, fileOnDb.file.id)
+		}
+
+
 		uploadedFile = fileOnDb.file;
 		await deleteTmpFile(upload.path);
 	} else {

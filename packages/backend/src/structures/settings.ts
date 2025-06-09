@@ -77,6 +77,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.privacyPolicyPageContent = settingsTable.privacyPolicyPageContent;
 		SETTINGS.termsOfServicePageContent = settingsTable.termsOfServicePageContent;
 		SETTINGS.rulesPageContent = settingsTable.rulesPageContent;
+		SETTINGS.saveDuplicatesToAlbum = settingsTable.saveDuplicatesToAlbum
 		return;
 	}
 
@@ -122,7 +123,8 @@ export const loadSettings = async (force = false) => {
 		S3PublicUrl: '',
 		privacyPolicyPageContent: '',
 		termsOfServicePageContent: '',
-		rulesPageContent: ''
+		rulesPageContent: '',
+		saveDuplicatesToAlbum: false
 	};
 
 	await prisma.settings.create({
@@ -250,6 +252,12 @@ const SETTINGS_META = {
 		name: 'Generated short URL Length',
 		notice: 'This setting should at least be 8 characters long to avoid collisions.',
 		category: 'other'
+	},
+	saveDuplicatesToAlbum: {
+		type: 'boolean',
+		description: 'Whether or not to add a file that was already uploaded to the album you tried uploading it to.',
+		name: 'Add duplicates to Album',
+		category: 'uploads'
 	},
 	blockedExtensions: {
 		type: 'string',
@@ -407,12 +415,6 @@ const SETTINGS_META = {
 		type: 'text',
 		description: 'The markdown content for the terms of service page. Leave empty to disable.',
 		name: 'Terms of Service Page',
-		category: 'legal'
-	},
-	rulesPageContent: {
-		type: 'text',
-		description: 'The markdown content for the rules page. Leave empty to disable.',
-		name: 'Rules Page',
 		category: 'legal'
 	}
 };
