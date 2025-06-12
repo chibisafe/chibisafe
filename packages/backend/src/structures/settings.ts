@@ -416,5 +416,11 @@ const SETTINGS_META = {
 		description: 'The markdown content for the terms of service page. Leave empty to disable.',
 		name: 'Terms of Service Page',
 		category: 'legal'
+	},
+	rulesPageContent: {
+		type: 'text',
+		description: 'The markdown content for the rules page. Leave empty to disable.',
+		name: 'Rules Page',
+		category: 'legal'
 	}
 };
