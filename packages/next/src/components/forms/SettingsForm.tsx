@@ -51,7 +51,7 @@ const formSchema = z.object({
 	generateOriginalFileNameWithIdentifier: z.boolean().optional(),
 	enableMixedCaseFilenames: z.boolean().optional(),
 	generatedFilenameLength: z.coerce.number(),
-  saveDuplicatesToAlbum: z.boolean().optional(),
+	saveDuplicatesToAlbum: z.boolean().optional(),
 	blockedExtensions: z.string().optional(),
 	blockNoExtension: z.boolean().optional(),
 	useNetworkStorage: z.boolean().optional(),

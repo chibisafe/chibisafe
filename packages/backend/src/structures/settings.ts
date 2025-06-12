@@ -51,6 +51,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
 		SETTINGS.generatedLinksLength = settingsTable.generatedLinksLength;
+		SETTINGS.saveDuplicatesToAlbum = settingsTable.saveDuplicatesToAlbum;
 		SETTINGS.blockedExtensions = settingsTable.blockedExtensions.split(',');
 		SETTINGS.blockNoExtension = settingsTable.blockNoExtension;
 		SETTINGS.publicMode = settingsTable.publicMode;
@@ -77,7 +78,6 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.privacyPolicyPageContent = settingsTable.privacyPolicyPageContent;
 		SETTINGS.termsOfServicePageContent = settingsTable.termsOfServicePageContent;
 		SETTINGS.rulesPageContent = settingsTable.rulesPageContent;
-		SETTINGS.saveDuplicatesToAlbum = settingsTable.saveDuplicatesToAlbum
 		return;
 	}
 
@@ -98,6 +98,7 @@ export const loadSettings = async (force = false) => {
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
 		generatedLinksLength: 8,
+		saveDuplicatesToAlbum: false,
 		blockedExtensions: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'].join(','),
 		blockNoExtension: true,
 		publicMode: false,
@@ -123,8 +124,7 @@ export const loadSettings = async (force = false) => {
 		S3PublicUrl: '',
 		privacyPolicyPageContent: '',
 		termsOfServicePageContent: '',
-		rulesPageContent: '',
-		saveDuplicatesToAlbum: false
+		rulesPageContent: ''
 	};
 
 	await prisma.settings.create({
