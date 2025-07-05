@@ -73,6 +73,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
 		SETTINGS.S3SecretKey = settingsTable.S3SecretKey;
 		SETTINGS.S3Endpoint = settingsTable.S3Endpoint;
+		SETTINGS.S3PathStyle = settingsTable.S3PathStyle;
 		SETTINGS.S3PublicUrl = settingsTable.S3PublicUrl;
 		SETTINGS.privacyPolicyPageContent = settingsTable.privacyPolicyPageContent;
 		SETTINGS.termsOfServicePageContent = settingsTable.termsOfServicePageContent;
@@ -118,6 +119,7 @@ export const loadSettings = async (force = false) => {
 		S3Bucket: '',
 		S3AccessKey: '',
 		S3SecretKey: '',
+		S3PathStyle: false,
 		S3Endpoint: '',
 		S3PublicUrl: '',
 		privacyPolicyPageContent: '',
@@ -376,6 +378,13 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The secret key for the S3 bucket.',
 		name: 'S3 Secret Key',
+		category: 'uploads'
+	},
+	S3PathStyle: {
+		type: 'boolean',
+		description: 'Whether or not to use path style access for the S3 bucket',
+		name: 'S3 Path Style',
+		notice: 'This is usually true for non-AWS S3 providers.',
 		category: 'uploads'
 	},
 	S3Endpoint: {

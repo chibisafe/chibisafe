@@ -59,6 +59,7 @@ const formSchema = z.object({
 	S3Bucket: z.string().optional(),
 	S3AccessKey: z.string().optional(),
 	S3SecretKey: z.string().optional(),
+	S3PathStyle: z.boolean().optional(),
 	S3Endpoint: z.string().optional(),
 	S3PublicUrl: z.string().optional(),
 	// Other
