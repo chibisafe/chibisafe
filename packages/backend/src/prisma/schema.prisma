@@ -160,6 +160,7 @@ model settings {
 	S3AccessKey String @default("")
 	S3SecretKey String @default("")
 	S3Endpoint String @default("")
+	S3PathStyle Boolean @default(false)
 	S3PublicUrl String @default("")
 }
 

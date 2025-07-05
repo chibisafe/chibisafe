@@ -7,7 +7,8 @@ export const createS3Client = () => {
 		credentials: {
 			accessKeyId: SETTINGS.S3AccessKey,
 			secretAccessKey: SETTINGS.S3SecretKey
-		}
+		},
+		forcePathStyle: SETTINGS.S3PathStyle
 	};
 
 	if (SETTINGS.S3Endpoint) {
