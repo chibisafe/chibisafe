@@ -25,7 +25,8 @@ export const schema = {
 		.object({
 			identifier: z.string().describe('The identifier of the file.'),
 			name: z.string().describe('The name of the file.'),
-			type: z.string().describe('The type of the file.')
+			type: z.string().describe('The type of the file.'),
+			sourceUrl: z.string().optional().describe('The source URL of the file.')
 		})
 		.required(),
 	response: {
@@ -56,7 +57,12 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	if (!SETTINGS.useNetworkStorage) return res.internalServerError('Network storage is not enabled');
 
-	const { identifier, name, type } = req.body as { identifier: string; name: string; type: string };
+	const { identifier, name, type, sourceUrl } = req.body as {
+		identifier: string;
+		name: string;
+		sourceUrl?: string;
+		type: string;
+	};
 	if (!identifier || !name || !type) return res.badRequest('Missing file identifier');
 
 	const { createS3Client } = await import('@/structures/s3.js');
@@ -97,7 +103,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		hash,
 		ip: req.ip,
 		isS3: true,
-		isWatched: false
+		isWatched: false,
+		sourceUrl
 	};
 
 	let uploadedFile;

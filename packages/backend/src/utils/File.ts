@@ -338,6 +338,7 @@ export const storeFileToDb = async (
 		size: file.size,
 		hash: file.hash,
 		ip: file.ip,
+		sourceUrl: file.sourceUrl ?? null,
 		isS3: file.isS3,
 		isWatched: file.isWatched,
 		createdAt: now,
@@ -484,7 +485,7 @@ export const handleUploadFile = async ({
 }: {
 	album?: number | null | undefined;
 	ip: string;
-	upload: { name: string; path: string; size: string; type: string };
+	upload: { name: string; path: string; size: string; sourceUrl?: string; type: string };
 	user?: RequestUser | User | undefined;
 }) => {
 	// Assign a unique identifier to the file
@@ -511,6 +512,7 @@ export const handleUploadFile = async ({
 		size: upload.size,
 		hash: await hashFile(upload.path),
 		ip,
+		sourceUrl: upload.sourceUrl,
 		isS3: false,
 		isWatched: false
 	};

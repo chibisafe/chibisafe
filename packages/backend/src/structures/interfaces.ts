@@ -46,6 +46,7 @@ export interface FileInProgress {
 	original: string;
 	path: string;
 	size: string;
+	sourceUrl?: string | undefined;
 	type: string;
 }
 
@@ -63,6 +64,7 @@ export interface File {
 		name: string;
 	};
 	size: number;
+	sourceUrl?: string | null;
 	type: string;
 	userId?: number | null;
 	// id: number;
