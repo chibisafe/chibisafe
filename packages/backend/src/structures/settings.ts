@@ -51,6 +51,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
 		SETTINGS.generatedLinksLength = settingsTable.generatedLinksLength;
+		SETTINGS.saveDuplicatesToAlbum = settingsTable.saveDuplicatesToAlbum;
 		SETTINGS.blockedExtensions = settingsTable.blockedExtensions.split(',');
 		SETTINGS.blockNoExtension = settingsTable.blockNoExtension;
 		SETTINGS.publicMode = settingsTable.publicMode;
@@ -73,6 +74,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.S3AccessKey = settingsTable.S3AccessKey;
 		SETTINGS.S3SecretKey = settingsTable.S3SecretKey;
 		SETTINGS.S3Endpoint = settingsTable.S3Endpoint;
+		SETTINGS.S3PathStyle = settingsTable.S3PathStyle;
 		SETTINGS.S3PublicUrl = settingsTable.S3PublicUrl;
 		SETTINGS.privacyPolicyPageContent = settingsTable.privacyPolicyPageContent;
 		SETTINGS.termsOfServicePageContent = settingsTable.termsOfServicePageContent;
@@ -97,6 +99,7 @@ export const loadSettings = async (force = false) => {
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
 		generatedLinksLength: 8,
+		saveDuplicatesToAlbum: false,
 		blockedExtensions: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'].join(','),
 		blockNoExtension: true,
 		publicMode: false,
@@ -118,6 +121,7 @@ export const loadSettings = async (force = false) => {
 		S3Bucket: '',
 		S3AccessKey: '',
 		S3SecretKey: '',
+		S3PathStyle: false,
 		S3Endpoint: '',
 		S3PublicUrl: '',
 		privacyPolicyPageContent: '',
@@ -251,6 +255,12 @@ const SETTINGS_META = {
 		notice: 'This setting should at least be 8 characters long to avoid collisions.',
 		category: 'other'
 	},
+	saveDuplicatesToAlbum: {
+		type: 'boolean',
+		description: 'Whether or not to add a file that was already uploaded to the album you tried uploading it to.',
+		name: 'Add duplicates to Album',
+		category: 'uploads'
+	},
 	blockedExtensions: {
 		type: 'string',
 		description: 'The blocked extensions for uploads. Separate them with a comma.',
@@ -376,6 +386,13 @@ const SETTINGS_META = {
 		type: 'string',
 		description: 'The secret key for the S3 bucket.',
 		name: 'S3 Secret Key',
+		category: 'uploads'
+	},
+	S3PathStyle: {
+		type: 'boolean',
+		description: 'Whether or not to use path style access for the S3 bucket',
+		name: 'S3 Path Style',
+		notice: 'This is usually true for non-AWS S3 providers.',
 		category: 'uploads'
 	},
 	S3Endpoint: {

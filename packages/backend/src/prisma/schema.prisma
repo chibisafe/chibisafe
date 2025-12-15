@@ -42,6 +42,7 @@ model files {
 	size String
 	hash String
 	ip String
+	sourceUrl String?
 	isS3 Boolean @default(false)
 	isWatched Boolean @default(false)
 	createdAt DateTime @default(now())
@@ -133,6 +134,7 @@ model settings {
 	generatedFilenameLength Int
 	generatedAlbumLength Int
 	generatedLinksLength Int @default(8)
+	saveDuplicatesToAlbum Boolean @default(false)
 	blockedExtensions String
 	blockNoExtension Boolean
 	publicMode Boolean
@@ -160,6 +162,7 @@ model settings {
 	S3AccessKey String @default("")
 	S3SecretKey String @default("")
 	S3Endpoint String @default("")
+	S3PathStyle Boolean @default(false)
 	S3PublicUrl String @default("")
 }
 

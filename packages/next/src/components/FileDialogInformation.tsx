@@ -348,6 +348,20 @@ export const FileDialogInformation = ({
 						<Input value={file.url} name="url" id="url" readOnly />
 					</div>
 
+					{file.sourceUrl ? (
+						<div>
+							<Label htmlFor="source">Source</Label>
+							<div className="flex gap-2">
+								<Input value={file.sourceUrl} name="source" id="source" readOnly />
+								<Button size={'icon'} variant={'ghost'} asChild>
+									<a href={file.sourceUrl} target="_blank" rel="noopener noreferrer">
+										<ArrowUpRightFromSquare className="h-5 w-5" />
+									</a>
+								</Button>
+							</div>
+						</div>
+					) : null}
+
 					<div>
 						<Label htmlFor="size">Size</Label>
 						<Input value={formatBytes(file.size)} name="size" id="size" readOnly />
