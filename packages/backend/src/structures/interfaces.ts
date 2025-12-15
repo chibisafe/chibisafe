@@ -109,6 +109,7 @@ export interface Settings {
 	S3AccessKey: string;
 	S3Bucket: string;
 	S3Endpoint: string;
+	S3PathStyle: boolean;
 	S3PublicUrl: string;
 	S3Region: string;
 	S3SecretKey: string;
