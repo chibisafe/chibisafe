@@ -50,6 +50,7 @@ export type File = {
 	preview?: string;
 	quarantine: boolean;
 	size: number;
+	sourceUrl?: string;
 	thumb: string;
 	type: string;
 	url: string;

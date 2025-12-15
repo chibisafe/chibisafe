@@ -24,13 +24,15 @@ export const schema = {
 		albumuuid: z.string().optional().describe('The uuid of the album.'),
 		'chibi-chunk-number': z.coerce.number().optional().describe('The chunk number.'),
 		'chibi-chunks-total': z.coerce.number().optional().describe('The total number of chunks.'),
-		'chibi-uuid': z.string().optional().describe('The uuid of the file.')
+		'chibi-uuid': z.string().optional().describe('The uuid of the file.'),
+		'x-source-url': z.string().optional().describe('The source URL of the file.')
 	}),
 	body: z
 		.object({
 			size: z.number().describe('The size of the file.'),
 			name: z.string().describe('The name of the file.'),
-			contentType: z.string().describe('The content type of the file.')
+			contentType: z.string().describe('The content type of the file.'),
+			sourceUrl: z.string().optional().describe('The source URL of the file.')
 		})
 		.or(z.null()),
 	response: {
@@ -189,7 +191,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 				name: upload.metadata.name,
 				path: upload.path as string,
 				type: upload.metadata.type as string,
-				size: upload.metadata.size ?? '0'
+				size: upload.metadata.size ?? '0',
+				sourceUrl: (req.headers['x-source-url'] as string) ?? undefined
 			},
 			album
 		});
