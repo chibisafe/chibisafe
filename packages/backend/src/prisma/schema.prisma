@@ -134,6 +134,7 @@ model settings {
 	generatedFilenameLength Int
 	generatedAlbumLength Int
 	generatedLinksLength Int @default(8)
+	saveDuplicatesToAlbum Boolean @default(false)
 	blockedExtensions String
 	blockNoExtension Boolean
 	publicMode Boolean
