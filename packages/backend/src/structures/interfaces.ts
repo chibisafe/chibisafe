@@ -140,6 +140,7 @@ export interface Settings {
 	rateLimitMax: number;
 	rateLimitWindow: number;
 	rulesPageContent: string;
+	saveDuplicatesToAlbum: boolean;
 	secret: string;
 	serveUploadsFrom: string;
 	serviceName: string;

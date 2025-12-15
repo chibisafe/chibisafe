@@ -51,6 +51,7 @@ export const loadSettings = async (force = false) => {
 		SETTINGS.generatedFilenameLength = settingsTable.generatedFilenameLength;
 		SETTINGS.generatedAlbumLength = settingsTable.generatedAlbumLength;
 		SETTINGS.generatedLinksLength = settingsTable.generatedLinksLength;
+		SETTINGS.saveDuplicatesToAlbum = settingsTable.saveDuplicatesToAlbum;
 		SETTINGS.blockedExtensions = settingsTable.blockedExtensions.split(',');
 		SETTINGS.blockNoExtension = settingsTable.blockNoExtension;
 		SETTINGS.publicMode = settingsTable.publicMode;
@@ -98,6 +99,7 @@ export const loadSettings = async (force = false) => {
 		generatedFilenameLength: 12,
 		generatedAlbumLength: 6,
 		generatedLinksLength: 8,
+		saveDuplicatesToAlbum: false,
 		blockedExtensions: ['.jar', '.exe', '.msi', '.com', '.bat', '.cmd', '.scr', '.ps1', '.sh'].join(','),
 		blockNoExtension: true,
 		publicMode: false,
@@ -252,6 +254,12 @@ const SETTINGS_META = {
 		name: 'Generated short URL Length',
 		notice: 'This setting should at least be 8 characters long to avoid collisions.',
 		category: 'other'
+	},
+	saveDuplicatesToAlbum: {
+		type: 'boolean',
+		description: 'Whether or not to add a file that was already uploaded to the album you tried uploading it to.',
+		name: 'Add duplicates to Album',
+		category: 'uploads'
 	},
 	blockedExtensions: {
 		type: 'string',
