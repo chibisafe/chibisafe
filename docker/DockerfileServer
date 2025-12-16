@@ -3,7 +3,9 @@ FROM node:20-alpine as runner
 
 RUN apk update
 RUN apk add --no-cache libc6-compat git openssl
-COPY --from=ffmpeg /bin/ffmpeg /usr/bin/ffmpeg
+
+COPY --from=ffmpeg /bin/ffmpeg /usr/local/bin/ffmpeg
+RUN chmod +x /usr/local/bin/ffmpeg
 
 WORKDIR /app
 COPY . .
