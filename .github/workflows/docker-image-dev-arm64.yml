@@ -1,4 +1,4 @@
-name: Build and publish dev image
+name: Build and publish dev image (ARM64)
 
 on:
   push:
@@ -46,13 +46,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       -
         name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           file: docker/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: |
             chibisafe/chibisafe:dev
@@ -64,8 +67,9 @@ jobs:
         with:
           context: .
           file: docker/DockerfileServer
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: |
             chibisafe/chibisafe-server:dev
             ghcr.io/chibisafe/chibisafe-server:dev
+
