@@ -1,4 +1,4 @@
-FROM jrottenberg/ffmpeg:6.1.4-alpine AS ffmpeg
+FROM jrottenberg/ffmpeg:6.1.3-alpine320 AS ffmpeg
 FROM node:20-alpine as runner
 
 RUN apk update
