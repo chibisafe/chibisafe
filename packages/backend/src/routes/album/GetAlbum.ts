@@ -16,7 +16,8 @@ export const schema = {
 	tags: ['Albums'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your files.')
 	}),
 	response: {
 		200: z.object({
