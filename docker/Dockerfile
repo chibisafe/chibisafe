@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 RUN apk add --no-cache libc6-compat git
 
@@ -9,7 +9,7 @@ COPY package.json yarn.lock turbo.json tsconfig.json ./
 RUN yarn workspaces focus @chibisafe/next
 RUN yarn workspace @chibisafe/next build
 
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 WORKDIR /app
 
