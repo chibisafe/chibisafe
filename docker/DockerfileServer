@@ -4,11 +4,10 @@ FROM node:20-alpine AS runner
 RUN apk update
 RUN apk add --no-cache libc6-compat git openssl
 
-COPY --from=ffmpeg /opt/ffmpeg /opt/ffmpeg
-ENV PATH="/opt/ffmpeg/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/opt/ffmpeg/lib"
+COPY --from=ffmpeg /bin/ffmpeg /usr/bin/ffmpeg
+COPY --from=ffmpeg /lib /lib
 
-RUN ffmpeg -version
+RUN chmod +x /usr/bin/ffmpeg
 
 WORKDIR /app
 COPY . .
