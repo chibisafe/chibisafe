@@ -9,6 +9,8 @@ import { queryLimitSchema } from '@/structures/schemas/QueryLimit.js';
 import { queryPageSchema } from '@/structures/schemas/QueryPage.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import { constructFilePublicLink } from '@/utils/File.js';
+import { SETTINGS } from '@/structures/settings.js';
+import { parseSortOrder } from '@/utils/SortOrder.js';
 
 export const schema = {
 	summary: 'Get album',
@@ -25,6 +27,7 @@ export const schema = {
 			name: z.string().describe('The name of the album.'),
 			description: z.string().nullable().describe('The description of the album.'),
 			isNsfw: z.boolean().describe('Whether or not the album is nsfw.'),
+			sortOrder: z.string().nullable().describe('The sort order for files in this album.'),
 			count: z.number().describe('The number of files in the album.'),
 			files: z.array(fileAsUserSchema)
 		}),
@@ -75,6 +78,26 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			}
 		: {};
 
+	// First get the album to check ownership and get sortOrder
+	const albumMeta = await prisma.albums.findFirst({
+		where: {
+			uuid,
+			userId: req.user.id
+		},
+		select: {
+			sortOrder: true
+		}
+	});
+
+	if (!albumMeta) {
+		void res.notFound('The album could not be found');
+		return;
+	}
+
+	// Determine sort order: album-specific > global default > legacy fallback
+	const effectiveSortOrder = albumMeta.sortOrder || SETTINGS.defaultSortOrder || 'id:desc';
+	const orderBy = parseSortOrder(effectiveSortOrder);
+
 	// Make sure the uuid exists and it belongs to the user
 	const album = await prisma.albums.findFirst({
 		where: {
@@ -85,6 +108,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			name: true,
 			description: true,
 			nsfw: true,
+			sortOrder: true,
 			files: {
 				where: dbSearchObject,
 				select: {
@@ -99,9 +123,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 					isS3: true,
 					isWatched: true
 				},
-				orderBy: {
-					id: 'desc'
-				},
+				orderBy,
 				...options
 			},
 			_count: true
@@ -129,6 +151,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 		description: album.description,
 		files,
 		isNsfw: album.nsfw,
+		sortOrder: album.sortOrder,
 		count: album._count.files
 	});
 };

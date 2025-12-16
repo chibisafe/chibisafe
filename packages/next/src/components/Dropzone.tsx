@@ -5,6 +5,8 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useRef } from 'react';
 import type { DropZoneProps } from 'react-aria-components';
 import { globalDropZoneOpenAtom } from '@/lib/atoms/dropzone';
+import { uploadAlbumUuidAtom } from '@/lib/atoms/selectedAlbum';
+import { currentUserAtom } from '@/lib/atoms/currentUser';
 import { DropZone } from '@/components/ui/dropzone';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -23,10 +25,14 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 
 	const ref = useRef<HTMLDivElement>(null);
 	const [globalDropZoneOpen, setGlobalDropZoneOpen] = useAtom(globalDropZoneOpenAtom);
+	const uploadAlbumUuid = useAtomValue(uploadAlbumUuidAtom);
+	const currentUser = useAtomValue(currentUserAtom);
 
 	const settings = useAtomValue(settingsAtom);
 
-	const { uploadFile } = useUploadFile({ albumUuid: props.albumUuid });
+	// Use prop albumUuid if provided, otherwise fall back to global uploadAlbumUuid atom (only if authenticated)
+	const albumUuid = props.albumUuid ?? (currentUser?.uuid ? uploadAlbumUuid : null) ?? undefined;
+	const { uploadFile } = useUploadFile({ albumUuid });
 
 	const onDrop = useCallback(
 		async (ev: DropEvent) => {

@@ -96,6 +96,7 @@ model albums {
 	createdAt DateTime @default(now())
 	editedAt DateTime?
 	nsfw Boolean @default(false)
+	sortOrder String?
 	files files[]
 }
 
@@ -164,6 +165,7 @@ model settings {
 	S3Endpoint String @default("")
 	S3PathStyle Boolean @default(false)
 	S3PublicUrl String @default("")
+	defaultSortOrder String @default("createdAt:desc")
 }
 
 model statistics {

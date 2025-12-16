@@ -21,7 +21,16 @@ export const schema = {
 						description: z.string().describe('The description of the setting.'),
 						notice: z.string().optional().describe('The notice of the setting, if any.'),
 						example: z.string().optional().describe('An example value of the setting.'),
-						category: z.string().optional().describe('The category of the setting.')
+						category: z.string().optional().describe('The category of the setting.'),
+						options: z
+							.array(
+								z.object({
+									label: z.string(),
+									value: z.string()
+								})
+							)
+							.optional()
+							.describe('Available options for select type settings.')
 					})
 				)
 				.describe('All the chibisafe instance settings.')
