@@ -4,7 +4,16 @@ FROM node:20-alpine as runner
 RUN apk update
 RUN apk add --no-cache libc6-compat git openssl
 
-COPY --from=ffmpeg /bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=ffmpeg /bin/ffmpeg /usr/bin/ffmpeg
+COPY --from=ffmpeg /usr/lib/libavcodec.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libavformat.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libavfilter.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libavdevice.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libavutil.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libswresample.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libswscale.so.* /usr/lib/
+COPY --from=ffmpeg /usr/lib/libpostproc.so.* /usr/lib/
+
 RUN chmod +x /usr/local/bin/ffmpeg
 
 WORKDIR /app
