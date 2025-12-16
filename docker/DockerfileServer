@@ -14,7 +14,7 @@ COPY --from=ffmpeg /usr/lib/libswresample.so.* /usr/lib/
 COPY --from=ffmpeg /usr/lib/libswscale.so.* /usr/lib/
 COPY --from=ffmpeg /usr/lib/libpostproc.so.* /usr/lib/
 
-RUN chmod +x /usr/local/bin/ffmpeg
+RUN chmod +x /usr/bin/ffmpeg
 
 WORKDIR /app
 COPY . .
