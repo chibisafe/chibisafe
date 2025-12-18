@@ -36,7 +36,8 @@ export const schema = {
 				.boolean()
 				.optional()
 				.describe('Whether or not the terms of service page is enabled.'),
-			rulesPageContent: z.boolean().optional().describe('Whether or not the rules page is enabled.')
+			rulesPageContent: z.boolean().optional().describe('Whether or not the rules page is enabled.'),
+			saveDuplicatesToAlbum: z.boolean().optional().describe('Whether or not to attach an already existing file to an album when uploaded again.')
 		})
 	}
 };
@@ -66,6 +67,7 @@ export const run = (_: RequestWithUser, res: FastifyReply) => {
 		useUrlShortener: SETTINGS.useUrlShortener,
 		privacyPolicyPageContent: Boolean(SETTINGS.privacyPolicyPageContent),
 		termsOfServicePageContent: Boolean(SETTINGS.termsOfServicePageContent),
-		rulesPageContent: Boolean(SETTINGS.rulesPageContent)
+		rulesPageContent: Boolean(SETTINGS.rulesPageContent),
+		saveDuplicatesToAlbum: Boolean(SETTINGS.saveDuplicatesToAlbum)
 	});
 };

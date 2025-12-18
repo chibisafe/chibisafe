@@ -91,7 +91,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			uuid: true,
 			quarantine: true,
 			isS3: true,
-			isWatched: true
+			isWatched: true,
+			sourceUrl: true
 		},
 		orderBy: {
 			createdAt: 'desc'

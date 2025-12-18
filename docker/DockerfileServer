@@ -1,7 +1,7 @@
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 RUN apk update
-RUN apk add --no-cache libc6-compat git ffmpeg openssl
+RUN apk add --no-cache libc6-compat git openssl ffmpeg6=6.1.2-r12 ffmpeg6-libs=6.1.2-r12
 
 WORKDIR /app
 COPY . .

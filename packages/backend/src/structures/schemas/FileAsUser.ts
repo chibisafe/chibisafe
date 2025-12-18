@@ -13,6 +13,7 @@ export const fileAsUserSchema = z
 		url: z.string().describe('The URL of the file.'),
 		thumb: z.string().describe('The URL of the thumbnail of the file.'),
 		preview: z.string().describe('The URL of the preview of the file.'),
-		quarantine: z.boolean().optional().describe('Whether the file is quarantined.')
+		quarantine: z.boolean().optional().describe('Whether the file is quarantined.'),
+		sourceUrl: z.string().nullable().optional().describe('The source URL of the file.')
 	})
 	.describe('The file object.');

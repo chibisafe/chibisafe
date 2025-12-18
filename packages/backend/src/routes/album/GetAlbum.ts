@@ -16,7 +16,8 @@ export const schema = {
 	tags: ['Albums'],
 	query: z.object({
 		page: queryPageSchema,
-		limit: queryLimitSchema
+		limit: queryLimitSchema,
+		search: z.string().optional().describe('The text you want to search within your files.')
 	}),
 	response: {
 		200: z.object({
@@ -42,11 +43,37 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
 
 	// Set up pagination options
-	const { page = 1, limit = 50 } = req.query as { limit?: number; page?: number };
+	const { page = 1, limit = 50, search = '' } = req.query as { limit?: number; page?: number; search?: string };
 	const options = {
 		take: limit,
 		skip: (page - 1) * limit
 	};
+
+	const dbSearchObject = search
+		? {
+				OR: [
+					{
+						name: {
+							contains: search
+						}
+					},
+					{
+						original: {
+							contains: search
+						}
+					},
+					{
+						tags: {
+							some: {
+								name: {
+									contains: search
+								}
+							}
+						}
+					}
+				]
+			}
+		: {};
 
 	// Make sure the uuid exists and it belongs to the user
 	const album = await prisma.albums.findFirst({
@@ -59,6 +86,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 			description: true,
 			nsfw: true,
 			files: {
+				where: dbSearchObject,
 				select: {
 					createdAt: true,
 					hash: true,

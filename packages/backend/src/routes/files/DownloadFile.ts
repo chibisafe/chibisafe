@@ -55,5 +55,5 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 
 	const uploadPath = fileURLToPath(new URL('../../../../../uploads', import.meta.url));
 	const filePath = createReadStream(`${uploadPath}/${file.name}`);
-	return res.header('content-disposition', `attachment; filename="${file.original}"`).send(filePath);
+	return res.header('content-disposition', `attachment; filename="${file.name}"; filename*=UTF-8''${encodeURIComponent(file.original)}`).send(filePath);
 };
