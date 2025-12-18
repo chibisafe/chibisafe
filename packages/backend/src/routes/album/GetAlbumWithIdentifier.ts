@@ -32,6 +32,7 @@ export const schema = {
 				files: z.array(
 					z.object({
 						name: z.string().describe('The name of the file.'),
+						original: z.string().describe('The original name of the file.'),
 						type: z.string().describe('The type of the file.'),
 						url: z.string().describe('The URL of the file.'),
 						thumb: z.string().describe('The URL of the thumbnail of the file.'),
@@ -95,6 +96,7 @@ export const run = async (req: FastifyRequest, res: FastifyReply) => {
 			files: {
 				select: {
 					name: true,
+					original: true,
 					type: true,
 					isS3: true,
 					isWatched: true,
