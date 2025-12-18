@@ -68,6 +68,7 @@ const formSchema = z.object({
 	generatedAlbumLength: z.coerce.number(),
 	generatedLinksLength: z.coerce.number(),
 	useUrlShortener: z.boolean().optional(),
+	defaultSortOrder: z.string().optional(),
 	// Legal
 	privacyPolicyPageContent: z.string().optional(),
 	termsOfServicePageContent: z.string().optional(),

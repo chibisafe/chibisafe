@@ -6,6 +6,7 @@ import { FormFieldNumber } from './fields/FormFieldNumber';
 import { FormFieldBoolean } from './fields/FormFieldBoolean';
 import { FormFieldString } from './fields/FormFieldString';
 import { FormFieldText } from './fields/FormFieldText';
+import { FormFieldSelect } from './fields/FormFieldSelect';
 
 export const FormWrapper = ({ form, meta }: PropsWithChildren<{ readonly form: any; readonly meta: Setting[] }>) => {
 	return (
@@ -20,6 +21,8 @@ export const FormWrapper = ({ form, meta }: PropsWithChildren<{ readonly form: a
 						return <FormFieldBoolean form={form} data={setting} key={setting.key} />;
 					case 'text':
 						return <FormFieldText form={form} data={setting} key={setting.key} />;
+					case 'select':
+						return <FormFieldSelect form={form} data={setting} key={setting.key} />;
 					default:
 						return <div key={setting.key}>No component found for type: {setting.type}</div>;
 				}

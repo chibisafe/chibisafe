@@ -2,23 +2,35 @@
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CheckIcon, ChevronsUpDownIcon, PlusIcon } from 'lucide-react';
 
 export function Combobox({
 	data,
 	onSelected,
-	placeholder = 'Select...'
+	placeholder = 'Select...',
+	createNewLabel,
+	onCreateNew,
+	selectedValue
 }: PropsWithChildren<{
 	readonly data: { label: string; value: string }[];
 	onSelected?(selected: string): void;
 	readonly placeholder?: string | undefined;
+	readonly createNewLabel?: string | undefined;
+	onCreateNew?(): void;
+	readonly selectedValue?: string | undefined;
 }>) {
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState('');
+	const [value, setValue] = useState(selectedValue ?? '');
+
+	useEffect(() => {
+		if (selectedValue !== undefined) {
+			setValue(selectedValue);
+		}
+	}, [selectedValue]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -44,9 +56,10 @@ export function Combobox({
 								<CommandItem
 									key={item.value}
 									value={item.value}
+									keywords={[item.label]}
 									onSelect={currentValue => {
 										setValue(currentValue === value ? '' : currentValue);
-										onSelected?.(currentValue);
+										onSelected?.(currentValue === value ? '' : currentValue);
 										setOpen(false);
 									}}
 								>
@@ -61,6 +74,22 @@ export function Combobox({
 							))}
 						</CommandGroup>
 					</CommandList>
+					{createNewLabel && onCreateNew && (
+						<>
+							<CommandSeparator />
+							<CommandGroup>
+								<CommandItem
+									onSelect={() => {
+										setOpen(false);
+										onCreateNew();
+									}}
+								>
+									<PlusIcon className="mr-2 h-4 w-4" />
+									{createNewLabel}
+								</CommandItem>
+							</CommandGroup>
+						</>
+					)}
 				</Command>
 			</PopoverContent>
 		</Popover>

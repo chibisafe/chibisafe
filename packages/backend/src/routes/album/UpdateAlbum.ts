@@ -5,6 +5,7 @@ import type { RequestWithUser } from '@/structures/interfaces.js';
 import { http4xxErrorSchema } from '@/structures/schemas/HTTP4xxError.js';
 import { http5xxErrorSchema } from '@/structures/schemas/HTTP5xxError.js';
 import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
+import { isValidSortOrder } from '@/utils/SortOrder.js';
 
 export const schema = {
 	summary: 'Update album',
@@ -15,20 +16,12 @@ export const schema = {
 			uuid: z.string().describe('The uuid of the album.')
 		})
 		.required(),
-	body: z.union([
-		z.object({
-			name: z.string().describe('The name of the album.'),
-			description: z.string().describe('The description of the album.'),
-			nsfw: z.boolean().describe('Whether the album is nsfw or not.')
-		}),
-		z.object({
-			name: z.string().describe('The name of the album.')
-		}),
-		z.object({ description: z.string().describe('The description of the album.') }),
-		z.object({
-			nsfw: z.boolean().describe('Whether the album is nsfw or not.')
-		})
-	]),
+	body: z.object({
+		name: z.string().optional().describe('The name of the album.'),
+		description: z.string().optional().describe('The description of the album.'),
+		nsfw: z.boolean().optional().describe('Whether the album is nsfw or not.'),
+		sortOrder: z.string().optional().nullable().describe('The sort order for files in this album.')
+	}),
 	response: {
 		200: z.object({
 			message: responseMessageSchema
@@ -47,9 +40,19 @@ export const options = {
 export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { uuid } = req.params as { uuid: string };
 
-	const { name, nsfw, description } = req.body as { description?: string; name?: string; nsfw?: boolean };
-	if (!name && nsfw === undefined && !description) {
+	const { name, nsfw, description, sortOrder } = req.body as {
+		description?: string;
+		name?: string;
+		nsfw?: boolean;
+		sortOrder?: string | null;
+	};
+	if (!name && nsfw === undefined && !description && sortOrder === undefined) {
 		void res.badRequest('No data supplied');
+		return;
+	}
+
+	if (sortOrder !== undefined && sortOrder !== null && !isValidSortOrder(sortOrder)) {
+		void res.badRequest('Invalid sort order. Valid options: createdAt:asc, createdAt:desc, name:asc, name:desc, id:desc');
 		return;
 	}
 
@@ -69,7 +72,8 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const updateObj = {
 		name: name ?? album.name,
 		nsfw: nsfw === true ? true : nsfw === false ? false : album.nsfw,
-		description: description ?? album.description
+		description: description ?? album.description,
+		sortOrder: sortOrder === undefined ? album.sortOrder : sortOrder
 	};
 
 	await prisma.albums.update({

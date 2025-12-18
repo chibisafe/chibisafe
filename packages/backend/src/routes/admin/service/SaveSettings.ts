@@ -8,6 +8,7 @@ import { responseMessageSchema } from '@/structures/schemas/ResponseMessage.js';
 import type { SETTINGS } from '@/structures/settings.js';
 import { loadSettings } from '@/structures/settings.js';
 import { updateCheck, startUpdateCheckSchedule, stopUpdateCheckSchedule } from '@/utils/UpdateCheck.js';
+import { isValidSortOrder } from '@/utils/SortOrder.js';
 
 export const schema = {
 	summary: 'Save settings',
@@ -49,9 +50,13 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	const { settings }: { settings: string } = req.body as { settings: string };
 
 	try {
-		// TODO: Validation of the settings
 		const parsedSettings: Partial<typeof SETTINGS> = {};
 		for (const item of settings as unknown as incomingSettings[]) {
+			if (item.key === 'defaultSortOrder' && (!item.value || !isValidSortOrder(item.value))) {
+				void res.badRequest('Invalid default sort order');
+				return;
+			}
+
 			if (item.type === 'boolean') parsedSettings[item.key] = item.value === 'true';
 			else if (item.type === 'number') parsedSettings[item.key] = Number(item.value);
 			else parsedSettings[item.key] = item.value;

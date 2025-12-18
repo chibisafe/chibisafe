@@ -13,6 +13,7 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 
 	const description = form.get('description') as string;
 	const nsfw = form.get('nsfw') === 'on';
+	const sortOrder = (form.get('sortOrder') as string) || null;
 
 	try {
 		const { error } = await request.post({
@@ -20,7 +21,8 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 			body: {
 				name,
 				description,
-				nsfw
+				nsfw,
+				sortOrder
 			},
 			headers: {
 				authorization: `Bearer ${getToken()}`
