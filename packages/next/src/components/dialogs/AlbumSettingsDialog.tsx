@@ -33,6 +33,7 @@ import request from '@/lib/request';
 import { Plus } from 'lucide-react';
 
 export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
+	const defaultSortValue = '_default';
 	const [open, setOpen] = useAtom(isDialogOpenAtom);
 	const album = useAtomValue(selectedAlbumAtom);
 	const queryClient = useQueryClient();
@@ -148,12 +149,15 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 							<div>
 								<Label htmlFor="sortOrder">Sort Order</Label>
 								<input type="hidden" name="sortOrder" value={sortOrder} />
-								<Select value={sortOrder} onValueChange={setSortOrder}>
+								<Select
+									value={sortOrder === '' ? defaultSortValue : sortOrder}
+									onValueChange={value => setSortOrder(value === defaultSortValue ? '' : value)}
+								>
 									<SelectTrigger>
 										<SelectValue placeholder="Use default" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="">Use default</SelectItem>
+										<SelectItem value={defaultSortValue}>Use default</SelectItem>
 										<SelectItem value="createdAt:desc">Newest first</SelectItem>
 										<SelectItem value="createdAt:asc">Oldest first</SelectItem>
 										<SelectItem value="name:asc">Name (A-Z)</SelectItem>
