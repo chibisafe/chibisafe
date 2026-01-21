@@ -17,6 +17,7 @@ import { jumpstartStatistics } from './utils/StatsGenerator.js';
 import { startUpdateCheckSchedule } from './utils/UpdateCheck.js';
 import { createAdminUserIfNotExists, VERSION } from './utils/Util.js';
 import { fileWatcher, getFileWatcher } from './utils/Watcher.js';
+import { runMigrations } from './utils/Migration.js';
 
 // Create the Fastify server
 const server = fastify({
@@ -55,6 +56,15 @@ process.on('unhandledRejection', error => {
 });
 
 const start = async () => {
+	// Run migrations with self-healing before any DB operations
+	try {
+		await runMigrations(log);
+	} catch (error) {
+		log.error('Fatal: Database migration failed.');
+		log.error(error);
+		process.exit(1);
+	}
+
 	server.log.info(`Running Chibisafe v${VERSION}`);
 	// Check the environment has all the requirements before running chibisafe
 	await Requirements(server.log);
