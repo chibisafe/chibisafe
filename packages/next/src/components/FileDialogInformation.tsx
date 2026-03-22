@@ -17,8 +17,10 @@ import { Tooltip } from './Tooltip';
 import { Button } from './ui/button';
 import request from '@/lib/request';
 import { toast } from 'sonner';
-import { useSetAtom } from 'jotai';
+import { useSetAtom, useAtomValue } from 'jotai';
 import { isDialogOpenAtom } from '@/lib/atoms/fileDialog';
+import { settingsAtom } from '@/lib/atoms/settings';
+import QRCode from 'qrcode';
 
 const OpenButton = () => {
 	return (
@@ -62,6 +64,7 @@ export const FileDialogInformation = ({
 	const [albums, setAlbums] = useState<Album[]>([]);
 	const [fileAlbums, setFileAlbums] = useState<Album[]>([]);
 	const setModalOpen = useSetAtom(isDialogOpenAtom);
+	const settings = useAtomValue(settingsAtom);
 
 	const addFileToAlbum = useCallback(
 		async (albumUuid: string) => {
@@ -192,6 +195,34 @@ export const FileDialogInformation = ({
 	useEffect(() => {
 		void fetchAdditionalData();
 	}, [fetchAdditionalData]);
+
+	const [qrDataUrl, setQrDataUrl] = useState('');
+
+	useEffect(() => {
+		if (!settings.serveUploadsFrom) {
+			return;
+		}
+
+		let cancelled = false;
+
+		const generateQRCode = async () => {
+			try {
+				const downloadURL = settings.serveUploadsFrom + '/api/file/' + file.uuid + '/download';
+				const qrImage = await QRCode.toDataURL(downloadURL, { errorCorrectionLevel: 'Q', width: 500, margin: 1 });
+
+				if (!cancelled) {
+					setQrDataUrl(qrImage);
+				}
+
+			} catch (err) {
+				console.error('QR code generation failed:', err);
+			}
+		};
+
+		generateQRCode();
+
+		return () => { cancelled = true; };
+	}, [file.uuid, settings.serveUploadsFrom]);
 
 	return (
 		<ComponentToRender>
@@ -376,6 +407,13 @@ export const FileDialogInformation = ({
 						<Label htmlFor="uploaded">Uploaded</Label>
 						<Input value={getDate(file.createdAt)} name="uploaded" id="uploaded" readOnly />
 					</div>
+
+					{qrDataUrl ? (
+						<div>
+							<Label>QR code</Label>
+							<img src={qrDataUrl} alt="A QR code to a file download link" className="h-64 w-64 "/>
+						</div>
+					) : null}
 				</div>
 			</div>
 		</ComponentToRender>
