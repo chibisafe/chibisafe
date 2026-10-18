@@ -195,7 +195,17 @@ const start = async () => {
 	// Serve uploads only if the user is running in DEV mode
 	if (process.env.NODE_ENV !== 'production') {
 		await server.register(fstatic, {
-			root: fileURLToPath(new URL('../../../uploads', import.meta.url))
+			root: fileURLToPath(new URL('../../../uploads', import.meta.url)),
+			setHeaders: res => {
+				// Keep this policy in sync with the upload file server in Caddyfile.
+				void res.setHeader(
+					'Content-Security-Policy',
+					"sandbox; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+				);
+				void res.setHeader('X-Content-Type-Options', 'nosniff');
+				// Native media viewers fetch from the sandbox's opaque origin.
+				void res.setHeader('Access-Control-Allow-Origin', '*');
+			}
 		});
 	}
 
