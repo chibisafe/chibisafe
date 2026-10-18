@@ -7,9 +7,23 @@
 
 {$BASE_URL} {
 	route {
-		file_server * {
+		# Uploaded documents must not execute scripts or share the application's origin.
+		@uploadedFile file {
 			root /app/uploads
-			pass_thru
+			try_files {path} {path}/index.html {path}/index.txt
+		}
+		handle @uploadedFile {
+			header {
+				Content-Security-Policy "sandbox; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+				X-Content-Type-Options nosniff
+				# Native media viewers fetch from the sandbox's opaque origin.
+				Access-Control-Allow-Origin *
+			}
+
+			file_server {
+				root /app/uploads
+				pass_thru
+			}
 		}
 
 		@api path /api/*
