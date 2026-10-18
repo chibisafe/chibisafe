@@ -50,6 +50,20 @@ Whichever method you choose to install chibisafe keep in mind that the installat
 
 For more guides and how to set up different aspects of the service [please refer to the guides](https://chibisafe.app/docs/category/installation)
 
+### Uploaded file security
+
+Uploaded files are untrusted content. The supplied `Caddyfile` and the development server apply these headers to upload responses, including files uploaded before the update:
+
+```http
+Content-Security-Policy: sandbox; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+```
+
+The policy disables scripts and isolates uploaded documents from the application's origin. Anonymous CORS access lets native media viewers load public uploads from that isolated origin. These headers must be scoped to uploaded files so they do not restrict the application or grant CORS access to private API responses.
+
+Existing Docker installations must update their mounted `Caddyfile` and reload or restart Caddy. Updating the application images alone does not replace that file. Custom web servers, CDNs, and S3 storage must apply the same protections to uploaded file responses. Purge any cached upload responses when deploying the change. Blocking upload extensions alone does not protect files already stored.
+
 ## Migrate from older versions
 
 ### v5 to v6
