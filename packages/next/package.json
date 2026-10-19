@@ -60,6 +60,7 @@
 		"next": "14.3.0-canary.33",
 		"next-themes": "^0.3.0",
 		"p-queue": "^8.0.1",
+		"qrcode": "^1.5.4",
 		"react": "^18.2.0",
 		"react-aria-components": "^1.1.1",
 		"react-compare-slider": "^4.0.0-0",
