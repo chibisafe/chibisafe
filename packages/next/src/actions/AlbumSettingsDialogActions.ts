@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 
 import request from '@/lib/request';
@@ -11,14 +11,14 @@ export const deleteAlbum = async (uuid: string) => {
 		const { error } = await request.delete({
 			url: `album/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
-		revalidateTag('albums');
+		updateTag('files');
+		updateTag('albums');
 		return { message: 'Album deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -30,14 +30,14 @@ export const deleteAlbumAndFiles = async (uuid: string) => {
 		const { error } = await request.delete({
 			url: `album/${uuid}/purge`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
-		revalidateTag('albums');
+		updateTag('files');
+		updateTag('albums');
 		return { message: 'Album and all files deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -49,13 +49,13 @@ export const deleteLink = async (uuid: string, albumUuid: string) => {
 		const { error } = await request.delete({
 			url: `album/${albumUuid}/link/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('links');
+		updateTag('links');
 		return { message: 'Link deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -74,7 +74,7 @@ export const toggleEnabled = async (_: any, form: FormData) => {
 				enabled: !enabled
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 

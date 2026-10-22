@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -13,13 +13,13 @@ export const unbanIp = async (ip: string) => {
 				ip
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('ips');
+		updateTag('ips');
 		return { message: 'IP unbanned', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -37,13 +37,13 @@ export const banIp = async (_: any, form: FormData) => {
 				reason
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('ips');
+		updateTag('ips');
 		return { message: 'IP banned', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -58,13 +58,13 @@ export const purgeIp = async (ip: string) => {
 				ip
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('ips');
+		updateTag('ips');
 		return { message: 'IP files purged', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

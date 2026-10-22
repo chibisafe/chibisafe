@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -25,13 +25,13 @@ export const updateAlbumSettings = async (_: any, form: FormData) => {
 				sortOrder
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('albums');
+		updateTag('albums');
 		return { message: 'Album updated', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

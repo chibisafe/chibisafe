@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const currentUser = request.cookies.get('token')?.value;
 
 	if (request.nextUrl.pathname.startsWith('/dashboard') && !currentUser) {

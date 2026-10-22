@@ -2,7 +2,15 @@
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandSeparator
+} from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { PropsWithChildren } from 'react';
 import { useState, useEffect } from 'react';
@@ -16,11 +24,11 @@ export function Combobox({
 	onCreateNew,
 	selectedValue
 }: PropsWithChildren<{
+	readonly createNewLabel?: string | undefined;
 	readonly data: { label: string; value: string }[];
+	onCreateNew?(): void;
 	onSelected?(selected: string): void;
 	readonly placeholder?: string | undefined;
-	readonly createNewLabel?: string | undefined;
-	onCreateNew?(): void;
 	readonly selectedValue?: string | undefined;
 }>) {
 	const [open, setOpen] = useState(false);

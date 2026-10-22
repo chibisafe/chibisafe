@@ -15,13 +15,12 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Tags'
 };
 
-export default async function TagPage({
-	searchParams,
-	params
-}: {
-	readonly params: { uuid: string };
-	readonly searchParams: PageQuery;
+export default async function TagPage(props: {
+	readonly params: Promise<{ uuid: string }>;
+	readonly searchParams: Promise<PageQuery>;
 }) {
+	const params = await props.params;
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 
@@ -53,7 +52,7 @@ export default async function TagPage({
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="tag" />
-						<FilesWrapper files={response.files} total={response.count} type="tag" />
+						<FilesWrapper files={response.files} type="tag" />
 						<Pagination itemsTotal={response.count} type="tag" />
 					</Suspense>
 					<FileDialog />

@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { Button } from './ui/button';
-import { ProgressBar } from '@tremor/react';
+import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCopyToClipboard } from 'usehooks-ts';
@@ -86,7 +86,11 @@ export const UploadProgress = () => {
 					>
 						{status === 'uploading' ? (
 							<>
-								<ProgressBar value={totalProgress} color="blue" className="max-w-sm w-80" />
+								<Progress
+									value={totalProgress}
+									aria-label="Total upload progress"
+									className="max-w-sm w-80"
+								/>
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							</>
 						) : null}

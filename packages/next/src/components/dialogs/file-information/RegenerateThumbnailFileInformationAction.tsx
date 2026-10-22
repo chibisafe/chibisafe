@@ -8,10 +8,12 @@ export const RegenerateThumbnailFileInformationAction = ({
 	readonly isDrawer?: boolean | undefined;
 	readonly uuid: string;
 }) => {
-	const regenerateThumbailWithUuid = regenerateThumbnail.bind(null, uuid);
+	const regenerateThumbnailWithUuid = async () => {
+		await regenerateThumbnail(uuid);
+	};
 
 	return (
-		<form action={regenerateThumbailWithUuid} className="w-full h-full">
+		<form action={regenerateThumbnailWithUuid} className="w-full h-full">
 			{isDrawer ? (
 				<Button variant="outline" className="w-full">
 					Regenerate Thumbnail

@@ -4,7 +4,8 @@ import request from '@/lib/request';
 import type { MetadataBuilder, Snippet } from '@/types';
 import { SnippetViewer } from '@/components/SnippetViewer';
 
-export async function generateMetadata({ params }: { readonly params: { identifier: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { readonly params: Promise<{ identifier: string }> }): Promise<Metadata> {
+	const params = await props.params;
 	const { data: response, error } = await request.get({
 		url: `snippet/public/${params.identifier}`,
 		options: {
@@ -33,7 +34,8 @@ export async function generateMetadata({ params }: { readonly params: { identifi
 	} as MetadataBuilder;
 }
 
-export default async function PublicSnippetPage({ params }: { readonly params: { identifier: string } }) {
+export default async function PublicSnippetPage(props: { readonly params: Promise<{ identifier: string }> }) {
+	const params = await props.params;
 	const { data: response, error } = await request.get({
 		url: `snippet/public/${params.identifier}`,
 		options: {

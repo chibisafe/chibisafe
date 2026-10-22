@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardAdminStatsPage() {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 
 	const {
@@ -130,7 +130,7 @@ export default async function DashboardAdminStatsPage() {
 						const percentageUsed = Math.ceil((used / total) * 100);
 						return (
 							<div key={fileSystem} className="flex flex-row justify-center items-center gap-4">
-								<ProgressCircle value={percentageUsed} size="md">
+								<ProgressCircle value={percentageUsed}>
 									<span className="text-xs font-medium text-slate-700">{percentageUsed}%</span>
 								</ProgressCircle>
 								<div>
@@ -159,13 +159,7 @@ export default async function DashboardAdminStatsPage() {
 					<p>Uptime: {chibisafeUptime}</p>
 				</div>
 				<div className="flex items-center gap-6 mt-4">
-					<DonutChart
-						data={uploads}
-						category="value"
-						index="name"
-						colors={['blue', 'cyan', 'indigo']}
-						className="w-40"
-					/>
+					<DonutChart data={uploads} colors={['blue', 'cyan', 'indigo']} className="w-40" />
 					<div className="flex flex-col justify-center items-center">
 						<Legend
 							categories={['Images', 'Videos', 'Others']}

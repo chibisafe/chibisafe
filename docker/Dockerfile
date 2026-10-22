@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:26.12.1-alpine3.24@sha256:40cd011b55415bc894e45b02fdd5a5dfde056921b7d23a64c74f80497af48797 AS builder
 
 RUN apk add --no-cache libc6-compat git
 
@@ -6,10 +6,14 @@ WORKDIR /app
 COPY . .
 COPY package.json yarn.lock turbo.json tsconfig.json ./
 
+RUN npm install --global corepack@0.36.0 && corepack enable
+
 RUN yarn workspaces focus @chibisafe/next
 RUN yarn workspace @chibisafe/next build
 
-FROM node:20-alpine AS runner
+FROM node:26.12.1-alpine3.24@sha256:40cd011b55415bc894e45b02fdd5a5dfde056921b7d23a64c74f80497af48797 AS runner
+
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 WORKDIR /app
 

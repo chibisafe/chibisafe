@@ -64,7 +64,7 @@ function FileItem({
 	}, [file, isSelected, selectedFiles, setSelectedFiles, type]);
 
 	const attrs = useLongPress(
-		e => {
+		() => {
 			// console.log('long press', e);
 			canFileCanBeSelected();
 		},

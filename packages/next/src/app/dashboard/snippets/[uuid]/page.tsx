@@ -14,8 +14,9 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Snippets - Snippet'
 };
 
-export default async function PublicSnippetPage({ params }: { readonly params: { uuid: string } }) {
-	const cookiesStore = cookies();
+export default async function PublicSnippetPage(props: { readonly params: Promise<{ uuid: string }> }) {
+	const params = await props.params;
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 
 	const {

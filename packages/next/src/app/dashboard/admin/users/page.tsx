@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Users'
 };
 
-export default async function DashboardAdminUsersPage({ searchParams }: { readonly searchParams: PageQuery }) {
-	const cookiesStore = cookies();
+export default async function DashboardAdminUsersPage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 

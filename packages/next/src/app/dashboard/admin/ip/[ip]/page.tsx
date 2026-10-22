@@ -15,13 +15,12 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - IPs'
 };
 
-export default async function DashboardPage({
-	params,
-	searchParams
-}: {
-	readonly params: { ip: string };
-	readonly searchParams: PageQuery;
+export default async function DashboardPage(props: {
+	readonly params: Promise<{ ip: string }>;
+	readonly searchParams: Promise<PageQuery>;
 }) {
+	const searchParams = await props.searchParams;
+	const params = await props.params;
 	const ip = decodeURIComponent(params.ip);
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
@@ -53,7 +52,7 @@ export default async function DashboardPage({
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
+						<FilesWrapper files={response.files} type="admin" />
 						<Pagination itemsTotal={response.count} type="admin" />
 					</Suspense>
 					<FileDialog />

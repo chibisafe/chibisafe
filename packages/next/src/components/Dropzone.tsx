@@ -11,10 +11,8 @@ import { DropZone } from '@/components/ui/dropzone';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { settingsAtom } from '@/lib/atoms/settings';
-import { toast } from 'sonner';
-import { getSignedUrl, processDropItem } from '@/lib/dropzone';
+import { processDropItem } from '@/lib/dropzone';
 import { useUploadFile } from '@/hooks/useUploadFile';
-import { uploadQueue } from '@/lib/uploadQueue';
 
 interface DropZonePropsWithAlbumUuid extends DropZoneProps {
 	readonly albumUuid?: string;
@@ -32,7 +30,7 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 
 	// Use prop albumUuid if provided, otherwise fall back to global uploadAlbumUuid atom (only if authenticated)
 	const albumUuid = props.albumUuid ?? (currentUser?.uuid ? uploadAlbumUuid : null) ?? undefined;
-	const { uploadFile } = useUploadFile({ albumUuid });
+	const { queueFiles } = useUploadFile({ albumUuid });
 
 	const onDrop = useCallback(
 		async (ev: DropEvent) => {
@@ -40,43 +38,10 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				const files = await processDropItem(item, settings);
 				if (!files.length) continue;
 
-				if (!settings?.useNetworkStorage) {
-					files.map(async file =>
-						uploadQueue.add(async () =>
-							uploadFile({
-								file: file instanceof File ? file : await file.getFile(),
-								endpoint: '/api/upload',
-								isNetworkStored: false,
-								method: 'POST'
-							})
-						)
-					);
-
-					continue;
-				}
-
-				files.map(async file => {
-					uploadQueue.add(async () => {
-						const actualFile = file instanceof File ? file : await file.getFile();
-						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
-						if (error) {
-							toast.error(error);
-							return;
-						}
-
-						await uploadFile({
-							file: actualFile,
-							endpoint: url,
-							isNetworkStored: true,
-							method: 'PUT',
-							identifier,
-							publicUrl
-						});
-					});
-				});
+				queueFiles(files);
 			}
 		},
-		[settings, uploadFile]
+		[settings, queueFiles]
 	);
 
 	const onPaste = useCallback(
@@ -91,43 +56,10 @@ export const GlobalDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				const files = await processDropItem(file, settings);
 				if (!files.length) continue;
 
-				if (!settings?.useNetworkStorage) {
-					files.map(async file =>
-						uploadQueue.add(async () =>
-							uploadFile({
-								file: file instanceof File ? file : await file.getFile(),
-								endpoint: '/api/upload',
-								isNetworkStored: false,
-								method: 'POST'
-							})
-						)
-					);
-
-					continue;
-				}
-
-				files.map(async file => {
-					uploadQueue.add(async () => {
-						const actualFile = file instanceof File ? file : await file.getFile();
-						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
-						if (error) {
-							toast.error(error);
-							return;
-						}
-
-						await uploadFile({
-							file: actualFile,
-							endpoint: url,
-							isNetworkStored: true,
-							method: 'PUT',
-							identifier,
-							publicUrl
-						});
-					});
-				});
+				queueFiles(files);
 			}
 		},
-		[settings, uploadFile]
+		[settings, queueFiles]
 	);
 
 	useEffect(() => {

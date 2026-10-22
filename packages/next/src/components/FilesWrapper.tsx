@@ -136,13 +136,11 @@ function SelectionWrapper({ selectAllFiles, type }: { selectAllFiles(): void; re
 
 export function FilesWrapper({
 	files,
-	total,
 	type,
 	albumUuid
 }: {
 	readonly albumUuid?: string | undefined;
 	readonly files?: File[] | undefined;
-	readonly total?: number | undefined;
 	readonly type: FilePropsType;
 }) {
 	const isUploads = type === 'uploads';
