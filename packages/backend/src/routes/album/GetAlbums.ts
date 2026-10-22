@@ -99,7 +99,7 @@ export const run = async (req: RequestWithUser, res: FastifyReply) => {
 	for (const album of albums) {
 		const newObject = {
 			...album,
-			cover: ('' as string) || undefined,
+			cover: undefined,
 			count: album._count.files
 			// file.size is BigInt because of prisma, so we need to convert it to a number
 		} as unknown as Partial<Album>;

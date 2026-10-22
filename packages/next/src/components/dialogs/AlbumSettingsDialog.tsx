@@ -5,7 +5,7 @@ import { updateAlbumSettings } from '@/actions/UpdateAlbumSettings';
 import type { AlbumLink } from '@/types';
 import { MessageType } from '@/types';
 import { useAtom, useAtomValue } from 'jotai';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { toast } from 'sonner';
 
 import { isDialogOpenAtom, selectedAlbumAtom } from '@/lib/atoms/albumSettingsDialog';
@@ -39,7 +39,7 @@ export function AlbumSettingsDialog({ children }: PropsWithChildren<{}>) {
 	const queryClient = useQueryClient();
 	const [sortOrder, setSortOrder] = useState<string>('');
 
-	const [state, formAction] = useFormState(updateAlbumSettings, {
+	const [state, formAction] = useActionState(updateAlbumSettings, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

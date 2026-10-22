@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardAdminSettingsServicePage() {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 

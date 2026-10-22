@@ -1,5 +1,7 @@
 **/node_modules
 **/dist
+**/.next
+**/*.tsbuildinfo
 **/.yarn/cache
 **/.yarn/install-state.gz
 **/uploads

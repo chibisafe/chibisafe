@@ -2,7 +2,7 @@
 
 import { MessageType } from '@/types';
 import request from '@/lib/request';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { getToken } from './utils';
 
 export const changePassword = async (_: any, form: FormData) => {
@@ -23,13 +23,13 @@ export const changePassword = async (_: any, form: FormData) => {
 				newPassword
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('me');
+		updateTag('me');
 		return { message: 'Password changed', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -41,13 +41,13 @@ export const requestNewApiKey = async (_: any, __: FormData) => {
 		const { error } = await request.post({
 			url: 'auth/apikey/change',
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('me');
+		updateTag('me');
 		return { message: 'API key regenerated', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

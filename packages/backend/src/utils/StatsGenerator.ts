@@ -167,11 +167,7 @@ export const getUploadsInfo = async () => {
 
 		stats.sizeInDB += Number(upload.size);
 
-		if (types[upload.type] === undefined) {
-			types[upload.type] = 0;
-		}
-
-		types[upload.type]++;
+		types[upload.type] = (types[upload.type] ?? 0) + 1;
 	}
 
 	return stats;

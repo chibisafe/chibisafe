@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Uploads'
 };
 
-export default async function DashboardPage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function DashboardPage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';

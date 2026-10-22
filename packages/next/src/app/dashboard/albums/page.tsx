@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Albums'
 };
 
-export default async function AlbumsPage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function AlbumsPage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';

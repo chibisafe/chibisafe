@@ -20,9 +20,6 @@ const nextConfig = {
 	env: {
 		NEXT_PUBLIC_VERSION: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version
 	},
-	experimental: {
-		ppr: true
-	},
 	logging: {
 		fetches: {
 			fullUrl: true
@@ -47,12 +44,6 @@ const nextConfig = {
 						destination: `${process.env.BASE_API_URL}/api/:path*`
 					}
 				];
-	},
-	eslint: {
-		ignoreDuringBuilds: true
-	},
-	typescript: {
-		ignoreBuildErrors: true
 	}
 };
 

@@ -90,8 +90,8 @@ export async function generateMetadata() {
 	};
 }
 
-export default function RootLayout({ children }: PropsWithChildren<{}>) {
-	const hasTokenCookie = cookies().has('token');
+export default async function RootLayout({ children }: PropsWithChildren<{}>) {
+	const hasTokenCookie = (await cookies()).has('token');
 
 	return (
 		<html lang="en" suppressHydrationWarning>

@@ -59,7 +59,7 @@ export type MasonryProps<T> = React.ComponentPropsWithoutRef<'div'> & {
 	};
 
 	readonly items: T[];
-	render(item: T, idx: number): React.ReactNode;
+	render(item: T, idx: number): React.ReactElement;
 };
 
 export function createSafeArray(data: number[] | number) {

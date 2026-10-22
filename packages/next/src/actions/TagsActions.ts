@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -16,7 +16,7 @@ export const createTag = async (_: any, form: FormData) => {
 				name
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -27,7 +27,7 @@ export const createTag = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('tags');
+		updateTag('tags');
 		return { message: 'Tag created', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -39,7 +39,7 @@ export const deleteTag = async (uuid: string) => {
 		const { error } = await request.delete({
 			url: `tag/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -50,7 +50,7 @@ export const deleteTag = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('tags');
+		updateTag('tags');
 		return { message: 'Tag deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

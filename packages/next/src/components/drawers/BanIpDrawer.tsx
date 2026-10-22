@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
 import { Plus } from 'lucide-react';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -15,7 +14,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 
 export function BanIpDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(banIp, {
+	const [state, formAction] = useActionState(banIp, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

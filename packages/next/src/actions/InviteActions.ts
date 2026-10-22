@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -10,13 +10,13 @@ export const createInvite = async (_: FormData) => {
 		const { error } = await request.post({
 			url: 'admin/invite/create',
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('invites');
+		updateTag('invites');
 		return {};
 	} catch {
 		return {};
@@ -31,13 +31,13 @@ export const revokeInvite = async (uuid: string) => {
 				code: uuid
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('invites');
+		updateTag('invites');
 		return { message: 'Invite revoked', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

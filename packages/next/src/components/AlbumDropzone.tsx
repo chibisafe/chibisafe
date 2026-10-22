@@ -8,11 +8,9 @@ import { DropZone } from '@/components/ui/dropzone';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { settingsAtom } from '@/lib/atoms/settings';
-import { toast } from 'sonner';
-import { getSignedUrl, processDropItem } from '@/lib/dropzone';
+import { processDropItem } from '@/lib/dropzone';
 import { useUploadFile } from '@/hooks/useUploadFile';
 import { albumDisablePointerEventAtom } from '@/lib/atoms/dropzone';
-import { uploadQueue } from '@/lib/uploadQueue';
 
 interface DropZonePropsWithAlbumUuid extends DropZoneProps {
 	readonly albumUuid?: string;
@@ -27,7 +25,7 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 
 	const settings = useAtomValue(settingsAtom);
 
-	const { uploadFile } = useUploadFile({ albumUuid: props.albumUuid });
+	const { queueFiles } = useUploadFile({ albumUuid: props.albumUuid });
 
 	const onDrop = useCallback(
 		async (ev: DropEvent) => {
@@ -36,43 +34,10 @@ export const AlbumDropZone = (props: DropZonePropsWithAlbumUuid) => {
 				const files = await processDropItem(item, settings);
 				if (!files.length) continue;
 
-				if (!settings?.useNetworkStorage) {
-					files.map(async file =>
-						uploadQueue.add(async () =>
-							uploadFile({
-								file: file instanceof File ? file : await file.getFile(),
-								endpoint: '/api/upload',
-								isNetworkStored: false,
-								method: 'POST'
-							})
-						)
-					);
-
-					continue;
-				}
-
-				files.map(async file => {
-					uploadQueue.add(async () => {
-						const actualFile = file instanceof File ? file : await file.getFile();
-						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
-						if (error) {
-							toast.error(error);
-							return;
-						}
-
-						await uploadFile({
-							file: actualFile,
-							endpoint: url,
-							isNetworkStored: true,
-							method: 'PUT',
-							identifier,
-							publicUrl
-						});
-					});
-				});
+				queueFiles(files);
 			}
 		},
-		[setAlbumDisablePointerEvent, settings, uploadFile]
+		[setAlbumDisablePointerEvent, settings, queueFiles]
 	);
 
 	return (

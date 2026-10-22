@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Files'
 };
 
-export default async function AdminFilesPage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function AdminFilesPage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
@@ -42,7 +43,7 @@ export default async function AdminFilesPage({ searchParams }: { readonly search
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
+						<FilesWrapper files={response.files} type="admin" />
 						<Pagination itemsTotal={response.count} type="admin" />
 					</Suspense>
 					<FileDialog />

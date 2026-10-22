@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -21,7 +21,7 @@ export const createSnippet = async (_: any, form: FormData) => {
 				language: language ?? 'auto-detect'
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -32,7 +32,7 @@ export const createSnippet = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('snippets');
+		updateTag('snippets');
 		return { message: 'Snippet created', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -46,7 +46,7 @@ export const deleteSnippet = async (_: any, form: FormData) => {
 		const { error } = await request.delete({
 			url: `snippet/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {

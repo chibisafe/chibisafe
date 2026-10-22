@@ -21,7 +21,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"esModuleInterop": true,
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
+		"resolvePackageJsonExports": true,
+		"resolvePackageJsonImports": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"strictNullChecks": true

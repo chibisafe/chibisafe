@@ -15,8 +15,9 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Short URLs'
 };
 
-export default async function DashboardLinksPage({ searchParams }: { readonly searchParams: PageQuery }) {
-	const cookiesStore = cookies();
+export default async function DashboardLinksPage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 

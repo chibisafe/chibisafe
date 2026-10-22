@@ -1,7 +1,7 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
-export const saveSettings = () => {
-	revalidateTag('settings');
+export const saveSettings = async () => {
+	updateTag('settings');
 };

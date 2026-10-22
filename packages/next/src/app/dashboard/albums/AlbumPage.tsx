@@ -13,7 +13,7 @@ export async function AlbumPage({
 	readonly page: number;
 	readonly search: string;
 }) {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 

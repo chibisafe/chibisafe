@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
 import { Plus } from 'lucide-react';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ import { createAlbum } from '@/actions/CreateAlbum';
 
 export function CreateAlbumDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(createAlbum, {
+	const [state, formAction] = useActionState(createAlbum, {
 		message: '',
 		type: MessageType.Uninitialized
 	});
