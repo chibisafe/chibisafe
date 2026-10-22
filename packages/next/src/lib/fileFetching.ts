@@ -34,7 +34,7 @@ export const fetchEndpoint = async (
 		});
 	}
 
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 

@@ -3,18 +3,18 @@
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 export const regenerateThumbnail = async (uuid: string) => {
 	try {
 		await request.post({
 			url: `file/${uuid}/thumbnail/regenerate`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
-		revalidateTag('files');
+		updateTag('files');
 
 		return { message: 'Thumbnail queued for regeneration', type: MessageType.Success };
 	} catch (error: any) {
@@ -27,13 +27,13 @@ export const deleteFile = async (uuid: string) => {
 		const { error } = await request.delete({
 			url: `file/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
+		updateTag('files');
 
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
@@ -46,13 +46,13 @@ export const deleteFileAsAdmin = async (uuid: string) => {
 		const { error } = await request.delete({
 			url: `admin/file/${uuid}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
+		updateTag('files');
 
 		return { message: 'File deleted', type: MessageType.Success };
 	} catch (error: any) {
@@ -65,13 +65,13 @@ export const quarantineFile = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/file/${uuid}/quarantine`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
+		updateTag('files');
 
 		return { message: 'File quarantined', type: MessageType.Success };
 	} catch (error: any) {
@@ -84,13 +84,13 @@ export const allowFile = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/file/${uuid}/allow`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('files');
+		updateTag('files');
 
 		return { message: 'File allowed', type: MessageType.Success };
 	} catch (error: any) {

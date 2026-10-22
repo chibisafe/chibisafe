@@ -3,9 +3,8 @@ import { ImageResponse } from 'next/og';
 import fetchRequest from '@/lib/request';
 import { ChibisafeDefaultLogo } from '@/components/svg/ChibisafeLogo';
 
-export const contentType = 'image/jpeg';
 export const runtime = 'edge';
-export const size = {
+const size = {
 	width: 1200,
 	height: 630
 };
@@ -34,7 +33,7 @@ export async function GET(request: Request) {
 	});
 
 	if (error) {
-		return null;
+		return new Response('Unable to load image settings', { status: 502 });
 	}
 
 	return new ImageResponse(

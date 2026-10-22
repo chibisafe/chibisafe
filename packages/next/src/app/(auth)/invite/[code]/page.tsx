@@ -7,7 +7,8 @@ export const metadata: Metadata = {
 	description: 'Create an account to get started.'
 };
 
-export default function InvitePage({ params }: { readonly params: { code: string } }) {
+export default async function InvitePage(props: { readonly params: Promise<{ code: string }> }) {
+	const params = await props.params;
 	return (
 		<div className="container flex h-screen w-screen flex-col items-center justify-center">
 			<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">

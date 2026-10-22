@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardAdminInvitesPage() {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const token = cookiesStore.get('token')?.value;
 	if (!token) redirect('/');
 
@@ -52,7 +52,12 @@ export default async function DashboardAdminInvitesPage() {
 					{ name: 'Invites', url: '/dashboard/admin/invites' }
 				]}
 			>
-				<form action={createInvite}>
+				<form
+					action={async form => {
+						'use server';
+						await createInvite(form);
+					}}
+				>
 					<Button type="submit">
 						<Plus className="mr-2 h-4 w-4" />
 						Create new invite

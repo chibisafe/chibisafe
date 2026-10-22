@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - Quarantine'
 };
 
-export default async function DashboardAdminQuarantinePage({ searchParams }: { readonly searchParams: PageQuery }) {
+export default async function DashboardAdminQuarantinePage(props: { readonly searchParams: Promise<PageQuery> }) {
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
@@ -37,7 +38,7 @@ export default async function DashboardAdminQuarantinePage({ searchParams }: { r
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="quarantine" />
-						<FilesWrapper files={response.files} total={response.count} type="quarantine" />
+						<FilesWrapper files={response.files} type="quarantine" />
 						<Pagination itemsTotal={response.count} type="quarantine" />
 					</Suspense>
 					<FileDialog />

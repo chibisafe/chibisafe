@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
 import { Plus } from 'lucide-react';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ import { createTag } from '@/actions/TagsActions';
 
 export function CreateTagDrawer({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(createTag, {
+	const [state, formAction] = useActionState(createTag, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

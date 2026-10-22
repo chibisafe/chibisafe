@@ -11,13 +11,12 @@ import { Pagination } from '@/components/Pagination';
 import { FilesWrapper } from '@/components/FilesWrapper';
 import { FileDialog } from '@/components/dialogs/FileDialog';
 
-export async function generateMetadata({
-	searchParams,
-	params
-}: {
-	readonly params: { identifier: string };
-	readonly searchParams: PageQuery;
+export async function generateMetadata(props: {
+	readonly params: Promise<{ identifier: string }>;
+	readonly searchParams: Promise<PageQuery>;
 }): Promise<Metadata> {
+	const params = await props.params;
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
@@ -59,13 +58,12 @@ export async function generateMetadata({
 	return meta;
 }
 
-export default async function PublicAlbumPage({
-	searchParams,
-	params
-}: {
-	readonly params: { identifier: string };
-	readonly searchParams: PageQuery;
+export default async function PublicAlbumPage(props: {
+	readonly params: Promise<{ identifier: string }>;
+	readonly searchParams: Promise<PageQuery>;
 }) {
+	const params = await props.params;
+	const searchParams = await props.searchParams;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
@@ -99,11 +97,7 @@ export default async function PublicAlbumPage({
 					<div className="grid gap-4">
 						<Suspense>
 							<Pagination itemsTotal={response.album.count} type="publicAlbum" />
-							<FilesWrapper
-								files={response.album.files}
-								total={response.album.count}
-								type="publicAlbum"
-							/>
+							<FilesWrapper files={response.album.files} type="publicAlbum" />
 							<Pagination itemsTotal={response.album.count} type="publicAlbum" />
 						</Suspense>
 						<FileDialog />

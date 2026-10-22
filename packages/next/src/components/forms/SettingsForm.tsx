@@ -117,7 +117,7 @@ export const SettingsForm = ({
 		}
 
 		toast.success('Settings saved. Please note that some settings may require a server restart to take effect');
-		saveSettings();
+		await saveSettings();
 		void queryClient.invalidateQueries({ queryKey: ['settings'] });
 	};
 

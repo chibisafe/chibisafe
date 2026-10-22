@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -15,7 +15,7 @@ export const setQuota = async (_: any, form: FormData) => {
 				space: form.get('space')
 			},
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -26,7 +26,7 @@ export const setQuota = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'New quota set', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -38,7 +38,7 @@ export const enableUser = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/enable`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -49,7 +49,7 @@ export const enableUser = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'User enabled', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -61,7 +61,7 @@ export const disableUser = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/disable`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -72,7 +72,7 @@ export const disableUser = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'User disabled', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -84,7 +84,7 @@ export const demoteUser = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/demote`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -95,7 +95,7 @@ export const demoteUser = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'User demoted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -107,7 +107,7 @@ export const promoteUser = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/promote`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -118,7 +118,7 @@ export const promoteUser = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'User promoted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -130,7 +130,7 @@ export const purgeUser = async (uuid: string) => {
 		const { error } = await request.post({
 			url: `admin/user/${uuid}/purge`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			options: {
 				next: {
@@ -141,7 +141,7 @@ export const purgeUser = async (uuid: string) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('users');
+		updateTag('users');
 		return { message: 'User purged', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

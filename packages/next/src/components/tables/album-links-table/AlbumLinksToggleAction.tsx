@@ -1,9 +1,8 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { toggleEnabled } from '@/actions/AlbumSettingsDialogActions';
@@ -19,7 +18,7 @@ export const AlbumLinksToggleAction = ({
 	readonly initialEnabled: boolean;
 	readonly uuid: string;
 }>) => {
-	const [state, formAction] = useFormState(toggleEnabled, {
+	const [state, formAction] = useActionState(toggleEnabled, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

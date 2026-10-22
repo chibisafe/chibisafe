@@ -1,16 +1,20 @@
-FROM node:20-alpine AS runner
+FROM node:26-alpine3.24 AS runner
 
 RUN apk update
-RUN apk add --no-cache libc6-compat git openssl ffmpeg6=6.1.4-r0 ffmpeg6-libs=6.1.4-r0
+RUN apk add --no-cache libc6-compat git openssl ffmpeg6=6.1.4-r2 ffmpeg6-libs=6.1.4-r2
 
 WORKDIR /app
 COPY . .
 COPY package.json yarn.lock turbo.json tsconfig.json ./
 
+RUN npm install --global npm@12.2.1 corepack@0.36.0 && corepack enable
+
 RUN yarn workspaces focus @chibisafe/backend
 RUN yarn workspace @chibisafe/backend generate
 RUN yarn workspace @chibisafe/backend migrate
 RUN yarn workspace @chibisafe/backend build
+
+RUN rm -rf /root/.npm
 
 ENV NODE_ENV=production
 

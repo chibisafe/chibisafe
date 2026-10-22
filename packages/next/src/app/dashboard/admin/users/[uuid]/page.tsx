@@ -13,13 +13,12 @@ export const metadata: Metadata = {
 	title: 'Dashboard - Admin - User'
 };
 
-export default async function DashboardAdminUserPage({
-	params,
-	searchParams
-}: {
-	readonly params: { uuid: string };
-	readonly searchParams: PageQuery;
+export default async function DashboardAdminUserPage(props: {
+	readonly params: Promise<{ uuid: string }>;
+	readonly searchParams: Promise<PageQuery>;
 }) {
+	const searchParams = await props.searchParams;
+	const params = await props.params;
 	const currentPage = searchParams.page ?? 1;
 	const perPage = searchParams.limit ? (searchParams.limit > 50 ? 50 : searchParams.limit) : 50;
 	const search = searchParams.search ?? '';
@@ -49,7 +48,7 @@ export default async function DashboardAdminUserPage({
 				<div className="grid gap-4">
 					<Suspense>
 						<Pagination itemsTotal={response.count} type="admin" />
-						<FilesWrapper files={response.files} total={response.count} type="admin" />
+						<FilesWrapper files={response.files} type="admin" />
 						<Pagination itemsTotal={response.count} type="admin" />
 					</Suspense>
 					<FileDialog />

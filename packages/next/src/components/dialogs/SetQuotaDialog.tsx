@@ -1,9 +1,8 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ export function SetQuotaDialog({
 	uuid
 }: PropsWithChildren<{ readonly className?: string; readonly initialValue: number; readonly uuid: string }>) {
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(setQuota, {
+	const [state, formAction] = useActionState(setQuota, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

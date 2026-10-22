@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { MessageType } from '@/types';
 import request from '@/lib/request';
 import { getToken } from './utils';
@@ -13,7 +13,7 @@ export const createShortURL = async (_: any, form: FormData) => {
 		const { error } = await request.post({
 			url: 'link/create',
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			},
 			body: {
 				url,
@@ -23,7 +23,7 @@ export const createShortURL = async (_: any, form: FormData) => {
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('links');
+		updateTag('links');
 		return { message: 'Link created', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -35,13 +35,13 @@ export const deleteLink = async (identifier: string) => {
 		const { error } = await request.delete({
 			url: `link/${identifier}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('links');
+		updateTag('links');
 		return { message: 'Link deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };
@@ -53,13 +53,13 @@ export const deleteLinkAsAdmin = async (identifier: string) => {
 		const { error } = await request.delete({
 			url: `admin/link/${identifier}`,
 			headers: {
-				authorization: `Bearer ${getToken()}`
+				authorization: `Bearer ${await getToken()}`
 			}
 		});
 
 		if (error) return { message: error, type: MessageType.Error };
 
-		revalidateTag('links');
+		updateTag('links');
 		return { message: 'Link deleted', type: MessageType.Success };
 	} catch (error: any) {
 		return { message: error, type: MessageType.Error };

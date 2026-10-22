@@ -1,10 +1,9 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
 import { Trash2Icon } from 'lucide-react';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ export function DeleteSnippetDialog({
 }: PropsWithChildren<{ readonly className?: string; readonly uuid: string }>) {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(deleteSnippet, {
+	const [state, formAction] = useActionState(deleteSnippet, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

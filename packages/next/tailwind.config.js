@@ -5,7 +5,7 @@ const colors = require('tailwindcss/colors');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	darkMode: ['class'],
-	content: ['src/**/*.{ts,tsx,mdx}', './mdx-components.tsx', '../../node_modules/@tremor/**/*.{js,ts,jsx,tsx}'],
+	content: ['src/**/*.{ts,tsx,mdx}', './mdx-components.tsx'],
 	theme: {
 		container: {
 			center: true,

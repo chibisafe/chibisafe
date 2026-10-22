@@ -6,6 +6,9 @@ import { useCallback } from 'react';
 import { debug } from '@/lib/utils';
 import { uploadsAtom } from '@/lib/atoms/uploads';
 import { toast } from 'sonner';
+import type { FileDropItem } from 'react-aria-components';
+import { getSignedUrl } from '@/lib/dropzone';
+import { uploadQueue } from '@/lib/uploadQueue';
 
 export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | undefined }) => {
 	const settings = useAtomValue(settingsAtom);
@@ -44,10 +47,9 @@ export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | und
 					'Content-Type': file.type
 				};
 
-				if(endpoint.includes("digitaloceanspaces.com")){
-					options.headers["x-amz-acl"] = "public-read";
+				if (endpoint.includes('digitaloceanspaces.com')) {
+					options.headers['x-amz-acl'] = 'public-read';
 				}
-        
 			} else {
 				options.postParams = {
 					name: file.name,
@@ -187,5 +189,44 @@ export const useUploadFile = ({ albumUuid }: { readonly albumUuid?: string | und
 		[albumUuid, setUploads, settings?.chunkSize, settings?.maxSize]
 	);
 
-	return { uploadFile };
+	const queueFiles = useCallback(
+		(files: (File | FileDropItem)[]) => {
+			for (const file of files) {
+				void uploadQueue.add(async () => {
+					try {
+						const actualFile = file instanceof File ? file : await file.getFile();
+						if (!settings?.useNetworkStorage) {
+							await uploadFile({
+								file: actualFile,
+								endpoint: '/api/upload',
+								isNetworkStored: false,
+								method: 'POST'
+							});
+							return;
+						}
+
+						const { url, identifier, publicUrl, error } = await getSignedUrl(actualFile);
+						if (error) {
+							toast.error(error);
+							return;
+						}
+
+						await uploadFile({
+							file: actualFile,
+							endpoint: url,
+							identifier,
+							publicUrl,
+							isNetworkStored: true,
+							method: 'PUT'
+						});
+					} catch (error: unknown) {
+						toast.error(error instanceof Error ? error.message : 'Unable to upload file');
+					}
+				});
+			}
+		},
+		[settings?.useNetworkStorage, uploadFile]
+	);
+
+	return { queueFiles, uploadFile };
 };

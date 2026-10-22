@@ -1,7 +1,7 @@
 'use client';
 
 import { MessageType } from '@/types';
-import { useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const useServerAction = ({
@@ -35,5 +35,9 @@ export const useServerAction = ({
 		};
 	}, [state.message, state.type, state]);
 
-	return { formAction, isPending, state };
+	const runAction = () => {
+		startTransition(() => formAction());
+	};
+
+	return { formAction: runAction, isPending, state };
 };

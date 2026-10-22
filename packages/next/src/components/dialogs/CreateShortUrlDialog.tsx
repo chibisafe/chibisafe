@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useActionState } from 'react';
 import { MessageType } from '@/types';
 import { Plus } from 'lucide-react';
-import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +22,7 @@ import { Callout } from '../mdx/Callout';
 
 export function CreateShortUrlDialog({ className }: { readonly className?: string }) {
 	const [open, setOpen] = useState(false);
-	const [state, formAction] = useFormState(createShortURL, {
+	const [state, formAction] = useActionState(createShortURL, {
 		message: '',
 		type: MessageType.Uninitialized
 	});

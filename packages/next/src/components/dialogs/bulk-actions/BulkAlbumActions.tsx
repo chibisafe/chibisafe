@@ -203,8 +203,8 @@ export const BulkAlbumActions = ({
 					return;
 				}
 
-				customRevalidateTag('albums');
-				customRevalidateTag('files');
+				await customRevalidateTag('albums');
+				await customRevalidateTag('files');
 			} catch (error: any) {
 				toast.error(error);
 			}
@@ -225,8 +225,8 @@ export const BulkAlbumActions = ({
 					return;
 				}
 
-				customRevalidateTag('albums');
-				customRevalidateTag('files');
+				await customRevalidateTag('albums');
+				await customRevalidateTag('files');
 			} catch (error: any) {
 				toast.error(error);
 			}
