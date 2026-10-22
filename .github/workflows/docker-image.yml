@@ -55,6 +55,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
+          pull: true
           push: true
           tags: |
             chibisafe/chibisafe:latest
@@ -69,6 +70,7 @@ jobs:
           context: .
           file: docker/DockerfileServer
           platforms: linux/amd64,linux/arm64
+          pull: true
           push: true
           tags: |
             chibisafe/chibisafe-server:latest
