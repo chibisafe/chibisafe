@@ -64,6 +64,10 @@ The policy disables scripts and isolates uploaded documents from the application
 
 Existing Docker installations must update their mounted `Caddyfile` and reload or restart Caddy. Updating the application images alone does not replace that file. Custom web servers, CDNs, and S3 storage must apply the same protections to uploaded file responses. Purge any cached upload responses when deploying the change. Blocking upload extensions alone does not protect files already stored.
 
+## One-click deploy
+
+[![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploylobe.svg)](https://repocloud.io/details/Chibisafe/)
+
 ## Migrate from older versions
 
 ### v5 to v6
