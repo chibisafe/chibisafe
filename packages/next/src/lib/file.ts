@@ -42,6 +42,12 @@ export const isFilePDF = (file: FileWithAdditionalData | null) => {
 	return type === 'application/pdf';
 };
 
+export const isFileDocx = (file: FileWithAdditionalData | null) => {
+	if (!file) return false;
+	const { type } = file;
+	return type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+};
+
 export const getFileExtension = (name: string) => {
 	return name.split('.').pop();
 };

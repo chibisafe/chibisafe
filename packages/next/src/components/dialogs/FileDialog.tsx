@@ -14,13 +14,14 @@ import {
 	MediaVolumeRange
 } from 'media-chrome/dist/react';
 
-import { isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
+import { isFileAudio, isFileDocx, isFileImage, isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, Loader2Icon } from 'lucide-react';
 import { useAtom, useAtomValue } from 'jotai';
 import { currentTypeAtom, isDialogOpenAtom, selectedFileAtom, allFilesAtom } from '@/lib/atoms/fileDialog';
 import { FileTextViewer } from '../FileTextViewer';
+import { FileDocxViewer } from '../FileDocxViewer';
 import { useEventListener } from 'usehooks-ts';
 import { useZoomImageWheel } from '@zoom-image/react';
 import { FileDialogToolbar } from '../FileDialogToolbar';
@@ -195,6 +196,8 @@ export function FileDialog() {
 								<MediaVolumeRange />
 							</MediaControlBar>
 						</MediaController>
+					) : isFileDocx(selectedFile) ? (
+						<FileDocxViewer url={selectedFile.url} />
 					) : (
 						<div className="h-full w-full">
 							<FileTextViewer uuid={selectedFile.uuid} />

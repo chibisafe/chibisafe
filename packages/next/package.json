@@ -48,6 +48,7 @@
 		"clsx": "^2.1.0",
 		"cmdk": "1.1.1",
 		"dayjs": "^1.11.10",
+		"docx-preview": "^0.4.1",
 		"file-saver": "^2.0.5",
 		"framer-motion": "11.18.2",
 		"immer": "^10.0.4",
