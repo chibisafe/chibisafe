@@ -14,7 +14,7 @@ import {
 	MediaVolumeRange
 } from 'media-chrome/dist/react';
 
-import { isFileAudio, isFileImage, isFileVideo } from '@/lib/file';
+import { isFileAudio, isFileImage, isFilePDF, isFileVideo } from '@/lib/file';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, Loader2Icon } from 'lucide-react';
@@ -195,6 +195,13 @@ export function FileDialog() {
 								<MediaVolumeRange />
 							</MediaControlBar>
 						</MediaController>
+					) : isFilePDF(selectedFile) ? (
+						// eslint-disable-next-line react/iframe-missing-sandbox -- the browser's PDF viewer does not load in a sandboxed frame
+						<iframe
+							src={`${selectedFile.url}#view=Fit&zoom=page-fit`}
+							title={selectedFile.name}
+							className="h-full w-[calc(100vw-8rem)] max-w-5xl bg-background"
+						/>
 					) : (
 						<div className="h-full w-full">
 							<FileTextViewer uuid={selectedFile.uuid} />
